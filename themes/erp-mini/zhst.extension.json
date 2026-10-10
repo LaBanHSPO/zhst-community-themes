@@ -1,0 +1,19 @@
+{
+	"schema": 1,
+	"id": "erp-mini",
+	"kind": "theme",
+	"name": "ERP Mini",
+	"type": "sales",
+	"emdash": "1.2.0",
+	"entry": "themes/erp-mini",
+	"plugin": "erp-mini",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": false,
+		"inquiry": false,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}
