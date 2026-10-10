@@ -1,0 +1,33 @@
+# Dependencies and generated output at any project depth
+node_modules/
+.pnpm-store/
+dist/
+.astro/
+.output/
+.cache/
+coverage/
+*.tsbuildinfo
+
+# Local runtime state; keep source seeds and lockfiles tracked
+.wrangler/
+uploads/
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+**/.emdash/migrations.json
+
+# Local secrets; examples must contain sanitized values only
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+*.pem
+*.key
+
+# Local logs and operating-system metadata
+*.log
+.DS_Store

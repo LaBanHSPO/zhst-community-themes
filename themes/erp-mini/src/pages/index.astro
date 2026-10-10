@@ -1,0 +1,80 @@
+---
+// This launcher deliberately does not load business records or CMS collections.
+Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content="Sign in to your private CRM and sales workspace." />
+    <title>ERP mini — CRM &amp; sales workspace</title>
+  </head>
+  <body>
+    <main>
+      <header><span class="wordmark">ERP<span class="mini">mini</span></span><span class="label">Private workspace</span></header>
+      <section aria-labelledby="title">
+        <p class="eyebrow">CRM &amp; sales</p>
+        <h1 id="title">Good relationships.<br />Clear next steps.</h1>
+        <p class="intro">Your customers, catalog and sales workflow, together in one focused workspace.</p>
+        <a class="primary" href="/_emdash/admin/plugins/erp-mini/workspace">Open workspace <span aria-hidden="true">→</span></a>
+        <p class="access">Administrator access required. Sign in securely with EmDash.</p>
+      </section>
+      <ol aria-label="Workspace workflow">
+        <li><span class="step">01</span><div><h2>Customers</h2><p>Keep contacts and customer details together.</p></div></li>
+        <li><span class="step">02</span><div><h2>Quotations</h2><p>Build offers from your item catalog.</p></div></li>
+        <li><span class="step">03</span><div><h2>Orders</h2><p>Turn accepted quotes into orders and track fulfillment.</p></div></li>
+      </ol>
+      <footer><span>Independent EmDash ERP</span><span>Business records stay in the private workspace.</span></footer>
+    </main>
+  </body>
+</html>
+<style>
+  :global(:root) {
+    color-scheme: light;
+    --paper: #f6f7f9;
+    --ink: #202834;
+    --muted: #586372;
+    --line: #d9dfe6;
+    --accent: #214e72;
+    --accent-hover: #153953;
+    --surface: #ffffff;
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+    --space-4: 2rem;
+    --space-5: 3rem;
+    --space-6: 5rem;
+    --radius: 0.5rem;
+  }
+  :global(*) { box-sizing: border-box; }
+  :global(body) { margin: 0; background: var(--paper); color: var(--ink); font-family: ui-sans-serif, system-ui, sans-serif; line-height: 1.6; }
+  main { width: min(100% - var(--space-5), 64rem); margin-inline: auto; }
+  header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); padding-block: var(--space-4); border-bottom: 1px solid var(--line); }
+  .wordmark { font-size: 1.25rem; font-weight: 750; letter-spacing: -0.04em; }
+  .mini { color: var(--muted); margin-left: 0.2em; font-weight: 500; }
+  .label, .eyebrow { color: var(--muted); font-size: 0.75rem; letter-spacing: 0.09em; text-transform: uppercase; font-weight: 650; }
+  section { padding-block: var(--space-6); max-width: 43rem; }
+  .eyebrow { margin: 0 0 var(--space-3); }
+  h1 { font-size: clamp(2.25rem, 6vw, 3.75rem); line-height: 1.1; letter-spacing: -0.045em; font-weight: 650; margin: 0; }
+  .intro { max-width: 34rem; font-size: 1.125rem; color: var(--muted); margin-block: var(--space-3) var(--space-4); }
+  .primary { display: inline-flex; align-items: center; gap: var(--space-4); padding: 0.875rem var(--space-3); min-height: 48px; background: var(--accent); color: var(--surface); border-radius: var(--radius); text-decoration: none; font-weight: 650; }
+  .primary:hover { background: var(--accent-hover); }
+  .primary:active { background: var(--ink); }
+  .primary:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+  .access { font-size: 0.8125rem; color: var(--muted); margin-block: var(--space-2) 0; }
+  ol { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); border-top: 1px solid var(--line); }
+  li { display: flex; align-items: baseline; gap: var(--space-2); padding-block: var(--space-4); }
+  .step { font-size: 0.75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  h2 { margin: 0 0 var(--space-1); font-size: 1rem; font-weight: 650; }
+  li p { margin: 0; font-size: 0.875rem; color: var(--muted); }
+  footer { border-top: 1px solid var(--line); padding-block: var(--space-3); display: flex; justify-content: space-between; gap: var(--space-2); color: var(--muted); font-size: 0.75rem; }
+  @media (max-width: 40rem) {
+    main { width: calc(100% - var(--space-4)); }
+    section { padding-block: var(--space-5); }
+    ol { grid-template-columns: 1fr; gap: 0; }
+    li { padding-block: var(--space-3); }
+    footer { flex-direction: column; }
+  }
+</style>
