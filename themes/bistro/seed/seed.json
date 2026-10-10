@@ -1,0 +1,255 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Bistro",
+		"description": "A neighborhood restaurant theme with a menu, a journal and pages",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "Bistro",
+		"tagline": "Seasonal kitchen and bar"
+	},
+	"collections": [
+		{
+			"slug": "posts",
+			"label": "Journal",
+			"labelSingular": "Journal entry",
+			"urlPattern": "/posts/{slug}",
+			"supports": ["drafts", "revisions", "preview", "scheduling", "search", "seo"],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured Image",
+					"type": "image"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": ["drafts", "revisions", "preview", "search", "seo"],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "menu",
+			"label": "Menu items",
+			"labelSingular": "Menu item",
+			"urlPattern": "/menu/{slug}",
+			"supports": ["drafts", "revisions", "preview", "search"],
+			"fields": [
+				{
+					"slug": "name",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "description",
+					"label": "Description",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "price",
+					"label": "Price",
+					"type": "string"
+				},
+				{
+					"slug": "category",
+					"label": "Category",
+					"type": "string"
+				},
+				{
+					"slug": "available",
+					"label": "Available",
+					"type": "boolean"
+				}
+			]
+		}
+	],
+	"taxonomies": [
+		{
+			"name": "category",
+			"label": "Categories",
+			"labelSingular": "Category",
+			"hierarchical": true,
+			"collections": ["posts"],
+			"terms": [
+				{ "slug": "general", "label": "General" },
+				{ "slug": "kitchen", "label": "Kitchen" }
+			]
+		},
+		{
+			"name": "tag",
+			"label": "Tags",
+			"labelSingular": "Tag",
+			"hierarchical": false,
+			"collections": ["posts"],
+			"terms": [
+				{ "slug": "menu", "label": "Menu" },
+				{ "slug": "events", "label": "Events" }
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{ "type": "custom", "label": "Home", "url": "/" },
+				{ "type": "custom", "label": "Menu", "url": "/menu" },
+				{ "type": "custom", "label": "Journal", "url": "/posts" },
+				{ "type": "custom", "label": "About", "url": "/about" }
+			]
+		}
+	],
+	"widgetAreas": [
+		{
+			"name": "sidebar",
+			"label": "Sidebar",
+			"description": "Sidebar widget area",
+			"widgets": [
+				{
+					"type": "component",
+					"componentId": "core:search",
+					"title": "Search"
+				},
+				{
+					"type": "component",
+					"componentId": "core:recent-posts",
+					"title": "Recent posts",
+					"settings": { "count": 5 }
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Bistro is a synthetic restaurant theme for the ZeroHostCMS community catalog. Replace this text and the sample menu with your own content.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						}
+					]
+				}
+			}
+		],
+		"posts": [
+			{
+				"id": "post-1",
+				"slug": "welcome",
+				"status": "published",
+				"data": {
+					"title": "Welcome to Bistro",
+					"excerpt": "A sample journal entry. Replace it with your own.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This is a sample entry for the Bistro theme. Edit it in the admin panel or replace the templates in src/pages.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": ["general"],
+					"tag": ["menu"]
+				}
+			}
+		],
+		"menu": [
+			{
+				"id": "menu-1",
+				"slug": "grilled-peach-salad",
+				"status": "published",
+				"data": {
+					"name": "Grilled peach salad",
+					"description": "Charred peaches, whipped ricotta, mint, toasted almonds.",
+					"price": "$12",
+					"category": "starters",
+					"available": true
+				}
+			},
+			{
+				"id": "menu-2",
+				"slug": "braised-short-rib",
+				"status": "published",
+				"data": {
+					"name": "Braised short rib",
+					"description": "Slow-braised beef, root vegetables, red-wine jus.",
+					"price": "$26",
+					"category": "mains",
+					"available": true
+				}
+			},
+			{
+				"id": "menu-3",
+				"slug": "house-lemonade",
+				"status": "published",
+				"data": {
+					"name": "House lemonade",
+					"description": "Pressed lemons, cane sugar, sparkling water.",
+					"price": "$5",
+					"category": "drinks",
+					"available": true
+				}
+			}
+		]
+	}
+}
