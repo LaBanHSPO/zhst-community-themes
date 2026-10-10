@@ -1,6 +1,6 @@
 # ZeroHostCMS Community Themes
 
-Public, independent theme development for ZeroHostCMS using released EmDash and Astro APIs. Theme projects belong under `themes/<slug>/`; each owns its dependencies, lockfile, source, synthetic seed content, and local development instructions. They are not members of the private hosting-platform workspace.
+Public, independently developed community themes for [ZeroHostCMS](https://zerohostcms.com/), built using released EmDash and Astro APIs. Theme projects belong under `themes/<slug>/`; each owns its dependencies, lockfile, source, synthetic seed content, and local development instructions. They are not members of the private hosting-platform workspace.
 
 Start with [CONTRIBUTING.md](CONTRIBUTING.md) for the standalone authoring walkthrough and review requirements. The framework contract lives in the [EmDash theme documentation](https://docs.emdashcms.com/themes/overview/).
 
