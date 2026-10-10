@@ -1,0 +1,28 @@
+---
+export const prerender = false;
+---
+<!doctype html>
+<html lang="vi">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex" />
+		<title>Nhà hàng · Restaurant operations</title>
+	</head>
+	<body>
+		<main>
+			<p class="eyebrow">RESTAURANT COLLECTION</p>
+			<h1>Một trải nghiệm<br />được chăm chút.</h1>
+			<p>Quét mã QR hoặc chạm thẻ NFC tại bàn để xem thực đơn và gọi món.</p>
+			<a href="/_emdash/admin/plugins/restaurant-chain/workspace">Dành cho nhân viên →</a>
+		</main>
+	</body>
+</html>
+<style>
+	:global(body) { margin: 0; background: #f6f3ed; color: #263c34; font-family: Georgia, serif; }
+	main { max-width: 60rem; margin-inline: auto; padding: clamp(2rem, 8vw, 8rem); }
+	.eyebrow { font: 600 .75rem/1.5 system-ui; letter-spacing: .2em; }
+	h1 { font-weight: 400; font-size: clamp(2.8rem, 6vw, 5rem); line-height: 1.15; }
+	p { max-width: 33rem; line-height: 1.8; }
+	a { color: inherit; display: inline-block; margin-block-start: 2rem; text-underline-offset: .4rem; }
+</style>

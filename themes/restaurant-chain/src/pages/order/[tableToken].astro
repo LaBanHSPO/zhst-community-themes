@@ -1,0 +1,20 @@
+---
+export const prerender = false;
+import GuestMenu from '../../components/GuestMenu.js';
+const { tableToken } = Astro.params;
+if (!tableToken || !/^[A-Za-z0-9_-]{16,160}$/.test(tableToken)) {
+	return new Response('Không tìm thấy bàn.', { status: 404 });
+}
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+Astro.response.headers.set('Referrer-Policy', 'no-referrer');
+---
+<!doctype html>
+<html lang="vi">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex,nofollow" />
+		<title>Thực đơn tại bàn</title>
+	</head>
+	<body><GuestMenu tableToken={tableToken} client:load /></body>
+</html>
