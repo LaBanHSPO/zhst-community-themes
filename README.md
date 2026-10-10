@@ -4,6 +4,12 @@ Public, independent theme development for ZeroHostCMS using released EmDash and 
 
 Start with [CONTRIBUTING.md](CONTRIBUTING.md) for the standalone authoring walkthrough and review requirements. The framework contract lives in the [EmDash theme documentation](https://docs.emdashcms.com/themes/overview/).
 
+## ERP mini starter
+
+[ERP mini](themes/erp-mini/README.md) is a standalone EmDash host for the community CRM/sales plugin: private customers/contacts, items/services, quotations and sales orders. Clone the theme and plugin repositories as siblings, then follow its credential-free Node setup. Optional Cloudflare deployment remains an explicit operator action on isolated review resources.
+
+Customer variants fork the theme/plugin layer, not EmDash core. The starter pins EmDash 1.2.0, checks upstream compatibility daily and requires reviewed upgrades. It is not an ERPNext/Frappe runtime, financial ledger, proven thousand-customer fleet or already-approved hosting-platform catalog entry.
+
 ## Source acceptance is not publication
 
 A community pull request accepts source for review, not production use. Fetching this repository as a hosting-platform submodule must not install, execute, or deploy a theme. Merging here does not register a gallery entry or approve publication.

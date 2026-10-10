@@ -1,0 +1,41 @@
+{
+  "name": "@zerohost/theme-erp-mini",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": "^24.15.0 || >=26.0.0" },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "node scripts/start.mjs",
+    "start": "node scripts/start.mjs",
+    "typecheck": "astro check",
+    "secrets:generate": "emdash secrets generate --write .env",
+    "cloudflare:configure": "node scripts/configure-cloudflare.mjs",
+    "cloudflare:build": "astro build --config astro.cloudflare.config.mjs",
+    "cloudflare:preview": "wrangler dev --config dist/server/wrangler.json --local",
+    "cloudflare:deploy": "wrangler deploy --config dist/server/wrangler.json"
+  },
+  "overrides": { "@astrojs/react": { "@vitejs/plugin-react": "6.1.1" } },
+  "dependencies": {
+    "@astrojs/node": "11.1.5",
+    "@astrojs/react": "7.0.1",
+    "@zerohost/plugin-erp-mini": "file:../../../zhst-community-plugins/plugins/erp-mini",
+    "astro": "7.3.5",
+    "emdash": "1.2.0",
+    "oxc-transform-react": "0.145.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@astrojs/cloudflare": "14.3.3",
+    "@emdash-cms/cloudflare": "1.2.0",
+    "@types/node": "24.10.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "typescript": "5.9.3",
+    "wrangler": "4.149.0"
+  }
+}
