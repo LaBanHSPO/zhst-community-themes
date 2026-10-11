@@ -1,0 +1,32 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../../layouts/Base.astro";
+
+const { entries: services, cacheHint } = await getEmDashCollection("services", { limit: 50 });
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+---
+
+<Base title="Services">
+	<h1>Services</h1>
+
+	{
+		services.length === 0 ? (
+			<p>
+				No services yet. <a href="/_emdash/admin/content/services/new">Create one</a>.
+			</p>
+		) : (
+			<ul>
+				{services.map((service) => (
+					<li>
+						<h2 {...service.edit.name}>{service.data.name}</h2>
+						{service.data.description && <p {...service.edit.description}>{service.data.description}</p>}
+						<p>
+							{service.data.duration && <span>{service.data.duration}</span>}
+							{service.data.price && <span> — {service.data.price}</span>}
+						</p>
+					</li>
+				))}
+			</ul>
+		)
+	}
+</Base>

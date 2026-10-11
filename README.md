@@ -4,6 +4,19 @@ Public, independently developed community themes for [ZeroHostCMS](https://zeroh
 
 Start with [CONTRIBUTING.md](CONTRIBUTING.md) for the standalone authoring walkthrough and review requirements. The framework contract lives in the [EmDash theme documentation](https://docs.emdashcms.com/themes/overview/).
 
+## Curated themes
+
+Standalone EmDash hosts extracted from the ZeroHostCMS curated catalog. Each pins EmDash 1.2.0 and Astro 7.3.5, ships a synthetic seed and a `zhst.extension.json` manifest, and runs locally with only Node and npm.
+
+| Theme | Type | Focus |
+| --- | --- | --- |
+| [bistro](themes/bistro/README.md) | restaurant | menu, journal, pages |
+| [urbanguide](themes/urbanguide/README.md) | directory | listings, guides, pages |
+| [tradecraft](themes/tradecraft/README.md) | company | studio landing, pricing, contact |
+| [commercelite](themes/commercelite/README.md) | sales | product catalog, pricing, contact |
+| [minimalfolio](themes/minimalfolio/README.md) | bio | projects, about, contact |
+| [carepulse](themes/carepulse/README.md) | company | services, health notes, pages |
+
 ## ERP mini starter
 
 [ERP mini](themes/erp-mini/README.md) is a standalone EmDash host for the community CRM/sales plugin: private customers/contacts, items/services, quotations and sales orders. Clone the theme and plugin repositories as siblings, then follow its credential-free Node setup. Optional Cloudflare deployment remains an explicit operator action on isolated review resources.
@@ -20,7 +33,7 @@ A community pull request accepts source for review, not production use. Fetching
 
 Maintainers must select an exact source commit, manually review and evaluate/deploy it in ZeroHostCMS using their own isolated review resources, and only then propose a separate private hosting-platform promotion. [The contribution guide](CONTRIBUTING.md#maintainer-review-and-promotion) owns that approval boundary.
 
-No private hosting-platform checkout, platform credentials, customer data, or account/resource identifiers are needed to contribute. Private runtimes and shipped curated themes remain private; this repository is not an export of them.
+No private hosting-platform checkout, platform credentials, customer data, or account/resource identifiers are needed to contribute. Platform-owned integrations and private runtimes remain private; a curated theme is an independent reimplementation here, not an export of private platform code.
 
 ## License
 

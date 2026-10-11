@@ -1,0 +1,29 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../../layouts/Base.astro";
+
+const { entries: items, cacheHint } = await getEmDashCollection("menu", { limit: 50 });
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+---
+
+<Base title="Menu">
+	<h1>Menu</h1>
+
+	{
+		items.length === 0 ? (
+			<p>
+				No menu items yet. <a href="/_emdash/admin/content/menu/new">Create one</a>.
+			</p>
+		) : (
+			<ul>
+				{items.map((item) => (
+					<li>
+						<h2 {...item.edit.name}>{item.data.name}</h2>
+						{item.data.description && <p {...item.edit.description}>{item.data.description}</p>}
+						{item.data.price && <p {...item.edit.price}>{item.data.price}</p>}
+					</li>
+				))}
+			</ul>
+		)
+	}
+</Base>

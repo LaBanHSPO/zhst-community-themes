@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "urbanguide",
+	"kind": "theme",
+	"name": "UrbanGuide",
+	"type": "directory",
+	"emdash": "1.2.0",
+	"entry": "themes/urbanguide",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": true,
+		"whatsapp": true
+	}
+}

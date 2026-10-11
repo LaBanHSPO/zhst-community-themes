@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "commercelite",
+	"kind": "theme",
+	"name": "CommerceLite",
+	"type": "sales",
+	"emdash": "1.2.0",
+	"entry": "themes/commercelite",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": true,
+		"map": true,
+		"whatsapp": true
+	}
+}

@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "minimalfolio",
+	"kind": "theme",
+	"name": "MinimalFolio",
+	"type": "bio",
+	"emdash": "1.2.0",
+	"entry": "themes/minimalfolio",
+	"capabilities": {
+		"pwa": true,
+		"publicItems": true,
+		"inquiry": false,
+		"booking": false,
+		"checkout": false,
+		"map": true,
+		"whatsapp": true
+	}
+}

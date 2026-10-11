@@ -1,0 +1,30 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../../layouts/Base.astro";
+
+const { entries: listings, cacheHint } = await getEmDashCollection("listings", { limit: 50 });
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+---
+
+<Base title="Listings">
+	<h1>Listings</h1>
+
+	{
+		listings.length === 0 ? (
+			<p>
+				No listings yet. <a href="/_emdash/admin/content/listings/new">Create one</a>.
+			</p>
+		) : (
+			<ul>
+				{listings.map((listing) => (
+					<li>
+						<h2 {...listing.edit.name}>{listing.data.name}</h2>
+						{listing.data.category && <p>{listing.data.category}</p>}
+						{listing.data.description && <p {...listing.edit.description}>{listing.data.description}</p>}
+						{listing.data.address && <p>{listing.data.address}</p>}
+					</li>
+				))}
+			</ul>
+		)
+	}
+</Base>

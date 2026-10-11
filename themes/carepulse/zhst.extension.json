@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "carepulse",
+	"kind": "theme",
+	"name": "CarePulse",
+	"type": "company",
+	"emdash": "1.2.0",
+	"entry": "themes/carepulse",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": true,
+		"checkout": false,
+		"map": true,
+		"whatsapp": true
+	}
+}
