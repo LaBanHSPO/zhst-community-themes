@@ -1,0 +1,266 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "UrbanGuide",
+		"description": "A local directory theme with listings, categories and guides",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "UrbanGuide",
+		"tagline": "Discover your city"
+	},
+	"collections": [
+		{
+			"slug": "posts",
+			"label": "Guides",
+			"labelSingular": "Guide",
+			"urlPattern": "/posts/{slug}",
+			"supports": ["drafts", "revisions", "preview", "scheduling", "search", "seo"],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured Image",
+					"type": "image"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": ["drafts", "revisions", "preview", "search", "seo"],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "listings",
+			"label": "Listings",
+			"labelSingular": "Listing",
+			"urlPattern": "/listings/{slug}",
+			"supports": ["drafts", "revisions", "preview", "search"],
+			"fields": [
+				{
+					"slug": "name",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "category",
+					"label": "Category",
+					"type": "string"
+				},
+				{
+					"slug": "address",
+					"label": "Address",
+					"type": "string"
+				},
+				{
+					"slug": "phone",
+					"label": "Phone",
+					"type": "string"
+				},
+				{
+					"slug": "description",
+					"label": "Description",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "url",
+					"label": "Website",
+					"type": "string"
+				},
+				{
+					"slug": "available",
+					"label": "Open now",
+					"type": "boolean"
+				}
+			]
+		}
+	],
+	"taxonomies": [
+		{
+			"name": "category",
+			"label": "Categories",
+			"labelSingular": "Category",
+			"hierarchical": false,
+			"collections": ["listings"],
+			"terms": [
+				{ "slug": "eat", "label": "Eat" },
+				{ "slug": "shop", "label": "Shop" },
+				{ "slug": "services", "label": "Services" }
+			]
+		},
+		{
+			"name": "tag",
+			"label": "Tags",
+			"labelSingular": "Tag",
+			"hierarchical": false,
+			"collections": ["posts"],
+			"terms": [
+				{ "slug": "neighborhood", "label": "Neighborhood" },
+				{ "slug": "weekend", "label": "Weekend" }
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{ "type": "custom", "label": "Home", "url": "/" },
+				{ "type": "custom", "label": "Listings", "url": "/listings" },
+				{ "type": "custom", "label": "Guides", "url": "/posts" },
+				{ "type": "custom", "label": "About", "url": "/about" }
+			]
+		}
+	],
+	"widgetAreas": [
+		{
+			"name": "sidebar",
+			"label": "Sidebar",
+			"description": "Sidebar widget area",
+			"widgets": [
+				{
+					"type": "component",
+					"componentId": "core:search",
+					"title": "Search"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "UrbanGuide is a synthetic local-directory theme for the ZeroHostCMS community catalog. Replace this text and the sample listings with your own content.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						}
+					]
+				}
+			}
+		],
+		"posts": [
+			{
+				"id": "post-1",
+				"slug": "welcome",
+				"status": "published",
+				"data": {
+					"title": "Welcome to UrbanGuide",
+					"excerpt": "A sample guide. Replace it with your own.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This is a sample guide for the UrbanGuide theme. Edit it in the admin panel or replace the templates in src/pages.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": ["eat"],
+					"tag": ["neighborhood"]
+				}
+			}
+		],
+		"listings": [
+			{
+				"id": "listing-1",
+				"slug": "corner-bakery",
+				"status": "published",
+				"data": {
+					"name": "Corner Bakery",
+					"category": "eat",
+					"address": "12 Maple Street",
+					"phone": "+1 555 0100",
+					"description": "Neighborhood bakery with fresh bread and pastries.",
+					"url": "https://example.invalid/corner-bakery",
+					"available": true
+				}
+			},
+			{
+				"id": "listing-2",
+				"slug": "river-bike-shop",
+				"status": "published",
+				"data": {
+					"name": "River Bike Shop",
+					"category": "shop",
+					"address": "8 River Road",
+					"phone": "+1 555 0111",
+					"description": "Bicycle sales, repairs and rentals near the river path.",
+					"url": "https://example.invalid/river-bike-shop",
+					"available": true
+				}
+			},
+			{
+				"id": "listing-3",
+				"slug": "bright-plumbing",
+				"status": "published",
+				"data": {
+					"name": "Bright Plumbing",
+					"category": "services",
+					"address": "44 Oak Avenue",
+					"phone": "+1 555 0122",
+					"description": "Local plumbing and heating service, same-day callouts.",
+					"url": "https://example.invalid/bright-plumbing",
+					"available": true
+				}
+			}
+		]
+	}
+}

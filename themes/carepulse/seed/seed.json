@@ -1,0 +1,258 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "CarePulse",
+		"description": "A wellness and clinic theme with services, appointment inquiries and pages",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "CarePulse",
+		"tagline": "Care that feels personal"
+	},
+	"collections": [
+		{
+			"slug": "posts",
+			"label": "Health notes",
+			"labelSingular": "Health note",
+			"urlPattern": "/posts/{slug}",
+			"supports": ["drafts", "revisions", "preview", "scheduling", "search", "seo"],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured Image",
+					"type": "image"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": ["drafts", "revisions", "preview", "search", "seo"],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "services",
+			"label": "Services",
+			"labelSingular": "Service",
+			"urlPattern": "/services/{slug}",
+			"supports": ["drafts", "revisions", "preview", "search"],
+			"fields": [
+				{
+					"slug": "name",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "category",
+					"label": "Category",
+					"type": "string"
+				},
+				{
+					"slug": "description",
+					"label": "Description",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "duration",
+					"label": "Duration",
+					"type": "string"
+				},
+				{
+					"slug": "price",
+					"label": "Price",
+					"type": "string"
+				},
+				{
+					"slug": "available",
+					"label": "Available",
+					"type": "boolean"
+				}
+			]
+		}
+	],
+	"taxonomies": [
+		{
+			"name": "category",
+			"label": "Categories",
+			"labelSingular": "Category",
+			"hierarchical": false,
+			"collections": ["services"],
+			"terms": [
+				{ "slug": "therapy", "label": "Therapy" },
+				{ "slug": "wellness", "label": "Wellness" },
+				{ "slug": "diagnostics", "label": "Diagnostics" }
+			]
+		},
+		{
+			"name": "tag",
+			"label": "Tags",
+			"labelSingular": "Tag",
+			"hierarchical": false,
+			"collections": ["posts"],
+			"terms": [
+				{ "slug": "wellbeing", "label": "Wellbeing" },
+				{ "slug": "prevention", "label": "Prevention" }
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{ "type": "custom", "label": "Home", "url": "/" },
+				{ "type": "custom", "label": "Services", "url": "/services" },
+				{ "type": "custom", "label": "Health notes", "url": "/posts" },
+				{ "type": "custom", "label": "About", "url": "/about" }
+			]
+		}
+	],
+	"widgetAreas": [
+		{
+			"name": "sidebar",
+			"label": "Sidebar",
+			"description": "Sidebar widget area",
+			"widgets": [
+				{
+					"type": "component",
+					"componentId": "core:search",
+					"title": "Search"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "CarePulse is a synthetic wellness theme for the ZeroHostCMS community catalog. Replace this text and the sample services with your own content.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						}
+					]
+				}
+			}
+		],
+		"posts": [
+			{
+				"id": "post-1",
+				"slug": "welcome",
+				"status": "published",
+				"data": {
+					"title": "Welcome to CarePulse",
+					"excerpt": "A sample health note. Replace it with your own.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This is a sample health note for the CarePulse theme. Edit it in the admin panel or replace the templates in src/pages.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": ["wellness"],
+					"tag": ["wellbeing"]
+				}
+			}
+		],
+		"services": [
+			{
+				"id": "service-1",
+				"slug": "physiotherapy",
+				"status": "published",
+				"data": {
+					"name": "Physiotherapy",
+					"category": "therapy",
+					"description": "One-to-one assessment and treatment for movement and pain.",
+					"duration": "45 min",
+					"price": "$80",
+					"available": true
+				}
+			},
+			{
+				"id": "service-2",
+				"slug": "nutrition-coaching",
+				"status": "published",
+				"data": {
+					"name": "Nutrition coaching",
+					"category": "wellness",
+					"description": "Practical, evidence-based guidance for everyday eating.",
+					"duration": "30 min",
+					"price": "$60",
+					"available": true
+				}
+			},
+			{
+				"id": "service-3",
+				"slug": "health-screening",
+				"status": "published",
+				"data": {
+					"name": "Health screening",
+					"category": "diagnostics",
+					"description": "A short check-up with a summary you can share with your doctor.",
+					"duration": "20 min",
+					"price": "$40",
+					"available": true
+				}
+			}
+		]
+	}
+}

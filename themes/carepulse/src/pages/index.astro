@@ -1,0 +1,68 @@
+---
+import { getEmDashCollection, getSiteSettings } from "emdash";
+import { Image } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+
+const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
+	orderBy: { published_at: "desc" },
+	limit: 10,
+});
+const { entries: services } = await getEmDashCollection("services", { limit: 6 });
+const { siteTitle, siteTagline } = resolveStarterSiteIdentity(
+	await getSiteSettings(),
+);
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+---
+
+<Base title={siteTitle} description={siteTagline}>
+	{
+		services.length > 0 && (
+			<section>
+				<h2>Our services</h2>
+				<ul>
+					{services.map((service) => (
+						<li>
+							<strong {...service.edit.name}>{service.data.name}</strong>
+							{service.data.duration && <span> — {service.data.duration}</span>}
+						</li>
+					))}
+				</ul>
+				<p><a href="/services">See all services</a></p>
+			</section>
+		)
+	}
+
+	<h1>Recent Posts</h1>
+
+	{
+		posts.length === 0 ? (
+			<p>
+				No posts yet. <a href="/_emdash/admin/content/posts/new">Create one</a>.
+			</p>
+		) : (
+			<ul>
+				{posts.map((post) => (
+					<li>
+						<a href={`/posts/${post.id}`}>
+							{post.data.featured_image && (
+								<div {...post.edit.featured_image}><Image image={post.data.featured_image} /></div>
+							)}
+							<h2 {...post.edit.title}>{post.data.title}</h2>
+						</a>
+						{post.data.excerpt && <p {...post.edit.excerpt}>{post.data.excerpt}</p>}
+						{post.data.publishedAt && (
+							<time datetime={post.data.publishedAt.toISOString()}>
+								{post.data.publishedAt.toLocaleDateString("en-US", {
+									year: "numeric",
+									month: "long",
+									day: "numeric",
+								})}
+							</time>
+						)}
+					</li>
+				))}
+			</ul>
+		)
+	}
+</Base>
