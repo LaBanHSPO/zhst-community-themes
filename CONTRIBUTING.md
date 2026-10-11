@@ -19,18 +19,18 @@ Keep a PR focused on one theme. For an existing theme, work in its project direc
 
 ## 2. Generate a standalone project
 
-Use Node.js in `^22.22.2 || ^24.15.0 || >=26.0.0` and npm. The hosting review baseline is **EmDash 1.1.0**, **Astro 7.3.5**, and **@astrojs/cloudflare 14.3.3**. The local walkthrough deliberately uses the Node adapter so no cloud resources or credentials are required. A successful Node build alone does not establish Cloudflare compatibility.
+Use Node.js in `^22.22.2 || ^24.15.0 || >=26.0.0` and npm. The hosting review baseline is **EmDash 1.2.0**, **Astro 7.3.5**, and **@astrojs/cloudflare 14.3.3**. The local walkthrough deliberately uses the Node adapter so no cloud resources or credentials are required. A successful Node build alone does not establish Cloudflare compatibility.
 
-For the implemented CRM/sales starter, follow [ERP mini](themes/erp-mini/README.md) rather than generating a fresh generic theme below. It pins **EmDash 1.2.0** with the companion community plugin and owns its daily compatibility checks. This does not upgrade or bypass the private platform's 1.1.0 review baseline.
+For the implemented CRM/sales starter, follow [ERP mini](themes/erp-mini/README.md) rather than generating a fresh generic theme below. It pins **EmDash 1.2.0** with the companion community plugin and owns its daily compatibility checks, matching the review baseline above.
 
 The official [getting-started workflow](https://docs.emdashcms.com/getting-started/) supplies the generator; its [released command parser](https://github.com/emdash-cms/emdash/blob/create-emdash%401.1.0/packages/create-emdash/src/flags.ts) owns the flags below. From the repository root:
 
 ```sh
 mkdir -p themes
 cd themes
-npm create emdash@1.1.0 my-theme -- --platform node --template starter --pm npm --no-install --yes
+npm create emdash@1.2.0 my-theme -- --platform node --template starter --pm npm --no-install --yes
 cd my-theme
-npm install --save-exact emdash@1.1.0 astro@7.3.5
+npm install --save-exact emdash@1.2.0 astro@7.3.5
 ```
 
 If npm asks permission to download `create-emdash`, review and accept that package prompt. Do not use `--force` or overwrite an existing project.
