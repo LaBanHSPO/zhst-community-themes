@@ -129,4 +129,10 @@ See [`AGENTS.md`](AGENTS.md), the [ERPNext workflow-porting guide](https://githu
 
 Cross-repository changes need linked PRs and an exact tested source pair. Keep customer-only secrets, resource mappings, data and proprietary requirements private. General improvements can flow back to the community without forking EmDash core.
 
+### Internal bookkeeping design (not implemented)
+
+The companion [ERP mini accounting design proposal](https://github.com/ZeroHostCMS/zhst-community-plugins/pull/7) contains the specification, atomic-storage design and implementation plan for internal VND double-entry bookkeeping with receivables/payables. It is documentation, not an Accounting module or evidence of statutory Vietnamese accounting/tax compliance.
+
+The proposed Node host owns a separate accounting SQLite database, authenticated transport, resource lifecycle and explicit migrations; the plugin owns business rules and admin UI. The design requires EmDash sessions and `plugins:manage`, preserves the current CRM/sales storage, and keeps Node-only accounting code out of the Cloudflare import graph. Cloudflare accounting remains unsupported by this proposal. This documentation adds no runtime route, binding, migration or dependency and does not change the existing setup commands.
+
 MIT, inherited from the repository [license](../../LICENSE). This project uses no ERPNext source/assets. Capacity for thousands of variants is an operational goal, not a result established by these starter checks.
