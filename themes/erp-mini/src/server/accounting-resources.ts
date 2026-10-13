@@ -34,7 +34,7 @@ export function accountingStore(): AccountingStore {
       connection = openAccountingDatabase(databasePath);
     } catch (cause) {
       // Driver/schema prerequisites are transport failures, not successful domain reads.
-      throw new Error('Accounting schema is unavailable. Run the explicit migration.', { cause });
+      throw new Error('Accounting schema is unavailable. Restart the paired Node host to initialize or verify it.', { cause });
     }
   }
   return connection;

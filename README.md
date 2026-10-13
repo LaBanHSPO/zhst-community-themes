@@ -19,7 +19,7 @@ Standalone EmDash hosts extracted from the ZeroHostCMS curated catalog. Each pin
 
 ## ERP mini starter
 
-[ERP mini](themes/erp-mini/README.md) is a standalone EmDash host for the community CRM/sales plugin: private customers/contacts, items/services, quotations and sales orders, plus optional **Node-only internal VND double-entry bookkeeping and receivables/payables**. Clone the theme and plugin repositories as siblings, then follow its Node setup and explicit Accounting migration/book setup instructions. Cloudflare retains CRM/sales only; deployment remains an explicit operator action on isolated review resources.
+[ERP mini](themes/erp-mini/README.md) is a standalone EmDash host for the community CRM/sales plugin: private customers/contacts, items/services, quotations and sales orders, plus optional **Node-only internal VND double-entry bookkeeping and receivables/payables**. Clone the theme and plugin repositories as siblings, then follow its Node setup: the paired VND host initializes/verifies accounting schema at startup, while book/start-date setup remains an explicit administrator action. Cloudflare retains CRM/sales only; deployment remains an explicit operator action on isolated review resources.
 
 Customer variants fork the theme/plugin layer, not EmDash core. The starter pins EmDash 1.2.0 and provides a daily upstream compatibility workflow for reviewed upgrades, not certification of every latest release. It is not an ERPNext/Frappe runtime, statutory accounting/tax solution, proven thousand-customer fleet or already-approved hosting-platform catalog entry.
 

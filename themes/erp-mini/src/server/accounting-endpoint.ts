@@ -108,6 +108,6 @@ export const ALL: APIRoute = async ({ locals, params, request, url }) => {
     if (error instanceof ErpError) {
       return response({ success: true, data: { ok: false, error: { code: error.code, message: error.message } } });
     }
-    return response({ success: false, error: { code: 'ACCOUNTING_UNAVAILABLE', message: 'Accounting is unavailable. Verify the captured Node settings and run the explicit accounting schema migration before retrying.' } }, 503);
+    return response({ success: false, error: { code: 'ACCOUNTING_UNAVAILABLE', message: 'Accounting is unavailable. Verify the captured Node settings and restart the paired Node host to initialize or verify its accounting schema before retrying.' } }, 503);
   }
 };
