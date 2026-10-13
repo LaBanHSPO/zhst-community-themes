@@ -28,6 +28,8 @@ const APP = "unitel-man";
 const OTHER_APP = "unitel-logistics";
 const CHANNEL = "ducnv/feature/luu-kho";
 const BINARY = "1.0.66+93";
+const signature = Buffer.alloc(64, 7).toString("base64");
+let uploadKey = randomBytes(64).toString("base64");
 
 const xdg = {
 	XDG_CONFIG_HOME: join(stateDir, "xdg", "config"),
@@ -77,10 +79,13 @@ function releaseRequest(token, bundle, overrides = {}) {
 		{ name: "sha256", value: overrides.sha256 ?? sha256(bundle) },
 		{ name: "note", value: "verify-local" },
 		{ name: "commit", value: "deadbeef" },
+		...(overrides.signature === null ? [] : [{ name: "signature", value: overrides.signature ?? signature }]),
+		...(overrides.mandatory === null ? [] : [{ name: "mandatory", value: overrides.mandatory ?? "true" }]),
 		{ name: "bundle", filename: "app.bundle", contentType: "application/octet-stream", value: bundle },
 	]);
 	const headers = { "content-type": `multipart/form-data; boundary=${boundary}` };
 	if (token !== null) headers.authorization = `Bearer ${token}`;
+	if (overrides.uploadKey !== null) headers["x-ota-upload-key"] = overrides.uploadKey ?? uploadKey;
 	return { body, headers };
 }
 
@@ -144,6 +149,7 @@ await writeFile(
 	[
 		`INSERT INTO ota_tokens (id, app, name, token_hash, token_prefix, created_at, last_used_at, revoked_at) VALUES ('verify-token', '${APP}', 'verify', '${sha256(Buffer.from(token))}', '${token.slice(0, 13)}', ${now}, NULL, NULL);`,
 		`INSERT INTO ota_tokens (id, app, name, token_hash, token_prefix, created_at, last_used_at, revoked_at) VALUES ('verify-token-other', '${OTHER_APP}', 'verify', '${sha256(Buffer.from(otherToken))}', '${otherToken.slice(0, 13)}', ${now}, NULL, NULL);`,
+		`INSERT INTO ota_settings (key, value, version, updated_at) VALUES ('upload-key:${APP}', '{"hash":"${sha256(Buffer.from(uploadKey))}"}', 1, ${now});`,
 		"",
 	].join("\n"),
 );
@@ -197,11 +203,8 @@ try {
 	response = await fetch(`${origin}/ota/${APP}/android/releases`, { method: "POST", ...releaseRequest(token, bundle) });
 	const created = await response.json();
 	check("push answers 201", response.status === 201, `got ${response.status} ${JSON.stringify(created).slice(0, 200)}`);
-	check(
-		"push returns the manifest entry shape",
-		Object.keys(created).sort().join(",") === "branch,commit,createdAt,file,id,note,sha256,size",
-		Object.keys(created).join(","),
-	);
+	check("push preserves signature verbatim", created.signature === signature);
+	check("push returns mandatory as boolean true", created.mandatory === true);
 	check(
 		"file path uses the slugged channel",
 		created.file === `bundles/ducnv_feature_luu-kho/${BINARY}/${created.id}.bundle`,
@@ -222,6 +225,34 @@ try {
 
 	response = await fetch(`${origin}/ota/${APP}/android/releases`, { method: "POST", ...releaseRequest(otherToken, bundle) });
 	check("token for another app answers 403", response.status === 403, `got ${response.status}`);
+
+	response = await fetch(`${origin}/ota/${APP}/android/releases`, {
+		method: "POST", ...releaseRequest(token, bundle, { uploadKey: null }),
+	});
+	check("activated upload protection refuses token alone", response.status === 403);
+	response = await fetch(`${origin}/ota/${APP}/android/releases`, {
+		method: "POST", ...releaseRequest(token, bundle, { uploadKey: randomBytes(64).toString("base64") }),
+	});
+	check("upload protection refuses an incorrect key", response.status === 403);
+	response = await fetch(`${origin}/api/ota/upload-key-rotate`, {
+		method: "POST", headers: { "Content-Type": "application/json", Origin: origin, "X-EmDash-Request": "1" },
+		body: JSON.stringify({ app: APP }),
+	});
+	check("only an admin can rotate the upload key", response.status === 403);
+
+	const oldUploadKey = uploadKey;
+	uploadKey = randomBytes(64).toString("base64");
+	const rotate = await runWrangler(["d1", "execute", "OTA_DB", ...localArgs, "--command",
+		`UPDATE ota_settings SET value = '{"hash":"${sha256(Buffer.from(uploadKey))}"}', version = version + 1 WHERE key = 'upload-key:${APP}';`]);
+	if (rotate.code !== 0) throw new Error("Local upload key rotation failed");
+	response = await fetch(`${origin}/ota/${APP}/android/releases`, {
+		method: "POST", ...releaseRequest(token, bundle, { uploadKey: oldUploadKey }),
+	});
+	check("rotated-out upload key is refused", response.status === 403);
+	response = await fetch(`${origin}/ota/${APP}/android/releases`, {
+		method: "POST", ...releaseRequest(token, bundle),
+	});
+	check("replacement upload key permits publishing", response.status === 201);
 
 	console.log("\ndownload");
 	response = await fetch(`${origin}/ota/${APP}/android/${created.file}`, { headers: { "accept-encoding": "identity" } });
@@ -290,6 +321,24 @@ try {
 		"manifest entry equals the push response",
 		JSON.stringify(manifest.channels[CHANNEL]?.[BINARY]) === JSON.stringify(created),
 	);
+
+	response = await fetch(`${origin}/ota/${APP}/android/releases`, {
+		method: "POST", ...releaseRequest(token, bundle, { mandatory: "false" }),
+	});
+	const optional = await response.json();
+	check("same bundle can become an optional update", response.status === 201 && optional.mandatory === false && optional.id !== created.id);
+	response = await fetch(`${origin}/ota/${APP}/android/manifest.json`);
+	const optionalManifest = await response.json();
+	check("manifest persists optional update flag and signature", optionalManifest.channels[CHANNEL]?.[BINARY]?.mandatory === false && optionalManifest.channels[CHANNEL]?.[BINARY]?.signature === signature);
+	response = await fetch(`${origin}/ota/${APP}/android/releases`, {
+		method: "POST", ...releaseRequest(token, bundle, { signature: null, mandatory: null }),
+	});
+	const defaults = await response.json();
+	check("omitted metadata defaults to empty signature and boolean false", response.status === 201 && defaults.signature === "" && defaults.mandatory === false);
+	response = await fetch(`${origin}/ota/${APP}/android/releases`, {
+		method: "POST", ...releaseRequest(token, bundle, { mandatory: "0" }),
+	});
+	check("invalid mandatory is rejected", response.status === 400);
 
 	console.log("\ndelete");
 	response = await fetch(
