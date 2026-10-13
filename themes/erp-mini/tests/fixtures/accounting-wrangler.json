@@ -1,0 +1,11 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "erp-accounting-local-fixture",
+  "main": "accounting-worker.ts",
+  "compatibility_date": "2026-10-01",
+  "durable_objects": {
+    "bindings": [{ "name": "ERP_ACCOUNTING", "class_name": "ErpAccounting" }]
+  },
+  "migrations": [{ "tag": "erp-accounting-sqlite-v1", "new_sqlite_classes": ["ErpAccounting"] }],
+  "vars": { "ERP_CURRENCY": "VND" }
+}

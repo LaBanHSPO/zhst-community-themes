@@ -34,6 +34,11 @@ const config = {
   compatibility_flags: ["nodejs_compat"],
   d1_databases: [{ binding: "DB", database_name: databaseName, database_id: databaseId }],
   r2_buckets: [{ binding: "MEDIA", bucket_name: bucketName }],
+  // Stable namespace identity belongs to this Worker, not a shared service or CRM D1.
+  ...(currency === "VND" ? {
+    durable_objects: { bindings: [{ name: "ERP_ACCOUNTING", class_name: "ErpAccounting" }] },
+    migrations: [{ tag: "erp-accounting-sqlite-v1", new_sqlite_classes: ["ErpAccounting"] }],
+  } : {}),
   vars: { EMDASH_SITE_URL: origin, ERP_CURRENCY: currency },
   triggers: { crons: ["* * * * *"] },
 };

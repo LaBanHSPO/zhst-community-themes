@@ -1,15 +1,15 @@
-import { PluginStorageRepository } from 'emdash';
-import { getDb } from 'emdash/runtime';
-import { createErpAccountingSource, type AccountingStore } from '@zerohost/plugin-erp-mini/accounting';
+import { type AccountingStore } from '@zerohost/plugin-erp-mini/accounting';
 import { openAccountingDatabase } from '@zerohost/plugin-erp-mini/accounting-node';
 import captured from 'virtual:erp-mini/accounting-settings';
 import { readAccountingTarget } from '../../scripts/accounting-settings.mjs';
+import { accountingSource as createSource } from './accounting-source.js';
 
 let connection: AccountingStore | undefined;
 
 function target() {
   const manifest = import.meta.env.DEV ? '.astro/accounting-settings.json' : 'dist/accounting-settings.json';
-  const result = readAccountingTarget(manifest, { captured });
+  if (typeof captured.dataDirectory !== 'string') throw new Error('The captured Node accounting data directory is required.');
+  const result = readAccountingTarget(manifest, { captured: { ...captured, dataDirectory: captured.dataDirectory } });
   if (result.settings.currency !== 'VND') throw new Error('Accounting requires a VND Node installation.');
   return result;
 }
@@ -17,13 +17,7 @@ function target() {
 /** Called only after the endpoint has authenticated and guarded the request. */
 export async function accountingSource(actorId: string) {
   target();
-  const db = await getDb();
-  return createErpAccountingSource({
-    settings: new PluginStorageRepository(db, 'erp-mini', 'settings', []),
-    customers: new PluginStorageRepository(db, 'erp-mini', 'customers', ['nameKey', 'active', ['active', 'nameKey']]),
-    items: new PluginStorageRepository(db, 'erp-mini', 'items', ['nameKey', 'active', ['active', 'nameKey']]),
-    sales: new PluginStorageRepository(db, 'erp-mini', 'sales', ['hasOrder']),
-  }, actorId, captured.currency);
+  return createSource(actorId);
 }
 
 /** Caller must finish the injected CRM currency check before accessing SQLite. */
