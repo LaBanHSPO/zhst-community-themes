@@ -27,6 +27,10 @@ Customer variants fork the theme/plugin layer, not EmDash core. The starter pins
 
 The [restaurant chain theme](themes/restaurant-chain/README.md) hosts the companion restaurant plugin on Cloudflare Workers, D1, Queues, and R2. It includes a mobile Vietnamese table menu, staff workspace, SePay webhook transport, and scheduled recovery. Clone the plugin repository as a sibling and follow its local setup; production resources, provider conformance, and hosting promotion remain explicit operator steps.
 
+## OTA server
+
+The [OTA server theme](themes/ota-server/README.md) hosts the companion OTA plugin on Cloudflare Workers, D1, and R2. It serves the frozen `/ota/{app}/{platform}/*` client contract — manifest, bundles with exact lengths and immutable caching, authenticated pushes — plus the private management API behind the plugin's admin workspace. `npm run verify:local` drives the built Worker through 35 end-to-end contract checks. Clone the plugin repository as a sibling and build it first; production resources, a private R2 configuration, and hosting promotion remain explicit operator steps.
+
 ## Source acceptance is not publication
 
 A community pull request accepts source for review, not production use. Fetching this repository as a hosting-platform submodule must not install, execute, or deploy a theme. Merging here does not register a gallery entry or approve publication.

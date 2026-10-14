@@ -1,0 +1,29 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "ota-server-local",
+	"main": "src/worker.ts",
+	"compatibility_date": "2026-10-10",
+	"compatibility_flags": ["nodejs_compat"],
+	"workers_dev": false,
+	"observability": { "enabled": true },
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "ota-cms-local",
+			"database_id": "00000000-0000-0000-0000-000000000001"
+		},
+		{
+			"binding": "OTA_DB",
+			"database_name": "ota-metadata-local",
+			"database_id": "00000000-0000-0000-0000-000000000002",
+			"migrations_dir": "node_modules/@zerohost/plugin-ota-server/migrations"
+		}
+	],
+	"r2_buckets": [{ "binding": "MEDIA", "bucket_name": "ota-bundles-local" }],
+	"triggers": { "crons": ["17 3 * * *"] },
+	"vars": {
+		"OTA_SITE_URL": "http://localhost:4342",
+		"OTA_MAX_BUNDLE_BYTES": "104857600",
+		"OTA_RETENTION_DAYS": "14"
+	}
+}

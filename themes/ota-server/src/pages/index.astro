@@ -1,0 +1,98 @@
+---
+export const prerender = false;
+
+const endpoints = [
+	{ method: "GET", path: "/ota/{app}/{platform}/manifest.json", note: "Current build per channel and binary. No authentication." },
+	{ method: "GET", path: "/ota/{app}/{platform}/{file}", note: "Bundle bytes with Content-Length and immutable caching." },
+	{ method: "POST", path: "/ota/{app}/{platform}/releases", note: "Publish a build. Bearer token, multipart/form-data." },
+	{ method: "DELETE", path: "/ota/{app}/{platform}/releases?channel=&binary=", note: "Remove one channel and binary. Bearer token." },
+	{ method: "GET", path: "/ota/{app}/{platform}/releases", note: "Same body as the manifest. Bearer token." },
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex" />
+		<title>OTA server</title>
+		<style>
+			:root {
+				color-scheme: light dark;
+				font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+			}
+			body {
+				margin: 0;
+				padding: 2.5rem 1.25rem;
+				line-height: 1.6;
+			}
+			main {
+				max-inline-size: 46rem;
+				margin-inline: auto;
+			}
+			h1 {
+				margin-block-end: 0.25rem;
+			}
+			p.lead {
+				margin-block-start: 0;
+				opacity: 0.75;
+			}
+			table {
+				inline-size: 100%;
+				border-collapse: collapse;
+				margin-block: 1.5rem;
+				font-size: 0.9rem;
+			}
+			th,
+			td {
+				text-align: start;
+				padding: 0.5rem 0.6rem;
+				border-block-end: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+				vertical-align: top;
+			}
+			code {
+				font-size: 0.85em;
+			}
+			a.cta {
+				display: inline-block;
+				margin-block-start: 0.5rem;
+				padding: 0.6rem 1rem;
+				border-radius: 0.5rem;
+				background: light-dark(#1f5fd0, #2f6fe0);
+				color: #fff;
+				text-decoration: none;
+				font-weight: 600;
+			}
+		</style>
+	</head>
+	<body>
+		<main>
+			<h1>OTA server</h1>
+			<p class="lead">
+				Release distribution for the Android and iOS dev builds. This site publishes the manifest the apps poll and
+				serves the bundles it points at.
+			</p>
+
+			<table>
+				<caption>
+					Client contract
+				</caption>
+				<thead>
+					<tr><th scope="col">Method</th><th scope="col">Path</th><th scope="col">Notes</th></tr>
+				</thead>
+				<tbody>
+					{endpoints.map((endpoint) => (
+						<tr>
+							<td><code>{endpoint.method}</code></td>
+							<td><code>{endpoint.path}</code></td>
+							<td>{endpoint.note}</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+
+			<a class="cta" href="/_emdash/admin/plugins/ota-server/workspace">Open the OTA workspace</a>
+		</main>
+	</body>
+</html>

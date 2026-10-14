@@ -1,0 +1,52 @@
+{
+ "name": "@zerohost/theme-ota-server",
+ "version": "0.1.0",
+ "private": true,
+ "license": "MIT",
+ "type": "module",
+ "engines": {
+  "node": "^24.15.0 || >=26.0.0"
+ },
+ "scripts": {
+  "dev": "astro dev --host 127.0.0.1",
+  "build": "astro build",
+  "preview": "wrangler dev --config dist/server/wrangler.json --local --port 4342 --persist-to .wrangler/state",
+  "typecheck": "astro check",
+  "types": "wrangler types --config wrangler.jsonc",
+  "migrate:local": "wrangler d1 migrations apply OTA_DB --local --config wrangler.jsonc",
+  "migrate:remote": "wrangler d1 migrations apply OTA_DB --remote --config wrangler.jsonc",
+  "verify:local": "node scripts/verify-local.mjs"
+ },
+ "dependencies": {
+  "@astrojs/cloudflare": "14.3.3",
+  "@astrojs/react": "7.0.1",
+  "@cloudflare/kumo": "2.6.0",
+  "@emdash-cms/auth": "1.2.0",
+  "@emdash-cms/cloudflare": "1.2.0",
+  "@zerohost/plugin-ota-server": "file:../../../zhst-community-plugins/plugins/ota-server",
+  "astro": "7.3.5",
+  "emdash": "1.2.0",
+  "oxc-transform-react": "0.145.0",
+  "react": "19.3.0",
+  "react-dom": "19.3.0"
+ },
+ "devDependencies": {
+  "@astrojs/check": "0.9.10",
+  "@cloudflare/workers-types": "5.20261010.1",
+  "@types/node": "24.10.1",
+  "@types/react": "19.3.0",
+  "@types/react-dom": "19.3.0",
+  "jsonc-parser": "3.3.1",
+  "typescript": "5.9.3",
+  "wrangler": "4.149.0"
+ },
+ "overrides": {
+  "@astrojs/react": {
+   "@vitejs/plugin-react": "6.1.1"
+  }
+ },
+ "allowScripts": {
+  "esbuild@0.28.2": true,
+  "workerd@1.20261006.1": true
+ }
+}
