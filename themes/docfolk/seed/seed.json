@@ -1,0 +1,1835 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "defaultLocale": "en",
+  "meta": {
+    "name": "Docfolk",
+    "description": "Docfolk is an open-source, customizable documentation platform for software teams and indie makers. This sample seed publishes product guides and API reference for the fictional Orbit API in English and Vietnamese, with Mermaid diagrams, OpenAPI 3.1, Markdown, and AI discovery resources.",
+    "author": "Community contributors"
+  },
+  "settings": {
+    "title": "Docfolk",
+    "tagline": "Your docs. Your brand."
+  },
+  "collections": [
+    {
+      "slug": "companies",
+      "label": "Companies",
+      "labelSingular": "Company",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "titleField": "title",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Company name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "description",
+          "label": "Description",
+          "type": "text",
+          "required": true
+        },
+        {
+          "slug": "sandbox_url",
+          "label": "Sandbox API base URL",
+          "type": "url",
+          "required": true
+        },
+        {
+          "slug": "production_url",
+          "label": "Production API base URL",
+          "type": "url",
+          "required": true
+        },
+        {
+          "slug": "default_language",
+          "label": "Default documentation language",
+          "type": "string",
+          "required": true,
+          "defaultValue": "en"
+        },
+        {
+          "slug": "accent",
+          "label": "Accent color",
+          "type": "string",
+          "required": true,
+          "defaultValue": "#0f766e",
+          "validation": {
+            "pattern": "^#[0-9a-fA-F]{6}$"
+          }
+        },
+        {
+          "slug": "api_version",
+          "label": "API version",
+          "type": "string",
+          "required": true,
+          "defaultValue": "v1"
+        }
+      ]
+    },
+    {
+      "slug": "documents",
+      "label": "Documentation",
+      "labelSingular": "Document",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "titleField": "title",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "description",
+          "label": "Description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "company",
+          "label": "Company slug",
+          "type": "string",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "slug": "language",
+          "label": "Document language",
+          "type": "string",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "slug": "doc_key",
+          "label": "Shared translation route key",
+          "type": "string",
+          "required": true,
+          "indexed": true,
+          "validation": {
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          }
+        },
+        {
+          "slug": "category",
+          "label": "Navigation category",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "position",
+          "label": "Navigation order",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "slug": "body",
+          "label": "Markdown content",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "method",
+          "label": "HTTP method (API endpoints only)",
+          "type": "string"
+        },
+        {
+          "slug": "path",
+          "label": "API path without base prefix",
+          "type": "string"
+        },
+        {
+          "slug": "operation",
+          "label": "Self-contained OpenAPI operation",
+          "type": "json"
+        }
+      ]
+    },
+    {
+      "slug": "doc_locales",
+      "label": "Documentation languages",
+      "labelSingular": "Documentation language",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "titleField": "title",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Native language name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "code",
+          "label": "Portal language code",
+          "type": "string",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "slug": "api_language",
+          "label": "Accept-Language API value",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "strings",
+          "label": "Interface translations",
+          "type": "json",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "content": {
+    "companies": [
+      {
+        "id": "orbit",
+        "slug": "orbit",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "Orbit",
+          "description": "Sample project-management API used to demonstrate a Docfolk documentation portal: projects, regions, pagination, and lifecycle webhooks.",
+          "sandbox_url": "https://sandbox.api.orbit.example/v1",
+          "production_url": "https://api.orbit.example/v1",
+          "default_language": "en",
+          "accent": "#0f766e",
+          "api_version": "v1"
+        }
+      }
+    ],
+    "doc_locales": [
+      {
+        "id": "en",
+        "slug": "en",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "code": "en",
+          "title": "English",
+          "api_language": "en",
+          "strings": {
+            "documentation": "Documentation",
+            "guides": "Guides",
+            "apiReference": "API reference",
+            "search": "Search",
+            "searchPlaceholder": "Search this company’s documentation…",
+            "onThisPage": "On this page",
+            "copyPage": "Copy page",
+            "copied": "Copied",
+            "downloadOpenapi": "Download OpenAPI",
+            "aiResources": "AI resources",
+            "company": "Company",
+            "language": "Language",
+            "menu": "Menu",
+            "overview": "Overview",
+            "gettingStarted": "Getting started",
+            "endpoints": "Endpoints",
+            "resources": "Resources",
+            "fallback": "This page is not yet available in your selected language. Showing {language}.",
+            "previous": "Previous",
+            "next": "Next",
+            "noResults": "No results",
+            "searchHint": "Search titles, endpoints, and guide content",
+            "source": "Source",
+            "viewSource": "View source",
+            "diagram": "Diagram",
+            "lightMode": "Light mode",
+            "darkMode": "Dark mode",
+            "skipToContent": "Skip to content",
+            "close": "Close",
+            "copyCode": "Copy code",
+            "copyFailed": "Could not copy. Please copy manually.",
+            "loading": "Loading…",
+            "searchError": "Search is unavailable. Please try again.",
+            "retry": "Retry",
+            "searchResults": "Search results",
+            "sandbox": "Sandbox",
+            "production": "Production",
+            "environment": "Environment",
+            "apiVersion": "API version",
+            "apiLanguage": "API language",
+            "copyPrompt": "Copy prompt",
+            "aiDescription": "Give your AI assistant the current company’s documentation, Markdown pages, and OpenAPI contract.",
+            "markdown": "Markdown",
+            "allCompanies": "All companies"
+          }
+        }
+      },
+      {
+        "id": "vi",
+        "slug": "vi",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "code": "vi",
+          "title": "Tiếng Việt",
+          "api_language": "vn",
+          "strings": {
+            "documentation": "Tài liệu",
+            "guides": "Hướng dẫn",
+            "apiReference": "Tham chiếu API",
+            "search": "Tìm kiếm",
+            "searchPlaceholder": "Tìm trong tài liệu của công ty này…",
+            "onThisPage": "Trong trang này",
+            "copyPage": "Sao chép trang",
+            "copied": "Đã sao chép",
+            "downloadOpenapi": "Tải OpenAPI",
+            "aiResources": "Tài nguyên AI",
+            "company": "Công ty",
+            "language": "Ngôn ngữ",
+            "menu": "Trình đơn",
+            "overview": "Tổng quan",
+            "gettingStarted": "Bắt đầu",
+            "endpoints": "Điểm cuối API",
+            "resources": "Tài nguyên",
+            "fallback": "Trang này chưa có bản dịch sang ngôn ngữ đã chọn. Đang hiển thị bằng {language}.",
+            "previous": "Trước",
+            "next": "Tiếp",
+            "noResults": "Không có kết quả",
+            "searchHint": "Tìm tiêu đề, điểm cuối API và nội dung hướng dẫn",
+            "source": "Nguồn",
+            "viewSource": "Xem nguồn",
+            "diagram": "Sơ đồ",
+            "lightMode": "Giao diện sáng",
+            "darkMode": "Giao diện tối",
+            "skipToContent": "Chuyển đến nội dung",
+            "close": "Đóng",
+            "copyCode": "Sao chép mã",
+            "copyFailed": "Không thể sao chép. Vui lòng sao chép thủ công.",
+            "loading": "Đang tải…",
+            "searchError": "Không thể tìm kiếm. Vui lòng thử lại.",
+            "retry": "Thử lại",
+            "searchResults": "Kết quả tìm kiếm",
+            "sandbox": "Thử nghiệm",
+            "production": "Vận hành chính thức",
+            "environment": "Môi trường",
+            "apiVersion": "Phiên bản API",
+            "apiLanguage": "Ngôn ngữ API",
+            "copyPrompt": "Sao chép câu lệnh",
+            "aiDescription": "Cung cấp cho trợ lý AI tài liệu của công ty hiện tại, các trang Markdown và đặc tả OpenAPI.",
+            "markdown": "Markdown",
+            "allCompanies": "Tất cả công ty"
+          }
+        }
+      },
+      {
+        "id": "km",
+        "slug": "km",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "code": "km",
+          "title": "ខ្មែរ",
+          "api_language": "km",
+          "strings": {
+            "documentation": "ឯកសារ",
+            "guides": "មគ្គុទ្ទេសក៍",
+            "apiReference": "ឯកសារយោង API",
+            "search": "ស្វែងរក",
+            "searchPlaceholder": "ស្វែងរកក្នុងឯកសាររបស់ក្រុមហ៊ុននេះ…",
+            "onThisPage": "នៅលើទំព័រនេះ",
+            "copyPage": "ចម្លងទំព័រ",
+            "copied": "បានចម្លង",
+            "downloadOpenapi": "ទាញយក OpenAPI",
+            "aiResources": "ធនធាន AI",
+            "company": "ក្រុមហ៊ុន",
+            "language": "ភាសា",
+            "menu": "ម៉ឺនុយ",
+            "overview": "ទិដ្ឋភាពទូទៅ",
+            "gettingStarted": "ចាប់ផ្តើម",
+            "endpoints": "ចំណុចចូល API",
+            "resources": "ធនធាន",
+            "fallback": "ទំព័រនេះមិនទាន់មានជាភាសាដែលអ្នកបានជ្រើសរើសទេ។ កំពុងបង្ហាញជាភាសា {language}។",
+            "previous": "មុន",
+            "next": "បន្ទាប់",
+            "noResults": "គ្មានលទ្ធផល",
+            "searchHint": "ស្វែងរកចំណងជើង ចំណុចចូល API និងខ្លឹមសារណែនាំ",
+            "source": "ប្រភព",
+            "viewSource": "មើលប្រភព",
+            "diagram": "ដ្យាក្រាម",
+            "lightMode": "របៀបភ្លឺ",
+            "darkMode": "របៀបងងឹត",
+            "skipToContent": "រំលងទៅខ្លឹមសារ",
+            "close": "បិទ",
+            "copyCode": "ចម្លងកូដ",
+            "copyFailed": "មិនអាចចម្លងបានទេ។ សូមចម្លងដោយដៃ។",
+            "loading": "កំពុងផ្ទុក…",
+            "searchError": "មិនអាចស្វែងរកបានទេ។ សូមព្យាយាមម្តងទៀត។",
+            "retry": "ព្យាយាមម្តងទៀត",
+            "searchResults": "លទ្ធផលស្វែងរក",
+            "sandbox": "បរិស្ថានសាកល្បង",
+            "production": "បរិស្ថានប្រើប្រាស់ពិត",
+            "environment": "បរិស្ថាន",
+            "apiVersion": "កំណែ API",
+            "apiLanguage": "ភាសា API",
+            "copyPrompt": "ចម្លងសំណើ",
+            "aiDescription": "ផ្តល់ឱ្យជំនួយការ AI របស់អ្នកនូវឯកសារក្រុមហ៊ុនបច្ចុប្បន្ន ទំព័រ Markdown និងកិច្ចសន្យា OpenAPI។",
+            "markdown": "Markdown",
+            "allCompanies": "ក្រុមហ៊ុនទាំងអស់"
+          }
+        }
+      },
+      {
+        "id": "lo",
+        "slug": "lo",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "code": "lo",
+          "title": "ລາວ",
+          "api_language": "lo",
+          "strings": {
+            "documentation": "ເອກະສານ",
+            "guides": "ຄູ່ມື",
+            "apiReference": "ເອກະສານອ້າງອີງ API",
+            "search": "ຄົ້ນຫາ",
+            "searchPlaceholder": "ຄົ້ນຫາໃນເອກະສານຂອງບໍລິສັດນີ້…",
+            "onThisPage": "ໃນໜ້ານີ້",
+            "copyPage": "ສຳເນົາໜ້າ",
+            "copied": "ສຳເນົາແລ້ວ",
+            "downloadOpenapi": "ດາວໂຫຼດ OpenAPI",
+            "aiResources": "ຊັບພະຍາກອນ AI",
+            "company": "ບໍລິສັດ",
+            "language": "ພາສາ",
+            "menu": "ເມນູ",
+            "overview": "ພາບລວມ",
+            "gettingStarted": "ເລີ່ມຕົ້ນ",
+            "endpoints": "ຈຸດເຊື່ອມຕໍ່ API",
+            "resources": "ຊັບພະຍາກອນ",
+            "fallback": "ໜ້ານີ້ຍັງບໍ່ມີໃນພາສາທີ່ທ່ານເລືອກ. ກຳລັງສະແດງເປັນ {language}.",
+            "previous": "ກ່ອນໜ້າ",
+            "next": "ຖັດໄປ",
+            "noResults": "ບໍ່ພົບຜົນລັບ",
+            "searchHint": "ຄົ້ນຫາຫົວຂໍ້ ຈຸດເຊື່ອມຕໍ່ API ແລະເນື້ອຫາຄູ່ມື",
+            "source": "ແຫຼ່ງທີ່ມາ",
+            "viewSource": "ເບິ່ງແຫຼ່ງທີ່ມາ",
+            "diagram": "ແຜນວາດ",
+            "lightMode": "ໂໝດສະຫວ່າງ",
+            "darkMode": "ໂໝດມືດ",
+            "skipToContent": "ຂ້າມໄປຫາເນື້ອຫາ",
+            "close": "ປິດ",
+            "copyCode": "ສຳເນົາລະຫັດ",
+            "copyFailed": "ບໍ່ສາມາດສຳເນົາໄດ້. ກະລຸນາສຳເນົາດ້ວຍຕົນເອງ.",
+            "loading": "ກຳລັງໂຫຼດ…",
+            "searchError": "ບໍ່ສາມາດຄົ້ນຫາໄດ້. ກະລຸນາລອງໃໝ່.",
+            "retry": "ລອງໃໝ່",
+            "searchResults": "ຜົນການຄົ້ນຫາ",
+            "sandbox": "ສະພາບແວດລ້ອມທົດລອງ",
+            "production": "ສະພາບແວດລ້ອມໃຊ້ງານຈິງ",
+            "environment": "ສະພາບແວດລ້ອມ",
+            "apiVersion": "ລຸ້ນ API",
+            "apiLanguage": "ພາສາ API",
+            "copyPrompt": "ສຳເນົາຄຳສັ່ງ",
+            "aiDescription": "ໃຫ້ເອກະສານຂອງບໍລິສັດປັດຈຸບັນ ໜ້າ Markdown ແລະສັນຍາ OpenAPI ແກ່ຜູ້ຊ່ວຍ AI ຂອງທ່ານ.",
+            "markdown": "Markdown",
+            "allCompanies": "ທຸກບໍລິສັດ"
+          }
+        }
+      },
+      {
+        "id": "my",
+        "slug": "my",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "code": "my",
+          "title": "မြန်မာ",
+          "api_language": "my",
+          "strings": {
+            "documentation": "စာရွက်စာတမ်း",
+            "guides": "လမ်းညွှန်များ",
+            "apiReference": "API ကိုးကားချက်",
+            "search": "ရှာဖွေရန်",
+            "searchPlaceholder": "ဤကုမ္ပဏီ၏ စာရွက်စာတမ်းများတွင် ရှာဖွေပါ…",
+            "onThisPage": "ဤစာမျက်နှာတွင်",
+            "copyPage": "စာမျက်နှာကို ကူးယူရန်",
+            "copied": "ကူးယူပြီး",
+            "downloadOpenapi": "OpenAPI ဒေါင်းလုဒ်လုပ်ရန်",
+            "aiResources": "AI အရင်းအမြစ်များ",
+            "company": "ကုမ္ပဏီ",
+            "language": "ဘာသာစကား",
+            "menu": "မီနူး",
+            "overview": "အနှစ်ချုပ်",
+            "gettingStarted": "စတင်ရန်",
+            "endpoints": "API ချိတ်ဆက်မှတ်များ",
+            "resources": "အရင်းအမြစ်များ",
+            "fallback": "ဤစာမျက်နှာကို သင်ရွေးထားသော ဘာသာစကားဖြင့် မရရှိသေးပါ။ {language} ဖြင့် ဖော်ပြထားသည်။",
+            "previous": "ယခင်",
+            "next": "နောက်",
+            "noResults": "ရလဒ်မရှိပါ",
+            "searchHint": "ခေါင်းစဉ်များ၊ API ချိတ်ဆက်မှတ်များနှင့် လမ်းညွှန်အကြောင်းအရာများကို ရှာဖွေပါ",
+            "source": "မူရင်း",
+            "viewSource": "မူရင်းကို ကြည့်ရန်",
+            "diagram": "ပုံကြမ်း",
+            "lightMode": "အလင်းအပြင်အဆင်",
+            "darkMode": "အမှောင်အပြင်အဆင်",
+            "skipToContent": "အကြောင်းအရာသို့ ကျော်သွားရန်",
+            "close": "ပိတ်ရန်",
+            "copyCode": "ကုဒ်ကို ကူးယူရန်",
+            "copyFailed": "ကူးယူ၍ မရပါ။ ကိုယ်တိုင် ကူးယူပါ။",
+            "loading": "ဖွင့်နေသည်…",
+            "searchError": "ရှာဖွေ၍ မရပါ။ ထပ်မံကြိုးစားပါ။",
+            "retry": "ထပ်မံကြိုးစားရန်",
+            "searchResults": "ရှာဖွေမှုရလဒ်များ",
+            "sandbox": "စမ်းသပ်ပတ်ဝန်းကျင်",
+            "production": "လက်တွေ့အသုံးပြုပတ်ဝန်းကျင်",
+            "environment": "ပတ်ဝန်းကျင်",
+            "apiVersion": "API ဗားရှင်း",
+            "apiLanguage": "API ဘာသာစကား",
+            "copyPrompt": "ညွှန်ကြားချက်ကို ကူးယူရန်",
+            "aiDescription": "သင့် AI အကူအညီပေးစနစ်သို့ လက်ရှိကုမ္ပဏီ၏ စာရွက်စာတမ်းများ၊ Markdown စာမျက်နှာများနှင့် OpenAPI သတ်မှတ်ချက်ကို ပေးပါ။",
+            "markdown": "Markdown",
+            "allCompanies": "ကုမ္ပဏီအားလုံး"
+          }
+        }
+      }
+    ],
+    "documents": [
+      {
+        "id": "orbit-en-overview",
+        "slug": "orbit-en-overview",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "Introduction",
+          "description": "Understand the Orbit API, choose an environment, and make your first request.",
+          "company": "orbit",
+          "language": "en",
+          "doc_key": "overview",
+          "category": "Getting started",
+          "position": 1,
+          "body": "\n## What this is\n\nOrbit is a sample project-management API used to demonstrate a Docfolk documentation portal. The content is an editorial example: names, identifiers, and responses are synthetic, not a real service contract.\n\n## Environments and base URL\n\n\n\n| Environment | BASE_URL |\n| --- | --- |\n| Sandbox | https://sandbox.api.orbit.example/v1 |\n| Production | https://api.orbit.example/v1 |\n\nEach environment has its own token. Do not share tokens between sandbox and production.\n\n## First request\n\nKeep the base URL and token in your environment, then list projects:\n```bash\nexport BASE_URL=\"https://sandbox.api.orbit.example/v1\"\n# API_TOKEN must be supplied by your private environment.\ncurl \"$BASE_URL/projects?limit=20\" \\\n  --header \"Authorization: Bearer ${API_TOKEN}\" \\\n  --header \"Accept: application/json\"\n```\n\n\n## Integration flow\n\n1. [Create a token](authentication) and choose an environment.\n2. [Create a project](create-project) or [list](list-projects) existing ones.\n3. [Get a project](get-project) when you need its details.\n4. [Register a webhook](webhooks) to receive events.\n5. Review [errors and limits](errors) before going to production.\n\n## Request sequence\n\n\n```mermaid\nsequenceDiagram\n  participant C as Your app\n  participant A as Orbit API\n  C->>A: POST /projects\n  A-->>C: id and status\n  C->>A: GET /projects\n  A-->>C: items and nextCursor\n  A->>C: POST webhook event\n  C-->>A: HTTP 200 acknowledgement\n```\n\n\n\n---\nSample documentation for the fictional Orbit API, published with Docfolk. See [errors and limits](errors).\n"
+        }
+      },
+      {
+        "id": "orbit-vi-overview",
+        "slug": "orbit-vi-overview",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "Giới thiệu",
+          "description": "Tìm hiểu API Orbit, chọn môi trường và thực hiện yêu cầu đầu tiên.",
+          "company": "orbit",
+          "language": "vi",
+          "doc_key": "overview",
+          "category": "Getting started",
+          "position": 1,
+          "body": "\n## Giới thiệu\n\nOrbit là một API quản lý dự án mẫu dùng để minh họa một cổng tài liệu Docfolk. Nội dung này là ví dụ biên tập: tên, mã và phản hồi là giả lập, không phải hợp đồng của một dịch vụ thật.\n\n## Môi trường và base URL\n\n\n\n| Môi trường | BASE_URL |\n| --- | --- |\n| Sandbox | https://sandbox.api.orbit.example/v1 |\n| Production | https://api.orbit.example/v1 |\n\nMỗi môi trường có token riêng. Không dùng chéo sandbox và production.\n\n## Yêu cầu đầu tiên\n\nLưu base URL và token trong môi trường, rồi liệt kê dự án:\n```bash\nexport BASE_URL=\"https://sandbox.api.orbit.example/v1\"\n# API_TOKEN must be supplied by your private environment.\ncurl \"$BASE_URL/projects?limit=20\" \\\n  --header \"Authorization: Bearer ${API_TOKEN}\" \\\n  --header \"Accept: application/json\"\n```\n\n\n## Luồng tích hợp\n\n1. [Tạo token](authentication) và chọn môi trường.\n2. [Tạo dự án](create-project) hoặc [liệt kê](list-projects) dự án hiện có.\n3. [Lấy một dự án](get-project) khi cần chi tiết.\n4. [Đăng ký webhook](webhooks) để nhận sự kiện.\n5. Đối chiếu [mã lỗi và giới hạn](errors) trước khi lên production.\n\n## Trình tự request\n\n\n```mermaid\nsequenceDiagram\n  participant C as Ứng dụng\n  participant A as Orbit API\n  C->>A: POST /projects\n  A-->>C: id và trạng thái\n  C->>A: GET /projects\n  A-->>C: items và nextCursor\n  A->>C: POST webhook sự kiện\n  C-->>A: HTTP 200 xác nhận\n```\n\n\n\n---\nTài liệu mẫu cho API Orbit giả lập, xuất bản bằng Docfolk. Xem [lỗi và giới hạn](errors).\n"
+        }
+      },
+      {
+        "id": "orbit-en-authentication",
+        "slug": "orbit-en-authentication",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "Authentication",
+          "description": "Create an API token, send it as a bearer token, and keep environments separate.",
+          "company": "orbit",
+          "language": "en",
+          "doc_key": "authentication",
+          "category": "Getting started",
+          "position": 2,
+          "body": "\n## API tokens\n\nCreate a token in the dashboard and send it in the `Authorization` header as a bearer token. Each environment issues its own token; call the sandbox with a sandbox token and production with a production token.\n\n\n| Header | Requirement | Value / meaning |\n| --- | --- | --- |\n| Authorization | Required | `Bearer ${API_TOKEN}`: token for the selected environment |\n| Content-Type | With a JSON body | application/json |\n| Accept | Recommended | application/json |\n| Accept-Language | Optional | `en`, `vi`, `km`, `lo`, `my` |\n\n\n## Example\n\nNever store the token in source code or AI prompts. Keep it in a server-side environment variable.\n```bash\ncurl \"$BASE_URL/projects\" \\\n  --header \"Authorization: Bearer ${API_TOKEN}\" \\\n  --header \"Accept: application/json\"\n```\n\n\n## Authentication and access\n\n\n\n| Case | Result |\n| --- | --- |\n| Thiếu header Authorization | `401 Unauthorized` |\n| Token sai hoặc hết hạn | `401 Unauthorized` |\n| Token đúng nhưng không có quyền | `403 Forbidden` |\n| Tài nguyên ngoài phạm vi token | `404 Not Found` |\n\n\n\n## Authentication diagram\n\n\n```mermaid\nflowchart LR\n  A[\"Your app\"] --> B[\"Authorization: Bearer token\"]\n  B --> C{\"Token valid?\"}\n  C -->|No| D[\"401\"]\n  C -->|Yes| E{\"Authorized?\"}\n  E -->|No| F[\"403\"]\n  E -->|Yes| G[\"Handle request\"]\n```\n\n\n\n---\nSample documentation for the fictional Orbit API, published with Docfolk. See [errors and limits](errors).\n"
+        }
+      },
+      {
+        "id": "orbit-vi-authentication",
+        "slug": "orbit-vi-authentication",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "Xác thực",
+          "description": "Tạo token API, gửi dưới dạng bearer token và tách biệt các môi trường.",
+          "company": "orbit",
+          "language": "vi",
+          "doc_key": "authentication",
+          "category": "Getting started",
+          "position": 2,
+          "body": "\n## Token API\n\nTạo token trong bảng điều khiển và gửi trong header `Authorization` dưới dạng bearer. Mỗi môi trường cấp token riêng; gọi sandbox bằng token sandbox và production bằng token production.\n\n\n| Header | Yêu cầu | Giá trị / ý nghĩa |\n| --- | --- | --- |\n| Authorization | Bắt buộc | `Bearer ${API_TOKEN}`: token của môi trường đã chọn |\n| Content-Type | Khi có body JSON | application/json |\n| Accept | Nên gửi | application/json |\n| Accept-Language | Tùy chọn | `en`, `vi`, `km`, `lo`, `my` |\n\n\n## Ví dụ\n\nKhông lưu token trong mã nguồn hay prompt AI. Đặt trong biến môi trường ở phía máy chủ.\n```bash\ncurl \"$BASE_URL/projects\" \\\n  --header \"Authorization: Bearer ${API_TOKEN}\" \\\n  --header \"Accept: application/json\"\n```\n\n\n## Xác thực và phân quyền\n\n\n\n| Trường hợp | Kết quả |\n| --- | --- |\n| Thiếu header Authorization | `401 Unauthorized` |\n| Token sai hoặc hết hạn | `401 Unauthorized` |\n| Token đúng nhưng không có quyền | `403 Forbidden` |\n| Tài nguyên ngoài phạm vi token | `404 Not Found` |\n\n\n\n## Sơ đồ xác thực\n\n\n```mermaid\nflowchart LR\n  A[\"Ứng dụng\"] --> B[\"Authorization: Bearer token\"]\n  B --> C{\"Token hợp lệ?\"}\n  C -->|Không| D[\"401\"]\n  C -->|Có| E{\"Có quyền?\"}\n  E -->|Không| F[\"403\"]\n  E -->|Có| G[\"Xử lý yêu cầu\"]\n```\n\n\n\n---\nTài liệu mẫu cho API Orbit giả lập, xuất bản bằng Docfolk. Xem [lỗi và giới hạn](errors).\n"
+        }
+      },
+      {
+        "id": "orbit-en-webhooks",
+        "slug": "orbit-en-webhooks",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "Webhooks",
+          "description": "Receive project events, verify the token, and acknowledge delivery safely.",
+          "company": "orbit",
+          "language": "en",
+          "doc_key": "webhooks",
+          "category": "Guides",
+          "position": 3,
+          "body": "\n```http\nPOST ${WEBHOOK_URL}\n```\n\n## Delivery contract\n\nThe webhook delivers project lifecycle events to an HTTPS endpoint you register. Events can be redelivered; deduplicate them and never let an older event regress a newer state.\n\n## Configuration\n\n\n\n| Field | Required | Description |\n| --- | --- | --- |\n| webhook_url | Yes | Your HTTPS endpoint that receives events |\n| token | Yes | Secret token sent with each request |\n\n\n\n## Incoming headers\n\n\n\n| Header | Value |\n| --- | --- |\n| Content-Type | application/json |\n| Authorization | Bearer ${WEBHOOK_TOKEN} |\n\n\n\n## Payload fields\n\n\n\n| Field | Type | Required | Description |\n| --- | --- | --- | --- |\n| `id` | string | Yes | Unique project identifier. |\n| `name` | string | See description | Project name at event time. |\n| `event` | string | Yes | Event type. Values: `project.created`, `project.updated`, `project.archived`. |\n| `status` | string | Yes | Project status after the event. Values: `active`, `archived`. |\n| `updatedAt` | string | Yes | Event time, ISO 8601. |\n\n\n\n## Example event\n\n\n```json\n{\n  \"id\": \"prj_01HZX\",\n  \"name\": \"My first project\",\n  \"event\": \"project.updated\",\n  \"status\": \"active\",\n  \"updatedAt\": \"2026-01-01T00:00:00Z\"\n}\n```\n\n\n## Receipt\n\n1. Verify `Authorization` against the configured token.\n2. Durably store the payload or enqueue it.\n3. Return HTTP **200** to acknowledge receipt.\n4. Deduplicate and own your business retries. Acknowledge only after durable receipt to avoid losing an event.\n\n## Webhook diagram\n\n\n```mermaid\nsequenceDiagram\n  participant A as Orbit\n  participant W as Your webhook\n  participant Q as Durable store\n  A->>W: POST event with bearer token\n  W->>W: Authenticate payload\n  W->>Q: Persist event\n  Q-->>W: Stored\n  W-->>A: HTTP 200\n  Note over A,W: Older events may be redelivered\n```\n\n\n\n---\nSample documentation for the fictional Orbit API, published with Docfolk. See [errors and limits](errors).\n",
+          "operation": {
+            "operationId": "receiveProjectEvent",
+            "summary": "Webhooks",
+            "description": "Receive project events, verify the token, and acknowledge delivery safely.",
+            "tags": [
+              "Webhooks"
+            ],
+            "parameters": [
+              {
+                "name": "Authorization",
+                "in": "header",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "description": "Bearer ${WEBHOOK_TOKEN}; token configured for your webhook endpoint."
+                },
+                "description": "Bearer ${WEBHOOK_TOKEN}; token configured for your webhook endpoint."
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "description": "Event delivered to your webhook endpoint.",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Unique project identifier."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Project name at event time."
+                      },
+                      "event": {
+                        "type": "string",
+                        "description": "Event type.",
+                        "enum": [
+                          "project.created",
+                          "project.updated",
+                          "project.archived"
+                        ]
+                      },
+                      "status": {
+                        "type": "string",
+                        "description": "Project status after the event.",
+                        "enum": [
+                          "active",
+                          "archived"
+                        ]
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "description": "Event time, ISO 8601.",
+                        "format": "date-time"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "event",
+                      "status",
+                      "updatedAt"
+                    ]
+                  },
+                  "example": {
+                    "id": "prj_01HZX",
+                    "name": "My first project",
+                    "event": "project.updated",
+                    "status": "active",
+                    "updatedAt": "2026-01-01T00:00:00Z"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Received. No response body is specified."
+              },
+              "default": {
+                "description": "A non-200 response or timeout may cause the event to be redelivered."
+              }
+            },
+            "x-webhook-name": "projectUpdated"
+          }
+        }
+      },
+      {
+        "id": "orbit-vi-webhooks",
+        "slug": "orbit-vi-webhooks",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "Webhook",
+          "description": "Nhận sự kiện dự án, xác thực token và xác nhận an toàn.",
+          "company": "orbit",
+          "language": "vi",
+          "doc_key": "webhooks",
+          "category": "Guides",
+          "position": 3,
+          "body": "\n```http\nPOST ${WEBHOOK_URL}\n```\n\n## Hợp đồng gửi\n\nWebhook gửi sự kiện vòng đời dự án tới endpoint HTTPS do bạn đăng ký. Sự kiện có thể được gửi lại; hãy chống trùng và không để sự kiện cũ làm lùi trạng thái mới.\n\n## Cấu hình\n\n\n\n| Field | Bắt buộc | Mô tả |\n| --- | --- | --- |\n| webhook_url | Có | Endpoint HTTPS phía bạn để nhận sự kiện |\n| token | Có | Token bí mật gửi trong mỗi request |\n\n\n\n## Header nhận vào\n\n\n\n| Header | Giá trị |\n| --- | --- |\n| Content-Type | application/json |\n| Authorization | Bearer ${WEBHOOK_TOKEN} |\n\n\n\n## Các field payload\n\n\n\n| Field | Kiểu | Bắt buộc | Mô tả |\n| --- | --- | --- | --- |\n| `id` | string | Có | Mã dự án duy nhất. |\n| `name` | string | Xem mô tả | Tên dự án tại thời điểm sự kiện. |\n| `event` | string | Có | Loại sự kiện. Giá trị: `project.created`, `project.updated`, `project.archived`. |\n| `status` | string | Có | Trạng thái dự án sau sự kiện. Giá trị: `active`, `archived`. |\n| `updatedAt` | string | Có | Thời điểm sự kiện, ISO 8601. |\n\n\n\n## Ví dụ sự kiện\n\n\n```json\n{\n  \"id\": \"prj_01HZX\",\n  \"name\": \"My first project\",\n  \"event\": \"project.updated\",\n  \"status\": \"active\",\n  \"updatedAt\": \"2026-01-01T00:00:00Z\"\n}\n```\n\n\n## Tiếp nhận\n\n1. Kiểm tra `Authorization` có đúng token đã cấu hình.\n2. Lưu bền vững payload hoặc đưa vào hàng đợi.\n3. Trả HTTP **200** để xác nhận đã nhận.\n4. Xử lý trùng lặp và tự retry nghiệp vụ ở phía bạn. Xác nhận sau khi đã lưu để tránh mất sự kiện.\n\n## Sơ đồ webhook\n\n\n```mermaid\nsequenceDiagram\n  participant A as Orbit\n  participant W as Webhook của bạn\n  participant Q as Kho lưu bền vững\n  A->>W: POST sự kiện và bearer token\n  W->>W: Xác thực payload\n  W->>Q: Lưu bền vững\n  Q-->>W: Đã lưu\n  W-->>A: HTTP 200\n  Note over A,W: Sự kiện cũ có thể được gửi lại\n```\n\n\n\n---\nTài liệu mẫu cho API Orbit giả lập, xuất bản bằng Docfolk. Xem [lỗi và giới hạn](errors).\n",
+          "operation": {
+            "operationId": "receiveProjectEvent",
+            "summary": "Webhook",
+            "description": "Nhận sự kiện dự án, xác thực token và xác nhận an toàn.",
+            "tags": [
+              "Webhooks"
+            ],
+            "parameters": [
+              {
+                "name": "Authorization",
+                "in": "header",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "description": "Bearer ${WEBHOOK_TOKEN}; token đã cấu hình cho endpoint webhook của bạn."
+                },
+                "description": "Bearer ${WEBHOOK_TOKEN}; token đã cấu hình cho endpoint webhook của bạn."
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "description": "Sự kiện gửi tới endpoint webhook của bạn.",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "Mã dự án duy nhất."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Tên dự án tại thời điểm sự kiện."
+                      },
+                      "event": {
+                        "type": "string",
+                        "description": "Loại sự kiện.",
+                        "enum": [
+                          "project.created",
+                          "project.updated",
+                          "project.archived"
+                        ]
+                      },
+                      "status": {
+                        "type": "string",
+                        "description": "Trạng thái dự án sau sự kiện.",
+                        "enum": [
+                          "active",
+                          "archived"
+                        ]
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "description": "Thời điểm sự kiện, ISO 8601.",
+                        "format": "date-time"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "event",
+                      "status",
+                      "updatedAt"
+                    ]
+                  },
+                  "example": {
+                    "id": "prj_01HZX",
+                    "name": "My first project",
+                    "event": "project.updated",
+                    "status": "active",
+                    "updatedAt": "2026-01-01T00:00:00Z"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Đã nhận. Không có body phản hồi được quy định."
+              },
+              "default": {
+                "description": "Phản hồi khác 200 hoặc timeout có thể khiến sự kiện được gửi lại."
+              }
+            },
+            "x-webhook-name": "projectUpdated"
+          }
+        }
+      },
+      {
+        "id": "orbit-en-list-projects",
+        "slug": "orbit-en-list-projects",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "List projects",
+          "description": "Page through projects with a cursor and filter by status.",
+          "company": "orbit",
+          "language": "en",
+          "doc_key": "list-projects",
+          "category": "API reference",
+          "position": 4,
+          "body": "\n```http\nGET /v1/projects\n```\n\n## Notes\n\nProjects are returned newest first. Use `limit` and the opaque `nextCursor` for pagination: request the next page with `cursor=<nextCursor>` and stop when `nextCursor` is `null`. Do not build cursors yourself or treat them as stable identifiers.\n\n`status` filters by lifecycle state. Omit it to return every status. The endpoint returns `items` and `nextCursor`; there is no total count.\n\n## Authentication headers\n\n\n\n| Header | Requirement | Value / meaning |\n| --- | --- | --- |\n| Authorization | Required | `Bearer ${API_TOKEN}`: token for the selected environment |\n| Content-Type | With a JSON body | application/json |\n| Accept | Recommended | application/json |\n| Accept-Language | Optional | `en`, `vi`, `km`, `lo`, `my` |\n\n\n\n## Path and query parameters\n\n\n\n| Name | Location | Required | Description |\n| --- | --- | --- | --- |\n| limit | query | No | Page size, 1–100. Defaults to 20. |\n| cursor | query | No | Cursor from a previous response’s nextCursor. |\n| status | query | No | Filter by lifecycle status. |\n\n\n\n## cURL example\n\n`BASE_URL` is the base URL of the selected environment. Keep the token in an environment variable, never in documentation.\n```bash\ncurl --request GET \"${BASE_URL}/projects?limit=20\" \\\n  --header \"Authorization: Bearer ${API_TOKEN}\" \\\n  --header \"Accept-Language: en\" \\\n  --header \"Accept: application/json\"\n```\n\n\n## Example response\n\nIllustrative shape; not live data or a guarantee.\n```json\n{\n  \"items\": [\n    {\n      \"id\": \"prj_01HZX\",\n      \"name\": \"My first project\",\n      \"region\": \"us\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-01-01T00:00:00Z\"\n    }\n  ],\n  \"nextCursor\": null\n}\n```\n\n\n## Response fields\n\n\n\n| Field | Type | Required | Description |\n| --- | --- | --- | --- |\n| `items` | array | Yes | Projects on this page. |\n| `items[].id` | string | When parent is present | Unique project identifier. |\n| `items[].name` | string | When parent is present | Human-readable project name. |\n| `items[].region` | string | When parent is present | Deployment region. Values: `us`, `eu`, `ap`. |\n| `items[].status` | string | When parent is present | Lifecycle status. Values: `active`, `archived`. |\n| `items[].createdAt` | string | When parent is present | Creation time, ISO 8601. |\n| `nextCursor` | string / null | See description | Opaque cursor for the next page, or null at the end. |\n\n\n\n## Error handling\n\nSee [errors and limits](errors) for HTTP codes, rate limits, and idempotency notes.\n\n\n---\nSample documentation for the fictional Orbit API, published with Docfolk. See [errors and limits](errors).\n",
+          "method": "GET",
+          "path": "/projects",
+          "operation": {
+            "operationId": "listProjects",
+            "summary": "List projects",
+            "description": "Projects are returned newest first. Use `limit` and the opaque `nextCursor` for pagination: request the next page with `cursor=<nextCursor>` and stop when `nextCursor` is `null`. Do not build cursors yourself or treat them as stable identifiers.\n\n`status` filters by lifecycle state. Omit it to return every status. The endpoint returns `items` and `nextCursor`; there is no total count.",
+            "tags": [
+              "Projects"
+            ],
+            "parameters": [
+              {
+                "name": "Authorization",
+                "in": "header",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "description": "Bearer ${API_TOKEN}; token for the selected environment."
+                },
+                "description": "Bearer ${API_TOKEN}; token for the selected environment."
+              },
+              {
+                "name": "Accept-Language",
+                "in": "header",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                  "description": "Preferred response language: en, vi, km, lo, my.",
+                  "enum": [
+                    "en",
+                    "vi",
+                    "km",
+                    "lo",
+                    "my"
+                  ]
+                },
+                "description": "Preferred response language: en, vi, km, lo, my."
+              },
+              {
+                "name": "limit",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "integer",
+                  "description": "Page size, 1–100. Defaults to 20.",
+                  "default": 20
+                },
+                "description": "Page size, 1–100. Defaults to 20."
+              },
+              {
+                "name": "cursor",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                  "description": "Cursor from a previous response’s nextCursor."
+                },
+                "description": "Cursor from a previous response’s nextCursor."
+              },
+              {
+                "name": "status",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                  "description": "Filter by lifecycle status.",
+                  "enum": [
+                    "active",
+                    "archived"
+                  ]
+                },
+                "description": "Filter by lifecycle status."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Illustrative successful response.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "description": "A paginated project collection.",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "description": "Projects on this page.",
+                          "items": {
+                            "type": "object",
+                            "description": "A project resource.",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Unique project identifier."
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Human-readable project name."
+                              },
+                              "region": {
+                                "type": "string",
+                                "description": "Deployment region.",
+                                "enum": [
+                                  "us",
+                                  "eu",
+                                  "ap"
+                                ]
+                              },
+                              "status": {
+                                "type": "string",
+                                "description": "Lifecycle status.",
+                                "enum": [
+                                  "active",
+                                  "archived"
+                                ]
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "description": "Creation time, ISO 8601.",
+                                "format": "date-time"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "name",
+                              "region",
+                              "status",
+                              "createdAt"
+                            ]
+                          }
+                        },
+                        "nextCursor": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Opaque cursor for the next page, or null at the end."
+                        }
+                      },
+                      "required": [
+                        "items"
+                      ]
+                    },
+                    "example": {
+                      "items": [
+                        {
+                          "id": "prj_01HZX",
+                          "name": "My first project",
+                          "region": "us",
+                          "status": "active",
+                          "createdAt": "2026-01-01T00:00:00Z"
+                        }
+                      ],
+                      "nextCursor": null
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Bad Request. Malformed body or invalid query parameters."
+              },
+              "401": {
+                "description": "Unauthorized. Missing or invalid bearer token."
+              },
+              "403": {
+                "description": "Forbidden. The token lacks access to this resource."
+              },
+              "404": {
+                "description": "Not Found. The resource does not exist or is not visible to this token."
+              },
+              "429": {
+                "description": "Too Many Requests. Retry after the interval in Retry-After."
+              },
+              "500": {
+                "description": "Internal Server Error. Retry with backoff and report repeated failures."
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "orbit-vi-list-projects",
+        "slug": "orbit-vi-list-projects",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "Liệt kê dự án",
+          "description": "Duyệt danh sách dự án bằng con trỏ và lọc theo trạng thái.",
+          "company": "orbit",
+          "language": "vi",
+          "doc_key": "list-projects",
+          "category": "API reference",
+          "position": 4,
+          "body": "\n```http\nGET /v1/projects\n```\n\n## Ghi chú\n\nDự án trả về mới nhất trước. Dùng `limit` và `nextCursor` mờ để phân trang: gọi trang kế tiếp với `cursor=<nextCursor>` và dừng khi `nextCursor` là `null`. Không tự tạo con trỏ hoặc coi chúng là mã ổn định.\n\n`status` lọc theo trạng thái vòng đời. Bỏ qua để trả mọi trạng thái. Endpoint trả `items` và `nextCursor`; không có tổng số lượng.\n\n## Header xác thực\n\n\n\n| Header | Yêu cầu | Giá trị / ý nghĩa |\n| --- | --- | --- |\n| Authorization | Bắt buộc | `Bearer ${API_TOKEN}`: token của môi trường đã chọn |\n| Content-Type | Khi có body JSON | application/json |\n| Accept | Nên gửi | application/json |\n| Accept-Language | Tùy chọn | `en`, `vi`, `km`, `lo`, `my` |\n\n\n\n## Tham số đường dẫn và truy vấn\n\n\n\n| Tên | Vị trí | Bắt buộc | Mô tả |\n| --- | --- | --- | --- |\n| limit | query | Không | Số bản ghi mỗi trang, 1–100. Mặc định 20. |\n| cursor | query | Không | Con trỏ từ nextCursor của phản hồi trước. |\n| status | query | Không | Lọc theo trạng thái vòng đời. |\n\n\n\n## Ví dụ cURL\n\n`BASE_URL` là base URL của môi trường đã chọn. Giữ token trong biến môi trường, không dán vào tài liệu.\n```bash\ncurl --request GET \"${BASE_URL}/projects?limit=20\" \\\n  --header \"Authorization: Bearer ${API_TOKEN}\" \\\n  --header \"Accept-Language: vi\" \\\n  --header \"Accept: application/json\"\n```\n\n\n## Ví dụ phản hồi\n\nMinh họa cấu trúc; không phải dữ liệu thật hay cam kết.\n```json\n{\n  \"items\": [\n    {\n      \"id\": \"prj_01HZX\",\n      \"name\": \"My first project\",\n      \"region\": \"us\",\n      \"status\": \"active\",\n      \"createdAt\": \"2026-01-01T00:00:00Z\"\n    }\n  ],\n  \"nextCursor\": null\n}\n```\n\n\n## Các field phản hồi\n\n\n\n| Field | Kiểu | Bắt buộc | Mô tả |\n| --- | --- | --- | --- |\n| `items` | array | Có | Dự án trong trang này. |\n| `items[].id` | string | Khi có object cha | Mã dự án duy nhất. |\n| `items[].name` | string | Khi có object cha | Tên dự án hiển thị. |\n| `items[].region` | string | Khi có object cha | Vùng triển khai. Giá trị: `us`, `eu`, `ap`. |\n| `items[].status` | string | Khi có object cha | Trạng thái vòng đời. Giá trị: `active`, `archived`. |\n| `items[].createdAt` | string | Khi có object cha | Thời điểm tạo, ISO 8601. |\n| `nextCursor` | string / null | Xem mô tả | Con trỏ mờ cho trang kế tiếp, hoặc null khi hết. |\n\n\n\n## Xử lý lỗi\n\nXem [lỗi và giới hạn](errors) để biết mã HTTP, giới hạn tần suất và ghi chú idempotency.\n\n\n---\nTài liệu mẫu cho API Orbit giả lập, xuất bản bằng Docfolk. Xem [lỗi và giới hạn](errors).\n",
+          "method": "GET",
+          "path": "/projects",
+          "operation": {
+            "operationId": "listProjects",
+            "summary": "Liệt kê dự án",
+            "description": "Dự án trả về mới nhất trước. Dùng `limit` và `nextCursor` mờ để phân trang: gọi trang kế tiếp với `cursor=<nextCursor>` và dừng khi `nextCursor` là `null`. Không tự tạo con trỏ hoặc coi chúng là mã ổn định.\n\n`status` lọc theo trạng thái vòng đời. Bỏ qua để trả mọi trạng thái. Endpoint trả `items` và `nextCursor`; không có tổng số lượng.",
+            "tags": [
+              "Projects"
+            ],
+            "parameters": [
+              {
+                "name": "Authorization",
+                "in": "header",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "description": "Bearer ${API_TOKEN}; token của môi trường đã chọn."
+                },
+                "description": "Bearer ${API_TOKEN}; token của môi trường đã chọn."
+              },
+              {
+                "name": "Accept-Language",
+                "in": "header",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                  "description": "Ngôn ngữ phản hồi mong muốn: en, vi, km, lo, my.",
+                  "enum": [
+                    "en",
+                    "vi",
+                    "km",
+                    "lo",
+                    "my"
+                  ]
+                },
+                "description": "Ngôn ngữ phản hồi mong muốn: en, vi, km, lo, my."
+              },
+              {
+                "name": "limit",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "integer",
+                  "description": "Số bản ghi mỗi trang, 1–100. Mặc định 20.",
+                  "default": 20
+                },
+                "description": "Số bản ghi mỗi trang, 1–100. Mặc định 20."
+              },
+              {
+                "name": "cursor",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                  "description": "Con trỏ từ nextCursor của phản hồi trước."
+                },
+                "description": "Con trỏ từ nextCursor của phản hồi trước."
+              },
+              {
+                "name": "status",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                  "description": "Lọc theo trạng thái vòng đời.",
+                  "enum": [
+                    "active",
+                    "archived"
+                  ]
+                },
+                "description": "Lọc theo trạng thái vòng đời."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Phản hồi thành công minh họa.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "description": "Danh sách dự án phân trang.",
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "description": "Dự án trong trang này.",
+                          "items": {
+                            "type": "object",
+                            "description": "Tài nguyên dự án.",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Mã dự án duy nhất."
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Tên dự án hiển thị."
+                              },
+                              "region": {
+                                "type": "string",
+                                "description": "Vùng triển khai.",
+                                "enum": [
+                                  "us",
+                                  "eu",
+                                  "ap"
+                                ]
+                              },
+                              "status": {
+                                "type": "string",
+                                "description": "Trạng thái vòng đời.",
+                                "enum": [
+                                  "active",
+                                  "archived"
+                                ]
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "description": "Thời điểm tạo, ISO 8601.",
+                                "format": "date-time"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "name",
+                              "region",
+                              "status",
+                              "createdAt"
+                            ]
+                          }
+                        },
+                        "nextCursor": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "description": "Con trỏ mờ cho trang kế tiếp, hoặc null khi hết."
+                        }
+                      },
+                      "required": [
+                        "items"
+                      ]
+                    },
+                    "example": {
+                      "items": [
+                        {
+                          "id": "prj_01HZX",
+                          "name": "My first project",
+                          "region": "us",
+                          "status": "active",
+                          "createdAt": "2026-01-01T00:00:00Z"
+                        }
+                      ],
+                      "nextCursor": null
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Bad Request. Malformed body or invalid query parameters."
+              },
+              "401": {
+                "description": "Unauthorized. Missing or invalid bearer token."
+              },
+              "403": {
+                "description": "Forbidden. The token lacks access to this resource."
+              },
+              "404": {
+                "description": "Not Found. The resource does not exist or is not visible to this token."
+              },
+              "429": {
+                "description": "Too Many Requests. Retry after the interval in Retry-After."
+              },
+              "500": {
+                "description": "Internal Server Error. Retry with backoff and report repeated failures."
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "orbit-en-create-project",
+        "slug": "orbit-en-create-project",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "Create a project",
+          "description": "Create a project in a region and read the created resource.",
+          "company": "orbit",
+          "language": "en",
+          "doc_key": "create-project",
+          "category": "API reference",
+          "position": 5,
+          "body": "\n```http\nPOST /v1/projects\n```\n\n## Notes\n\nSend `name` and optionally `region`; `region` defaults to `us`. A successful response echoes the stored resource, including `id`, `status`, and `createdAt`.\n\nUse a client-generated correlation value if you retry after a timeout, and reconcile before creating a duplicate. The sample API does not document a server-enforced idempotency key.\n\n## Authentication headers\n\n\n\n| Header | Requirement | Value / meaning |\n| --- | --- | --- |\n| Authorization | Required | `Bearer ${API_TOKEN}`: token for the selected environment |\n| Content-Type | With a JSON body | application/json |\n| Accept | Recommended | application/json |\n| Accept-Language | Optional | `en`, `vi`, `km`, `lo`, `my` |\n\n\n\n## Request fields\n\nFields accepted when creating a project.\n\n| Field | Type | Required | Description |\n| --- | --- | --- | --- |\n| `name` | string | Yes | Project name, 1–80 characters. |\n| `region` | string | See description | Deployment region. Defaults to us. Values: `us`, `eu`, `ap`. Default: `us`. |\n\n\n\n## Example JSON body\n\nSave as `request.json`; replace the example values with real ones.\n```json\n{\n  \"name\": \"My first project\",\n  \"region\": \"us\"\n}\n```\n\n\n## cURL example\n\n`BASE_URL` is the base URL of the selected environment. Keep the token in an environment variable, never in documentation.\n```bash\ncurl --request POST \"${BASE_URL}/projects\" \\\n  --header \"Authorization: Bearer ${API_TOKEN}\" \\\n  --header \"Accept-Language: en\" \\\n  --header \"Accept: application/json\" \\\n  --header \"Content-Type: application/json\" \\\n  --data @request.json\n```\n\n\n## Example response\n\nIllustrative shape; not live data or a guarantee.\n```json\n{\n  \"id\": \"prj_01HZX\",\n  \"name\": \"My first project\",\n  \"region\": \"us\",\n  \"status\": \"active\",\n  \"createdAt\": \"2026-01-01T00:00:00Z\"\n}\n```\n\n\n## Response fields\n\n\n\n| Field | Type | Required | Description |\n| --- | --- | --- | --- |\n| `id` | string | Yes | Unique project identifier. |\n| `name` | string | Yes | Human-readable project name. |\n| `region` | string | Yes | Deployment region. Values: `us`, `eu`, `ap`. |\n| `status` | string | Yes | Lifecycle status. Values: `active`, `archived`. |\n| `createdAt` | string | Yes | Creation time, ISO 8601. |\n\n\n\n## Error handling\n\nSee [errors and limits](errors) for HTTP codes, rate limits, and idempotency notes.\n\n\n---\nSample documentation for the fictional Orbit API, published with Docfolk. See [errors and limits](errors).\n",
+          "method": "POST",
+          "path": "/projects",
+          "operation": {
+            "operationId": "createProject",
+            "summary": "Create a project",
+            "description": "Send `name` and optionally `region`; `region` defaults to `us`. A successful response echoes the stored resource, including `id`, `status`, and `createdAt`.\n\nUse a client-generated correlation value if you retry after a timeout, and reconcile before creating a duplicate. The sample API does not document a server-enforced idempotency key.",
+            "tags": [
+              "Projects"
+            ],
+            "parameters": [
+              {
+                "name": "Authorization",
+                "in": "header",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "description": "Bearer ${API_TOKEN}; token for the selected environment."
+                },
+                "description": "Bearer ${API_TOKEN}; token for the selected environment."
+              },
+              {
+                "name": "Accept-Language",
+                "in": "header",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                  "description": "Preferred response language: en, vi, km, lo, my.",
+                  "enum": [
+                    "en",
+                    "vi",
+                    "km",
+                    "lo",
+                    "my"
+                  ]
+                },
+                "description": "Preferred response language: en, vi, km, lo, my."
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "description": "Fields accepted when creating a project.",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Project name, 1–80 characters."
+                      },
+                      "region": {
+                        "type": "string",
+                        "description": "Deployment region. Defaults to us.",
+                        "enum": [
+                          "us",
+                          "eu",
+                          "ap"
+                        ],
+                        "default": "us"
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ]
+                  },
+                  "example": {
+                    "name": "My first project",
+                    "region": "us"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Illustrative successful response.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "description": "A project resource.",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Unique project identifier."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Human-readable project name."
+                        },
+                        "region": {
+                          "type": "string",
+                          "description": "Deployment region.",
+                          "enum": [
+                            "us",
+                            "eu",
+                            "ap"
+                          ]
+                        },
+                        "status": {
+                          "type": "string",
+                          "description": "Lifecycle status.",
+                          "enum": [
+                            "active",
+                            "archived"
+                          ]
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "description": "Creation time, ISO 8601.",
+                          "format": "date-time"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "region",
+                        "status",
+                        "createdAt"
+                      ]
+                    },
+                    "example": {
+                      "id": "prj_01HZX",
+                      "name": "My first project",
+                      "region": "us",
+                      "status": "active",
+                      "createdAt": "2026-01-01T00:00:00Z"
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Bad Request. Malformed body or invalid query parameters."
+              },
+              "401": {
+                "description": "Unauthorized. Missing or invalid bearer token."
+              },
+              "403": {
+                "description": "Forbidden. The token lacks access to this resource."
+              },
+              "404": {
+                "description": "Not Found. The resource does not exist or is not visible to this token."
+              },
+              "429": {
+                "description": "Too Many Requests. Retry after the interval in Retry-After."
+              },
+              "500": {
+                "description": "Internal Server Error. Retry with backoff and report repeated failures."
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "orbit-vi-create-project",
+        "slug": "orbit-vi-create-project",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "Tạo dự án",
+          "description": "Tạo dự án trong một vùng và đọc tài nguyên vừa tạo.",
+          "company": "orbit",
+          "language": "vi",
+          "doc_key": "create-project",
+          "category": "API reference",
+          "position": 5,
+          "body": "\n```http\nPOST /v1/projects\n```\n\n## Ghi chú\n\nGửi `name` và tùy chọn `region`; `region` mặc định `us`. Phản hồi thành công trả lại tài nguyên đã lưu, gồm `id`, `status` và `createdAt`.\n\nNếu gửi lại sau timeout, dùng một giá trị đối soát do client tạo và đối chiếu trước khi tạo trùng. API mẫu không nêu khóa idempotency do máy chủ đảm bảo.\n\n## Header xác thực\n\n\n\n| Header | Yêu cầu | Giá trị / ý nghĩa |\n| --- | --- | --- |\n| Authorization | Bắt buộc | `Bearer ${API_TOKEN}`: token của môi trường đã chọn |\n| Content-Type | Khi có body JSON | application/json |\n| Accept | Nên gửi | application/json |\n| Accept-Language | Tùy chọn | `en`, `vi`, `km`, `lo`, `my` |\n\n\n\n## Các field request\n\nCác field khi tạo dự án.\n\n| Field | Kiểu | Bắt buộc | Mô tả |\n| --- | --- | --- | --- |\n| `name` | string | Có | Tên dự án, 1–80 ký tự. |\n| `region` | string | Xem mô tả | Vùng triển khai. Mặc định us. Giá trị: `us`, `eu`, `ap`. Mặc định: `us`. |\n\n\n\n## Ví dụ body JSON\n\nLưu thành `request.json`; thay các giá trị ví dụ bằng giá trị thật của bạn.\n```json\n{\n  \"name\": \"My first project\",\n  \"region\": \"us\"\n}\n```\n\n\n## Ví dụ cURL\n\n`BASE_URL` là base URL của môi trường đã chọn. Giữ token trong biến môi trường, không dán vào tài liệu.\n```bash\ncurl --request POST \"${BASE_URL}/projects\" \\\n  --header \"Authorization: Bearer ${API_TOKEN}\" \\\n  --header \"Accept-Language: vi\" \\\n  --header \"Accept: application/json\" \\\n  --header \"Content-Type: application/json\" \\\n  --data @request.json\n```\n\n\n## Ví dụ phản hồi\n\nMinh họa cấu trúc; không phải dữ liệu thật hay cam kết.\n```json\n{\n  \"id\": \"prj_01HZX\",\n  \"name\": \"My first project\",\n  \"region\": \"us\",\n  \"status\": \"active\",\n  \"createdAt\": \"2026-01-01T00:00:00Z\"\n}\n```\n\n\n## Các field phản hồi\n\n\n\n| Field | Kiểu | Bắt buộc | Mô tả |\n| --- | --- | --- | --- |\n| `id` | string | Có | Mã dự án duy nhất. |\n| `name` | string | Có | Tên dự án hiển thị. |\n| `region` | string | Có | Vùng triển khai. Giá trị: `us`, `eu`, `ap`. |\n| `status` | string | Có | Trạng thái vòng đời. Giá trị: `active`, `archived`. |\n| `createdAt` | string | Có | Thời điểm tạo, ISO 8601. |\n\n\n\n## Xử lý lỗi\n\nXem [lỗi và giới hạn](errors) để biết mã HTTP, giới hạn tần suất và ghi chú idempotency.\n\n\n---\nTài liệu mẫu cho API Orbit giả lập, xuất bản bằng Docfolk. Xem [lỗi và giới hạn](errors).\n",
+          "method": "POST",
+          "path": "/projects",
+          "operation": {
+            "operationId": "createProject",
+            "summary": "Tạo dự án",
+            "description": "Gửi `name` và tùy chọn `region`; `region` mặc định `us`. Phản hồi thành công trả lại tài nguyên đã lưu, gồm `id`, `status` và `createdAt`.\n\nNếu gửi lại sau timeout, dùng một giá trị đối soát do client tạo và đối chiếu trước khi tạo trùng. API mẫu không nêu khóa idempotency do máy chủ đảm bảo.",
+            "tags": [
+              "Projects"
+            ],
+            "parameters": [
+              {
+                "name": "Authorization",
+                "in": "header",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "description": "Bearer ${API_TOKEN}; token của môi trường đã chọn."
+                },
+                "description": "Bearer ${API_TOKEN}; token của môi trường đã chọn."
+              },
+              {
+                "name": "Accept-Language",
+                "in": "header",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                  "description": "Ngôn ngữ phản hồi mong muốn: en, vi, km, lo, my.",
+                  "enum": [
+                    "en",
+                    "vi",
+                    "km",
+                    "lo",
+                    "my"
+                  ]
+                },
+                "description": "Ngôn ngữ phản hồi mong muốn: en, vi, km, lo, my."
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "description": "Các field khi tạo dự án.",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Tên dự án, 1–80 ký tự."
+                      },
+                      "region": {
+                        "type": "string",
+                        "description": "Vùng triển khai. Mặc định us.",
+                        "enum": [
+                          "us",
+                          "eu",
+                          "ap"
+                        ],
+                        "default": "us"
+                      }
+                    },
+                    "required": [
+                      "name"
+                    ]
+                  },
+                  "example": {
+                    "name": "My first project",
+                    "region": "us"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Phản hồi thành công minh họa.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "description": "Tài nguyên dự án.",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Mã dự án duy nhất."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Tên dự án hiển thị."
+                        },
+                        "region": {
+                          "type": "string",
+                          "description": "Vùng triển khai.",
+                          "enum": [
+                            "us",
+                            "eu",
+                            "ap"
+                          ]
+                        },
+                        "status": {
+                          "type": "string",
+                          "description": "Trạng thái vòng đời.",
+                          "enum": [
+                            "active",
+                            "archived"
+                          ]
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "description": "Thời điểm tạo, ISO 8601.",
+                          "format": "date-time"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "region",
+                        "status",
+                        "createdAt"
+                      ]
+                    },
+                    "example": {
+                      "id": "prj_01HZX",
+                      "name": "My first project",
+                      "region": "us",
+                      "status": "active",
+                      "createdAt": "2026-01-01T00:00:00Z"
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Bad Request. Malformed body or invalid query parameters."
+              },
+              "401": {
+                "description": "Unauthorized. Missing or invalid bearer token."
+              },
+              "403": {
+                "description": "Forbidden. The token lacks access to this resource."
+              },
+              "404": {
+                "description": "Not Found. The resource does not exist or is not visible to this token."
+              },
+              "429": {
+                "description": "Too Many Requests. Retry after the interval in Retry-After."
+              },
+              "500": {
+                "description": "Internal Server Error. Retry with backoff and report repeated failures."
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "orbit-en-get-project",
+        "slug": "orbit-en-get-project",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "Get a project",
+          "description": "Retrieve a single project by identifier.",
+          "company": "orbit",
+          "language": "en",
+          "doc_key": "get-project",
+          "category": "API reference",
+          "position": 6,
+          "body": "\n```http\nGET /v1/projects/{projectId}\n```\n\n## Notes\n\nUse the `id` returned by create-project or list-projects. A project the token cannot see returns `404`, not `403`, so do not infer existence from the status code alone.\n\n## Authentication headers\n\n\n\n| Header | Requirement | Value / meaning |\n| --- | --- | --- |\n| Authorization | Required | `Bearer ${API_TOKEN}`: token for the selected environment |\n| Content-Type | With a JSON body | application/json |\n| Accept | Recommended | application/json |\n| Accept-Language | Optional | `en`, `vi`, `km`, `lo`, `my` |\n\n\n\n## Path and query parameters\n\n\n\n| Name | Location | Required | Description |\n| --- | --- | --- | --- |\n| projectId | path | Yes | Project identifier returned by create-project. |\n\n\n\n## cURL example\n\n`BASE_URL` is the base URL of the selected environment. Keep the token in an environment variable, never in documentation.\n```bash\ncurl --request GET \"${BASE_URL}/projects/prj_01HZX\" \\\n  --header \"Authorization: Bearer ${API_TOKEN}\" \\\n  --header \"Accept-Language: en\" \\\n  --header \"Accept: application/json\"\n```\n\n\n## Example response\n\nIllustrative shape; not live data or a guarantee.\n```json\n{\n  \"id\": \"prj_01HZX\",\n  \"name\": \"My first project\",\n  \"region\": \"us\",\n  \"status\": \"active\",\n  \"createdAt\": \"2026-01-01T00:00:00Z\"\n}\n```\n\n\n## Response fields\n\n\n\n| Field | Type | Required | Description |\n| --- | --- | --- | --- |\n| `id` | string | Yes | Unique project identifier. |\n| `name` | string | Yes | Human-readable project name. |\n| `region` | string | Yes | Deployment region. Values: `us`, `eu`, `ap`. |\n| `status` | string | Yes | Lifecycle status. Values: `active`, `archived`. |\n| `createdAt` | string | Yes | Creation time, ISO 8601. |\n\n\n\n## Error handling\n\nSee [errors and limits](errors) for HTTP codes, rate limits, and idempotency notes.\n\n\n---\nSample documentation for the fictional Orbit API, published with Docfolk. See [errors and limits](errors).\n",
+          "method": "GET",
+          "path": "/projects/{projectId}",
+          "operation": {
+            "operationId": "getProject",
+            "summary": "Get a project",
+            "description": "Use the `id` returned by create-project or list-projects. A project the token cannot see returns `404`, not `403`, so do not infer existence from the status code alone.",
+            "tags": [
+              "Projects"
+            ],
+            "parameters": [
+              {
+                "name": "Authorization",
+                "in": "header",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "description": "Bearer ${API_TOKEN}; token for the selected environment."
+                },
+                "description": "Bearer ${API_TOKEN}; token for the selected environment."
+              },
+              {
+                "name": "Accept-Language",
+                "in": "header",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                  "description": "Preferred response language: en, vi, km, lo, my.",
+                  "enum": [
+                    "en",
+                    "vi",
+                    "km",
+                    "lo",
+                    "my"
+                  ]
+                },
+                "description": "Preferred response language: en, vi, km, lo, my."
+              },
+              {
+                "name": "projectId",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "description": "Project identifier returned by create-project."
+                },
+                "description": "Project identifier returned by create-project."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Illustrative successful response.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "description": "A project resource.",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Unique project identifier."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Human-readable project name."
+                        },
+                        "region": {
+                          "type": "string",
+                          "description": "Deployment region.",
+                          "enum": [
+                            "us",
+                            "eu",
+                            "ap"
+                          ]
+                        },
+                        "status": {
+                          "type": "string",
+                          "description": "Lifecycle status.",
+                          "enum": [
+                            "active",
+                            "archived"
+                          ]
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "description": "Creation time, ISO 8601.",
+                          "format": "date-time"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "region",
+                        "status",
+                        "createdAt"
+                      ]
+                    },
+                    "example": {
+                      "id": "prj_01HZX",
+                      "name": "My first project",
+                      "region": "us",
+                      "status": "active",
+                      "createdAt": "2026-01-01T00:00:00Z"
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Bad Request. Malformed body or invalid query parameters."
+              },
+              "401": {
+                "description": "Unauthorized. Missing or invalid bearer token."
+              },
+              "403": {
+                "description": "Forbidden. The token lacks access to this resource."
+              },
+              "404": {
+                "description": "Not Found. The resource does not exist or is not visible to this token."
+              },
+              "429": {
+                "description": "Too Many Requests. Retry after the interval in Retry-After."
+              },
+              "500": {
+                "description": "Internal Server Error. Retry with backoff and report repeated failures."
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "orbit-vi-get-project",
+        "slug": "orbit-vi-get-project",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "Lấy một dự án",
+          "description": "Lấy một dự án theo mã định danh.",
+          "company": "orbit",
+          "language": "vi",
+          "doc_key": "get-project",
+          "category": "API reference",
+          "position": 6,
+          "body": "\n```http\nGET /v1/projects/{projectId}\n```\n\n## Ghi chú\n\nDùng `id` trả về khi tạo dự án hoặc khi liệt kê. Dự án mà token không thấy sẽ trả `404`, không phải `403`, nên không suy ra sự tồn tại chỉ từ mã trạng thái.\n\n## Header xác thực\n\n\n\n| Header | Yêu cầu | Giá trị / ý nghĩa |\n| --- | --- | --- |\n| Authorization | Bắt buộc | `Bearer ${API_TOKEN}`: token của môi trường đã chọn |\n| Content-Type | Khi có body JSON | application/json |\n| Accept | Nên gửi | application/json |\n| Accept-Language | Tùy chọn | `en`, `vi`, `km`, `lo`, `my` |\n\n\n\n## Tham số đường dẫn và truy vấn\n\n\n\n| Tên | Vị trí | Bắt buộc | Mô tả |\n| --- | --- | --- | --- |\n| projectId | path | Có | Mã dự án trả về khi tạo dự án. |\n\n\n\n## Ví dụ cURL\n\n`BASE_URL` là base URL của môi trường đã chọn. Giữ token trong biến môi trường, không dán vào tài liệu.\n```bash\ncurl --request GET \"${BASE_URL}/projects/prj_01HZX\" \\\n  --header \"Authorization: Bearer ${API_TOKEN}\" \\\n  --header \"Accept-Language: vi\" \\\n  --header \"Accept: application/json\"\n```\n\n\n## Ví dụ phản hồi\n\nMinh họa cấu trúc; không phải dữ liệu thật hay cam kết.\n```json\n{\n  \"id\": \"prj_01HZX\",\n  \"name\": \"My first project\",\n  \"region\": \"us\",\n  \"status\": \"active\",\n  \"createdAt\": \"2026-01-01T00:00:00Z\"\n}\n```\n\n\n## Các field phản hồi\n\n\n\n| Field | Kiểu | Bắt buộc | Mô tả |\n| --- | --- | --- | --- |\n| `id` | string | Có | Mã dự án duy nhất. |\n| `name` | string | Có | Tên dự án hiển thị. |\n| `region` | string | Có | Vùng triển khai. Giá trị: `us`, `eu`, `ap`. |\n| `status` | string | Có | Trạng thái vòng đời. Giá trị: `active`, `archived`. |\n| `createdAt` | string | Có | Thời điểm tạo, ISO 8601. |\n\n\n\n## Xử lý lỗi\n\nXem [lỗi và giới hạn](errors) để biết mã HTTP, giới hạn tần suất và ghi chú idempotency.\n\n\n---\nTài liệu mẫu cho API Orbit giả lập, xuất bản bằng Docfolk. Xem [lỗi và giới hạn](errors).\n",
+          "method": "GET",
+          "path": "/projects/{projectId}",
+          "operation": {
+            "operationId": "getProject",
+            "summary": "Lấy một dự án",
+            "description": "Dùng `id` trả về khi tạo dự án hoặc khi liệt kê. Dự án mà token không thấy sẽ trả `404`, không phải `403`, nên không suy ra sự tồn tại chỉ từ mã trạng thái.",
+            "tags": [
+              "Projects"
+            ],
+            "parameters": [
+              {
+                "name": "Authorization",
+                "in": "header",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "description": "Bearer ${API_TOKEN}; token của môi trường đã chọn."
+                },
+                "description": "Bearer ${API_TOKEN}; token của môi trường đã chọn."
+              },
+              {
+                "name": "Accept-Language",
+                "in": "header",
+                "required": false,
+                "schema": {
+                  "type": "string",
+                  "description": "Ngôn ngữ phản hồi mong muốn: en, vi, km, lo, my.",
+                  "enum": [
+                    "en",
+                    "vi",
+                    "km",
+                    "lo",
+                    "my"
+                  ]
+                },
+                "description": "Ngôn ngữ phản hồi mong muốn: en, vi, km, lo, my."
+              },
+              {
+                "name": "projectId",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "description": "Mã dự án trả về khi tạo dự án."
+                },
+                "description": "Mã dự án trả về khi tạo dự án."
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Phản hồi thành công minh họa.",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "description": "Tài nguyên dự án.",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "Mã dự án duy nhất."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "Tên dự án hiển thị."
+                        },
+                        "region": {
+                          "type": "string",
+                          "description": "Vùng triển khai.",
+                          "enum": [
+                            "us",
+                            "eu",
+                            "ap"
+                          ]
+                        },
+                        "status": {
+                          "type": "string",
+                          "description": "Trạng thái vòng đời.",
+                          "enum": [
+                            "active",
+                            "archived"
+                          ]
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "description": "Thời điểm tạo, ISO 8601.",
+                          "format": "date-time"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "region",
+                        "status",
+                        "createdAt"
+                      ]
+                    },
+                    "example": {
+                      "id": "prj_01HZX",
+                      "name": "My first project",
+                      "region": "us",
+                      "status": "active",
+                      "createdAt": "2026-01-01T00:00:00Z"
+                    }
+                  }
+                }
+              },
+              "400": {
+                "description": "Bad Request. Malformed body or invalid query parameters."
+              },
+              "401": {
+                "description": "Unauthorized. Missing or invalid bearer token."
+              },
+              "403": {
+                "description": "Forbidden. The token lacks access to this resource."
+              },
+              "404": {
+                "description": "Not Found. The resource does not exist or is not visible to this token."
+              },
+              "429": {
+                "description": "Too Many Requests. Retry after the interval in Retry-After."
+              },
+              "500": {
+                "description": "Internal Server Error. Retry with backoff and report repeated failures."
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "orbit-en-errors",
+        "slug": "orbit-en-errors",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "Errors and limits",
+          "description": "HTTP status codes, rate limits, pagination, and idempotency notes.",
+          "company": "orbit",
+          "language": "en",
+          "doc_key": "errors",
+          "category": "Resources",
+          "position": 7,
+          "body": "\n## HTTP status codes\n\n\n\n| Code | Meaning | Action |\n| --- | --- | --- |\n| 400 | Bad Request | Check the body, parameters, and data types. |\n| 401 | Unauthorized | Missing or invalid token; recheck `Authorization`. |\n| 403 | Forbidden | Valid token without access to this resource. |\n| 404 | Not Found | The resource does not exist or is not visible to this token. |\n| 429 | Too Many Requests | Wait for `Retry-After`, then retry. |\n| 500 | Internal Server Error | Retry with exponential backoff and report repeated failures. |\n\n\n\n## Rate limits\n\nSuccessful responses may include `X-RateLimit-Limit` and `X-RateLimit-Remaining`. When the limit is exceeded, the API returns `429` with `Retry-After` in seconds. These are illustrative, not a guarantee of a specific limit.\n\n## Pagination\n\nUse `limit` and `nextCursor`. Do not construct or persist cursors as stable identifiers. Stop when `nextCursor` is `null`.\n\n## Idempotency\n\nThe sample API does not guarantee server-enforced idempotency. After a create timeout, reconcile with list before retrying to avoid duplicates.\n\n\n---\nSample documentation for the fictional Orbit API, published with Docfolk. See [errors and limits](errors).\n"
+        }
+      },
+      {
+        "id": "orbit-vi-errors",
+        "slug": "orbit-vi-errors",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "Lỗi và giới hạn",
+          "description": "Mã trạng thái HTTP, giới hạn tần suất, phân trang và ghi chú idempotency.",
+          "company": "orbit",
+          "language": "vi",
+          "doc_key": "errors",
+          "category": "Resources",
+          "position": 7,
+          "body": "\n## Mã HTTP\n\n\n\n| Mã | Ý nghĩa | Cách xử lý |\n| --- | --- | --- |\n| 400 | Bad Request | Kiểm tra body, tham số và kiểu dữ liệu. |\n| 401 | Unauthorized | Token thiếu hoặc không hợp lệ; kiểm tra lại `Authorization`. |\n| 403 | Forbidden | Token hợp lệ nhưng thiếu quyền cho tài nguyên này. |\n| 404 | Not Found | Tài nguyên không tồn tại hoặc token không thấy nó. |\n| 429 | Too Many Requests | Chờ theo header `Retry-After` rồi thử lại. |\n| 500 | Internal Server Error | Thử lại với backoff lũy tiến và báo nếu lặp lại. |\n\n\n\n## Giới hạn tần suất\n\nPhản hồi thành công có thể kèm header `X-RateLimit-Limit` và `X-RateLimit-Remaining`. Khi vượt giới hạn, API trả `429` kèm `Retry-After` (giây). Đây là ví dụ minh họa, không phải cam kết mức giới hạn cụ thể.\n\n## Phân trang\n\nDùng `limit` và `nextCursor`. Không tính `nextCursor` và không coi là mã ổn định. Dừng khi `nextCursor` là `null`.\n\n## Idempotency\n\nAPI mẫu không đảm bảo idempotency phía máy chủ. Sau timeout khi tạo dự án, đối chiếu bằng danh sách trước khi tạo lại để tránh trùng lặp.\n\n\n---\nTài liệu mẫu cho API Orbit giả lập, xuất bản bằng Docfolk. Xem [lỗi và giới hạn](errors).\n"
+        }
+      },
+      {
+        "id": "orbit-en-ai-tools",
+        "slug": "orbit-en-ai-tools",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "Use with AI coding tools",
+          "description": "Give Claude, Codex, or Cursor scoped documentation and verifiable API contracts.",
+          "company": "orbit",
+          "language": "en",
+          "doc_key": "ai-tools",
+          "category": "Resources",
+          "position": 8,
+          "body": "\n## Product- and language-scoped context\n\nThese are real portal routes generated from published CMS content. `llms.txt` is a short index; `llms-full.txt` contains complete resolved documentation; `openapi.json` contains inline operation schemas and an OpenAPI 3.1 webhook; every page has a `.md` representation. Stay within the selected product and language.\n\n\n| Resource | Path |\n| --- | --- |\n| Index | [llms.txt](/orbit/en/llms.txt) |\n| Full context | [llms-full.txt](/orbit/en/llms-full.txt) |\n| OpenAPI | [openapi.json](/orbit/en/openapi.json) |\n| Create a project | [create-project.md](/orbit/en/create-project.md) |\n\n\n## Claude, Codex, and Cursor\n\n1. **Claude:** give the index URL to a tool that can fetch the web; if the session has no web access, download the Markdown and OpenAPI files and attach them.\n2. **Codex:** ask it to read `llms.txt` first, fetch the relevant `.md` files and `openapi.json` through an allowed network tool, then reconcile generated code against the schema.\n3. **Cursor:** add the documentation URL to a Docs source if supported, or load the files into an allowed context region and reference them in chat.\n\nKeep tokens in server-side environment variables and ask the assistant to confirm before calling the API. Never paste secrets into a prompt.\n\n\n---\nSample documentation for the fictional Orbit API, published with Docfolk. See [errors and limits](errors).\n"
+        }
+      },
+      {
+        "id": "orbit-vi-ai-tools",
+        "slug": "orbit-vi-ai-tools",
+        "locale": "en",
+        "status": "published",
+        "data": {
+          "title": "Dùng với công cụ lập trình AI",
+          "description": "Cung cấp cho Claude, Codex hoặc Cursor tài liệu đúng phạm vi và hợp đồng API có thể kiểm chứng.",
+          "company": "orbit",
+          "language": "vi",
+          "doc_key": "ai-tools",
+          "category": "Resources",
+          "position": 8,
+          "body": "\n## Bộ tài liệu theo sản phẩm và ngôn ngữ\n\nCác tài nguyên dưới đây là route thật của cổng, sinh từ nội dung CMS đã công khai. `llms.txt` là chỉ mục ngắn; `llms-full.txt` là nội dung đầy đủ đã giải quyết fallback; `openapi.json` chứa schema inline và webhook OpenAPI 3.1; mỗi trang có bản `.md`. Chỉ dùng đúng sản phẩm/ngôn ngữ.\n\n\n| Tài nguyên | Đường dẫn |\n| --- | --- |\n| Index | [llms.txt](/orbit/vi/llms.txt) |\n| Full context | [llms-full.txt](/orbit/vi/llms-full.txt) |\n| OpenAPI | [openapi.json](/orbit/vi/openapi.json) |\n| Create a project | [create-project.md](/orbit/vi/create-project.md) |\n\n\n## Claude, Codex và Cursor\n\n1. **Claude:** đưa URL chỉ mục cho công cụ có khả năng tải web; nếu phiên làm việc không có quyền web, tải Markdown/OpenAPI rồi đính kèm file.\n2. **Codex:** yêu cầu đọc `llms.txt` trước, tải các `.md` liên quan và `openapi.json` bằng công cụ mạng được phép rồi đối chiếu code với schema.\n3. **Cursor:** thêm URL tài liệu vào nguồn Docs nếu được hỗ trợ, hoặc tải file vào vùng ngữ cảnh rồi tham chiếu trong chat.\n\nLuôn giữ token trong biến môi trường phía máy chủ và yêu cầu trợ lý hỏi lại trước khi gọi API. Không bao giờ dán bí mật vào prompt.\n\n\n---\nTài liệu mẫu cho API Orbit giả lập, xuất bản bằng Docfolk. Xem [lỗi và giới hạn](errors).\n"
+        }
+      }
+    ]
+  }
+}

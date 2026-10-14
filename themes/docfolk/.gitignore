@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+.emdash/
+.local/
+.env
+.env.*
+!.env.example
+*.db
+*.db-shm
+*.db-wal
+*.tgz
+verification/
+emdash-env.d.ts
