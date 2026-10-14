@@ -49,7 +49,8 @@ if (root) {
     }
   }
 
-  root.querySelectorAll<HTMLSelectElement>('[data-company-select], [data-locale-select]').forEach((select) => {
+  root.querySelectorAll('[data-company-select], [data-locale-select]').forEach((select) => {
+    if (!(select instanceof HTMLSelectElement)) return;
     select.addEventListener('change', () => {
       if (select.value.startsWith('/') && !select.value.startsWith('//')) window.location.assign(select.value);
     });
@@ -130,9 +131,11 @@ if (root) {
     button.textContent = copyLabel;
     button.setAttribute('aria-label', language ? `${copyLabel} · ${language}` : copyLabel);
     button.addEventListener('click', () => { void copy(button, async () => code.textContent || ''); });
-    toolbar.append(languageLabel, button);
-    pre.before(wrapper);
-    wrapper.append(toolbar, pre);
+    toolbar.appendChild(languageLabel);
+    toolbar.appendChild(button);
+    pre.parentNode?.insertBefore(wrapper, pre);
+    wrapper.appendChild(toolbar);
+    wrapper.appendChild(pre);
     pre.tabIndex = 0;
   });
   root.querySelectorAll<HTMLTableElement>('.prose table').forEach((table) => { table.tabIndex = 0; });
@@ -222,16 +225,18 @@ if (root) {
         badge.className = 'method-badge';
         badge.dataset.method = page.method.toUpperCase();
         badge.textContent = page.method.toUpperCase();
-        title.append(badge);
+        title.appendChild(badge);
       }
       const titleText = document.createElement('span');
       titleText.textContent = page.title;
-      title.append(titleText);
+      title.appendChild(titleText);
       const description = document.createElement('span');
       description.className = 'search-result-description';
       description.textContent = page.description;
-      link.append(context, title, description);
-      item.append(link);
+      link.appendChild(context);
+      link.appendChild(title);
+      link.appendChild(description);
+      item.appendChild(link);
       fragment.append(item);
     }
     resultList.replaceChildren(fragment);
