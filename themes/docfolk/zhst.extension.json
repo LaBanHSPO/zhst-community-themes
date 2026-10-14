@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "id": "docfolk",
+  "kind": "theme",
+  "name": "Docfolk",
+  "type": "documentation",
+  "description": "An open-source, customizable documentation platform for software teams and indie makers. Publish product guides and API documentation under your own brand and domain.",
+  "keywords": [
+    "documentation",
+    "product-docs",
+    "api-docs",
+    "knowledge-base",
+    "open-source",
+    "customizable",
+    "white-label",
+    "multilingual"
+  ],
+  "emdash": "1.2.0",
+  "entry": "themes/docfolk"
+}

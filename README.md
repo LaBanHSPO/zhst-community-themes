@@ -31,6 +31,12 @@ The [restaurant chain theme](themes/restaurant-chain/README.md) hosts the compan
 
 The [OTA server theme](themes/ota-server/README.md) hosts the companion OTA plugin on Cloudflare Workers, D1, and R2. It serves the frozen `/ota/{app}/{platform}/*` client contract — manifest, bundles with exact lengths and immutable caching, authenticated pushes — plus the private management API behind the plugin's admin workspace. `npm run verify:local` drives the built Worker through 35 end-to-end contract checks. Clone the plugin repository as a sibling and build it first; production resources, a private R2 configuration, and hosting promotion remain explicit operator steps.
 
+## Docfolk documentation
+
+[Docfolk](themes/docfolk/README.md) is an open-source, customizable documentation platform: a public, multi-company portal with CMS-managed content, Mermaid diagrams, OpenAPI 3.1, Markdown, and AI discovery resources. Its checked-in seed documents a sample Orbit API in English and Vietnamese, with English, Khmer, Vietnamese, Lao, and Burmese interfaces and explicit translation fallback. The standalone Node/SQLite host uses native EmDash editing; private content, Cloudflare verification, and hosting promotion are separate concerns.
+
+The recovered [Cambodia logistics customer guide](themes/docfolk/README.md#customer-logistics-content--cambodia) is retained separately in [seed/cambodia.json](themes/docfolk/seed/cambodia.json). Customer documentation must not be deleted or replaced during demo-content or branding changes.
+
 ## Source acceptance is not publication
 
 A community pull request accepts source for review, not production use. Fetching this repository as a hosting-platform submodule must not install, execute, or deploy a theme. Merging here does not register a gallery entry or approve publication.
