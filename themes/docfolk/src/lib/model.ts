@@ -15,12 +15,16 @@ export function resolveDocuments(rows: Doc[], company: Company, language: string
   }
   const result: Doc[] = [];
   for (const translations of byKey.values()) {
-    const canonical = translations.get(company.default_language) ?? translations.get("en");
-    const doc = translations.get(language) ?? canonical;
+    const defaultDoc = translations.get(company.default_language);
+    const english = translations.get("en");
+    const doc = translations.get(language) ?? defaultDoc ?? english;
     if (!doc) continue;
     // Translating prose must not silently remove its API contract from machine exports.
-    if (canonical && ((!doc.operation && canonical.operation) || (!doc.method && canonical.method) || (!doc.path && canonical.path))) {
-      result.push({ ...doc, operation: doc.operation ?? canonical.operation, method: doc.method ?? canonical.method, path: doc.path ?? canonical.path });
+    const operation = doc.operation ?? defaultDoc?.operation ?? english?.operation;
+    const method = doc.method ?? defaultDoc?.method ?? english?.method;
+    const path = doc.path ?? defaultDoc?.path ?? english?.path;
+    if (operation !== doc.operation || method !== doc.method || path !== doc.path) {
+      result.push({ ...doc, operation, method, path });
     } else {
       result.push(doc);
     }

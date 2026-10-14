@@ -171,3 +171,11 @@ Local verification targets Node and SQLite. The upstream bundled admin currently
 - The separate Cambodia customer seed was imported into an empty SQLite database successfully: three collections, 22 fields, and 34 content records (one company, five locales, 28 documents).
 
 Customer-recovery checks matched all 28 public Markdown pages against the original content snapshot, rendered eight diagram instances, and confirmed all 16 Orbit records were unchanged. Live provider requests, production passkey enrollment, and hosting deployment were not tested.
+
+### Browser review — 14 October 2026
+
+The local Cambodia portal was exercised at desktop and 390px mobile widths. Search result navigation, the empty-search state, Escape focus restoration, Vietnamese page switching, and the explicit Khmer-to-English content fallback were observed. The mobile search trigger lost its accessible name when its visible label was hidden; [DocsLayout.astro](src/layouts/DocsLayout.astro) now retains the localized label, verified as “Search” and “Tìm kiếm” in the browser accessibility tree.
+
+The review also repaired missing English endpoint-metadata fallback when a non-English default translation has only prose; its regression failed before the change and passed afterward. Namespace-root URLs now redirect to the overview so relative documentation links retain their company/language scope, verified by opening the authentication page from `/orbit/en`. The Orbit starter's Vietnamese API value is now `vi`, matching its OpenAPI contract; the separate Cambodia seed and installed CMS values were not changed. Ten behavior tests, Astro checks (zero errors/warnings/hints), and starter-seed validation passed after these fixes. No new production build was performed.
+
+This is local UI evidence, not a production release. The production directory did not list Docfolk during this review, and access to the owner's signed-in Chrome session was blocked by an unconnected browser relay. No customer content, database, production Worker, or domain was changed.

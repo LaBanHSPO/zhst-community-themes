@@ -25,6 +25,19 @@ test("a prose-only translation retains the company's published API contract", ()
   assert.equal(openApi(company, resolved).paths["/projects/{projectId}"]!.get!.operationId, "getProject");
 });
 
+test("a prose-only default language inherits English metadata while preserving translated endpoint overrides", () => {
+  const multilingual = { ...company, default_language: "vi" };
+  const english = doc({ method: "GET", path: "/projects", operation: { operationId: "listProjects", responses: { "200": { description: "Projects" } } } });
+  const vietnamese = doc({ language: "vi", body: "Vietnamese prose", path: "/localized-projects" });
+  const khmer = doc({ language: "km", body: "Khmer prose" });
+  const resolved = resolveDocuments([english, vietnamese, khmer], multilingual, "km");
+  assert.equal(resolved[0]!.body, "Khmer prose");
+  assert.equal(openApi(multilingual, resolved).paths["/localized-projects"]?.get?.operationId, "listProjects");
+  const fallback = resolveDocuments([english, vietnamese], multilingual, "lo");
+  assert.equal(fallback[0]!.language, "vi");
+  assert.equal(openApi(multilingual, fallback).paths["/localized-projects"]?.get?.operationId, "listProjects");
+});
+
 test("ambiguous published translations fail instead of picking an arbitrary contract", () => {
   assert.throws(() => resolveDocuments([doc(), doc({ body: "Conflicting contract" })], company, "en"), /Duplicate/);
 });

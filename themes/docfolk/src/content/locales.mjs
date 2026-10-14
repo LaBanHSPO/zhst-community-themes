@@ -9,5 +9,5 @@ const translations = {
 };
 export const locales = Object.entries(translations).map(([code, values]) => {
   if (values.length !== keys.length) throw new Error(`Incomplete interface translation: ${code}`);
-  return { code, title: { en: 'English', km: 'ខ្មែរ', vi: 'Tiếng Việt', lo: 'ລາວ', my: 'မြန်မာ' }[code], api_language: code === 'vi' ? 'vn' : code, strings: Object.fromEntries(keys.map((key, index) => [key, values[index]])) };
+  return { code, title: { en: 'English', km: 'ខ្មែរ', vi: 'Tiếng Việt', lo: 'ລາວ', my: 'မြန်မာ' }[code], api_language: code, strings: Object.fromEntries(keys.map((key, index) => [key, values[index]])) };
 });

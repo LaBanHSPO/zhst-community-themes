@@ -78,7 +78,7 @@ const prompt = `Help me integrate with ${company.title} (${company.api_version})
         <label class="context-select locale-select"><span>{t('language')}</span><select data-locale-select aria-label={t('language')}>
           {locales.map((item) => <option value={`/${encodeURIComponent(company.slug)}/${encodeURIComponent(item.code)}/${encodeURIComponent(doc.doc_key)}`} selected={item.code === locale.code} lang={item.code}>{item.title}</option>)}
         </select></label>
-        <button class="search-trigger" type="button" data-search-open aria-haspopup="dialog" aria-controls="docs-search" aria-keyshortcuts="Control+k Meta+k" disabled>
+        <button class="search-trigger" type="button" data-search-open aria-label={t('search')} aria-haspopup="dialog" aria-controls="docs-search" aria-keyshortcuts="Control+k Meta+k" disabled>
           <Icon name="search" /><span>{t('search')}</span><kbd data-search-shortcut>⌘ K</kbd>
         </button>
         <button class="icon-button theme-toggle" type="button" data-theme-toggle data-light-label={t('lightMode')} data-dark-label={t('darkMode')} aria-label={t('darkMode')} title={t('darkMode')} disabled>

@@ -7,6 +7,7 @@ import { renderDocument } from "../../../lib/render";
 const { company = "", lang = "", page = "overview" } = Astro.params;
 const portal = await loadPortal(company, lang);
 if (!portal) return Astro.rewrite("/404");
+if (Astro.params.page === undefined) return Astro.redirect(pageUrl(portal.company, portal.locale, "overview"), 302);
 const { docs, locale } = portal;
 const origin = (Astro.site?.origin ?? Astro.url.origin);
 Astro.response.headers.set("Cache-Control", "no-store");
