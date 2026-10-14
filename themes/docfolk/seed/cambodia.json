@@ -192,8 +192,8 @@
   "content": {
     "companies": [
       {
-        "id": "cambodia",
-        "slug": "cambodia",
+        "id": "mfexpress",
+        "slug": "mfexpress",
         "locale": "en",
         "status": "published",
         "data": {
@@ -503,12 +503,12 @@
         "data": {
           "title": "Sử dụng với công cụ lập trình AI",
           "description": "Cung cấp cho Claude, Codex hoặc Cursor tài liệu đúng phạm vi và hợp đồng API có thể kiểm chứng.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "vi",
           "doc_key": "ai-tools",
           "category": "Resources",
           "position": 14,
-          "body": "\n## Bộ tài liệu theo công ty và ngôn ngữ\n\nCác tài nguyên dưới đây là route thật của cổng, sinh từ nội dung CMS đã công khai. `llms.txt` là chỉ mục ngắn; `llms-full.txt` là nội dung đầy đủ đã giải quyết fallback; `openapi.json` là hợp đồng có schema inline và webhook OpenAPI 3.1; từng trang có bản `.md`. Chỉ dùng đúng công ty/ngôn ngữ, không trộn API các công ty. Khi chưa có bản dịch, ghi nhận ngôn ngữ thực của tài liệu.\n\n\n| Tài nguyên | Đường dẫn |\n| --- | --- |\n| Index | [llms.txt](/cambodia/vi/llms.txt) |\n| Full context | [llms-full.txt](/cambodia/vi/llms-full.txt) |\n| OpenAPI | [openapi.json](/cambodia/vi/openapi.json) |\n| Create-order Markdown | [create-order.md](/cambodia/vi/create-order.md) |\n\n\n## Claude, Codex và Cursor\n\n1. **Claude:** đưa URL chỉ mục cho công cụ có khả năng tải web; nếu phiên làm việc không có quyền web, tải Markdown/OpenAPI rồi đính kèm file. Không giả định trợ lý đã đọc chỉ vì bạn dán URL.\n2. **Codex:** yêu cầu đọc `llms.txt` trước, tải các `.md` liên quan và `openapi.json` bằng công cụ mạng được phép. Nếu chạy offline, cung cấp file đã tải. Yêu cầu đối chiếu code sinh ra với schema và ghi rõ thiếu thông tin.\n3. **Cursor:** thêm URL tài liệu vào nguồn Docs nếu phiên bản đang dùng hỗ trợ, hoặc tải file vào vùng ngữ cảnh được phép rồi tham chiếu file trong chat. Không giả định index của Cursor luôn mới; kiểm tra nội dung và endpoint mà trợ lý trích dẫn.\n4. Yêu cầu kế hoạch trước thay đổi nghiệp vụ; xác nhận bất định với TMS, không dùng AI để tự suy ra surchargeType, idempotency hay SLA.\n5. Chỉ chạy kiểm tra sandbox bằng credential riêng ngoài prompt; đối chiếu cod, phí, HTML nhãn, phản hồi hủy và webhook trùng.\n\n## Tải ngữ cảnh\n\n\n```bash\n# Set PORTAL_ORIGIN to the actual deployed portal origin, without a trailing slash.\ncurl --fail --show-error \"${PORTAL_ORIGIN}/cambodia/vi/llms.txt\"\ncurl --fail --show-error \"${PORTAL_ORIGIN}/cambodia/vi/openapi.json\" --output cambodia-openapi.json\ncurl --fail --show-error \"${PORTAL_ORIGIN}/cambodia/vi/create-order.md\" --output create-order.md\n```\n\n\n## Prompt mẫu\n\n\n```text\nHãy đọc /cambodia/vi/llms.txt, các trang Markdown liên quan và /cambodia/vi/openapi.json. Chỉ triển khai Cambodia TMS Partner API theo nguồn này. Trích dẫn đường dẫn trang và tên field cho mỗi quyết định quan trọng. Nêu rõ ngôn ngữ tài liệu thực và mọi điểm chưa rõ. Không tự tạo enum surchargeType hoặc đảm bảo idempotency của txId. Truyền moneyCollection riêng khi tạo đơn và kiểm tra cod. Nhãn là HTML; API trạng thái chỉ có ba field. Lập kế hoạch kiểm thử sandbox và xin đầu vào còn thiếu, nhưng không yêu cầu token hoặc dữ liệu khách hàng trong chat. Không gọi production.\n```\n\n\n## Giới hạn an toàn\n\nKhông đưa `API_TOKEN`, `PARTNER_CODE` thật, token webhook, địa chỉ cá nhân, số điện thoại, đơn khách hàng hoặc dữ liệu production vào prompt, file ngữ cảnh công khai hay log chia sẻ. Dùng ví dụ giả lập và biến môi trường. AI không phải nguồn xác nhận hợp đồng nhà cung cấp; bản OpenAPI là diễn giải có giới hạn từ tài liệu, không phải đặc tả chính thức được TMS xác nhận. Xem [các điểm chưa rõ](reference) trước khi chấp nhận code.\n"
+          "body": "\n## Bộ tài liệu theo công ty và ngôn ngữ\n\nCác tài nguyên dưới đây là route thật của cổng, sinh từ nội dung CMS đã công khai. `llms.txt` là chỉ mục ngắn; `llms-full.txt` là nội dung đầy đủ đã giải quyết fallback; `openapi.json` là hợp đồng có schema inline và webhook OpenAPI 3.1; từng trang có bản `.md`. Chỉ dùng đúng công ty/ngôn ngữ, không trộn API các công ty. Khi chưa có bản dịch, ghi nhận ngôn ngữ thực của tài liệu.\n\n\n| Tài nguyên | Đường dẫn |\n| --- | --- |\n| Index | [llms.txt](/mfexpress/vi/llms.txt) |\n| Full context | [llms-full.txt](/mfexpress/vi/llms-full.txt) |\n| OpenAPI | [openapi.json](/mfexpress/vi/openapi.json) |\n| Create-order Markdown | [create-order.md](/mfexpress/vi/create-order.md) |\n\n\n## Claude, Codex và Cursor\n\n1. **Claude:** đưa URL chỉ mục cho công cụ có khả năng tải web; nếu phiên làm việc không có quyền web, tải Markdown/OpenAPI rồi đính kèm file. Không giả định trợ lý đã đọc chỉ vì bạn dán URL.\n2. **Codex:** yêu cầu đọc `llms.txt` trước, tải các `.md` liên quan và `openapi.json` bằng công cụ mạng được phép. Nếu chạy offline, cung cấp file đã tải. Yêu cầu đối chiếu code sinh ra với schema và ghi rõ thiếu thông tin.\n3. **Cursor:** thêm URL tài liệu vào nguồn Docs nếu phiên bản đang dùng hỗ trợ, hoặc tải file vào vùng ngữ cảnh được phép rồi tham chiếu file trong chat. Không giả định index của Cursor luôn mới; kiểm tra nội dung và endpoint mà trợ lý trích dẫn.\n4. Yêu cầu kế hoạch trước thay đổi nghiệp vụ; xác nhận bất định với TMS, không dùng AI để tự suy ra surchargeType, idempotency hay SLA.\n5. Chỉ chạy kiểm tra sandbox bằng credential riêng ngoài prompt; đối chiếu cod, phí, HTML nhãn, phản hồi hủy và webhook trùng.\n\n## Tải ngữ cảnh\n\n\n```bash\n# Set PORTAL_ORIGIN to the actual deployed portal origin, without a trailing slash.\ncurl --fail --show-error \"${PORTAL_ORIGIN}/mfexpress/vi/llms.txt\"\ncurl --fail --show-error \"${PORTAL_ORIGIN}/mfexpress/vi/openapi.json\" --output cambodia-openapi.json\ncurl --fail --show-error \"${PORTAL_ORIGIN}/mfexpress/vi/create-order.md\" --output create-order.md\n```\n\n\n## Prompt mẫu\n\n\n```text\nHãy đọc /mfexpress/vi/llms.txt, các trang Markdown liên quan và /mfexpress/vi/openapi.json. Chỉ triển khai Cambodia TMS Partner API theo nguồn này. Trích dẫn đường dẫn trang và tên field cho mỗi quyết định quan trọng. Nêu rõ ngôn ngữ tài liệu thực và mọi điểm chưa rõ. Không tự tạo enum surchargeType hoặc đảm bảo idempotency của txId. Truyền moneyCollection riêng khi tạo đơn và kiểm tra cod. Nhãn là HTML; API trạng thái chỉ có ba field. Lập kế hoạch kiểm thử sandbox và xin đầu vào còn thiếu, nhưng không yêu cầu token hoặc dữ liệu khách hàng trong chat. Không gọi production.\n```\n\n\n## Giới hạn an toàn\n\nKhông đưa `API_TOKEN`, `PARTNER_CODE` thật, token webhook, địa chỉ cá nhân, số điện thoại, đơn khách hàng hoặc dữ liệu production vào prompt, file ngữ cảnh công khai hay log chia sẻ. Dùng ví dụ giả lập và biến môi trường. AI không phải nguồn xác nhận hợp đồng nhà cung cấp; bản OpenAPI là diễn giải có giới hạn từ tài liệu, không phải đặc tả chính thức được TMS xác nhận. Xem [các điểm chưa rõ](reference) trước khi chấp nhận code.\n"
         }
       },
       {
@@ -519,12 +519,12 @@
         "data": {
           "title": "Use with AI coding tools",
           "description": "Give Claude, Codex, or Cursor scoped documentation and verifiable API contracts.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "en",
           "doc_key": "ai-tools",
           "category": "Resources",
           "position": 14,
-          "body": "\n## Company- and language-scoped context\n\nThese are real portal routes generated from published CMS content. `llms.txt` is a short index; `llms-full.txt` contains complete resolved documentation; `openapi.json` contains inline operation schemas and an OpenAPI 3.1 webhook; every page has a `.md` representation. Stay within the selected company/language rather than mixing providers. Record the actual document language when a translation falls back.\n\n\n| Resource | Path |\n| --- | --- |\n| Index | [llms.txt](/cambodia/en/llms.txt) |\n| Full context | [llms-full.txt](/cambodia/en/llms-full.txt) |\n| OpenAPI | [openapi.json](/cambodia/en/openapi.json) |\n| Create-order Markdown | [create-order.md](/cambodia/en/create-order.md) |\n\n\n## Claude, Codex, and Cursor\n\n1. **Claude:** give a web-capable session the index URL; if web access is unavailable, download and attach the Markdown/OpenAPI files. Pasting a URL does not prove the assistant read it.\n2. **Codex:** ask it to read `llms.txt` first, then fetch relevant `.md` pages and `openapi.json` with an allowed network tool. For offline work, provide downloaded files. Require generated code to be checked against schemas and missing facts to be reported.\n3. **Cursor:** add the documentation URL as a Docs source if supported by your installed version, or download files into an approved context location and reference them in chat. Do not assume Cursor’s index is fresh; inspect the cited content and endpoints.\n4. Ask for a plan before changing business behavior; resolve uncertainties with TMS, never let an assistant invent surchargeType, idempotency, or an SLA.\n5. Exercise sandbox only with credentials kept outside prompts; compare COD, fees, label HTML, cancellation results, and duplicate webhook behavior.\n\n## Download context\n\n\n```bash\n# Set PORTAL_ORIGIN to the actual deployed portal origin, without a trailing slash.\ncurl --fail --show-error \"${PORTAL_ORIGIN}/cambodia/en/llms.txt\"\ncurl --fail --show-error \"${PORTAL_ORIGIN}/cambodia/en/openapi.json\" --output cambodia-openapi.json\ncurl --fail --show-error \"${PORTAL_ORIGIN}/cambodia/en/create-order.md\" --output create-order.md\n```\n\n\n## Suggested prompt\n\n\n```text\nRead /cambodia/en/llms.txt, the relevant Markdown pages, and /cambodia/en/openapi.json. Implement only the Cambodia TMS Partner API described there. Cite page paths and field names for important decisions. Disclose actual document language and all uncertainties. Do not invent surchargeType enums or txId server idempotency. Send moneyCollection separately during creation and check cod. Labels are HTML; status lookup has only three fields. Propose sandbox checks and identify missing inputs, but do not request tokens or customer data in chat. Do not call production.\n```\n\n\n## Safety boundaries\n\nDo not include real `API_TOKEN`, `PARTNER_CODE`, webhook tokens, personal addresses, phones, customer orders, or production data in prompts, public context files, or shared logs. Use synthetic examples and environment variables. AI is not authority for the provider contract; this OpenAPI is a bounded interpretation of the document, not a TMS-certified specification. Review [source details](reference) before accepting generated code.\n"
+          "body": "\n## Company- and language-scoped context\n\nThese are real portal routes generated from published CMS content. `llms.txt` is a short index; `llms-full.txt` contains complete resolved documentation; `openapi.json` contains inline operation schemas and an OpenAPI 3.1 webhook; every page has a `.md` representation. Stay within the selected company/language rather than mixing providers. Record the actual document language when a translation falls back.\n\n\n| Resource | Path |\n| --- | --- |\n| Index | [llms.txt](/mfexpress/en/llms.txt) |\n| Full context | [llms-full.txt](/mfexpress/en/llms-full.txt) |\n| OpenAPI | [openapi.json](/mfexpress/en/openapi.json) |\n| Create-order Markdown | [create-order.md](/mfexpress/en/create-order.md) |\n\n\n## Claude, Codex, and Cursor\n\n1. **Claude:** give a web-capable session the index URL; if web access is unavailable, download and attach the Markdown/OpenAPI files. Pasting a URL does not prove the assistant read it.\n2. **Codex:** ask it to read `llms.txt` first, then fetch relevant `.md` pages and `openapi.json` with an allowed network tool. For offline work, provide downloaded files. Require generated code to be checked against schemas and missing facts to be reported.\n3. **Cursor:** add the documentation URL as a Docs source if supported by your installed version, or download files into an approved context location and reference them in chat. Do not assume Cursor’s index is fresh; inspect the cited content and endpoints.\n4. Ask for a plan before changing business behavior; resolve uncertainties with TMS, never let an assistant invent surchargeType, idempotency, or an SLA.\n5. Exercise sandbox only with credentials kept outside prompts; compare COD, fees, label HTML, cancellation results, and duplicate webhook behavior.\n\n## Download context\n\n\n```bash\n# Set PORTAL_ORIGIN to the actual deployed portal origin, without a trailing slash.\ncurl --fail --show-error \"${PORTAL_ORIGIN}/mfexpress/en/llms.txt\"\ncurl --fail --show-error \"${PORTAL_ORIGIN}/mfexpress/en/openapi.json\" --output cambodia-openapi.json\ncurl --fail --show-error \"${PORTAL_ORIGIN}/mfexpress/en/create-order.md\" --output create-order.md\n```\n\n\n## Suggested prompt\n\n\n```text\nRead /mfexpress/en/llms.txt, the relevant Markdown pages, and /mfexpress/en/openapi.json. Implement only the Cambodia TMS Partner API described there. Cite page paths and field names for important decisions. Disclose actual document language and all uncertainties. Do not invent surchargeType enums or txId server idempotency. Send moneyCollection separately during creation and check cod. Labels are HTML; status lookup has only three fields. Propose sandbox checks and identify missing inputs, but do not request tokens or customer data in chat. Do not call production.\n```\n\n\n## Safety boundaries\n\nDo not include real `API_TOKEN`, `PARTNER_CODE`, webhook tokens, personal addresses, phones, customer orders, or production data in prompts, public context files, or shared logs. Use synthetic examples and environment variables. AI is not authority for the provider contract; this OpenAPI is a bounded interpretation of the document, not a TMS-certified specification. Review [source details](reference) before accepting generated code.\n"
         }
       },
       {
@@ -535,7 +535,7 @@
         "data": {
           "title": "Phụ lục và ghi chú nguồn",
           "description": "Mã dịch vụ, lỗi HTTP và URL môi trường.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "vi",
           "doc_key": "reference",
           "category": "Resources",
@@ -551,7 +551,7 @@
         "data": {
           "title": "Reference and source notes",
           "description": "Service codes, HTTP errors, and environment URLs.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "en",
           "doc_key": "reference",
           "category": "Resources",
@@ -567,7 +567,7 @@
         "data": {
           "title": "Kiểm tra trạng thái đơn",
           "description": "Chỉ đọc mã đơn, trạng thái dạng số và thời điểm cập nhật gần nhất.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "vi",
           "doc_key": "order-status",
           "category": "API reference",
@@ -714,7 +714,7 @@
         "data": {
           "title": "Look up order status",
           "description": "Read only the order ID, numeric status, and most recent update time.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "en",
           "doc_key": "order-status",
           "category": "API reference",
@@ -861,7 +861,7 @@
         "data": {
           "title": "Nhận webhook trạng thái",
           "description": "Xác thực cập nhật hành trình, xác nhận tiếp nhận và xử lý trạng thái trùng.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "vi",
           "doc_key": "webhook-status",
           "category": "Guides",
@@ -986,7 +986,7 @@
         "data": {
           "title": "Receive status webhooks",
           "description": "Authenticate incoming journey updates, acknowledge receipt, and handle duplicate states.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "en",
           "doc_key": "webhook-status",
           "category": "Guides",
@@ -1111,7 +1111,7 @@
         "data": {
           "title": "Hủy đơn hàng",
           "description": "Hủy đơn đủ điều kiện trong nhóm đang lấy hàng và đối chiếu mã trả về.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "vi",
           "doc_key": "cancel-order",
           "category": "API reference",
@@ -1262,7 +1262,7 @@
         "data": {
           "title": "Cancel an order",
           "description": "Cancel an eligible pickup-stage order and verify the returned order code.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "en",
           "doc_key": "cancel-order",
           "category": "API reference",
@@ -1413,7 +1413,7 @@
         "data": {
           "title": "In đơn: lấy trang nhãn HTML",
           "description": "Tải trang nhãn HTML trước khi đường dẫn bảo mật hết hạn.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "vi",
           "doc_key": "print-label",
           "category": "API reference",
@@ -1540,7 +1540,7 @@
         "data": {
           "title": "Retrieve label HTML",
           "description": "Download the HTML print page before the secure path expires.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "en",
           "doc_key": "print-label",
           "category": "API reference",
@@ -1667,7 +1667,7 @@
         "data": {
           "title": "Tạo template in đơn",
           "description": "Tạo đường dẫn bảo mật tạm thời để in một hoặc nhiều đơn.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "vi",
           "doc_key": "create-label",
           "category": "API reference",
@@ -1860,7 +1860,7 @@
         "data": {
           "title": "Create a label template",
           "description": "Request a temporary secure path for printing one or more orders.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "en",
           "doc_key": "create-label",
           "category": "API reference",
@@ -2053,7 +2053,7 @@
         "data": {
           "title": "Tạo đơn hàng",
           "description": "Tạo vận đơn, truyền lại COD để lưu vào đơn và giữ phản hồi đầy đủ.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "vi",
           "doc_key": "create-order",
           "category": "API reference",
@@ -3303,7 +3303,7 @@
         "data": {
           "title": "Create an order",
           "description": "Create a shipment, explicitly persist COD, and retain the complete response.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "en",
           "doc_key": "create-order",
           "category": "API reference",
@@ -4553,7 +4553,7 @@
         "data": {
           "title": "Tính giá cước",
           "description": "Tính chi tiết VAT và chiết khấu cho lộ trình và dịch vụ đã chọn.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "vi",
           "doc_key": "calculate-pricing",
           "category": "API reference",
@@ -5303,7 +5303,7 @@
         "data": {
           "title": "Calculate shipping prices",
           "description": "Calculate the VAT and discount breakdown for a known route and service.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "en",
           "doc_key": "calculate-pricing",
           "category": "API reference",
@@ -6053,7 +6053,7 @@
         "data": {
           "title": "Lấy dịch vụ vận chuyển",
           "description": "Lấy dịch vụ chính, phụ và đặc biệt trước khi tính giá.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "vi",
           "doc_key": "available-services",
           "category": "API reference",
@@ -6789,7 +6789,7 @@
         "data": {
           "title": "Discover available services",
           "description": "Find main, extra, and special service choices before calculating a quote.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "en",
           "doc_key": "available-services",
           "category": "API reference",
@@ -7525,7 +7525,7 @@
         "data": {
           "title": "Tra cứu bưu cục",
           "description": "Tìm bưu cục, phân trang và tùy chọn sắp xếp theo khoảng cách.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "vi",
           "doc_key": "post-offices",
           "category": "API reference",
@@ -7883,7 +7883,7 @@
         "data": {
           "title": "Find post offices",
           "description": "Search branches, paginate results, and optionally sort by distance.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "en",
           "doc_key": "post-offices",
           "category": "API reference",
@@ -8241,7 +8241,7 @@
         "data": {
           "title": "Lấy huyện và xã",
           "description": "Lấy địa chỉ cấp 2 và cấp 3 theo mã đơn vị cha.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "vi",
           "doc_key": "administrative-divisions",
           "category": "API reference",
@@ -8484,7 +8484,7 @@
         "data": {
           "title": "List districts and villages",
           "description": "Resolve level-2 and level-3 locations from their parent codes.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "en",
           "doc_key": "administrative-divisions",
           "category": "API reference",
@@ -8727,7 +8727,7 @@
         "data": {
           "title": "Lấy danh sách tỉnh / thành phố",
           "description": "Lấy toàn bộ đơn vị hành chính cấp 1 của Cambodia hoặc Lào.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "vi",
           "doc_key": "provinces",
           "category": "API reference",
@@ -8940,7 +8940,7 @@
         "data": {
           "title": "List provinces",
           "description": "Retrieve all level-1 administrative divisions for Cambodia or Laos.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "en",
           "doc_key": "provinces",
           "category": "API reference",
@@ -9153,7 +9153,7 @@
         "data": {
           "title": "Tổng quan tích hợp",
           "description": "Xác thực, chọn môi trường và thực hiện quy trình vận chuyển Metfone Express đầy đủ.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "vi",
           "doc_key": "overview",
           "category": "Getting started",
@@ -9169,7 +9169,7 @@
         "data": {
           "title": "Integration overview",
           "description": "Authenticate, choose an environment, and follow the complete Metfone Express shipping workflow.",
-          "company": "cambodia",
+          "company": "mfexpress",
           "language": "en",
           "doc_key": "overview",
           "category": "Getting started",
