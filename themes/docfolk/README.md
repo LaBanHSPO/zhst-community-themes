@@ -4,6 +4,10 @@
 
 Open-source documentation for software teams and indie makers.
 
+Public documentation and the landing page include a small “Powered by ZeroHost CMS” footer linking to [Docfolk one-click deployment](https://zerohostcms.com/themes/docfolk), with open-source and free deployment credit. The shared [theme credit component](src/components/theme-credit.astro) owns this link; it uses no tracking or client-side script.
+
+ZeroHost CMS provides free Docfolk hosting on a `zhst.app` address, with up to 10 retained Docfolk installations per workspace and 1,000 page views per site per UTC month. No hosting subscription is required. Custom domains and AI remain paid features. Save the installation draft, complete the normal owner/email and required setup approval checks, publish, then set up the native CMS and publish your documentation. Self-hosting remains available under the MIT license.
+
 Build a professional documentation site for your product. Customize its appearance, publish under your own domain, and help customers understand your software and integrate with your APIs.
 
 Docfolk is an open-source, customizable documentation platform for software teams and indie makers. Publish product guides and API documentation under your own brand and domain. It is a standalone EmDash theme for ZeroHostCMS: the native CMS already supplies content editing, drafts, revisions, and publication, so a separate plugin would duplicate those capabilities.

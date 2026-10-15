@@ -1,5 +1,6 @@
 ---
 import { loadDirectory } from "../lib/data";
+import ThemeCredit from "../components/theme-credit.astro";
 const { companies, locales } = await loadDirectory();
 const company = companies.find((item) => item.slug === "orbit") ?? companies.find((item) => locales.some((locale) => locale.code === item.default_language)) ?? companies[0];
 const docsUrl = company ? `/${company.slug}/${company.default_language}/overview` : "/_emdash/admin/";
@@ -62,9 +63,11 @@ const sourceUrl = "https://github.com/ZeroHostCMS/zhst-community-themes";
         <p class="fine-print">Docfolk AI will be offered separately from the open-source documentation platform.</p>
       </section>
     </main>
+    <footer class="landing-footer"><ThemeCredit /></footer>
     <style>
       .docfolk-landing{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1d1a15;background:#faf8f3;margin:0;line-height:1.7}
       .docfolk-landing main{max-width:60rem;margin:0 auto;padding:0 1.5rem 6rem}
+      .landing-footer{max-width:60rem;margin:0 auto;padding:1.5rem;color:#5e574c;border-top:1px solid #e7e0d4}
       .landing-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:60rem;margin:0 auto;padding:1.5rem}
       .landing-brand{display:flex;flex-direction:column}
       .landing-brand strong{font-size:1.15rem;letter-spacing:-.01em}
@@ -91,8 +94,8 @@ const sourceUrl = "https://github.com/ZeroHostCMS/zhst-community-themes";
       @media (prefers-color-scheme:dark){
         .docfolk-landing{color:#ece7dd;background:#17150f}
         .landing-brand span,.fine-print{color:#a49b8a}
-        .hero,.features,.get-started,.addon{border-color:#2f2b22}
-        .tagline,.hero-copy,.section-lead,.feature-grid p,.addon p{color:#b9b1a2}
+        .hero,.features,.get-started,.addon,.landing-footer{border-color:#2f2b22}
+        .tagline,.hero-copy,.section-lead,.feature-grid p,.addon p,.landing-footer{color:#b9b1a2}
         .button-primary{background:#ece7dd;color:#17150f}
         .button-secondary{background:#211e16;color:#ece7dd;border-color:#3a352a}
         .landing-header-link{color:#d9a441}

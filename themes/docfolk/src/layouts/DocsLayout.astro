@@ -1,6 +1,7 @@
 ---
 import type { PortalView } from '../lib/types';
 import Icon from '../components/Icon.astro';
+import ThemeCredit from '../components/theme-credit.astro';
 import '../styles/docs.css';
 
 interface Props { view: PortalView }
@@ -144,7 +145,7 @@ const prompt = `Help me integrate with ${company.title} (${company.api_version})
           {previous && <a href={pageUrl(previous.doc_key)} class="previous-page"><span><Icon name="arrow" size={16} />{t('previous')}</span><strong>{previous.title}</strong></a>}
           {next && <a href={pageUrl(next.doc_key)} class="next-page"><span>{t('next')}<Icon name="arrow" size={16} /></span><strong>{next.title}</strong></a>}
         </nav>}
-        <footer class="page-footer"><span>{company.title} · {t('documentation')}</span><a href="/llms.txt">{t('allCompanies')}<Icon name="arrow" size={14} /></a></footer>
+        <footer class="page-footer"><span>{company.title} · {t('documentation')}</span><a href="/llms.txt">{t('allCompanies')}<Icon name="arrow" size={14} /></a><ThemeCredit /></footer>
       </main>
       <aside class="right-rail">
         <div class="right-rail-inner">
