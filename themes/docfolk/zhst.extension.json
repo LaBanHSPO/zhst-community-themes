@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "id": "docfolk",
+  "kind": "theme",
+  "name": "Docfolk",
+  "type": "company",
+  "capabilities": {
+    "pwa": false,
+    "publicItems": false,
+    "inquiry": false,
+    "booking": false,
+    "checkout": false,
+    "map": false,
+    "whatsapp": false
+  },
+  "emdash": "1.2.0",
+  "entry": "themes/docfolk"
+}

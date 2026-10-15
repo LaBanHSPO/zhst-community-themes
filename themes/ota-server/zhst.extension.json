@@ -3,7 +3,7 @@
 	"id": "ota-server",
 	"kind": "theme",
 	"name": "OTA Server",
-	"type": "distribution",
+	"type": "company",
 	"emdash": "1.2.0",
 	"entry": "themes/ota-server",
 	"capabilities": {

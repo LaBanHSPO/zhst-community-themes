@@ -4,7 +4,7 @@ export const prerender = false;
 const endpoints = [
 	{ method: "GET", path: "/ota/{app}/{platform}/manifest.json", note: "Current build per channel and binary. No authentication." },
 	{ method: "GET", path: "/ota/{app}/{platform}/{file}", note: "Bundle bytes with Content-Length and immutable caching." },
-	{ method: "POST", path: "/ota/{app}/{platform}/releases", note: "Publish a build. Bearer token, multipart/form-data." },
+	{ method: "POST", path: "/ota/{app}/{platform}/releases", note: "Publish a build with signature/mandatory metadata. Bearer token plus X-OTA-Upload-Key when enabled; multipart/form-data." },
 	{ method: "DELETE", path: "/ota/{app}/{platform}/releases?channel=&binary=", note: "Remove one channel and binary. Bearer token." },
 	{ method: "GET", path: "/ota/{app}/{platform}/releases", note: "Same body as the manifest. Bearer token." },
 ];

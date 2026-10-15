@@ -14,6 +14,8 @@
     "start": "node scripts/start.mjs",
     "typecheck": "astro check",
     "accounting:migrate": "node scripts/migrate-accounting.mjs",
+    "accounting:test": "tsx --test tests/accounting-transport.test.ts tests/accounting-rpc.test.ts tests/accounting-cloudflare-integration.test.mjs tests/accounting-durable.test.mjs",
+    "accounting:worker-smoke": "node scripts/accounting-worker-smoke.mjs",
     "secrets:generate": "emdash secrets generate --write .env",
     "cloudflare:configure": "node scripts/configure-cloudflare.mjs",
     "cloudflare:build": "astro build --config astro.cloudflare.config.mjs",
@@ -44,6 +46,7 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "typescript": "5.9.3",
+    "tsx": "4.23.15",
     "wrangler": "4.149.0"
   }
 }

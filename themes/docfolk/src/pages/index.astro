@@ -1,0 +1,105 @@
+---
+import { loadDirectory } from "../lib/data";
+import ThemeCredit from "../components/theme-credit.astro";
+const { companies, locales } = await loadDirectory();
+const company = companies.find((item) => item.slug === "orbit") ?? companies.find((item) => locales.some((locale) => locale.code === item.default_language)) ?? companies[0];
+const docsUrl = company ? `/${company.slug}/${company.default_language}/overview` : "/_emdash/admin/";
+const docsLabel = company ? "Get started free" : "Open CMS administration";
+const sourceUrl = "https://github.com/ZeroHostCMS/zhst-community-themes";
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="An open-source, customizable documentation platform for software teams and indie makers. Publish product guides and API documentation under your own brand and domain." />
+    <title>Docfolk: open-source documentation platform</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="docfolk-landing">
+    <header class="landing-header">
+      <span class="landing-brand"><strong>Docfolk</strong><span>documentation platform</span></span>
+      <a class="landing-header-link" href={docsUrl}>{docsLabel}</a>
+    </header>
+    <main>
+      <section class="hero">
+        <p class="eyebrow">Open source</p>
+        <h1>Docfolk</h1>
+        <p class="tagline">Your docs. Your brand.</p>
+        <p class="lead">Open-source documentation for software teams and indie makers.</p>
+        <p class="hero-copy">Build a professional documentation site for your product. Customize its appearance, publish under your own domain, and help customers understand your software and integrate with your APIs.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href={docsUrl}>{docsLabel}</a>
+          <a class="button button-secondary" href={sourceUrl}>View source code</a>
+        </div>
+      </section>
+
+      <section class="features">
+        <h2>Documentation that fits your product</h2>
+        <p class="section-lead">Bring product guides, API references, and visual workflows together in one place. Give your customers a clear path from getting started to completing an integration.</p>
+        <ul class="feature-grid">
+          <li><h3>Make it yours.</h3><p>Customize the logo, colors, navigation, and appearance to match your product.</p></li>
+          <li><h3>Publish on your domain.</h3><p>Give customers a documentation site that feels like part of your business.</p></li>
+          <li><h3>Explain with diagrams.</h3><p>Make workflows and integrations easier to understand with Mermaid diagrams.</p></li>
+          <li><h3>Reach more customers.</h3><p>Provide documentation in English, Khmer, Vietnamese, Lao, and Burmese, with room for more languages.</p></li>
+          <li><h3>Keep content current.</h3><p>Manage and update documentation from the ZeroHostCMS admin.</p></li>
+          <li><h3>Support AI-assisted integration.</h3><p>Publish clear, structured documentation for developers working with Claude, Codex, and Cursor.</p></li>
+        </ul>
+      </section>
+
+      <section class="get-started">
+        <h2>Start free on ZeroHostCMS</h2>
+        <p>Docfolk is open source. Deploy on ZeroHostCMS for free.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href={docsUrl}>{docsLabel}</a>
+          <a class="button button-secondary" href={sourceUrl}>View source code</a>
+        </div>
+      </section>
+
+      <section class="addon">
+        <h2>Docfolk AI: planned add-on</h2>
+        <p>Extend your documentation with an optional paid AI assistant. Help customers find answers and understand integrations using your product documentation.</p>
+        <p class="fine-print">Docfolk AI will be offered separately from the open-source documentation platform.</p>
+      </section>
+    </main>
+    <footer class="landing-footer"><ThemeCredit /></footer>
+    <style>
+      .docfolk-landing{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1d1a15;background:#faf8f3;margin:0;line-height:1.7}
+      .docfolk-landing main{max-width:60rem;margin:0 auto;padding:0 1.5rem 6rem}
+      .landing-footer{max-width:60rem;margin:0 auto;padding:1.5rem;color:#5e574c;border-top:1px solid #e7e0d4}
+      .landing-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:60rem;margin:0 auto;padding:1.5rem}
+      .landing-brand{display:flex;flex-direction:column}
+      .landing-brand strong{font-size:1.15rem;letter-spacing:-.01em}
+      .landing-brand span{font-size:.78rem;color:#7a7264;text-transform:uppercase;letter-spacing:.08em}
+      .landing-header-link{color:#744a0f;text-decoration:none;font-weight:600}
+      .hero{padding:4rem 0 3rem;border-bottom:1px solid #e7e0d4}
+      .eyebrow{margin:0;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#8a5a12}
+      .hero h1{font-size:clamp(2.75rem,7vw,4.5rem);margin:.4rem 0 0;letter-spacing:-.03em;line-height:1}
+      .tagline{font-size:1.35rem;font-weight:600;color:#5e574c;margin:.6rem 0 1.4rem}
+      .lead{font-size:1.2rem;font-weight:600;margin:0 0 .6rem}
+      .hero-copy{max-width:44rem;color:#5e574c;margin:0 0 2rem}
+      .hero-actions{display:flex;flex-wrap:wrap;gap:.75rem}
+      .button{display:inline-flex;align-items:center;padding:.7rem 1.3rem;border-radius:.6rem;font-weight:600;text-decoration:none;border:1px solid transparent}
+      .button-primary{background:#1d1a15;color:#faf8f3}
+      .button-secondary{background:#fff;color:#1d1a15;border-color:#d9d0c0}
+      .features,.get-started,.addon{padding:3.5rem 0;border-bottom:1px solid #e7e0d4}
+      .features h2,.get-started h2,.addon h2{font-size:1.8rem;letter-spacing:-.02em;margin:0 0 .6rem}
+      .section-lead{max-width:46rem;color:#5e574c;margin:0 0 2rem}
+      .feature-grid{list-style:none;padding:0;margin:0;display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+      .feature-grid h3{font-size:1.05rem;margin:0 0 .3rem}
+      .feature-grid p{margin:0;color:#5e574c}
+      .addon p{max-width:46rem;color:#5e574c;margin:0 0 .8rem}
+      .fine-print{font-size:.92rem;color:#7a7264}
+      @media (prefers-color-scheme:dark){
+        .docfolk-landing{color:#ece7dd;background:#17150f}
+        .landing-brand span,.fine-print{color:#a49b8a}
+        .hero,.features,.get-started,.addon,.landing-footer{border-color:#2f2b22}
+        .tagline,.hero-copy,.section-lead,.feature-grid p,.addon p,.landing-footer{color:#b9b1a2}
+        .button-primary{background:#ece7dd;color:#17150f}
+        .button-secondary{background:#211e16;color:#ece7dd;border-color:#3a352a}
+        .landing-header-link{color:#d9a441}
+      }
+    </style>
+  </body>
+</html>
