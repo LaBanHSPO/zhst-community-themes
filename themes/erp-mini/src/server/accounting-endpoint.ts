@@ -6,7 +6,7 @@ import { createAccountingEndpoint } from './accounting-transport.js';
 export const prerender = false;
 export const ALL = createAccountingEndpoint({
   origin: captured.origin,
-  unavailableMessage: 'Accounting is unavailable. Verify the captured Node settings and run the explicit accounting schema migration before retrying.',
+  unavailableMessage: 'Accounting is unavailable. Verify the captured Node settings and restart the paired Node host to initialize or verify its accounting schema before retrying.',
   source: accountingSource,
   execute: async (action, input, actorId, source) =>
     executeAccountingAction(new AccountingService(accountingStore(), actorId), action, input, source),

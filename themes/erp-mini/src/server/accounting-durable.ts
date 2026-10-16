@@ -25,7 +25,7 @@ export class ErpAccounting extends DurableObject<unknown> {
       const currency = this.installationCurrency();
       if (this.env !== null && typeof this.env === 'object' &&
           'ERP_ACCOUNTING_MAINTENANCE' in this.env && this.env.ERP_ACCOUNTING_MAINTENANCE === 'true' &&
-          !['info', 'list', 'get', 'report'].includes(action)) {
+          !['info', 'list', 'get', 'report', 'account-templates', 'account-template', 'preview-account-import'].includes(action)) {
         throw new ErpError('ACCOUNTING_MAINTENANCE', 'Accounting writes are paused for operator maintenance. Authenticated reads remain available for recovery verification.');
       }
       if (typeof actorId !== 'string' || !actorId.trim() || actorId.length > 2048) {

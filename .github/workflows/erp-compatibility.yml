@@ -40,7 +40,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: ZeroHostCMS/zhst-community-plugins
-          ref: 3b81a280b07a6391de46ad33158a540ba915c7fe
+          ref: 44a32528253d597c76b280cf28359ad126ae30b6
           path: zhst-community-plugins
           persist-credentials: false
       - name: Record exact source pair

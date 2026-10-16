@@ -2,6 +2,7 @@ import { mkdirSync, realpathSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateAccountingSettings } from "./accounting-settings.mjs";
+import { migrateAccounting } from "./migrate-accounting.mjs";
 
 const virtualId = "virtual:erp-mini/accounting-settings";
 const resolvedId = `\0${virtualId}`;
@@ -11,6 +12,7 @@ const resources = fileURLToPath(new URL("../src/server/accounting-resources.ts",
 export function accountingIntegration(input) {
   const settings = validateAccountingSettings(input);
   let outputDirectory;
+  let developmentManifest;
   const writeManifest = (filename) => {
     mkdirSync(dirname(filename), { recursive: true });
     writeFileSync(filename, `${JSON.stringify(settings, null, 2)}\n`, { mode: 0o600 });
@@ -25,7 +27,10 @@ export function accountingIntegration(input) {
         if (settings.currency === "VND") {
           injectRoute({ pattern: "/api/erp-mini/accounting/[action]", entrypoint: endpoint, prerender: false });
         }
-        if (command === "dev") writeManifest(join(fileURLToPath(config.root), ".astro/accounting-settings.json"));
+        if (command === "dev") {
+          developmentManifest = join(fileURLToPath(config.root), ".astro/accounting-settings.json");
+          writeManifest(developmentManifest);
+        }
         updateConfig({ vite: { plugins: [{
           name: "erp-mini-accounting-settings",
           resolveId(id) { if (id === virtualId) return resolvedId; },
@@ -52,6 +57,11 @@ export function accountingIntegration(input) {
         outputDirectory = fileURLToPath(config.outDir);
         if (outputDirectory.replace(/[\\/]$/, "") !== join(fileURLToPath(config.root), "dist")) {
           throw new Error("The Node accounting release requires the dist output directory.");
+        }
+      },
+      "astro:server:setup": async () => {
+        if (developmentManifest && settings.currency === "VND") {
+          await migrateAccounting(developmentManifest, { captured: settings });
         }
       },
       "astro:build:done": () => {
