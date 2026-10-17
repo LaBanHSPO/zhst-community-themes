@@ -1,5 +1,6 @@
 ---
 export const prerender = false;
+const features = ["Chi nhánh", "Bàn", "Thực đơn", "Nhân viên", "QR / NFC"];
 ---
 <!doctype html>
 <html lang="vi">
@@ -10,19 +11,161 @@ export const prerender = false;
 		<title>Nhà hàng · Restaurant operations</title>
 	</head>
 	<body>
-		<main>
-			<p class="eyebrow">RESTAURANT COLLECTION</p>
-			<h1>Một trải nghiệm<br />được chăm chút.</h1>
-			<p>Quét mã QR hoặc chạm thẻ NFC tại bàn để xem thực đơn và gọi món.</p>
-			<a href="/_emdash/admin/plugins/restaurant-chain/workspace">Dành cho nhân viên →</a>
-		</main>
+		<div class="shell">
+			<header class="brand">
+				<span class="mark" aria-hidden="true">
+					<svg viewBox="0 0 32 32">
+						<circle cx="10.5" cy="12.5" r="5"></circle>
+						<circle cx="16" cy="10" r="6"></circle>
+						<circle cx="21.5" cy="12.5" r="5"></circle>
+						<rect x="9" y="15.5" width="14" height="6.5" rx="2.6"></rect>
+					</svg>
+				</span>
+				<span class="wordmark">Restaurant <em>Chain</em></span>
+			</header>
+
+			<main>
+				<ul class="features">
+					{features.map((feature) => <li>{feature}</li>)}
+				</ul>
+				<p class="eyebrow">RESTAURANT COLLECTION</p>
+				<h1>Một trải nghiệm<br />được chăm chút.</h1>
+				<p class="lede">
+					Quản lý chi nhánh, bàn, thực đơn và nhân viên. Khách quét mã QR hoặc chạm thẻ NFC tại
+					bàn để xem thực đơn và gọi món.
+				</p>
+				<div class="actions">
+					<a class="primary" href="/_emdash/admin/plugins/restaurant-chain/workspace">
+						Dành cho nhân viên
+					</a>
+					<a class="secondary" href="#restaurant-note">Cách hoạt động</a>
+				</div>
+				<p id="restaurant-note" class="note">
+					Món chỉ được chuyển tới bếp sau khi nhân viên xác nhận. Thanh toán và hóa đơn điện tử cần
+					cấu hình nhà cung cấp riêng.
+				</p>
+			</main>
+		</div>
 	</body>
 </html>
 <style>
-	:global(body) { margin: 0; background: #f6f3ed; color: #263c34; font-family: Georgia, serif; }
-	main { max-width: 60rem; margin-inline: auto; padding: clamp(2rem, 8vw, 8rem); }
-	.eyebrow { font: 600 .75rem/1.5 system-ui; letter-spacing: .2em; }
-	h1 { font-weight: 400; font-size: clamp(2.8rem, 6vw, 5rem); line-height: 1.15; }
-	p { max-width: 33rem; line-height: 1.8; }
-	a { color: inherit; display: inline-block; margin-block-start: 2rem; text-underline-offset: .4rem; }
+	:global(body) {
+		margin: 0;
+		background: #faf7f2;
+		color: #221f1d;
+		font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+	}
+	.shell {
+		max-width: 62rem;
+		margin-inline: auto;
+		padding: clamp(1.5rem, 6vw, 5rem);
+		min-height: 100svh;
+		display: flex;
+		flex-direction: column;
+		gap: clamp(2rem, 6vw, 4.5rem);
+	}
+	.brand {
+		display: flex;
+		align-items: center;
+		gap: 0.85rem;
+	}
+	.mark {
+		display: grid;
+		place-items: center;
+		width: 2.6rem;
+		height: 2.6rem;
+		border-radius: 0.8rem;
+		background: #e11d2a;
+		color: #fff;
+	}
+	.mark svg {
+		width: 1.6rem;
+		height: 1.6rem;
+		fill: currentColor;
+	}
+	.wordmark {
+		font-size: 1.35rem;
+		font-weight: 800;
+		letter-spacing: -0.02em;
+	}
+	.wordmark em {
+		color: #e11d2a;
+		font-style: normal;
+	}
+	main {
+		display: flex;
+		flex-direction: column;
+		gap: 1.1rem;
+		max-width: 40rem;
+	}
+	.features {
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin: 0 0 0.5rem;
+		padding: 0;
+	}
+	.features li {
+		padding: 0.35rem 0.85rem;
+		border: 1px solid #eae6e0;
+		border-radius: 999px;
+		background: #fff;
+		font-size: 0.82rem;
+		font-weight: 600;
+		color: #6c6862;
+	}
+	.eyebrow {
+		margin: 0;
+		font-weight: 700;
+		font-size: 0.72rem;
+		letter-spacing: 0.2em;
+		color: #e11d2a;
+	}
+	h1 {
+		margin: 0;
+		font-weight: 800;
+		font-size: clamp(2.4rem, 7vw, 4rem);
+		line-height: 1.05;
+		letter-spacing: -0.035em;
+	}
+	.lede {
+		margin: 0;
+		max-width: 34rem;
+		font-size: 1.05rem;
+		line-height: 1.7;
+		color: #6c6862;
+	}
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-block-start: 0.6rem;
+	}
+	.actions a {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.8rem 1.4rem;
+		border-radius: 999px;
+		font-weight: 700;
+		text-decoration: none;
+	}
+	.primary {
+		background: #e11d2a;
+		color: #fff;
+	}
+	.primary:hover {
+		background: #c41622;
+	}
+	.secondary {
+		border: 1px solid #eae6e0;
+		background: #fff;
+		color: #221f1d;
+	}
+	.note {
+		margin: 1.4rem 0 0;
+		font-size: 0.82rem;
+		line-height: 1.6;
+		color: #6c6862;
+	}
 </style>

@@ -18,7 +18,7 @@ import {
 	RestaurantLocale,
 	useText,
 } from "@zerohost/plugin-restaurant-chain/locale";
-import { Failure, Status, useCommand, useUnsaved } from "@zerohost/plugin-restaurant-chain/ui";
+import { ChefHat, Failure, Status, useCommand, useUnsaved } from "@zerohost/plugin-restaurant-chain/ui";
 import "@cloudflare/kumo/styles/standalone";
 import "../styles/restaurant.css";
 
@@ -329,12 +329,21 @@ function GuestMenuContent({ tableToken }: { tableToken: string }) {
 		<main className="restaurant-guest">
 			<header className="restaurant-header">
 				<a href="#restaurant-content" className="restaurant-wordmark">
-					{menu?.branch.name ?? t("menu")}
+					<span className="restaurant-mark" aria-hidden="true">
+						<ChefHat />
+					</span>
+					<span className="restaurant-wordmark-text">
+						<strong>{menu?.branch.name ?? t("brandName")}</strong>
+						<small>{t("brandTag")}</small>
+					</span>
 				</a>
 				<LanguageSelect />
 			</header>
 			<section className="restaurant-intro">
 				<div>
+					<span className="restaurant-table-badge">
+						{t("table")} · {menu?.branch.name ?? t("brandName")}
+					</span>
 					<h1>{menu?.table.name ?? t("menu")}</h1>
 					<p>{t("welcome")}</p>
 				</div>
@@ -385,12 +394,6 @@ function GuestMenuContent({ tableToken }: { tableToken: string }) {
 							<>
 								<p className="restaurant-notice">{t("guestHint")}</p>
 								<div className="restaurant-menu-tools">
-									<Input
-										label={t("search")}
-										type="search"
-										value={search}
-										onChange={(event) => setSearch(event.target.value)}
-									/>
 									<div className="restaurant-categories" aria-label={t("category")}>
 										<Button
 											type="button"
@@ -412,6 +415,12 @@ function GuestMenuContent({ tableToken }: { tableToken: string }) {
 											</Button>
 										))}
 									</div>
+									<Input
+										label={t("search")}
+										type="search"
+										value={search}
+										onChange={(event) => setSearch(event.target.value)}
+									/>
 								</div>
 								<div className="restaurant-menu-list">
 									{visible.map((item) => (
@@ -540,7 +549,7 @@ function GuestMenuContent({ tableToken }: { tableToken: string }) {
 								<span>{money(total, locale)}</span>
 							</div>
 							<Button variant="primary" type="button" onClick={() => setView("basket")}>
-								{t("basket")}
+								{t("orderAtTable")}
 							</Button>
 						</aside>
 					)}
