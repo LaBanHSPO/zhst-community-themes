@@ -71,7 +71,7 @@ test('Actual workerd class has explicit schema migration, guarded execution and 
     assert.deepEqual((await rpc({ operation: 'status' })).value, { version: null, checksum: null, bookConfigured: false });
     const migrated = await rpc({ operation: 'migrate' });
     assert.equal(migrated.status, 200);
-    assert.equal(migrated.value.version, 2);
+    assert.equal(migrated.value.version, 3);
     assert.match(migrated.value.checksum, /^[a-f0-9]{64}$/);
     assert.equal(migrated.value.bookConfigured, false);
     const checksum = migrated.value.checksum;
@@ -81,6 +81,27 @@ test('Actual workerd class has explicit schema migration, guarded execution and 
     assert.equal(anonymous.value.error.code, 'AUTH_REQUIRED');
     const forbiddenAction = await rpc({ operation: 'execute', action: 'migrate', actorId: 'synthetic-native-actor' });
     assert.equal(forbiddenAction.value.error.code, 'INVALID_ACTION');
+    // Household setup and real reports do not require an enterprise book or COA.
+    const hkdConfig = { commandId: '55555555-5555-4555-8555-555555555555', year: 2026, startDate: '2026-01-01',
+      name: 'Hộ kiểm chứng', address: 'Địa chỉ tổng hợp', taxCode: '0123456789', representative: 'Người kiểm chứng',
+      location: 'Cửa hàng tổng hợp', taxMethod: 'income', periodType: 'month', incomeTaxRateBps: 1700, otherTaxes: true };
+    const hkdConfigured = await rpc({ operation: 'execute', action: 'hkd-configure', actorId: 'synthetic-native-actor', input: hkdConfig });
+    assert.equal(hkdConfigured.value.ok, true);
+    assert.equal(hkdConfigured.value.data.profile.name, hkdConfig.name);
+    assert.equal((await rpc({ operation: 'execute', action: 'info', actorId: 'synthetic-native-actor' })).value.data.book, null);
+    const hkdRevenue = { commandId: '66666666-6666-4666-8666-666666666666', year: 2026,
+      installationId: hkdConfigured.value.data.profile.installationId, revision: hkdConfigured.value.data.profile.revision,
+      entry: { kind: 'revenue', date: '2026-01-03', documentDate: '2026-01-03', documentNumber: 'HKD-001',
+        description: 'Doanh thu tổng hợp', amountMinor: 1000, businessLine: 'Dịch vụ', vatRateBps: 100,
+        pitRateBps: 0, vatTaxableMinor: 1000, pitTaxableMinor: 0, incomeRevenueMinor: 1000 } };
+    const hkdPosted = await rpc({ operation: 'execute', action: 'hkd-post-entry', actorId: 'synthetic-native-actor', input: hkdRevenue });
+    assert.equal(hkdPosted.value.ok, true);
+    assert.equal(hkdPosted.value.data.entry.createdBy, 'synthetic-native-actor');
+    assert.deepEqual((await rpc({ operation: 'execute', action: 'hkd-post-entry', actorId: 'synthetic-native-actor', input: hkdRevenue })).value, hkdPosted.value);
+    const hkdReportInput = { year: 2026, period: 1, book: 'S2c-HKD' };
+    const hkdReport = await rpc({ operation: 'execute', action: 'hkd-report', actorId: 'synthetic-native-actor', input: hkdReportInput });
+    assert.equal(hkdReport.value.ok, true);
+    assert.equal(hkdReport.value.data.rows.some((row) => row.entryId === hkdPosted.value.data.entry.id), true);
     const configured = await rpc({ operation: 'execute', action: 'configure-book', actorId: 'synthetic-native-actor', input: { startDate: '2026-01-01' } });
     assert.equal(configured.value.ok, true);
     assert.equal((await rpc({ operation: 'status' })).value.bookConfigured, true);
@@ -123,6 +144,12 @@ test('Actual workerd class has explicit schema migration, guarded execution and 
     assert.equal(pausedImport.value.error.code, 'ACCOUNTING_MAINTENANCE');
     const afterDeniedImport = await rpc({ operation: 'execute', action: 'preview-account-import', actorId: 'synthetic-native-actor', input: selection });
     assert.deepEqual(afterDeniedImport.value, pausedPreview.value);
+    const pausedHkdRead = await rpc({ operation: 'execute', action: 'hkd-report', actorId: 'synthetic-native-actor', input: hkdReportInput });
+    assert.deepEqual(pausedHkdRead.value, hkdReport.value);
+    const pausedHkdWrite = await rpc({ operation: 'execute', action: 'hkd-post-entry', actorId: 'synthetic-native-actor',
+      input: { ...hkdRevenue, commandId: '77777777-7777-4777-8777-777777777777' } });
+    assert.equal(pausedHkdWrite.value.error.code, 'ACCOUNTING_MAINTENANCE');
+    assert.deepEqual((await rpc({ operation: 'execute', action: 'hkd-report', actorId: 'synthetic-native-actor', input: hkdReportInput })).value, hkdReport.value);
     const invalidRestore = await rpc({ operation: 'restore', bookmark: 'invalid' });
     assert.equal(invalidRestore.status, 503);
     assert.match(invalidRestore.value.error, /valid accounting PITR bookmark/);

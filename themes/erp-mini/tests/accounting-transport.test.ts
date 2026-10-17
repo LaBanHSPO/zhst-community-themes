@@ -77,13 +77,6 @@ for (const [name, options, status] of [
   });
 }
 
-test('Native user and currency are guarded before executor', async () => {
-  const { endpoint, context, calls } = fixture();
-  const result = await endpoint(context);
-  assert.equal(result.status, 200);
-  assert.deepEqual(await result.json(), { success: true, data: { ok: true, data: { configured: true } } });
-  assert.deepEqual(calls, ['source:native-session-user', 'currency', 'execute:configure-book:native-session-user']);
-});
 
 test('Strict schema rejects public actor and snapshot before CRM access', async () => {
   for (const extra of [{ actorId: 'forged' }, { sourceCustomer: { name: 'forged' } }]) {
@@ -108,4 +101,47 @@ test('Missing schema/binding is a truthful transport prerequisite', async () => 
   assert.equal(result.status, 503);
   assert.deepEqual(await result.json(), { success: false, error: { code: 'ACCOUNTING_UNAVAILABLE', message: 'Explicit operator migration is required.' } });
   assert.deepEqual(calls, ['source:native-session-user']);
+});
+
+test('All household actions deny anonymous, non-admin and cross-origin requests before opening storage', async () => {
+  for (const action of ['hkd-info', 'hkd-configure', 'hkd-post-entry', 'hkd-void-entry', 'hkd-list', 'hkd-report']) {
+    for (const [denied, status] of [
+      [{ anonymous: true }, 401],
+      [{ role: 0 }, 403],
+      [{ headers: { Origin: 'https://foreign.example.invalid' } }, 403],
+    ] as const) {
+      const { endpoint, context, calls } = fixture({ action, method: action === 'hkd-info' ? 'GET' : 'POST', ...denied });
+      const result = await endpoint(context);
+      assert.equal(result.status, status, action);
+      assert.deepEqual(calls, [], action);
+    }
+  }
+});
+
+const householdPolicy = {
+  commandId: '10000000-0000-4000-8000-000000000001', year: 2026, startDate: '2026-01-01',
+  name: 'Hộ tổng hợp', address: 'Địa chỉ tổng hợp', taxCode: '0123456789',
+  representative: 'Người tổng hợp', location: 'Cửa hàng', taxMethod: 'exempt',
+  periodType: 'month', incomeTaxRateBps: null, otherTaxes: false,
+};
+
+test('Household policy cannot silently change saved non-VND business currency', async () => {
+  const { endpoint, context, calls } = fixture({ action: 'hkd-configure', body: JSON.stringify(householdPolicy), currencyMismatch: true });
+  const result = await endpoint(context);
+  assert.equal((await result.json()).data.error.code, 'CURRENCY_MISMATCH');
+  assert.deepEqual(calls, ['source:native-session-user', 'currency']);
+});
+
+test('Household routes reject forged actors and public report snapshot overrides before storage', async () => {
+  for (const [action, input] of [
+    ['hkd-configure', { ...householdPolicy, actorId: 'forged' }],
+    ['hkd-report', { year: 2026, period: 1, book: 'S1a-HKD', asOfSequence: 999 }],
+    ['hkd-list', { year: 2026, actorId: 'forged' }],
+    ['hkd-void-entry', { commandId: householdPolicy.commandId, year: 2026, installationId: householdPolicy.commandId, revision: householdPolicy.commandId, id: householdPolicy.commandId, reason: 'Sửa sai', actorId: 'forged' }],
+  ] as const) {
+    const { endpoint, context, calls } = fixture({ action, body: JSON.stringify(input) });
+    const result = await endpoint(context);
+    assert.equal((await result.json()).data.error.code, 'INVALID_INPUT', action);
+    assert.deepEqual(calls, [], action);
+  }
 });
