@@ -1,0 +1,25 @@
+---
+import Base from "../layouts/Base.astro";
+import FundSummary from "../components/FundSummary.astro";
+import { getPublicFund } from "../utils/chapter-api";
+
+const fund = await getPublicFund(Astro.url);
+---
+
+<Base title="Quỹ & Minh bạch tài chính">
+	<div class="page-hero">
+		<h1>Quỹ &amp; Minh bạch tài chính</h1>
+		<p>Toàn bộ khoản thu – chi đã duyệt được công khai, cập nhật và kiểm toán định kỳ.</p>
+	</div>
+	<section>
+		<FundSummary fund={fund} showRecent />
+		<p style="font-size:12px;color:var(--muted);margin-top:20px">
+			Số liệu được cập nhật và kiểm toán định kỳ bởi Ban Kiểm tra của Hội. Chỉ các khoản đã duyệt mới
+			được tính vào báo cáo công khai.
+		</p>
+		<div style="margin-top:28px;display:flex;gap:10px;flex-wrap:wrap">
+			<a class="btn btn-line" href="/_emdash/admin">Khu vực quản trị</a>
+			<a class="btn btn-red" href="/lien-he">Ủng hộ / liên hệ</a>
+		</div>
+	</section>
+</Base>

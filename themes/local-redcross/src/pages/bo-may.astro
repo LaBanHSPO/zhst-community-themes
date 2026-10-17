@@ -1,0 +1,30 @@
+---
+import Base from "../layouts/Base.astro";
+import Leadership from "../components/Leadership.astro";
+---
+
+<Base title="Sơ đồ bộ máy">
+	<div class="page-hero">
+		<h1>Sơ đồ bộ máy tổ chức</h1>
+		<p>Cơ cấu lãnh đạo Hội nhiệm kỳ 2026–2031.</p>
+	</div>
+	<section>
+		<div class="tree">
+			<div class="node"><b>Đại hội đại biểu</b><span>Cơ quan quyền lực cao nhất</span></div>
+			<div class="conn"></div>
+			<div class="node"><b>Ban Chấp hành</b><span>Uỷ viên Ban Chấp hành</span></div>
+			<div class="conn"></div>
+			<div class="node hl"><b>Ban Thường vụ</b><span>Ban Thường vụ Hội</span></div>
+			<div class="conn"></div>
+			<div class="leader-row">
+				<div class="node hl" style="min-width:0"><b>Chủ tịch</b><span>Phạm Tuấn Vũ</span></div>
+				<div class="node" style="min-width:0"><b>Phó Chủ tịch</b><span>Nguyễn Công Tư</span></div>
+				<div class="node" style="min-width:0"><b>Uỷ viên BTV</b><span>Hoàng Văn Quân</span></div>
+			</div>
+		</div>
+		<div class="sec-head" style="margin-top:64px">
+			<div><h2>Nhân sự Ban Thường vụ</h2><p>Hồ sơ công khai · quá trình công tác</p></div>
+		</div>
+		<Leadership columns="2" />
+	</section>
+</Base>

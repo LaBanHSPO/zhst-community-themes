@@ -1,0 +1,57 @@
+---
+import type { Leader } from "../utils/leadership";
+import { leaders as allLeaders } from "../utils/leadership";
+
+interface Props {
+	leaders?: Leader[];
+	columns?: "3" | "2";
+	withHistory?: boolean;
+	highlightFirst?: boolean;
+}
+
+const {
+	leaders = allLeaders,
+	columns = "3",
+	withHistory = true,
+	highlightFirst = false,
+} = Astro.props;
+---
+
+<div class={`leaders${columns === "2" ? " cols2" : ""}`}>
+	{
+		leaders.map((leader, index) => (
+			<div class={`leader${highlightFirst && index === 0 ? " highlight" : ""}`}>
+				<div class="ph">
+					<span class="rank">{leader.rank}</span>
+					<div class="mono">{leader.initials}</div>
+					<b>{leader.name}</b>
+					<span class="rl">{leader.role}</span>
+				</div>
+				{withHistory && (
+					<div class="info">
+						<div class="exp">Chức vụ đã đảm nhiệm</div>
+						<div class="exp-list">
+							{leader.history.map((item) => (
+								<div>
+									<span class="yr">{item.yr}</span>
+									<span>{item.text}</span>
+								</div>
+							))}
+						</div>
+						<div class="contact-chips">
+							<span class="tag">{leader.term}</span>
+							<span class="tag">Ban Thường vụ</span>
+						</div>
+					</div>
+				)}
+			</div>
+		))
+	}
+</div>
+
+<style>
+	.leader.highlight {
+		border-color: var(--red);
+		box-shadow: 0 12px 28px rgba(225, 25, 35, 0.14);
+	}
+</style>

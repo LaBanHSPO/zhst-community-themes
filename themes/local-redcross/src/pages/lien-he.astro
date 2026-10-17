@@ -1,0 +1,64 @@
+---
+import Base from "../layouts/Base.astro";
+import { getSiteSettings } from "emdash";
+import { resolveSiteIdentity } from "../utils/site-identity";
+
+const { siteTitle } = resolveSiteIdentity(await getSiteSettings());
+---
+
+<Base title="Liên hệ">
+	<div class="page-hero">
+		<h1>Liên hệ với chúng tôi</h1>
+		<p>Gửi câu hỏi, đăng ký hiến máu hoặc trở thành tình nguyện viên.</p>
+	</div>
+	<section>
+		<div class="contact-grid">
+			<div class="card" style="padding:26px">
+				<h2 style="font-size:16px;margin-bottom:14px">Gửi tin nhắn</h2>
+				<form class="form" aria-describedby="contact-note">
+					<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+						<div class="field"><label for="c-name">Họ và tên</label><input id="c-name" name="name" class="input" autocomplete="name" placeholder="Nguyễn Văn A" /></div>
+						<div class="field"><label for="c-phone">Số điện thoại</label><input id="c-phone" name="phone" class="input" autocomplete="tel" placeholder="09xx xxx xxx" /></div>
+					</div>
+					<div class="field"><label for="c-email">Email</label><input id="c-email" name="email" type="email" class="input" autocomplete="email" placeholder="email@example.com" /></div>
+					<div class="field"><label for="c-subject">Tiêu đề</label><input id="c-subject" name="subject" class="input" placeholder="Đăng ký hiến máu / Tình nguyện…" /></div>
+					<div class="field"><label for="c-message">Nội dung</label><textarea id="c-message" name="message" rows="4" placeholder="Nhập nội dung…"></textarea></div>
+					<button class="btn btn-red" type="submit" style="justify-content:center" disabled>Gửi tin nhắn →</button>
+					<p id="contact-note" style="font-size:12px;color:var(--muted)">
+						Biểu mẫu liên hệ sẽ được kết nối tới hộp thư của Hội khi triển khai. Hiện tại vui lòng liên hệ
+						qua hotline hoặc email bên cạnh.
+					</p>
+				</form>
+			</div>
+			<div>
+				<div class="info-line">
+					<div class="ic" aria-hidden="true">
+						<svg class="ico"><use href="#i-pin"></use></svg>
+					</div>
+					<div><b>Trụ sở</b><span>Uỷ ban nhân dân xã Phú Lạc, tỉnh Thái Nguyên</span></div>
+				</div>
+				<div class="info-line">
+					<div class="ic" aria-hidden="true">
+						<svg class="ico"><use href="#i-phone"></use></svg>
+					</div>
+					<div><b>Hotline</b><span>Liên hệ Văn phòng Hội</span></div>
+				</div>
+				<div class="info-line">
+					<div class="ic" aria-hidden="true">
+						<svg class="ico"><use href="#i-mail"></use></svg>
+					</div>
+					<div><b>Email</b><span>lienhe@redcross.local</span></div>
+				</div>
+				<div class="info-line">
+					<div class="ic" aria-hidden="true">
+						<svg class="ico"><use href="#i-clock"></use></svg>
+					</div>
+					<div><b>Giờ làm việc</b><span>Thứ 2 – Thứ 6: 08:00 – 17:00</span></div>
+				</div>
+				<p style="font-size:12px;color:var(--muted);margin-top:16px">
+					© 2026 {siteTitle}. Thông tin liên hệ là mẫu và cần được cập nhật khi triển khai thật.
+				</p>
+			</div>
+		</div>
+	</section>
+</Base>

@@ -1,0 +1,182 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Local Red Cross",
+		"description": "Website for a local Red Cross chapter: news, transparency, documents and a public org chart",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "Hội Chữ Thập Đỏ Xã Phú Lạc",
+		"tagline": "Vì mỗi giọt máu, một sự sống được hồi sinh"
+	},
+	"collections": [
+		{
+			"slug": "posts",
+			"label": "Bản tin",
+			"labelSingular": "Bài viết",
+			"urlPattern": "/ban-tin/{slug}",
+			"supports": ["drafts", "revisions", "preview", "scheduling", "search", "seo"],
+			"fields": [
+				{ "slug": "title", "label": "Tiêu đề", "type": "string", "required": true, "searchable": true },
+				{ "slug": "featured_image", "label": "Ảnh đại diện", "type": "image" },
+				{ "slug": "excerpt", "label": "Tóm tắt", "type": "text", "searchable": true },
+				{ "slug": "content", "label": "Nội dung", "type": "portableText", "searchable": true }
+			]
+		},
+		{
+			"slug": "pages",
+			"label": "Trang",
+			"labelSingular": "Trang",
+			"urlPattern": "/{slug}",
+			"supports": ["drafts", "revisions", "preview", "search", "seo"],
+			"fields": [
+				{ "slug": "title", "label": "Tiêu đề", "type": "string", "required": true, "searchable": true },
+				{ "slug": "content", "label": "Nội dung", "type": "portableText", "searchable": true }
+			]
+		}
+	],
+	"taxonomies": [
+		{
+			"name": "category",
+			"label": "Chuyên mục",
+			"labelSingular": "Chuyên mục",
+			"hierarchical": false,
+			"collections": ["posts"],
+			"terms": [
+				{ "slug": "hoat-dong", "label": "Hoạt động" },
+				{ "slug": "hien-mau", "label": "Hiến máu" },
+				{ "slug": "cuu-tro", "label": "Cứu trợ" },
+				{ "slug": "hoc-bong", "label": "Học bổng" },
+				{ "slug": "vinh-danh", "label": "Vinh danh" }
+			]
+		},
+		{
+			"name": "tag",
+			"label": "Thẻ",
+			"labelSingular": "Thẻ",
+			"hierarchical": false,
+			"collections": ["posts"],
+			"terms": [
+				{ "slug": "nhan-dao", "label": "Nhân đạo" },
+				{ "slug": "2026", "label": "2026" },
+				{ "slug": "phu-lac", "label": "Phú Lạc" }
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Điều hướng chính",
+			"items": [
+				{ "type": "custom", "label": "Trang chủ", "url": "/" },
+				{ "type": "custom", "label": "Về Hội", "url": "/ve-hoi" },
+				{ "type": "custom", "label": "Bộ máy", "url": "/bo-may" },
+				{ "type": "custom", "label": "Quỹ", "url": "/quy" },
+				{ "type": "custom", "label": "Văn bản", "url": "/van-ban" },
+				{ "type": "custom", "label": "Bản tin", "url": "/ban-tin" },
+				{ "type": "custom", "label": "Liên hệ", "url": "/lien-he" }
+			]
+		}
+	],
+	"content": {
+		"posts": [
+			{
+				"id": "post-1",
+				"slug": "giot-mau-hong-2026",
+				"status": "published",
+				"data": {
+					"title": "Chiến dịch \"Giọt máu hồng\" 2026 thu về hơn 1.200 đơn vị máu",
+					"excerpt": "Ngày hội hiến máu nhân đạo thu hút hàng nghìn tình nguyện viên tham gia trên khắp các địa bàn.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Ngày 12/03/2026, Hội Chữ thập đỏ xã Phú Lạc phối hợp cùng Trung tâm Huyết học – Truyền máu tỉnh tổ chức Ngày hội hiến máu nhân đạo \"Giọt máu hồng\" năm 2026, thu về hơn 1.200 đơn vị máu.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						}
+					]
+				},
+				"taxonomies": { "category": ["hien-mau"], "tag": ["nhan-dao", "2026"] }
+			},
+			{
+				"id": "post-2",
+				"slug": "cuu-tro-vung-lu",
+				"status": "published",
+				"data": {
+					"title": "Hỗ trợ khẩn cấp bà con vùng lũ miền Trung",
+					"excerpt": "Hội khẩn trương huy động nguồn lực, trao tận tay nhu yếu phẩm cho các hộ dân bị ảnh hưởng.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Trước diễn biến phức tạp của mưa lũ, Hội Chữ thập đỏ xã Phú Lạc đã vận động cán bộ, hội viên và nhà hảo tâm ủng hộ quỹ cứu trợ, trao hơn 200 phần quà tới tay bà con.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						}
+					]
+				},
+				"taxonomies": { "category": ["cuu-tro"], "tag": ["nhan-dao"] }
+			},
+			{
+				"id": "post-3",
+				"slug": "hoc-bong-cho-hoc-sinh",
+				"status": "published",
+				"data": {
+					"title": "Trao 300 suất học bổng cho học sinh khó khăn",
+					"excerpt": "Chương trình đồng hành cùng các em học sinh nghèo vượt khó trên địa bàn xã.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Hội đã trao 300 suất học bổng cho học sinh có hoàn cảnh khó khăn, góp phần tiếp sức các em tới trường.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						}
+					]
+				},
+				"taxonomies": { "category": ["hoc-bong"], "tag": ["2026"] }
+			},
+			{
+				"id": "post-4",
+				"slug": "ton-vinh-tinh-nguyen-vien",
+				"status": "published",
+				"data": {
+					"title": "Tôn vinh 40 tình nguyện viên xuất sắc",
+					"excerpt": "Ghi nhận những đóng góp thầm lặng của đội ngũ tình nguyện viên trong các hoạt động nhân đạo.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Hội đã tổ chức gặp mặt và tôn vinh 40 tình nguyện viên tiêu biểu đã đồng hành cùng các chiến dịch năm 2026.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						}
+					]
+				},
+				"taxonomies": { "category": ["vinh-danh"], "tag": ["phu-lac"] }
+			}
+		]
+	}
+}

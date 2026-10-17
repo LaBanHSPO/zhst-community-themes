@@ -1,0 +1,48 @@
+---
+import Base from "../layouts/Base.astro";
+import { getPublicDocuments, formatVnDate } from "../utils/chapter-api";
+
+const documents = (await getPublicDocuments(Astro.url)) ?? [];
+const typeLabels: Record<string, string> = {
+	decision: "Quyết định",
+	resolution: "Nghị quyết",
+	circular: "Công văn",
+	report: "Báo cáo",
+	ledger: "Hồ sơ thu chi",
+};
+---
+
+<Base title="Hồ sơ – Văn bản – Quyết định">
+	<div class="page-hero">
+		<h1>Hồ sơ – Văn bản – Quyết định</h1>
+		<p>Tra cứu các quyết định, nghị quyết, báo cáo và hồ sơ thu–chi công khai của Hội.</p>
+	</div>
+	<section>
+		{
+			documents.length ? (
+				documents.map((doc) => (
+					<div class="doc-row">
+						<div class="pdf-ico">PDF</div>
+						<div class="d">
+							<b>{doc.number}</b>
+							<small>
+								{doc.title} · {typeLabels[doc.type] ?? doc.type}
+								{doc.signer ? ` · ${doc.signer}` : ""} · {formatVnDate(doc.date)}
+							</small>
+						</div>
+						<span class="badge pub">Công khai</span>
+						{doc.fileUrl ? (
+							<a class="btn btn-line btn-sm" href={doc.fileUrl} target="_blank" rel="noopener noreferrer">
+								{doc.fileName ? "Tải tệp" : "Xem"}
+							</a>
+						) : (
+							<span class="btn btn-line btn-sm" aria-disabled="true">Chưa có tệp</span>
+						)}
+					</div>
+				))
+			) : (
+				<p class="empty">Chưa có văn bản được công khai.</p>
+			)
+		}
+	</section>
+</Base>
