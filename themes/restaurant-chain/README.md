@@ -64,6 +64,15 @@ Set the SePay webhook URL to `https://<approved-host>/api/sepay/<context-id>`, c
 
 SePay remains an external payment/invoice provider. Its QR image service is also external; internet availability and correct bank configuration are required. Table-ordering QR PNGs are generated locally in the browser.
 
+## Guest table surface
+
+`/order/<table-token>` shows the branch menu, a basket with size/topping options and a
+note, and a live status view. From the status view a guest can **Gọi nhân viên** (call a
+waiter) or **Yêu cầu tính tiền** (request the bill); each request is deduplicated per
+visit and surfaced to floor staff, who mark it handled. When the browser loses
+connectivity the table surface shows a notice that unsent actions are retried once the
+connection returns.
+
 ## Prepare an approved deployment
 
 Deployment is an operator action, not a consequence of installing this template. Obtain ZeroHostCMS promotion approval and reconcile the host's pinned EmDash 1.2.0/Astro 7 baseline with the target platform. Provision isolated Cloudflare resources and confirm the actual SePay bank/provider configuration before production use.

@@ -437,6 +437,23 @@
 	border-radius: 12px;
 	margin-block: 14px;
 }
+.restaurant-service {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-block: 18px 4px;
+}
+.restaurant-service > button {
+	border-radius: 999px;
+}
+.restaurant-offline {
+	background: #fdf3dd;
+	color: #8a5300;
+	padding: 12px 16px;
+	border-radius: 12px;
+	margin-block: 12px;
+	max-inline-size: 70ch;
+}
 
 /* -------------------------------------------------------------- Kumo surfaces */
 
