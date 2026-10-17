@@ -158,7 +158,19 @@ function GuestMenuContent({ tableToken }: { tableToken: string }) {
 	const pinnedSubmission = useRef<{ signature: string; version: number } | undefined>(undefined);
 	const join = useCommand();
 	const submit = useCommand();
+	const service = useCommand();
+	const [online, setOnline] = useState(true);
 	const refresh = useCallback(() => setRevision((value) => value + 1), []);
+	useEffect(() => {
+		const update = () => setOnline(navigator.onLine);
+		update();
+		window.addEventListener("online", update);
+		window.addEventListener("offline", update);
+		return () => {
+			window.removeEventListener("online", update);
+			window.removeEventListener("offline", update);
+		};
+	}, []);
 	useUnsaved(basket.length > 0 || submit.pending);
 	useEffect(() => {
 		if (
@@ -324,7 +336,13 @@ function GuestMenuContent({ tableToken }: { tableToken: string }) {
 		0,
 	);
 	const count = basket.reduce((sum, line) => sum + line.quantity, 0);
+	const openKinds = new Set((status?.requests ?? []).map((entry) => entry.kind));
 	const canOrder = !closed && status?.visit.status === "open";
+	async function requestService(kind: "waiter" | "bill") {
+		if (!token || closed || service.pending) return;
+		const result = await service.run("call-service", { token, kind, note: "" });
+		if (result !== undefined) refresh();
+	}
 	return (
 		<main className="restaurant-guest">
 			<header className="restaurant-header">
@@ -367,6 +385,11 @@ function GuestMenuContent({ tableToken }: { tableToken: string }) {
 			)}
 			<Failure error={error} />
 			{Boolean(error) && <Button onClick={refresh}>{t("retry")}</Button>}
+			{!online && (
+				<p role="status" className="restaurant-offline">
+					{t("offline")}
+				</p>
+			)}
 			{loading && <p role="status">{t("loading")}</p>}
 			{basket.length >= 50 && (
 				<p role="status" className="restaurant-notice">
@@ -536,6 +559,34 @@ function GuestMenuContent({ tableToken }: { tableToken: string }) {
 									<strong>{t("total")}</strong>
 									<strong>{money(status?.total ?? 0, locale)}</strong>
 								</div>
+								<div className="restaurant-service">
+									<Button
+										type="button"
+										variant="secondary"
+										disabled={service.pending || openKinds.has("waiter")}
+										onClick={() => {
+											void requestService("waiter");
+										}}
+									>
+										{t(openKinds.has("waiter") ? "alreadyRequested" : "callWaiter")}
+									</Button>
+									<Button
+										type="button"
+										variant="secondary"
+										disabled={service.pending || openKinds.has("bill")}
+										onClick={() => {
+											void requestService("bill");
+										}}
+									>
+										{t(openKinds.has("bill") ? "alreadyRequested" : "requestBill")}
+									</Button>
+								</div>
+								<Failure error={service.error} />
+								{openKinds.size > 0 && (
+									<p role="status" className="restaurant-success">
+										{t("requestSent")}
+									</p>
+								)}
 								<p className="restaurant-muted">{t("paymentHint")}</p>
 							</section>
 						)}
