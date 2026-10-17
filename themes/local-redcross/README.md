@@ -61,6 +61,10 @@ Seed content is synthetic Vietnamese sample data; replace it with the chapter's 
 
 `src/styles/theme.css` holds the design tokens and components ported from the approved prototype (buttons, hero, stats, cards, leadership, fund bars/donut, tables, album, article, footer). `src/layouts/Base.astro` wires the header/nav/footer and the EmDash head/body helpers.
 
+### Chapter emblem
+
+The default header and footer use [`public/images/logo-cross-vn.webp`](public/images/logo-cross-vn.webp), a lossless 256 × 256 transparent derivative of the supplied `logo-cross-vn.webp` artwork, not a recreated symbol. A chapter's custom Site Identity logo takes precedence in both locations; see [`src/layouts/Base.astro`](src/layouts/Base.astro). Favicon selection remains with EmDash's separate Site Identity favicon setting, rather than introducing a competing theme icon.
+
 ## Notes and limitations
 
 - The public fund and document pages read the plugin's **public** routes; when the plugin is not registered those sections render an empty state.
@@ -70,4 +74,6 @@ Seed content is synthetic Vietnamese sample data; replace it with the chapter's 
 
 ## License
 
-MIT. See the repository [`LICENSE`](../../LICENSE).
+Theme code is MIT. See the repository [`LICENSE`](../../LICENSE).
+
+The supplied Vietnam Red Cross emblem is a separate asset; the code license does **not** grant rights to that emblem or permission to imply affiliation or endorsement. Confirm authorization and applicable emblem-use and redistribution requirements before publishing or reusing the artwork.
