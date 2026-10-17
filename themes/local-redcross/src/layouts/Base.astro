@@ -25,6 +25,8 @@ if (Astro.cache?.enabled) {
 }
 
 const { siteTitle, siteTagline, siteLogo } = resolveSiteIdentity(settingsResult.data);
+const logoSrc = siteLogo?.url ?? "/images/logo-cross-vn.webp";
+const logoAlt = siteLogo ? siteLogo.alt || siteTitle : "";
 const titleIncludesSiteName =
 	title === siteTitle || title.endsWith(` | ${siteTitle}`) || title.endsWith(` — ${siteTitle}`);
 const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
@@ -77,16 +79,7 @@ const menuActive = (url: string) => {
 		</defs></svg>
 		<header class="site-head">
 			<a class="brand" href="/">
-				{
-					siteLogo ? (
-						<img class="logo" src={siteLogo.url} alt={siteLogo.alt || siteTitle} />
-					) : (
-						<svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
-							<circle cx="24" cy="24" r="22" fill="#E11923" />
-							<path d="M20 10h8v8h8v8h-8v12h-8V26h-8v-8h8z" fill="#fff" />
-						</svg>
-					)
-				}
+				<img class="logo" src={logoSrc} alt={logoAlt} width="38" height="38" />
 				<div>
 					<b>{siteTitle}</b>
 					<span>{siteTagline}</span>
@@ -119,10 +112,14 @@ const menuActive = (url: string) => {
 			<div class="foot-grid">
 				<div>
 					<div class="brand" style="margin-bottom:12px">
-						<svg class="logo" viewBox="0 0 48 48" style="width:34px;height:34px" aria-hidden="true">
-							<circle cx="24" cy="24" r="22" fill="#E11923" />
-							<path d="M20 10h8v8h8v8h-8v12h-8V26h-8v-8h8z" fill="#fff" />
-						</svg>
+						<img
+							class="logo"
+							src={logoSrc}
+							alt={logoAlt}
+							width="34"
+							height="34"
+							style="width:34px;height:34px"
+						/>
 						<div style="color:#fff">
 							<b style="color:#fff">{siteTitle}</b>
 							<span style="color:var(--muted-2)">{siteTagline}</span>

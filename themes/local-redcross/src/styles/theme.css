@@ -130,8 +130,11 @@ a {
 	gap: 10px;
 }
 .brand .logo {
+	display: block;
+	flex-shrink: 0;
 	width: 38px;
 	height: 38px;
+	object-fit: contain;
 }
 .brand b {
 	font-size: 14.5px;
