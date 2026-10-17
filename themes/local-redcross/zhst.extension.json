@@ -3,7 +3,7 @@
 	"id": "local-redcross",
 	"kind": "theme",
 	"name": "Local Red Cross",
-	"type": "charity",
+	"type": "company",
 	"emdash": "1.2.0",
 	"entry": "themes/local-redcross",
 	"capabilities": {
@@ -13,7 +13,6 @@
 		"booking": false,
 		"checkout": false,
 		"map": false,
-		"whatsapp": false,
-		"plugins": ["redcross-chapter"]
+		"whatsapp": false
 	}
 }
