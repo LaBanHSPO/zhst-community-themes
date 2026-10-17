@@ -1329,6 +1329,12 @@ textarea:focus {
 	.album-grid {
 		grid-template-columns: 1fr;
 	}
+	.bars {
+		gap: 6px;
+	}
+	.bars .pair i {
+		width: 9px;
+	}
 	.gallery {
 		columns: 1;
 	}
