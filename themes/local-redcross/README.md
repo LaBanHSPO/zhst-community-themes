@@ -4,6 +4,8 @@ A public website theme for a **local Red Cross chapter**, built on EmDash + Astr
 
 The public **news feed, media and pages** are native EmDash content. The **member registry, fund ledger and document library** are provided by the companion plugin [`redcross-chapter`](https://github.com/ZeroHostCMS/zhst-community-plugins/tree/main/plugins/redcross-chapter), which this theme registers in `astro.config.mjs`. The **org chart and leadership profiles are static** (edited in the theme, not the CMS). **Admin login is EmDash's own** account/passkey flow at `/_emdash/admin`.
 
+The platform extension manifest uses the supported `company` theme type. The companion plugin is registered by `astro.config.mjs`, not an unsupported `capabilities.plugins` manifest field.
+
 ## Pages
 
 | Route | Source | What it shows |
