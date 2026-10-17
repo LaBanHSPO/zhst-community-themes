@@ -1,0 +1,152 @@
+---
+import type { PublicFund } from "@zerohost/plugin-redcross-chapter";
+import { formatCompactVnd, formatVnd, formatVnDate } from "../utils/chapter-api";
+
+interface Props {
+	fund: PublicFund | null;
+	showRecent?: boolean;
+}
+
+const { fund, showRecent = false } = Astro.props;
+
+const palette = ["#E11923", "#FF6B57", "#0E7C86", "#CBD5E1", "#B00D18", "#1FA971"];
+const maxMonthly = fund
+	? Math.max(1, ...fund.totals.monthly.map((bucket) => Math.max(bucket.inMinor, bucket.outMinor)))
+	: 1;
+const totalOut = fund?.totals.totalOutMinor ?? 0;
+const slices = (fund?.totals.byCategory ?? []).map((entry, index) => ({
+	...entry,
+	percent: totalOut > 0 ? (entry.amountMinor / totalOut) * 100 : 0,
+	color: palette[index % palette.length] ?? "#CBD5E1",
+}));
+let cursor = 0;
+const gradient = slices.length
+	? `conic-gradient(${slices
+			.map((slice) => {
+				const start = cursor;
+				cursor += slice.percent;
+				return `${slice.color} ${start}% ${cursor}%`;
+			})
+			.join(",")})`
+	: "conic-gradient(#E7E9EE 0 100%)";
+---
+
+<div class="fund-wrap">
+	<div>
+		<div class="kpi-3">
+			<div class="kpi">
+				<span>Số dư quỹ hiện tại</span>
+				<b>{fund ? formatVnd(fund.totals.balanceMinor) : "—"}</b>
+			</div>
+			<div class="kpi">
+				<span>Tổng thu (đã duyệt)</span>
+				<b class="g">{fund ? formatVnd(fund.totals.totalInMinor) : "—"}</b>
+			</div>
+			<div class="kpi">
+				<span>Tổng chi (đã duyệt)</span>
+				<b class="r">{fund ? formatVnd(fund.totals.totalOutMinor) : "—"}</b>
+			</div>
+		</div>
+		<div class="sec-head" style="margin-bottom:12px">
+			<div><h3 style="font-size:17px">Thu – chi theo tháng</h3></div>
+		</div>
+		{
+			fund ? (
+				<div class="bars">
+					{fund.totals.monthly.map((bucket) => (
+						<div class="col">
+							<div class="pair">
+								<i class="in" style={`height:${(bucket.inMinor / maxMonthly) * 100}%`} />
+								<i class="out" style={`height:${(bucket.outMinor / maxMonthly) * 100}%`} />
+							</div>
+							<small>T{bucket.month}</small>
+						</div>
+					))}
+				</div>
+			) : (
+				<p class="empty">Chưa có dữ liệu quỹ được công khai.</p>
+			)
+		}
+		<div style="display:flex;gap:16px;font-size:11.5px;color:var(--muted);margin-top:8px">
+			<span><i class="lg-dot" style="background:var(--teal)"></i> Thu</span>
+			<span><i class="lg-dot" style="background:var(--red)"></i> Chi</span>
+		</div>
+	</div>
+	<div class="donut-wrap">
+		<div class="donut" style={`background:${gradient}`}>
+			<div class="center">
+				<div>
+					<b>{fund ? formatCompactVnd(fund.totals.totalOutMinor) : "—"}</b>
+					<small>Cơ cấu chi</small>
+				</div>
+			</div>
+		</div>
+		<div class="legend">
+			{
+				slices.length ? (
+					slices.map((slice) => (
+						<div>
+							<i style={`background:${slice.color}`} />
+							{slice.category} <b>{Math.round(slice.percent)}%</b>
+						</div>
+					))
+				) : (
+					<div>
+						<i style="background:#CBD5E1" /> Chưa có khoản chi <b>0%</b>
+					</div>
+				)
+			}
+		</div>
+	</div>
+</div>
+
+{
+	showRecent && fund && fund.recent.length > 0 && (
+		<div style="margin-top:36px">
+			<div class="sec-head" style="margin-bottom:12px">
+				<div><h3 style="font-size:17px">Giao dịch công khai gần đây</h3></div>
+			</div>
+			<div class="table-scroll">
+				<table>
+					<thead>
+						<tr>
+							<th>Ngày</th>
+							<th>Loại</th>
+							<th>Danh mục</th>
+							<th>Mô tả</th>
+							<th style="text-align:right">Số tiền</th>
+						</tr>
+					</thead>
+					<tbody>
+						{fund.recent.map((entry) => (
+							<tr>
+								<td>{formatVnDate(entry.date)}</td>
+								<td>
+									<span class={`badge ${entry.kind === "in" ? "in" : "out"}`}>
+										{entry.kind === "in" ? "Thu" : "Chi"}
+									</span>
+								</td>
+								<td>{entry.category}</td>
+								<td>{entry.description || "—"}</td>
+								<td style={`text-align:right;color:var(--${entry.kind === "in" ? "ok" : "red"});font-weight:700`}>
+									{entry.kind === "in" ? "+" : "−"}
+									{formatVnd(entry.amountMinor).replace("−", "")}
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	)
+}
+
+<style>
+	.lg-dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 3px;
+		display: inline-block;
+		margin-right: 6px;
+	}
+</style>

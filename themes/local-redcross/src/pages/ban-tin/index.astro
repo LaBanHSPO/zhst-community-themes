@@ -1,0 +1,96 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../../layouts/Base.astro";
+
+const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
+	orderBy: { published_at: "desc" },
+	limit: 30,
+});
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const [featured, ...rest] = posts;
+const titleOf = (slug: string | null) => (slug ? `/ban-tin/${slug}` : "/ban-tin");
+const categoryOf = (post: (typeof posts)[number]) =>
+	post.data.terms?.category?.[0]?.label ?? "Bản tin";
+---
+
+<Base title="Bản tin truyền thông">
+	<div class="page-hero">
+		<h1>Bản tin truyền thông</h1>
+		<p>Cập nhật hoạt động, sự kiện và câu chuyện nhân ái của Hội.</p>
+	</div>
+	<section>
+		<div class="toolbar">
+			<a class="chip on" href="/ban-tin">Tất cả</a>
+			<span style="font-size:12.5px;color:var(--muted)">Chuyên mục được gán trong EmDash Admin → Bản tin.</span>
+		</div>
+		{
+			posts.length === 0 ? (
+				<p class="empty">
+					Chưa có bài viết. <a href="/_emdash/admin/content/posts/new">Tạo bài viết đầu tiên</a>.
+				</p>
+			) : (
+				<>
+					<div style="display:grid;grid-template-columns:1.4fr 1fr;gap:22px;margin-bottom:34px" class="news-lead">
+						<a class="card" href={titleOf(featured.id)}>
+							<div
+								class="thumb"
+								style={`height:260px;background-image:${featured.data.featured_image?.src ? `url('${featured.data.featured_image.src}'),` : ""}linear-gradient(135deg,#7a0e14,#E11923)`}
+							>
+								<span class="cat">NỔI BẬT</span>
+							</div>
+							<div class="body">
+								<h2 style="font-size:20px">{featured.data.title}</h2>
+								{featured.data.excerpt && <p style="font-size:13px;color:var(--muted);margin:8px 0">{featured.data.excerpt}</p>}
+								<div class="meta">
+									{featured.data.publishedAt && <span>{featured.data.publishedAt.toLocaleDateString("vi-VN")}</span>}
+									<span>· {categoryOf(featured)}</span>
+								</div>
+							</div>
+						</a>
+						<div style="display:flex;flex-direction:column;gap:14px">
+							{rest.slice(0, 3).map((post) => (
+								<a class="card" href={titleOf(post.id)} style="display:flex">
+									<div
+										class="thumb"
+										style={`width:130px;height:100%;flex:0 0 130px;background-image:${post.data.featured_image?.src ? `url('${post.data.featured_image.src}'),` : ""}linear-gradient(135deg,#0a5a61,#0E7C86)`}
+									/>
+									<div class="body">
+										<span class="tag">{categoryOf(post)}</span>
+										<h3 style="margin-top:8px">{post.data.title}</h3>
+										<div class="meta">{post.data.publishedAt && <span>{post.data.publishedAt.toLocaleDateString("vi-VN")}</span>}</div>
+									</div>
+								</a>
+							))}
+						</div>
+					</div>
+					{rest.length > 3 && (
+						<div class="grid-3">
+							{rest.slice(3).map((post) => (
+								<a class="card" href={titleOf(post.id)}>
+									<div
+										class="thumb"
+										style={`background-image:${post.data.featured_image?.src ? `url('${post.data.featured_image.src}'),` : ""}linear-gradient(135deg,#B00D18,#FF6B57)`}
+									>
+										<span class="cat">{categoryOf(post).toUpperCase()}</span>
+									</div>
+									<div class="body">
+										<h3>{post.data.title}</h3>
+										<div class="meta">{post.data.publishedAt && <span>{post.data.publishedAt.toLocaleDateString("vi-VN")}</span>}</div>
+									</div>
+								</a>
+							))}
+						</div>
+					)}
+				</>
+			)
+		}
+	</section>
+	<style>
+		@media (max-width: 900px) {
+			.news-lead {
+				grid-template-columns: 1fr !important;
+			}
+		}
+	</style>
+</Base>

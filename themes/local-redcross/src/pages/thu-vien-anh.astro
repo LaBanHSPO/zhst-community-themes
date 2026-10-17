@@ -1,0 +1,76 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../layouts/Base.astro";
+
+const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
+	orderBy: { published_at: "desc" },
+	limit: 30,
+});
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const hue = ["#7a0e14,#E11923", "#0a5a61,#0E7C86", "#c24a1a,#FF6B57", "#B00D18,#E8A317"];
+const items = posts.map((post, index) => ({
+	title: post.data.title,
+	src: post.data.featured_image?.src,
+	category: post.data.terms?.category?.[0]?.label ?? "Bản tin",
+	date: post.data.publishedAt,
+	hue: hue[index % hue.length],
+}));
+const withImages = items.filter((item) => item.src);
+---
+
+<Base title="Thư viện ảnh">
+	<div class="page-hero">
+		<h1>Thư viện ảnh</h1>
+		<p>Hình ảnh hoạt động, sự kiện và chiến dịch của Hội Chữ thập đỏ.</p>
+	</div>
+	<section>
+		{
+			items.length === 0 ? (
+				<p class="empty">Chưa có nội dung. Ảnh được lấy từ ảnh đại diện của bài viết trong Bản tin.</p>
+			) : (
+				<>
+					<div class="sec-head">
+						<div><h2>Album theo bài viết</h2><p>Ảnh đại diện của mỗi bản tin</p></div>
+					</div>
+					<div class="album-grid">
+						{items.map((item) => (
+							<a class="album" href="/ban-tin">
+								<div
+									class="cover"
+									style={`background-image:${item.src ? `url('${item.src}'),` : ""}linear-gradient(135deg,${item.hue})`}
+								/>
+								<div class="info">
+									<b>{item.title}</b>
+									<span>
+										{item.category}
+										{item.date ? ` · ${item.date.toLocaleDateString("vi-VN")}` : ""}
+									</span>
+								</div>
+							</a>
+						))}
+					</div>
+					{
+						withImages.length > 0 && (
+							<>
+								<div class="sec-head" style="margin-top:64px">
+									<div><h2>Khoảnh khắc</h2><p>Ảnh từ các hoạt động gần đây</p></div>
+								</div>
+								<div class="gallery">
+									{withImages.map((item) => (
+										<div
+											class="g"
+											style={`height:${[200, 150, 180, 160, 190][withImages.indexOf(item) % 5]}px;background-image:url('${item.src}')`}
+										>
+											<span>{item.title}</span>
+										</div>
+									))}
+								</div>
+							</>
+						)
+					}
+				</>
+			)
+		}
+	</section>
+</Base>

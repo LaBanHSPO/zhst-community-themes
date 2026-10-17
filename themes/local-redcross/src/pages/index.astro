@@ -1,0 +1,163 @@
+---
+import { getEmDashCollection, getSiteSettings } from "emdash";
+import Base from "../layouts/Base.astro";
+import FundSummary from "../components/FundSummary.astro";
+import Leadership from "../components/Leadership.astro";
+import { resolveSiteIdentity } from "../utils/site-identity";
+import { getPublicFund, getPublicDocuments, formatCompactVnd } from "../utils/chapter-api";
+import { leaders } from "../utils/leadership";
+
+const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
+	orderBy: { published_at: "desc" },
+	limit: 4,
+});
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const { siteTitle, siteTagline } = resolveSiteIdentity(await getSiteSettings());
+const [fund, documents] = await Promise.all([
+	getPublicFund(Astro.url),
+	getPublicDocuments(Astro.url),
+]);
+
+const featured = posts.slice(0, 3);
+const gallery = posts.map((post, index) => ({
+	title: post.data.title,
+	src: post.data.featured_image?.src,
+	hue: ["#7a0e14,#E11923", "#0a5a61,#0E7C86", "#c24a1a,#FF6B57", "#B00D18,#E8A317"][index % 4],
+}));
+const titleOf = (slug: string | null) => (slug ? `/ban-tin/${slug}` : "/ban-tin");
+---
+
+<Base title={siteTitle} description={siteTagline}>
+	<div class="hero">
+		<div class="glow"></div>
+		<svg class="cross-deco" viewBox="0 0 48 48" aria-hidden="true">
+			<path d="M20 10h8v8h8v8h-8v12h-8V26h-8v-8h8z" fill="#fff"></path>
+		</svg>
+		<div class="hero-inner">
+			<div>
+				<span class="eyebrow"><span class="live"></span>Minh bạch quỹ đã công khai</span>
+				<h1>Vì mỗi giọt máu,<br /><em>một sự sống</em> được hồi sinh</h1>
+				<p>
+					Hội Chữ thập đỏ kết nối cộng đồng — hiến máu nhân đạo, cứu trợ thiên tai và chăm sóc
+					người yếu thế, với dữ liệu minh bạch và truyền thông tới từng người dân.
+				</p>
+				<div class="hero-cta">
+					<a class="btn btn-red" href="/quy">Ủng hộ quỹ →</a>
+					<a class="btn btn-ghost" href="/lien-he">Tham gia hội viên</a>
+				</div>
+			</div>
+			<div class="hero-card">
+				<div class="mini"><span>Quỹ đã huy động</span><span>{fund ? formatCompactVnd(fund.totals.totalInMinor) : "—"}</span></div>
+				<div class="bar-track">
+					<i style={`width:${fund && fund.totals.totalOutMinor > 0 ? Math.min(100, Math.round((fund.totals.totalOutMinor / Math.max(1, fund.totals.totalInMinor)) * 100)) : 100}%`}></i>
+				</div>
+				<div class="mini"><span>Tổng thu (đã duyệt)</span><span>{fund ? formatCompactVnd(fund.totals.totalInMinor) : "—"}</span></div>
+				<div class="mini"><span>Tổng chi (đã duyệt)</span><span>{fund ? formatCompactVnd(fund.totals.totalOutMinor) : "—"}</span></div>
+				<div class="mini" style="margin-top:14px;border-top:1px solid rgba(255,255,255,.2);padding-top:12px">
+					<span>Số dư hiện tại</span><span>{fund ? formatCompactVnd(fund.totals.balanceMinor) : "—"}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="stats">
+		<div class="stat"><b class="g">{fund ? formatCompactVnd(fund.totals.totalInMinor) : "—"}</b><span>Tổng thu đã duyệt</span></div>
+		<div class="stat"><b class="r">{fund ? formatCompactVnd(fund.totals.totalOutMinor) : "—"}</b><span>Tổng chi đã duyệt</span></div>
+		<div class="stat"><b>{fund ? formatCompactVnd(fund.totals.balanceMinor) : "—"}</b><span>Số dư quỹ hiện tại</span></div>
+		<div class="stat"><b>{documents ? documents.length : 0}</b><span>Văn bản công khai</span></div>
+	</div>
+
+	<section>
+		<div class="sec-head">
+			<div><h2>Hoạt động nổi bật</h2><p>Tin tức &amp; sự kiện mới nhất từ Hội</p></div>
+			<a class="u" href="/ban-tin">Xem tất cả →</a>
+		</div>
+		{
+			featured.length ? (
+				<div class="grid-3">
+					{featured.map((post) => (
+						<a class="card" href={titleOf(post.id)}>
+							<div
+								class="thumb"
+								style={`background-image:${
+									post.data.featured_image?.src
+										? `url('${post.data.featured_image.src}'),`
+										: ""
+								}linear-gradient(135deg,#7a0e14,#E11923)`}
+							>
+								<span class="cat">
+									{post.data.terms?.category?.[0]?.label?.toUpperCase() ?? "BẢN TIN"}
+								</span>
+							</div>
+							<div class="body">
+								<h3>{post.data.title}</h3>
+								{post.data.excerpt && <p style="font-size:12.5px;color:var(--muted);margin-bottom:8px">{post.data.excerpt}</p>}
+								<div class="meta">
+									{post.data.publishedAt && (
+										<span>{post.data.publishedAt.toLocaleDateString("vi-VN")}</span>
+									)}
+								</div>
+							</div>
+						</a>
+					))}
+				</div>
+			) : (
+				<p class="empty">
+					Chưa có bài viết. <a href="/_emdash/admin/content/posts/new">Tạo bài viết đầu tiên</a>.
+				</p>
+			)
+		}
+	</section>
+
+	<section style="background:var(--slate);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+		<div class="sec-head">
+			<div><h2>Bộ máy lãnh đạo</h2><p>Ban Thường vụ nhiệm kỳ 2026–2031</p></div>
+			<a class="u" href="/bo-may">Xem sơ đồ đầy đủ →</a>
+		</div>
+		<Leadership leaders={leaders.slice(0, 3)} />
+	</section>
+
+	<section>
+		<div class="sec-head">
+			<div><h2>Quỹ &amp; Minh bạch tài chính</h2><p>Số liệu được cập nhật và kiểm toán định kỳ</p></div>
+			<a class="u" href="/quy">Xem báo cáo chi tiết →</a>
+		</div>
+		<FundSummary fund={fund} />
+	</section>
+
+	{
+		gallery.length > 0 && (
+			<section style="background:var(--slate);border-top:1px solid var(--line)">
+				<div class="sec-head">
+					<div><h2>Bản tin hình ảnh</h2><p>Khoảnh khắc hoạt động của Hội</p></div>
+					<a class="u" href="/thu-vien-anh">Mở thư viện →</a>
+				</div>
+				<div class="gallery">
+					{gallery.map((item) => (
+						<div
+							class="g"
+							style={`height:${
+								[180, 130, 150, 160][gallery.indexOf(item) % 4]
+							}px;background-image:${item.src ? `url('${item.src}'),` : ""}linear-gradient(135deg,${item.hue})`}
+						>
+							<span>{item.title}</span>
+						</div>
+					))}
+				</div>
+			</section>
+		)
+	}
+
+	<section>
+		<div class="cta-strip">
+			<div>
+				<h2>Chung tay vì cộng đồng nhân ái</h2>
+				<p>Mỗi đóng góp của bạn được ghi nhận, công khai và chuyển đến đúng người cần.</p>
+			</div>
+			<div style="display:flex;gap:12px">
+				<a class="btn btn-line" href="/quy">Quyên góp ngay</a>
+				<a class="btn btn-ghost" href="/lien-he">Đăng ký hội viên</a>
+			</div>
+		</div>
+	</section>
+</Base>
