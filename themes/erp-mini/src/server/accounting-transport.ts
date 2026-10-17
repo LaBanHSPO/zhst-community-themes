@@ -102,7 +102,7 @@ export function createAccountingEndpoint(runtime: AccountingRuntime): APIRoute {
       }
       const input = validateAccountingActionInput(action, await inputBody(request, definition.maxBytes));
       const source = await runtime.source(user.id);
-      await source.checkCurrency(action === 'configure-book', action === 'info');
+      await source.checkCurrency(action === 'configure-book' || action === 'hkd-configure', action === 'info' || action === 'hkd-info');
       return response({ success: true, data: await runtime.execute(action, input, user.id, source) });
     } catch (error) {
       if (error instanceof TransportError) {
