@@ -8,9 +8,15 @@ async function getData<T>(origin: URL, path: string): Promise<T | null> {
 			headers: { accept: "application/json" },
 		});
 		if (!response.ok) return null;
-		const result = (await response.json()) as { ok?: boolean; data?: T };
-		if (!result || result.ok !== true || !("data" in result) || result.data === undefined) return null;
-		return result.data;
+		const payload = (await response.json()) as unknown;
+		const outer = payload as { success?: boolean; data?: unknown };
+		const envelope = (outer && typeof outer === "object" && "success" in outer ? outer.data : payload) as
+			| { ok?: boolean; data?: T }
+			| undefined;
+		if (!envelope || envelope.ok !== true || !("data" in envelope) || envelope.data === undefined) {
+			return null;
+		}
+		return envelope.data;
 	} catch {
 		return null;
 	}
