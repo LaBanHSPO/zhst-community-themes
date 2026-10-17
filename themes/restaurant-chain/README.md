@@ -69,7 +69,10 @@ SePay remains an external payment/invoice provider. Its QR image service is also
 `/order/<table-token>` shows the branch menu, a basket with size/topping options and a
 note, and a live status view. From the status view a guest can **Gọi nhân viên** (call a
 waiter) or **Yêu cầu tính tiền** (request the bill); each request is deduplicated per
-visit and surfaced to floor staff, who mark it handled. When the browser loses
+visit and surfaced to floor staff, who mark it handled. If a menu price changes after the
+guest started choosing, the submission is refused and the basket is refreshed with the
+new prices for the guest to confirm, so nobody is charged a price they did not see. When
+the browser loses
 connectivity the table surface shows a notice that unsent actions are retried once the
 connection returns. A dish the kitchen marks sold out is shown faded with a **Hết món**
 badge, its price struck through, and cannot be added to the basket.
