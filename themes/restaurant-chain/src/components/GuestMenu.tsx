@@ -42,7 +42,7 @@ function MenuDish({
 			.filter((modifier) => modifiers.includes(modifier.id))
 			.reduce((sum, modifier) => sum + modifier.price, 0);
 	return (
-		<article className="restaurant-dish">
+		<article className="restaurant-dish" data-available={item.available ? "true" : "false"}>
 			{image && (
 				<img
 					src={image}
@@ -59,6 +59,7 @@ function MenuDish({
 					<h3>{item.name}</h3>
 					<strong>{money(price, locale)}</strong>
 				</div>
+				{!item.available && <span className="restaurant-soldout">{t("unavailable")}</span>}
 				{item.description && <p>{item.description}</p>}
 				{item.modifiers.length > 0 && (
 					<fieldset className="restaurant-modifiers">
@@ -155,6 +156,7 @@ function GuestMenuContent({ tableToken }: { tableToken: string }) {
 	const [view, setView] = useState<"menu" | "basket" | "status">("menu");
 	const [revision, setRevision] = useState(0);
 	const [sent, setSent] = useState(false);
+	const [priceChanged, setPriceChanged] = useState(false);
 	const pinnedSubmission = useRef<{ signature: string; version: number } | undefined>(undefined);
 	const join = useCommand();
 	const submit = useCommand();
@@ -179,6 +181,21 @@ function GuestMenuContent({ tableToken }: { tableToken: string }) {
 		)
 			pinnedSubmission.current = undefined;
 	}, [submit.error]);
+	useEffect(() => {
+		if (submit.error instanceof RestaurantRequestError && submit.error.code === "PRICE_CHANGED") {
+			setPriceChanged(true);
+			refresh();
+		}
+	}, [submit.error, refresh]);
+	useEffect(() => {
+		if (!priceChanged || !menu) return;
+		setBasket((current) =>
+			current.map((line) => {
+				const item = menu.items.find((candidate) => candidate.id === line.item.id);
+				return item ? { ...line, item } : line;
+			}),
+		);
+	}, [menu, priceChanged]);
 	useEffect(() => {
 		try {
 			const saved = sessionStorage.getItem(`restaurant-visit:${tableToken}`);
@@ -297,6 +314,11 @@ function GuestMenuContent({ tableToken }: { tableToken: string }) {
 			menuItemId: line.item.id,
 			quantity: line.quantity,
 			modifierIds: line.modifierIds,
+			expectedUnitPrice:
+				line.item.price +
+				line.item.modifiers
+					.filter((modifier) => line.modifierIds.includes(modifier.id))
+					.reduce((extra, modifier) => extra + modifier.price, 0),
 		}));
 		const signature = JSON.stringify({ token, note, lines });
 		if (pinnedSubmission.current?.signature !== signature)
@@ -311,6 +333,7 @@ function GuestMenuContent({ tableToken }: { tableToken: string }) {
 		pinnedSubmission.current = undefined;
 		setBasket([]);
 		setNote("");
+		setPriceChanged(false);
 		setSent(true);
 		setView("status");
 		refresh();
@@ -526,6 +549,11 @@ function GuestMenuContent({ tableToken }: { tableToken: string }) {
 											<strong>{t("total")}</strong>
 											<strong>{money(total, locale)}</strong>
 										</div>
+										{priceChanged && (
+											<p role="status" className="restaurant-offline">
+												{t("priceChanged")}
+											</p>
+										)}
 										<p className="restaurant-muted">{t("estimate")}</p>
 										<Failure error={submit.error} />
 										<Button type="submit" variant="primary" disabled={!canOrder || submit.pending}>
