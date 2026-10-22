@@ -1,0 +1,9 @@
+---
+// Original open-book brand mark. It inherits the brand accent through currentColor.
+interface Props { size?: number }
+const { size = 30 } = Astro.props;
+---
+<svg class="brand-mark-svg" width={size} height={size} viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+  <path d="M4 6.5c4.2-.9 8 .1 11 2.6V27c-3-2.3-6.8-3.2-11-2.4Z" fill="currentColor" />
+  <path d="M28 6.5c-4.2-.9-8 .1-11 2.6V27c3-2.3 6.8-3.2 11-2.4Z" fill="currentColor" opacity=".62" />
+</svg>

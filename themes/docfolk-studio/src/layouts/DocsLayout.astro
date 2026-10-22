@@ -1,0 +1,270 @@
+---
+import type { PortalView } from '../lib/types';
+import Icon, { type IconName } from '../components/Icon.astro';
+import BrandMark from '../components/BrandMark.astro';
+import ThemeCredit from '../components/theme-credit.astro';
+import '../styles/docs.css';
+
+interface Props { view: PortalView }
+const { view } = Astro.props;
+const { company, companies, locale, docs, doc, html, headings, isFallback } = view;
+// Display order only: the company's default language first, then by code.
+const locales = [...view.locales].sort((a, b) => Number(b.code === company.default_language) - Number(a.code === company.default_language) || a.code.localeCompare(b.code));
+const defaults: Record<string, string> = {
+  documentation: 'Documentation', guides: 'Guides', apiReference: 'API reference', search: 'Search',
+  searchPlaceholder: 'Search documentation…', onThisPage: 'On this page', copyPage: 'Copy page',
+  copied: 'Copied', downloadOpenapi: 'Download OpenAPI', aiResources: 'AI resources',
+  company: 'Company', language: 'Language', menu: 'Browse documentation', overview: 'Overview',
+  gettingStarted: 'Getting started', resources: 'Resources', previous: 'Previous', next: 'Next',
+  noResults: 'No matching pages. Try a different term.', searchHint: 'Use ↑ ↓ to browse, Enter to open, Esc to close.',
+  source: 'Source', lightMode: 'Light mode', darkMode: 'Dark mode', skipToContent: 'Skip to content',
+  close: 'Close', copyCode: 'Copy code', copyFailed: 'Could not copy. Select and copy the text instead.',
+  loading: 'Loading documentation…', searchError: 'Search could not load. Please try again.', retry: 'Retry',
+  searchResults: 'Search results', sandbox: 'Sandbox', production: 'Production', environment: 'API environments',
+  apiVersion: 'API version', apiLanguage: 'API language', copyPrompt: 'Copy integration prompt',
+  aiDescription: 'Give Claude, Codex or Cursor the documentation and API schema for this company.',
+  markdown: 'View Markdown', allCompanies: 'All companies',
+  fallback: 'This page is not yet available in your selected language. Showing {language}.',
+};
+const t = (key: string) => locale.strings[key] || defaults[key] || key;
+const base = `/${encodeURIComponent(company.slug)}/${encodeURIComponent(locale.code)}`;
+const pageUrl = (key: string) => `${base}/${encodeURIComponent(key)}`;
+const localeUrl = (code: string) => `/${encodeURIComponent(company.slug)}/${encodeURIComponent(code)}/${encodeURIComponent(doc.doc_key)}`;
+const categoryKeys: Record<string, string> = {
+  'Getting started': 'gettingStarted', 'API reference': 'apiReference', Guides: 'guides', Resources: 'resources',
+};
+const categoryIcons: Record<string, IconName> = {
+  'Getting started': 'play', 'API reference': 'code', Guides: 'book', Resources: 'layers',
+};
+const docIcon = (key: string, category: string): IconName => key === 'overview' ? 'home'
+  : /(^|-)ai(-|$)/u.test(key) ? 'sparkles' : categoryIcons[category] || 'file';
+const groupNames = [...new Set(docs.map((item) => item.category))];
+const preferredOrder = Object.keys(categoryKeys);
+groupNames.sort((a, b) => {
+  const aIndex = preferredOrder.indexOf(a);
+  const bIndex = preferredOrder.indexOf(b);
+  return (aIndex < 0 ? preferredOrder.length : aIndex) - (bIndex < 0 ? preferredOrder.length : bIndex);
+});
+const orderedDocs = groupNames.flatMap((category) => docs.filter((item) => item.category === category).sort((a, b) => a.position - b.position));
+const currentIndex = orderedDocs.findIndex((item) => item.doc_key === doc.doc_key);
+const previous = orderedDocs[currentIndex - 1];
+const next = currentIndex >= 0 ? orderedDocs[currentIndex + 1] : undefined;
+const overview = docs.find((item) => item.doc_key === 'overview') || orderedDocs[0];
+const homeUrl = overview ? pageUrl(overview.doc_key) : base;
+const sourceLanguage = locales.find((item) => item.code === doc.language)?.title || doc.language;
+const visibleHeadings = headings.filter((heading) => heading.level >= 2 && heading.level <= 3);
+const isOverview = doc.doc_key === 'overview';
+// API fields are required on every company, so products without an API carry placeholders.
+// Show API version/environments only where the page carries endpoint or OpenAPI metadata.
+const hasApi = (item: typeof doc) => Boolean(item.method || item.path || item.operation);
+const pageHasApi = hasApi(doc);
+const companyHasApi = docs.some(hasApi);
+// Overview cards: one per category, linking to its first page other than the current one.
+const featureCards = isOverview ? groupNames.slice(0, 4).flatMap((category) => {
+  const target = orderedDocs.find((item) => item.category === category && item.doc_key !== doc.doc_key);
+  return target ? [{ category, icon: categoryIcons[category] || 'file', label: t(categoryKeys[category] || category), target }] : [];
+}) : [];
+const quickStart = isOverview ? [
+  ...(companyHasApi ? [{ id: 'sandbox', label: t('sandbox'), lines: [
+    `# ${company.title} ${company.api_version} · ${t('sandbox')}`,
+    `export BASE_URL="${company.sandbox_url}"`,
+    `export API_LANGUAGE="${locale.api_language}"`,
+    `curl -o ${company.slug}-openapi.json "${view.origin}${base}/openapi.json"`,
+  ] }] : []),
+  ...(companyHasApi ? [{ id: 'production', label: t('production'), lines: [
+    `# ${company.title} ${company.api_version} · ${t('production')}`,
+    `export BASE_URL="${company.production_url}"`,
+    `export API_LANGUAGE="${locale.api_language}"`,
+    `curl -o ${company.slug}-openapi.json "${view.origin}${base}/openapi.json"`,
+  ] }] : []),
+  { id: 'ai', label: t('aiResources'), lines: [
+    `# ${t('aiResources')} · ${locale.title}`,
+    `curl "${view.origin}${base}/llms.txt"`,
+    `curl "${view.origin}${base}/llms-full.txt"`,
+    `curl "${view.origin}${pageUrl(doc.doc_key)}.md"`,
+  ] },
+] : [];
+const prompt = `Help me integrate with ${company.title} (${company.api_version}).\nRead ${view.origin}${base}/llms.txt first, then ${view.origin}${base}/llms-full.txt and ${view.origin}${base}/openapi.json.\nUse only the documented endpoints, authentication, schemas and examples. Ask me about my application stack and the operation I need before writing code. Identify any documented limitations or inconsistencies. Keep credentials in environment variables, never in client-side code. Use the sandbox for examples; do not execute requests or change production data without my explicit approval.\nDocumentation locale: ${locale.code}. API language value: ${locale.api_language}.\nCurrent page: ${view.origin}${pageUrl(doc.doc_key)}.`;
+---
+<!doctype html>
+<html lang={locale.code} style={`--brand: ${company.accent}`}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content={doc.description} />
+    <title>{doc.title} · {company.title} {t('documentation')}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="text/markdown" href={`${pageUrl(doc.doc_key)}.md`} title={t('markdown')} />
+    <link rel="alternate" type="application/json" href={`${base}/openapi.json`} title="OpenAPI" />
+    <script is:inline>
+      try {
+        const saved = localStorage.getItem('docfolk-theme');
+        document.documentElement.dataset.theme = saved === 'dark' || saved === 'light' ? saved : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      } catch { document.documentElement.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+    </script>
+  </head>
+  <body data-docs-root data-base={base} data-copy-label={t('copyCode')} data-copied-label={t('copied')} data-copy-error={t('copyFailed')}>
+    <a class="skip-link" href="#main-content">{t('skipToContent')}</a>
+    <header class="site-header">
+      <a class="brand" href={homeUrl} aria-label={`${company.title} ${t('documentation')}`}>
+        <span class="brand-mark"><BrandMark /></span>
+        <span class="brand-copy"><strong>{company.title}</strong><span>{t('documentation')}</span></span>
+      </a>
+      <button class="search-trigger" type="button" data-search-open aria-label={t('search')} aria-haspopup="dialog" aria-controls="docs-search" aria-keyshortcuts="Control+k Meta+k" disabled>
+        <Icon name="search" /><span class="search-trigger-label">{t('searchPlaceholder')}</span><kbd data-search-shortcut>⌘ K</kbd>
+      </button>
+      <div class="header-controls">
+        <label class="context-select company-select"><span class="sr-only">{t('company')}</span><Icon name="building" size={16} /><select data-company-select aria-label={t('company')}>
+          {companies.map((item) => <option value={`/${encodeURIComponent(item.slug)}/${encodeURIComponent(item.default_language)}/overview`} selected={item.slug === company.slug}>{item.title}</option>)}
+        </select><Icon name="chevron" size={14} /></label>
+        <label class="context-select locale-select"><span class="sr-only">{t('language')}</span><Icon name="globe" size={17} /><select data-locale-select aria-label={t('language')}>
+          {locales.map((item) => <option value={localeUrl(item.code)} selected={item.code === locale.code} lang={item.code}>{item.title}</option>)}
+        </select><Icon name="chevron" size={14} /></label>
+      </div>
+      <button class="icon-button theme-toggle" type="button" data-theme-toggle data-light-label={t('lightMode')} data-dark-label={t('darkMode')} aria-label={t('darkMode')} title={t('darkMode')} disabled>
+        <span class="theme-sun"><Icon name="sun" /></span><span class="theme-moon"><Icon name="moon" /></span>
+      </button>
+    </header>
+    <div class="docs-shell">
+      <details class="sidebar" data-sidebar open>
+        <summary class="sidebar-toggle" aria-label={t('menu')}><Icon name="menu" size={22} /><span class="sidebar-toggle-label">{t('menu')}</span></summary>
+        <div class="sidebar-body">
+          {pageHasApi && <div class="sidebar-heading"><span>{t('apiVersion')}</span><span class="version-badge">{company.api_version}</span></div>}
+          <nav class="sidebar-nav" aria-label={t('documentation')}>
+            {groupNames.map((category) => <section class="nav-group">
+              <h2>{t(categoryKeys[category] || category)}</h2>
+              <ul>{orderedDocs.filter((item) => item.category === category).map((item) => <li>
+                <a href={pageUrl(item.doc_key)} aria-current={item.doc_key === doc.doc_key ? 'page' : undefined}>
+                  {item.method
+                    ? <span class="method-badge" data-method={item.method.toUpperCase()}>{item.method.toUpperCase()}</span>
+                    : <span class="nav-icon"><Icon name={docIcon(item.doc_key, item.category)} size={18} /></span>}
+                  <span class="nav-label">{item.title}</span>
+                  <span class="nav-chevron"><Icon name="chevron" size={16} /></span>
+                </a>
+              </li>)}</ul>
+            </section>)}
+          </nav>
+          <div class="sidebar-resources">
+            <a href={`${base}/openapi.json`} download={`${company.slug}-openapi.json`}><span class="nav-icon"><Icon name="download" /></span>{t('downloadOpenapi')}</a>
+            <a href={`${base}/llms.txt`}><span class="nav-icon"><Icon name="sparkles" /></span>llms.txt</a>
+            <a href="/llms.txt"><span class="nav-icon"><Icon name="building" /></span>{t('allCompanies')}</a>
+          </div>
+          <div class="sidebar-context">
+            <label class="context-select company-select"><span class="sr-only">{t('company')}</span><Icon name="building" size={16} /><select data-company-select aria-label={t('company')}>
+              {companies.map((item) => <option value={`/${encodeURIComponent(item.slug)}/${encodeURIComponent(item.default_language)}/overview`} selected={item.slug === company.slug}>{item.title}</option>)}
+            </select><Icon name="chevron" size={14} /></label>
+            <nav class="sidebar-languages" aria-label={t('language')}>
+              <Icon name="globe" size={17} />
+              {locales.map((item) => <a href={localeUrl(item.code)} lang={item.code} hreflang={item.code} aria-label={item.title} title={item.title} aria-current={item.code === locale.code ? 'true' : undefined}>{item.code.toUpperCase()}</a>)}
+            </nav>
+          </div>
+          <div class="sidebar-art" aria-hidden="true">
+            <svg viewBox="0 0 200 120" width="200" height="120" focusable="false">
+              <rect x="18" y="26" width="92" height="84" rx="8" fill="var(--accent-soft)" transform="rotate(-8 64 68)" />
+              <rect x="40" y="18" width="92" height="88" rx="8" fill="var(--panel)" stroke="var(--line-strong)" />
+              <path d="M56 40h52M56 52h60M56 64h44M56 76h56" stroke="var(--line-strong)" stroke-width="5" stroke-linecap="round" />
+              <path d="M120 34l52 14v64l-52-14Z" fill="var(--accent)" opacity=".85" />
+            </svg>
+          </div>
+          <noscript><div class="no-script-navigation">
+            <h2>{t('company')}</h2>{companies.map((item) => <a href={`/${encodeURIComponent(item.slug)}/${encodeURIComponent(item.default_language)}/overview`}>{item.title}</a>)}
+            <h2>{t('language')}</h2>{locales.map((item) => <a href={localeUrl(item.code)} lang={item.code}>{item.title}</a>)}
+          </div></noscript>
+        </div>
+      </details>
+      <main id="main-content" class="main-content" tabindex="-1">
+        <nav class="breadcrumbs" aria-label={t('documentation')}>
+          <a href={homeUrl}>{t('documentation')}</a><Icon name="chevron" size={13} />
+          <span>{t(categoryKeys[doc.category] || doc.category)}</span>
+          {!isOverview && <><Icon name="chevron" size={13} /><span aria-current="page" lang={doc.language}>{doc.title}</span></>}
+          {pageHasApi && <span class="version-badge">{company.api_version}</span>}
+        </nav>
+        <header class="page-header">
+          <h1 lang={doc.language}>{doc.title}</h1>
+          {doc.description && <p class="page-description" lang={doc.language}>{doc.description}</p>}
+          <div class="page-actions">
+            <button class="button button-secondary" type="button" data-copy-url={`${pageUrl(doc.doc_key)}.md`} disabled><Icon name="copy" size={16} /><span>{t('copyPage')}</span></button>
+            <a class="text-link" href={`${pageUrl(doc.doc_key)}.md`}><Icon name="code" size={16} />{t('markdown')}</a>
+          </div>
+        </header>
+        {isFallback && <aside class="fallback-notice" role="note"><Icon name="info" /><div><p>{t('fallback').replace('{language}', sourceLanguage)}</p><span>{t('source')}: <strong lang={doc.language}>{sourceLanguage}</strong></span></div></aside>}
+        {featureCards.length > 1 && <nav class="feature-cards" aria-label={t('gettingStarted')}>
+          {featureCards.map((card) => <a class="feature-card" href={pageUrl(card.target.doc_key)}>
+            <span class="feature-icon"><Icon name={card.icon} size={26} /></span>
+            <strong>{card.label}</strong>
+            <span class="feature-caption" lang={card.target.language}>{card.target.title}</span>
+          </a>)}
+        </nav>}
+        {quickStart.length > 0 && <section class="quick-start" aria-labelledby="quick-start-heading">
+          <h2 id="quick-start-heading">{t('gettingStarted')}</h2>
+          <div class="tabbed-code" data-tabs>
+            <div class="tabbed-code-bar">
+              <div class="tab-list" role="tablist" aria-labelledby="quick-start-heading">
+                {quickStart.map((tab, index) => <button type="button" role="tab" id={`qs-tab-${tab.id}`} aria-controls={`qs-panel-${tab.id}`} aria-selected={index === 0 ? 'true' : 'false'} tabindex={index === 0 ? 0 : -1}>{tab.label}</button>)}
+              </div>
+              <button class="code-copy tab-copy" type="button" data-tabs-copy disabled><Icon name="copy" size={15} /><span>{t('copyCode')}</span></button>
+            </div>
+            {quickStart.map((tab) => <div class="tab-panel" role="tabpanel" id={`qs-panel-${tab.id}`} aria-labelledby={`qs-tab-${tab.id}`} tabindex="0">
+              <pre class="numbered"><code>{tab.lines.map((line, index) => <><span class="code-line">{line}</span>{index < tab.lines.length - 1 ? '\n' : ''}</>)}</code></pre>
+            </div>)}
+          </div>
+        </section>}
+        {doc.method && doc.path && <div class="endpoint-signature"><span class="method-badge" data-method={doc.method.toUpperCase()}>{doc.method.toUpperCase()}</span><code>{doc.path}</code></div>}
+        {pageHasApi && <details class="environment-panel">
+          <summary><Icon name="globe" size={17} /><span>{t('environment')}</span><span class="environment-summary">{company.api_version} · {locale.api_language}</span><Icon name="chevron" size={14} /></summary>
+          <div class="environment-content">
+            <dl><div><dt>{t('sandbox')}</dt><dd><code>{company.sandbox_url}</code></dd></div><div><dt>{t('production')}</dt><dd><code>{company.production_url}</code></dd></div><div><dt>{t('apiVersion')}</dt><dd>{company.api_version}</dd></div><div><dt>{t('apiLanguage')}</dt><dd><code>{locale.api_language}</code></dd></div></dl>
+          </div>
+        </details>}
+        {visibleHeadings.length > 0 && <details class="mobile-toc"><summary>{t('onThisPage')}<Icon name="chevron" size={14} /></summary><nav aria-label={t('onThisPage')}><ul>{visibleHeadings.map((heading) => <li class:list={{ 'toc-nested': heading.level === 3 }}><a href={`#${heading.id}`} lang={doc.language}>{heading.text}</a></li>)}</ul></nav></details>}
+        <article class="prose" lang={doc.language} set:html={html} />
+        <section class="ai-panel" aria-labelledby="ai-heading">
+          <span class="ai-icon"><Icon name="export" size={24} /></span>
+          <div class="ai-heading"><h2 id="ai-heading">{t('aiResources')}</h2><p>{t('aiDescription')}</p></div>
+          <div class="ai-links"><a href={`${base}/llms.txt`}>llms.txt<Icon name="arrow" size={15} /></a><a href={`${base}/llms-full.txt`}>llms-full.txt<Icon name="arrow" size={15} /></a><a href={`${base}/openapi.json`}>openapi.json<Icon name="arrow" size={15} /></a></div>
+          <button class="button button-primary" type="button" data-copy-prompt disabled><Icon name="copy" size={16} /><span>{t('copyPrompt')}</span></button>
+          <details class="prompt-source"><summary>{t('source')}</summary><pre data-integration-prompt>{prompt}</pre></details>
+        </section>
+        {(previous || next) && <nav class="pagination" aria-label={`${t('previous')} / ${t('next')}`}>
+          {previous && <a href={pageUrl(previous.doc_key)} class="previous-page"><span><Icon name="arrow" size={16} />{t('previous')}</span><strong>{previous.title}</strong></a>}
+          {next && <a href={pageUrl(next.doc_key)} class="next-page"><span>{t('next')}<Icon name="arrow" size={16} /></span><strong>{next.title}</strong></a>}
+        </nav>}
+        <footer class="page-footer"><span>{company.title} · {t('documentation')}</span><a href="/llms.txt">{t('allCompanies')}<Icon name="arrow" size={14} /></a><ThemeCredit /></footer>
+      </main>
+      <aside class="right-rail">
+        <div class="right-rail-inner">
+          {visibleHeadings.length > 0 && <nav class="toc" aria-label={t('onThisPage')}><h2>{t('onThisPage')}</h2><ul>{visibleHeadings.map((heading) => <li class:list={{ 'toc-nested': heading.level === 3 }}><a href={`#${heading.id}`} data-toc-link lang={doc.language}>{heading.text}</a></li>)}</ul></nav>}
+          {locales.length > 1 && <nav class="rail-languages" aria-labelledby="rail-languages-heading">
+            <h2 id="rail-languages-heading"><Icon name="globe" size={16} />{t('language')}</h2>
+            <ul>{locales.map((item) => <li><a href={localeUrl(item.code)} lang={item.code} hreflang={item.code} aria-current={item.code === locale.code ? 'true' : undefined}>{item.title}</a></li>)}</ul>
+          </nav>}
+          <div class="rail-card">
+            <span class="rail-card-icon"><Icon name="export" size={22} /></span>
+            <h2>{t('aiResources')}</h2>
+            <p>{t('aiDescription')}</p>
+            <ul class="rail-card-links">
+              <li><a href={`${pageUrl(doc.doc_key)}.md`}><Icon name="book" size={15} />{t('markdown')}</a></li>
+              <li><a href={`${base}/llms.txt`}><Icon name="code" size={15} />llms.txt</a></li>
+              <li><a href={`${base}/openapi.json`} download={`${company.slug}-openapi.json`}><Icon name="download" size={15} />OpenAPI</a></li>
+            </ul>
+            <a class="rail-card-more" href="#ai-heading"><span>{t('copyPrompt')}</span><Icon name="arrow" size={16} /></a>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <dialog id="docs-search" class="search-dialog" aria-labelledby="search-title" data-search-dialog data-loading={t('loading')} data-empty={t('noResults')} data-error={t('searchError')} data-results-label={t('searchResults')}>
+      <div class="search-dialog-heading"><h2 id="search-title">{t('search')}</h2><button class="icon-button" type="button" data-search-close aria-label={t('close')}><Icon name="close" /></button></div>
+      <p class="search-scope">{company.title}<span aria-hidden="true"> / </span><span lang={locale.code}>{locale.title}</span></p>
+      <form class="search-form" role="search"><label class="sr-only" for="search-input">{t('searchPlaceholder')}</label><Icon name="search" /><input id="search-input" type="search" placeholder={t('searchPlaceholder')} autocomplete="off" spellcheck="false" aria-controls="search-results" aria-describedby="search-keyboard-hint" /></form>
+      <p class="search-status" data-search-status role="status" aria-live="polite"></p>
+      <button class="button button-secondary search-retry" type="button" data-search-retry hidden>{t('retry')}</button>
+      <ul class="search-results" id="search-results" aria-label={t('searchResults')}></ul>
+      <div class="search-dialog-footer" id="search-keyboard-hint">{t('searchHint')}</div>
+    </dialog>
+    <div class="copy-status sr-only" role="status" aria-live="polite" data-copy-status></div>
+    <script>
+      import '../scripts/docs';
+    </script>
+  </body>
+</html>

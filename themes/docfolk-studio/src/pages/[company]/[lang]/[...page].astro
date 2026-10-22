@@ -1,0 +1,33 @@
+---
+import DocsLayout from "../../../layouts/DocsLayout.astro";
+import { loadPortal } from "../../../lib/data";
+import { llmsIndex, markdownDocument, openApi, pageUrl } from "../../../lib/model";
+import { renderDocument } from "../../../lib/render";
+
+const { company = "", lang = "", page = "overview" } = Astro.params;
+const portal = await loadPortal(company, lang);
+if (!portal) return Astro.rewrite("/404");
+if (Astro.params.page === undefined) return Astro.redirect(pageUrl(portal.company, portal.locale, "overview"), 302);
+const { docs, locale } = portal;
+const origin = (Astro.site?.origin ?? Astro.url.origin);
+Astro.response.headers.set("Cache-Control", "no-store");
+Astro.response.headers.set("X-Content-Type-Options", "nosniff");
+const resource = (body: string, type: string) => new Response(body, { headers: {
+  "Content-Type": `${type}; charset=utf-8`, "Cache-Control": "no-store",
+  "X-Content-Type-Options": "nosniff", "Access-Control-Allow-Origin": "*",
+} });
+if (page === "llms.txt") return resource(llmsIndex(portal.company, locale, docs, origin), "text/plain");
+if (page === "llms-full.txt") return resource(docs.map(doc => markdownDocument(doc, portal.company, locale, origin)).join("\n\n---\n\n"), "text/plain");
+if (page === "openapi.json") return resource(JSON.stringify(openApi(portal.company, docs), null, 2), "application/json");
+if (page === "search.json") return resource(JSON.stringify(docs.map(doc => ({
+  title: doc.title, description: doc.description, doc_key: doc.doc_key, category: doc.category,
+  method: doc.method, path: doc.path, url: pageUrl(portal.company, locale, doc.doc_key), body: doc.body,
+}))), "application/json");
+const markdown = page.endsWith(".md");
+const key = markdown ? page.slice(0, -3) : page;
+const doc = docs.find(item => item.doc_key === key);
+if (!doc) return Astro.rewrite("/404");
+if (markdown) return resource(markdownDocument(doc, portal.company, locale, origin), "text/markdown");
+const view = { ...portal, doc, ...renderDocument(doc.body, locale), isFallback: doc.language !== lang, origin };
+---
+<DocsLayout view={view} />

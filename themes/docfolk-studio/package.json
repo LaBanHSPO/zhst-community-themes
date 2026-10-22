@@ -1,0 +1,35 @@
+{
+  "name": "docfolk-studio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": "^22.22.2 || ^24.15.0 || >=26.0.0" },
+  "emdash": { "label": "Docfolk Studio documentation", "seed": "seed/seed.json" },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "start": "node --env-file-if-exists=.env ./dist/server/entry.mjs",
+    "preview": "astro preview",
+    "typecheck": "astro check",
+    "seed:validate": "emdash seed --validate",
+    "test": "tsx --test tests/*.test.ts"
+  },
+  "dependencies": {
+    "@astrojs/node": "11.1.5",
+    "@astrojs/react": "6.0.5",
+    "astro": "7.3.5",
+    "beautiful-mermaid": "1.1.3",
+    "emdash": "1.2.0",
+    "marked": "18.1.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "sanitize-html": "2.18.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@types/node": "^24.0.0",
+    "@types/sanitize-html": "^2.16.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
