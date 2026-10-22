@@ -1,0 +1,212 @@
+---
+import { loadDirectory } from "../lib/data";
+import Icon from "../components/Icon.astro";
+import BrandMark from "../components/BrandMark.astro";
+import ThemeCredit from "../components/theme-credit.astro";
+import "../styles/docs.css";
+
+const directory = await loadDirectory();
+const { companies } = directory;
+const company = companies.find((item) => item.slug === "orbit") ?? companies.find((item) => directory.locales.some((locale) => locale.code === item.default_language)) ?? companies[0];
+const locales = [...directory.locales].sort((a, b) => Number(b.code === company?.default_language) - Number(a.code === company?.default_language) || a.code.localeCompare(b.code));
+const companyBase = company ? `/${encodeURIComponent(company.slug)}/${encodeURIComponent(company.default_language)}` : "";
+const docsUrl = company ? `${companyBase}/overview` : "/_emdash/admin/";
+const docsLabel = company ? "Get started free" : "Open CMS administration";
+const sourceUrl = "https://github.com/ZeroHostCMS/zhst-community-themes";
+const companyUrl = (slug: string, language: string) => `/${encodeURIComponent(slug)}/${encodeURIComponent(language)}/overview`;
+const cards = [
+  { icon: "book", title: "Guides", caption: "Step-by-step documentation", href: docsUrl },
+  { icon: "code", title: "API reference", caption: "OpenAPI 3.1 and endpoint examples", href: company ? `${companyBase}/openapi.json` : undefined },
+  { icon: "sparkles", title: "AI exports", caption: "Markdown and llms.txt for AI tools", href: company ? `${companyBase}/llms.txt` : "/llms.txt" },
+  { icon: "layers", title: "EmDash CMS", caption: "Native drafts, revisions and publishing", href: undefined },
+] as const;
+const features = [
+  ["Make it yours.", "Customize the logo, colors, navigation, and appearance to match your product."],
+  ["Publish on your domain.", "Give customers a documentation site that feels like part of your business."],
+  ["Explain with diagrams.", "Make workflows and integrations easier to understand with Mermaid diagrams."],
+  ["Reach more customers.", "Provide documentation in English, Khmer, Vietnamese, Lao, and Burmese, with room for more languages."],
+  ["Keep content current.", "Manage and update documentation from the ZeroHostCMS admin."],
+  ["Support AI-assisted integration.", "Publish clear, structured documentation for developers working with Claude, Codex, and Cursor."],
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="An open-source, customizable documentation platform for software teams and indie makers. Publish product guides and API documentation under your own brand and domain." />
+    <title>Docfolk Studio: open-source documentation platform</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline>
+      try {
+        const saved = localStorage.getItem('docfolk-theme');
+        document.documentElement.dataset.theme = saved === 'dark' || saved === 'light' ? saved : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      } catch { document.documentElement.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
+    </script>
+  </head>
+  <body class="studio-landing">
+    <a class="skip-link" href="#landing-main">Skip to content</a>
+    <header class="landing-header">
+      <a class="landing-brand" href="/"><span class="landing-mark"><BrandMark size={30} /></span><strong>Docfolk Studio</strong></a>
+      <nav class="landing-header-links" aria-label="Docfolk Studio">
+        <a href={sourceUrl}>View source code</a>
+        <a class="button button-primary" href={docsUrl}>{docsLabel}</a>
+      </nav>
+    </header>
+    <div class="landing-shell">
+      <aside class="landing-sidebar" aria-label="Directory">
+        <nav aria-label="Docfolk Studio">
+          <ul class="landing-nav">
+            <li><a href="#landing-main" aria-current="page"><Icon name="home" />Home</a></li>
+            {cards.map((card) => <li><a href={card.href ?? "#features"}><Icon name={card.icon} />{card.title}</a></li>)}
+          </ul>
+        </nav>
+        {companies.length > 0 && <nav class="landing-directory" aria-labelledby="landing-companies">
+          <h2 id="landing-companies"><Icon name="building" size={16} />Companies</h2>
+          <ul class="landing-nav">
+            {companies.map((item) => <li><a href={companyUrl(item.slug, item.default_language)}><span class="company-dot" style={`--dot: ${item.accent}`} aria-hidden="true"></span><span class="landing-nav-label">{item.title}</span><Icon name="chevron" size={16} /></a></li>)}
+          </ul>
+        </nav>}
+        {company && locales.length > 0 && <nav class="landing-languages" aria-label="Language">
+          <Icon name="globe" size={17} />
+          {locales.map((item) => <a href={companyUrl(company.slug, item.code)} lang={item.code} hreflang={item.code} aria-label={item.title} title={item.title}>{item.code.toUpperCase()}</a>)}
+        </nav>}
+      </aside>
+      <main id="landing-main" class="landing-main" tabindex="-1">
+        <section class="landing-hero" aria-labelledby="landing-title">
+          <p class="eyebrow">Open source · Your docs. Your brand.</p>
+          <h1 id="landing-title">Search documentation</h1>
+          {company ? <form class="landing-search" action={docsUrl} method="get" role="search">
+            <label class="sr-only" for="landing-search-input">Search guides, API, or topics</label>
+            <Icon name="search" size={20} />
+            <input id="landing-search-input" name="q" type="search" placeholder="Search guides, API, or topics…" autocomplete="off" spellcheck="false" maxlength="200" required />
+            <button class="button button-primary" type="submit">Search</button>
+          </form>
+          : <p class="landing-empty">No documentation is published yet. Open the CMS administration to import the sample content or publish a company.</p>}
+          {company && <p class="landing-scope">Searches <strong>{company.title}</strong> documentation. Choose another company from the directory.</p>}
+        </section>
+
+        <section id="features" class="landing-cards" aria-label="What Docfolk Studio publishes">
+          {cards.map((card) => {
+            const body = <><span class="landing-card-icon"><Icon name={card.icon} size={22} /></span><strong>{card.title}</strong><span>{card.caption}</span></>;
+            return card.href ? <a class="landing-card" href={card.href}>{body}</a> : <div class="landing-card">{body}</div>;
+          })}
+        </section>
+
+        <section class="landing-banner" aria-labelledby="banner-title">
+          <div class="landing-banner-copy">
+            <p class="landing-banner-brand"><BrandMark size={40} /><span id="banner-title">Docfolk Studio</span></p>
+            <p class="landing-banner-lead">Clear docs. Greater possibilities.</p>
+            <p>Open-source documentation for software teams and indie makers. Publish product guides and API documentation under your own brand and domain.</p>
+            <div class="landing-actions">
+              <a class="button landing-button-light" href={docsUrl}>{docsLabel}</a>
+              <a class="button landing-button-ghost" href={sourceUrl}>View source code</a>
+            </div>
+          </div>
+          <svg class="landing-banner-art" viewBox="0 0 320 200" aria-hidden="true" focusable="false">
+            <path d="M0 170C70 120 140 190 210 120S300 60 320 70" fill="none" stroke="rgb(140 160 255 / 45%)" stroke-width="2" />
+            <path d="M0 190C80 140 150 200 230 140S300 90 320 100" fill="none" stroke="rgb(140 160 255 / 25%)" stroke-width="2" />
+            <rect x="70" y="34" width="180" height="124" rx="12" fill="#e9ecff" />
+            <rect x="70" y="34" width="180" height="22" rx="12" fill="#c9d0ff" />
+            <circle cx="86" cy="45" r="3.5" fill="#7d8af0" /><circle cx="98" cy="45" r="3.5" fill="#7d8af0" /><circle cx="110" cy="45" r="3.5" fill="#7d8af0" />
+            <path d="M92 76h110M92 94h134M92 112h96M92 130h120" stroke="#aeb7f5" stroke-width="7" stroke-linecap="round" />
+            <rect x="232" y="88" width="56" height="56" rx="12" fill="#5b6cf0" />
+            <path d="m260 102 4 10 10 4-10 4-4 10-4-10-10-4 10-4Z" fill="#fff" />
+          </svg>
+        </section>
+
+        <section class="landing-features" aria-labelledby="features-title">
+          <h2 id="features-title">Documentation that fits your product</h2>
+          <p class="landing-section-lead">Bring product guides, API references, and visual workflows together in one place. Give your customers a clear path from getting started to completing an integration.</p>
+          <ul>{features.map(([title, text]) => <li><h3>{title}</h3><p>{text}</p></li>)}</ul>
+        </section>
+
+        <section class="landing-notes">
+          <div><h2>Start free on ZeroHostCMS</h2><p>Docfolk Studio is open source. Deploy on ZeroHostCMS for free.</p></div>
+          <div><h2>Docfolk AI: planned add-on</h2><p>Extend your documentation with an optional paid AI assistant. Docfolk AI will be offered separately from the open-source documentation platform.</p></div>
+        </section>
+        <footer class="landing-footer"><ThemeCredit /></footer>
+      </main>
+    </div>
+    <style>
+      .studio-landing { margin: 0; background: var(--surface); color: var(--ink); font-family: var(--sans); }
+      .landing-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); min-height: 68px; padding: var(--space-3) var(--space-4); background: var(--canvas); border-bottom: 1px solid var(--line); }
+      .landing-brand { display: inline-flex; align-items: center; gap: var(--space-3); min-height: 44px; }
+      .landing-brand strong { font-size: 1.2rem; font-weight: 780; letter-spacing: -.02em; }
+      .landing-mark { display: inline-grid; color: var(--accent); }
+      .landing-header-links { display: flex; align-items: center; gap: var(--space-4); font-size: .875rem; font-weight: 600; }
+      .landing-header-links > a:first-child { display: none; color: var(--muted); }
+      .landing-header-links > a:first-child:hover { color: var(--accent-ink); }
+      .landing-shell { display: flex; flex-direction: column-reverse; }
+      .landing-sidebar { padding: var(--space-6) var(--space-4); background: var(--canvas); border-top: 1px solid var(--line); }
+      .landing-nav { list-style: none; margin: 0; padding: 0; }
+      .landing-nav a { display: flex; align-items: center; gap: var(--space-3); min-height: 48px; padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); color: var(--ink); font-size: .9375rem; font-weight: 500; }
+      .landing-nav a > svg { color: var(--muted); }
+      .landing-nav a:hover { background: var(--surface-hover); }
+      .landing-nav a[aria-current='page'] { background: var(--accent-soft); color: var(--accent-ink); font-weight: 650; }
+      .landing-nav a[aria-current='page'] > svg { color: var(--accent); }
+      .landing-nav-label { flex: 1; min-width: 0; }
+      .company-dot { width: 10px; height: 10px; margin-inline: 6px; border-radius: 50%; background: var(--dot); flex-shrink: 0; }
+      .landing-directory { margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--line); }
+      .landing-directory h2 { display: flex; align-items: center; gap: var(--space-2); margin: 0 0 var(--space-2); padding-inline: var(--space-3); font-size: .75rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--subtle); }
+      .landing-languages { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-1); margin-top: var(--space-4); padding: var(--space-4) var(--space-3) 0; border-top: 1px solid var(--line); color: var(--muted); }
+      .landing-languages > svg { margin-right: var(--space-2); }
+      .landing-languages a { display: inline-flex; align-items: center; justify-content: center; min-width: 38px; min-height: 40px; border-radius: var(--radius-sm); font-size: .8125rem; font-weight: 650; }
+      .landing-languages a:hover { background: var(--surface-hover); color: var(--ink); }
+      .landing-main { min-width: 0; padding: var(--space-8) var(--space-4) 0; }
+      .landing-main:focus { outline: none; }
+      .landing-hero h1 { margin: var(--space-2) 0 var(--space-5); font-size: clamp(2.125rem, 5vw, 3rem); }
+      .landing-search { display: flex; align-items: center; gap: var(--space-3); max-width: 760px; padding: var(--space-1) var(--space-1) var(--space-1) var(--space-4); border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--panel); color: var(--muted); box-shadow: var(--shadow-card); }
+      .landing-search:focus-within { border-color: var(--accent); outline: 3px solid var(--accent-soft); }
+      .landing-search input { flex: 1; min-width: 0; min-height: 48px; border: 0; outline: none; background: transparent; color: var(--ink); font-size: 1rem; }
+      .landing-search input::placeholder { color: var(--subtle); }
+      .landing-search .button { min-width: 96px; min-height: 46px; font-size: .9375rem; }
+      .landing-scope, .landing-empty { margin: var(--space-3) 0 0; color: var(--muted); font-size: .875rem; }
+      .landing-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); margin-top: var(--space-8); }
+      .landing-card { display: flex; flex-direction: column; align-items: center; gap: var(--space-1); padding: var(--space-6) var(--space-3); border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); text-align: center; box-shadow: var(--shadow-sm); }
+      .landing-card strong { margin-top: var(--space-2); font-size: 1rem; font-weight: 700; }
+      .landing-card > span:last-child { color: var(--muted); font-size: .8125rem; line-height: 1.45; }
+      a.landing-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); box-shadow: var(--shadow-card); }
+      a.landing-card:hover strong { color: var(--accent-ink); }
+      .landing-card-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); }
+      .landing-banner { position: relative; display: grid; gap: var(--space-4); margin-top: var(--space-6); padding: var(--space-8) var(--space-6); overflow: hidden; border-radius: 16px; background: radial-gradient(120% 140% at 100% 100%, #2c3a9e 0%, #151c3f 45%, #0d1226 100%); color: #e8ebff; }
+      .landing-banner-copy { position: relative; z-index: 1; max-width: 30rem; }
+      .landing-banner-brand { display: flex; align-items: center; gap: var(--space-3); margin: 0 0 var(--space-3); color: #fff; font-size: clamp(1.75rem, 3.5vw, 2.25rem); font-weight: 800; letter-spacing: -.03em; }
+      .landing-banner-lead { margin: 0 0 var(--space-2); color: #fff; font-size: 1.125rem; font-weight: 650; }
+      .landing-banner p:not([class]) { margin: 0; color: #c3c9ea; font-size: .9375rem; line-height: 1.6; }
+      .landing-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
+      .landing-button-light { background: #fff; color: #151c3f; border-color: transparent; }
+      .landing-button-light:hover { background: #e9ecff; }
+      .landing-button-ghost { background: transparent; color: #fff; border-color: rgb(255 255 255 / 35%); }
+      .landing-button-ghost:hover { background: rgb(255 255 255 / 10%); }
+      .landing-banner-art { width: 100%; max-width: 360px; height: auto; justify-self: end; }
+      .landing-features { margin-top: var(--space-12); }
+      .landing-features h2, .landing-notes h2 { margin: 0 0 var(--space-2); font-size: 1.5rem; font-weight: 750; letter-spacing: -.02em; }
+      .landing-section-lead { max-width: 46rem; margin: 0 0 var(--space-6); color: var(--muted); }
+      .landing-features ul { display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); list-style: none; margin: 0; padding: 0; }
+      .landing-features li { padding: var(--space-5); border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
+      .landing-features h3 { margin: 0 0 var(--space-1); font-size: 1rem; }
+      .landing-features li p, .landing-notes p { margin: 0; color: var(--muted); font-size: .9375rem; line-height: 1.6; }
+      .landing-notes { display: grid; gap: var(--space-6); margin-top: var(--space-12); padding: var(--space-8) 0; border-top: 1px solid var(--line); }
+      .landing-notes h2 { font-size: 1.125rem; }
+      .landing-footer { padding: var(--space-4) 0 var(--space-8); border-top: 1px solid var(--line); color: var(--muted); }
+      @media (min-width: 640px) {
+        .landing-header { padding-inline: var(--space-8); }
+        .landing-header-links > a:first-child { display: inline; }
+        .landing-main { padding-inline: var(--space-8); }
+        .landing-notes { grid-template-columns: 1fr 1fr; }
+      }
+      @media (min-width: 900px) {
+        .landing-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); }
+        .landing-banner { grid-template-columns: minmax(0, 1fr) minmax(0, 340px); align-items: center; padding: var(--space-10); }
+      }
+      @media (min-width: 1024px) {
+        .landing-shell { display: grid; grid-template-columns: 264px minmax(0, 1fr); flex-direction: row; }
+        .landing-sidebar { position: sticky; top: 0; align-self: start; min-height: calc(100dvh - 68px); border-top: 0; border-right: 1px solid var(--line); }
+        .landing-directory .landing-nav a > svg:last-child { display: none; }
+        .landing-main { padding: var(--space-12) var(--space-12) 0; }
+      }
+    </style>
+  </body>
+</html>
