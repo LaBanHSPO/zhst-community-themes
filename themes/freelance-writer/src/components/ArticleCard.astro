@@ -1,0 +1,19 @@
+---
+import { articleHref, articleMeta, photoAlt, photoSrc } from "../lib/studio";
+import type { Article } from "../lib/studio";
+
+interface Props {
+	article: { data: Article; edit: Record<string, Record<string, unknown>> };
+	eager?: boolean;
+}
+const { article, eager = false } = Astro.props;
+const d = article.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<a class="card" href={articleHref(d)}>
+	{src && <img src={src} alt={photoAlt(d.image, d.photo, d.title)} width="664" height="340" loading={eager ? "eager" : "lazy"} />}
+	<span class="card-title" {...article.edit.title}>{d.title}</span>
+	<span class="card-meta">{articleMeta(d)}</span>
+	<span class="card-excerpt">{d.summary}</span>
+</a>

@@ -1,0 +1,163 @@
+---
+import Base from "../layouts/Base.astro";
+import { getServices, getStudio, telHref } from "../lib/studio";
+
+const [{ studio, cacheHint }, servicesResult] = await Promise.all([getStudio(), getServices()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(servicesResult.cacheHint);
+}
+const services = servicesResult.entries;
+
+// ?service=<slug> pre-selects a service (links from the home page and article pages).
+const wanted = Astro.url.searchParams.get("service");
+const selected = services.find((s) => (s.data.slug ?? s.data.id) === wanted);
+
+// Earliest selectable deadline is today in the site's timezone.
+const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Saigon" }).format(new Date());
+---
+
+<Base title="Contact" description="Tell me about the piece you have in mind: articles, copywriting, editing or ghostwriting. I reply personally, usually within two working days." current="/contact">
+	<div class="wrap contact">
+		<section aria-labelledby="contact-title">
+			<p class="label">Contact</p>
+			<h1 id="contact-title" class="display">Tell me about the piece you have in mind.</h1>
+			<p class="lede">
+				Who is it for, what should it do, and when do you need it? A message is not a commission until we have spoken and agreed the details.
+			</p>
+
+			<form
+				class="contact-form"
+				data-contact-form
+				data-email={studio.email}
+				action={studio.email ? `mailto:${studio.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field">
+						<label for="c-name">Your name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field full">
+						<label for="c-service">What do you need?</label>
+						<select id="c-service" name="service" required>
+							<option value="" selected={!selected}>Choose a service</option>
+							{services.map((s) => <option value={s.data.title} selected={selected?.data.id === s.data.id}>{s.data.title}</option>)}
+							<option value="Not sure yet">Not sure yet, please advise</option>
+						</select>
+						<span class="field-error" data-error-for="c-service"></span>
+					</div>
+					<div class="field full">
+						<label for="c-topic">The piece or project</label>
+						<input id="c-topic" name="topic" type="text" placeholder="e.g. 1,800-word feature on remote work" required />
+						<span class="field-error" data-error-for="c-topic"></span>
+					</div>
+					<div class="field">
+						<label for="c-deadline">Deadline <span class="optional">(optional)</span></label>
+						<input id="c-deadline" name="deadline" type="date" min={today} />
+					</div>
+					<div class="field">
+						<label for="c-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field full">
+						<label for="c-notes">More detail <span class="optional">(optional)</span></label>
+						<textarea id="c-notes" name="notes" rows="5" placeholder="Audience, length, tone, anything I should read first…"></textarea>
+					</div>
+				</div>
+				<button class="btn btn-block" type="submit"><span>Send message</span></button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{studio.email && <>Write to <a href={`mailto:${studio.email}`}>{studio.email}</a> with what you need and when.</>}
+					</noscript>
+				</p>
+			</form>
+		</section>
+
+		<aside class="contact-photo" aria-label="Direct contact">
+			<div class="contact-direct" style="margin-top: 0; border-top: 0; padding-top: 0">
+				<h2>Prefer to write or call?</h2>
+				<p>
+					{studio.email && <a href={`mailto:${studio.email}`}>{studio.email}</a>}
+					{studio.phone && <a href={telHref(studio.phone)}>{studio.phone}</a>}
+				</p>
+				{studio.response && <span class="small">{studio.response}</span>}
+				{studio.base && <span class="small">Based in {studio.base}</span>}
+				{studio.contact_note && <span class="small" style="margin-top: 10px">{studio.contact_note}</span>}
+			</div>
+			<img src="/images/notebook-pen.webp" alt="An open handwritten notebook with a black fountain pen" width="488" height="410" />
+		</aside>
+	</div>
+</Base>
+
+<script>
+	// Compose an enquiry email; the writer replies to it. Nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLSelectElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input[required], select[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? input.tagName === "SELECT"
+							? "Please choose an option."
+							: "Please fill this in."
+						: input.getAttribute("type") === "email"
+							? "Please enter a valid email address."
+							: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online messages are not available right now. Please call.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const subject = `${get("service")}: ${get("topic")}`;
+			const lines = [
+				"Hello,",
+				"",
+				"I would like to talk about a piece of writing:",
+				`Name: ${get("name")}`,
+				`Service: ${get("service")}`,
+				`Project: ${get("topic")}`,
+				get("deadline") ? `Deadline: ${get("deadline")}` : "",
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				get("notes") ? `More detail: ${get("notes")}` : "",
+				"",
+				"I understand this is only a commission once we have spoken and agreed the details.",
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this message ready to send. It is only sent when you send that email, and I reply personally. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

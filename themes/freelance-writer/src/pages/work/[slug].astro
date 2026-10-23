@@ -1,0 +1,87 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import ArticleCard from "../../components/ArticleCard.astro";
+import CommissionBand from "../../components/CommissionBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { categoryLabel, getArticles, getStudio, photoAlt, photoSrc } from "../../lib/studio";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: article, cacheHint } = await getEmDashEntry("articles", slug);
+if (!article) return Astro.rewrite("/404");
+
+const [allResult, studioResult, settings] = await Promise.all([getArticles(), getStudio(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(article, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const d = article.data;
+const cover = photoSrc(d.image, d.photo);
+const hasBody = Boolean(d.content && d.content.length > 0);
+const sameCategory = allResult.entries.filter((a) => a.data.id !== d.id && a.data.category === d.category);
+const others = [...sameCategory, ...allResult.entries.filter((a) => a.data.id !== d.id && a.data.category !== d.category)].slice(0, 3);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "articles", id: d.id, slug }}
+	current="/work"
+>
+	<header class="article-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/work">Work</a>
+				<span aria-hidden="true">/</span>
+				<a href={`/work?category=${d.category}`}>{categoryLabel(d.category)}</a>
+			</nav>
+			<h1 class="display" {...article.edit.title}>{d.title}</h1>
+			<p class="byline">
+				{d.publication && <span>{d.publication}</span>}
+				{d.date_label && <span>{d.date_label}</span>}
+				{d.read_minutes && <span>{d.read_minutes} min read</span>}
+			</p>
+			{cover && <div class="article-cover"><img src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="1200" height="560" fetchpriority="high" /></div>}
+		</div>
+	</header>
+
+	<section class="article-body">
+		<p class="article-summary">{d.summary}</p>
+		{
+			hasBody && (
+				<div class="prose">
+					<PortableText value={d.content} />
+				</div>
+			)
+		}
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="more" aria-labelledby="more-title">
+				<div class="wrap">
+					<p class="label">Keep reading</p>
+					<h2 id="more-title" class="display display-md" style="margin-bottom: 36px">More writing.</h2>
+					<ul class="work-grid">
+						{others.map((a) => <li><ArticleCard article={a} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<CommissionBand studio={studioResult.studio} />
+</Base>
