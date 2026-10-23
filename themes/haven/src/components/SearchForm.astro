@@ -1,0 +1,166 @@
+---
+/**
+ * Location / property type / budget search. A plain GET form to /search, so it
+ * works without JavaScript and results are shareable URLs.
+ */
+import Icon from "./Icon.astro";
+import { BUDGETS, LISTING_TYPES, PROPERTY_TYPES, type SearchCriteria } from "../utils/listing";
+
+interface Props {
+	locations: readonly string[];
+	criteria?: SearchCriteria;
+	/** "floating" overlaps the hero (home); "inline" sits in page flow. */
+	variant?: "floating" | "inline";
+	/** Accessible name for the search landmark. */
+	label?: string;
+}
+
+const { locations, criteria = {}, variant = "inline", label = "Search properties" } = Astro.props;
+const uid = `s${Math.random().toString(36).slice(2, 7)}`;
+const saleBudgets = BUDGETS.filter((b) => b.listing === "sale");
+const rentBudgets = BUDGETS.filter((b) => b.listing === "rent");
+// Keep an unknown typed location selectable so the form reflects the current query.
+const locationOptions =
+	criteria.location && !locations.includes(criteria.location)
+		? [...locations, criteria.location]
+		: locations;
+---
+
+<div role="search" class:list={["search", `search--${variant}`]} aria-label={label}>
+	<form action="/search" method="get" class="search-form">
+		<div class="search-field">
+			<Icon name="pin" size={24} class="search-icon" />
+			<label for={`${uid}-location`}>Location</label>
+			<select id={`${uid}-location`} name="location">
+				<option value="">Any location</option>
+				{locationOptions.map((loc) => <option value={loc} selected={criteria.location === loc}>{loc}</option>)}
+			</select>
+			<Icon name="chevron" size={18} class="search-chevron" />
+		</div>
+		<div class="search-field">
+			<Icon name="home" size={24} class="search-icon" />
+			<label for={`${uid}-type`}>Property type</label>
+			<select id={`${uid}-type`} name="type">
+				<option value="">Any type</option>
+				{
+					Object.entries(PROPERTY_TYPES).map(([value, text]) => (
+						<option value={value} selected={criteria.type === value}>{text}</option>
+					))
+				}
+			</select>
+			<Icon name="chevron" size={18} class="search-chevron" />
+		</div>
+		<div class="search-field">
+			<Icon name="coins" size={24} class="search-icon" />
+			<label for={`${uid}-budget`}>Budget</label>
+			<select id={`${uid}-budget`} name="budget">
+				<option value="">Any budget</option>
+				<optgroup label={LISTING_TYPES.sale}>
+					{saleBudgets.map((b) => <option value={b.id} selected={criteria.budget?.id === b.id}>{b.label}</option>)}
+				</optgroup>
+				<optgroup label={LISTING_TYPES.rent}>
+					{rentBudgets.map((b) => <option value={b.id} selected={criteria.budget?.id === b.id}>{b.label}</option>)}
+				</optgroup>
+			</select>
+			<Icon name="chevron" size={18} class="search-chevron" />
+		</div>
+		{criteria.listing && <input type="hidden" name="listing" value={criteria.listing} />}
+		<button class="btn search-submit" type="submit">
+			<Icon name="search" size={22} />
+			Search
+		</button>
+	</form>
+</div>
+
+<style>
+	.search {
+		display: block;
+		background: var(--paper);
+		border-radius: 6px;
+		box-shadow: var(--shadow);
+	}
+	.search--inline {
+		box-shadow: 0 1px 0 var(--line);
+		border: 1px solid var(--line);
+	}
+	.search-form {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+		align-items: center;
+		gap: 0;
+		padding: 0.85rem;
+	}
+	.search-field {
+		position: relative;
+		display: grid;
+		grid-template-columns: auto 1fr;
+		grid-template-rows: auto auto;
+		column-gap: 1rem;
+		align-items: center;
+		padding: 0.35rem 1.4rem;
+		border-right: 1px solid var(--line);
+		min-width: 0;
+	}
+	.search-field :global(.search-icon) {
+		grid-row: 1 / span 2;
+		color: var(--navy);
+	}
+	.search-field label {
+		font-size: 0.85rem;
+		font-weight: 500;
+		color: var(--ink);
+		line-height: 1.2;
+	}
+	.search-field select {
+		grid-column: 2;
+		appearance: none;
+		width: 100%;
+		min-height: 2rem;
+		border: 0;
+		background: transparent;
+		padding: 0 1.8rem 0 0;
+		margin-left: -2px;
+		font: inherit;
+		font-size: 0.98rem;
+		color: var(--muted);
+		cursor: pointer;
+		text-overflow: ellipsis;
+	}
+	.search-field select:focus-visible {
+		outline: 3px solid var(--focus);
+		outline-offset: 2px;
+	}
+	.search-field :global(.search-chevron) {
+		position: absolute;
+		right: 1.3rem;
+		bottom: 0.65rem;
+		pointer-events: none;
+		color: var(--ink);
+	}
+	.search-submit {
+		margin-left: 0.85rem;
+		min-height: 3.6rem;
+		min-width: 11rem;
+		font-size: 1.05rem;
+	}
+
+	@media (max-width: 860px) {
+		.search-form {
+			grid-template-columns: 1fr;
+			padding: 0.5rem 0.75rem 0.85rem;
+		}
+		.search-field {
+			border-right: 0;
+			border-bottom: 1px solid var(--line);
+			padding: 0.8rem 0.4rem;
+		}
+		.search-field :global(.search-chevron) {
+			right: 0.5rem;
+			bottom: 1.05rem;
+		}
+		.search-submit {
+			margin: 0.85rem 0 0;
+			width: 100%;
+		}
+	}
+</style>

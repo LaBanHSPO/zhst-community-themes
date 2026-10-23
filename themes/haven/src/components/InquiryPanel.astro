@@ -1,0 +1,143 @@
+---
+/**
+ * Property-specific viewing inquiry. Renders the admin-built "inquiry" form
+ * (Forms plugin) next to always-visible contact details, because <Form>
+ * renders nothing until a form with that slug exists.
+ */
+import { Form } from "@emdash-cms/plugin-forms/ui";
+import Icon from "./Icon.astro";
+
+interface Props {
+	title: string;
+	address?: string | null;
+	price: string;
+	pageUrl: string;
+	agent: { name: string; email?: string | null; phone?: string | null } | null;
+}
+
+const { title, address, price, pageUrl, agent } = Astro.props;
+const reference = [title, address].filter(Boolean).join(", ");
+const mailSubject = encodeURIComponent(`Viewing request: ${reference}`);
+const mailBody = encodeURIComponent(`Hello,\n\nI would like to arrange a viewing of ${reference} (${pageUrl}).\n\nTimes that suit me:\n\nThank you.`);
+---
+
+<section id="inquiry" class="inquiry" aria-labelledby="inquiry-title">
+	<div class="inquiry-intro">
+		<p class="eyebrow">Viewing request</p>
+		<h2 id="inquiry-title">Ask to see this home</h2>
+		<div class="inquiry-property">
+			<p class="inquiry-property-title">{title}</p>
+			{address && <p>{address}</p>}
+			<p>{price}</p>
+		</div>
+		<p class="inquiry-note">
+			Sending this form is an inquiry, not a confirmed appointment. {agent ? agent.name : "An agent"} will reply to suggest
+			times that work.
+		</p>
+
+		<div class="inquiry-direct">
+			<p class="inquiry-direct-title">Prefer to call or email?</p>
+			<ul>
+				{
+					agent?.phone && (
+						<li>
+							<Icon name="phone" size={18} />
+							<a href={`tel:${agent.phone.replace(/[^\d+]/g, "")}`}>{agent.phone}</a>
+						</li>
+					)
+				}
+				{
+					agent?.email && (
+						<li>
+							<Icon name="mail" size={18} />
+							<a href={`mailto:${agent.email}?subject=${mailSubject}&body=${mailBody}`}>{agent.email}</a>
+						</li>
+					)
+				}
+				{
+					!agent?.phone && !agent?.email && (
+						<li>
+							<a href="/contact">Contact our team</a>
+						</li>
+					)
+				}
+			</ul>
+		</div>
+	</div>
+
+	<div class="inquiry-form form-slot" data-inquiry-property={`${reference} — ${pageUrl}`}>
+		<Form id="inquiry" />
+		<p class="form-fallback">
+			The online viewing request form is not available right now. Please use the phone number or email address
+			shown here to ask about a viewing.
+		</p>
+	</div>
+</section>
+
+<script>
+	// Pre-fill an optional "property" field (hidden or text) so each submission
+	// records which listing it came from.
+	for (const box of document.querySelectorAll<HTMLElement>("[data-inquiry-property]")) {
+		const value = box.dataset.inquiryProperty ?? "";
+		for (const input of box.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[name="property"]')) {
+			if (!input.value) input.value = value;
+		}
+	}
+</script>
+
+<style>
+	.inquiry {
+		margin-top: 4rem;
+		padding: clamp(1.5rem, 4vw, 3rem);
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+		gap: 2.5rem;
+		background: var(--paper);
+		border: 1px solid var(--line);
+		border-radius: 6px;
+		scroll-margin-top: 1.5rem;
+	}
+	.inquiry-property {
+		margin: 1rem 0 1.25rem;
+		padding: 1rem 1.15rem;
+		border-left: 3px solid var(--navy);
+		background: var(--cream);
+	}
+	.inquiry-property p {
+		margin: 0;
+		color: var(--muted);
+	}
+	.inquiry-property .inquiry-property-title {
+		color: var(--navy);
+		font-weight: 600;
+	}
+	.inquiry-note {
+		color: var(--muted);
+	}
+	.inquiry-direct {
+		margin-top: 1.5rem;
+	}
+	.inquiry-direct-title {
+		font-weight: 600;
+		margin-bottom: 0.5rem;
+	}
+	.inquiry-direct ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.5rem;
+	}
+	.inquiry-direct li {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		color: var(--navy);
+		overflow-wrap: anywhere;
+	}
+	@media (max-width: 900px) {
+		.inquiry {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
