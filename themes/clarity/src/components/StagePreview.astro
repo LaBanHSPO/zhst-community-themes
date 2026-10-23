@@ -1,0 +1,156 @@
+---
+/**
+ * Annotated product previews for each workflow stage on the Features page (HTML/CSS, decorative).
+ * Numbered callouts match the numbered points next to the preview.
+ */
+import Icon from "./Icon.astro";
+
+interface Props {
+	preview: string | null | undefined;
+	title: string;
+}
+const { preview, title } = Astro.props;
+const labels: Record<string, string> = {
+	outline: "Preview: research notes turned into a five-part outline, each heading tagged with the note it came from.",
+	draft: "Preview: an inline Ask Clarity instruction and the drafted introduction with Keep and Try again buttons.",
+	edit: "Preview: a suggested edit shown with removed words struck through and new words highlighted, plus tone options.",
+	share: "Preview: a share panel with teammates and their access, and export options for Word, PDF and Markdown.",
+};
+const kind = preview && preview in labels ? preview : "outline";
+---
+
+<div class="stage-visual" role="img" aria-label={labels[kind] ?? title}>
+	{
+		kind === "outline" && (
+			<div class="doc-card">
+				<div class="doc-card-head">
+					<Icon name="list" size={15} /> Outline · Spring product update
+					<span class="app-pill">From 3 notes</span>
+				</div>
+				<div class="notes-mini">
+					note-1 &nbsp;customers want faster exports
+					<br />
+					note-2 &nbsp;new templates gallery ships in May
+					<br />
+					note-3 &nbsp;share links now support comments
+				</div>
+				<ul class="outline-list">
+					<li>
+						<span class="grip">⋮⋮</span> Why this update matters
+					</li>
+					<li>
+						<span class="grip">⋮⋮</span> Faster exports <span class="src">note-1</span>
+					</li>
+					<li class="sub">
+						<span class="grip">⋮⋮</span> What changed for Word and PDF <span class="src">note-1</span>
+					</li>
+					<li>
+						<span class="grip">⋮⋮</span> A new templates gallery <span class="src">note-2</span>
+					</li>
+					<li>
+						<span class="grip">⋮⋮</span> Comments on shared links <span class="src">note-3</span>
+					</li>
+				</ul>
+				<span class="callout" style="top:6.4rem;right:-0.8rem">1</span>
+				<span class="callout" style="top:10.6rem;left:-0.8rem">2</span>
+				<span class="callout" style="bottom:-0.8rem;right:2rem">3</span>
+			</div>
+		)
+	}
+	{
+		kind === "draft" && (
+			<div class="doc-card">
+				<div class="doc-card-head">
+					<Icon name="doc" size={15} /> Draft · Spring product update
+					<span class="app-pill">Section 1 of 4</span>
+				</div>
+				<h4>Why this update matters</h4>
+				<div class="ask-inline">
+					<Icon name="sparkle" size={16} /> Write a two-sentence intro for small business owners.
+				</div>
+				<p class="draft-text">
+					Small teams told us the same thing: getting words out the door takes longer than writing them. This update
+					makes exporting, starting from a template and gathering feedback quicker, so your next announcement ships
+					on time.
+				</p>
+				<div class="draft-actions">
+					<span class="app-pill app-pill-dark">Keep</span>
+					<span class="app-pill">
+						<Icon name="refresh" size={12} /> Try again
+					</span>
+				</div>
+				<span class="callout" style="top:6.6rem;left:-0.8rem">1</span>
+				<span class="callout" style="top:9.6rem;right:-0.8rem">2</span>
+				<span class="callout" style="bottom:-0.8rem;left:2rem">3</span>
+			</div>
+		)
+	}
+	{
+		kind === "edit" && (
+			<div class="doc-card">
+				<div class="doc-card-head">
+					<Icon name="sparkle" size={15} /> Suggested edit · More concise
+				</div>
+				<p class="diff">
+					<del>We are really very excited to be able to finally</del> <ins>We’re excited to</ins> introduce a new chapter for
+					Clarity. <del>Our mission has always been, and continues to be,</del> <ins>Our mission is</ins> to help people turn
+					their ideas into clear, compelling writing.
+				</p>
+				<div class="suggest-row">
+					<span class="chip on">
+						<Icon name="pen" size={12} /> More concise
+					</span>
+					<span class="chip">More professional</span>
+					<span class="chip">More casual</span>
+					<span class="chip">More persuasive</span>
+				</div>
+				<div class="draft-actions">
+					<span class="app-pill" style="background:var(--violet);border-color:var(--violet);color:#fff">Apply</span>
+					<span class="app-pill">Dismiss</span>
+				</div>
+				<span class="callout" style="top:3.2rem;right:-0.8rem">1</span>
+				<span class="callout" style="top:8.4rem;left:-0.8rem">2</span>
+				<span class="callout" style="bottom:-0.8rem;left:2rem">3</span>
+			</div>
+		)
+	}
+	{
+		kind === "share" && (
+			<div class="doc-card">
+				<div class="doc-card-head">
+					<Icon name="upload" size={15} /> Share “Spring product update”
+				</div>
+				<div class="share-grid">
+					<div class="share-row">
+						<span class="who">MO</span> Maya O. <span class="role">Can comment</span>
+					</div>
+					<div class="share-row">
+						<span class="who">DK</span> Daniel K. <span class="role">Can edit</span>
+					</div>
+					<div class="share-row">
+						<Icon name="link" size={16} /> Anyone at your company with the link <span class="role">Can view</span>
+					</div>
+				</div>
+				<p style="margin:1rem 0 0.3rem;font-size:12px;color:#6b6e7a">Export as</p>
+				<div class="export-row">
+					<span class="chip">
+						<Icon name="download" size={12} /> Word
+					</span>
+					<span class="chip">
+						<Icon name="download" size={12} /> PDF
+					</span>
+					<span class="chip">
+						<Icon name="download" size={12} /> Markdown
+					</span>
+					<span class="chip">Copy as rich text</span>
+				</div>
+				<p style="margin-top:0.9rem;font-size:12px;color:#6b6e7a;display:flex;gap:0.4rem;align-items:center">
+					<Icon name="history" size={14} /> Version 4 shared with 2 people
+				</p>
+				<span class="callout" style="top:3.4rem;right:-0.8rem">1</span>
+				<span class="callout" style="top:12rem;left:-0.8rem">2</span>
+				<span class="callout" style="bottom:-0.8rem;left:2rem">3</span>
+			</div>
+		)
+	}
+</div>

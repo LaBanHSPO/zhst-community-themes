@@ -1,0 +1,28 @@
+---
+import Icon from "./Icon.astro";
+import { DEMO_URL } from "../lib/clarity";
+
+interface Props {
+	eyebrow?: string;
+	title?: string;
+	text?: string;
+}
+const {
+	eyebrow = "Ready to write more clearly?",
+	title = "Turn your ideas into impact.",
+	text = "Plan, draft, and refine your writing with confidence — see Clarity with your own use case.",
+} = Astro.props;
+const id = `cta-${title.toLowerCase().replace(/[^a-z]+/g, "-").slice(0, 24)}`;
+---
+
+<section class="container cta-band" aria-labelledby={id}>
+	<div class="cta-copy">
+		<span class="eyebrow">{eyebrow}</span>
+		<h2 id={id}>{title}</h2>
+		<p>{text}</p>
+		<a class="btn" href={DEMO_URL}>Book a demo <Icon name="arrow-right" size={16} /></a>
+	</div>
+	<div class="cta-media">
+		<img src="/images/laptop-lake.webp" alt="A laptop, notebook and coffee mug on a desk by a window overlooking a lake and mountains" width="800" height="131" loading="lazy" />
+	</div>
+</section>

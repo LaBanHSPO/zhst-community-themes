@@ -1,0 +1,28 @@
+---
+import Icon from "./Icon.astro";
+import type { Benefit } from "../lib/clarity";
+
+interface Props {
+	items: { data: Benefit }[];
+	placement: "home" | "demo";
+}
+const { items, placement } = Astro.props;
+---
+
+{
+	items.length > 0 && (
+		<ul class="benefits" style={`--cols: ${items.length}`}>
+			{items.map(({ data }) => (
+				<li class="benefit">
+					<span class="icon-disc">
+						<Icon name={data.icon} />
+					</span>
+					<div>
+						<h3>{data.title}</h3>
+						<p>{placement === "demo" ? (data.demo_text ?? data.text) : data.text}</p>
+					</div>
+				</li>
+			))}
+		</ul>
+	)
+}

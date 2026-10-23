@@ -1,0 +1,116 @@
+---
+import Base from "../layouts/Base.astro";
+import CtaBand from "../components/CtaBand.astro";
+import Icon from "../components/Icon.astro";
+import { cellKind, formatPrice, getComparison, getPlans } from "../lib/clarity";
+
+const [plans, comparison] = await Promise.all([getPlans(), getComparison()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(plans.cacheHint);
+	Astro.cache.set(comparison.cacheHint);
+}
+// Billing period is a plain query-string toggle so it works without JavaScript.
+const yearly = Astro.url.searchParams.get("billing") === "yearly";
+const columns = [
+	{ key: "free", label: plans.entries.find((p) => p.data.slug === "free")?.data.title ?? "Free" },
+	{ key: "solo", label: plans.entries.find((p) => p.data.slug === "solo")?.data.title ?? "Solo" },
+	{ key: "team", label: plans.entries.find((p) => p.data.slug === "team")?.data.title ?? "Team" },
+] as const;
+---
+
+<Base title="Pricing" description="Free, Solo and Team plans for Clarity. Get started for free, or unlock more power as you grow — no long-term commitments.">
+	<section class="pricing-hero" aria-labelledby="pricing-title">
+		<div class="container">
+			<span class="eyebrow">Pricing</span>
+			<h1 id="pricing-title">A plan for <span class="accent">every idea</span></h1>
+			<p class="lede">Get started for free, or unlock more power as you grow. All plans include Clarity’s core AI writing tools, with no long-term commitments.</p>
+			<nav class="billing-toggle" aria-label="Billing period">
+				<a href="/pricing#plans" aria-current={yearly ? undefined : "true"}>Monthly</a>
+				<a href="/pricing?billing=yearly#plans" aria-current={yearly ? "true" : undefined}>
+					Yearly <small>Save up to 20%</small>
+				</a>
+			</nav>
+			<div class="plans" id="plans">
+				{
+					plans.entries.map(({ data }) => {
+						const price = yearly ? data.price_yearly : data.price_monthly;
+						const free = price === 0;
+						return (
+							<article class:list={["plan", { "plan-featured": data.featured }]} aria-labelledby={`plan-${data.id}`}>
+								<h2 id={`plan-${data.id}`}>{data.title}</h2>
+								{data.badge && <span class="plan-badge">{data.badge}</span>}
+								{data.blurb && <p class="plan-blurb">{data.blurb}</p>}
+								<p class="plan-price">
+									<strong>{formatPrice(price)}</strong>
+									<span>
+										{free ? (data.period_free ?? "forever") : "per month"}
+										{!free && yearly && <small>billed yearly ({formatPrice(price * 12)}/year)</small>}
+										{data.seats_note && <small>{data.seats_note}</small>}
+									</span>
+								</p>
+								<a class:list={["btn", "btn-block", { "btn-outline": !data.featured }]} href={data.cta_url ?? "/book-a-demo"}>
+									{data.cta_label ?? "Get started"}
+									<span class="sr-only"> with {data.title}</span>
+								</a>
+								<ul class="plan-features">
+									{(data.features ?? []).map((f) => (
+										<li>
+											<Icon name={f.icon ?? "check"} /> {f.text}
+										</li>
+									))}
+								</ul>
+							</article>
+						);
+					})
+				}
+			</div>
+
+			{
+				comparison.entries.length > 0 && (
+					<div class="compare">
+						<table>
+							<caption class="sr-only">Compare plans</caption>
+							<thead>
+								<tr class="caption-row">
+									<th scope="col">
+										<span aria-hidden="true">Compare plans</span>
+										<span class="sr-only">Feature</span>
+									</th>
+									{columns.map((c) => (
+										<th scope="col">{c.label}</th>
+									))}
+								</tr>
+							</thead>
+							<tbody>
+								{comparison.entries.map(({ data }) => (
+									<tr>
+										<th scope="row">{data.title}</th>
+										{columns.map((c) => {
+											const v = data[c.key];
+											const k = cellKind(v);
+											return k === "yes" ? (
+												<td class="yes">
+													<Icon name="check" />
+													<span class="sr-only">Included</span>
+												</td>
+											) : k === "no" ? (
+												<td class="no">
+													<span aria-hidden="true">—</span>
+													<span class="sr-only">Not included</span>
+												</td>
+											) : (
+												<td>{v}</td>
+											);
+										})}
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				)
+			}
+		</div>
+	</section>
+
+	<CtaBand text="Join individuals and teams who use Clarity to plan, draft, and refine their writing with confidence." />
+</Base>
