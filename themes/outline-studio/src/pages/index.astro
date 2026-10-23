@@ -1,0 +1,54 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { getProjects } from "../lib/outline";
+
+const { entries, cacheHint } = await getProjects();
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const featured = entries.filter((e) => e.data.featured);
+---
+
+<Base
+	title="Outline — independent creative studio"
+	description="We're an independent creative studio helping ambitious brands find focus, tell better stories and make what's next."
+	headCta={false}
+>
+	<section class="hero">
+		<div class="hero-copy">
+			<p class="eyebrow">Brand. Web. Creative.</p>
+			<h1>
+				<span class="line">Good design.</span>
+				<span class="line accent">Clear results.</span>
+			</h1>
+			<p class="lead">
+				We’re an independent creative studio helping ambitious brands find focus, tell better stories and make what’s
+				next.
+			</p>
+			<a class="btn" href="/start-a-project">Start a project <Arrow /></a>
+		</div>
+		<div class="hero-photo">
+			<img
+				src="/images/hero-desk.webp"
+				alt="Studio desk in front of a vermilion wall with a vase of olive branches, a stack of design books and a laptop"
+				width="770"
+				height="553"
+			/>
+		</div>
+	</section>
+
+	<section class="section selected-work" aria-labelledby="selected-work-title">
+		<div class="section-head">
+			<h2 id="selected-work-title" class="h2">Selected work</h2>
+			<a class="text-link" href="/work">View all work <Arrow /></a>
+		</div>
+		<div class="work-grid is-home">
+			{featured.map((e) => <ProjectCard project={e.data} tags="home" />)}
+		</div>
+	</section>
+
+	<section class="cta-band" aria-labelledby="cta-title">
+		<h2 id="cta-title" class="h2">Have a project in mind?</h2>
+		<a class="btn" href="/start-a-project">Start a project <Arrow /></a>
+	</section>
+</Base>

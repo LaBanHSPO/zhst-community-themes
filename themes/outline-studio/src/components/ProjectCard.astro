@@ -1,0 +1,26 @@
+---
+import Arrow from "./Arrow.astro";
+import { photoSrc, projectUrl } from "../lib/outline";
+import type { Project } from "../../emdash-env";
+
+interface Props {
+	project: Project & { id: string; slug: string | null };
+	/** Which discipline line to show: homepage cards list more disciplines. */
+	tags?: "work" | "home";
+	size?: "wide" | "third";
+}
+const { project, tags = "work", size = "third" } = Astro.props;
+const src = photoSrc(project.image, project.photo);
+const line = tags === "home" ? (project.home_tags ?? project.tags) : project.tags;
+---
+
+<a class:list={["project-card", `is-${size}`]} href={projectUrl(project)}>
+	<span class="project-photo">
+		{src && <img src={src} alt={project.image?.alt || `${project.title} — project artwork`} loading="lazy" />}
+	</span>
+	<span class="project-meta">
+		<span class="project-name">{project.title}</span>
+		<Arrow dir="up-right" />
+	</span>
+	{line && <span class="project-tags">{line}</span>}
+</a>
