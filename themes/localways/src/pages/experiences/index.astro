@@ -1,0 +1,159 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import ExperienceCard from "../../components/ExperienceCard.astro";
+import Icon from "../../components/Icon.astro";
+import { distinct, getCompany, getExperiences, getGuides, km } from "../../lib/localways";
+
+const [{ entries, cacheHint }, { company }, guidesResult] = await Promise.all([getExperiences(), getCompany(), getGuides()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(guidesResult.cacheHint);
+}
+
+const all = entries.map((e) => e.data);
+const areas = distinct(all.map((e) => e.area));
+const cuisines = distinct(all.map((e) => e.cuisine));
+const durations = distinct(all.map((e) => e.duration));
+const distances = [...new Set(all.map((e) => e.distance_km).filter((d): d is number => typeof d === "number" && d > 0))].sort(
+	(a, b) => a - b,
+);
+
+// Server-side filters from the query string; unknown values are ignored rather than emptying the list.
+const q = Astro.url.searchParams;
+const pick = (key: string, allowed: string[]) => {
+	const v = (q.get(key) ?? "").trim();
+	return allowed.includes(v) ? v : "";
+};
+const area = pick("area", areas);
+const cuisine = pick("cuisine", cuisines);
+const duration = pick("duration", durations);
+const distanceRaw = Number.parseFloat(q.get("distance") ?? "");
+const distance = distances.includes(distanceRaw) ? distanceRaw : undefined;
+const guideKey = (q.get("guide") ?? "").trim();
+const guide = guidesResult.entries.find((g) => (g.data.slug ?? g.data.id) === guideKey)?.data;
+
+const results = all.filter(
+	(e) =>
+		(!area || e.area === area) &&
+		(!cuisine || e.cuisine === cuisine) &&
+		(!duration || e.duration === duration) &&
+		(distance === undefined || (typeof e.distance_km === "number" && e.distance_km <= distance)) &&
+		(!guide || e.guide === (guide.slug ?? guide.id)),
+);
+const filtered = Boolean(area || cuisine || duration || distance !== undefined || guide);
+---
+
+<Base title="Experiences" description="Food culture walking experiences: taste the city, meet the locals, and discover neighborhoods through authentic food.">
+	<section class="hero hero-dark hero-short" aria-labelledby="hero-title">
+		<div class="hero-bg" aria-hidden="true"><img src="/images/hero-experiences.webp" alt="" width="910" height="280" /></div>
+		<div class="hero-photo">
+			<img
+				src="/images/hero-experiences.webp"
+				alt="A woman biting into a slice of pizza beside laughing friends at a busy street market"
+				width="910"
+				height="280"
+				fetchpriority="high"
+			/>
+		</div>
+		<div class="hero-copy hero-copy-experiences">
+			<h1 id="hero-title" class="display display-md">Food Culture<br /> Walking Experiences</h1>
+			<p class="hero-lede">Taste the city, meet the locals, and discover<br class="br-wide" /> neighborhoods through authentic food.</p>
+		</div>
+	</section>
+
+	<section class="listing container-wide" aria-labelledby="results-title">
+		<h2 id="results-title" class="sr-only">All experiences</h2>
+		<form class="filters" method="get" action="/experiences" data-filters>
+			<p class="filters-label" id="filters-label">Filter by</p>
+			{guide && <input type="hidden" name="guide" value={guide.slug ?? guide.id} />}
+			<div class="filter">
+				<label class="sr-only" for="f-area">Neighborhood</label>
+				<select id="f-area" name="area">
+					<option value="">Neighborhood</option>
+					{areas.map((v) => <option value={v} selected={v === area}>{v}</option>)}
+				</select>
+				<Icon name="chevron" class="filter-chevron" />
+			</div>
+			<div class="filter">
+				<label class="sr-only" for="f-cuisine">Cuisine type</label>
+				<select id="f-cuisine" name="cuisine">
+					<option value="">Cuisine type</option>
+					{cuisines.map((v) => <option value={v} selected={v === cuisine}>{v}</option>)}
+				</select>
+				<Icon name="chevron" class="filter-chevron" />
+			</div>
+			<div class="filter">
+				<label class="sr-only" for="f-duration">Duration</label>
+				<select id="f-duration" name="duration">
+					<option value="">Duration</option>
+					{durations.map((v) => <option value={v} selected={v === duration}>{v}</option>)}
+				</select>
+				<Icon name="chevron" class="filter-chevron" />
+			</div>
+			<div class="filter">
+				<label class="sr-only" for="f-distance">Walking distance</label>
+				<select id="f-distance" name="distance">
+					<option value="">Walking distance</option>
+					{distances.map((v) => <option value={String(v)} selected={v === distance}>Up to {km(v)}</option>)}
+				</select>
+				<Icon name="chevron" class="filter-chevron" />
+			</div>
+			<button class="btn btn-sm filters-apply" type="submit">Apply filters</button>
+			<a class="text-link filters-clear" href="/experiences">Clear filters</a>
+		</form>
+
+		<p class="results-status" role="status">
+			{
+				guide
+					? `Showing ${results.length} ${results.length === 1 ? "experience" : "experiences"} with ${guide.title}.`
+					: filtered
+						? `Showing ${results.length} of ${all.length} experiences.`
+						: <span class="sr-only">{`Showing all ${all.length} experiences.`}</span>
+			}
+		</p>
+
+		{
+			results.length > 0 ? (
+				<div class="tour-grid">
+					{results.map((e) => (
+						<ExperienceCard entry={e} currency={company.currency} />
+					))}
+				</div>
+			) : (
+				<div class="no-results">
+					<p>No experiences match these filters yet.</p>
+					<a class="text-link" href="/experiences">Clear filters <Arrow /></a>
+				</div>
+			)
+		}
+	</section>
+
+	<section class="band band-wide" aria-labelledby="groups-title">
+		<div class="band-copy">
+			<div class="band-text">
+				<p class="eyebrow eyebrow-light">A more meaningful way to explore</p>
+				<h2 id="groups-title" class="title-lg">Small groups. Big stories.</h2>
+				<p>Our food walks are led by passionate locals who share the flavors, history and everyday life of their city.</p>
+				<a class="btn" href="/experiences#results-title">Browse all experiences <Arrow /></a>
+			</div>
+		</div>
+		<div class="band-photo">
+			<img src="/images/band-terrace.webp" alt="Wine, bread and olives on a terrace overlooking the city’s domes at sunset" width="1011" height="210" />
+		</div>
+	</section>
+</Base>
+
+<script>
+	// Apply a filter as soon as it changes; the Apply button remains for keyboard users and no-JS visitors.
+	const form = document.querySelector<HTMLFormElement>("[data-filters]");
+	if (form) {
+		for (const select of form.querySelectorAll("select")) {
+			select.addEventListener("change", () => {
+				// Drop empty fields so the URL only carries active filters.
+				for (const el of form.querySelectorAll<HTMLSelectElement>("select")) el.disabled = !el.value;
+				form.submit();
+			});
+		}
+	}
+</script>

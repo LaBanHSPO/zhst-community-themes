@@ -1,0 +1,16 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+---
+
+<Base title="Page not found">
+	<section class="notfound container" aria-labelledby="nf-title">
+		<p class="eyebrow eyebrow-ink">Error 404</p>
+		<h1 id="nf-title" class="display display-dark display-md">This street is a dead end.</h1>
+		<p class="walk-lede">The page you’re looking for doesn’t exist or has moved. Explore our experiences or send us a booking request and a local will be in touch.</p>
+		<div class="actions">
+			<a class="btn btn-lg" href="/experiences">Explore experiences <Arrow /></a>
+			<a class="text-link" href="/booking-request">Booking request <Arrow /></a>
+		</div>
+	</section>
+</Base>
