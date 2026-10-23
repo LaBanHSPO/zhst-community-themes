@@ -1,0 +1,49 @@
+---
+/** Line icons drawn inline (no icon font). Decorative unless a label is passed. */
+interface Props {
+	name: string;
+	class?: string;
+	label?: string;
+}
+const { name, class: className, label } = Astro.props;
+const arm = '<path d="M18 18V4M14 6.2l4 3.3 4-3.3M13.6 11.6L18 15l4.4-3.4"/>';
+const snowflake = [0, 60, 120, 180, 240, 300].map((a) => `<g transform="rotate(${a} 18 18)">${arm}</g>`).join("");
+const paths: Record<string, string> = {
+	snowflake,
+	waves:
+		'<path d="M6 12c2.6-2.6 5.2-2.6 7.8 0s5.2 2.6 7.8 0 5.2-2.6 7.8 0M6 18c2.6-2.6 5.2-2.6 7.8 0s5.2 2.6 7.8 0 5.2-2.6 7.8 0M6 24c2.6-2.6 5.2-2.6 7.8 0s5.2 2.6 7.8 0 5.2-2.6 7.8 0"/>',
+	wrench:
+		'<path d="M22.5 4.5a7.5 7.5 0 0 0-7 10.2L5.2 25a3 3 0 0 0 4.3 4.3L19.8 19a7.5 7.5 0 0 0 10.2-7l-4.4 2.4-4-1.4-1.4-4z"/>',
+	gear: '<path d="M27.8 16L30.9 16.3L30.9 19.7L27.8 20L26.3 23.5L28.3 25.9L25.9 28.3L23.5 26.3L20 27.8L19.7 30.9L16.3 30.9L16 27.8L12.5 26.3L10.1 28.3L7.7 25.9L9.7 23.5L8.2 20L5.1 19.7L5.1 16.3L8.2 16L9.7 12.5L7.7 10.1L10.1 7.7L12.5 9.7L16 8.2L16.3 5.1L19.7 5.1L20 8.2L23.5 9.7L25.9 7.7L28.3 10.1L26.3 12.5Z"/><circle cx="18" cy="18" r="4.6"/>',
+	calendar: '<rect x="5.5" y="7.5" width="25" height="23" rx="2.5"/><path d="M5.5 14h25M12 4.5v6M24 4.5v6"/>',
+	leaf: '<path d="M7 30C6.5 16 14 7.5 30 6c.6 15.4-7.7 23.3-21.5 23.6"/><path d="M7 30C11 23 16 18 22.5 13.5"/>',
+	house: '<path d="M4.5 17L18 5l13.5 12"/><path d="M8.5 14v17h19V14"/><path d="M15 31v-9h6v9"/>',
+	building:
+		'<path d="M8 31V6.5h13V31M21 13.5h7V31M4.5 31h27"/><path d="M12.5 11h1M16 11h1M12.5 16h1M16 16h1M12.5 21h1M16 21h1M12.5 26h1M16 26h1M24.5 18.5h.5M24.5 23.5h.5"/>',
+	tower:
+		'<path d="M6.5 31V14h7M13.5 31V5h12v26M25.5 12h4v19M3.5 31h29"/><path d="M17.5 9.5h1M21 9.5h1M17.5 14.5h1M21 14.5h1M17.5 19.5h1M21 19.5h1M17.5 24.5h1M21 24.5h1M9.5 19h.5M9.5 24h.5"/>',
+	unit: '<rect x="3.5" y="10" width="29" height="11" rx="2"/><path d="M7.5 17h21M9 25.5h18"/>',
+	phone:
+		'<path d="M9.5 4.5l5 7-3.2 3.3c1.6 3.7 5.2 7.3 9 9l3.2-3.3 7 5-3.3 5c-11.5 0-22.3-10.8-22.3-22.3z"/>',
+	chat: '<path d="M18 5.5c7.7 0 14 5.2 14 11.6S25.7 28.7 18 28.7c-1.8 0-3.5-.3-5.1-.8L6 31l1.9-5.6C5.4 23.2 4 20.3 4 17.1 4 10.7 10.3 5.5 18 5.5z"/>',
+	clock: '<circle cx="18" cy="18" r="13.5"/><path d="M18 9.5V18h7"/>',
+	shield: '<path d="M18 4l12 4.5v8.5c0 7.5-5.2 12.6-12 15-6.8-2.4-12-7.5-12-15V8.5z"/><path d="M12.5 17.5l4 4 7.5-8"/>',
+	check: '<path d="M10.5 18.5l5 5 10-10.5"/>',
+};
+const body = paths[name] ?? "";
+---
+
+<svg
+	class:list={["icon", className]}
+	viewBox="0 0 36 36"
+	fill="none"
+	stroke="currentColor"
+	stroke-width="2"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	role={label ? "img" : undefined}
+	aria-label={label}
+	aria-hidden={label ? undefined : "true"}
+	focusable="false"
+	set:html={body}
+/>
