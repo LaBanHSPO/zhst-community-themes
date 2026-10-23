@@ -1,0 +1,28 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref } from "../lib/studio";
+import type { StudioData } from "../lib/studio";
+
+interface Props {
+	studio: StudioData;
+	/** Pre-selects the project type on the commission page. */
+	type?: string | null;
+}
+const { studio, type } = Astro.props;
+const href = type ? `/contact?type=${encodeURIComponent(type)}` : "/contact";
+---
+
+<section class="commission" aria-labelledby="commission-title">
+	<div class="wrap commission-inner">
+		<p class="eyebrow eyebrow-light">Commissions</p>
+		<h2 id="commission-title" class="display display-light">A building worth seeing deserves the right light.</h2>
+		<p class="commission-copy">Tell us about the project, where it is and when it will be ready. We reply personally, usually within two working days.</p>
+		<div class="commission-actions">
+			<a class="btn btn-light" href={href}><span>Commission a shoot</span><Arrow /></a>
+			<p class="commission-contact">
+				{studio.email && <a href={`mailto:${studio.email}`}>{studio.email}</a>}
+				{studio.phone && <a href={telHref(studio.phone)}>{studio.phone}</a>}
+			</p>
+		</div>
+	</div>
+</section>

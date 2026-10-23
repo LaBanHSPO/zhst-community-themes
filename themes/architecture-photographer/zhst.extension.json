@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "architecture-photographer",
+	"kind": "theme",
+	"name": "Architecture Photographer",
+	"type": "bio",
+	"emdash": "1.2.0",
+	"entry": "themes/architecture-photographer",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

@@ -1,0 +1,159 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import CommissionBand from "../../components/CommissionBand.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { categoryLabel, getProjects, getStudio, photoAlt, photoSrc } from "../../lib/studio";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: project, cacheHint } = await getEmDashEntry("projects", slug);
+if (!project) return Astro.rewrite("/404");
+
+const [allResult, studioResult, settings] = await Promise.all([getProjects(), getStudio(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(project, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const d = project.data;
+const cover = photoSrc(d.image, d.photo);
+const photos = (d.gallery ?? [])
+	.map((g) => ({ src: photoSrc(g.image, g.photo), alt: photoAlt(g.image, g.photo, g.caption ?? ""), caption: g.caption }))
+	.filter((g): g is { src: string; alt: string; caption: string | undefined } => Boolean(g.src));
+const hasBody = Boolean(d.content && d.content.length > 0);
+const credits = [
+	{ label: "Architect", value: d.architect },
+	{ label: "Location", value: d.place },
+	{ label: "Year", value: d.year },
+	{ label: "Building type", value: d.programme },
+	{ label: "Category", value: categoryLabel(d.category) },
+].filter((c) => c.value);
+
+// More projects: same category first, then the rest in sort order.
+const others = allResult.entries
+	.filter((p) => p.data.id !== d.id)
+	.sort((a, b) => Number(b.data.category === d.category) - Number(a.data.category === d.category))
+	.slice(0, 3);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "projects", id: d.id, slug }}
+	current="/work"
+>
+	<header class="project-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/work">Work</a>
+				<span aria-hidden="true">/</span>
+				{d.category && <a href={`/work?category=${d.category}`}>{categoryLabel(d.category)}</a>}
+				{d.category && <span aria-hidden="true">/</span>}
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class="project-head-grid">
+				<div>
+					<p class="eyebrow">{[categoryLabel(d.category), d.year].filter(Boolean).join(" · ")}</p>
+					<h1 class="display display-xl" {...project.edit.title}>{d.title}</h1>
+				</div>
+				<p class="lede">{d.summary}</p>
+			</div>
+		</div>
+	</header>
+
+	<section class="project-lead">
+		<div class="wrap project-lead-grid">
+			{
+				cover && (
+					<figure class="project-cover">
+						<img src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="1448" height="800" fetchpriority="high" />
+					</figure>
+				)
+			}
+			{
+				credits.length > 0 && (
+					<dl class="credits">
+						{credits.map((c) => (
+							<div>
+								<dt>{c.label}</dt>
+								<dd>{c.value}</dd>
+							</div>
+						))}
+					</dl>
+				)
+			}
+		</div>
+	</section>
+
+	{
+		hasBody && (
+			<section class="project-body">
+				<div class="wrap">
+					<div class="prose">
+						<PortableText value={d.content} />
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		photos.length > 0 && (
+			<section class="project-photos" aria-label={`Photographs of ${d.title}`}>
+				<div class="wrap">
+					<ul class="sequence">
+						{photos.map((p) => (
+							<li>
+								<figure>
+									<img src={p.src} alt={p.alt} width="1000" height="700" loading="lazy" />
+									{p.caption && <figcaption>{p.caption}</figcaption>}
+								</figure>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="project-cta">
+		<div class="wrap">
+			<a class="btn-dark" href={`/contact?type=${d.category ?? ""}`}><span>Commission similar work</span><Arrow /></a>
+		</div>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="section more-projects" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="section-head">
+						<div>
+							<p class="eyebrow">More work</p>
+							<h2 id="more-title" class="display">Other projects</h2>
+						</div>
+						<a class="text-link" href="/work"><span>All projects</span><Arrow /></a>
+					</div>
+					<ul class="work-grid">
+						{others.map((p) => <li><ProjectCard project={p} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<CommissionBand studio={studioResult.studio} type={d.category} />
+</Base>

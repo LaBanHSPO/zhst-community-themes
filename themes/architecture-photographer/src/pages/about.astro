@@ -1,0 +1,83 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import CommissionBand from "../components/CommissionBand.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getApproach, getStudio, photoAlt, photoSrc } from "../lib/studio";
+
+const [{ entry: page, cacheHint }, approachResult, studioResult, settings] = await Promise.all([
+	getEmDashEntry("pages", "about"),
+	getApproach(),
+	getStudio(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	if (cacheHint) Astro.cache.set(cacheHint);
+	Astro.cache.set(approachResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page ? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" }) : null;
+const approach = approachResult.entries;
+const hasBody = Boolean(page?.data.content && page.data.content.length > 0);
+const photo = photoSrc(page?.data.image, page?.data.photo) ?? "/images/prints-camera.webp";
+---
+
+<Base
+	title={seo?.title ?? "About"}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? page?.data.intro ?? "About KELLEN, an architecture photography practice."}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<PageHead
+		id="about-title"
+		eyebrow={page?.data.eyebrow ?? "About"}
+		title={page?.data.title ?? "Photographs that read the building."}
+		intro={page?.data.intro}
+		edit={page ? { ...page.edit.title } : {}}
+	/>
+
+	<section class="about-story">
+		<div class="wrap about-grid">
+			<figure class="about-photo">
+				<img
+					src={photo}
+					alt={photoAlt(page?.data.image, page?.data.photo, "A camera, an olive branch and printed architectural photographs on a stone ledge")}
+					width="1448"
+					height="1086"
+					loading="lazy"
+				/>
+			</figure>
+			<div class="prose">
+				{hasBody ? <PortableText value={page!.data.content} /> : <p>More about the practice is coming soon.</p>}
+			</div>
+		</div>
+	</section>
+
+	{
+		approach.length > 0 && (
+			<section class="section approach" aria-labelledby="values-title">
+				<div class="wrap approach-grid">
+					<div class="approach-intro">
+						<p class="eyebrow">How we work</p>
+						<h2 id="values-title" class="display">What to expect.</h2>
+					</div>
+					<ol class="approach-list">
+						{approach.map((a, i) => (
+							<li>
+								<span class="approach-no">{String(i + 1).padStart(2, "0")}</span>
+								<h3 {...a.edit.title}>{a.data.title}</h3>
+								{a.data.text && <p>{a.data.text}</p>}
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	<CommissionBand studio={studioResult.studio} />
+</Base>
