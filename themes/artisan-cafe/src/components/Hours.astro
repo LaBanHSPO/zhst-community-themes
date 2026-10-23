@@ -1,0 +1,19 @@
+---
+/** Opening hours as a definition list. */
+interface Props {
+	rows: { data: { title: string; hours: string } }[];
+}
+
+const { rows } = Astro.props;
+---
+
+<dl class="hours">
+	{
+		rows.map((h) => (
+			<div>
+				<dt>{h.data.title}</dt>
+				<dd>{h.data.hours}</dd>
+			</div>
+		))
+	}
+</dl>
