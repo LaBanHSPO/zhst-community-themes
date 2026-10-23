@@ -1,0 +1,1045 @@
+---
+import { getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashBodyEnd, EmDashBodyStart, EmDashHead } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import { Font } from "astro:assets";
+import { Icon } from "astro-iconset/components";
+import "../styles/tokens.css";
+import "../styles/theme.css";
+
+interface Props {
+	title?: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	robots?: string | null;
+	content?: { collection: string; id: string; slug?: string | null };
+}
+
+const { title, pageTitle, description, image, canonical, robots, content } = Astro.props;
+const [settingsResult, menuResult, footerProductResult, footerCompanyResult, footerSupportResult] =
+	await Promise.all([
+		getSiteSettingsWithCacheHint(),
+		getMenuWithCacheHint("primary"),
+		getMenuWithCacheHint("footer_product"),
+		getMenuWithCacheHint("footer_company"),
+		getMenuWithCacheHint("footer_support"),
+	]);
+
+if (Astro.cache?.enabled) {
+	for (const result of [
+		settingsResult,
+		menuResult,
+		footerProductResult,
+		footerCompanyResult,
+		footerSupportResult,
+	]) {
+		Astro.cache.set(result.cacheHint);
+	}
+}
+
+const settings = settingsResult.data;
+const siteTitle = settings?.title || "Acme";
+const fullTitle = title ? (title.includes(siteTitle) ? title : `${title} — ${siteTitle}`) : siteTitle;
+const siteDescription = settings?.tagline || "Build products people actually want";
+const siteLogo = settings.logo?.url ? settings.logo : null;
+const menu = menuResult.data;
+const footerProduct = footerProductResult.data;
+const footerCompany = footerCompanyResult.data;
+const footerSupport = footerSupportResult.data;
+
+const footerColumns = [
+	{ heading: "Product", menu: footerProduct },
+	{ heading: "Company", menu: footerCompany },
+	{ heading: "Support", menu: footerSupport },
+].filter((col) => col.menu && col.menu.items.length > 0);
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title ?? siteTitle,
+	description: description || siteDescription,
+	canonical: canonical ?? `${Astro.url.origin}${Astro.url.pathname}`,
+	image,
+	content,
+	seo: { ogImage: image, robots },
+	siteName: siteTitle,
+});
+
+const isLoggedIn = !!Astro.locals.user;
+
+// Two-tone wordmark: the first word in full ink, the rest in a softer tone.
+const titleWords = siteTitle.trim().split(/\s+/);
+const wordmarkLead = titleWords[0] ?? siteTitle;
+const wordmarkRest = titleWords.slice(1).join(" ");
+
+const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
+function isCurrent(url: string): boolean {
+	if (!url.startsWith("/") || url.startsWith("//") || url.includes("#")) return false;
+	const path = url.split("?")[0].replace(/\/+$/, "") || "/";
+	return path === currentPath;
+}
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{fullTitle}</title>
+		<EmDashHead page={pageCtx} />
+		<Font cssVariable="--font-body" preload />
+		<Font cssVariable="--font-display" preload />
+		<script is:inline>
+			// Apply an explicit theme choice immediately to prevent flash.
+			// With no cookie, color-scheme: light dark follows the OS.
+			(function () {
+				var c = document.cookie;
+				var i = c.indexOf("theme=");
+				var theme = i >= 0 ? c.slice(i + 6).split(";")[0] : null;
+				if (theme === "dark" || theme === "light") {
+					document.documentElement.classList.add(theme);
+				}
+			})();
+		</script>
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+		<header class="site-header">
+			<nav class="nav" aria-label="Primary">
+				<a href="/" class="site-logo" aria-label={`${siteTitle} home`}>
+					{siteLogo ? (
+						<img
+							src={siteLogo.url}
+							alt={siteLogo.alt || siteTitle}
+							width={siteLogo.width}
+							height={siteLogo.height}
+							class="site-logo-img"
+						/>
+					) : (
+						<span class="wordmark">
+							<span class="wordmark-lead">{wordmarkLead}</span>
+							{wordmarkRest && <span class="wordmark-rest"> {wordmarkRest}</span>}
+						</span>
+					)}
+				</a>
+
+				<div class="nav-menu" id="site-menu" data-menu>
+					{menu && menu.items.length > 0 && (
+						<ul class="nav-links" role="list">
+							{menu.items.map((item) => (
+								<li>
+									<a
+										class="nav-link"
+										href={item.url}
+										target={item.target}
+										rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+										aria-current={isCurrent(item.url) ? "page" : undefined}
+									>
+										<span>{item.label}</span>
+										<Icon name="ph:arrow-right" class="nav-link-arrow" aria-hidden="true" />
+									</a>
+								</li>
+							))}
+						</ul>
+					)}
+					<a href="/contact" class="btn btn-primary nav-menu-cta">
+						Inquire <Icon name="ph:arrow-right" aria-hidden="true" />
+					</a>
+				</div>
+
+				<div class="nav-actions">
+					{isLoggedIn && <a href="/_emdash/admin" class="nav-admin">Admin</a>}
+					<button type="button" class="mode-toggle" role="switch" aria-checked="false" data-mode-toggle>
+						<span class="visually-hidden">Dark mode</span>
+						<Icon name="ph:sun" class="mode-icon mode-icon-sun" aria-hidden="true" />
+						<span class="mode-track" aria-hidden="true"><span class="mode-knob"></span></span>
+						<Icon name="ph:moon" class="mode-icon mode-icon-moon" aria-hidden="true" />
+					</button>
+					<a href="/contact" class="btn btn-primary nav-cta">Inquire</a>
+					<button
+						type="button"
+						class="menu-toggle"
+						aria-expanded="false"
+						aria-controls="site-menu"
+						data-menu-toggle
+					>
+						<Icon name="ph:list" class="menu-icon-open" aria-hidden="true" />
+						<Icon name="ph:x" class="menu-icon-close" aria-hidden="true" />
+						<span class="visually-hidden">Menu</span>
+					</button>
+				</div>
+			</nav>
+		</header>
+
+		<main id="main" tabindex="-1">
+			<slot />
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-content">
+				<div class="footer-brand">
+					<span class="footer-logo">
+						{siteLogo ? (
+							<img
+								src={siteLogo.url}
+								alt={siteLogo.alt || siteTitle}
+								width={siteLogo.width}
+								height={siteLogo.height}
+								class="footer-logo-img"
+							/>
+						) : (
+							<span class="wordmark">
+								<span class="wordmark-lead">{wordmarkLead}</span>
+								{wordmarkRest && <span class="wordmark-rest"> {wordmarkRest}</span>}
+							</span>
+						)}
+					</span>
+					<p class="footer-tagline">{settings?.tagline || "Build something amazing"}</p>
+					<a href="/contact" class="btn btn-primary footer-cta">
+						Inquire <Icon name="ph:arrow-right" aria-hidden="true" />
+					</a>
+				</div>
+				{footerColumns.length > 0 && (
+					<div class="footer-links">
+						{footerColumns.map((col) => (
+							<nav class="footer-col" aria-label={col.heading}>
+								<h2 class="footer-heading">{col.heading}</h2>
+								<ul role="list">
+									{col.menu!.items.map((item) => (
+										<li>
+											<a
+												class="footer-link"
+												href={item.url}
+												target={item.target}
+												rel={item.target ? "noopener noreferrer" : undefined}
+											>
+												{item.label}
+											</a>
+										</li>
+									))}
+								</ul>
+							</nav>
+						))}
+					</div>
+				)}
+			</div>
+			<div class="footer-bottom">
+				<p>
+					&copy; {new Date().getFullYear()}{" "}{siteTitle}. All rights reserved.
+				</p>
+				<div class="theme-switcher" role="group" aria-label="Colour theme">
+					<button type="button" class="theme-btn" data-theme="light" aria-pressed="false">Light</button>
+					<button type="button" class="theme-btn" data-theme="dark" aria-pressed="false">Dark</button>
+					<button type="button" class="theme-btn" data-theme="system" aria-pressed="false">System</button>
+				</div>
+				<p class="footer-powered">
+					Powered by <a href="https://emdashcms.com">EmDash</a>
+				</p>
+			</div>
+		</footer>
+
+		<EmDashBodyEnd page={pageCtx} />
+
+		<script>
+			// Theme: footer switcher (light / dark / system) and header switch (light / dark).
+			const THEME_REGEX = /theme=([^;]+)/;
+			const themeBtns = document.querySelectorAll<HTMLButtonElement>(".theme-btn");
+			const modeToggle = document.querySelector<HTMLButtonElement>("[data-mode-toggle]");
+			const root = document.documentElement;
+			const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+			function isDark(theme: string): boolean {
+				return theme === "dark" || (theme === "system" && darkQuery.matches);
+			}
+
+			function setTheme(theme: string) {
+				const secure = location.protocol === "https:" ? "; Secure" : "";
+				root.classList.remove("light", "dark");
+				if (theme === "system") {
+					document.cookie = `theme=; path=/; max-age=0; SameSite=Lax${secure}`;
+				} else {
+					document.cookie = `theme=${theme}; path=/; max-age=31536000; SameSite=Lax${secure}`;
+					root.classList.add(theme);
+				}
+				updateControls(theme);
+			}
+
+			function updateControls(theme: string) {
+				themeBtns.forEach((btn) => {
+					const active = btn.dataset.theme === theme;
+					btn.classList.toggle("active", active);
+					btn.setAttribute("aria-pressed", String(active));
+				});
+				modeToggle?.setAttribute("aria-checked", String(isDark(theme)));
+			}
+
+			function getStoredTheme(): string {
+				const match = document.cookie.match(THEME_REGEX);
+				return match && (match[1] === "light" || match[1] === "dark") ? match[1] : "system";
+			}
+
+			setTheme(getStoredTheme());
+
+			themeBtns.forEach((btn) => {
+				btn.addEventListener("click", () => setTheme(btn.dataset.theme || "system"));
+			});
+
+			modeToggle?.addEventListener("click", () => {
+				setTheme(isDark(getStoredTheme()) ? "light" : "dark");
+			});
+
+			darkQuery.addEventListener("change", () => updateControls(getStoredTheme()));
+
+			// Mobile menu: one menu element, shown inline on desktop and as a panel on small screens.
+			const menuToggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+			const menuPanel = document.querySelector<HTMLElement>("[data-menu]");
+			const header = document.querySelector<HTMLElement>(".site-header");
+
+			function setMenu(open: boolean, restoreFocus = false) {
+				if (!menuToggle || !header) return;
+				menuToggle.setAttribute("aria-expanded", String(open));
+				header.classList.toggle("menu-open", open);
+				if (!open && restoreFocus) menuToggle.focus();
+			}
+
+			menuToggle?.addEventListener("click", () => {
+				const open = menuToggle.getAttribute("aria-expanded") !== "true";
+				setMenu(open);
+				if (open) menuPanel?.querySelector<HTMLElement>("a")?.focus();
+			});
+
+			document.addEventListener("keydown", (event) => {
+				if (event.key === "Escape" && header?.classList.contains("menu-open")) {
+					setMenu(false, true);
+				}
+			});
+
+			menuPanel?.addEventListener("click", (event) => {
+				if ((event.target as HTMLElement).closest("a")) setMenu(false);
+			});
+
+			window.matchMedia("(min-width: 901px)").addEventListener("change", (event) => {
+				if (event.matches) setMenu(false);
+			});
+		</script>
+
+		<style is:global>
+			/*
+			 * Establish layer order: "base" has lower priority than unlayered
+			 * styles, so theme.css overrides always win regardless of source
+			 * order in the bundled CSS.
+			 */
+			@layer base;
+
+			@layer base {
+				*,
+				*::before,
+				*::after {
+					box-sizing: border-box;
+					margin: 0;
+					padding: 0;
+				}
+
+				@supports (color: light-dark(#000, #fff)) {
+					:root.light {
+						color-scheme: light;
+					}
+
+					:root.dark {
+						color-scheme: dark;
+					}
+				}
+
+				html {
+					scroll-behavior: smooth;
+					scroll-padding-top: 88px;
+				}
+
+				@media (prefers-reduced-motion: reduce) {
+					html {
+						scroll-behavior: auto;
+					}
+
+					*,
+					*::before,
+					*::after {
+						scroll-behavior: auto !important;
+						transition-duration: 0.01ms !important;
+						animation-duration: 0.01ms !important;
+						animation-iteration-count: 1 !important;
+					}
+				}
+
+				body {
+					font-family: var(--font-body);
+					font-size: var(--font-size-base);
+					line-height: var(--leading-normal);
+					color: var(--color-text);
+					background: var(--color-bg);
+					-webkit-font-smoothing: antialiased;
+					min-height: 100vh;
+				}
+
+				a:where(:not([class*="emdash"]):not([class*="ec-"])) {
+					color: currentColor;
+					text-decoration: none;
+				}
+
+				/* Bare links in authored content need a visible style. */
+				p a:not([class]),
+				li a:not([class]) {
+					color: var(--color-lime-text);
+					text-decoration: underline;
+					text-underline-offset: 2px;
+				}
+
+				:focus-visible {
+					outline: 2px solid var(--color-focus);
+					outline-offset: 3px;
+				}
+
+				img {
+					max-width: 100%;
+					height: auto;
+					display: block;
+				}
+
+				ul[role="list"] {
+					list-style: none;
+				}
+
+				h1,
+				h2,
+				h3,
+				h4,
+				h5,
+				h6 {
+					font-family: var(--font-heading);
+					font-weight: var(--font-weight-heading);
+					line-height: var(--leading-snug);
+					letter-spacing: var(--tracking-snug);
+				}
+
+				h1 {
+					font-size: var(--font-size-5xl);
+				}
+				h2 {
+					font-size: var(--font-size-3xl);
+				}
+				h3 {
+					font-size: var(--font-size-2xl);
+				}
+				h4 {
+					font-size: var(--font-size-xl);
+				}
+
+				.visually-hidden {
+					position: absolute;
+					width: 1px;
+					height: 1px;
+					padding: 0;
+					margin: -1px;
+					overflow: hidden;
+					clip: rect(0, 0, 0, 0);
+					white-space: nowrap;
+					border: 0;
+				}
+
+				.container {
+					max-width: var(--wide-width);
+					margin: 0 auto;
+					padding: 0 var(--gutter);
+				}
+
+				.section {
+					padding: var(--spacing-3xl) 0;
+				}
+
+				.section-header {
+					display: flex;
+					flex-wrap: wrap;
+					align-items: flex-end;
+					justify-content: space-between;
+					gap: var(--spacing-md) var(--spacing-2xl);
+					margin: 0 0 var(--spacing-xl);
+				}
+
+				.section-headline {
+					font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+					font-weight: var(--font-weight-heading);
+					letter-spacing: var(--tracking-snug);
+				}
+
+				.section-subheadline {
+					max-width: 46ch;
+					font-size: var(--font-size-base);
+					color: var(--color-muted);
+				}
+
+				.accent-word {
+					color: var(--color-lime-text);
+				}
+
+				.icon-tile {
+					width: 44px;
+					height: 44px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					flex-shrink: 0;
+					font-size: 1.375rem;
+					color: var(--color-on-brand);
+					background: var(--color-lime);
+					border-radius: var(--radius);
+				}
+
+				.btn {
+					display: inline-flex;
+					align-items: center;
+					justify-content: center;
+					gap: var(--spacing-sm);
+					min-height: 44px;
+					padding: 0.625rem 1.375rem;
+					font-family: inherit;
+					font-size: var(--font-size-sm);
+					font-weight: 700;
+					line-height: 1.2;
+					border-radius: var(--radius-full);
+					cursor: pointer;
+					transition:
+						background var(--transition-fast),
+						color var(--transition-fast),
+						border-color var(--transition-fast),
+						transform var(--transition-fast);
+				}
+
+				.btn:hover {
+					transform: translateY(-1px);
+				}
+
+				.btn:active {
+					transform: translateY(0);
+				}
+
+				.btn-primary {
+					color: var(--color-on-brand);
+					background: var(--color-lime);
+					border: 1px solid var(--color-lime);
+				}
+
+				.btn-primary:hover {
+					background: var(--color-lime-strong);
+					border-color: var(--color-lime-strong);
+				}
+
+				.btn-primary:focus-visible {
+					outline-color: var(--color-focus);
+				}
+
+				.btn-secondary {
+					color: var(--color-text);
+					background: var(--color-surface);
+					border: 1px solid var(--color-border);
+				}
+
+				.btn-secondary:hover {
+					border-color: var(--color-text);
+				}
+
+				.btn-ink {
+					color: var(--color-on-ink);
+					background: var(--color-ink);
+					border: 1px solid var(--color-ink);
+				}
+
+				.btn-ink:hover {
+					background: var(--color-ink-2);
+				}
+
+				.btn-lg {
+					min-height: 52px;
+					padding: 0.875rem 1.75rem;
+					font-size: var(--font-size-base);
+				}
+
+				.btn :where(svg) {
+					width: 1.1em;
+					height: 1.1em;
+				}
+			}
+		</style>
+
+		<style>
+			.skip-link {
+				position: absolute;
+				top: -100px;
+				left: var(--spacing-md);
+				z-index: 200;
+				padding: var(--spacing-sm) var(--spacing-md);
+				font-weight: 700;
+				color: var(--color-on-brand);
+				background: var(--color-lime);
+				border-radius: var(--radius-sm);
+			}
+
+			.skip-link:focus {
+				top: var(--spacing-md);
+			}
+
+			main:focus {
+				outline: none;
+			}
+
+			.site-header {
+				position: sticky;
+				top: 0;
+				z-index: 100;
+				background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+				backdrop-filter: saturate(1.4) blur(12px);
+				border-bottom: 1px solid var(--color-border);
+			}
+
+			.nav {
+				max-width: var(--wide-width);
+				margin: 0 auto;
+				padding: 0 var(--gutter);
+				min-height: 76px;
+				display: flex;
+				align-items: center;
+				gap: var(--spacing-xl);
+			}
+
+			.site-logo {
+				flex-shrink: 0;
+				font-family: var(--font-heading);
+				font-size: 1.625rem;
+				font-weight: var(--font-weight-display);
+				letter-spacing: -0.03em;
+				line-height: 1;
+			}
+
+			.wordmark-lead {
+				color: var(--color-text);
+			}
+
+			.wordmark-rest {
+				font-weight: 600;
+				color: var(--color-muted);
+			}
+
+			.site-logo-img {
+				height: 40px;
+				width: auto;
+				display: block;
+			}
+
+			.nav-menu {
+				flex: 1;
+				display: flex;
+				justify-content: center;
+			}
+
+			.nav-links {
+				display: flex;
+				align-items: center;
+				gap: clamp(1rem, 3vw, 3rem);
+			}
+
+			.nav-links a {
+				position: relative;
+				display: inline-flex;
+				align-items: center;
+				padding: 0.5rem 0;
+				font-size: var(--font-size-sm);
+				font-weight: 500;
+				color: var(--color-text);
+			}
+
+			.nav-links a::after {
+				content: "";
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				height: 3px;
+				border-radius: 3px;
+				background: var(--color-lime);
+				transform: scaleX(0);
+				transform-origin: left;
+				transition: transform var(--transition-base);
+			}
+
+			.nav-links a:hover::after,
+			.nav-links a[aria-current="page"]::after {
+				transform: scaleX(1);
+			}
+
+			.nav-links a[aria-current="page"] {
+				font-weight: 700;
+			}
+
+			.nav-link-arrow,
+			.nav-menu-cta {
+				display: none;
+			}
+
+			.nav-actions {
+				display: flex;
+				align-items: center;
+				gap: var(--spacing-md);
+				margin-left: auto;
+			}
+
+			.nav-admin {
+				font-size: var(--font-size-sm);
+				color: var(--color-muted);
+			}
+
+			.mode-toggle {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				min-height: 44px;
+				padding: 0 0.25rem;
+				color: var(--color-text);
+				background: transparent;
+				border: 0;
+				border-radius: var(--radius-full);
+				cursor: pointer;
+			}
+
+			.mode-icon {
+				width: 18px;
+				height: 18px;
+			}
+
+			.mode-icon-moon {
+				display: none;
+			}
+
+			.mode-track {
+				position: relative;
+				width: 44px;
+				height: 24px;
+				border-radius: var(--radius-full);
+				background: var(--color-ink);
+				transition: background var(--transition-base);
+			}
+
+			.mode-knob {
+				position: absolute;
+				top: 3px;
+				left: 3px;
+				width: 18px;
+				height: 18px;
+				border-radius: 50%;
+				background: var(--color-lime);
+				transition: transform var(--transition-base);
+			}
+
+			.mode-toggle[aria-checked="true"] .mode-knob {
+				transform: translateX(20px);
+			}
+
+			.mode-toggle[aria-checked="true"] .mode-track {
+				background: var(--color-ink-2);
+				box-shadow: inset 0 0 0 1px var(--color-border);
+			}
+
+			.mode-toggle[aria-checked="true"] .mode-icon-sun {
+				display: none;
+			}
+
+			.mode-toggle[aria-checked="true"] .mode-icon-moon {
+				display: block;
+			}
+
+			.nav-cta {
+				min-height: 44px;
+				padding: 0.625rem 1.625rem;
+			}
+
+			.menu-toggle {
+				display: none;
+				align-items: center;
+				justify-content: center;
+				width: 44px;
+				height: 44px;
+				color: var(--color-text);
+				background: var(--color-surface);
+				border: 1px solid var(--color-border);
+				border-radius: 50%;
+				cursor: pointer;
+			}
+
+			.menu-toggle :global(svg) {
+				width: 22px;
+				height: 22px;
+			}
+
+			.menu-icon-close {
+				display: none;
+			}
+
+			main {
+				min-height: calc(100vh - 220px);
+			}
+
+			/* Footer: graphite in both modes */
+			.site-footer {
+				color: var(--color-on-ink);
+				background: var(--color-ink);
+			}
+
+			.footer-content {
+				max-width: var(--wide-width);
+				margin: 0 auto;
+				padding: var(--spacing-3xl) var(--gutter) var(--spacing-2xl);
+				display: grid;
+				grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+				gap: var(--spacing-3xl);
+			}
+
+			.footer-logo {
+				font-family: var(--font-heading);
+				font-size: 1.5rem;
+				font-weight: var(--font-weight-display);
+				letter-spacing: -0.03em;
+			}
+
+			.site-footer .wordmark-lead {
+				color: var(--color-on-ink);
+			}
+
+			.site-footer .wordmark-rest {
+				color: var(--color-on-ink-muted);
+			}
+
+			.footer-logo-img {
+				height: 32px;
+				width: auto;
+			}
+
+			.footer-tagline {
+				max-width: 32ch;
+				margin: var(--spacing-md) 0 var(--spacing-lg);
+				font-size: var(--font-size-sm);
+				color: var(--color-on-ink-muted);
+			}
+
+			.footer-links {
+				display: grid;
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: var(--spacing-xl);
+			}
+
+			.footer-heading {
+				margin-bottom: var(--spacing-md);
+				font-family: var(--font-body);
+				font-size: var(--font-size-xs);
+				font-weight: 600;
+				letter-spacing: 0.24em;
+				text-transform: uppercase;
+				color: var(--color-on-ink-muted);
+			}
+
+			.footer-col a {
+				display: inline-block;
+				padding: 0.3rem 0;
+				font-size: var(--font-size-sm);
+				color: var(--color-on-ink);
+				text-decoration: none;
+			}
+
+			.footer-col a:hover {
+				color: var(--color-lime);
+			}
+
+			.site-footer :focus-visible {
+				outline-color: var(--color-lime);
+			}
+
+			.footer-bottom {
+				max-width: var(--wide-width);
+				margin: 0 auto;
+				padding: var(--spacing-lg) var(--gutter);
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				gap: var(--spacing-md);
+				font-size: var(--font-size-sm);
+				color: var(--color-on-ink-muted);
+				border-top: 1px solid rgba(255, 255, 255, 0.12);
+			}
+
+			.footer-powered a {
+				color: var(--color-on-ink);
+				text-decoration: underline;
+				text-underline-offset: 3px;
+			}
+
+			.theme-switcher {
+				display: flex;
+				gap: var(--spacing-xs);
+				padding: 4px;
+				border: 1px solid rgba(255, 255, 255, 0.16);
+				border-radius: var(--radius-full);
+			}
+
+			.theme-btn {
+				min-height: 32px;
+				padding: 0 0.875rem;
+				font-family: var(--font-body);
+				font-size: var(--font-size-xs);
+				font-weight: 600;
+				color: var(--color-on-ink-muted);
+				background: transparent;
+				border: 0;
+				border-radius: var(--radius-full);
+				cursor: pointer;
+				transition:
+					color var(--transition-fast),
+					background var(--transition-fast);
+			}
+
+			.theme-btn:hover {
+				color: var(--color-on-ink);
+			}
+
+			.theme-btn.active {
+				color: var(--color-on-brand);
+				background: var(--color-lime);
+			}
+
+			@media (max-width: 1100px) {
+				.mode-icon {
+					display: none !important;
+				}
+			}
+
+			@media (max-width: 900px) {
+				.nav {
+					min-height: 64px;
+					gap: var(--spacing-md);
+				}
+
+				.site-logo {
+					font-size: 1.3rem;
+				}
+
+				.menu-toggle {
+					display: inline-flex;
+				}
+
+				.site-header.menu-open .menu-icon-open {
+					display: none;
+				}
+
+				.site-header.menu-open .menu-icon-close {
+					display: block;
+				}
+
+				.nav-cta {
+					display: none;
+				}
+
+				.nav-menu {
+					display: none;
+					position: absolute;
+					top: 100%;
+					left: 0;
+					right: 0;
+					flex-direction: column;
+					gap: var(--spacing-lg);
+					padding: var(--spacing-lg) var(--gutter) var(--spacing-xl);
+					background: var(--color-bg);
+					border-bottom: 1px solid var(--color-border);
+					box-shadow: var(--shadow-lg);
+					max-height: calc(100vh - 64px);
+					overflow-y: auto;
+				}
+
+				.site-header.menu-open .nav-menu {
+					display: flex;
+				}
+
+				.nav-links {
+					flex-direction: column;
+					align-items: stretch;
+					gap: var(--spacing-sm);
+				}
+
+				.nav-links a {
+					justify-content: space-between;
+					width: 100%;
+					min-height: 56px;
+					padding: 0 var(--spacing-md);
+					font-size: var(--font-size-base);
+					font-weight: 600;
+					background: var(--color-surface);
+					border: 1px solid var(--color-border);
+					border-radius: var(--radius);
+				}
+
+				.nav-links a::after {
+					display: none;
+				}
+
+				.nav-links a[aria-current="page"] {
+					border-color: var(--color-text);
+					box-shadow: inset 4px 0 0 var(--color-lime);
+				}
+
+				.nav-link-arrow {
+					display: block;
+					width: 18px;
+					height: 18px;
+				}
+
+				.nav-menu-cta {
+					display: inline-flex;
+					width: 100%;
+					min-height: 52px;
+				}
+
+				.footer-content {
+					grid-template-columns: 1fr;
+					gap: var(--spacing-2xl);
+				}
+
+				.footer-bottom {
+					flex-direction: column;
+					text-align: center;
+				}
+
+				.theme-switcher {
+					order: -1;
+				}
+
+				h1 {
+					font-size: var(--font-size-4xl);
+				}
+				h2 {
+					font-size: var(--font-size-2xl);
+				}
+			}
+
+			@media (max-width: 560px) {
+				.footer-links {
+					grid-template-columns: repeat(2, minmax(0, 1fr));
+				}
+			}
+
+			@media (max-width: 360px) {
+				.footer-links {
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
+	</body>
+</html>

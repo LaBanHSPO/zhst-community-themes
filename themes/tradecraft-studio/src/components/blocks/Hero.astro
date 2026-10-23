@@ -1,0 +1,271 @@
+---
+import { Icon } from "astro-iconset/components";
+import { sanitizeHref } from "emdash";
+import { Image, type BlockComponentProps } from "emdash/ui";
+import type { PageContentBlock } from "../../../emdash-env";
+import HeroArt from "../HeroArt.astro";
+
+type HeroBlock = Extract<PageContentBlock, { _type: "marketing_hero" }>;
+type Props = BlockComponentProps<HeroBlock>;
+
+const { value } = Astro.props;
+const { anchor_id, headline, subheadline, image, centered } = value;
+
+const primaryCta =
+	value.primary_cta_label && value.primary_cta_url
+		? { label: value.primary_cta_label, url: sanitizeHref(value.primary_cta_url) }
+		: undefined;
+const secondaryCta =
+	value.secondary_cta_label && value.secondary_cta_url
+		? { label: value.secondary_cta_label, url: sanitizeHref(value.secondary_cta_url) }
+		: undefined;
+
+// The last word of the headline carries the lime accent.
+const words = headline.trim().split(/\s+/);
+const accentWord = words.length > 1 ? words[words.length - 1] : "";
+const leadText = accentWord ? words.slice(0, -1).join(" ") : headline;
+
+// A short subheadline (a few words) is set as a tracked, stacked caption
+// beside the artwork; longer copy stays a normal paragraph.
+const subWords = subheadline?.trim().split(/\s+/) ?? [];
+const stackedCaption =
+	!centered && subheadline && subheadline.length <= 48 && subWords.length >= 2 && subWords.length <= 5
+		? subWords.map((word) => word.replace(/[.,;:·/]+$/, "")).filter(Boolean)
+		: null;
+---
+
+<section
+	id={anchor_id || undefined}
+	class:list={["hero", centered ? "hero-centered" : "hero-split", { "hero-with-image": !!image }]}
+>
+	<div class="hero-inner">
+		<div class="hero-content">
+			<h1 class="hero-headline">
+				{leadText}{accentWord && <> <span class="accent-word">{accentWord}</span></>}
+			</h1>
+			{subheadline && !stackedCaption && <p class="hero-subheadline">{subheadline}</p>}
+			{(primaryCta || secondaryCta) && (
+				<div class="hero-actions">
+					{primaryCta && (
+						<a href={primaryCta.url} class="btn btn-primary btn-lg">
+							{primaryCta.label}
+							<Icon name="ph:arrow-right" aria-hidden="true" />
+						</a>
+					)}
+					{secondaryCta && (
+						<a href={secondaryCta.url} class="btn btn-secondary btn-lg">
+							{secondaryCta.label}
+						</a>
+					)}
+				</div>
+			)}
+		</div>
+
+		{!centered && (
+			<div class="hero-media">
+				{image ? (
+					<Image image={image} class="hero-image-media" priority />
+				) : (
+					<HeroArt />
+				)}
+			</div>
+		)}
+
+		{stackedCaption && (
+			<p class="hero-caption">
+				{stackedCaption.map((word) => (
+					<span>{word}</span>
+				))}
+			</p>
+		)}
+	</div>
+</section>
+
+<style>
+	.hero {
+		background: var(--color-band);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.hero-inner {
+		max-width: var(--wide-width);
+		margin: 0 auto;
+		padding: 0 var(--gutter);
+	}
+
+	/* Split hero: copy | artwork | caption */
+	.hero-split .hero-inner {
+		display: grid;
+		grid-template-columns: minmax(0, 5fr) minmax(0, 6.5fr) minmax(0, 1.6fr);
+		grid-template-areas: "content media caption";
+		align-items: stretch;
+		min-height: clamp(420px, 52vw, 560px);
+	}
+
+	.hero-split:not(:has(.hero-caption)) .hero-inner {
+		grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+		grid-template-areas: "content media";
+	}
+
+	.hero-content {
+		grid-area: content;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: var(--spacing-xl);
+		padding: var(--spacing-3xl) var(--spacing-xl) var(--spacing-3xl) 0;
+		position: relative;
+		z-index: 1;
+	}
+
+	.hero-headline {
+		font-size: clamp(2.75rem, 1.2rem + 4.6vw, var(--font-size-6xl));
+		font-weight: var(--font-weight-display);
+		line-height: 0.98;
+		letter-spacing: var(--tracking-tight);
+		color: var(--color-text);
+		text-wrap: balance;
+	}
+
+	.hero-subheadline {
+		max-width: 44ch;
+		font-size: var(--font-size-lg);
+		line-height: var(--leading-normal);
+		color: var(--color-muted);
+	}
+
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--spacing-sm) var(--spacing-md);
+	}
+
+	.hero-media {
+		grid-area: media;
+		position: relative;
+		overflow: hidden;
+		min-height: 320px;
+	}
+
+	.hero-media :global(.hero-art),
+	.hero-media :global(.hero-image-media) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.hero-caption {
+		grid-area: caption;
+		align-self: center;
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+		padding-left: var(--spacing-xl);
+		font-size: var(--font-size-sm);
+		font-weight: 500;
+		letter-spacing: 0.42em;
+		text-transform: uppercase;
+		color: var(--color-text);
+	}
+
+	.hero-caption::after {
+		content: "";
+		width: 72px;
+		height: 1px;
+		margin-top: var(--spacing-md);
+		background: currentColor;
+	}
+
+	/* Centered hero: compact page intro */
+	.hero-centered .hero-inner {
+		max-width: 920px;
+		padding-top: var(--spacing-3xl);
+		padding-bottom: var(--spacing-3xl);
+		text-align: center;
+	}
+
+	.hero-centered .hero-content {
+		align-items: center;
+		padding: 0;
+		gap: var(--spacing-lg);
+	}
+
+	.hero-centered .hero-headline {
+		font-size: clamp(2.5rem, 1.4rem + 3.4vw, 4.25rem);
+	}
+
+	.hero-centered .hero-headline::after {
+		content: "";
+		display: block;
+		width: 64px;
+		height: 6px;
+		margin: var(--spacing-lg) auto 0;
+		border-radius: 6px;
+		background: var(--color-lime);
+	}
+
+	.hero-centered .hero-actions {
+		justify-content: center;
+	}
+
+	@media (max-width: 1100px) {
+		.hero-split .hero-inner,
+		.hero-split:not(:has(.hero-caption)) .hero-inner {
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+			grid-template-areas:
+				"content media"
+				"caption media";
+		}
+
+		.hero-caption {
+			align-self: start;
+			flex-direction: row;
+			flex-wrap: wrap;
+			gap: 0.4rem 1.2rem;
+			padding: 0 0 var(--spacing-2xl);
+			letter-spacing: 0.3em;
+		}
+
+		.hero-caption::after {
+			display: none;
+		}
+
+		.hero-content {
+			padding-bottom: var(--spacing-lg);
+		}
+	}
+
+	@media (max-width: 760px) {
+		.hero-split .hero-inner,
+		.hero-split:not(:has(.hero-caption)) .hero-inner {
+			grid-template-columns: minmax(0, 1fr);
+			grid-template-areas:
+				"content"
+				"caption"
+				"media";
+			min-height: 0;
+		}
+
+		.hero-content {
+			padding: var(--spacing-2xl) 0 var(--spacing-lg);
+			gap: var(--spacing-lg);
+		}
+
+		.hero-media {
+			margin: 0 calc(var(--gutter) * -1);
+			min-height: 0;
+			aspect-ratio: 4 / 3;
+		}
+
+		.hero-caption {
+			padding-bottom: var(--spacing-lg);
+			font-size: var(--font-size-xs);
+		}
+
+		.hero-actions .btn {
+			flex: 1 1 auto;
+		}
+	}
+</style>

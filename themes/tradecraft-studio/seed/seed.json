@@ -1,0 +1,673 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Tradecraft Studio",
+		"description": "A product studio site with a featured catalog, pricing and contact pages",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "Tradecraft Studio",
+		"tagline": "Digital products, templates and tools — designed, built and launched with care."
+	},
+	"blockTypes": [
+		{
+			"slug": "marketing_hero",
+			"label": "Hero",
+			"description": "A prominent page introduction with optional calls to action and media",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{
+							"slug": "anchor_id",
+							"label": "Anchor ID",
+							"type": "string",
+							"validation": {
+								"pattern": "^(?:$|[a-z][a-z0-9_-]*)$"
+							}
+						},
+						{
+							"slug": "headline",
+							"label": "Headline",
+							"type": "string",
+							"required": true
+						},
+						{
+							"slug": "subheadline",
+							"label": "Subheadline",
+							"type": "text"
+						},
+						{
+							"slug": "primary_cta_label",
+							"label": "Primary CTA label",
+							"type": "string"
+						},
+						{
+							"slug": "primary_cta_url",
+							"label": "Primary CTA URL",
+							"type": "string",
+							"validation": {
+								"pattern": "^(?:$|(?:https?://|mailto:|tel:|/(?!/)|#).+)$"
+							}
+						},
+						{
+							"slug": "secondary_cta_label",
+							"label": "Secondary CTA label",
+							"type": "string"
+						},
+						{
+							"slug": "secondary_cta_url",
+							"label": "Secondary CTA URL",
+							"type": "string",
+							"validation": {
+								"pattern": "^(?:$|(?:https?://|mailto:|tel:|/(?!/)|#).+)$"
+							}
+						},
+						{
+							"slug": "image",
+							"label": "Image",
+							"type": "image"
+						},
+						{
+							"slug": "centered",
+							"label": "Center the layout",
+							"type": "boolean",
+							"defaultValue": false
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_features",
+			"label": "Features",
+			"description": "A grid of product or service features",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{
+							"slug": "anchor_id",
+							"label": "Anchor ID",
+							"type": "string",
+							"validation": {
+								"pattern": "^(?:$|[a-z][a-z0-9_-]*)$"
+							}
+						},
+						{
+							"slug": "headline",
+							"label": "Headline",
+							"type": "string",
+							"required": true
+						},
+						{
+							"slug": "subheadline",
+							"label": "Subheadline",
+							"type": "text"
+						},
+						{
+							"slug": "features",
+							"label": "Features",
+							"type": "repeater",
+							"required": true,
+							"validation": {
+								"minItems": 1,
+								"maxItems": 12,
+								"subFields": [
+									{
+										"slug": "icon",
+										"label": "Icon",
+										"type": "select",
+										"required": true,
+										"options": [
+											"zap",
+											"shield",
+											"users",
+											"chart",
+											"code",
+											"globe",
+											"heart",
+											"star",
+											"check",
+											"lock",
+											"clock",
+											"cloud"
+										]
+									},
+									{
+										"slug": "title",
+										"label": "Title",
+										"type": "string",
+										"required": true
+									},
+									{
+										"slug": "description",
+										"label": "Description",
+										"type": "text",
+										"required": true
+									}
+								]
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_testimonials",
+			"label": "Testimonials",
+			"description": "Customer quotes and attribution",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{
+							"slug": "anchor_id",
+							"label": "Anchor ID",
+							"type": "string",
+							"validation": {
+								"pattern": "^(?:$|[a-z][a-z0-9_-]*)$"
+							}
+						},
+						{
+							"slug": "headline",
+							"label": "Headline",
+							"type": "string"
+						},
+						{
+							"slug": "testimonials",
+							"label": "Testimonials",
+							"type": "repeater",
+							"required": true,
+							"validation": {
+								"minItems": 1,
+								"maxItems": 12,
+								"subFields": [
+									{
+										"slug": "quote",
+										"label": "Quote",
+										"type": "text",
+										"required": true
+									},
+									{
+										"slug": "author",
+										"label": "Author name",
+										"type": "string",
+										"required": true
+									},
+									{
+										"slug": "role",
+										"label": "Role or title",
+										"type": "string"
+									},
+									{
+										"slug": "company",
+										"label": "Company",
+										"type": "string"
+									},
+									{
+										"slug": "avatar",
+										"label": "Avatar",
+										"type": "image"
+									}
+								]
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_pricing",
+			"label": "Pricing",
+			"description": "A comparison of up to three pricing plans",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{
+							"slug": "anchor_id",
+							"label": "Anchor ID",
+							"type": "string",
+							"validation": {
+								"pattern": "^(?:$|[a-z][a-z0-9_-]*)$"
+							}
+						},
+						{
+							"slug": "headline",
+							"label": "Headline",
+							"type": "string"
+						},
+						{
+							"slug": "plans",
+							"label": "Plans",
+							"type": "repeater",
+							"required": true,
+							"validation": {
+								"minItems": 1,
+								"maxItems": 3,
+								"subFields": [
+									{
+										"slug": "name",
+										"label": "Plan name",
+										"type": "string",
+										"required": true
+									},
+									{
+										"slug": "price",
+										"label": "Price",
+										"type": "string",
+										"required": true
+									},
+									{
+										"slug": "period",
+										"label": "Period",
+										"type": "string"
+									},
+									{
+										"slug": "description",
+										"label": "Description",
+										"type": "text"
+									},
+									{
+										"slug": "features",
+										"label": "Features, one per line",
+										"type": "text"
+									},
+									{
+										"slug": "cta_label",
+										"label": "CTA label",
+										"type": "string",
+										"required": true
+									},
+									{
+										"slug": "cta_url",
+										"label": "CTA URL",
+										"type": "string",
+										"required": true
+									},
+									{
+										"slug": "highlighted",
+										"label": "Highlight this plan",
+										"type": "boolean"
+									}
+								]
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_faq",
+			"label": "FAQ",
+			"description": "A list of frequently asked questions",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{
+							"slug": "anchor_id",
+							"label": "Anchor ID",
+							"type": "string",
+							"validation": {
+								"pattern": "^(?:$|[a-z][a-z0-9_-]*)$"
+							}
+						},
+						{
+							"slug": "headline",
+							"label": "Headline",
+							"type": "string"
+						},
+						{
+							"slug": "items",
+							"label": "Questions",
+							"type": "repeater",
+							"required": true,
+							"validation": {
+								"minItems": 1,
+								"maxItems": 12,
+								"subFields": [
+									{
+										"slug": "question",
+										"label": "Question",
+										"type": "string",
+										"required": true
+									},
+									{
+										"slug": "answer",
+										"label": "Answer",
+										"type": "text",
+										"required": true
+									}
+								]
+							}
+						}
+					]
+				}
+			]
+		}
+	],
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"supports": [
+				"drafts",
+				"revisions",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "blocks",
+					"validation": {
+						"allowedTypes": [
+							"marketing_hero",
+							"marketing_features",
+							"marketing_testimonials",
+							"marketing_pricing",
+							"marketing_faq"
+						],
+						"maxItems": 20
+					}
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Products",
+					"url": "/#products"
+				},
+				{
+					"type": "custom",
+					"label": "Process",
+					"url": "/#process"
+				},
+				{
+					"type": "custom",
+					"label": "Pricing",
+					"url": "/pricing"
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
+				}
+			]
+		},
+		{
+			"name": "footer_product",
+			"label": "Footer: Product",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Products",
+					"url": "/#products"
+				},
+				{
+					"type": "custom",
+					"label": "Process",
+					"url": "/#process"
+				},
+				{
+					"type": "custom",
+					"label": "Pricing",
+					"url": "/pricing"
+				}
+			]
+		},
+		{
+			"name": "footer_company",
+			"label": "Footer: Company",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Home",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
+				}
+			]
+		},
+		{
+			"name": "footer_support",
+			"label": "Footer: Support",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Questions",
+					"url": "/#faq"
+				},
+				{
+					"type": "custom",
+					"label": "Email",
+					"url": "mailto:hello@acme.example"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "home",
+				"slug": "home",
+				"status": "published",
+				"data": {
+					"title": "Home",
+					"content": [
+						{
+							"_type": "marketing_hero",
+							"_version": 1,
+							"_key": "hero",
+							"headline": "Digital products for ideas",
+							"subheadline": "Build. Design. Launch.",
+							"primary_cta_label": "Browse products",
+							"primary_cta_url": "/#products",
+							"secondary_cta_label": "Inquire",
+							"secondary_cta_url": "/contact"
+						},
+						{
+							"_type": "marketing_features",
+							"_version": 1,
+							"_key": "products",
+							"anchor_id": "products",
+							"headline": "Featured products",
+							"subheadline": "Templates, kits and tools made in the studio. Ask about any of them and we will tell you what fits your project.",
+							"features": [
+								{
+									"icon": "code",
+									"title": "Core UI",
+									"description": "Web · Template"
+								},
+								{
+									"icon": "globe",
+									"title": "Studio Kit",
+									"description": "Mobile · Template"
+								},
+								{
+									"icon": "star",
+									"title": "Mono Icons",
+									"description": "Tools · Icons"
+								},
+								{
+									"icon": "zap",
+									"title": "Launch Pad",
+									"description": "Web · Template"
+								}
+							]
+						},
+						{
+							"_type": "marketing_features",
+							"_version": 1,
+							"_key": "process",
+							"anchor_id": "process",
+							"headline": "How we work",
+							"subheadline": "One small team takes an idea from the first sketch to a product people can use.",
+							"features": [
+								{
+									"icon": "chart",
+									"title": "Build",
+									"description": "We scope the smallest useful version together, then build it in short, reviewable steps."
+								},
+								{
+									"icon": "heart",
+									"title": "Design",
+									"description": "Interfaces, type and motion are designed alongside the code, so nothing is lost in handoff."
+								},
+								{
+									"icon": "cloud",
+									"title": "Launch",
+									"description": "We help you publish, watch how it is used, and plan the next round of improvements."
+								}
+							]
+						},
+						{
+							"_type": "marketing_faq",
+							"_version": 1,
+							"_key": "faq",
+							"anchor_id": "faq",
+							"headline": "Questions",
+							"items": [
+								{
+									"question": "Can I use a product as the start of my own project?",
+									"answer": "Yes. Each template and kit is a starting point. Tell us what you are building and we will suggest the closest fit."
+								},
+								{
+									"question": "Do you take custom projects?",
+									"answer": "Yes. Send an inquiry with a short description of the idea, your timeline and any constraints, and we will reply with next steps."
+								},
+								{
+									"question": "What do you need from us to start?",
+									"answer": "A clear goal, the people who will use the product, and someone on your side who can make decisions quickly."
+								},
+								{
+									"question": "How do we stay in touch during a project?",
+									"answer": "You get regular reviews of working software, not slide decks, plus one shared place for questions and decisions."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "pricing",
+				"slug": "pricing",
+				"status": "published",
+				"data": {
+					"title": "Pricing",
+					"content": [
+						{
+							"_type": "marketing_hero",
+							"_version": 1,
+							"_key": "pricing-hero",
+							"headline": "Simple, transparent pricing",
+							"subheadline": "Pick a starting point. Every engagement begins with a short conversation about your idea.",
+							"centered": true
+						},
+						{
+							"_type": "marketing_pricing",
+							"_version": 1,
+							"_key": "pricing-plans",
+							"plans": [
+								{
+									"name": "Template",
+									"price": "$0",
+									"period": "/project",
+									"description": "Start from a studio product",
+									"features": "Any featured template or kit\nSetup notes\nCommunity questions",
+									"cta_label": "Inquire",
+									"cta_url": "/contact"
+								},
+								{
+									"name": "Studio",
+									"price": "$2,400",
+									"period": "/sprint",
+									"description": "A focused two-week build",
+									"features": "Scoping session\nDesign and build in one team\nWeekly reviews\nLaunch checklist",
+									"cta_label": "Inquire",
+									"cta_url": "/contact",
+									"highlighted": true
+								},
+								{
+									"name": "Partner",
+									"price": "Custom",
+									"description": "An ongoing product team",
+									"features": "Everything in Studio\nRoadmap planning\nOngoing improvements\nShared decision log",
+									"cta_label": "Contact us",
+									"cta_url": "/contact"
+								}
+							]
+						},
+						{
+							"_type": "marketing_faq",
+							"_version": 1,
+							"_key": "pricing-faq",
+							"headline": "Pricing FAQ",
+							"items": [
+								{
+									"question": "Can I change plans later?",
+									"answer": "Yes. Many projects start from a template and grow into a sprint or an ongoing partnership."
+								},
+								{
+									"question": "How do you invoice?",
+									"answer": "Sprints are invoiced at the start of each sprint. Partner work is invoiced monthly."
+								},
+								{
+									"question": "What if my idea does not fit a plan?",
+									"answer": "Send an inquiry anyway. We will tell you honestly whether we are the right studio for it."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "contact",
+				"slug": "contact",
+				"status": "published",
+				"data": {
+					"title": "Contact",
+					"content": [
+						{
+							"_type": "marketing_hero",
+							"_version": 1,
+							"_key": "contact-hero",
+							"headline": "Start an inquiry",
+							"subheadline": "Have an idea, a product question or a project in mind? We would like to hear about it.",
+							"centered": true
+						}
+					]
+				}
+			}
+		]
+	}
+}

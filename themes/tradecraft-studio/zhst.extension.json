@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "tradecraft-studio",
+	"kind": "theme",
+	"name": "Tradecraft Studio",
+	"type": "company",
+	"emdash": "1.2.0",
+	"entry": "themes/tradecraft-studio",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": true,
+		"checkout": false,
+		"map": true,
+		"whatsapp": true
+	}
+}

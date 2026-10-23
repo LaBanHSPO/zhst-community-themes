@@ -1,0 +1,211 @@
+---
+import { Icon } from "astro-iconset/components";
+import { sanitizeHref } from "emdash";
+import type { BlockComponentProps } from "emdash/ui";
+import type { PageContentBlock } from "../../../emdash-env";
+
+type PricingBlock = Extract<PageContentBlock, { _type: "marketing_pricing" }>;
+type Props = BlockComponentProps<PricingBlock>;
+
+const { value, index = 0 } = Astro.props;
+const { anchor_id, headline, plans: rawPlans } = value;
+
+const plans = rawPlans.map((plan) => ({
+	...plan,
+	features: (plan.features ?? "")
+		.split("\n")
+		.map((s) => s.trim())
+		.filter(Boolean),
+	cta: {
+		label: plan.cta_label,
+		url: sanitizeHref(plan.cta_url),
+	},
+}));
+const headingId = headline ? `pricing-${anchor_id || index}-heading` : undefined;
+---
+
+<section class="pricing section" id={anchor_id || undefined} aria-labelledby={headingId}>
+	<div class="container">
+		{headline && (
+			<header class="section-header">
+				<h2 class="section-headline" id={headingId}>{headline}</h2>
+			</header>
+		)}
+		<ul class="pricing-grid" role="list" style={`--cols: ${Math.max(1, plans.length)}`}>
+			{plans.map((plan) => (
+				<li class:list={["pricing-card", { "pricing-highlighted": plan.highlighted }]}>
+					<div class="pricing-plan-header">
+						<div class="pricing-name-row">
+							<h3 class="pricing-name">{plan.name}</h3>
+							{plan.highlighted && <span class="pricing-badge">Most popular</span>}
+						</div>
+						{plan.description && <p class="pricing-description">{plan.description}</p>}
+						<p class="pricing-price">
+							<span class="pricing-amount">{plan.price}</span>
+							{plan.period && <span class="pricing-period">{plan.period}</span>}
+						</p>
+					</div>
+					{plan.features.length > 0 && (
+						<ul class="pricing-features" role="list">
+							{plan.features.map((feature) => (
+								<li>
+									<Icon name="ph:check-circle" class="check-icon" aria-hidden="true" />
+									<span>{feature}</span>
+								</li>
+							))}
+						</ul>
+					)}
+					<a
+						href={plan.cta.url}
+						class:list={[
+							"btn",
+							"btn-lg",
+							"pricing-cta",
+							plan.highlighted ? "btn-primary" : "btn-ink",
+						]}
+					>
+						{plan.cta.label}
+						<Icon name="ph:arrow-right" aria-hidden="true" />
+					</a>
+				</li>
+			))}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.pricing-grid {
+		display: grid;
+		grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+		gap: var(--spacing-lg);
+		align-items: stretch;
+	}
+
+	.pricing-card {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-xl);
+		padding: var(--spacing-xl);
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+	}
+
+	.pricing-highlighted {
+		color: var(--color-on-ink);
+		background: var(--color-ink);
+		border-color: var(--color-ink);
+		box-shadow: var(--shadow-xl);
+	}
+
+	.pricing-highlighted :focus-visible {
+		outline-color: var(--color-lime);
+	}
+
+	.pricing-plan-header {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-sm);
+		padding-bottom: var(--spacing-xl);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.pricing-highlighted .pricing-plan-header {
+		border-bottom-color: rgba(255, 255, 255, 0.14);
+	}
+
+	.pricing-name-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--spacing-sm);
+	}
+
+	.pricing-name {
+		font-size: var(--font-size-xl);
+		font-weight: 700;
+	}
+
+	.pricing-badge {
+		padding: 0.3rem 0.75rem;
+		font-size: var(--font-size-xs);
+		font-weight: 700;
+		color: var(--color-on-brand);
+		background: var(--color-lime);
+		border-radius: var(--radius-full);
+		white-space: nowrap;
+	}
+
+	.pricing-description {
+		font-size: var(--font-size-sm);
+		color: var(--color-muted);
+	}
+
+	.pricing-highlighted .pricing-description,
+	.pricing-highlighted .pricing-period {
+		color: var(--color-on-ink-muted);
+	}
+
+	.pricing-price {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: var(--spacing-xs);
+		margin-top: var(--spacing-md);
+	}
+
+	.pricing-amount {
+		font-family: var(--font-heading);
+		font-size: clamp(2.25rem, 1.8rem + 1.5vw, 3rem);
+		font-weight: var(--font-weight-display);
+		letter-spacing: var(--tracking-tight);
+		line-height: 1;
+	}
+
+	.pricing-period {
+		font-size: var(--font-size-sm);
+		color: var(--color-muted);
+	}
+
+	.pricing-features {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 0.7rem;
+	}
+
+	.pricing-features li {
+		display: flex;
+		align-items: flex-start;
+		gap: var(--spacing-sm);
+		font-size: var(--font-size-sm);
+	}
+
+	.pricing-features :global(.check-icon) {
+		width: 18px;
+		height: 18px;
+		flex-shrink: 0;
+		margin-top: 1px;
+		color: var(--color-success);
+	}
+
+	.pricing-highlighted .pricing-features :global(.check-icon) {
+		color: var(--color-lime);
+	}
+
+	.pricing-cta {
+		width: 100%;
+	}
+
+	.pricing-highlighted .btn-primary:focus-visible {
+		outline-color: var(--color-lime);
+	}
+
+	@media (max-width: 960px) {
+		.pricing-grid {
+			grid-template-columns: minmax(0, 1fr);
+			max-width: 480px;
+			margin: 0 auto;
+		}
+	}
+</style>

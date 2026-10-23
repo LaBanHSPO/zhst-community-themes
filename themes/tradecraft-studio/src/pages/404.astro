@@ -1,0 +1,106 @@
+---
+import Base from "../layouts/Base.astro";
+import HeroArt from "../components/HeroArt.astro";
+---
+
+<Base title="Page not found" robots="noindex">
+	<section class="not-found" aria-labelledby="not-found-heading">
+		<div class="not-found-inner">
+			<div class="not-found-copy">
+				<p class="not-found-code" aria-hidden="true">404</p>
+				<h1 id="not-found-heading">Page not <span class="accent-word">found</span></h1>
+				<p>The page you're looking for doesn't exist or has been moved.</p>
+				<div class="not-found-actions">
+					<a href="/" class="btn btn-primary btn-lg">Go home</a>
+					<a href="/contact" class="btn btn-secondary btn-lg">Contact us</a>
+				</div>
+			</div>
+			<div class="not-found-art">
+				<HeroArt />
+			</div>
+		</div>
+	</section>
+</Base>
+
+<style>
+	.not-found {
+		background: var(--color-band);
+	}
+
+	.not-found-inner {
+		max-width: var(--wide-width);
+		margin: 0 auto;
+		padding: 0 var(--gutter);
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		min-height: 520px;
+	}
+
+	.not-found-copy {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: var(--spacing-lg);
+		padding: var(--spacing-3xl) var(--spacing-xl) var(--spacing-3xl) 0;
+	}
+
+	.not-found-code {
+		font-family: var(--font-heading);
+		font-size: clamp(5rem, 3rem + 8vw, 9rem);
+		font-weight: var(--font-weight-display);
+		line-height: 0.9;
+		letter-spacing: -0.05em;
+		color: transparent;
+		-webkit-text-stroke: 2px var(--color-text);
+	}
+
+	.not-found h1 {
+		font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+		font-weight: var(--font-weight-display);
+		letter-spacing: var(--tracking-tight);
+	}
+
+	.not-found-copy > p:not(.not-found-code) {
+		max-width: 40ch;
+		font-size: var(--font-size-lg);
+		color: var(--color-muted);
+	}
+
+	.not-found-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--spacing-md);
+	}
+
+	.not-found-art {
+		position: relative;
+		overflow: hidden;
+		min-height: 280px;
+	}
+
+	.not-found-art :global(.hero-art) {
+		position: absolute;
+		inset: 0;
+	}
+
+	@media (max-width: 760px) {
+		.not-found-inner {
+			grid-template-columns: minmax(0, 1fr);
+			min-height: 0;
+		}
+
+		.not-found-copy {
+			padding: var(--spacing-2xl) 0;
+		}
+
+		.not-found-art {
+			margin: 0 calc(var(--gutter) * -1);
+			aspect-ratio: 16 / 9;
+			min-height: 0;
+		}
+
+		.not-found-actions .btn {
+			flex: 1 1 auto;
+		}
+	}
+</style>
