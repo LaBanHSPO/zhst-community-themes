@@ -1,0 +1,167 @@
+---
+import { decodeSlug, getEmDashEntry } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+import OpeningHoursPanel from "../../components/OpeningHoursPanel.astro";
+import InquiryPanel from "../../components/InquiryPanel.astro";
+import {
+	categoryLabel,
+	getCategoryLabels,
+	getInquiryHref,
+	getOpeningHours,
+	serviceVisual,
+} from "../../utils/practice";
+
+// Detail view for the base schema's `/services/{slug}` URL pattern.
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) {
+	return Astro.redirect("/404");
+}
+
+const { entry: service, cacheHint } = await getEmDashEntry("services", slug);
+if (!service) {
+	return Astro.redirect("/404");
+}
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const [labels, hours, inquiryHref] = await Promise.all([
+	getCategoryLabels(),
+	getOpeningHours(),
+	getInquiryHref(Astro.locals, Astro.url),
+]);
+const category = categoryLabel(service.data.category, labels);
+const visual = serviceVisual(service.data.category, 0);
+---
+
+<Base
+	title={service.data.name}
+	description={service.data.description ?? null}
+	content={{ collection: "services", id: service.data.id, slug }}
+>
+	<div class="wrap">
+		<header class={`page-head service-head tone-${visual.tone}`}>
+			<a class="crumbs" href="/services"><Icon name="arrow-left" /> All services</a>
+			<div class="service-title">
+				<span class="badge" aria-hidden="true"><Icon name={visual.icon} /></span>
+				<div>
+					{category && <span class="eyebrow">{category}</span>}
+					<h1 {...service.edit.name}>{service.data.name}</h1>
+				</div>
+			</div>
+		</header>
+
+		<div class="reading page-section">
+			<article class="reading-main">
+				{
+					service.data.description && (
+						<p class="description" {...service.edit.description}>
+							{service.data.description}
+						</p>
+					)
+				}
+				<dl class="facts">
+					{
+						service.data.duration && (
+							<div>
+								<dt>Duration</dt>
+								<dd {...service.edit.duration}>{service.data.duration}</dd>
+							</div>
+						)
+					}
+					{
+						service.data.price && (
+							<div>
+								<dt>Price</dt>
+								<dd {...service.edit.price}>{service.data.price}</dd>
+							</div>
+						)
+					}
+					<div>
+						<dt>Availability</dt>
+						<dd>{service.data.available === false ? "Currently unavailable" : "Available for inquiries"}</dd>
+					</div>
+				</dl>
+			</article>
+			{
+				(hours || inquiryHref) && (
+					<aside class="reading-aside" aria-label="Practice details">
+						{inquiryHref && <InquiryPanel href={inquiryHref} />}
+						{hours && <OpeningHoursPanel hours={hours} />}
+					</aside>
+				)
+			}
+		</div>
+	</div>
+</Base>
+
+<style>
+	.service-title {
+		display: flex;
+		align-items: center;
+		gap: 20px;
+	}
+
+	.badge {
+		display: grid;
+		place-items: center;
+		flex: none;
+		width: 76px;
+		height: 76px;
+		border-radius: 50%;
+		background: var(--sage-soft);
+		color: var(--sage-deep);
+	}
+
+	.tone-peach .badge {
+		background: var(--peach-soft);
+		color: var(--peach-deep);
+	}
+
+	.badge :global(svg) {
+		width: 38px;
+		height: 38px;
+	}
+
+	.description {
+		margin: 0;
+		font-family: var(--font-display);
+		font-size: clamp(1.3rem, 2vw, 1.6rem);
+		line-height: 1.45;
+		color: var(--ink);
+	}
+
+	.facts {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+		gap: 14px;
+		margin: 28px 0 0;
+	}
+
+	.facts div {
+		padding: 16px 18px;
+		border-radius: var(--radius-sm);
+		background: var(--sage-wash);
+	}
+
+	.facts dt {
+		color: var(--muted);
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.facts dd {
+		margin: 4px 0 0;
+		color: var(--ink);
+		font-size: 1.1rem;
+		font-weight: 600;
+	}
+
+	@media (max-width: 520px) {
+		.service-title {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+	}
+</style>

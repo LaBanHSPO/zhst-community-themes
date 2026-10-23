@@ -1,0 +1,117 @@
+---
+import {
+	getTaxonomyTermsWithCacheHint,
+	getEmDashCollection,
+	decodeSlug,
+} from "emdash";
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+import PostCard from "../../components/PostCard.astro";
+import ServiceCard from "../../components/ServiceCard.astro";
+import { serviceVisual } from "../../utils/practice";
+
+const slug = decodeSlug(Astro.params.slug);
+const termsResult = await getTaxonomyTermsWithCacheHint("category", {
+	includeCounts: false,
+});
+const term = slug ? termsResult.data.find((item) => item.slug === slug) : null;
+
+if (!term) {
+	return Astro.redirect("/404");
+}
+
+const cursor = Astro.url.searchParams.get("cursor") || undefined;
+const {
+	entries: posts,
+	cacheHint,
+	nextCursor,
+} = await getEmDashCollection("posts", {
+	where: { category: term.slug },
+	orderBy: { published_at: "desc" },
+	limit: 20,
+	cursor,
+});
+// Services carry the category as a plain field; list the ones in this category.
+const { entries: allServices, cacheHint: servicesHint } = await getEmDashCollection("services", { limit: 50 });
+const services = allServices.filter((service) => service.data.category === term.slug);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(termsResult.cacheHint);
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(servicesHint);
+}
+---
+
+<Base title={`${term.label}`} description={`Services and health notes in ${term.label}`}>
+	<div class="wrap">
+		<header class="page-head">
+			<a class="crumbs" href="/services"><Icon name="arrow-left" /> All services</a>
+			<span class="eyebrow">Category</span>
+			<h1>{term.label}</h1>
+		</header>
+
+		{
+			services.length > 0 && (
+				<section class="page-section" aria-labelledby="category-services">
+					<h2 id="category-services" class="list-title">Services</h2>
+					<ul class="card-grid">
+						{services.map((service, index) => (
+							<li>
+								<ServiceCard
+									href={`/services/${service.id}`}
+									name={service.data.name}
+									nameAttrs={service.edit.name}
+									summary={service.data.description}
+									meta={[service.data.duration, service.data.price].filter(Boolean) as string[]}
+									category={term.label}
+									available={service.data.available}
+									visual={serviceVisual(service.data.category, index)}
+								/>
+							</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+
+		<section class="page-section" aria-labelledby="category-posts">
+			<h2 id="category-posts" class="list-title">Health notes</h2>
+			{
+				posts.length === 0 ? (
+					<p class="empty">No health notes in this category yet.</p>
+				) : (
+					<ul class="card-grid">
+						{posts.map((post) => (
+							<li>
+								<PostCard post={post} />
+							</li>
+						))}
+					</ul>
+				)
+			}
+			{
+				(cursor || nextCursor) && (
+					<nav class="pager" aria-label="Pagination">
+						{cursor && <a class="btn btn-ghost" href={`/category/${term.slug}`}>First page</a>}
+						{nextCursor && (
+							<a class="btn btn-ghost" href={`/category/${term.slug}?cursor=${encodeURIComponent(nextCursor)}`}>
+								Next page
+							</a>
+						)}
+					</nav>
+				)
+			}
+		</section>
+	</div>
+</Base>
+
+<style>
+	.list-title {
+		margin-bottom: 18px;
+		font-size: clamp(1.5rem, 2vw, 1.8rem);
+	}
+
+	.page-head .crumbs {
+		display: flex;
+		width: max-content;
+	}
+</style>

@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "carepulse-studio",
+	"kind": "theme",
+	"name": "CarePulse Studio",
+	"type": "company",
+	"emdash": "1.2.0",
+	"entry": "themes/carepulse-studio",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": true,
+		"checkout": false,
+		"map": true,
+		"whatsapp": true
+	}
+}

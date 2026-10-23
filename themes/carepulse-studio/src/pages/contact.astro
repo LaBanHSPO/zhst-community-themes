@@ -1,0 +1,171 @@
+---
+/**
+ * /contact — the CMS "contact" page plus the full appointment inquiry form.
+ *
+ * GET renders the page (and the success state after `?inquiry=received`). POST validates the
+ * form on the server, forwards it to the EmDash Forms plugin, and redirects (303) to the success
+ * state, or re-renders the page with inline errors. No JavaScript is required.
+ */
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import InquiryForm from "../components/InquiryForm.astro";
+import OpeningHoursPanel from "../components/OpeningHoursPanel.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { INQUIRY_PAGE_SLUG, getAvailableServiceNames, getOpeningHours } from "../utils/practice";
+import {
+	EMPTY_VALUES,
+	MAX_BODY_BYTES,
+	isInquiryFormActive,
+	parseInquiry,
+	submitInquiry,
+	type InquiryErrors,
+	type InquiryValues,
+} from "../utils/inquiry";
+
+const [{ entry: page, cacheHint }, formActive, serviceNames] = await Promise.all([
+	getEmDashEntry("pages", INQUIRY_PAGE_SLUG),
+	isInquiryFormActive(Astro.locals, Astro.url),
+	getAvailableServiceNames(),
+]);
+
+if (!page && !formActive) {
+	return Astro.redirect("/404");
+}
+
+let values: InquiryValues = EMPTY_VALUES;
+let errors: InquiryErrors = {};
+const submitted = Astro.request.method === "GET" && Astro.url.searchParams.get("inquiry") === "received";
+
+// Browsers send Origin on form POSTs; refuse submissions posted from another site. Hosts are
+// compared (not full origins) so a TLS-terminating proxy in front of the server does not matter.
+const origin = Astro.request.headers.get("origin");
+const sameHost = (value: string) => {
+	try {
+		return new URL(value).host === Astro.url.host;
+	} catch {
+		return false;
+	}
+};
+if (Astro.request.method === "POST" && origin && !sameHost(origin)) {
+	return new Response("Cross-site form submissions are not accepted.", { status: 403 });
+}
+
+if (Astro.request.method === "POST") {
+	if (!formActive) {
+		errors = { form: "Online inquiries are not available right now. Please contact us another way." };
+		Astro.response.status = 503;
+	} else if (Number(Astro.request.headers.get("content-length") ?? 0) > MAX_BODY_BYTES) {
+		errors = { form: "Your inquiry is too long. Please shorten your message and try again." };
+		Astro.response.status = 413;
+	} else {
+		let form: FormData | null = null;
+		try {
+			form = await Astro.request.formData();
+		} catch {
+			form = null;
+		}
+		if (!form) {
+			errors = { form: "We could not read the form. Please try again." };
+			Astro.response.status = 400;
+		} else {
+			const parsed = parseInquiry(form, serviceNames);
+			values = parsed.values;
+			errors = parsed.errors;
+			if (Object.keys(errors).length === 0) {
+				const result = await submitInquiry(Astro.locals, Astro.url, values, parsed.honeypot);
+				if (result.ok) {
+					return Astro.redirect("/contact?inquiry=received#inquiry", 303);
+				}
+				errors = result.errors;
+			}
+			Astro.response.status = errors.form ? 503 : 400;
+		}
+	}
+} else if (!submitted && Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+}
+
+const [settings, hours] = await Promise.all([getSiteSettings(), getOpeningHours()]);
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page
+	? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/contact" })
+	: null;
+const pageTitle = page?.data.title ?? "Contact";
+const hasErrors = Object.keys(errors).length > 0;
+---
+
+<Base
+	title={hasErrors ? `Error: ${seo?.title ?? pageTitle}` : (seo?.title ?? pageTitle)}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: INQUIRY_PAGE_SLUG } : undefined}
+>
+	<div class="wrap">
+		<header class="page-head">
+			{page ? <h1 {...page.edit.title}>{pageTitle}</h1> : <h1>{pageTitle}</h1>}
+		</header>
+		<div class="reading page-section">
+			<div class="reading-main">
+				{
+					page && (
+						<article class="prose">
+							<PortableText value={page.data.content} />
+						</article>
+					)
+				}
+				{
+					formActive && (
+						<section class:list={["inquiry-section", { "has-page": page }]} id="inquiry" aria-labelledby="inquiry-title">
+							<h2 id="inquiry-title">Send an appointment inquiry</h2>
+							<p class="inquiry-lede">
+								Tell us what you need and when suits you. We reply by email to arrange a time.
+							</p>
+							<InquiryForm
+								variant="full"
+								serviceNames={serviceNames}
+								values={values}
+								errors={errors}
+								submitted={submitted}
+								idPrefix="contact-inq"
+							/>
+						</section>
+					)
+				}
+			</div>
+			{
+				hours && (
+					<aside class="reading-aside" aria-label="Practice details">
+						<OpeningHoursPanel hours={hours} />
+					</aside>
+				)
+			}
+		</div>
+	</div>
+</Base>
+
+<style>
+	.inquiry-section {
+		scroll-margin-top: 110px;
+	}
+
+	.inquiry-section.has-page {
+		margin-top: 36px;
+		padding-top: 32px;
+		border-top: 1px solid var(--line-soft);
+	}
+
+	.inquiry-section h2 {
+		font-size: clamp(1.5rem, 2.2vw, 1.85rem);
+	}
+
+	.inquiry-lede {
+		margin: 8px 0 22px;
+		color: var(--ink-soft);
+	}
+
+	.inquiry-section :global(.inq-form) {
+		max-width: 640px;
+	}
+</style>

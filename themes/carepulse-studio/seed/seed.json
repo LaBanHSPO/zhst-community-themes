@@ -1,0 +1,649 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "CarePulse Studio",
+		"description": "A wellness practice theme with services, opening hours, appointment inquiries and health notes",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "CarePulse",
+		"tagline": "Wellness for a brighter tomorrow"
+	},
+	"collections": [
+		{
+			"slug": "posts",
+			"label": "Health notes",
+			"labelSingular": "Health note",
+			"urlPattern": "/posts/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"scheduling",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured Image",
+					"type": "image"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "services",
+			"label": "Services",
+			"labelSingular": "Service",
+			"urlPattern": "/services/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "name",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "category",
+					"label": "Category",
+					"type": "string"
+				},
+				{
+					"slug": "description",
+					"label": "Description",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "duration",
+					"label": "Duration",
+					"type": "string"
+				},
+				{
+					"slug": "price",
+					"label": "Price",
+					"type": "string"
+				},
+				{
+					"slug": "available",
+					"label": "Available",
+					"type": "boolean"
+				}
+			]
+		}
+	],
+	"taxonomies": [
+		{
+			"name": "category",
+			"label": "Categories",
+			"labelSingular": "Category",
+			"hierarchical": false,
+			"collections": [
+				"services",
+				"posts"
+			],
+			"terms": [
+				{
+					"slug": "therapy",
+					"label": "Therapy"
+				},
+				{
+					"slug": "wellness",
+					"label": "Wellness"
+				},
+				{
+					"slug": "diagnostics",
+					"label": "Diagnostics"
+				}
+			]
+		},
+		{
+			"name": "tag",
+			"label": "Tags",
+			"labelSingular": "Tag",
+			"hierarchical": false,
+			"collections": [
+				"posts"
+			],
+			"terms": [
+				{
+					"slug": "wellbeing",
+					"label": "Wellbeing"
+				},
+				{
+					"slug": "prevention",
+					"label": "Prevention"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Home",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "Services",
+					"url": "/services"
+				},
+				{
+					"type": "custom",
+					"label": "Health notes",
+					"url": "/posts"
+				},
+				{
+					"type": "custom",
+					"label": "About",
+					"url": "/about"
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
+				}
+			]
+		}
+	],
+	"widgetAreas": [
+		{
+			"name": "home-intro",
+			"label": "Home introduction",
+			"description": "Short introduction under the home page heading",
+			"widgets": [
+				{
+					"type": "content",
+					"title": "Introduction",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b1",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s1",
+									"text": "Holistic care for a healthier, happier you.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "opening-hours",
+			"label": "Opening hours",
+			"description": "One paragraph per line, written as 'Day: hours' (for example 'Mon: 9:00 AM – 6:00 PM')",
+			"widgets": [
+				{
+					"type": "content",
+					"title": "Opening Hours",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s2",
+									"text": "Mon: 9:00 AM – 6:00 PM",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b3",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s3",
+									"text": "Tue: 9:00 AM – 6:00 PM",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b4",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s4",
+									"text": "Wed: 9:00 AM – 6:00 PM",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b5",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s5",
+									"text": "Thu: 9:00 AM – 6:00 PM",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b6",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s6",
+									"text": "Fri: 9:00 AM – 5:00 PM",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b7",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s7",
+									"text": "Sat: 9:00 AM – 1:00 PM",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b8",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s8",
+									"text": "Sun: Closed",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "sidebar",
+			"label": "Sidebar",
+			"description": "Sidebar widget area",
+			"widgets": [
+				{
+					"type": "component",
+					"componentId": "core:search",
+					"title": "Search"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b9",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s9",
+									"text": "CarePulse is a sample wellness practice for the ZeroHostCMS community catalog. Everything on this demo site is synthetic: replace this text, the services and the opening hours with your own practice details.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"_key": "b10",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s10",
+									"text": "A calm place to start",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b11",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s11",
+									"text": "Use this page to introduce your practice, the people who work there and how a first visit usually goes. Keep it practical and friendly.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "contact",
+				"slug": "contact",
+				"status": "published",
+				"data": {
+					"title": "Contact",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b12",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s12",
+									"text": "Send us an inquiry and we'll get back to you. Tell us which service you are interested in and the times that usually suit you.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"_key": "b13",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s13",
+									"text": "How to reach us",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b14",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s14",
+									"text": "Email: hello@example.com (sample address — replace it with your practice email).",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b15",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s15",
+									"text": "Inquiries are not confirmed bookings. We will reply to agree a time with you.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"posts": [
+			{
+				"id": "post-1",
+				"slug": "welcome",
+				"status": "published",
+				"data": {
+					"title": "Welcome to CarePulse",
+					"excerpt": "A sample health note. Replace it with your own.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This is a sample health note for the CarePulse theme. Edit it in the admin panel or replace the templates in src/pages.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": [
+						"wellness"
+					],
+					"tag": [
+						"wellbeing"
+					]
+				}
+			},
+			{
+				"id": "post-2",
+				"slug": "preparing-for-your-first-visit",
+				"status": "published",
+				"data": {
+					"title": "Preparing for your first visit",
+					"excerpt": "A few practical things to bring and think about before a first session.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b16",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s16",
+									"text": "A short sample note about what to bring to a first session: comfortable clothing, any questions you want to ask, and a list of times that suit you.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b17",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s17",
+									"text": "Replace this sample note with guidance from your own practice.",
+									"marks": []
+								}
+							]
+						}
+					]
+				},
+				"taxonomies": {
+					"category": [
+						"therapy"
+					],
+					"tag": [
+						"wellbeing"
+					]
+				}
+			},
+			{
+				"id": "post-3",
+				"slug": "small-daily-habits",
+				"status": "published",
+				"data": {
+					"title": "Small daily habits that add up",
+					"excerpt": "Gentle, everyday routines: rest, movement and regular meals.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b18",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s18",
+									"text": "A sample note on simple routines such as short walks, regular meals and a consistent bedtime. It is general information, not medical advice.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b19",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "s19",
+									"text": "Replace this sample note with your own content.",
+									"marks": []
+								}
+							]
+						}
+					]
+				},
+				"taxonomies": {
+					"category": [
+						"wellness"
+					],
+					"tag": [
+						"prevention"
+					]
+				}
+			}
+		],
+		"services": [
+			{
+				"id": "service-1",
+				"slug": "physiotherapy",
+				"status": "published",
+				"data": {
+					"name": "Physiotherapy",
+					"category": "therapy",
+					"description": "One-to-one assessment and treatment for movement and pain.",
+					"duration": "45 min",
+					"price": "$80",
+					"available": true
+				}
+			},
+			{
+				"id": "service-2",
+				"slug": "nutrition-coaching",
+				"status": "published",
+				"data": {
+					"name": "Nutrition coaching",
+					"category": "wellness",
+					"description": "Practical, evidence-based guidance for everyday eating.",
+					"duration": "30 min",
+					"price": "$60",
+					"available": true
+				}
+			},
+			{
+				"id": "service-3",
+				"slug": "health-screening",
+				"status": "published",
+				"data": {
+					"name": "Health screening",
+					"category": "diagnostics",
+					"description": "A short check-up with a summary you can share with your doctor.",
+					"duration": "20 min",
+					"price": "$40",
+					"available": true
+				}
+			}
+		]
+	}
+}

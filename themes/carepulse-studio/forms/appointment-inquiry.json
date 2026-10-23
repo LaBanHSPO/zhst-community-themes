@@ -1,0 +1,25 @@
+{
+	"name": "Appointment inquiry",
+	"slug": "appointment-inquiry",
+	"pages": [
+		{
+			"fields": [
+				{ "id": "name", "type": "text", "label": "Name", "name": "name", "required": true, "width": "full", "validation": { "maxLength": 120 } },
+				{ "id": "email", "type": "email", "label": "Email", "name": "email", "required": true, "width": "full", "validation": { "maxLength": 254 } },
+				{ "id": "service", "type": "text", "label": "Service", "name": "service", "required": false, "width": "full", "helpText": "Name of a published service; the theme only accepts services from the Services collection.", "validation": { "maxLength": 120 } },
+				{ "id": "preferred_time", "type": "text", "label": "Preferred day or time", "name": "preferred_time", "required": false, "width": "full", "validation": { "maxLength": 120 } },
+				{ "id": "message", "type": "textarea", "label": "Message", "name": "message", "required": true, "width": "full", "validation": { "maxLength": 2000 } },
+				{ "id": "consent", "type": "checkbox", "label": "I agree that this site stores my inquiry so the practice can reply.", "name": "consent", "required": true, "width": "full", "defaultValue": "true" }
+			]
+		}
+	],
+	"settings": {
+		"confirmationMessage": "We received your inquiry. This is not a confirmed appointment.",
+		"notifyEmails": [],
+		"digestEnabled": false,
+		"digestHour": 9,
+		"retentionDays": 0,
+		"spamProtection": "honeypot",
+		"submitLabel": "Send inquiry"
+	}
+}

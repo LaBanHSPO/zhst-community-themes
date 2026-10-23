@@ -1,0 +1,29 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+
+Astro.response.status = 404;
+---
+
+<Base title="Not Found">
+	<div class="wrap">
+		<header class="page-head not-found">
+			<span class="eyebrow">404</span>
+			<h1>Page not found</h1>
+			<p class="lede">The page you're looking for doesn't exist.</p>
+			<p class="actions">
+				<a class="btn btn-sage" href="/"><Icon name="arrow-left" /> Go home</a>
+				<a class="btn btn-ghost" href="/services">View services</a>
+			</p>
+		</header>
+	</div>
+</Base>
+
+<style>
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
+		margin: 28px 0 0;
+	}
+</style>

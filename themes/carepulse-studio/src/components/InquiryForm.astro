@@ -1,0 +1,400 @@
+---
+/**
+ * Server-rendered appointment inquiry form. It is a plain POST form: validation, errors and the
+ * success state are all rendered by the server, so it works without JavaScript and makes no
+ * third-party requests. Submissions are stored by the EmDash Forms plugin (see utils/inquiry.ts).
+ */
+import Icon from "./Icon.astro";
+import {
+	EMPTY_VALUES,
+	LIMITS,
+	SUCCESS_MESSAGE,
+	type InquiryErrors,
+	type InquiryValues,
+} from "../utils/inquiry";
+
+interface Props {
+	/** "full" on /contact, "compact" in the home right rail (fewer fields, same rules). */
+	variant?: "full" | "compact";
+	serviceNames: string[];
+	values?: InquiryValues;
+	errors?: InquiryErrors;
+	submitted?: boolean;
+	/** Prefix for element ids, unique per form on a page. */
+	idPrefix?: string;
+}
+
+const {
+	variant = "full",
+	serviceNames,
+	values = EMPTY_VALUES,
+	errors = {},
+	submitted = false,
+	idPrefix = "inq",
+} = Astro.props;
+
+const compact = variant === "compact";
+const id = (name: string) => `${idPrefix}-${name}`;
+const errorList = Object.entries(errors).filter(([, message]) => Boolean(message)) as [string, string][];
+const fieldLabels: Record<string, string> = {
+	name: "Name",
+	email: "Email",
+	service: "Service",
+	preferredTime: "Preferred day or time",
+	message: "Message",
+	consent: "Consent",
+	form: "Form",
+};
+const anchor = (field: string) => (field === "form" ? `#${id("form")}` : `#${id(field)}`);
+const describedBy = (field: keyof InquiryErrors, hint?: string) =>
+	[hint, errors[field] ? id(`${field}-error`) : null].filter(Boolean).join(" ") || undefined;
+---
+
+{
+	submitted ? (
+		<div class="inq-success" role="status" id={id("form")} tabindex="-1">
+			<Icon name="check" />
+			<div>
+				<p class="inq-success-title">{SUCCESS_MESSAGE}</p>
+				<p>We will reply by email. If your need is urgent, please call your doctor or local emergency services.</p>
+			</div>
+		</div>
+	) : (
+		<form
+			class:list={["inq-form", { "inq-compact": compact }]}
+			method="post"
+			action="/contact#inquiry"
+			id={id("form")}
+			novalidate
+			aria-describedby={id("privacy")}
+		>
+			{errorList.length > 0 && (
+				<div class="inq-summary" role="alert" aria-labelledby={id("summary-title")}>
+					<p id={id("summary-title")} class="inq-summary-title">
+						Please fix {errorList.length === 1 ? "this problem" : `these ${errorList.length} problems`}:
+					</p>
+					<ul>
+						{errorList.map(([field, message]) => (
+							<li>
+								<a href={anchor(field)}>
+									{field === "form" ? message : `${fieldLabels[field] ?? field}: ${message}`}
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			)}
+
+			<p class="inq-required-note">Fields marked <span aria-hidden="true">*</span><span class="visually-hidden">required</span> are required.</p>
+
+			<div class:list={["inq-field", { "has-error": errors.name }]}>
+				<label for={id("name")}>Name <span class="inq-req" aria-hidden="true">*</span></label>
+				<input
+					id={id("name")}
+					name="name"
+					type="text"
+					autocomplete="name"
+					required
+					maxlength={LIMITS.name}
+					value={values.name}
+					aria-invalid={errors.name ? "true" : undefined}
+					aria-describedby={describedBy("name")}
+				/>
+				{errors.name && <p class="inq-error" id={id("name-error")}>{errors.name}</p>}
+			</div>
+
+			<div class:list={["inq-field", { "has-error": errors.email }]}>
+				<label for={id("email")}>Email <span class="inq-req" aria-hidden="true">*</span></label>
+				<input
+					id={id("email")}
+					name="email"
+					type="email"
+					autocomplete="email"
+					inputmode="email"
+					required
+					maxlength={LIMITS.email}
+					value={values.email}
+					aria-invalid={errors.email ? "true" : undefined}
+					aria-describedby={describedBy("email")}
+				/>
+				{errors.email && <p class="inq-error" id={id("email-error")}>{errors.email}</p>}
+			</div>
+
+			{serviceNames.length > 0 && (
+				<div class:list={["inq-field", { "has-error": errors.service }]}>
+					<label for={id("service")}>Service <span class="inq-optional">(optional)</span></label>
+					<select
+						id={id("service")}
+						name="service"
+						aria-invalid={errors.service ? "true" : undefined}
+						aria-describedby={describedBy("service")}
+					>
+						<option value="">Not sure yet</option>
+						{serviceNames.map((name) => (
+							<option value={name} selected={values.service === name}>
+								{name}
+							</option>
+						))}
+					</select>
+					{errors.service && <p class="inq-error" id={id("service-error")}>{errors.service}</p>}
+				</div>
+			)}
+
+			{!compact && (
+				<div class:list={["inq-field", { "has-error": errors.preferredTime }]}>
+					<label for={id("preferredTime")}>
+						Preferred day or time <span class="inq-optional">(optional)</span>
+					</label>
+					<input
+						id={id("preferredTime")}
+						name="preferred_time"
+						type="text"
+						maxlength={LIMITS.preferredTime}
+						value={values.preferredTime}
+						aria-invalid={errors.preferredTime ? "true" : undefined}
+						aria-describedby={describedBy("preferredTime", id("preferredTime-hint"))}
+					/>
+					<p class="inq-hint" id={id("preferredTime-hint")}>For example "Tuesday mornings". We will confirm a time by email.</p>
+					{errors.preferredTime && (
+						<p class="inq-error" id={id("preferredTime-error")}>{errors.preferredTime}</p>
+					)}
+				</div>
+			)}
+
+			<div class:list={["inq-field", { "has-error": errors.message }]}>
+				<label for={id("message")}>Message <span class="inq-req" aria-hidden="true">*</span></label>
+				<textarea
+					id={id("message")}
+					name="message"
+					rows={compact ? 3 : 6}
+					required
+					maxlength={LIMITS.message}
+					aria-invalid={errors.message ? "true" : undefined}
+					aria-describedby={describedBy("message", compact ? undefined : id("message-hint"))}
+				>{values.message}</textarea>
+				{!compact && (
+					<p class="inq-hint" id={id("message-hint")}>
+						Up to {LIMITS.message} characters. Please do not include detailed medical records.
+					</p>
+				)}
+				{errors.message && <p class="inq-error" id={id("message-error")}>{errors.message}</p>}
+			</div>
+
+			<div class:list={["inq-field inq-check", { "has-error": errors.consent }]}>
+				<input
+					id={id("consent")}
+					name="consent"
+					type="checkbox"
+					value="yes"
+					required
+					checked={values.consent}
+					aria-invalid={errors.consent ? "true" : undefined}
+					aria-describedby={describedBy("consent")}
+				/>
+				<label for={id("consent")}>
+					I agree that this site stores my inquiry so the practice can reply. <span class="inq-req" aria-hidden="true">*</span>
+				</label>
+				{errors.consent && <p class="inq-error" id={id("consent-error")}>{errors.consent}</p>}
+			</div>
+
+			<div class="inq-hp" aria-hidden="true">
+				<label for={id("website")}>Leave this field empty</label>
+				<input id={id("website")} name="website" type="text" tabindex="-1" autocomplete="off" />
+			</div>
+
+			<button class="btn btn-sage btn-block" type="submit">
+				<Icon name="send" />
+				Send inquiry
+			</button>
+
+			<p class="inq-privacy" id={id("privacy")}>
+				An inquiry is not a confirmed appointment. We store your name, email, chosen service, preferred
+				time, message, your consent and the time you sent it in this site's database. Only practice staff
+				with admin access can read it, and we use it only to reply to you.
+			</p>
+		</form>
+	)
+}
+
+<style>
+	.inq-form {
+		display: grid;
+		gap: 16px;
+	}
+
+	.inq-compact {
+		gap: 12px;
+	}
+
+	.inq-required-note {
+		margin: 0;
+		color: var(--muted);
+		font-size: 0.85rem;
+	}
+
+	.inq-field {
+		display: grid;
+		gap: 6px;
+		min-width: 0;
+	}
+
+	.inq-field label {
+		color: var(--ink);
+		font-size: 0.95rem;
+		font-weight: 600;
+	}
+
+	.inq-req {
+		color: var(--peach-deep);
+	}
+
+	.inq-optional {
+		color: var(--muted);
+		font-weight: 400;
+	}
+
+	.inq-field input[type="text"],
+	.inq-field input[type="email"],
+	.inq-field select,
+	.inq-field textarea {
+		width: 100%;
+		min-height: 46px;
+		padding: 10px 12px;
+		border: 1px solid #b9b0a1;
+		border-radius: var(--radius-sm);
+		background: var(--card);
+		color: var(--ink);
+		font: inherit;
+		font-size: 1rem;
+	}
+
+	.inq-field textarea {
+		resize: vertical;
+		line-height: 1.5;
+	}
+
+	.inq-field input:focus-visible,
+	.inq-field select:focus-visible,
+	.inq-field textarea:focus-visible {
+		outline: 3px solid var(--focus);
+		outline-offset: 1px;
+		border-color: var(--focus);
+	}
+
+	.has-error input,
+	.has-error select,
+	.has-error textarea {
+		border-color: #a3322a;
+		border-width: 2px;
+	}
+
+	.inq-hint {
+		margin: 0;
+		color: var(--muted);
+		font-size: 0.85rem;
+	}
+
+	.inq-error {
+		margin: 0;
+		color: #a3322a;
+		font-size: 0.9rem;
+		font-weight: 600;
+	}
+
+	.inq-check {
+		grid-template-columns: auto minmax(0, 1fr);
+		align-items: start;
+		column-gap: 10px;
+	}
+
+	.inq-check input {
+		width: 22px;
+		height: 22px;
+		margin: 1px 0 0;
+		accent-color: var(--sage-deep);
+	}
+
+	.inq-check input:focus-visible {
+		outline: 3px solid var(--focus);
+		outline-offset: 2px;
+	}
+
+	.inq-check label {
+		font-weight: 400;
+		line-height: 1.45;
+	}
+
+	.inq-check .inq-error {
+		grid-column: 1 / -1;
+	}
+
+	.inq-hp {
+		position: absolute;
+		left: -10000px;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+	}
+
+	.inq-privacy {
+		margin: 0;
+		color: var(--muted);
+		font-size: 0.85rem;
+		line-height: 1.5;
+	}
+
+	.inq-summary {
+		padding: 14px 16px;
+		border: 2px solid #a3322a;
+		border-radius: var(--radius-sm);
+		background: #fbeeea;
+	}
+
+	.inq-summary-title {
+		margin: 0 0 6px;
+		color: #7d241e;
+		font-weight: 700;
+	}
+
+	.inq-summary ul {
+		margin: 0;
+		padding-left: 20px;
+	}
+
+	.inq-summary a {
+		color: #7d241e;
+	}
+
+	.inq-success {
+		display: flex;
+		gap: 12px;
+		align-items: flex-start;
+		padding: 16px 18px;
+		border: 1px solid var(--sage-mid);
+		border-radius: var(--radius-sm);
+		background: var(--sage-wash);
+		color: var(--ink);
+	}
+
+	.inq-success :global(svg) {
+		flex: none;
+		width: 22px;
+		height: 22px;
+		margin-top: 2px;
+		color: var(--sage-deep);
+	}
+
+	.inq-success p {
+		margin: 0;
+	}
+
+	.inq-success-title {
+		margin-bottom: 4px !important;
+		font-weight: 700;
+	}
+
+	.inq-success:focus-visible {
+		outline: 3px solid var(--focus);
+		outline-offset: 2px;
+	}
+</style>

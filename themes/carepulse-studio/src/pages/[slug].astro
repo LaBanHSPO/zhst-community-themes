@@ -1,0 +1,56 @@
+---
+import { getEmDashEntry, getSeoMeta, decodeSlug, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import OpeningHoursPanel from "../components/OpeningHoursPanel.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getOpeningHours } from "../utils/practice";
+
+const slug = decodeSlug(Astro.params.slug);
+
+if (!slug) {
+	return Astro.redirect("/404");
+}
+
+const { entry: page, cacheHint } = await getEmDashEntry("pages", slug);
+
+if (!page) {
+	return Astro.redirect("/404");
+}
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const [settings, hours] = await Promise.all([getSiteSettings(), getOpeningHours()]);
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+
+const seo = getSeoMeta(page, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description}
+	canonical={seo.canonical}
+	content={{ collection: "pages", id: page.data.id, slug }}
+>
+	<div class="wrap">
+		<header class="page-head">
+			<h1 {...page.edit.title}>{page.data.title}</h1>
+		</header>
+		<div class="reading page-section">
+			<article class="reading-main prose">
+				<PortableText value={page.data.content} />
+			</article>
+			{
+				hours && (
+					<aside class="reading-aside" aria-label="Practice details">
+						<OpeningHoursPanel hours={hours} />
+					</aside>
+				)
+			}
+		</div>
+	</div>
+</Base>

@@ -1,0 +1,186 @@
+---
+import {
+	getEmDashEntry,
+	getSeoMeta,
+	decodeSlug,
+	getSiteSettings,
+} from "emdash";
+import { Image, PortableText, WidgetArea } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+import InquiryPanel from "../../components/InquiryPanel.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { formatDate, getInquiryHref } from "../../utils/practice";
+
+const slug = decodeSlug(Astro.params.slug);
+
+if (!slug) {
+	return Astro.redirect("/404");
+}
+
+const { entry: post, cacheHint } = await getEmDashEntry("posts", slug);
+
+if (!post) {
+	return Astro.redirect("/404");
+}
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const [settings, inquiryHref] = await Promise.all([getSiteSettings(), getInquiryHref(Astro.locals, Astro.url)]);
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+
+// SEO meta from content fields
+const seo = getSeoMeta(post, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+
+// Taxonomy terms are already hydrated onto the entry by getEmDashEntry.
+const tags = post.data.terms?.tag ?? [];
+const categories = post.data.terms?.category ?? [];
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description}
+	canonical={seo.canonical}
+	image={seo.ogImage}
+	content={{ collection: "posts", id: post.data.id, slug }}
+>
+	<div class="wrap">
+		<header class="page-head">
+			<a class="crumbs" href="/posts"><Icon name="arrow-left" /> Health notes</a>
+			<h1 {...post.edit.title}>{post.data.title}</h1>
+			<div class="post-meta">
+				{
+					post.data.publishedAt && (
+						<time datetime={post.data.publishedAt.toISOString()}>{formatDate(post.data.publishedAt)}</time>
+					)
+				}
+				{
+					categories.map((c) => (
+						<a class="pill pill-peach" href={`/category/${c.slug}`}>
+							{c.label}
+						</a>
+					))
+				}
+			</div>
+		</header>
+
+		<div class="reading page-section">
+			<article class="reading-main">
+				{
+					post.data.featured_image && (
+						<div class="feature" {...post.edit.featured_image}>
+							<Image image={post.data.featured_image} />
+						</div>
+					)
+				}
+				<div class="prose">
+					<PortableText value={post.data.content} />
+				</div>
+				{
+					tags.length > 0 && (
+						<ul class="tags" aria-label="Tags">
+							{tags.map((t) => (
+								<li>
+									<a class="pill" href={`/tag/${t.slug}`}>
+										{t.label}
+									</a>
+								</li>
+							))}
+						</ul>
+					)
+				}
+			</article>
+
+			<aside class="reading-aside" aria-label="Sidebar">
+				<div class="panel widgets">
+					<WidgetArea name="sidebar" />
+				</div>
+				{inquiryHref && <InquiryPanel href={inquiryHref} />}
+			</aside>
+		</div>
+	</div>
+</Base>
+
+<style>
+	.post-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 10px 14px;
+		margin-top: 16px;
+		color: var(--ink-soft);
+	}
+
+	.feature {
+		margin: 0 0 28px;
+		overflow: hidden;
+		border-radius: var(--radius);
+	}
+
+	.feature :global(img) {
+		display: block;
+		width: 100%;
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin: 32px 0 0;
+		padding: 24px 0 0;
+		border-top: 1px solid var(--line-soft);
+		list-style: none;
+	}
+
+	.widgets :global(h2),
+	.widgets :global(h3) {
+		font-family: var(--font-body);
+		font-size: 1.1rem;
+		font-weight: 600;
+		margin: 0 0 12px;
+	}
+
+	.widgets :global(input) {
+		width: 100%;
+		min-height: 44px;
+		padding: 8px 14px;
+		border: 1px solid var(--line);
+		border-radius: 12px;
+		background: var(--card);
+		font: inherit;
+	}
+
+	.widgets :global(form) {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.widgets :global(input) {
+		flex: 1 1 160px;
+	}
+
+	.widgets :global(button) {
+		min-height: 44px;
+		padding: 8px 18px;
+		border: 0;
+		border-radius: 12px;
+		background: var(--sage);
+		color: #fff;
+		font: inherit;
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	.widgets :global(button:hover) {
+		background: var(--sage-deep);
+	}
+
+	.widgets:not(:has(*)) {
+		display: none;
+	}
+</style>

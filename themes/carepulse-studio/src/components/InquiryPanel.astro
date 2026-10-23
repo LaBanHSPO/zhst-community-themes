@@ -1,0 +1,107 @@
+---
+import Icon from "./Icon.astro";
+import InquiryForm from "./InquiryForm.astro";
+
+/**
+ * Appointment inquiry panel. With `showForm` (the Forms-plugin inquiry form is active) it renders
+ * the compact inquiry form, which posts to /contact. Otherwise it links to the contact page and
+ * never renders a form that could not submit.
+ */
+interface Props {
+	href: string;
+	serviceNames?: string[];
+	id?: string;
+	showForm?: boolean;
+}
+
+const { href, serviceNames = [], id = "inquiry", showForm = false } = Astro.props;
+const headingId = `${id}-title`;
+---
+
+<section class="panel inquiry" aria-labelledby={headingId}>
+	<div class="panel-head">
+		<Icon name="calendar" />
+		<div>
+			<h2 id={headingId}>Appointment Inquiry</h2>
+			<p>Send us an inquiry and we'll get back to you.</p>
+		</div>
+	</div>
+	{
+		showForm ? (
+			<>
+				<InquiryForm variant="compact" serviceNames={serviceNames} idPrefix={`${id}-inq`} />
+				<p class="note">
+					Want to add a preferred day or time? <a href={href}>Use the full inquiry form</a>.
+				</p>
+			</>
+		) : (
+			<>
+				{serviceNames.length > 0 && (
+					<div class="ask">
+						<p class="ask-label">You can ask about</p>
+						<ul>
+							{serviceNames.map((name) => (
+								<li>{name}</li>
+							))}
+						</ul>
+					</div>
+				)}
+				<a class="btn btn-sage btn-block" href={href}>
+					<Icon name="send" />
+					Send an inquiry
+				</a>
+				<p class="note">Inquiries are not confirmed bookings.</p>
+			</>
+		)
+	}
+</section>
+
+<style>
+	.ask {
+		margin-bottom: 18px;
+		padding: 14px 16px;
+		background: var(--card);
+		border: 1px solid var(--line-soft);
+		border-radius: var(--radius-sm);
+	}
+
+	.ask-label {
+		margin: 0 0 6px;
+		color: var(--muted);
+		font-size: 0.82rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	.ask ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.ask li {
+		position: relative;
+		padding: 4px 0 4px 18px;
+		color: var(--ink);
+		font-size: 0.95rem;
+	}
+
+	.ask li::before {
+		content: "";
+		position: absolute;
+		left: 2px;
+		top: 0.85em;
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: var(--sage-mid);
+	}
+
+	.note {
+		margin: 12px 0 0;
+		color: var(--muted);
+		font-size: 0.85rem;
+		text-align: center;
+	}
+</style>

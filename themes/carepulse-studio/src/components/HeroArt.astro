@@ -1,0 +1,73 @@
+---
+/**
+ * Illustrated treatment-room scene drawn in SVG (the seed ships no photography).
+ * Purely decorative: arched window, botanical leaves, lamp glow and a soft chair.
+ */
+interface Props {
+	class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<svg class={className} viewBox="0 0 720 460" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+	<defs>
+		<linearGradient id="cp-wall" x1="0" y1="0" x2="1" y2="1">
+			<stop offset="0" stop-color="#f4ece1" />
+			<stop offset="0.55" stop-color="#e3e7da" />
+			<stop offset="1" stop-color="#cdd7c6" />
+		</linearGradient>
+		<linearGradient id="cp-window" x1="0" y1="0" x2="0" y2="1">
+			<stop offset="0" stop-color="#fffaf2" />
+			<stop offset="1" stop-color="#f1e6d6" />
+		</linearGradient>
+		<radialGradient id="cp-glow" cx="0.5" cy="0.5" r="0.5">
+			<stop offset="0" stop-color="#ffe2c4" stop-opacity="0.95" />
+			<stop offset="1" stop-color="#ffe2c4" stop-opacity="0" />
+		</radialGradient>
+		<linearGradient id="cp-floor" x1="0" y1="0" x2="0" y2="1">
+			<stop offset="0" stop-color="#e6d6c2" />
+			<stop offset="1" stop-color="#d9c4ab" />
+		</linearGradient>
+	</defs>
+
+	<rect width="720" height="460" fill="url(#cp-wall)" />
+	<rect y="372" width="720" height="88" fill="url(#cp-floor)" />
+
+	<!-- Arched window with light -->
+	<path d="M70 372V150a95 95 0 0 1 190 0v222Z" fill="url(#cp-window)" />
+	<path d="M165 55v317M70 222h190" stroke="#e3d7c5" stroke-width="5" />
+	<path d="M70 372V150a95 95 0 0 1 190 0v222" fill="none" stroke="#e8dccb" stroke-width="8" />
+
+	<!-- Framed botanical print -->
+	<rect x="470" y="70" width="104" height="132" rx="4" fill="#f8f2e8" stroke="#c9b79c" stroke-width="5" />
+	<path d="M522 186c0-38 2-62 0-92" stroke="#7f9479" stroke-width="2.5" fill="none" />
+	<path d="M522 150c-16-6-24-18-24-32 14 4 22 14 24 32Zm0-20c16-6 24-18 24-32-14 4-22 14-24 32Zm0 44c-14-4-22-14-22-26 12 2 20 12 22 26Zm0-6c14-4 22-14 22-26-12 2-20 12-22 26Z" fill="#8fa48a" />
+
+	<!-- Lamp glow -->
+	<circle cx="395" cy="250" r="70" fill="url(#cp-glow)" />
+	<path d="M380 230h30l-6-26h-18Z" fill="#f3d6b8" />
+	<rect x="392" y="230" width="6" height="64" fill="#b79b78" />
+	<rect x="372" y="292" width="46" height="10" rx="3" fill="#a88d6a" />
+	<rect x="352" y="300" width="86" height="72" rx="6" fill="#c9ab86" />
+
+	<!-- Soft armchair -->
+	<path d="M120 300c0-34 18-52 58-52h76c40 0 58 18 58 52v72H120Z" fill="#f3ebde" />
+	<path d="M98 312c0-18 12-28 30-28s30 10 30 28v60H98Zm176 0c0-18 12-28 30-28s30 10 30 28v60h-60Z" fill="#ece1d1" />
+	<rect x="150" y="320" width="132" height="34" rx="14" fill="#f8f2e8" />
+	<path d="M178 262c22-10 54-8 74 6l-6 46c-26-10-50-10-74 0Z" fill="#7f9479" />
+	<rect x="110" y="368" width="10" height="14" rx="3" fill="#a88d6a" />
+	<rect x="312" y="368" width="10" height="14" rx="3" fill="#a88d6a" />
+
+	<!-- Potted plant -->
+	<path d="M598 372h70l-8-62h-54Z" fill="#efe6d8" />
+	<path d="M632 312c-4-60-30-96-70-112 22 30 38 70 70 112Z" fill="#7f9479" />
+	<path d="M634 312c4-66 30-104 70-124-20 34-36 78-70 124Z" fill="#5d7259" />
+	<path d="M632 312c-20-36-52-54-92-56 28 22 54 42 92 56Z" fill="#8fa48a" />
+	<path d="M636 312c18-40 48-62 86-68-24 26-50 50-86 68Z" fill="#a5b79f" />
+	<path d="M633 312c0-70 4-112 12-150 10 40 6 92-12 150Z" fill="#6b8066" />
+
+	<!-- Foreground leaves -->
+	<path d="M0 460c10-70 50-118 120-140-26 46-64 98-120 140Z" fill="#5d7259" opacity="0.92" />
+	<path d="M0 410c44-28 98-30 150-6-52 18-102 22-150 6Z" fill="#8fa48a" opacity="0.85" />
+	<path d="M720 460c-30-58-76-90-138-96 30 40 76 72 138 96Z" fill="#e2a68c" opacity="0.55" />
+</svg>

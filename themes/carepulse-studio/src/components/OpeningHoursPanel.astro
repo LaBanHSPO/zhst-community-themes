@@ -1,0 +1,71 @@
+---
+import Icon from "./Icon.astro";
+import type { OpeningHours } from "../utils/practice";
+
+interface Props {
+	hours: OpeningHours;
+	compact?: boolean;
+}
+
+const { hours, compact = false } = Astro.props;
+const title = hours.title || "Opening Hours";
+const headingId = `hours-${compact ? "c" : "p"}`;
+---
+
+<section class:list={["panel", "hours", { compact }]} aria-labelledby={headingId}>
+	<div class="panel-head">
+		<Icon name="clock" />
+		<h2 id={headingId}>{title}</h2>
+	</div>
+	<dl class="hours-list">
+		{
+			hours.rows.map((row) =>
+				row.value ? (
+					<div class="hours-row">
+						<dt>{row.label}</dt>
+						<dd>{row.value}</dd>
+					</div>
+				) : (
+					<div class="hours-row note">
+						<dt class="visually-hidden">Note</dt>
+						<dd>{row.label}</dd>
+					</div>
+				),
+			)
+		}
+	</dl>
+</section>
+
+<style>
+	.hours-list {
+		margin: 0;
+	}
+
+	.hours-row {
+		display: grid;
+		grid-template-columns: minmax(3.5rem, 0.6fr) 1.4fr;
+		gap: 12px;
+		padding: 5px 0;
+		border-bottom: 1px solid rgba(143, 164, 138, 0.35);
+		font-size: 0.95rem;
+	}
+
+	.hours-row:last-child {
+		border-bottom: 0;
+	}
+
+	.hours-row dt {
+		color: var(--ink);
+	}
+
+	.hours-row dd {
+		margin: 0;
+		color: var(--ink);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.hours-row.note {
+		grid-template-columns: 1fr;
+		color: var(--ink-soft);
+	}
+</style>

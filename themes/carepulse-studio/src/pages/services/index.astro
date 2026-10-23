@@ -1,0 +1,81 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../../layouts/Base.astro";
+import ServiceCard from "../../components/ServiceCard.astro";
+import OpeningHoursPanel from "../../components/OpeningHoursPanel.astro";
+import InquiryPanel from "../../components/InquiryPanel.astro";
+import {
+	categoryLabel,
+	getCategoryLabels,
+	getInquiryHref,
+	getOpeningHours,
+	serviceVisual,
+} from "../../utils/practice";
+
+const { entries: services, cacheHint } = await getEmDashCollection("services", { limit: 50 });
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const [labels, hours, inquiryHref] = await Promise.all([
+	getCategoryLabels(),
+	getOpeningHours(),
+	getInquiryHref(Astro.locals, Astro.url),
+]);
+---
+
+<Base title="Services" description="Our services">
+	<div class="wrap">
+		<header class="page-head">
+			<span class="eyebrow">Our practice</span>
+			<h1>Services</h1>
+		</header>
+
+		<div class="reading page-section">
+			<div>
+				{
+					services.length === 0 ? (
+						<p class="empty">
+							No services yet. <a href="/_emdash/admin/content/services/new">Create one</a>.
+						</p>
+					) : (
+						<ul class="card-grid services-grid">
+							{services.map((service, index) => (
+								<li>
+									<ServiceCard
+										headingLevel="h2"
+										href={`/services/${service.id}`}
+										name={service.data.name}
+										nameAttrs={service.edit.name}
+										summary={service.data.description}
+										meta={[service.data.duration, service.data.price].filter(Boolean) as string[]}
+										category={categoryLabel(service.data.category, labels)}
+										available={service.data.available}
+										visual={serviceVisual(service.data.category, index)}
+									/>
+								</li>
+							))}
+						</ul>
+					)
+				}
+			</div>
+			{
+				(hours || inquiryHref) && (
+					<aside class="reading-aside" aria-label="Practice details">
+						{hours && <OpeningHoursPanel hours={hours} />}
+						{inquiryHref && <InquiryPanel href={inquiryHref} />}
+					</aside>
+				)
+			}
+		</div>
+	</div>
+</Base>
+
+<style>
+	.services-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	@media (max-width: 680px) {
+		.services-grid {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+</style>

@@ -1,0 +1,232 @@
+---
+import Icon from "./Icon.astro";
+import type { ServiceVisual } from "../utils/practice";
+
+interface Props {
+	href: string;
+	name: string;
+	nameAttrs?: Record<string, unknown>;
+	summary?: string | null;
+	meta?: string[];
+	category?: string | null;
+	available?: boolean | null;
+	visual: ServiceVisual;
+	headingLevel?: "h2" | "h3";
+}
+
+const {
+	href,
+	name,
+	nameAttrs = {},
+	summary,
+	meta = [],
+	category,
+	available,
+	visual,
+	headingLevel = "h3",
+} = Astro.props;
+const Heading = headingLevel;
+---
+
+<article class={`service-card tone-${visual.tone}`}>
+	<div class="service-art" aria-hidden="true">
+		<span class="art-shape art-a"></span>
+		<span class="art-shape art-b"></span>
+		<Icon name={visual.icon} class="art-icon" />
+		{category && <span class="art-tag">{category}</span>}
+	</div>
+	<div class="service-body">
+		<span class="service-badge" aria-hidden="true"><Icon name={visual.icon} /></span>
+		<div class="service-text">
+			<Heading class="service-name">
+				<a href={href} {...nameAttrs}>{name}</a>
+			</Heading>
+			{summary && <p class="service-summary">{summary}</p>}
+			{
+				(meta.length > 0 || available === false) && (
+					<p class="service-meta">
+						{meta.map((item) => (
+							<span>{item}</span>
+						))}
+						{available === false && <span class="unavailable">Currently unavailable</span>}
+					</p>
+				)
+			}
+		</div>
+	</div>
+</article>
+
+<style>
+	.service-card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		overflow: hidden;
+		background: var(--card);
+		border: 1px solid var(--line-soft);
+		border-radius: var(--radius);
+		box-shadow: var(--shadow);
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.service-card:hover,
+	.service-card:focus-within {
+		transform: translateY(-2px);
+		box-shadow: 0 2px 4px rgba(38, 48, 42, 0.05), 0 18px 34px -18px rgba(38, 48, 42, 0.32);
+	}
+
+	.service-art {
+		position: relative;
+		height: 112px;
+		overflow: hidden;
+		background: linear-gradient(135deg, #f1e9dc 0%, #dfe6da 100%);
+	}
+
+	.tone-peach .service-art {
+		background: linear-gradient(135deg, #f8ece2 0%, #f1d6c6 100%);
+	}
+
+	.tone-stone .service-art {
+		background: linear-gradient(135deg, #f3eee6 0%, #ddd6ca 100%);
+	}
+
+	.art-shape {
+		position: absolute;
+		border-radius: 50%;
+	}
+
+	.art-a {
+		width: 190px;
+		height: 190px;
+		right: -40px;
+		top: -70px;
+		background: rgba(255, 255, 255, 0.55);
+	}
+
+	.art-b {
+		width: 120px;
+		height: 120px;
+		left: -30px;
+		bottom: -60px;
+		background: rgba(143, 164, 138, 0.35);
+	}
+
+	.tone-peach .art-b {
+		background: rgba(226, 166, 140, 0.4);
+	}
+
+	.service-art :global(.art-icon) {
+		position: absolute;
+		right: 28px;
+		bottom: 18px;
+		width: 74px;
+		height: 74px;
+		color: rgba(74, 93, 71, 0.55);
+		stroke-width: 1.1;
+	}
+
+	.tone-peach .service-art :global(.art-icon) {
+		color: rgba(154, 79, 55, 0.5);
+	}
+
+	.art-tag {
+		position: absolute;
+		left: 18px;
+		top: 16px;
+		padding: 3px 12px;
+		border-radius: 999px;
+		background: rgba(255, 253, 249, 0.85);
+		color: var(--ink-soft);
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+	}
+
+	.service-body {
+		display: flex;
+		gap: 16px;
+		align-items: flex-start;
+		padding: 20px 22px 22px;
+	}
+
+	.service-badge {
+		display: grid;
+		place-items: center;
+		flex: none;
+		width: 56px;
+		height: 56px;
+		margin-top: -2px;
+		border-radius: 50%;
+		background: var(--sage-soft);
+		color: var(--sage-deep);
+	}
+
+	.tone-peach .service-badge {
+		background: var(--peach-soft);
+		color: var(--peach-deep);
+	}
+
+	.service-badge :global(svg) {
+		width: 28px;
+		height: 28px;
+	}
+
+	.service-text {
+		min-width: 0;
+	}
+
+	.service-name {
+		font-family: var(--font-body);
+		font-size: 1.1rem;
+		font-weight: 600;
+		line-height: 1.35;
+	}
+
+	.service-name a {
+		color: var(--ink);
+		text-decoration: none;
+	}
+
+	/* Whole card is clickable through the heading link. */
+	.service-name a::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+	}
+
+	.service-name a:focus-visible {
+		outline: none;
+	}
+
+	.service-card:has(.service-name a:focus-visible) {
+		outline: 3px solid var(--focus);
+		outline-offset: 3px;
+	}
+
+	.service-summary {
+		margin: 4px 0 0;
+		color: var(--muted);
+		font-size: 0.95rem;
+		line-height: 1.45;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.service-meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px 14px;
+		margin: 10px 0 0;
+		color: var(--sage-deep);
+		font-size: 0.85rem;
+		font-weight: 600;
+	}
+
+	.unavailable {
+		color: var(--peach-deep);
+	}
+</style>

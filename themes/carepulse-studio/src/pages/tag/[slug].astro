@@ -1,0 +1,81 @@
+---
+import {
+	getTaxonomyTermsWithCacheHint,
+	getEmDashCollection,
+	decodeSlug,
+} from "emdash";
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+import PostCard from "../../components/PostCard.astro";
+
+const slug = decodeSlug(Astro.params.slug);
+const termsResult = await getTaxonomyTermsWithCacheHint("tag", {
+	includeCounts: false,
+});
+const term = slug ? termsResult.data.find((item) => item.slug === slug) : null;
+
+if (!term) {
+	return Astro.redirect("/404");
+}
+
+const cursor = Astro.url.searchParams.get("cursor") || undefined;
+const {
+	entries: posts,
+	cacheHint,
+	nextCursor,
+} = await getEmDashCollection("posts", {
+	where: { tag: term.slug },
+	orderBy: { published_at: "desc" },
+	limit: 20,
+	cursor,
+});
+if (Astro.cache?.enabled) {
+	Astro.cache.set(termsResult.cacheHint);
+	Astro.cache.set(cacheHint);
+}
+---
+
+<Base title={`Posts tagged "${term.label}"`} description={`Posts tagged ${term.label}`}>
+	<div class="wrap">
+		<header class="page-head">
+			<a class="crumbs" href="/posts"><Icon name="arrow-left" /> Health notes</a>
+			<span class="eyebrow">Tag</span>
+			<h1>{term.label}</h1>
+		</header>
+
+		<div class="page-section">
+			{
+				posts.length === 0 ? (
+					<p class="empty">No posts with this tag yet.</p>
+				) : (
+					<ul class="card-grid">
+						{posts.map((post) => (
+							<li>
+								<PostCard post={post} headingLevel="h2" />
+							</li>
+						))}
+					</ul>
+				)
+			}
+			{
+				(cursor || nextCursor) && (
+					<nav class="pager" aria-label="Pagination">
+						{cursor && <a class="btn btn-ghost" href={`/tag/${term.slug}`}>First page</a>}
+						{nextCursor && (
+							<a class="btn btn-ghost" href={`/tag/${term.slug}?cursor=${encodeURIComponent(nextCursor)}`}>
+								Next page
+							</a>
+						)}
+					</nav>
+				)
+			}
+		</div>
+	</div>
+</Base>
+
+<style>
+	.page-head .crumbs {
+		display: flex;
+		width: max-content;
+	}
+</style>
