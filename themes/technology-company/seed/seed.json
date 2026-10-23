@@ -1,0 +1,1321 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Technology Company",
+		"description": "A dark-navy B2B technology company theme: solutions, industries, about, careers and a get-in-touch page",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "Nexora",
+		"tagline": "Technology for a brighter tomorrow"
+	},
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "eyebrow",
+					"label": "Small label above the title",
+					"type": "string"
+				},
+				{
+					"slug": "intro",
+					"label": "Intro paragraph",
+					"type": "text"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "solutions",
+			"label": "Solutions",
+			"labelSingular": "Solution",
+			"urlPattern": "/solutions/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Solution name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "summary",
+					"label": "Card description (one short line)",
+					"type": "text",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "illustration",
+					"label": "Card illustration",
+					"type": "select",
+					"required": true,
+					"indexed": true,
+					"defaultValue": "layers",
+					"validation": {
+						"options": [
+							"layers",
+							"cubes",
+							"spheres"
+						]
+					}
+				},
+				{
+					"slug": "featured",
+					"label": "Show on the homepage",
+					"type": "boolean",
+					"indexed": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "intro",
+					"label": "Intro paragraph on the solution page",
+					"type": "text"
+				},
+				{
+					"slug": "content",
+					"label": "Solution page content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "capabilities",
+					"label": "What we deliver (one per line)",
+					"type": "text"
+				},
+				{
+					"slug": "engagement",
+					"label": "How engagements usually start",
+					"type": "string"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Bundled photo path",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "industries",
+			"label": "Industries",
+			"labelSingular": "Industry",
+			"supports": [
+				"revisions",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Industry",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "summary",
+					"label": "Short description",
+					"type": "text",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "icon",
+					"label": "Icon",
+					"type": "select",
+					"required": true,
+					"indexed": true,
+					"defaultValue": "finance",
+					"validation": {
+						"options": [
+							"finance",
+							"health",
+							"energy",
+							"public",
+							"retail",
+							"manufacturing"
+						]
+					}
+				},
+				{
+					"slug": "focus",
+					"label": "Where we help (one per line)",
+					"type": "text"
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "principles",
+			"label": "Approach & values",
+			"labelSingular": "Approach step or value",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "text",
+					"label": "Text",
+					"type": "text"
+				},
+				{
+					"slug": "placement",
+					"label": "Where it appears",
+					"type": "select",
+					"required": true,
+					"indexed": true,
+					"defaultValue": "approach",
+					"validation": {
+						"options": [
+							"approach",
+							"values"
+						]
+					}
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "openings",
+			"label": "Careers",
+			"labelSingular": "Opening",
+			"urlPattern": "/careers/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Role title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "team",
+					"label": "Team",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "location",
+					"label": "Location",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "work_type",
+					"label": "Type",
+					"type": "select",
+					"required": true,
+					"indexed": true,
+					"defaultValue": "Full-time",
+					"validation": {
+						"options": [
+							"Full-time",
+							"Part-time",
+							"Contract",
+							"Internship"
+						]
+					}
+				},
+				{
+					"slug": "summary",
+					"label": "Short summary",
+					"type": "text",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "posted",
+					"label": "Date posted",
+					"type": "datetime",
+					"indexed": true
+				},
+				{
+					"slug": "content",
+					"label": "About the role",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "responsibilities",
+					"label": "What you will do (one per line)",
+					"type": "text"
+				},
+				{
+					"slug": "requirements",
+					"label": "What you will bring (one per line)",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "office",
+			"label": "Company details",
+			"labelSingular": "Company details",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Company name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "street",
+					"label": "Street address",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "locality",
+					"label": "City and postcode",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "country",
+					"label": "Country",
+					"type": "string"
+				},
+				{
+					"slug": "phone",
+					"label": "Phone",
+					"type": "string"
+				},
+				{
+					"slug": "email",
+					"label": "Enquiries email",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "careers_email",
+					"label": "Applications email (falls back to the enquiries email)",
+					"type": "string"
+				},
+				{
+					"slug": "hours",
+					"label": "Office hours",
+					"type": "string"
+				},
+				{
+					"slug": "response_note",
+					"label": "Response note shown on the contact page",
+					"type": "text"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Solutions",
+					"url": "/solutions"
+				},
+				{
+					"type": "custom",
+					"label": "Industries",
+					"url": "/industries"
+				},
+				{
+					"type": "custom",
+					"label": "About",
+					"url": "/about"
+				},
+				{
+					"type": "custom",
+					"label": "Careers",
+					"url": "/careers"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "We help organizations build what comes next.",
+					"eyebrow": "About Nexora",
+					"intro": "Nexora is a technology partner for organizations that want to move forward with confidence. We bring together engineers, designers and data specialists who work alongside your teams to plan, build and run the technology behind your next chapter.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We started Nexora with a simple belief: technology works best when the people who rely on it help shape it. That is why we work inside your teams, share what we know and leave you more capable than we found you.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Our work spans cloud platforms, data and AI, and the digital services that sit on top of them. Whatever the starting point, we focus on clear outcomes, steady progress and choices you can explain to your board, your colleagues and your customers.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How we are organized",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We keep teams small and multidisciplinary. Each engagement has one accountable lead, a clear plan and regular reviews, so you always know where things stand.",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "privacy",
+				"slug": "privacy",
+				"status": "published",
+				"data": {
+					"title": "Privacy notice",
+					"eyebrow": "Privacy",
+					"intro": "This sample notice explains how this website handles information. Replace it with your own before publishing.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This website does not use analytics, advertising cookies or third-party trackers, and it does not store messages sent through the contact or careers pages. Those forms prepare an email in your own email app; nothing is sent until you send that email.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Your enquiries and applications",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "When you write to us, we use your details only to reply and, for applications, to run our hiring process. We keep correspondence for as long as needed for that purpose and delete it on request.",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Contact",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Questions about privacy can be sent to the enquiries email shown on the contact page.",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			}
+		],
+		"solutions": [
+			{
+				"id": "cloud-infrastructure",
+				"slug": "cloud-infrastructure",
+				"status": "published",
+				"data": {
+					"title": "Cloud & Infrastructure",
+					"summary": "Scalable foundations\nfor what's next.",
+					"illustration": "layers",
+					"featured": true,
+					"position": 10,
+					"intro": "We design, migrate and run the platforms your teams build on, so infrastructure becomes a reason to move faster rather than a reason to wait.",
+					"photo": "/images/cloud-platform.webp",
+					"engagement": "A short platform assessment, then delivery in planned phases",
+					"capabilities": "Cloud migration and modernization roadmaps\nLanding zones, networking and identity foundations\nPlatform engineering and infrastructure as code\nResilience, backup and recovery design\nCost visibility and right-sizing reviews",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Most organizations already run a mix of on-premises systems, cloud services and tools that grew up around them. The challenge is rarely choosing a provider; it is creating a foundation that is secure, understandable and ready for the next ten products, not just the next one.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What we do",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We start by mapping what you run today and what it costs to keep it running. Together we agree a target platform and a sequence of moves that keeps services available throughout.",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Assessment of current workloads, dependencies and risks",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Reference architecture and security baseline for your teams",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Migration waves planned around business calendars",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Automation for environments, deployments and monitoring",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b7",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How we work with your team",
+									"_key": "b7s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b8",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Our engineers work inside your teams rather than beside them. Every pattern we introduce is documented and handed over, so your people can run and extend the platform with confidence once we step back.",
+									"_key": "b8s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "data-ai",
+				"slug": "data-ai",
+				"status": "published",
+				"data": {
+					"title": "Data & AI",
+					"summary": "Turn insight into\nopportunity.",
+					"illustration": "cubes",
+					"featured": true,
+					"position": 20,
+					"intro": "We help you bring data together, make it trustworthy and put it to work, from everyday reporting to carefully governed AI services.",
+					"photo": "/images/skyline.webp",
+					"engagement": "A discovery sprint around one valuable use case",
+					"capabilities": "Data strategy and governance that people actually use\nModern data platforms and pipelines\nReporting and self-service analytics\nApplied machine learning and AI assistants\nResponsible AI reviews and guardrails",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Data becomes valuable when the right people can find it, understand it and trust it. We focus on a small number of decisions that matter to you and build the data foundations those decisions need.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What we do",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Data platform design, from ingestion to the semantic layer",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Data quality, lineage and ownership models",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Dashboards and analytics shaped with the people who use them",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "AI use-case discovery, prototyping and production rollout",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Responsible by design",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b7",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Every AI service we build includes clear human oversight, documented limitations and privacy reviews from the start. If a use case is not ready for automation, we will say so and suggest a better first step.",
+									"_key": "b7s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "digital-transformation",
+				"slug": "digital-transformation",
+				"status": "published",
+				"data": {
+					"title": "Digital Transformation",
+					"summary": "Reimagine how\nyou work and grow.",
+					"illustration": "spheres",
+					"featured": true,
+					"position": 30,
+					"intro": "We help leadership teams redesign services, processes and products around the people who use them, then deliver the change step by step.",
+					"photo": "/images/building-glass.webp",
+					"engagement": "A joint vision workshop and a prioritized roadmap",
+					"capabilities": "Service and customer journey redesign\nProduct strategy and digital product delivery\nProcess automation and workflow tools\nOperating model and team design for digital work\nChange support, training and adoption",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Transformation is not a single project. It is a series of well-chosen improvements that change how work gets done and how customers experience you.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What we do",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We combine strategy, design and engineering in one team. That means ideas are tested with real users early, and the people who design a change are the people who help build it.",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Discovery research with customers and colleagues",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Roadmaps that balance quick wins with longer-term change",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Cross-functional delivery teams working in short cycles",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Measures agreed up front so progress stays visible",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b7",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Lasting change",
+									"_key": "b7s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b8",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We build your capability as we go. Coaching, playbooks and shared rituals stay with your organization long after the engagement ends.",
+									"_key": "b8s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			}
+		],
+		"industries": [
+			{
+				"id": "financial-services",
+				"slug": "financial-services",
+				"status": "published",
+				"data": {
+					"title": "Financial Services",
+					"icon": "finance",
+					"summary": "Secure, compliant platforms for banks, insurers and fintech teams that need to modernize without disrupting customers.",
+					"focus": "Core system modernization\nRegulatory reporting and data lineage\nFraud and risk analytics\nDigital onboarding journeys",
+					"position": 10
+				}
+			},
+			{
+				"id": "healthcare",
+				"slug": "healthcare",
+				"status": "published",
+				"data": {
+					"title": "Healthcare & Life Sciences",
+					"icon": "health",
+					"summary": "Connected systems and careful data practices for providers and research teams, built around patient privacy.",
+					"focus": "Interoperable records and integrations\nResearch data platforms\nScheduling and operational tools\nPrivacy and security reviews",
+					"position": 20
+				}
+			},
+			{
+				"id": "energy-utilities",
+				"slug": "energy-utilities",
+				"status": "published",
+				"data": {
+					"title": "Energy & Utilities",
+					"icon": "energy",
+					"summary": "Technology for networks in transition, from field operations to customer service and grid data.",
+					"focus": "Asset and field-service platforms\nSensor and grid data pipelines\nCustomer self-service portals\nResilience and continuity planning",
+					"position": 30
+				}
+			},
+			{
+				"id": "public-sector",
+				"slug": "public-sector",
+				"status": "published",
+				"data": {
+					"title": "Public Sector",
+					"icon": "public",
+					"summary": "Accessible, dependable digital services for agencies and local government, designed with the people who use them.",
+					"focus": "Accessible service design\nLegacy system replacement\nOpen standards and data sharing\nCloud adoption under public policies",
+					"position": 40
+				}
+			},
+			{
+				"id": "retail-consumer",
+				"slug": "retail-consumer",
+				"status": "published",
+				"data": {
+					"title": "Retail & Consumer",
+					"icon": "retail",
+					"summary": "Commerce, supply chain and loyalty platforms that keep pace with how customers shop today.",
+					"focus": "Unified commerce platforms\nInventory and demand insight\nPersonalization with consent\nStore and warehouse tooling",
+					"position": 50
+				}
+			},
+			{
+				"id": "manufacturing",
+				"slug": "manufacturing",
+				"status": "published",
+				"data": {
+					"title": "Manufacturing",
+					"icon": "manufacturing",
+					"summary": "Connected operations that link the factory floor with planning, quality and the wider supply chain.",
+					"focus": "Connected factory data\nQuality and maintenance analytics\nERP integration and modernization\nSupplier collaboration portals",
+					"position": 60
+				}
+			}
+		],
+		"principles": [
+			{
+				"id": "discover",
+				"slug": "discover",
+				"status": "published",
+				"data": {
+					"title": "Discover",
+					"text": "We listen to your teams and customers, map what exists today and agree the outcomes that matter.",
+					"placement": "approach",
+					"position": 10
+				}
+			},
+			{
+				"id": "design",
+				"slug": "design",
+				"status": "published",
+				"data": {
+					"title": "Design",
+					"text": "We shape the target solution together, test ideas early and plan a sequence of safe, valuable steps.",
+					"placement": "approach",
+					"position": 20
+				}
+			},
+			{
+				"id": "build",
+				"slug": "build",
+				"status": "published",
+				"data": {
+					"title": "Build",
+					"text": "Cross-functional teams deliver in short cycles, with security, quality and accessibility built in from day one.",
+					"placement": "approach",
+					"position": 30
+				}
+			},
+			{
+				"id": "evolve",
+				"slug": "evolve",
+				"status": "published",
+				"data": {
+					"title": "Evolve",
+					"text": "We hand over knowledge, measure what changed and keep improving with you as your needs grow.",
+					"placement": "approach",
+					"position": 40
+				}
+			},
+			{
+				"id": "curious",
+				"slug": "curious",
+				"status": "published",
+				"data": {
+					"title": "Stay curious",
+					"text": "We ask why before we ask how, and we keep learning from every team we work with.",
+					"placement": "values",
+					"position": 10
+				}
+			},
+			{
+				"id": "together",
+				"slug": "together",
+				"status": "published",
+				"data": {
+					"title": "Build together",
+					"text": "The best results come from shared ownership. We work inside your teams, not around them.",
+					"placement": "values",
+					"position": 20
+				}
+			},
+			{
+				"id": "open",
+				"slug": "open",
+				"status": "published",
+				"data": {
+					"title": "Open by default",
+					"text": "Clear documentation, honest updates and no lock-in. You should always understand what we built and why.",
+					"placement": "values",
+					"position": 30
+				}
+			},
+			{
+				"id": "responsible",
+				"slug": "responsible",
+				"status": "published",
+				"data": {
+					"title": "Responsible by design",
+					"text": "Privacy, security, accessibility and energy use are part of every decision, not an afterthought.",
+					"placement": "values",
+					"position": 40
+				}
+			}
+		],
+		"openings": [
+			{
+				"id": "senior-cloud-engineer",
+				"slug": "senior-cloud-engineer",
+				"status": "published",
+				"data": {
+					"title": "Senior Cloud Engineer",
+					"team": "Cloud & Infrastructure",
+					"location": "London · Hybrid",
+					"work_type": "Full-time",
+					"posted": "2026-10-14T09:00:00.000Z",
+					"summary": "Design and build secure cloud platforms with client teams, and help them run those platforms with confidence.",
+					"responsibilities": "Design landing zones, networking and identity foundations\nWrite and review infrastructure as code\nPair with client engineers and share what you know\nShape our internal patterns and playbooks",
+					"requirements": "Hands-on experience with at least one major cloud platform\nComfort with infrastructure as code and CI/CD pipelines\nA calm, clear way of explaining technical trade-offs\nCuriosity about how platforms serve the people who use them",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "You will join a small platform team working across several client engagements a year. Some weeks you will be deep in architecture diagrams; others you will be pairing on automation or running a workshop with a client's operations team.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How we work",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We work in small, mixed teams with a clear lead and regular time set aside for learning. Most of our work is hybrid, with client visits planned in advance.",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "data-engineer",
+				"slug": "data-engineer",
+				"status": "published",
+				"data": {
+					"title": "Data Engineer",
+					"team": "Data & AI",
+					"location": "London · Hybrid",
+					"work_type": "Full-time",
+					"posted": "2026-10-09T09:00:00.000Z",
+					"summary": "Build reliable data pipelines and platforms that analysts, product teams and AI services can trust.",
+					"responsibilities": "Build and maintain batch and streaming pipelines\nModel data so it is easy to understand and reuse\nImprove data quality checks and lineage\nWork closely with analysts and data scientists",
+					"requirements": "Strong SQL and experience with a modern programming language\nExperience with a cloud data platform or warehouse\nCare for documentation and testing\nInterest in responsible use of data and AI",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Our Data & AI team helps clients turn scattered information into something people can rely on. As a data engineer you will own pipelines end to end and help clients set up the practices to keep them healthy.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "product-designer",
+				"slug": "product-designer",
+				"status": "published",
+				"data": {
+					"title": "Product Designer",
+					"team": "Digital Transformation",
+					"location": "Remote (UK)",
+					"work_type": "Full-time",
+					"posted": "2026-10-02T09:00:00.000Z",
+					"summary": "Research, design and test digital services with client teams, from first sketches to shipped product.",
+					"responsibilities": "Plan and run research with customers and staff\nDesign journeys, interfaces and prototypes\nWork side by side with engineers through delivery\nContribute to accessible, reusable design systems",
+					"requirements": "A portfolio showing your process, not only the final screens\nExperience designing for complex services or B2B tools\nA strong grasp of accessibility standards\nConfidence presenting work to senior stakeholders",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Design at Nexora sits inside delivery teams. You will help clients see their services through their customers' eyes and then make those services simpler, clearer and more inclusive.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "delivery-lead",
+				"slug": "delivery-lead",
+				"status": "published",
+				"data": {
+					"title": "Delivery Lead",
+					"team": "Digital Transformation",
+					"location": "London · Hybrid",
+					"work_type": "Full-time",
+					"posted": "2026-09-25T09:00:00.000Z",
+					"summary": "Lead multidisciplinary teams, keep work flowing and build trusted relationships with client stakeholders.",
+					"responsibilities": "Plan and lead delivery for one or two client teams\nKeep priorities, risks and progress visible\nCoach teams on agile ways of working\nBuild long-term relationships with client leaders",
+					"requirements": "Experience leading digital or technology delivery\nA practical, people-first leadership style\nComfort with ambiguity and changing priorities\nClear written and spoken communication",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Delivery leads make sure good intentions become shipped outcomes. You will create the conditions for teams to do their best work and help clients make well-informed decisions along the way.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "graduate-software-engineer",
+				"slug": "graduate-software-engineer",
+				"status": "published",
+				"data": {
+					"title": "Graduate Software Engineer",
+					"team": "Engineering",
+					"location": "London · Hybrid",
+					"work_type": "Full-time",
+					"posted": "2026-09-18T09:00:00.000Z",
+					"summary": "Start your career on real client projects, with a dedicated mentor and a structured learning programme.",
+					"responsibilities": "Build features as part of a client delivery team\nLearn testing, code review and deployment practices\nRotate across cloud, data and product work\nShare what you learn with the wider team",
+					"requirements": "A degree, bootcamp or equivalent experience in software\nSome experience with a modern programming language\nEagerness to learn and ask questions\nGood communication and teamwork",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Our graduate programme pairs every new engineer with a mentor and gives you time each week for structured learning. You will work on real projects from your first month.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			}
+		],
+		"office": [
+			{
+				"id": "office",
+				"slug": "office",
+				"status": "published",
+				"data": {
+					"title": "Nexora Technologies",
+					"street": "4th Floor, 22 Canal Reach",
+					"locality": "London N1 9AG",
+					"country": "United Kingdom",
+					"phone": "+44 20 7946 0715",
+					"email": "hello@nexora.example",
+					"careers_email": "careers@nexora.example",
+					"hours": "Monday to Friday, 9:00 to 17:30",
+					"response_note": "We reply to every message within two working days. First conversations are free and carry no obligation."
+				}
+			}
+		]
+	}
+}

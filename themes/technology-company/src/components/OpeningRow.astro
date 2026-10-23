@@ -1,0 +1,25 @@
+---
+import Arrow from "./Arrow.astro";
+import type { Opening } from "../lib/nexora";
+
+interface Props {
+	opening: { id: string; data: Opening; edit: Record<string, Record<string, unknown>> };
+	headingLevel?: "h2" | "h3";
+}
+const { opening, headingLevel = "h3" } = Astro.props;
+const Heading = headingLevel;
+const href = `/careers/${opening.data.slug ?? opening.data.id}`;
+---
+
+<li class="opening-row">
+	<div class="opening-main">
+		<Heading class="opening-title" {...opening.edit.title}><a href={href}>{opening.data.title}</a></Heading>
+		<p class="opening-summary">{opening.data.summary}</p>
+		<ul class="opening-meta" aria-label="Role details">
+			<li>{opening.data.team}</li>
+			<li>{opening.data.location}</li>
+			<li>{opening.data.work_type}</li>
+		</ul>
+	</div>
+	<span class="opening-arrow" aria-hidden="true"><Arrow /></span>
+</li>

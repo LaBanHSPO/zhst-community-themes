@@ -1,0 +1,23 @@
+---
+/** Line icons for the industries collection's `icon` select. */
+interface Props {
+	icon: string;
+	class?: string;
+}
+const { icon, class: className } = Astro.props;
+const paths: Record<string, string> = {
+	finance: "M4 11 16 4l12 7M6 12v11M11 12v11M16 12v11M21 12v11M26 12v11M3 26h26",
+	health: "M16 27s-11-6.4-11-14a6 6 0 0 1 11-3.3A6 6 0 0 1 27 13c0 7.6-11 14-11 14zM9 15h4l2-3 3 6 2-3h3",
+	energy: "M18 3 7 18h8l-2 11 12-16h-8l1-10z",
+	public: "M5 27h22M7 24h18M8 13v11M13 13v11M19 13v11M24 13v11M4 13h24L16 5 4 13z",
+	retail: "M7 10h18l-1.5 17h-15L7 10zM11.5 10V8.5a4.5 4.5 0 0 1 9 0V10",
+	manufacturing: "M4 27V13l7 4v-4l7 4v-4l7 4V5h3v22H4zM9 22h3M15 22h3M21 22h3",
+};
+const d = paths[icon] ?? paths.finance;
+---
+
+<span class:list={["industry-icon", className]} aria-hidden="true">
+	<svg viewBox="0 0 32 32" width="28" height="28" focusable="false">
+		<path d={d} fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+	</svg>
+</span>

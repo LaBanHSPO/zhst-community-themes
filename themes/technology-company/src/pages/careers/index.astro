@@ -1,0 +1,100 @@
+---
+import Base from "../../layouts/Base.astro";
+import OpeningRow from "../../components/OpeningRow.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { getOffice, getOpenings, getPrinciples } from "../../lib/nexora";
+
+const [openingsResult, valuesResult, officeResult] = await Promise.all([getOpenings(), getPrinciples("values"), getOffice()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(openingsResult.cacheHint);
+	Astro.cache.set(valuesResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const openings = openingsResult.entries;
+const values = valuesResult.entries;
+const { office } = officeResult;
+const careersEmail = office.careers_email || office.email;
+const speculative = careersEmail
+	? `mailto:${careersEmail}?subject=${encodeURIComponent("Speculative application")}`
+	: undefined;
+---
+
+<Base title="Careers" description="Join small, multidisciplinary teams solving real problems for organizations that matter.">
+	<section class="page-head">
+		<div class="container page-head-inner">
+			<div>
+				<span class="eyebrow">Careers</span>
+				<h1>Do the best work of your career.</h1>
+			</div>
+			<p class="lede">
+				Join small, multidisciplinary teams solving real problems for organizations that matter. We invest in learning, mentoring and flexible ways of working.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-white">
+		<div class="container careers-layout">
+			<div>
+				<h2 class="careers-heading">Open roles</h2>
+				{
+					openings.length > 0 ? (
+						<ul class="opening-list careers-list">
+							{openings.map((o) => (
+								<OpeningRow opening={o} />
+							))}
+						</ul>
+					) : (
+						<p class="empty careers-empty">There are no open roles right now. You are welcome to send a speculative application.</p>
+					)
+				}
+			</div>
+			<aside class="careers-side" aria-label="Applying to Nexora">
+				<div class="side-card">
+					<h2>How to apply</h2>
+					<p>Choose a role and apply by email with your CV or portfolio and a few lines about why the role interests you. We reply to every application.</p>
+					<ol class="next-steps">
+						<li>A short call with someone from the team you would join.</li>
+						<li>A practical conversation about real work, never a trick test.</li>
+						<li>Meet the wider team, ask anything, then a decision within days.</li>
+					</ol>
+				</div>
+				<div class="side-card">
+					<h2>Don't see your role?</h2>
+					<p>We are always glad to hear from curious engineers, designers and data specialists.</p>
+					{
+						speculative && (
+							<a class="btn btn-outline" href={speculative}>Send a speculative application</a>
+						)
+					}
+					{careersEmail && <p class="apply-note">Or write to <a href={`mailto:${careersEmail}`}>{careersEmail}</a>.</p>}
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	{
+		values.length > 0 && (
+			<section class="section section-tint" aria-labelledby="life-title">
+				<div class="container">
+					<div class="section-head">
+						<div>
+							<span class="eyebrow">Life at Nexora</span>
+							<h2 id="life-title">What it is like to work here.</h2>
+						</div>
+					</div>
+					<ul class="value-grid">
+						{values.map((v, i) => (
+							<li>
+								<span class="value-num">{String(i + 1).padStart(2, "0")}</span>
+								<h3>{v.data.title}</h3>
+								{v.data.text && <p>{v.data.text}</p>}
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} />
+</Base>

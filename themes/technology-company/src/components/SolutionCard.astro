@@ -1,0 +1,23 @@
+---
+import Arrow from "./Arrow.astro";
+import { illustrationSrc, type Solution } from "../lib/nexora";
+
+interface Props {
+	solution: { id: string; data: Solution; edit: Record<string, Record<string, unknown>> };
+	headingLevel?: "h2" | "h3";
+}
+const { solution, headingLevel = "h3" } = Astro.props;
+const Heading = headingLevel;
+const href = `/solutions/${solution.data.slug ?? solution.data.id}`;
+---
+
+<article class="solution-card">
+	<img class="solution-card-art" src={illustrationSrc(solution.data.illustration)} alt="" width="220" height="154" loading="lazy" decoding="async" />
+	<Heading class="solution-card-title" {...solution.edit.title}>
+		<a href={href}>{solution.data.title}</a>
+	</Heading>
+	<div class="solution-card-foot">
+		<p {...solution.edit.summary}>{solution.data.summary}</p>
+		<span class="solution-card-arrow" aria-hidden="true"><Arrow /></span>
+	</div>
+</article>

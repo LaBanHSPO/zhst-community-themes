@@ -1,0 +1,124 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import SolutionCard from "../../components/SolutionCard.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { getOffice, getSolutions, illustrationSrc, lines, photoSrc } from "../../lib/nexora";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: solution, cacheHint } = await getEmDashEntry("solutions", slug);
+if (!solution) return Astro.rewrite("/404");
+
+const [allResult, officeResult, settings] = await Promise.all([getSolutions(), getOffice(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(solution, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const others = allResult.entries.filter((s) => s.data.id !== solution.data.id).slice(0, 2);
+const capabilities = lines(solution.data.capabilities);
+const src = photoSrc(solution.data.image, solution.data.photo);
+const contactHref = `/contact?topic=${encodeURIComponent(solution.data.title)}`;
+const { office } = officeResult;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? solution.data.summary}
+	canonical={seo.canonical}
+	content={{ collection: "solutions", id: solution.data.id, slug }}
+	current="/solutions"
+>
+	<section class="page-head detail-head">
+		<div class="container">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/solutions">Solutions</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{solution.data.title}</span>
+			</nav>
+			<div class="detail-head-inner">
+				<div>
+					<span class="eyebrow">Solution</span>
+					<h1 {...solution.edit.title}>{solution.data.title}</h1>
+					<p class="summary" {...solution.edit.summary}>{solution.data.summary}</p>
+					{solution.data.intro && <p class="lede">{solution.data.intro}</p>}
+					<a class="btn btn-lg" href={contactHref}>Get in touch <Arrow /></a>
+				</div>
+				{
+					src && (
+						<figure class="detail-photo">
+							<img src={src} alt={solution.data.image?.alt ?? ""} />
+						</figure>
+					)
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="container detail-grid">
+			<div class="prose">
+				{
+					solution.data.content && solution.data.content.length > 0 ? (
+						<PortableText value={solution.data.content} />
+					) : (
+						<p>{solution.data.summary}</p>
+					)
+				}
+			</div>
+			<aside class="detail-aside" aria-label="At a glance">
+				<img class="detail-aside-art" src={illustrationSrc(solution.data.illustration)} alt="" width="220" height="154" />
+				<h2>What we deliver</h2>
+				{
+					capabilities.length > 0 && (
+						<ul class="check-list">
+							{capabilities.map((c) => (
+								<li>{c}</li>
+							))}
+						</ul>
+					)
+				}
+				{
+					solution.data.engagement && (
+						<p class="engagement">
+							<strong>How we usually start</strong>
+							{solution.data.engagement}
+						</p>
+					)
+				}
+				<a class="btn btn-block" href={contactHref}>Talk to an expert <Arrow /></a>
+			</aside>
+		</div>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="section section-tint" aria-labelledby="more-title">
+				<div class="container more-solutions">
+					<div class="more-intro">
+						<span class="eyebrow">More solutions</span>
+						<h2 id="more-title" class="section-title">Other ways we help you move forward.</h2>
+						<a class="link-arrow" href="/solutions">All solutions <Arrow /></a>
+					</div>
+					{others.map((s) => (
+						<SolutionCard solution={s} />
+					))}
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} />
+</Base>
