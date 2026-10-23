@@ -1,0 +1,67 @@
+---
+import { safeHref } from "../utils/content";
+
+interface Fact {
+	label: string;
+	value: string;
+	url?: string | null;
+}
+
+interface Props {
+	facts: Fact[];
+	label?: string;
+}
+
+const { facts, label } = Astro.props;
+const items = facts.filter((fact) => fact?.label?.trim() && fact?.value?.trim());
+---
+
+{
+	items.length > 0 && (
+		<dl class="fact-list" aria-label={label}>
+			{items.map((fact) => {
+				const href = safeHref(fact.url);
+				return (
+					<div>
+						<dt>{fact.label}</dt>
+						<dd>{href ? <a href={href}>{fact.value}</a> : fact.value}</dd>
+					</div>
+				);
+			})}
+		</dl>
+	)
+}
+
+<style>
+	.fact-list {
+		margin: 0;
+		border-top: 1px solid var(--line);
+	}
+
+	.fact-list div {
+		display: grid;
+		grid-template-columns: minmax(7rem, 0.5fr) minmax(0, 1fr);
+		gap: 1rem;
+		padding: 1rem 0;
+		border-bottom: 1px solid var(--line);
+	}
+
+	.fact-list dt {
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--muted);
+		padding-top: 0.2rem;
+	}
+
+	.fact-list dd {
+		margin: 0;
+		font-size: 1.02rem;
+		overflow-wrap: anywhere;
+	}
+
+	.fact-list a {
+		text-decoration-color: var(--accent);
+	}
+</style>

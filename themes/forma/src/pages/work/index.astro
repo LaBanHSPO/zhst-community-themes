@@ -1,0 +1,233 @@
+---
+import { getEmDashCollection, getTaxonomyTermsWithCacheHint } from "emdash";
+import Base from "../../layouts/Base.astro";
+import InquiryCta from "../../components/InquiryCta.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { DISCIPLINE_TAXONOMY, disciplinesOf } from "../../utils/content";
+
+const PAGE_SIZE = 12;
+const rawDiscipline = Astro.url.searchParams.get("discipline")?.trim() ?? "";
+// Term slugs are kebab-case; anything else cannot match and is treated as an unknown filter.
+const activeDiscipline = /^[a-z0-9-]{1,80}$/.test(rawDiscipline) ? rawDiscipline : rawDiscipline ? "_invalid" : "";
+const cursor = Astro.url.searchParams.get("cursor") ?? undefined;
+
+const [projectsResult, termsResult] = await Promise.all([
+	activeDiscipline === "_invalid"
+		? Promise.resolve(null)
+		: getEmDashCollection("projects", {
+				orderBy: { sort_order: "asc", published_at: "desc" },
+				limit: PAGE_SIZE,
+				cursor,
+				...(activeDiscipline ? { where: { [DISCIPLINE_TAXONOMY]: activeDiscipline } } : {}),
+			}),
+	getTaxonomyTermsWithCacheHint(DISCIPLINE_TAXONOMY, { includeCounts: false }),
+]);
+if (projectsResult?.error) {
+	return new Response("Could not load projects", { status: 500 });
+}
+if (Astro.cache?.enabled) {
+	if (projectsResult) Astro.cache.set(projectsResult.cacheHint);
+	Astro.cache.set(termsResult.cacheHint);
+}
+
+const projects = projectsResult?.entries ?? [];
+const nextCursor = projectsResult?.nextCursor;
+const terms = termsResult.data;
+const activeTerm = terms.find((term) => term.slug === activeDiscipline);
+const filterLabel = activeTerm?.label ?? (activeDiscipline ? "this discipline" : "");
+
+function nextPageUrl(next: string): string {
+	const params = new URLSearchParams({ cursor: next });
+	if (activeDiscipline && activeDiscipline !== "_invalid") params.set("discipline", activeDiscipline);
+	return `/work?${params.toString()}`;
+}
+---
+
+<Base
+	title={activeTerm ? `${activeTerm.label} — Work` : "Work"}
+	description="Selected projects and case studies across identity, packaging, spaces and art direction."
+>
+	<section class="work-head" aria-labelledby="work-title">
+		<div class="wrap">
+			<p class="eyebrow">Work</p>
+			<h1 id="work-title">
+				{activeTerm ? activeTerm.label : "Projects that start with a clear brief"}<span class="accent-dot">.</span>
+			</h1>
+			<p class="lede">
+				Each project shows the brief we were given, how we approached it and what was delivered.
+			</p>
+			{
+				terms.length > 0 && (
+					<nav class="filters" aria-label="Filter projects by discipline">
+						<ul>
+							<li>
+								<a href="/work" aria-current={!activeDiscipline ? "page" : undefined}>
+									All
+								</a>
+							</li>
+							{terms.map((term) => (
+								<li>
+									<a
+										href={`/work?discipline=${encodeURIComponent(term.slug)}`}
+										aria-current={activeDiscipline === term.slug ? "page" : undefined}
+									>
+										{term.label}
+									</a>
+								</li>
+							))}
+						</ul>
+					</nav>
+				)
+			}
+		</div>
+	</section>
+
+	<section class="section work-list" aria-label={activeTerm ? `${activeTerm.label} projects` : "All projects"}>
+		<div class="wrap">
+			{
+				projects.length > 0 ? (
+					<>
+						<p class="work-count" role="status">
+							{projects.length}
+							{nextCursor ? "+" : ""} {projects.length === 1 ? "project" : "projects"}
+							{activeTerm && ` in ${activeTerm.label}`}
+						</p>
+						<div class="work-grid">
+							{projects.map((project, index) => (
+								<ProjectCard
+									index={index}
+									title={project.data.title}
+									href={`/work/${project.id}`}
+									image={project.data.featured_image}
+									disciplines={disciplinesOf(project.data)}
+									summary={project.data.summary}
+									year={project.data.year}
+									headingLevel={2}
+									priority={index < 2}
+								/>
+							))}
+						</div>
+						{nextCursor && (
+							<nav class="pager" aria-label="More projects">
+								<a href={nextPageUrl(nextCursor)} rel="next" class="btn btn--ghost">
+									More projects
+								</a>
+							</nav>
+						)}
+					</>
+				) : (
+					<div class="empty-state" role="status">
+						{activeDiscipline ? (
+							<>
+								<h2>No projects in {filterLabel} yet</h2>
+								<p>Try another discipline, or browse every project.</p>
+								<a href="/work" class="btn btn--ghost">View all work</a>
+							</>
+						) : (
+							<>
+								<h2>No projects published yet</h2>
+								<p>Case studies you publish in the admin will appear here.</p>
+							</>
+						)}
+					</div>
+				)
+			}
+		</div>
+	</section>
+
+	<InquiryCta />
+</Base>
+
+<style>
+	.work-head {
+		background: var(--paper);
+		padding: clamp(3rem, 7vw, 6.5rem) 0 clamp(2.5rem, 5vw, 4rem);
+	}
+
+	.work-head h1 {
+		font-size: clamp(2.9rem, 6.4vw, 6rem);
+		max-width: 15ch;
+		margin-bottom: 1.75rem;
+	}
+
+	.filters ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		list-style: none;
+		margin: clamp(2rem, 4vw, 3rem) 0 0;
+		padding: 0;
+	}
+
+	.filters a {
+		display: inline-block;
+		padding: 0.55rem 1.1rem;
+		border: 1px solid var(--line);
+		font-size: 0.9rem;
+		font-weight: 550;
+		text-decoration: none;
+		color: var(--ink-soft);
+		background: var(--paper-raised);
+		transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease);
+	}
+
+	.filters a:hover {
+		border-color: var(--ink);
+	}
+
+	.filters a[aria-current="page"] {
+		background: var(--ink);
+		border-color: var(--ink);
+		color: var(--paper-raised);
+	}
+
+	.work-list {
+		padding-top: clamp(2.5rem, 5vw, 4rem);
+	}
+
+	.work-count {
+		margin-bottom: 2rem;
+		font-size: 0.8rem;
+		font-weight: 650;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+
+	.work-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(3.5rem, 6vw, 6rem) clamp(2rem, 4vw, 4rem);
+	}
+
+	/* Editorial rhythm: every third project spans the full width. */
+	.work-grid > :global(:nth-child(3n + 1)) {
+		grid-column: 1 / -1;
+		grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+		align-items: end;
+		gap: clamp(1.5rem, 4vw, 4rem);
+	}
+
+	.work-grid > :global(:nth-child(3n + 1)) :global(.project-card__media) {
+		aspect-ratio: 16 / 10;
+	}
+
+	.pager {
+		margin-top: clamp(3rem, 6vw, 5rem);
+		text-align: center;
+	}
+
+	@media (max-width: 900px) {
+		.work-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.work-grid > :global(:nth-child(3n + 1)) {
+			grid-template-columns: 1fr;
+		}
+
+		.work-grid > :global(:nth-child(3n + 1)) :global(.project-card__media) {
+			aspect-ratio: 4 / 3;
+		}
+	}
+</style>

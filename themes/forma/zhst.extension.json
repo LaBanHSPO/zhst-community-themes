@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "forma",
+	"kind": "theme",
+	"name": "Forma",
+	"type": "portfolio",
+	"emdash": "1.2.0",
+	"entry": "themes/forma",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

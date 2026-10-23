@@ -1,0 +1,152 @@
+---
+/**
+ * Editorial project tile: image with an index number, title, disciplines and a case-study link.
+ * `layout="split"` places the text beside the image (home "Selected work");
+ * `layout="stacked"` places it below (Work index).
+ */
+import type { ImageValue, TaxonomyTerm } from "emdash";
+import { Image } from "emdash/ui";
+import ArrowIcon from "./ArrowIcon.astro";
+import { disciplineLine, indexLabel } from "../utils/content";
+
+interface Props {
+	index: number;
+	title: string;
+	href: string;
+	image?: ImageValue | null;
+	disciplines: TaxonomyTerm[];
+	summary?: string | null;
+	year?: string | null;
+	layout?: "split" | "stacked";
+	headingLevel?: 2 | 3;
+	priority?: boolean;
+}
+
+const {
+	index,
+	title,
+	href,
+	image,
+	disciplines,
+	summary,
+	year,
+	layout = "stacked",
+	headingLevel = 3,
+	priority = false,
+} = Astro.props;
+const Heading = `h${headingLevel}` as "h2" | "h3";
+const discipline = disciplineLine(disciplines);
+const titleId = `project-${indexLabel(index)}-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+---
+
+<article class:list={["project-card", `project-card--${layout}`]} aria-labelledby={titleId}>
+	<a href={href} class="project-card__media frame" tabindex="-1" aria-hidden="true">
+		{
+			image ? (
+				<Image image={image} priority={priority} sizes="(min-width: 1100px) 40vw, 100vw" />
+			) : (
+				<span class="frame--placeholder project-card__placeholder">{title.slice(0, 1)}</span>
+			)
+		}
+	</a>
+	<div class="project-card__body">
+		<span class="index-num">{indexLabel(index)}</span>
+		<Heading class="project-card__title" id={titleId}>
+			<a href={href}>{title}</a>
+		</Heading>
+		{
+			(discipline || year) && (
+				<p class="project-card__meta">
+					{discipline}
+					{discipline && year && <span aria-hidden="true"> · </span>}
+					{year && <span class="project-card__year">{year}</span>}
+				</p>
+			)
+		}
+		{summary && layout === "stacked" && <p class="project-card__summary">{summary}</p>}
+		<a href={href} class="link-arrow" aria-label={`View case study: ${title}`}>
+			View case study <ArrowIcon />
+		</a>
+	</div>
+</article>
+
+<style>
+	.project-card {
+		display: grid;
+		gap: 1.75rem;
+	}
+
+	.project-card--split {
+		grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+		gap: clamp(1.5rem, 3vw, 3rem);
+		align-items: center;
+	}
+
+	.project-card__media {
+		display: block;
+		aspect-ratio: 4 / 3;
+	}
+
+	.project-card--split .project-card__media {
+		aspect-ratio: 4 / 3.1;
+	}
+
+	.project-card__media :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.9s var(--ease);
+	}
+
+	.project-card:hover .project-card__media :global(img) {
+		transform: scale(1.025);
+	}
+
+	.project-card__placeholder {
+		width: 100%;
+		height: 100%;
+	}
+
+	.project-card__body {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.project-card__title {
+		margin-top: 1.5rem;
+		font-size: clamp(2rem, 3.2vw, 2.9rem);
+	}
+
+	.project-card__title a {
+		text-decoration: none;
+	}
+
+	.project-card__title a:hover {
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-decoration-color: var(--accent);
+	}
+
+	.project-card__meta {
+		margin: 0.6rem 0 0;
+		color: var(--muted);
+		font-size: 0.95rem;
+	}
+
+	.project-card__summary {
+		margin: 1rem 0 0;
+		color: var(--ink-soft);
+		max-width: 34rem;
+	}
+
+	.project-card .link-arrow {
+		margin-top: 1.75rem;
+	}
+
+	@media (max-width: 900px) {
+		.project-card--split {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

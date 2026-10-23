@@ -1,0 +1,270 @@
+---
+import { getEmDashCollection, getEmDashEntry, getSiteSettings } from "emdash";
+import { Image } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import ArrowIcon from "../components/ArrowIcon.astro";
+import InquiryCta from "../components/InquiryCta.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { disciplinesOf, indexLabel, splitFinalPeriod } from "../utils/content";
+
+const [homeResult, projectsResult, servicesResult, settings] = await Promise.all([
+	getEmDashEntry("pages", "home"),
+	getEmDashCollection("projects", { orderBy: { sort_order: "asc", published_at: "desc" }, limit: 50 }),
+	getEmDashCollection("services", { orderBy: { sort_order: "asc" }, limit: 6 }),
+	getSiteSettings(),
+]);
+if (projectsResult.error || servicesResult.error || homeResult.error) {
+	return new Response("Could not load the home page", { status: 500 });
+}
+if (Astro.cache?.enabled) {
+	Astro.cache.set(projectsResult.cacheHint);
+	Astro.cache.set(servicesResult.cacheHint);
+	if (homeResult.entry) Astro.cache.set(homeResult.cacheHint);
+}
+
+const { siteTitle, siteTagline } = resolveStarterSiteIdentity(settings);
+const home = homeResult.entry?.data;
+const projects = projectsResult.entries;
+const flagged = projects.filter((project) => project.data.selected);
+// Fall back to the newest projects when nothing has been marked as selected yet.
+const selected = (flagged.length > 0 ? flagged : projects).slice(0, 6);
+const services = servicesResult.entries;
+
+const headline = splitFinalPeriod(home?.title ?? siteTitle);
+const lede = home?.lede ?? siteTagline;
+const heroImage = home?.hero_image ?? selected[0]?.data.featured_image ?? null;
+const heroWords = (home?.points ?? []).map((point) => point.title).filter(Boolean);
+---
+
+<Base title={siteTitle} description={lede}>
+	<section class="hero" aria-labelledby="hero-title">
+		<div class="wrap hero__inner">
+			<div class="hero__copy">
+				{home?.eyebrow && <p class="eyebrow">{home.eyebrow}</p>}
+				<h1 id="hero-title" class="hero__title">
+					{headline.text}{headline.period && <span class="accent-dot">.</span>}
+				</h1>
+				{lede && <p class="lede hero__lede">{lede}</p>}
+				<a href="/work" class="btn">View selected work <ArrowIcon /></a>
+			</div>
+			{
+				heroImage && (
+					<div class="hero__visual">
+						<Image image={heroImage} priority sizes="(min-width: 900px) 55vw, 100vw" />
+					</div>
+				)
+			}
+			{
+				heroWords.length > 0 && (
+					<ul class="hero__words" aria-label="What we work on">
+						{heroWords.map((word) => (
+							<li>{word}</li>
+						))}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+
+	<section class="section selected" aria-labelledby="selected-title">
+		<div class="wrap">
+			<div class="section-head">
+				<h2 id="selected-title" class="eyebrow selected__label">Selected work</h2>
+				{projects.length > 0 && <a href="/work" class="link-arrow">All projects <ArrowIcon /></a>}
+			</div>
+			{
+				selected.length > 0 ? (
+					<div class="selected__grid">
+						{selected.map((project, index) => (
+							<ProjectCard
+								index={index}
+								title={project.data.title}
+								href={`/work/${project.id}`}
+								image={project.data.featured_image}
+								disciplines={disciplinesOf(project.data)}
+								layout="split"
+								priority={index < 2}
+							/>
+						))}
+					</div>
+				) : (
+					<div class="empty-state">
+						<h3>No projects yet</h3>
+						<p>Projects you publish in the admin appear here. Mark a project as selected to feature it on the home page.</p>
+					</div>
+				)
+			}
+		</div>
+	</section>
+
+	{
+		services.length > 0 && (
+			<section class="section services-teaser" aria-labelledby="services-teaser-title">
+				<div class="wrap">
+					<div class="section-head">
+						<div>
+							<p class="eyebrow">What we do</p>
+							<h2 id="services-teaser-title">Services shaped around the brief.</h2>
+						</div>
+						<a href="/services" class="link-arrow">All services <ArrowIcon /></a>
+					</div>
+					<ol class="services-teaser__list">
+						{services.map((service, index) => (
+							<li>
+								<span class="index-num">{indexLabel(index)}</span>
+								<h3>{service.data.title}</h3>
+								{service.data.summary && <p>{service.data.summary}</p>}
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	<InquiryCta />
+</Base>
+
+<style>
+	.hero {
+		background: var(--paper);
+		overflow: hidden;
+	}
+
+	.hero__inner {
+		position: relative;
+		display: grid;
+		grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+		align-items: center;
+		gap: 0;
+		min-height: min(78vh, 720px);
+		padding-bottom: clamp(3rem, 6vw, 4.5rem);
+	}
+
+	.hero__copy {
+		position: relative;
+		z-index: 2;
+		padding-block: clamp(2rem, 5vw, 4rem);
+	}
+
+	.hero__title {
+		font-size: clamp(3.3rem, 7.4vw, 7.1rem);
+		line-height: 0.95;
+		letter-spacing: -0.035em;
+		font-weight: 470;
+		max-width: 11ch;
+	}
+
+	.hero__lede {
+		margin: clamp(1.75rem, 3vw, 2.5rem) 0 clamp(2rem, 3.5vw, 2.75rem);
+		max-width: 27rem;
+	}
+
+	.hero__visual {
+		align-self: stretch;
+		margin-left: -8vw;
+		display: flex;
+		align-items: center;
+		margin-right: calc(-1 * var(--gutter));
+	}
+
+	.hero__visual :global(img) {
+		width: 100%;
+		height: auto;
+		max-height: 640px;
+		object-fit: contain;
+		object-position: right center;
+		/* Feather the photo into the paper background. */
+		-webkit-mask-image: radial-gradient(ellipse 72% 66% at 58% 48%, #000 55%, transparent 100%);
+		mask-image: radial-gradient(ellipse 72% 66% at 58% 48%, #000 55%, transparent 100%);
+	}
+
+	.hero__words {
+		position: absolute;
+		right: var(--gutter);
+		top: 50%;
+		transform: translateY(-50%);
+		list-style: none;
+		margin: 0;
+		padding: 0 0 1rem;
+		font-size: 0.68rem;
+		font-weight: 600;
+		letter-spacing: 0.32em;
+		line-height: 2.2;
+		text-transform: uppercase;
+		color: var(--muted);
+		background: linear-gradient(currentColor, currentColor) left bottom / 1.75rem 1px no-repeat;
+	}
+
+	.selected {
+		background: var(--paper-raised);
+	}
+
+	.selected__label {
+		margin: 0;
+		max-width: none;
+		font-family: var(--font-body);
+		font-size: 0.72rem;
+		line-height: 1.4;
+		letter-spacing: 0.22em;
+	}
+
+	.selected__grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: clamp(3.5rem, 6vw, 6rem) clamp(2rem, 4vw, 4rem);
+	}
+
+	.services-teaser {
+		border-top: 1px solid var(--line);
+	}
+
+	.services-teaser__list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+		gap: 2.5rem clamp(2rem, 3vw, 3rem);
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.services-teaser__list h3 {
+		margin: 1.25rem 0 0.75rem;
+		font-size: 1.75rem;
+	}
+
+	.services-teaser__list p {
+		color: var(--muted);
+		margin: 0;
+	}
+
+	@media (max-width: 1100px) {
+		.hero__words {
+			display: none;
+		}
+	}
+
+	@media (max-width: 900px) {
+		.hero__inner {
+			grid-template-columns: 1fr;
+			min-height: 0;
+			gap: 0;
+		}
+
+		.hero__visual {
+			order: -1;
+			margin-inline: calc(-1 * var(--gutter));
+			margin-top: -1rem;
+		}
+
+		.hero__visual :global(img) {
+			max-height: 52vh;
+			object-position: center;
+		}
+
+		.selected__grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
