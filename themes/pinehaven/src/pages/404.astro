@@ -1,0 +1,16 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+---
+
+<Base title="Page not found">
+	<section class="notfound container" aria-labelledby="nf-title">
+		<p class="eyebrow">Error 404</p>
+		<h1 id="nf-title" class="display display-hero-ink">This trail<br /> ends here.</h1>
+		<p>The page you’re looking for doesn’t exist or has moved. Browse our cabins, or send us your dates and we’ll check availability.</p>
+		<div class="actions">
+			<a class="btn" href="/rooms">See our cabins <Arrow /></a>
+			<a class="text-link" href="/request-a-stay">Request a stay <Arrow /></a>
+		</div>
+	</section>
+</Base>

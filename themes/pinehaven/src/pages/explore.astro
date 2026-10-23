@@ -1,0 +1,106 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import { getExperiences, photoAlt, photoSrc } from "../lib/pinehaven";
+
+const result = await getExperiences();
+if (Astro.cache?.enabled) Astro.cache.set(result.cacheHint);
+const experiences = result.entries.map((e) => ({ ...e.data, key: e.data.slug ?? e.data.id }));
+---
+
+<Base
+	title="Explore"
+	description="From forest trails and alpine lakes to local flavors and mountain towns, discover experiences that make your stay even more meaningful."
+	header="overlay"
+	image="/images/hero-explore.webp"
+>
+	<section class="hero hero-explore" aria-labelledby="explore-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-explore.webp"
+			alt="A hiker with a backpack standing on a rocky outcrop above a forested lake with snow-capped mountains beyond"
+			width="1672"
+			height="410"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy container">
+			<p class="eyebrow eyebrow-light">Explore Pinehaven</p>
+			<h1 id="explore-title" class="display display-hero">Wilder days,<br /> quieter moments.</h1>
+			<p class="hero-lede hero-lede-explore">
+				From forest trails and alpine lakes to local flavors and mountain towns, discover experiences that make your stay
+				even more meaningful.
+			</p>
+		</div>
+	</section>
+
+	<section class="explore container" aria-labelledby="area-title">
+		<div class="section-head section-head-split">
+			<div>
+				<p class="eyebrow">Things to do</p>
+				<h2 id="area-title" class="display display-section">Explore the area.</h2>
+			</div>
+			<p>Hiking, lakes, local dining and charming mountain towns are all within easy reach of Pinehaven.</p>
+		</div>
+
+		{
+			experiences.length === 0 ? (
+				<p class="empty">Experiences will appear here once they are published.</p>
+			) : (
+				<ul class="explore-grid" role="list">
+					{experiences.map((x) => {
+						const src = photoSrc(x.image, x.photo);
+						return (
+							<li class="explore-card">
+								{src && <img src={src} alt={photoAlt(x.image, x.photo_alt, x.title)} width="418" height="186" loading="lazy" />}
+								<p class="explore-meta">
+									<Icon name={x.travel === "Walk" ? "walk" : "car"} label={x.travel === "Walk" ? "On foot" : "By car"} />
+									{x.distance && <span>{x.distance}</span>}
+									{x.distance && x.travel_time && <span aria-hidden="true">·</span>}
+									{x.travel_time && <span>{x.travel_time}</span>}
+								</p>
+								<h3 class="explore-name">{x.title}</h3>
+								<div class="explore-row">
+									{x.summary && <p>{x.summary}</p>}
+									<a class="explore-more" href={`#${x.key}`} aria-label={`Plan: ${x.title}`}>
+										<Arrow />
+									</a>
+								</div>
+							</li>
+						);
+					})}
+				</ul>
+			)
+		}
+	</section>
+
+	{
+		experiences.some((x) => x.details || x.good_to_know) && (
+			<section class="plan" aria-labelledby="plan-title">
+				<div class="container">
+					<p class="eyebrow">Plan your days</p>
+					<h2 id="plan-title" class="display display-section">Good to know before you go.</h2>
+					<div class="plan-list">
+						{experiences.map((x) => (
+							<article id={x.key} class="plan-item" aria-labelledby={`${x.key}-title`}>
+								<p class="explore-meta">
+									<Icon name={x.travel === "Walk" ? "walk" : "car"} />
+									{x.travel === "Walk" ? "On foot" : "By car"}
+									{x.distance && <> · {x.distance}</>}
+									{x.travel_time && <> · {x.travel_time}</>}
+								</p>
+								<h3 id={`${x.key}-title`} class="display display-block">{x.title}</h3>
+								{x.details && <p>{x.details}</p>}
+								{x.good_to_know && <p class="detail-note">{x.good_to_know}</p>}
+							</article>
+						))}
+					</div>
+					<div class="plan-cta">
+						<p>Ask us for trail maps, café hours and directions when you request your stay.</p>
+						<a class="btn" href="/request-a-stay">Request a stay <Arrow /></a>
+					</div>
+				</div>
+			</section>
+		)
+	}
+</Base>

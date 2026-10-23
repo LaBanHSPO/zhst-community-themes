@@ -1,0 +1,92 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import Icon from "../../components/Icon.astro";
+import { cabinUrl, countWord, getCabins, guestsLabel, money, photoAlt, photoSrc } from "../../lib/pinehaven";
+
+const cabinsResult = await getCabins();
+if (Astro.cache?.enabled) Astro.cache.set(cabinsResult.cacheHint);
+const cabins = cabinsResult.entries.map((e) => e.data);
+const count = cabins.length;
+---
+
+<Base
+	title="Rooms"
+	description="Distinct stays, the same extraordinary setting in the heart of the mountains."
+	header="overlay"
+	image="/images/hero-rooms.webp"
+>
+	<section class="hero hero-rooms" aria-labelledby="rooms-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-rooms.webp"
+			alt="Pine forest and a mountain lake under a sunset sky, with granite boulders in the foreground"
+			width="1672"
+			height="302"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy container">
+			<p class="eyebrow eyebrow-light">Our rooms</p>
+			<h1 id="rooms-title" class="display display-hero">
+				{count > 0 ? `${countWord(count)} ${count === 1 ? "cabin" : "cabins"}.` : "Our cabins."}<br /> A deeper you.
+			</h1>
+			<p class="hero-lede">Distinct stays, the same extraordinary setting<br class="br-wide" /> in the heart of the mountains.</p>
+		</div>
+	</section>
+
+	<section class="rooms container-wide" aria-labelledby="cabins-title">
+		<div class="rooms-head container">
+			<h2 id="cabins-title" class="display display-rooms">Our cabins</h2>
+			<p>
+				Each cabin offers a unique perspective on mountain living,<br class="br-wide" /> with modern comforts and the tranquillity
+				of nature at your doorstep.
+			</p>
+		</div>
+
+		{
+			cabins.length === 0 ? (
+				<p class="empty">Cabins will appear here once they are published.</p>
+			) : (
+				<ul class="cabin-grid" role="list">
+					{cabins.map((c) => {
+						const src = photoSrc(c.image, c.photo);
+						const url = cabinUrl(c);
+						return (
+							<li class="cabin-card">
+								{src && (
+									<img src={src} alt={photoAlt(c.image, c.photo_alt, c.title)} width="488" height="196" loading="lazy" />
+								)}
+								<div class="cabin-body">
+									<h3 class="cabin-name">
+										<a href={url}>{c.title}</a>
+									</h3>
+									<ul class="cabin-facts" role="list">
+										{c.beds && (
+											<li>
+												<Icon name="bed" /> {c.beds}
+											</li>
+										)}
+										<li>
+											<Icon name="guests" /> {guestsLabel(c.guests)}
+										</li>
+									</ul>
+									{c.summary && <p class="cabin-text">{c.summary}</p>}
+									<div class="cabin-foot">
+										<p class="price">
+											<span class="price-from">From</span>
+											<span class="price-amount">{money(c.price)}</span> <span class="price-unit">/ night</span>
+										</p>
+										<a class="btn" href={url} aria-label={`View cabin: ${c.title}`}>
+											View cabin <Arrow />
+										</a>
+									</div>
+								</div>
+							</li>
+						);
+					})}
+				</ul>
+			)
+		}
+		<p class="rooms-note">Prices are starting nightly rates before taxes. We confirm availability and the full price when we reply to your request.</p>
+	</section>
+</Base>

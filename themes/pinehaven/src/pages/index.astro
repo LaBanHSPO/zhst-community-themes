@@ -1,0 +1,148 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import { cabinUrl, getCabins, isoDay, photoAlt, photoSrc, prettyDay } from "../lib/pinehaven";
+
+const cabinsResult = await getCabins();
+if (Astro.cache?.enabled) Astro.cache.set(cabinsResult.cacheHint);
+
+const cabins = cabinsResult.entries.map((e) => e.data);
+const featured = (cabins.some((c) => c.featured) ? cabins.filter((c) => c.featured) : cabins).slice(0, 3);
+const maxGuests = Math.max(2, ...cabins.map((c) => c.max_guests ?? 2));
+
+// Suggested dates: a three-night stay starting a week from today.
+const today = isoDay(0);
+const checkIn = isoDay(7);
+const checkOut = isoDay(10);
+---
+
+<Base
+	title="A slower kind of stay"
+	description="Secluded cabins, breathtaking views, and time for what matters most."
+	header="overlay"
+	image="/images/hero-home.webp"
+>
+	<section class="hero hero-home" aria-labelledby="home-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A glass-fronted timber cabin with a fire pit on its deck, above a pine forest and a mountain lake at sunset"
+			width="1672"
+			height="448"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy container">
+			<p class="eyebrow eyebrow-light">Mountains. Forests. A deeper you.</p>
+			<h1 id="home-title" class="display display-hero">A slower kind<br /> of stay.</h1>
+			<p class="hero-lede">Secluded cabins, breathtaking views, and time<br class="br-wide" /> for what matters most.</p>
+		</div>
+
+		<form class="stay-strip container" action="/request-a-stay" method="get" aria-label="Check availability">
+			<div class="strip-field">
+				<Icon name="calendar" class="strip-icon" />
+				<label for="s-in">Check in</label>
+				<span class="date-wrap">
+					<input id="s-in" class="date-input" name="checkin" type="date" min={today} value={checkIn} required />
+					<span class="date-pretty" aria-hidden="true">{prettyDay(checkIn)}</span>
+				</span>
+				<Icon name="chevron" class="strip-chevron" />
+			</div>
+			<div class="strip-field">
+				<label for="s-out">Check out</label>
+				<span class="date-wrap">
+					<input id="s-out" class="date-input" name="checkout" type="date" min={today} value={checkOut} required />
+					<span class="date-pretty" aria-hidden="true">{prettyDay(checkOut)}</span>
+				</span>
+				<Icon name="chevron" class="strip-chevron" />
+			</div>
+			<div class="strip-field">
+				<Icon name="guests" class="strip-icon" />
+				<label for="s-guests">Guests</label>
+				<select id="s-guests" name="guests">
+					{Array.from({ length: maxGuests }, (_, i) => i + 1).map((n) => (
+						<option value={n} selected={n === 2}>{n} {n === 1 ? "guest" : "guests"}</option>
+					))}
+				</select>
+				<Icon name="chevron" class="strip-chevron" />
+			</div>
+			<button class="btn strip-btn" type="submit">Check availability <Arrow /></button>
+		</form>
+	</section>
+
+	{
+		featured.length > 0 && (
+			<section class="featured container" aria-labelledby="featured-title">
+				<div class="section-head">
+					<div>
+						<p class="eyebrow">Featured cabins</p>
+						<h2 id="featured-title" class="display display-section">Stay closer to what matters.</h2>
+					</div>
+					<a class="text-link" href="/rooms">View all cabins <Arrow /></a>
+				</div>
+				<ul class="featured-grid" role="list">
+					{featured.map((c) => {
+						const src = photoSrc(c.image, c.photo);
+						return (
+							<li>
+								<a class="featured-card" href={cabinUrl(c)}>
+									{src && (
+										<img
+											src={src}
+											alt={photoAlt(c.image, c.photo_alt, c.title)}
+											width="488"
+											height="192"
+											loading="lazy"
+										/>
+									)}
+									<span class="featured-name">
+										{c.title} <Arrow />
+									</span>
+								</a>
+							</li>
+						);
+					})}
+				</ul>
+			</section>
+		)
+	}
+
+	<section class="home-close" aria-labelledby="close-title">
+		<div class="container home-close-inner">
+			<div>
+				<p class="eyebrow eyebrow-light">Plan your stay</p>
+				<h2 id="close-title" class="display display-section">Trails, lakes and long evenings by the fire.</h2>
+			</div>
+			<p>
+				Walk the Pine Ridge Trail before breakfast, drive down to the lake for coffee, and spend the afternoon in Willow
+				Creek. Tell us your dates and we’ll reply personally with availability.
+			</p>
+			<div class="actions">
+				<a class="btn btn-light" href="/request-a-stay">Request a stay <Arrow /></a>
+				<a class="text-link text-link-light" href="/explore">Explore the area <Arrow /></a>
+			</div>
+		</div>
+	</section>
+</Base>
+
+<script>
+	// Keep check-out after check-in in the availability strip.
+	const strip = document.querySelector<HTMLFormElement>(".stay-strip");
+	const inEl = strip?.querySelector<HTMLInputElement>("#s-in");
+	const outEl = strip?.querySelector<HTMLInputElement>("#s-out");
+	if (strip && inEl && outEl) {
+		const sync = () => {
+			if (!inEl.value) return;
+			const next = new Date(`${inEl.value}T00:00:00Z`);
+			next.setUTCDate(next.getUTCDate() + 1);
+			const min = next.toISOString().slice(0, 10);
+			outEl.min = min;
+			if (!outEl.value || outEl.value < min) {
+				outEl.value = min;
+				outEl.dispatchEvent(new Event("input", { bubbles: true }));
+			}
+		};
+		inEl.addEventListener("change", sync);
+		sync();
+	}
+</script>

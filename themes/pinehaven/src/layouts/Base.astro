@@ -1,0 +1,220 @@
+---
+import { getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import Arrow from "../components/Arrow.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getLodge, telHref } from "../lib/pinehaven";
+import "../styles/theme.css";
+
+interface Props {
+	title: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	/** Pass content reference for plugin page contributions on content pages */
+	content?: { collection: string; id: string; slug?: string | null };
+	/** Force which primary-menu URL is marked current. */
+	current?: string;
+	/**
+	 * Header treatment: both are a solid oatmeal bar above the page. `overlay` (photo-hero pages) has no
+	 * hairline because the photo starts directly below; `solid` adds a bottom hairline.
+	 */
+	header?: "overlay" | "solid";
+}
+
+const { title, pageTitle, description, image, canonical, content, current, header = "solid" } = Astro.props;
+const [settingsResult, menuResult, lodgeResult] = await Promise.all([
+	getSiteSettingsWithCacheHint(),
+	getMenuWithCacheHint("primary"),
+	getLodge(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(settingsResult.cacheHint);
+	Astro.cache.set(menuResult.cacheHint);
+	Astro.cache.set(lodgeResult.cacheHint);
+}
+
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(settingsResult.data);
+const titleIncludesSiteName =
+	title === siteTitle || title.endsWith(` | ${siteTitle}`) || title.endsWith(` — ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
+const pageDescription = description ?? siteTagline;
+const menuItems = menuResult.data?.items ?? [];
+const { lodge } = lodgeResult;
+
+// The request menu item doubles as the header button; it also stays in the text nav, as designed.
+const CTA_URL = "/request-a-stay";
+const norm = (url: string) => url.replace(/[?#].*$/, "").replace(/\/$/, "") || "/";
+const ctaItem = menuItems.find((i) => norm(i.url) === CTA_URL);
+const ctaLabel = ctaItem?.label ?? "Request a stay";
+const ctaUrl = ctaItem?.url ?? CTA_URL;
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const currentUrl =
+	current ??
+	menuItems.find((i) => norm(i.url) === path)?.url ??
+	menuItems
+		.filter((i) => norm(i.url) !== "/" && path.startsWith(`${norm(i.url)}/`))
+		.sort((a, b) => b.url.length - a.url.length)[0]?.url;
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description: pageDescription,
+	canonical,
+	image,
+	content,
+	siteName: siteTitle,
+});
+const year = new Intl.DateTimeFormat("en-GB", { year: "numeric", timeZone: "Asia/Saigon" }).format(new Date());
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{fullTitle}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..600;1,400&family=Jost:wght@400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<script is:inline>document.documentElement.classList.add("js");</script>
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<header class:list={["site-head", `site-head-${header}`]}>
+			<div class="head-inner">
+				<a class="wordmark" href="/" aria-label={`${siteTitle} — homepage`}>
+					{
+						siteLogo ? (
+							<img src={siteLogo.url} alt={siteLogo.alt || siteTitle} />
+						) : (
+							<>
+								<svg class="wordmark-tree" viewBox="0 0 26 40" aria-hidden="true" focusable="false">
+									<path
+										d="M13 1 7.2 10.4h3.4L5.4 18.6h3.9L3.4 27.4h7.6V39h4V27.4h7.6l-5.9-8.8h3.9l-5.2-8.2h3.4z"
+										fill="currentColor"
+									/>
+								</svg>
+								<span class="wordmark-text">
+									<span class="wordmark-name">{siteTitle}</span>
+									<span class="wordmark-tag">{siteTagline}</span>
+								</span>
+							</>
+						)
+					}
+				</a>
+				<nav class="nav" aria-label="Primary">
+					{
+						menuItems.map((item) => (
+							<a
+								href={item.url}
+								target={item.target}
+								rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+								aria-current={item.url === currentUrl ? "page" : undefined}
+							>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+				<a class="btn head-cta" href={ctaUrl}>{ctaLabel} <Arrow /></a>
+				<details class="mobile-nav">
+					<summary>
+						<svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true" focusable="false">
+							<path d="M0 1h22M0 7h22M0 13h22" stroke="currentColor" stroke-width="1.5" />
+						</svg>
+						<span>Menu</span>
+					</summary>
+					<nav class="mobile-panel" aria-label="Primary (mobile)">
+						{
+							menuItems.map((item) => (
+								<a href={item.url} aria-current={item.url === currentUrl ? "page" : undefined}>
+									{item.label}
+								</a>
+							))
+						}
+						<a class="btn" href={ctaUrl}>{ctaLabel} <Arrow /></a>
+					</nav>
+				</details>
+			</div>
+		</header>
+
+		<main id="main">
+			<slot />
+		</main>
+
+		<footer class="site-foot">
+			<div class="container foot-inner">
+				<div class="foot-brand">
+					<a class="wordmark wordmark-light" href="/">
+						<svg class="wordmark-tree" viewBox="0 0 26 40" aria-hidden="true" focusable="false">
+							<path d="M13 1 7.2 10.4h3.4L5.4 18.6h3.9L3.4 27.4h7.6V39h4V27.4h7.6l-5.9-8.8h3.9l-5.2-8.2h3.4z" fill="currentColor" />
+						</svg>
+						<span class="wordmark-text">
+							<span class="wordmark-name">{siteTitle}</span>
+							<span class="wordmark-tag">{siteTagline}</span>
+						</span>
+					</a>
+					<p>Secluded cabins, breathtaking views, and time for what matters most.</p>
+				</div>
+				<div class="foot-col">
+					<h2>Stay</h2>
+					{menuItems.map((item) => <a href={item.url}>{item.label}</a>)}
+				</div>
+				<div class="foot-col">
+					<h2>Find us</h2>
+					{lodge.address && <p>{lodge.address}</p>}
+					{lodge.phone && <a href={telHref(lodge.phone)}>{lodge.phone}</a>}
+					{lodge.email && <a href={`mailto:${lodge.email}`}>{lodge.email}</a>}
+					{
+						(lodge.check_in || lodge.check_out) && (
+							<p class="foot-times">
+								{lodge.check_in && <>Check-in from {lodge.check_in}</>}
+								{lodge.check_in && lodge.check_out && <br />}
+								{lodge.check_out && <>Check-out by {lodge.check_out}</>}
+							</p>
+						)
+					}
+				</div>
+				<div class="foot-cta">
+					<p class="foot-cta-title">A slower kind of stay.</p>
+					<a class="btn btn-light" href={ctaUrl}>{ctaLabel} <Arrow /></a>
+				</div>
+			</div>
+			<div class="container foot-bottom">
+				<span>© {year} {siteTitle}. All rights reserved.</span>
+				<span>Built with EmDash</span>
+			</div>
+		</footer>
+
+		<EmDashBodyEnd page={pageCtx} />
+	</body>
+</html>
+
+<script>
+	// Date fields show "Apr 17, 2025" like the mockups; the native control text shows while focused.
+	const fmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+	for (const input of document.querySelectorAll<HTMLInputElement>("input.date-input")) {
+		const pretty = input.parentElement?.querySelector<HTMLElement>(".date-pretty");
+		if (!pretty) continue;
+		const update = () => {
+			pretty.textContent = input.value ? fmt.format(new Date(`${input.value}T00:00:00Z`)) : "Select date";
+			input.classList.toggle("is-empty", !input.value);
+		};
+		input.addEventListener("input", update);
+		input.addEventListener("change", update);
+		update();
+	}
+</script>
