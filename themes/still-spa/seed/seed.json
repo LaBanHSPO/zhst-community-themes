@@ -1,0 +1,757 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Still",
+		"description": "A serene day spa theme: homepage, treatments with Massage / Facial / Body tabs, signature treatment detail pages, therapist profiles and an appointment request form",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "Still",
+		"tagline": "Day spa"
+	},
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "treatments",
+			"label": "Treatments",
+			"labelSingular": "Treatment",
+			"urlPattern": "/treatments/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Treatment name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "category",
+					"label": "Category (tab)",
+					"type": "select",
+					"defaultValue": "massage",
+					"validation": {
+						"options": [
+							"massage",
+							"facial",
+							"body"
+						]
+					},
+					"indexed": true
+				},
+				{
+					"slug": "summary",
+					"label": "Short description (cards)",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "lede",
+					"label": "Introduction (treatment page hero)",
+					"type": "text"
+				},
+				{
+					"slug": "duration",
+					"label": "Duration (minutes)",
+					"type": "integer"
+				},
+				{
+					"slug": "price",
+					"label": "Price (whole dollars)",
+					"type": "integer"
+				},
+				{
+					"slug": "signature",
+					"label": "Signature treatment",
+					"type": "boolean",
+					"indexed": true
+				},
+				{
+					"slug": "journey_title",
+					"label": "Treatment journey heading",
+					"type": "string"
+				},
+				{
+					"slug": "steps",
+					"label": "Treatment journey steps",
+					"type": "repeater",
+					"validation": {
+						"maxItems": 8,
+						"subFields": [
+							{
+								"slug": "title",
+								"label": "Step",
+								"type": "string",
+								"required": true
+							},
+							{
+								"slug": "text",
+								"label": "Description",
+								"type": "text"
+							},
+							{
+								"slug": "icon",
+								"label": "Icon (lotus, sprout, stones, face, leaf, steam, clock or calendar)",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"slug": "expect_title",
+					"label": "What to expect: heading",
+					"type": "string"
+				},
+				{
+					"slug": "expect_text",
+					"label": "What to expect: text",
+					"type": "text"
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Photo: bundled path",
+					"type": "string"
+				},
+				{
+					"slug": "alt",
+					"label": "Photo description",
+					"type": "string"
+				},
+				{
+					"slug": "hero_image",
+					"label": "Treatment page hero photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "hero_photo",
+					"label": "Treatment page hero photo: bundled path",
+					"type": "string"
+				},
+				{
+					"slug": "expect_image",
+					"label": "What to expect photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "expect_photo",
+					"label": "What to expect photo: bundled path",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "therapists",
+			"label": "Therapists",
+			"labelSingular": "Therapist",
+			"supports": [
+				"revisions",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "practice",
+					"label": "Areas of practice (comma separated)",
+					"type": "string"
+				},
+				{
+					"slug": "bio",
+					"label": "Approach",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Photo: bundled path",
+					"type": "string"
+				},
+				{
+					"slug": "alt",
+					"label": "Photo description",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "highlights",
+			"label": "Highlights",
+			"labelSingular": "Highlight",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "text",
+					"label": "Text",
+					"type": "text"
+				},
+				{
+					"slug": "icon",
+					"label": "Icon",
+					"type": "select",
+					"defaultValue": "lotus",
+					"validation": {
+						"options": [
+							"lotus",
+							"sprout",
+							"stones",
+							"face",
+							"leaf",
+							"steam",
+							"clock",
+							"calendar"
+						]
+					}
+				},
+				{
+					"slug": "placement",
+					"label": "Placement (home or appointment)",
+					"type": "string",
+					"required": true,
+					"indexed": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "business",
+			"label": "Business",
+			"labelSingular": "Business",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Business name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "email",
+					"label": "Appointment request email",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "phone",
+					"label": "Phone",
+					"type": "string"
+				},
+				{
+					"slug": "address",
+					"label": "Address",
+					"type": "string"
+				},
+				{
+					"slug": "hours",
+					"label": "Opening hours",
+					"type": "string"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Homepage",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "Treatments",
+					"url": "/treatments"
+				},
+				{
+					"type": "custom",
+					"label": "Signature treatment",
+					"url": "/treatments/the-still-ritual"
+				},
+				{
+					"type": "custom",
+					"label": "Therapists",
+					"url": "/therapists"
+				},
+				{
+					"type": "custom",
+					"label": "Appointment request",
+					"url": "/appointment"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About Still",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b1",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Still is a small day spa for massage, facials and body rituals. We keep the rooms quiet, the pace unhurried and the treatments shaped around how you feel on the day.",
+									"_key": "b1s"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Every appointment starts as a request. We check availability, ask about any focus areas or preferences and confirm with you before your visit.",
+									"_key": "b2s"
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"treatments": [
+			{
+				"id": "swedish-massage",
+				"slug": "swedish-massage",
+				"status": "published",
+				"data": {
+					"title": "Swedish Massage",
+					"category": "massage",
+					"summary": "A classic full-body massage to relieve tension, improve circulation and leave you feeling deeply relaxed.",
+					"duration": 60,
+					"price": 120,
+					"position": 10,
+					"photo": "/images/t-swedish.webp",
+					"alt": "A woman resting face down while a therapist massages her shoulders",
+					"expect_title": "Long, flowing strokes at an easy pace.",
+					"expect_text": "Your therapist uses gentle to medium pressure across the back, shoulders, legs and arms, adjusting as you go. Expect a quiet room, warm towels and time to rest before you leave."
+				}
+			},
+			{
+				"id": "hot-stone-massage",
+				"slug": "hot-stone-massage",
+				"status": "published",
+				"data": {
+					"title": "Hot Stone Massage",
+					"category": "massage",
+					"summary": "Warm stones and flowing massage techniques to melt away tension and restore balance.",
+					"duration": 75,
+					"price": 145,
+					"position": 20,
+					"photo": "/images/t-hot-stone.webp",
+					"alt": "Smooth dark basalt stones placed along a client’s back",
+					"expect_title": "Gentle heat that goes deep.",
+					"expect_text": "Smooth, heated basalt stones are placed along the spine and used in flowing strokes, letting the muscles soften without strong pressure."
+				}
+			},
+			{
+				"id": "deep-tissue-massage",
+				"slug": "deep-tissue-massage",
+				"status": "published",
+				"data": {
+					"title": "Deep Tissue Massage",
+					"category": "massage",
+					"summary": "A targeted massage to release deep muscle tension and support recovery and mobility.",
+					"duration": 60,
+					"price": 135,
+					"position": 30,
+					"photo": "/images/t-deep-tissue.webp",
+					"alt": "A therapist working firmly on a client’s upper back",
+					"expect_title": "Firm, focused and unhurried.",
+					"expect_text": "Slower, firmer pressure on areas of tightness such as the neck, shoulders and lower back. Your therapist checks in throughout so the pressure stays comfortable."
+				}
+			},
+			{
+				"id": "aromatherapy-massage",
+				"slug": "aromatherapy-massage",
+				"status": "published",
+				"data": {
+					"title": "Aromatherapy Massage",
+					"category": "massage",
+					"summary": "A soothing full-body massage using blended essential oils to calm the mind and restore inner balance.",
+					"duration": 60,
+					"price": 130,
+					"position": 40,
+					"photo": "/images/t-aromatherapy.webp",
+					"alt": "A relaxed client with eyes closed during a gentle massage",
+					"expect_title": "A blend chosen for how you feel.",
+					"expect_text": "Choose from calming, uplifting or grounding oil blends at the start. A gentle full-body massage follows, finishing with a slow scalp massage."
+				}
+			},
+			{
+				"id": "signature-facial",
+				"slug": "signature-facial",
+				"status": "published",
+				"data": {
+					"title": "Signature Facial",
+					"category": "facial",
+					"summary": "A deeply cleansing, nourishing facial tailored to your skin, with a relaxing face and shoulder massage.",
+					"duration": 60,
+					"price": 140,
+					"position": 50,
+					"photo": "/images/t-signature-facial.webp",
+					"alt": "Rolled towels, a candle and a bowl of salt on a wooden tray",
+					"expect_title": "Clean, calm, glowing skin.",
+					"expect_text": "A double cleanse, gentle exfoliation and a mask chosen for your skin, finished with a face, neck and shoulder massage and a light moisturiser."
+				}
+			},
+			{
+				"id": "hydrating-facial",
+				"slug": "hydrating-facial",
+				"status": "published",
+				"data": {
+					"title": "Hydrating Facial",
+					"category": "facial",
+					"summary": "Replenishing layers of moisture for dry or tired skin, leaving it soft, supple and comfortable.",
+					"duration": 45,
+					"price": 115,
+					"position": 60,
+					"photo": "/images/t-hydrating-facial.webp",
+					"alt": "A plum towel, folded linen and a lit candle on a tray",
+					"expect_title": "Moisture, layer by layer.",
+					"expect_text": "Hydrating serums and a cooling cream mask are pressed into the skin, followed by a calming facial massage to finish."
+				}
+			},
+			{
+				"id": "calm-skin-facial",
+				"slug": "calm-skin-facial",
+				"status": "published",
+				"data": {
+					"title": "Calm Skin Facial",
+					"category": "facial",
+					"summary": "A gentle, fragrance-free facial for sensitive or reactive skin, designed to soothe redness and restore comfort.",
+					"duration": 45,
+					"price": 110,
+					"position": 70,
+					"photo": "/images/t-calm-skin.webp",
+					"alt": "Folded towels and a bowl with a plum orchid on a treatment bed",
+					"expect_title": "Soothing, from the first touch.",
+					"expect_text": "Minimal, fragrance-free products and light pressure to calm the skin. Ideal before an event or after time in the sun."
+				}
+			},
+			{
+				"id": "renewal-facial",
+				"slug": "renewal-facial",
+				"status": "published",
+				"data": {
+					"title": "Renewal Facial",
+					"category": "facial",
+					"summary": "A brightening facial with gentle exfoliation and a firming massage to refresh dull or tired-looking skin.",
+					"duration": 75,
+					"price": 165,
+					"position": 80,
+					"photo": "/images/t-renewal-facial.webp",
+					"alt": "A wooden tray with bowls, stones and a candle beside a rolled plum towel",
+					"expect_title": "A fresher, brighter look.",
+					"expect_text": "Gentle exfoliation, a brightening mask and a lifting facial massage, with a hand and arm massage while the mask rests."
+				}
+			},
+			{
+				"id": "the-still-ritual",
+				"slug": "the-still-ritual",
+				"status": "published",
+				"data": {
+					"title": "The Still Ritual",
+					"category": "body",
+					"summary": "A deeply restorative experience combining soothing touch, warm stones and grounding aromatherapy to calm the mind and relax the body.",
+					"duration": 90,
+					"price": 210,
+					"position": 90,
+					"photo": "/images/t-still-ritual.webp",
+					"alt": "A smiling client resting while a therapist places warm stones on her back",
+					"signature": true,
+					"lede": "A deeply restorative experience combining soothing touch, warm stones and grounding aromatherapy to calm the mind and relax the body.",
+					"hero_photo": "/images/hero-ritual.webp",
+					"expect_photo": "/images/ritual-tray.webp",
+					"journey_title": "A considered flow, designed for deep rest.",
+					"steps": [
+						{
+							"title": "Ground",
+							"text": "A calming aroma ritual to settle the mind and prepare the body.",
+							"icon": "sprout"
+						},
+						{
+							"title": "Release",
+							"text": "A full-body massage using warm stones to ease tension and restore natural flow.",
+							"icon": "steam"
+						},
+						{
+							"title": "Restore",
+							"text": "Targeted work on areas of tension to rebalance the body and quiet the mind.",
+							"icon": "lotus"
+						},
+						{
+							"title": "Renew",
+							"text": "A soothing scalp, face and décolletage massage to leave you feeling refreshed and reset.",
+							"icon": "stones"
+						}
+					],
+					"expect_title": "More than a massage. A return to yourself.",
+					"expect_text": "The Still Ritual is a holistic treatment designed to calm the nervous system, ease physical tension and bring you back into balance. Expect a deeply nurturing experience in a serene, supportive environment, with natural textures, calming scents and unhurried time."
+				}
+			},
+			{
+				"id": "mineral-salt-scrub",
+				"slug": "mineral-salt-scrub",
+				"status": "published",
+				"data": {
+					"title": "Mineral Salt Scrub",
+					"category": "body",
+					"summary": "A warm mineral salt exfoliation followed by a rich body oil, leaving skin smooth and softly glowing.",
+					"duration": 45,
+					"price": 105,
+					"position": 100,
+					"photo": "/images/t-salt-scrub.webp",
+					"alt": "A bowl of pink mineral salt beside a plum orchid",
+					"expect_title": "Smooth from head to toe.",
+					"expect_text": "Mineral salts blended with warm oil are worked over the body in slow circles, then a nourishing oil is massaged in to finish."
+				}
+			},
+			{
+				"id": "nourishing-body-wrap",
+				"slug": "nourishing-body-wrap",
+				"status": "published",
+				"data": {
+					"title": "Nourishing Body Wrap",
+					"category": "body",
+					"summary": "A cocooning wrap of warm botanical balm while you rest, finished with a light scalp massage.",
+					"duration": 60,
+					"price": 135,
+					"position": 110,
+					"photo": "/images/t-body-wrap.webp",
+					"alt": "A candlelit stone basin in a quiet treatment room",
+					"expect_title": "Warm, wrapped and still.",
+					"expect_text": "After a light exfoliation, a warm botanical balm is applied and you are wrapped in soft linen to rest, with a scalp massage while it works."
+				}
+			},
+			{
+				"id": "back-and-shoulder-ritual",
+				"slug": "back-and-shoulder-ritual",
+				"status": "published",
+				"data": {
+					"title": "Back & Shoulder Ritual",
+					"category": "body",
+					"summary": "A focused treatment for the back, neck and shoulders with warm stones and a cleansing back mask.",
+					"duration": 45,
+					"price": 110,
+					"position": 120,
+					"photo": "/images/t-body-polish.webp",
+					"alt": "Dark stones, a plum orchid and a candle on a wooden tray",
+					"expect_title": "Where tension gathers most.",
+					"expect_text": "A gentle back cleanse and mask, then warm stones and massage across the back, neck and shoulders. A good choice when time is short."
+				}
+			}
+		],
+		"therapists": [
+			{
+				"id": "maya-chen",
+				"slug": "maya-chen",
+				"status": "published",
+				"data": {
+					"title": "Maya Chen",
+					"practice": "Massage, Aromatherapy",
+					"bio": "Maya’s intuitive touch and calm presence help release tension and restore balance. She specialises in therapeutic massage and bespoke aromatherapy blends tailored to your needs.",
+					"position": 10,
+					"photo": "/images/maya-chen.webp",
+					"alt": "Portrait of Maya Chen, a therapist with dark wavy hair in a plum uniform"
+				}
+			},
+			{
+				"id": "elise-rowan",
+				"slug": "elise-rowan",
+				"status": "published",
+				"data": {
+					"title": "Elise Rowan",
+					"practice": "Facials, Skin rituals",
+					"bio": "Elise combines advanced skincare techniques with a holistic approach to create radiant, healthy skin. Her facials are deeply relaxing, leaving you glowing inside and out.",
+					"position": 20,
+					"photo": "/images/elise-rowan.webp",
+					"alt": "Portrait of Elise Rowan, a therapist with fair wavy hair in a plum uniform"
+				}
+			},
+			{
+				"id": "nadia-park",
+				"slug": "nadia-park",
+				"status": "published",
+				"data": {
+					"title": "Nadia Park",
+					"practice": "Body treatments, Wellness rituals",
+					"bio": "Nadia’s treatments are grounded, restorative and deeply calming. She specialises in body rituals, hot stone therapy and treatments that reconnect you with a sense of ease.",
+					"position": 30,
+					"photo": "/images/nadia-park.webp",
+					"alt": "Portrait of Nadia Park, a therapist with dark hair pinned back in a plum uniform"
+				}
+			}
+		],
+		"highlights": [
+			{
+				"id": "bespoke-treatments",
+				"slug": "bespoke-treatments",
+				"status": "published",
+				"data": {
+					"title": "Bespoke treatments",
+					"text": "Thoughtfully tailored to your needs and how you feel today.",
+					"icon": "sprout",
+					"placement": "home",
+					"position": 10
+				}
+			},
+			{
+				"id": "a-calmer-you",
+				"slug": "a-calmer-you",
+				"status": "published",
+				"data": {
+					"title": "A calmer you",
+					"text": "Time and space to rest, restore and rebalance.",
+					"icon": "stones",
+					"placement": "home",
+					"position": 20
+				}
+			},
+			{
+				"id": "a-beautiful-setting",
+				"slug": "a-beautiful-setting",
+				"status": "published",
+				"data": {
+					"title": "A beautiful setting",
+					"text": "Serene spaces, natural textures and a warm, welcoming atmosphere.",
+					"icon": "lotus",
+					"placement": "home",
+					"position": 30
+				}
+			},
+			{
+				"id": "confirmation",
+				"slug": "confirmation",
+				"status": "published",
+				"data": {
+					"title": "Confirmation",
+					"text": "We’ll review your request and confirm your appointment as soon as possible.",
+					"icon": "calendar",
+					"placement": "appointment",
+					"position": 10
+				}
+			},
+			{
+				"id": "need-to-change",
+				"slug": "need-to-change",
+				"status": "published",
+				"data": {
+					"title": "Need to change?",
+					"text": "If you need to reschedule or cancel, please let us know at least 24 hours in advance.",
+					"icon": "clock",
+					"placement": "appointment",
+					"position": 20
+				}
+			},
+			{
+				"id": "questions",
+				"slug": "questions",
+				"status": "published",
+				"data": {
+					"title": "Questions?",
+					"text": "If you have any questions about our treatments or need assistance, we’re here to help.",
+					"icon": "lotus",
+					"placement": "appointment",
+					"position": 30
+				}
+			}
+		],
+		"business": [
+			{
+				"id": "still",
+				"slug": "still",
+				"status": "published",
+				"data": {
+					"title": "Still Day Spa",
+					"email": "hello@stillspa.example",
+					"phone": "(03) 9012 4580",
+					"address": "14 Linden Lane, Fitzroy",
+					"hours": "Tue–Sun, 9am–8pm"
+				}
+			}
+		]
+	}
+}
