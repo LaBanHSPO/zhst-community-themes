@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "beauty-studio",
+	"kind": "theme",
+	"name": "Beauty Studio",
+	"type": "restaurant",
+	"emdash": "1.2.0",
+	"entry": "themes/beauty-studio",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": false,
+		"booking": true,
+		"checkout": false,
+		"map": true,
+		"whatsapp": false
+	}
+}

@@ -1,0 +1,135 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { categoryOf, entryHref, formatPrice, getStudio, getTreatments, lines, photoSrc } from "../../lib/studio";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: treatment, cacheHint } = await getEmDashEntry("treatments", slug);
+if (!treatment) return Astro.rewrite("/404");
+
+const [allResult, studioResult, settings] = await Promise.all([getTreatments(), getStudio(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(treatment, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const category = categoryOf(treatment.data.category);
+const related = allResult.entries.filter((t) => t.data.category === treatment.data.category && t.data.id !== treatment.data.id);
+const includes = lines(treatment.data.includes);
+const src = photoSrc(treatment.data.image, treatment.data.photo ?? category?.photo);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? treatment.data.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "treatments", id: treatment.data.id, slug }}
+	current="/services"
+>
+	<section class="detail-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/services">Services</a>
+				<span aria-hidden="true">/</span>
+				{category && <a href={`/services#${category.slug}`}>{category.label}</a>}
+				{category && <span aria-hidden="true">/</span>}
+				<span aria-current="page">{treatment.data.title}</span>
+			</nav>
+			<div class:list={["detail-grid", { "is-text-only": !src }]}>
+				<div class="detail-copy">
+					{category && <p class="eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span>{category.label}</p>}
+					<h1 class="display" {...treatment.edit.title}>{treatment.data.title}</h1>
+					<p class="lede" {...treatment.edit.summary}>{treatment.data.summary}</p>
+					<dl class="facts">
+						{treatment.data.duration && <div><dt>Duration</dt><dd>{treatment.data.duration}</dd></div>}
+						{treatment.data.price != null && <div><dt>Price</dt><dd>{formatPrice(treatment.data.price)}</dd></div>}
+					</dl>
+					<a class="btn btn-lg" href={`/book?treatment=${encodeURIComponent(treatment.data.slug ?? treatment.data.id)}`}>
+						Book this treatment <Arrow />
+					</a>
+				</div>
+				{
+					src && (
+						<figure class="detail-photo">
+							<img src={src} alt={treatment.data.image?.alt ?? category?.alt ?? ""} width="512" height="492" />
+						</figure>
+					)
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="wrap detail-cols">
+			<div class="prose">
+				{treatment.data.intro && <p class="prose-lead">{treatment.data.intro}</p>}
+				{
+					treatment.data.content && treatment.data.content.length > 0 ? (
+						<PortableText value={treatment.data.content} />
+					) : (
+						<p>{treatment.data.summary}</p>
+					)
+				}
+			</div>
+			{
+				includes.length > 0 && (
+					<aside class="includes" aria-labelledby="includes-title">
+						<h2 id="includes-title">What is included</h2>
+						<ul class="ticks">
+							{includes.map((i) => <li>{i}</li>)}
+						</ul>
+					</aside>
+				)
+			}
+		</div>
+	</section>
+
+	{
+		related.length > 0 && (
+			<section class="band band-tint" aria-labelledby="related-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span>More {category?.label.toLowerCase() ?? "treatments"}</p>
+							<h2 id="related-title" class="display">You might also like.</h2>
+						</div>
+						<a class="link-arrow" href="/services">All treatments <Arrow /></a>
+					</div>
+					<ul class="menu-list">
+						{related.map((t) => (
+							<li>
+								<a class="menu-row" href={entryHref("/services", t.data)}>
+									<span class="menu-main">
+										<span class="menu-name">{t.data.title}</span>
+										<span class="menu-desc">{t.data.summary}</span>
+									</span>
+									<span class="menu-meta">
+										{t.data.duration && <span>{t.data.duration}</span>}
+										{t.data.price != null && <strong>{formatPrice(t.data.price)}</strong>}
+									</span>
+									<Arrow />
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand studio={studioResult.studio} />
+</Base>

@@ -1,0 +1,60 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PageHead from "../../components/PageHead.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { entryHref, formatPrice, getStudio, getTreatments, groupByCategory } from "../../lib/studio";
+
+const [treatmentsResult, studioResult] = await Promise.all([getTreatments(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(treatmentsResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const groups = groupByCategory(treatmentsResult.entries);
+---
+
+<Base title="Services" description="Facials, nails and hair at LUMIÈRE Beauty Studio, with durations and prices.">
+	<PageHead
+		id="services-title"
+		eyebrow="Our services"
+		title="Treatments for every day."
+		intro="Thoughtful treatments, a calm space and a more confident you. Prices are in US dollars and include a short consultation."
+	/>
+
+	{
+		groups.length === 0 ? (
+			<p class="empty-note">Our treatment list is being updated. Please call the studio to ask about availability.</p>
+		) : (
+			groups.map(({ category, items }) => (
+				<section class="svc-group" id={category.slug} aria-labelledby={`${category.slug}-title`}>
+					<div class="wrap svc-grid">
+						<div class="svc-intro">
+							<img src={category.photo} alt={category.alt} width="256" height="246" loading="lazy" />
+							<h2 id={`${category.slug}-title`} class="display">{category.label}</h2>
+							<p>{category.blurb}</p>
+						</div>
+						<ul class="menu-list">
+							{items.map((t) => (
+								<li>
+									<a class="menu-row" href={entryHref("/services", t.data)}>
+										<span class="menu-main">
+											<span class="menu-name" {...t.edit.title}>{t.data.title}</span>
+											<span class="menu-desc">{t.data.summary}</span>
+										</span>
+										<span class="menu-meta">
+											{t.data.duration && <span>{t.data.duration}</span>}
+											{t.data.price != null && <strong>{formatPrice(t.data.price)}</strong>}
+										</span>
+										<Arrow />
+									</a>
+								</li>
+							))}
+						</ul>
+					</div>
+				</section>
+			))
+		)
+	}
+
+	<CtaBand studio={studioResult.studio} />
+</Base>

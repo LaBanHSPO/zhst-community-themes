@@ -1,0 +1,99 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getStudio, getTeam, getValues, initials } from "../lib/studio";
+
+const [{ entry: page, cacheHint }, teamResult, valuesResult, studioResult, settings] = await Promise.all([
+	getEmDashEntry("pages", "about"),
+	getTeam(),
+	getValues(),
+	getStudio(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	if (cacheHint) Astro.cache.set(cacheHint);
+	Astro.cache.set(teamResult.cacheHint);
+	Astro.cache.set(valuesResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page
+	? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" })
+	: null;
+const team = teamResult.entries;
+const values = valuesResult.entries;
+const hasBody = Boolean(page?.data.content && page.data.content.length > 0);
+---
+
+<Base
+	title={seo?.title ?? "About"}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? page?.data.intro ?? "About LUMIÈRE Beauty Studio."}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<PageHead
+		id="about-title"
+		eyebrow={page?.data.eyebrow ?? "About"}
+		title={page?.data.title ?? "A calm place for everyday beauty."}
+		intro={page?.data.intro}
+		edit={page ? { ...page.edit.title } : {}}
+	/>
+
+	<section class="about-story">
+		<div class="wrap story-grid">
+			<figure class="story-photo">
+				<img src="/images/chair-towel.webp" alt="A cream armchair with brass trim and a rose towel beside a marble counter" width="810" height="646" loading="lazy" />
+			</figure>
+			<div class="prose">
+				{hasBody ? <PortableText value={page!.data.content} /> : <p>Our story is coming soon.</p>}
+			</div>
+		</div>
+	</section>
+
+	{
+		values.length > 0 && (
+			<section class="band band-tint" aria-labelledby="values-title">
+				<div class="wrap">
+					<p class="eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span>How we work</p>
+					<h2 id="values-title" class="display">What you can <em>expect.</em></h2>
+					<ul class="values">
+						{values.map((v) => (
+							<li>
+								<h3 {...v.edit.title}>{v.data.title}</h3>
+								{v.data.text && <p>{v.data.text}</p>}
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		team.length > 0 && (
+			<section class="band" aria-labelledby="team-title">
+				<div class="wrap">
+					<p class="eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span>The team</p>
+					<h2 id="team-title" class="display">The people <em>behind the chair.</em></h2>
+					<ul class="team">
+						{team.map((m) => (
+							<li class="member">
+								<span class="monogram" aria-hidden="true">{initials(m.data.title)}</span>
+								<h3 {...m.edit.title}>{m.data.title}</h3>
+								<p class="member-role">{m.data.role}</p>
+								{m.data.summary && <p class="member-bio">{m.data.summary}</p>}
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand studio={studioResult.studio} />
+</Base>
