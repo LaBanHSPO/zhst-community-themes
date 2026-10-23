@@ -1,0 +1,114 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Hero from "../../components/Hero.astro";
+import Arrow from "../../components/Arrow.astro";
+import { getSite, photoAlt, photoSrc, slugify } from "../../lib/fieldtested";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.redirect("/404");
+const { entry, cacheHint } = await getEmDashEntry("guides", slug);
+if (!entry) return Astro.redirect("/404");
+const [siteResult, settings] = await Promise.all([getSite(), getSiteSettings()]);
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(entry, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+
+const g = entry.data;
+const { site } = siteResult;
+const sections = g.sections ?? [];
+const picks = g.picks ?? [];
+const faqs = g.faqs ?? [];
+const toc = [
+	{ id: "short-answer", label: "The short answer" },
+	...sections.map((s) => ({ id: slugify(s.heading), label: s.heading })),
+	...(picks.length ? [{ id: "top-picks", label: "Our top picks" }] : []),
+	...(faqs.length ? [{ id: "faqs", label: "FAQs" }] : []),
+];
+const isExternal = (u: string) => /^https?:\/\//i.test(u);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? g.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? photoSrc(g.image, g.photo)}
+	content={{ collection: "guides", id: g.id, slug }}
+>
+	<Hero image={g.hero_photo ?? "/images/hero-guide.webp"} eyebrow="Buying guide" title={g.title} lede={g.hero_lede}>
+		{picks.length > 0 && <a class="btn" href="#top-picks">{g.jump_label ?? "Jump to our top picks"} <Arrow /></a>}
+	</Hero>
+
+	<div class="wrap guide-layout">
+		<div class="guide-main">
+			<section id="short-answer" aria-labelledby="sa-h">
+				<h2 id="sa-h">The short answer</h2>
+				<p>{g.short_answer}</p>
+			</section>
+			{
+				sections.map((s) => (
+					<section class="rule-top" id={slugify(s.heading)} aria-labelledby={`${slugify(s.heading)}-h`}>
+						<h2 id={`${slugify(s.heading)}-h`}>{s.heading}</h2>
+						<p>{s.body}</p>
+					</section>
+				))
+			}
+			{
+				picks.length > 0 && (
+					<section class="rule-top" id="top-picks" aria-labelledby="picks-h">
+						<div class="sec-head">
+							<h2 id="picks-h">{g.picks_title ?? "Our top picks"}</h2>
+							<span class="rule" aria-hidden="true"></span>
+							<a class="text-link" href="/reviews">See the full review catalog <Arrow /></a>
+						</div>
+						<p class="hint">{site.affiliate_line} Retailer links are affiliate links.</p>
+						<div class="pick-grid">
+							{picks.map((p) => {
+								const url = p.url ?? "";
+								const ext = isExternal(url);
+								return (
+									<article class="pick">
+										<a href={url || "/reviews"} rel={ext ? "sponsored noopener" : undefined} target={ext ? "_blank" : undefined}>
+											{(p.image?.src ?? p.photo) && <img src={p.image?.src ?? p.photo ?? ""} alt={photoAlt(p.image, p.alt, p.name)} width="233" height="115" loading="lazy" />}
+											<div class="pick-body">
+												{p.label && <p class="kicker">{p.label}</p>}
+												<h3>{p.name}</h3>
+												<p>{p.blurb}</p>
+												<span class="go" aria-hidden="true"><Arrow /></span>
+												{ext && <span class="sr-only"> (affiliate link, opens in a new tab)</span>}
+											</div>
+										</a>
+									</article>
+								);
+							})}
+						</div>
+					</section>
+				)
+			}
+			{
+				faqs.length > 0 && (
+					<section class="rule-top" id="faqs" aria-labelledby="faq-h">
+						<h2 id="faq-h">FAQs</h2>
+						<div class="faq">
+							{faqs.map((f) => (
+								<details>
+									<summary>{f.question}</summary>
+									<p>{f.answer}</p>
+								</details>
+							))}
+						</div>
+					</section>
+				)
+			}
+			<p class="disclosure">{site.affiliate_line} <a href="/affiliate-disclosure">Affiliate disclosure</a></p>
+		</div>
+		<nav class="toc" aria-label="On this page">
+			<h2>On this page</h2>
+			<ul role="list">
+				{toc.map((t) => <li><a href={`#${t.id}`}>{t.label}<Arrow /></a></li>)}
+			</ul>
+		</nav>
+	</div>
+</Base>

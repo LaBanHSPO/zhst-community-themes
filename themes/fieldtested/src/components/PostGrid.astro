@@ -1,0 +1,30 @@
+---
+import Arrow from "./Arrow.astro";
+import { photoAlt, photoSrc, postUrl } from "../lib/fieldtested";
+import type { Post } from "../../emdash-env";
+interface Props { posts: Post[]; empty: string }
+const { posts, empty } = Astro.props;
+---
+{
+	posts.length === 0 ? (
+		<p class="empty">{empty}</p>
+	) : (
+		<div class="post-grid">
+			{posts.map((p) => {
+				const src = photoSrc(p.featured_image, p.photo);
+				return (
+					<article class="rcard">
+						<a class="rcard-link" href={postUrl(p)}>
+							{src && <img src={src} alt={photoAlt(p.featured_image, p.photo_alt, p.title)} width="322" height="139" loading="lazy" />}
+							<div class="rcard-body">
+								<h2>{p.title}</h2>
+								<p class="rcard-sum">{p.excerpt}</p>
+								<span class="go" aria-hidden="true"><Arrow /></span>
+							</div>
+						</a>
+					</article>
+				);
+			})}
+		</div>
+	)
+}

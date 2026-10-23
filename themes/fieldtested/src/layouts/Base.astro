@@ -1,0 +1,146 @@
+---
+import { getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getSite } from "../lib/fieldtested";
+import Logo from "../components/Logo.astro";
+import "../styles/theme.css";
+
+interface Props {
+	title: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	content?: { collection: string; id: string; slug?: string | null };
+}
+
+const { title, pageTitle, description, image, canonical, content } = Astro.props;
+const [settingsResult, menuResult, siteResult] = await Promise.all([
+	getSiteSettingsWithCacheHint(),
+	getMenuWithCacheHint("primary"),
+	getSite(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(settingsResult.cacheHint);
+	Astro.cache.set(menuResult.cacheHint);
+	Astro.cache.set(siteResult.cacheHint);
+}
+
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(settingsResult.data);
+const { site } = siteResult;
+const titleIncludesSiteName =
+	title === siteTitle || title.endsWith(` | ${siteTitle}`) || title.endsWith(` — ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
+const pageDescription = description ?? siteTagline;
+const navItems = menuResult.data?.items ?? [];
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const clean = (url: string) => url.replace(/\/$/, "") || "/";
+const segs = (p: string) => p.split("/").filter(Boolean);
+// Exact match wins; otherwise a detail page highlights the nav link that lives
+// in the same section (e.g. any /reviews/<slug> highlights "Review article").
+const currentUrl =
+	navItems.find((i) => clean(i.url) === path)?.url ??
+	(() => {
+		const first = segs(path)[0];
+		if (!first) return undefined;
+		const same = navItems.filter((i) => segs(clean(i.url))[0] === first);
+		return (segs(path).length > 1 ? same.find((i) => segs(clean(i.url)).length > 1) : undefined)?.url ?? same.find((i) => segs(clean(i.url)).length === 1)?.url;
+	})();
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description: pageDescription,
+	canonical,
+	image,
+	content,
+	siteName: siteTitle,
+});
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{fullTitle}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600&display=swap"
+			rel="stylesheet"
+		/>
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<header class="site-head">
+			<div class="head-inner">
+				<a class="wordmark" href="/" aria-label={`${siteTitle} — homepage`}>
+					{siteLogo ? <img src={siteLogo.url} alt={siteLogo.alt || siteTitle} /> : <><Logo /><span>{siteTitle}</span></>}
+				</a>
+				<nav class="nav" aria-label="Primary">
+					{
+						navItems.map((item) => (
+							<a
+								href={item.url}
+								target={item.target}
+								rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+								aria-current={item.url === currentUrl ? "page" : undefined}
+							>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+				<div class="head-tools">
+					<a class="search-link" href="/reviews#catalog-search" aria-label="Search reviews">
+						<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="m13 13 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+					</a>
+					<details class="mobile-nav">
+						<summary>
+							<svg width="18" height="12" viewBox="0 0 18 12" aria-hidden="true" focusable="false"><path d="M0 1h18M0 6h18M0 11h18" stroke="currentColor" stroke-width="1.8" /></svg>
+							Menu
+						</summary>
+						<nav class="mobile-panel" aria-label="Primary (mobile)">
+							{
+								navItems.map((item) => (
+									<a href={item.url} aria-current={item.url === currentUrl ? "page" : undefined}>{item.label}</a>
+								))
+							}
+							<a href="/guides">All buying guides</a>
+							<a href="/posts">Field notes</a>
+						</nav>
+					</details>
+				</div>
+			</div>
+		</header>
+
+		<main id="main">
+			<slot />
+		</main>
+
+		<footer class="site-foot">
+			<div class="foot-inner">
+				<a class="wordmark" href="/" aria-label={`${siteTitle} — homepage`}><Logo /><span>{siteTitle}</span></a>
+				<nav class="foot-nav" aria-label="Footer">
+					{navItems.map((item) => <a href={item.url}>{item.label}</a>)}
+				</nav>
+				<p class="foot-note">
+					{site.footer_disclosure}
+					<a href="/affiliate-disclosure">Affiliate disclosure</a>
+				</p>
+			</div>
+		</footer>
+
+		<EmDashBodyEnd page={pageCtx} />
+	</body>
+</html>
