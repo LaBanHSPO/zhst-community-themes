@@ -1,0 +1,139 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import Heart from "../../components/Heart.astro";
+import Icon from "../../components/Icon.astro";
+import Sparks from "../../components/Sparks.astro";
+import { bookingUrl, getGallery, getHighlights, getRooms, photoSrc, roomUrl } from "../../lib/pawhouse";
+
+const [rooms, info, gallery] = await Promise.all([getRooms(), getHighlights("hotel"), getGallery("hotel")]);
+if (Astro.cache?.enabled) {
+	for (const hint of [rooms.cacheHint, info.cacheHint, gallery.cacheHint]) Astro.cache.set(hint);
+}
+---
+
+<Base title="Pet hotel" description="A home away from home. Spacious suites, plenty of play time and caring companionship while you’re away.">
+	<section class="hero hero-hotel" aria-labelledby="hotel-title">
+		<div class="hero-media">
+			<img src="/images/hero-hotel.webp" alt="A curly cavoodle lying on a fluffy bed with a teddy bear beside a yellow pet house" width="982" height="334" fetchpriority="high" />
+		</div>
+		<div class="hero-inner wrap">
+			<div class="hero-copy">
+				<Sparks class="hero-sparks" />
+				<h1 id="hotel-title" class="display display-md">A home away<br /> from home.<Heart /></h1>
+				<p class="hero-lede">Spacious suites, plenty of play time and caring companionship while you’re away.</p>
+				<a class="btn btn-md" href={bookingUrl({ book: "hotel" })}>Request a stay <Icon name="calendar" /> <Arrow /></a>
+			</div>
+		</div>
+	</section>
+
+	<section class="wrap rooms-band" aria-labelledby="rooms-title">
+		<div class="rooms-head">
+			<h2 id="rooms-title" class="rooms-title"><Icon name="house" />Our pet hotel rooms</h2>
+			<p>Comfort for every kind of stay.</p>
+			<a class="pill pill-sm" href="#compare">Compare rooms <Arrow /></a>
+		</div>
+		<div class="rooms-grid">
+			{
+				rooms.entries.map((entry) => {
+					const r = entry.data;
+					const src = photoSrc(r.image, r.photo);
+					return (
+						<article class="room-card">
+							{src && (
+								<div class="room-media">
+									<img src={src} alt={r.image?.alt || r.alt || r.title} width="273" height="140" loading="lazy" />
+								</div>
+							)}
+							<div class="room-body">
+								<h3>{r.title}</h3>
+								{r.summary && <p>{r.summary}</p>}
+								<a class="pill pill-sm" href={roomUrl(r)}>
+									View details<span class="sr-only">: {r.title}</span> <Arrow />
+								</a>
+							</div>
+						</article>
+					);
+				})
+			}
+		</div>
+	</section>
+
+	{
+		info.entries.length > 0 && (
+			<ul class="wrap info-row" aria-label="Staying with us">
+				{info.entries.map((h) => (
+					<li>
+						<span class={`info-icon tone-${h.data.tone ?? "yellow"}`}>
+							<Icon name={h.data.icon ?? "paw"} />
+						</span>
+						<div>
+							<h2>{h.data.title}</h2>
+							{h.data.text && <p>{h.data.text}</p>}
+						</div>
+					</li>
+				))}
+			</ul>
+		)
+	}
+
+	<section id="inside" class="inside-band" aria-labelledby="inside-title">
+		<div class="inside-copy">
+			<h2 id="inside-title" class="section-title">Take a look<br /> inside our space.<Heart /></h2>
+			<p>Bright, calm and pet-friendly, designed for comfort, play and peace of mind.</p>
+			<a class="pill pill-sm" href="/our-space">Explore our space <Arrow /></a>
+		</div>
+		<ul class="inside-photos">
+			{
+				gallery.entries.map((g) => (
+					<li>
+						<img src={photoSrc(g.data.image, g.data.photo)} alt={g.data.image?.alt || g.data.title} width="303" height="174" loading="lazy" />
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	{
+		rooms.entries.length > 0 && (
+			<section id="compare" class="wrap compare" aria-labelledby="compare-title">
+				<h2 id="compare-title" class="section-title">Compare rooms</h2>
+				<div class="compare-scroll">
+					<table class="compare-table">
+						<thead>
+							<tr>
+								<th scope="col"><span class="sr-only">Room</span></th>
+								<th scope="col">Best for</th>
+								<th scope="col">Space</th>
+								<th scope="col">What’s included</th>
+								<th scope="col"><span class="sr-only">Actions</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							{rooms.entries.map((entry) => {
+								const r = entry.data;
+								return (
+									<tr>
+										<th scope="row"><a href={roomUrl(r)}>{r.title}</a></th>
+										<td data-label="Best for">{r.best_for}</td>
+										<td data-label="Space">{r.space}</td>
+										<td data-label="What’s included">
+											<ul class="checks checks-compact">
+												{(r.includes ?? []).map((i) => <li>{i.item}</li>)}
+											</ul>
+										</td>
+										<td>
+											<a class="pill pill-sm pill-yellow" href={bookingUrl({ book: "hotel", room: r.slug ?? r.id })}>
+												Request<span class="sr-only"> the {r.title}</span> <Arrow />
+											</a>
+										</td>
+									</tr>
+								);
+							})}
+						</tbody>
+					</table>
+				</div>
+			</section>
+		)
+	}
+</Base>

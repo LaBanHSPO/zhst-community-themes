@@ -1,0 +1,270 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Heart from "../components/Heart.astro";
+import Icon from "../components/Icon.astro";
+import PreviewCard from "../components/PreviewCard.astro";
+import Sparks from "../components/Sparks.astro";
+import { getBusiness, getGrooming, getHighlights, getPreviews, getRooms, isPet } from "../lib/pawhouse";
+
+const [grooming, rooms, badges, cards, businessResult] = await Promise.all([
+	getGrooming(),
+	getRooms(),
+	getHighlights("booking"),
+	getPreviews("booking"),
+	getBusiness(),
+]);
+if (Astro.cache?.enabled) {
+	for (const hint of [grooming.cacheHint, rooms.cacheHint, badges.cacheHint, cards.cacheHint, businessResult.cacheHint]) {
+		Astro.cache.set(hint);
+	}
+}
+const { business } = businessResult;
+
+// Links from the grooming menu and hotel pages preselect: ?book=grooming|hotel&pet=dog|cat&service=<slug>&room=<slug>
+const q = Astro.url.searchParams;
+const petParam = q.get("pet");
+const pet = isPet(petParam) ? petParam : "dog";
+const serviceParam = q.get("service") ?? "";
+const roomParam = q.get("room") ?? "";
+const book = q.get("book") === "hotel" || (roomParam && q.get("book") !== "grooming") ? "hotel" : "grooming";
+
+// Dog and cat services share names, so the select lists each name once.
+const serviceNames = [...new Set(grooming.entries.map((e) => e.data.title))];
+const pickedService = grooming.entries.find((e) => (e.data.slug ?? e.data.id) === serviceParam)?.data.title;
+const selectedService = pickedService ?? (serviceNames.includes("Full groom") ? "Full groom" : serviceNames[0]);
+const roomList = rooms.entries.map((e) => e.data);
+const selectedRoom = roomList.find((r) => (r.slug ?? r.id) === roomParam)?.title ?? roomList[0]?.title;
+
+const sizes = ["Small", "Medium", "Large"];
+const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Saigon" }).format(new Date());
+const noJs = business.email ? `mailto:${business.email}` : undefined;
+---
+
+<Base title="Request booking" description="Tell us a bit about your pet and what they need, and we’ll be in touch to confirm your booking.">
+	<div class="booking-page">
+		<div class="booking-grid">
+			<div class="booking-side">
+				<section class="booking-hero" aria-labelledby="booking-title">
+					<div class="hero-media">
+						<img src="/images/hero-booking.webp" alt="A smiling golden retriever resting its paws on a knitted blanket" width="395" height="414" fetchpriority="high" />
+					</div>
+					<div class="booking-hero-copy">
+						<Sparks class="hero-sparks" />
+						<h1 id="booking-title" class="display">Request<br /> a booking.<Heart /></h1>
+						<p class="hero-lede">Tell us a bit about your pet and what they need, and we’ll be in touch to confirm your booking.</p>
+						{
+							badges.entries.length > 0 && (
+								<ul class="badges">
+									{badges.entries.map((b) => (
+										<li>
+											<span class={`info-icon tone-${b.data.tone ?? "yellow"}`}>
+												<Icon name={b.data.icon ?? "paw"} />
+											</span>
+											<span>
+												{b.data.title}
+												{b.data.text && <><br />{b.data.text}</>}
+											</span>
+										</li>
+									))}
+								</ul>
+							)
+						}
+					</div>
+				</section>
+				{
+					cards.entries.length > 0 && (
+						<div class="booking-cards">
+							{cards.entries.map((c) => <PreviewCard card={c.data} reverse size="md" />)}
+						</div>
+					)
+				}
+			</div>
+
+			<form
+				class="booking-form"
+				id="booking-form"
+				aria-labelledby="form-title"
+				data-email={business.email}
+				action={noJs ? `${noJs}?subject=${encodeURIComponent("Booking request")}` : undefined}
+				method="post"
+				enctype="text/plain"
+			>
+				<h2 id="form-title" class="form-title">Request a booking <Icon name="calendar" /></h2>
+
+				<div class="form-row form-row-pets">
+					<fieldset class="chips">
+						<legend>Pet type</legend>
+						<div class="chip-row">
+						<label class="chip">
+							<input type="radio" name="pet" value="Dog" checked={pet === "dog"} required />
+							<Icon name="dog-side" /> Dog
+						</label>
+						<label class="chip">
+							<input type="radio" name="pet" value="Cat" checked={pet === "cat"} />
+							<Icon name="cat" /> Cat
+						</label>
+						</div>
+					</fieldset>
+					<fieldset class="chips">
+						<legend>Pet size</legend>
+						<div class="chip-row">
+						{
+							sizes.map((s) => (
+								<label class="chip">
+									<input type="radio" name="size" value={s} checked={s === "Medium"} required />
+									<Icon name="dog-side" /> {s}
+								</label>
+							))
+						}
+						</div>
+					</fieldset>
+				</div>
+
+				<div class="field">
+					<label for="b-pet-name">Pet’s name</label>
+					<input id="b-pet-name" name="pet_name" type="text" placeholder="e.g. Buddy" maxlength="60" required />
+				</div>
+
+				<div class="form-row">
+					<fieldset class="chips">
+						<legend>I’d like to book</legend>
+						<div class="chip-row">
+						<label class="chip">
+							<input type="radio" name="book" value="Grooming" checked={book === "grooming"} required data-book="grooming" />
+							<Icon name="scissors" /> Grooming
+						</label>
+						<label class="chip">
+							<input type="radio" name="book" value="Pet hotel" checked={book === "hotel"} data-book="hotel" />
+							<Icon name="house" /> Pet hotel
+						</label>
+						</div>
+					</fieldset>
+					<div class="field only-grooming">
+						<label for="b-service">Service type (grooming)</label>
+						<div class="select">
+							<select id="b-service" name="service">
+								{serviceNames.map((n) => <option selected={n === selectedService}>{n}</option>)}
+							</select>
+							<Icon name="chevron" />
+						</div>
+					</div>
+					<div class="field only-hotel">
+						<label for="b-room">Room type (pet hotel)</label>
+						<div class="select">
+							<select id="b-room" name="room">
+								{roomList.map((r) => <option selected={r.title === selectedRoom}>{r.title}</option>)}
+							</select>
+							<Icon name="chevron" />
+						</div>
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="field">
+						<label for="b-date"><span class="only-grooming">Preferred date</span><span class="only-hotel">Check-in date</span></label>
+						<input id="b-date" name="date" type="date" min={today} required />
+					</div>
+					<div class="field">
+						<label for="b-date-2"><span class="only-grooming">Alternative date (optional)</span><span class="only-hotel">Check-out date</span></label>
+						<input id="b-date-2" name="date_2" type="date" min={today} />
+					</div>
+				</div>
+
+				<fieldset class="details">
+					<legend>Your details</legend>
+					<div class="form-row">
+						<div class="field">
+							<label for="b-name">Full name</label>
+							<input id="b-name" name="name" type="text" autocomplete="name" placeholder="e.g. Sarah Lee" required />
+						</div>
+						<div class="field">
+							<label for="b-email">Email address</label>
+							<input id="b-email" name="email" type="email" autocomplete="email" placeholder="e.g. sarah@email.com" required />
+						</div>
+						<div class="field">
+							<label for="b-phone">Phone number</label>
+							<input id="b-phone" name="phone" type="tel" autocomplete="tel" placeholder="e.g. 0412 345 678" required />
+						</div>
+						<div class="field">
+							<label for="b-suburb">Suburb</label>
+							<input id="b-suburb" name="suburb" type="text" autocomplete="address-level2" placeholder="e.g. Richmond" />
+						</div>
+					</div>
+				</fieldset>
+
+				<div class="field">
+					<label for="b-notes">Care notes (optional)</label>
+					<textarea id="b-notes" name="notes" rows="2" maxlength="1500" placeholder="Let us know anything we should know, such as temperament, medical needs or special requests."></textarea>
+				</div>
+
+				<button class="btn btn-block" type="submit"><Icon name="calendar" /> Submit request <Arrow /></button>
+				<p class="form-note">Submitting opens your email app with the request ready to send to our team. We’ll be in touch to confirm your booking.</p>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					{
+						business.email ? (
+							<noscript>
+								Without JavaScript, send your booking request by email to <a href={`mailto:${business.email}`}>{business.email}</a>.
+							</noscript>
+						) : (
+							business.phone && <>Online requests are not available right now. Please call {business.phone}.</>
+						)
+					}
+				</p>
+			</form>
+		</div>
+	</div>
+</Base>
+
+<script>
+	// Booking request: compose an email to the business. Nothing is sent by the site itself.
+	const form = document.querySelector<HTMLFormElement>("#booking-form");
+	const status = form?.querySelector<HTMLElement>("[data-status]");
+	const checkout = form?.querySelector<HTMLInputElement>("#b-date-2");
+	const syncMode = () => {
+		const hotel = form?.querySelector<HTMLInputElement>('input[name="book"]:checked')?.dataset.book === "hotel";
+		if (checkout) checkout.required = hotel;
+	};
+	form?.querySelectorAll<HTMLInputElement>('input[name="book"]').forEach((r) => r.addEventListener("change", syncMode));
+	syncMode();
+
+	form?.addEventListener("submit", (event) => {
+		event.preventDefault();
+		if (!status || !form.reportValidity()) return;
+		const email = form.dataset.email ?? "";
+		if (!email) {
+			status.textContent = "Online requests are not available right now. Please call us instead.";
+			return;
+		}
+		const data = new FormData(form);
+		const get = (k: string) => String(data.get(k) ?? "").trim();
+		const hotel = get("book") === "Pet hotel";
+		const what = hotel ? `Pet hotel — ${get("room")}` : `Grooming — ${get("service")}`;
+		const lines = [
+			"Hello Pawhouse,",
+			"",
+			"I would like to request a booking. Please confirm availability.",
+			"",
+			`Pet: ${get("pet_name")} (${get("pet")}, ${get("size")})`,
+			`Booking: ${what}`,
+			hotel ? `Check-in: ${get("date")}` : `Preferred date: ${get("date")}`,
+			hotel ? `Check-out: ${get("date_2")}` : `Alternative date: ${get("date_2") || "None"}`,
+			"",
+			`Name: ${get("name")}`,
+			`Email: ${get("email")}`,
+			`Phone: ${get("phone")}`,
+			`Suburb: ${get("suburb") || "Not given"}`,
+			"",
+			`Care notes: ${get("notes") || "None"}`,
+			"",
+		];
+		const subject = `Booking request: ${what} for ${get("pet_name")}`;
+		window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+		status.textContent =
+			"Your email app should open with this request ready to send. Nothing is sent until you send that email, and your booking is pending until we confirm it. If nothing opened, write to ";
+		const a = document.createElement("a");
+		a.href = `mailto:${email}`;
+		a.textContent = email;
+		status.append(a, ".");
+	});
+</script>

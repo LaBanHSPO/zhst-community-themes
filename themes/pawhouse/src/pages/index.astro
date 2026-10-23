@@ -1,0 +1,68 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Heart from "../components/Heart.astro";
+import Icon from "../components/Icon.astro";
+import PreviewCard from "../components/PreviewCard.astro";
+import Sparks from "../components/Sparks.astro";
+import { bookingUrl, getGallery, getPreviews, photoSrc } from "../lib/pawhouse";
+
+const [previews, gallery] = await Promise.all([getPreviews("home"), getGallery("home")]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(previews.cacheHint);
+	Astro.cache.set(gallery.cacheHint);
+}
+const [left, right] = gallery.entries.map((e) => e.data);
+---
+
+<Base title="Pawhouse — Grooming & stays" description="Expert grooming, comfortable stays and a whole lot of love — because happy pets make brighter days.">
+	<section class="hero hero-home" aria-labelledby="home-title">
+		<div class="hero-media">
+			<img src="/images/hero-home.webp" alt="A happy golden retriever lying on a cosy bed, tongue out" width="932" height="430" fetchpriority="high" />
+			<p class="hand-note" aria-hidden="true">Clean<br />pets<br />happier<br />days <Icon name="heart-line" /></p>
+		</div>
+		<div class="hero-inner wrap">
+			<div class="hero-copy">
+				<Sparks class="hero-sparks" />
+				<h1 id="home-title" class="display">Good days<br /> for good pets.<Heart /></h1>
+				<p class="hero-lede">Expert grooming, comfortable stays and a whole lot of love — because happy pets make brighter days.</p>
+				<a class="btn btn-lg" href={bookingUrl()}>Request booking <Icon name="calendar" /> <Arrow /></a>
+			</div>
+		</div>
+	</section>
+
+	{
+		previews.entries.length > 0 && (
+			<section class="wrap home-cards" aria-label="Grooming and stays">
+				{previews.entries.map((p) => <PreviewCard card={p.data} />)}
+			</section>
+		)
+	}
+
+	<section class="space-band" aria-labelledby="space-band-title">
+		{
+			left && (
+				<div class="space-band-photo space-band-left">
+					<img src={photoSrc(left.image, left.photo)} alt={left.image?.alt || left.title} width="565" height="135" loading="lazy" />
+				</div>
+			)
+		}
+		<div class="space-band-copy">
+			<div>
+				<p class="eyebrow">Our space</p>
+				<h2 id="space-band-title" class="section-title">A place made for<br /> the ones we love.<Heart /></h2>
+			</div>
+			<div class="space-band-text">
+				<p>Bright, calm and pet-friendly from the ground up. Take a look inside our space, designed for comfort, play and peace of mind.</p>
+				<a class="pill pill-yellow pill-sm" href="/our-space">Explore our space <Arrow /></a>
+			</div>
+		</div>
+		{
+			right && (
+				<div class="space-band-photo space-band-right">
+					<img src={photoSrc(right.image, right.photo)} alt={right.image?.alt || right.title} width="352" height="135" loading="lazy" />
+				</div>
+			)
+		}
+	</section>
+</Base>

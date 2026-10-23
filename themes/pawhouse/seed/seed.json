@@ -1,0 +1,1382 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Pawhouse",
+		"description": "A pet grooming and pet hotel theme: grooming menu with size-based prices, hotel rooms, our space with team and care FAQ, and a booking request form",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "Pawhouse",
+		"tagline": "Grooming & stays"
+	},
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "grooming",
+			"label": "Grooming services",
+			"labelSingular": "Grooming service",
+			"supports": [
+				"revisions",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Service name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "pet",
+					"label": "Pet",
+					"type": "select",
+					"defaultValue": "dog",
+					"validation": {
+						"options": [
+							"dog",
+							"cat"
+						]
+					}
+				},
+				{
+					"slug": "summary",
+					"label": "Description",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "icon",
+					"label": "Title icon",
+					"type": "select",
+					"defaultValue": "sparkle",
+					"validation": {
+						"options": [
+							"paw",
+							"scissors",
+							"house",
+							"calendar",
+							"heart",
+							"heart-line",
+							"sparkle",
+							"leaf",
+							"sun",
+							"bowl",
+							"shield",
+							"ball",
+							"clock",
+							"check",
+							"doc",
+							"dog",
+							"cat"
+						]
+					}
+				},
+				{
+					"slug": "tint",
+					"label": "Card colour",
+					"type": "select",
+					"defaultValue": "yellow",
+					"validation": {
+						"options": [
+							"yellow",
+							"pink",
+							"cream"
+						]
+					}
+				},
+				{
+					"slug": "prices",
+					"label": "Prices by size",
+					"type": "repeater",
+					"validation": {
+						"maxItems": 6,
+						"subFields": [
+							{
+								"slug": "size",
+								"label": "Size",
+								"type": "string",
+								"required": true
+							},
+							{
+								"slug": "price",
+								"label": "Price (whole dollars)",
+								"type": "integer",
+								"required": true
+							}
+						]
+					}
+				},
+				{
+					"slug": "includes",
+					"label": "What's included",
+					"type": "repeater",
+					"validation": {
+						"maxItems": 8,
+						"subFields": [
+							{
+								"slug": "item",
+								"label": "Item",
+								"type": "string",
+								"required": true
+							}
+						]
+					}
+				},
+				{
+					"slug": "duration",
+					"label": "Duration",
+					"type": "string"
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Photo: bundled path",
+					"type": "string"
+				},
+				{
+					"slug": "alt",
+					"label": "Photo description (alt text)",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "rooms",
+			"label": "Hotel rooms",
+			"labelSingular": "Hotel room",
+			"urlPattern": "/hotel/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Room name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "summary",
+					"label": "Short description (cards)",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "lede",
+					"label": "Introduction (room page)",
+					"type": "text"
+				},
+				{
+					"slug": "best_for",
+					"label": "Best for",
+					"type": "string"
+				},
+				{
+					"slug": "space",
+					"label": "Space",
+					"type": "string"
+				},
+				{
+					"slug": "includes",
+					"label": "What's included",
+					"type": "repeater",
+					"validation": {
+						"maxItems": 10,
+						"subFields": [
+							{
+								"slug": "item",
+								"label": "Item",
+								"type": "string",
+								"required": true
+							}
+						]
+					}
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Photo: bundled path",
+					"type": "string"
+				},
+				{
+					"slug": "alt",
+					"label": "Photo description (alt text)",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "previews",
+			"label": "Preview cards",
+			"labelSingular": "Preview card",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "text",
+					"label": "Text",
+					"type": "text"
+				},
+				{
+					"slug": "icon",
+					"label": "Icon",
+					"type": "select",
+					"defaultValue": "paw",
+					"validation": {
+						"options": [
+							"paw",
+							"scissors",
+							"house",
+							"calendar",
+							"heart",
+							"heart-line",
+							"sparkle",
+							"leaf",
+							"sun",
+							"bowl",
+							"shield",
+							"ball",
+							"clock",
+							"check",
+							"doc",
+							"dog",
+							"cat"
+						]
+					}
+				},
+				{
+					"slug": "tint",
+					"label": "Card colour",
+					"type": "select",
+					"defaultValue": "yellow",
+					"validation": {
+						"options": [
+							"yellow",
+							"pink",
+							"cream"
+						]
+					}
+				},
+				{
+					"slug": "link",
+					"label": "Link",
+					"type": "string"
+				},
+				{
+					"slug": "link_label",
+					"label": "Link label",
+					"type": "string"
+				},
+				{
+					"slug": "placement",
+					"label": "Placement (home, booking or space)",
+					"type": "string",
+					"required": true,
+					"indexed": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Photo: bundled path",
+					"type": "string"
+				},
+				{
+					"slug": "alt",
+					"label": "Photo description (alt text)",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "highlights",
+			"label": "Highlights",
+			"labelSingular": "Highlight",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "text",
+					"label": "Text",
+					"type": "text"
+				},
+				{
+					"slug": "icon",
+					"label": "Icon",
+					"type": "select",
+					"defaultValue": "paw",
+					"validation": {
+						"options": [
+							"paw",
+							"scissors",
+							"house",
+							"calendar",
+							"heart",
+							"heart-line",
+							"sparkle",
+							"leaf",
+							"sun",
+							"bowl",
+							"shield",
+							"ball",
+							"clock",
+							"check",
+							"doc",
+							"dog",
+							"cat"
+						]
+					}
+				},
+				{
+					"slug": "tone",
+					"label": "Icon circle colour",
+					"type": "select",
+					"defaultValue": "yellow",
+					"validation": {
+						"options": [
+							"yellow",
+							"pink",
+							"blue",
+							"none"
+						]
+					}
+				},
+				{
+					"slug": "placement",
+					"label": "Placement (grooming, hotel or booking)",
+					"type": "string",
+					"required": true,
+					"indexed": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "gallery",
+			"label": "Space photos",
+			"labelSingular": "Space photo",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Description (alt text)",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "placement",
+					"label": "Placement (home or hotel)",
+					"type": "string",
+					"required": true,
+					"indexed": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Photo: bundled path",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "team",
+			"label": "Team",
+			"labelSingular": "Team member",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "note",
+					"label": "Short note",
+					"type": "string"
+				},
+				{
+					"slug": "alt",
+					"label": "Photo description",
+					"type": "string"
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Photo: bundled path",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "faqs",
+			"label": "Care requirements",
+			"labelSingular": "Question",
+			"supports": [
+				"revisions",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Question",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "answer",
+					"label": "Answer",
+					"type": "text",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "business",
+			"label": "Business",
+			"labelSingular": "Business",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Business name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "email",
+					"label": "Booking request email",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "phone",
+					"label": "Phone",
+					"type": "string"
+				},
+				{
+					"slug": "address",
+					"label": "Address",
+					"type": "string"
+				},
+				{
+					"slug": "hours",
+					"label": "Opening hours",
+					"type": "string"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Homepage",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "Grooming menu",
+					"url": "/grooming"
+				},
+				{
+					"type": "custom",
+					"label": "Pet hotel",
+					"url": "/hotel"
+				},
+				{
+					"type": "custom",
+					"label": "Our space",
+					"url": "/our-space"
+				},
+				{
+					"type": "custom",
+					"label": "Request booking",
+					"url": "/booking"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About Pawhouse",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b1",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Pawhouse is a small grooming studio and pet hotel for dogs and cats. We groom by appointment and look after pets in bright, calm suites while their people are away.",
+									"_key": "b1s"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Every booking starts as a request. We check availability, ask about your pet’s needs and confirm with you before the visit.",
+									"_key": "b2s"
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"grooming": [
+			{
+				"id": "bath-brush",
+				"slug": "bath-brush",
+				"status": "published",
+				"data": {
+					"title": "Bath & brush",
+					"pet": "dog",
+					"icon": "sparkle",
+					"tint": "yellow",
+					"summary": "A refreshing clean, gentle brush and a tidy finish. Perfect for keeping your pet fresh between grooms.",
+					"prices": [
+						{
+							"size": "Small (up to 10 kg)",
+							"price": 50
+						},
+						{
+							"size": "Medium (10–25 kg)",
+							"price": 65
+						},
+						{
+							"size": "Large (25+ kg)",
+							"price": 80
+						}
+					],
+					"includes": [
+						{
+							"item": "Warm bath with premium products"
+						},
+						{
+							"item": "Blow dry and full brush out"
+						},
+						{
+							"item": "Ear clean and light trim (feet, face, sanitary)"
+						}
+					],
+					"duration": "Approx. 1–1.5 hours",
+					"position": 10,
+					"photo": "/images/groom-bath.webp",
+					"alt": "A wet spaniel puppy in the bath with a soapy head"
+				}
+			},
+			{
+				"id": "full-groom",
+				"slug": "full-groom",
+				"status": "published",
+				"data": {
+					"title": "Full groom",
+					"pet": "dog",
+					"icon": "scissors",
+					"tint": "pink",
+					"summary": "A complete head-to-tail makeover. Includes bath, brush, haircut and finishing touches for a clean, stylish look.",
+					"prices": [
+						{
+							"size": "Small (up to 10 kg)",
+							"price": 75
+						},
+						{
+							"size": "Medium (10–25 kg)",
+							"price": 95
+						},
+						{
+							"size": "Large (25+ kg)",
+							"price": 120
+						}
+					],
+					"includes": [
+						{
+							"item": "Everything in bath & brush"
+						},
+						{
+							"item": "Full haircut to your preferred style"
+						},
+						{
+							"item": "Nail trim, ear clean and sanitary trim"
+						},
+						{
+							"item": "Finishing spritz and bandana"
+						}
+					],
+					"duration": "Approx. 2–3 hours",
+					"position": 20,
+					"photo": "/images/groom-full.webp",
+					"alt": "A freshly groomed apricot poodle sitting and smiling"
+				}
+			},
+			{
+				"id": "nail-trim",
+				"slug": "nail-trim",
+				"status": "published",
+				"data": {
+					"title": "Nail trim",
+					"pet": "dog",
+					"icon": "paw",
+					"tint": "cream",
+					"summary": "Keep your pet comfortable and mobile with regular nail care. Quick, gentle and stress-free.",
+					"prices": [
+						{
+							"size": "Small (up to 10 kg)",
+							"price": 20
+						},
+						{
+							"size": "Medium (10–25 kg)",
+							"price": 25
+						},
+						{
+							"size": "Large (25+ kg)",
+							"price": 30
+						}
+					],
+					"includes": [
+						{
+							"item": "Gentle nail trim and file"
+						},
+						{
+							"item": "Check paw pads"
+						},
+						{
+							"item": "Treat and praise (of course!)"
+						}
+					],
+					"duration": "Approx. 15–30 minutes",
+					"position": 30,
+					"photo": "/images/groom-nail.webp",
+					"alt": "A groomer gently trimming a golden retriever’s nails"
+				}
+			},
+			{
+				"id": "cat-bath-brush",
+				"slug": "cat-bath-brush",
+				"status": "published",
+				"data": {
+					"title": "Bath & brush",
+					"pet": "cat",
+					"icon": "sparkle",
+					"tint": "yellow",
+					"summary": "A gentle wash with a cat-safe shampoo, a careful dry and a thorough brush to lift loose undercoat.",
+					"prices": [
+						{
+							"size": "Short coat",
+							"price": 55
+						},
+						{
+							"size": "Long coat",
+							"price": 70
+						}
+					],
+					"includes": [
+						{
+							"item": "Cat-safe shampoo and conditioner"
+						},
+						{
+							"item": "Low-noise dry and full brush out"
+						},
+						{
+							"item": "Ear clean and eye wipe"
+						}
+					],
+					"duration": "Approx. 1–1.5 hours",
+					"position": 40,
+					"photo": "/images/cat-towel.webp",
+					"alt": "A tabby cat wrapped in a soft grey towel after a bath"
+				}
+			},
+			{
+				"id": "cat-full-groom",
+				"slug": "cat-full-groom",
+				"status": "published",
+				"data": {
+					"title": "Full groom",
+					"pet": "cat",
+					"icon": "scissors",
+					"tint": "pink",
+					"summary": "A full coat tidy, from gentle de-matting to a neat trim, with a lion cut on request for long-haired cats.",
+					"prices": [
+						{
+							"size": "Short coat",
+							"price": 80
+						},
+						{
+							"size": "Long coat",
+							"price": 100
+						}
+					],
+					"includes": [
+						{
+							"item": "Everything in bath & brush"
+						},
+						{
+							"item": "De-matting and coat tidy"
+						},
+						{
+							"item": "Lion cut or comb cut on request"
+						},
+						{
+							"item": "Nail trim and sanitary trim"
+						}
+					],
+					"duration": "Approx. 2–2.5 hours",
+					"position": 50,
+					"photo": "/images/space-cat-tower.webp",
+					"alt": "A groomed tabby cat resting on a scratching tower"
+				}
+			},
+			{
+				"id": "cat-nail-trim",
+				"slug": "cat-nail-trim",
+				"status": "published",
+				"data": {
+					"title": "Nail trim",
+					"pet": "cat",
+					"icon": "paw",
+					"tint": "cream",
+					"summary": "Quick, calm nail care for cats, done on a soft towel with plenty of patience.",
+					"prices": [
+						{
+							"size": "All cats",
+							"price": 25
+						}
+					],
+					"includes": [
+						{
+							"item": "Gentle nail trim"
+						},
+						{
+							"item": "Check paw pads"
+						},
+						{
+							"item": "Treat and a chin scratch"
+						}
+					],
+					"duration": "Approx. 15–20 minutes",
+					"position": 60,
+					"photo": "/images/cat-rest.webp",
+					"alt": "A relaxed tabby cat lying on a soft round bed"
+				}
+			}
+		],
+		"rooms": [
+			{
+				"id": "standard-suite",
+				"slug": "standard-suite",
+				"status": "published",
+				"data": {
+					"title": "Standard Suite",
+					"summary": "A cosy, comfortable space perfect for short stays.",
+					"lede": "A quiet, cosy suite with a raised bed, soft bedding and a window view. A good fit for one pet staying a night or a long weekend.",
+					"best_for": "One pet, short stays",
+					"space": "Cosy suite with a raised bed",
+					"includes": [
+						{
+							"item": "Raised bed and fresh bedding"
+						},
+						{
+							"item": "Three supervised play sessions a day"
+						},
+						{
+							"item": "Meals on your pet's usual schedule"
+						},
+						{
+							"item": "Evening tuck-in and quiet time"
+						}
+					],
+					"position": 10,
+					"photo": "/images/room-standard.webp",
+					"alt": "A curly cavoodle lying on a soft bed in the Standard Suite"
+				}
+			},
+			{
+				"id": "deluxe-suite",
+				"slug": "deluxe-suite",
+				"status": "published",
+				"data": {
+					"title": "Deluxe Suite",
+					"summary": "More space to relax, with extra comfort and enrichment.",
+					"lede": "A roomier suite with a plush bed and daily enrichment, from puzzle feeders to sniff games. Ideal for longer stays or pets who like a little more space.",
+					"best_for": "One pet, longer stays",
+					"space": "Roomy suite with a plush bed",
+					"includes": [
+						{
+							"item": "Everything in the Standard Suite"
+						},
+						{
+							"item": "Extra one-to-one cuddle time"
+						},
+						{
+							"item": "Daily enrichment games and puzzle feeders"
+						},
+						{
+							"item": "A photo update during the stay"
+						}
+					],
+					"position": 20,
+					"photo": "/images/room-deluxe.webp",
+					"alt": "A French bulldog relaxing on yellow cushions in the Deluxe Suite"
+				}
+			},
+			{
+				"id": "family-suite",
+				"slug": "family-suite",
+				"status": "published",
+				"data": {
+					"title": "Family Suite",
+					"summary": "Ideal for pets from the same household who love to stay together.",
+					"lede": "Our largest suite, so pets from the same household can stay, play and nap together, keeping their routine and their company.",
+					"best_for": "Two or three pets from one household",
+					"space": "Our largest suite, with room for two beds",
+					"includes": [
+						{
+							"item": "Everything in the Deluxe Suite"
+						},
+						{
+							"item": "Shared suite for pets from one household"
+						},
+						{
+							"item": "Separate feeding at mealtimes"
+						},
+						{
+							"item": "Group play in the outdoor yard"
+						}
+					],
+					"position": 30,
+					"photo": "/images/room-family.webp",
+					"alt": "A golden retriever and a small fluffy dog sharing a bed in the Family Suite"
+				}
+			}
+		],
+		"previews": [
+			{
+				"id": "home-grooming",
+				"slug": "home-grooming",
+				"status": "published",
+				"data": {
+					"title": "Grooming menu",
+					"icon": "scissors",
+					"tint": "yellow",
+					"placement": "home",
+					"position": 10,
+					"text": "Fresh looks, happy tails. From bath and brush to full makeovers, our grooming services keep your pet looking and feeling great.",
+					"link": "/grooming",
+					"link_label": "View grooming menu",
+					"photo": "/images/card-grooming.webp",
+					"alt": "A happy dog with eyes closed being lathered in the bath"
+				}
+			},
+			{
+				"id": "home-hotel",
+				"slug": "home-hotel",
+				"status": "published",
+				"data": {
+					"title": "Pet hotel",
+					"icon": "house",
+					"tint": "pink",
+					"placement": "home",
+					"position": 20,
+					"text": "A home away from home. Spacious suites, plenty of play time and caring companionship while you’re away.",
+					"link": "/hotel",
+					"link_label": "Explore pet hotel",
+					"photo": "/images/card-hotel.webp",
+					"alt": "A curly puppy snuggled with a teddy bear on a fluffy bed"
+				}
+			},
+			{
+				"id": "booking-grooming",
+				"slug": "booking-grooming",
+				"status": "published",
+				"data": {
+					"title": "Our grooming services",
+					"icon": "scissors",
+					"tint": "yellow",
+					"placement": "booking",
+					"position": 10,
+					"text": "From bath and brush to full makeovers, our grooming services keep your pet looking and feeling great.",
+					"link": "/grooming",
+					"link_label": "View grooming menu",
+					"photo": "/images/card-grooming.webp",
+					"alt": "A happy dog with eyes closed being lathered in the bath"
+				}
+			},
+			{
+				"id": "booking-hotel",
+				"slug": "booking-hotel",
+				"status": "published",
+				"data": {
+					"title": "Our pet hotel",
+					"icon": "house",
+					"tint": "pink",
+					"placement": "booking",
+					"position": 20,
+					"text": "A home away from home. Spacious suites, plenty of play time and caring companionship while you’re away.",
+					"link": "/hotel",
+					"link_label": "Explore pet hotel",
+					"photo": "/images/card-hotel.webp",
+					"alt": "A curly puppy snuggled with a teddy bear on a fluffy bed"
+				}
+			},
+			{
+				"id": "space-studio",
+				"slug": "space-studio",
+				"status": "published",
+				"data": {
+					"title": "Grooming studio",
+					"icon": "scissors",
+					"tint": "yellow",
+					"placement": "space",
+					"position": 10,
+					"text": "A clean, calm and fully equipped studio where pets get the care they deserve, with plenty of snuggles along the way.",
+					"link": "/grooming",
+					"link_label": "Explore grooming menu",
+					"photo": "/images/space-studio.webp",
+					"alt": "A spaniel enjoying a gentle blow dry in the grooming studio"
+				}
+			},
+			{
+				"id": "space-play",
+				"slug": "space-play",
+				"status": "published",
+				"data": {
+					"title": "Play spaces",
+					"icon": "ball",
+					"tint": "pink",
+					"placement": "space",
+					"position": 20,
+					"text": "Room to run, explore and make furry friends. Our safe, supervised play areas keep tails wagging all day.",
+					"link": "/hotel#inside",
+					"link_label": "See our space",
+					"photo": "/images/space-play.webp",
+					"alt": "A border collie and a small poodle playing in the indoor play space"
+				}
+			},
+			{
+				"id": "space-hotel",
+				"slug": "space-hotel",
+				"status": "published",
+				"data": {
+					"title": "Pet hotel",
+					"icon": "house",
+					"tint": "yellow",
+					"placement": "space",
+					"position": 30,
+					"text": "Spacious, comfortable suites for restful stays. Playtime, quiet time and plenty of one-to-one care.",
+					"link": "/hotel",
+					"link_label": "Explore pet hotel",
+					"photo": "/images/space-hotel.webp",
+					"alt": "A puppy napping next to a teddy bear in a hotel suite"
+				}
+			}
+		],
+		"highlights": [
+			{
+				"id": "grooming-products",
+				"slug": "grooming-products",
+				"status": "published",
+				"data": {
+					"title": "Premium products",
+					"text": "Gentle, pet-safe and great for healthy coats and skin.",
+					"icon": "leaf",
+					"tone": "none",
+					"placement": "grooming",
+					"position": 10
+				}
+			},
+			{
+				"id": "grooming-groomers",
+				"slug": "grooming-groomers",
+				"status": "published",
+				"data": {
+					"title": "Experienced groomers",
+					"text": "Kind, patient care for pets of all breeds and ages.",
+					"icon": "heart",
+					"tone": "none",
+					"placement": "grooming",
+					"position": 20
+				}
+			},
+			{
+				"id": "grooming-calm",
+				"slug": "grooming-calm",
+				"status": "published",
+				"data": {
+					"title": "Calm environment",
+					"text": "A relaxed, friendly space to keep your pet comfortable.",
+					"icon": "house",
+					"tone": "none",
+					"placement": "grooming",
+					"position": 30
+				}
+			},
+			{
+				"id": "grooming-finish",
+				"slug": "grooming-finish",
+				"status": "published",
+				"data": {
+					"title": "Finishing touches",
+					"text": "A clean, fresh look with lots of love and praise.",
+					"icon": "sparkle",
+					"tone": "none",
+					"placement": "grooming",
+					"position": 40
+				}
+			},
+			{
+				"id": "hotel-routine",
+				"slug": "hotel-routine",
+				"status": "published",
+				"data": {
+					"title": "Daily routine",
+					"text": "A balanced mix of play time, rest and one-to-one attention to keep tails wagging.",
+					"icon": "sun",
+					"tone": "yellow",
+					"placement": "hotel",
+					"position": 10
+				}
+			},
+			{
+				"id": "hotel-feeding",
+				"slug": "hotel-feeding",
+				"status": "published",
+				"data": {
+					"title": "Feeding arrangements",
+					"text": "We follow your pet’s usual diet and feeding schedule, with care for any special requirements.",
+					"icon": "bowl",
+					"tone": "pink",
+					"placement": "hotel",
+					"position": 20
+				}
+			},
+			{
+				"id": "hotel-policies",
+				"slug": "hotel-policies",
+				"status": "published",
+				"data": {
+					"title": "Stay policies",
+					"text": "For everyone’s safety and comfort, all pets must be up to date on core vaccinations and pass a short meet and greet before their stay.",
+					"icon": "shield",
+					"tone": "blue",
+					"placement": "hotel",
+					"position": 30
+				}
+			},
+			{
+				"id": "booking-grooming",
+				"slug": "booking-grooming",
+				"status": "published",
+				"data": {
+					"title": "Grooming",
+					"text": "appointments",
+					"icon": "scissors",
+					"tone": "yellow",
+					"placement": "booking",
+					"position": 10
+				}
+			},
+			{
+				"id": "booking-hotel",
+				"slug": "booking-hotel",
+				"status": "published",
+				"data": {
+					"title": "Pet hotel",
+					"text": "stays",
+					"icon": "house",
+					"tone": "pink",
+					"placement": "booking",
+					"position": 20
+				}
+			},
+			{
+				"id": "booking-care",
+				"slug": "booking-care",
+				"status": "published",
+				"data": {
+					"title": "Same care.",
+					"text": "Happier days.",
+					"icon": "heart-line",
+					"tone": "yellow",
+					"placement": "booking",
+					"position": 30
+				}
+			}
+		],
+		"gallery": [
+			{
+				"id": "home-cat",
+				"slug": "home-cat",
+				"status": "published",
+				"data": {
+					"title": "A tabby cat relaxing on a round pet bed in a sunny room",
+					"placement": "home",
+					"position": 10,
+					"photo": "/images/home-cat.webp"
+				}
+			},
+			{
+				"id": "home-neon",
+				"slug": "home-neon",
+				"status": "published",
+				"data": {
+					"title": "A glowing neon paw sign in the plant-filled entrance",
+					"placement": "home",
+					"position": 20,
+					"photo": "/images/home-neon.webp"
+				}
+			},
+			{
+				"id": "hotel-suite",
+				"slug": "hotel-suite",
+				"status": "published",
+				"data": {
+					"title": "A bright guest suite with a yellow pet house, soft rug and bed",
+					"placement": "hotel",
+					"position": 10,
+					"photo": "/images/space-suite.webp"
+				}
+			},
+			{
+				"id": "hotel-yard",
+				"slug": "hotel-yard",
+				"status": "published",
+				"data": {
+					"title": "Two dogs running across the turf in the outdoor play yard",
+					"placement": "hotel",
+					"position": 20,
+					"photo": "/images/space-yard.webp"
+				}
+			},
+			{
+				"id": "hotel-cat-lounge",
+				"slug": "hotel-cat-lounge",
+				"status": "published",
+				"data": {
+					"title": "A cat resting on a scratching tower in the cat lounge",
+					"placement": "hotel",
+					"position": 30,
+					"photo": "/images/space-cat-tower.webp"
+				}
+			},
+			{
+				"id": "hotel-garden",
+				"slug": "hotel-garden",
+				"status": "published",
+				"data": {
+					"title": "The shaded garden courtyard with a bench and water feature",
+					"placement": "hotel",
+					"position": 40,
+					"photo": "/images/space-garden.webp"
+				}
+			}
+		],
+		"team": [
+			{
+				"id": "mia",
+				"slug": "mia",
+				"status": "published",
+				"data": {
+					"title": "Mia",
+					"note": "Grooming studio",
+					"alt": "Mia smiling and holding a curly brown puppy",
+					"position": 10,
+					"photo": "/images/team-1.webp"
+				}
+			},
+			{
+				"id": "sam",
+				"slug": "sam",
+				"status": "published",
+				"data": {
+					"title": "Sam",
+					"note": "Pet hotel",
+					"alt": "Sam laughing with a golden retriever",
+					"position": 20,
+					"photo": "/images/team-2.webp"
+				}
+			},
+			{
+				"id": "jess",
+				"slug": "jess",
+				"status": "published",
+				"data": {
+					"title": "Jess",
+					"note": "Play spaces",
+					"alt": "Jess cuddling a black and white puppy",
+					"position": 30,
+					"photo": "/images/team-3.webp"
+				}
+			}
+		],
+		"faqs": [
+			{
+				"id": "vaccinations",
+				"slug": "vaccinations",
+				"status": "published",
+				"data": {
+					"title": "Do pets need to be vaccinated?",
+					"position": 10,
+					"answer": "Yes. Dogs need current C5 vaccinations and cats need current F3 vaccinations. Please bring your vet record to your first visit."
+				}
+			},
+			{
+				"id": "what-to-bring",
+				"slug": "what-to-bring",
+				"status": "published",
+				"data": {
+					"title": "What should I bring for a stay?",
+					"position": 20,
+					"answer": "Your pet’s usual food, any medication with written instructions, and a favourite toy or blanket if they have one. We provide bedding, bowls and treats."
+				}
+			},
+			{
+				"id": "age-limit",
+				"slug": "age-limit",
+				"status": "published",
+				"data": {
+					"title": "Is there an age limit for daycare?",
+					"position": 30,
+					"answer": "Puppies and kittens are welcome from 16 weeks, once their vaccinations are complete. Senior pets are welcome too; just tell us about any special needs."
+				}
+			}
+		],
+		"business": [
+			{
+				"id": "pawhouse",
+				"slug": "pawhouse",
+				"status": "published",
+				"data": {
+					"title": "Pawhouse",
+					"email": "hello@pawhouse.example",
+					"phone": "(03) 9555 0142",
+					"address": "18 Swan Street, Richmond",
+					"hours": "Mon–Sat, 7:30am–6pm"
+				}
+			}
+		]
+	}
+}
