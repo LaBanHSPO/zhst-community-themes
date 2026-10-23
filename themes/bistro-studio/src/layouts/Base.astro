@@ -1,0 +1,468 @@
+---
+import { getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import LiveSearch from "emdash/ui/search";
+import Icon from "../components/Icon.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import "../styles/theme.css";
+
+interface Props {
+	title: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	/** Pass content reference for plugin page contributions on content pages */
+	content?: { collection: string; id: string; slug?: string | null };
+}
+
+const { title, pageTitle, description, image, canonical, content } =
+	Astro.props;
+const [settingsResult, menuResult] = await Promise.all([
+	getSiteSettingsWithCacheHint(),
+	getMenuWithCacheHint("primary"),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(settingsResult.cacheHint);
+	Astro.cache.set(menuResult.cacheHint);
+}
+
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(
+	settingsResult.data,
+);
+const titleIncludesSiteName =
+	title === siteTitle ||
+	title.endsWith(` | ${siteTitle}`) ||
+	title.endsWith(` — ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
+const pageDescription = description ?? siteTagline;
+const menu = menuResult.data;
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description: pageDescription,
+	canonical,
+	image,
+	content,
+	siteName: siteTitle,
+});
+
+const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+function isCurrent(url: string): boolean {
+	if (!url.startsWith("/")) return false;
+	const target = url.replace(/\/$/, "") || "/";
+	if (target === "/") return currentPath === "/";
+	return currentPath === target || currentPath.startsWith(`${target}/`);
+}
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="theme-color" content="#f6efe3" />
+		<title>{fullTitle}</title>
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<header class="site-header" data-site-header>
+			<div class="wrap site-header__bar">
+				<a class="brand" href="/" aria-label={`${siteTitle} — home`}>
+					{
+						siteLogo ? (
+							<img class="brand__logo" src={siteLogo.url} alt={siteLogo.alt || siteTitle} />
+						) : (
+							<span class="brand__name">{siteTitle}</span>
+						)
+					}
+				</a>
+
+				<button
+					class="nav-toggle"
+					type="button"
+					aria-controls="site-nav"
+					aria-expanded="false"
+					data-nav-toggle
+				>
+					<span class="nav-toggle__open"><Icon name="menu" /></span>
+					<span class="nav-toggle__close"><Icon name="close" /></span>
+					<span class="visually-hidden">Menu</span>
+				</button>
+
+				<div class="site-nav" id="site-nav" data-site-nav>
+					<nav aria-label="Primary">
+						<ul class="site-nav__list">
+							{
+								menu?.items.map((item) => (
+									<li>
+										<a
+											href={item.url}
+											target={item.target}
+											rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+											aria-current={isCurrent(item.url) ? "page" : undefined}
+										>
+											{item.label}
+										</a>
+									</li>
+								))
+							}
+						</ul>
+					</nav>
+					<div class="site-nav__tools">
+						<div class="site-search">
+							<LiveSearch placeholder="Search…" collections={["posts", "pages"]} />
+						</div>
+						<a class="btn btn--primary site-nav__cta" href="/menu">View Menu</a>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<main id="main" tabindex="-1">
+			<slot />
+		</main>
+
+		<footer class="site-footer">
+			<div class="wrap site-footer__inner">
+				<div class="site-footer__brand">
+					<p class="site-footer__name">{siteTitle}</p>
+					<p class="site-footer__tagline">{siteTagline}</p>
+				</div>
+				{
+					menu && menu.items.length > 0 && (
+						<nav aria-label="Footer">
+							<ul class="site-footer__links">
+								{menu.items.map((item) => (
+									<li>
+										<a href={item.url} target={item.target} rel={item.target === "_blank" ? "noopener noreferrer" : undefined}>
+											{item.label}
+										</a>
+									</li>
+								))}
+							</ul>
+						</nav>
+					)
+				}
+				<p class="site-footer__copy">© {year} {siteTitle}</p>
+			</div>
+		</footer>
+
+		<EmDashBodyEnd page={pageCtx} />
+
+		<script>
+			const header = document.querySelector<HTMLElement>("[data-site-header]");
+			const toggle = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
+			if (header && toggle) {
+				const setOpen = (open: boolean) => {
+					header.toggleAttribute("data-open", open);
+					toggle.setAttribute("aria-expanded", String(open));
+				};
+				toggle.addEventListener("click", () => {
+					setOpen(toggle.getAttribute("aria-expanded") !== "true");
+				});
+				document.addEventListener("keydown", (event) => {
+					if (event.key === "Escape" && header.hasAttribute("data-open")) {
+						setOpen(false);
+						toggle.focus();
+					}
+				});
+				window.matchMedia("(min-width: 960px)").addEventListener("change", (event) => {
+					if (event.matches) setOpen(false);
+				});
+			}
+		</script>
+	</body>
+</html>
+
+<style>
+	.site-header {
+		position: relative;
+		z-index: 20;
+		background: var(--paper);
+		border-bottom: 1px solid var(--line);
+	}
+
+	.site-header__bar {
+		display: flex;
+		align-items: center;
+		gap: 2rem;
+		min-height: 84px;
+	}
+
+	.brand {
+		display: inline-flex;
+		align-items: center;
+		color: var(--olive-deep);
+		text-decoration: none;
+		flex-shrink: 0;
+	}
+
+	.brand:hover {
+		color: var(--olive);
+	}
+
+	.brand__name {
+		font-family: var(--font-display);
+		font-size: clamp(2rem, 3.4vw, 2.7rem);
+		font-weight: 600;
+		letter-spacing: -0.02em;
+		line-height: 1;
+	}
+
+	.brand__logo {
+		display: block;
+		height: 52px;
+		width: auto;
+	}
+
+	.site-nav {
+		display: flex;
+		align-items: center;
+		gap: 2rem;
+		flex: 1;
+	}
+
+	.site-nav__list {
+		display: flex;
+		gap: clamp(1.25rem, 3vw, 3.25rem);
+		margin: 0 auto;
+		padding: 0;
+		list-style: none;
+	}
+
+	.site-nav__list a {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		color: var(--ink);
+		font-family: var(--font-display);
+		font-size: 1.15rem;
+		text-decoration: none;
+	}
+
+	.site-nav__list a::after {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 6px;
+		height: 2px;
+		background: var(--terracotta);
+		transform: scaleX(0);
+		transition: transform 0.2s ease;
+	}
+
+	.site-nav__list a:hover::after,
+	.site-nav__list a[aria-current="page"]::after {
+		transform: scaleX(1);
+	}
+
+	.site-nav__list a[aria-current="page"] {
+		color: var(--terracotta);
+	}
+
+	.site-nav__tools {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.site-search {
+		width: 11rem;
+		font-family: var(--font-ui);
+	}
+
+	.site-search > :global(*) {
+		width: 100%;
+	}
+
+	.site-search :global(input) {
+		width: 100%;
+		min-height: 42px;
+		padding: 0.5rem 0.9rem;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: var(--cream);
+		color: var(--ink);
+		font: inherit;
+		font-size: 0.95rem;
+	}
+
+	.site-search :global(input::placeholder) {
+		color: var(--muted);
+	}
+
+	.nav-toggle {
+		display: none;
+	}
+
+	main:focus {
+		outline: none;
+	}
+
+	.site-footer {
+		margin-top: clamp(3rem, 6vw, 5rem);
+		background: var(--olive-deep);
+		color: var(--olive-text);
+	}
+
+	.site-footer__inner {
+		display: grid;
+		grid-template-columns: 1.2fr 2fr auto;
+		align-items: center;
+		gap: 2rem;
+		padding-block: 2.5rem;
+	}
+
+	.site-footer__name {
+		margin: 0;
+		font-family: var(--font-display);
+		font-size: 1.8rem;
+		font-weight: 600;
+	}
+
+	.site-footer__tagline {
+		margin: 0.2rem 0 0;
+		color: var(--olive-muted);
+		font-family: var(--font-ui);
+		font-size: 0.82rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	.site-footer__links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 1.75rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.site-footer__links a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		color: var(--olive-text);
+		text-decoration: none;
+	}
+
+	.site-footer__links a:hover {
+		color: #fff;
+		text-decoration: underline;
+	}
+
+	.site-footer :global(:focus-visible) {
+		outline-color: #f3efe2;
+	}
+
+	.site-footer__copy {
+		margin: 0;
+		color: var(--olive-muted);
+		font-family: var(--font-ui);
+		font-size: 0.85rem;
+	}
+
+	@media (max-width: 1100px) {
+		.site-search {
+			width: 9.5rem;
+		}
+	}
+
+	@media (max-width: 959px) {
+		.site-header__bar {
+			justify-content: space-between;
+			min-height: 68px;
+			gap: 1rem;
+		}
+
+		.nav-toggle {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 46px;
+			height: 46px;
+			border: 1px solid var(--line);
+			border-radius: 12px;
+			background: var(--cream);
+			color: var(--ink);
+			cursor: pointer;
+		}
+
+		.nav-toggle__open,
+		.site-header[data-open] .nav-toggle__close {
+			display: inline-flex;
+		}
+
+		.nav-toggle__close,
+		.site-header[data-open] .nav-toggle__open {
+			display: none;
+		}
+
+		.site-nav {
+			display: none;
+			position: absolute;
+			top: 100%;
+			left: 0;
+			right: 0;
+			flex-direction: column;
+			align-items: stretch;
+			gap: 1rem;
+			padding: 0.75rem var(--gutter) 1.5rem;
+			background: var(--paper);
+			border-bottom: 1px solid var(--line);
+			box-shadow: 0 18px 30px rgb(60 40 20 / 0.12);
+		}
+
+		.site-header[data-open] .site-nav {
+			display: flex;
+		}
+
+		.site-nav__list {
+			flex-direction: column;
+			gap: 0;
+			margin: 0;
+		}
+
+		.site-nav__list li + li {
+			border-top: 1px solid var(--line);
+		}
+
+		.site-nav__list a {
+			display: flex;
+			min-height: 52px;
+			font-size: 1.3rem;
+		}
+
+		.site-nav__list a::after {
+			bottom: 10px;
+			right: auto;
+			width: 28px;
+		}
+
+		.site-nav__tools {
+			flex-direction: column;
+			align-items: stretch;
+		}
+
+		.site-search {
+			width: 100%;
+		}
+
+		.site-footer__inner {
+			grid-template-columns: 1fr;
+			gap: 1rem;
+		}
+	}
+</style>

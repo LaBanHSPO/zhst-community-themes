@@ -1,0 +1,499 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Bistro Studio",
+		"description": "A neighborhood restaurant theme with a menu, opening hours, contact details, a journal and pages",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "Bistro",
+		"tagline": "Good food brings people together"
+	},
+	"collections": [
+		{
+			"slug": "posts",
+			"label": "Journal",
+			"labelSingular": "Journal entry",
+			"urlPattern": "/posts/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"scheduling",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured Image",
+					"type": "image"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "menu",
+			"label": "Menu items",
+			"labelSingular": "Menu item",
+			"urlPattern": "/menu/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "name",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "description",
+					"label": "Description",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "price",
+					"label": "Price",
+					"type": "string"
+				},
+				{
+					"slug": "category",
+					"label": "Category",
+					"type": "string"
+				},
+				{
+					"slug": "available",
+					"label": "Available",
+					"type": "boolean"
+				}
+			]
+		}
+	],
+	"taxonomies": [
+		{
+			"name": "category",
+			"label": "Categories",
+			"labelSingular": "Category",
+			"hierarchical": true,
+			"collections": [
+				"posts"
+			],
+			"terms": [
+				{
+					"slug": "general",
+					"label": "General"
+				},
+				{
+					"slug": "kitchen",
+					"label": "Kitchen"
+				}
+			]
+		},
+		{
+			"name": "tag",
+			"label": "Tags",
+			"labelSingular": "Tag",
+			"hierarchical": false,
+			"collections": [
+				"posts"
+			],
+			"terms": [
+				{
+					"slug": "menu",
+					"label": "Menu"
+				},
+				{
+					"slug": "events",
+					"label": "Events"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Home",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "Menu",
+					"url": "/menu"
+				},
+				{
+					"type": "custom",
+					"label": "Hours",
+					"url": "/hours"
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
+				},
+				{
+					"type": "custom",
+					"label": "Journal",
+					"url": "/posts"
+				}
+			]
+		}
+	],
+	"widgetAreas": [
+		{
+			"name": "sidebar",
+			"label": "Sidebar",
+			"description": "Sidebar widget area",
+			"widgets": [
+				{
+					"type": "component",
+					"componentId": "core:search",
+					"title": "Search"
+				},
+				{
+					"type": "component",
+					"componentId": "core:recent-posts",
+					"title": "Recent posts",
+					"props": {
+						"count": 5
+					}
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Bistro is a synthetic restaurant theme for the ZeroHostCMS community catalog. Replace this text and the sample menu with your own content.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						}
+					]
+				}
+			},
+			{
+				"id": "hours",
+				"slug": "hours",
+				"status": "published",
+				"data": {
+					"title": "Opening Hours",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Monday – Sunday",
+									"_key": "s0"
+								}
+							],
+							"_key": "b0"
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "11:00 AM – 10:00 PM",
+									"_key": "s1"
+								}
+							],
+							"_key": "b1"
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "The kitchen takes last orders at 9:30 PM. Holiday hours are announced in the journal.",
+									"_key": "s2"
+								}
+							],
+							"_key": "b2"
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "These hours are sample content. Edit this page in the admin panel.",
+									"_key": "s3"
+								}
+							],
+							"_key": "b3"
+						}
+					]
+				}
+			},
+			{
+				"id": "contact",
+				"slug": "contact",
+				"status": "published",
+				"data": {
+					"title": "Contact",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "123 Market Street, Riverton",
+									"_key": "s0"
+								}
+							],
+							"_key": "b0"
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Phone: (555) 010-0123",
+									"_key": "s1"
+								}
+							],
+							"_key": "b1"
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Email: hello@example.com",
+									"_key": "s2"
+								}
+							],
+							"_key": "b2"
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "The address, phone number and email are sample content. Replace them with your restaurant's details.",
+									"_key": "s3"
+								}
+							],
+							"_key": "b3"
+						}
+					]
+				}
+			}
+		],
+		"posts": [
+			{
+				"id": "post-1",
+				"slug": "welcome",
+				"status": "published",
+				"data": {
+					"title": "Welcome to Bistro",
+					"excerpt": "A sample journal entry. Replace it with your own.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This is a sample entry for the Bistro theme. Edit it in the admin panel or replace the templates in src/pages.",
+									"_key": "k1"
+								}
+							],
+							"_key": "k0"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": [
+						"general"
+					],
+					"tag": [
+						"menu"
+					]
+				}
+			},
+			{
+				"id": "post-2",
+				"slug": "summer-menu",
+				"status": "published",
+				"data": {
+					"title": "Our summer menu is here",
+					"excerpt": "Grilled peaches, herb chicken and a lighter tiramisu join the menu this season.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This is a sample journal entry announcing seasonal dishes. Replace it with your own news.",
+									"_key": "s0"
+								}
+							],
+							"_key": "b0"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": [
+						"kitchen"
+					],
+					"tag": [
+						"menu"
+					]
+				}
+			}
+		],
+		"menu": [
+			{
+				"id": "menu-1",
+				"slug": "grilled-peach-salad",
+				"status": "published",
+				"data": {
+					"name": "Grilled peach salad",
+					"description": "Charred peaches, whipped ricotta, mint, toasted almonds.",
+					"price": "$12",
+					"category": "starters",
+					"available": true
+				}
+			},
+			{
+				"id": "menu-2",
+				"slug": "braised-short-rib",
+				"status": "published",
+				"data": {
+					"name": "Braised short rib",
+					"description": "Slow-braised beef, root vegetables, red-wine jus.",
+					"price": "$26",
+					"category": "mains",
+					"available": true
+				}
+			},
+			{
+				"id": "menu-3",
+				"slug": "house-lemonade",
+				"status": "published",
+				"data": {
+					"name": "House lemonade",
+					"description": "Pressed lemons, cane sugar, sparkling water.",
+					"price": "$5",
+					"category": "drinks",
+					"available": true
+				}
+			},
+			{
+				"id": "menu-4",
+				"slug": "herb-chicken",
+				"status": "published",
+				"data": {
+					"name": "Herb chicken",
+					"description": "Roasted chicken thigh, salsa verde, cherry tomatoes, crisp potatoes.",
+					"price": "$16",
+					"category": "mains",
+					"available": true
+				}
+			},
+			{
+				"id": "menu-5",
+				"slug": "truffle-pasta",
+				"status": "published",
+				"data": {
+					"name": "Truffle pasta",
+					"description": "Fresh tagliatelle, mushrooms, parmesan, truffle butter.",
+					"price": "$18",
+					"category": "mains",
+					"available": true
+				}
+			},
+			{
+				"id": "menu-6",
+				"slug": "tiramisu",
+				"status": "published",
+				"data": {
+					"name": "Tiramisu",
+					"description": "Espresso-soaked sponge, mascarpone cream, cocoa.",
+					"price": "$8",
+					"category": "desserts",
+					"available": true
+				}
+			}
+		]
+	}
+}

@@ -1,0 +1,131 @@
+---
+import DishArt from "./DishArt.astro";
+import Icon from "./Icon.astro";
+import { categoryLabel } from "../utils/portable-text";
+
+interface Props {
+	name: string;
+	price?: string | null;
+	category?: string | null;
+	available?: boolean | null;
+	variant?: number;
+	href?: string;
+	/** Visual-editing attributes for the name field */
+	nameEdit?: Record<string, unknown>;
+	priceEdit?: Record<string, unknown>;
+}
+
+const { name, price, category, available, variant = 0, href, nameEdit = {}, priceEdit = {} } = Astro.props;
+---
+
+<article class="dish">
+	<div class="dish__art"><DishArt category={category} variant={variant} /></div>
+	<div class="dish__body">
+		<h3 class="dish__name" {...nameEdit}>{href ? <a href={href}>{name}</a> : name}</h3>
+		{price && <p class="dish__price" {...priceEdit}>{price}</p>}
+	</div>
+	<p class="dish__meta">
+		<Icon name="leaf" size={18} />
+		<span>{categoryLabel(category)}</span>
+		{available === false && <span class="dish__off">Unavailable</span>}
+	</p>
+</article>
+
+<style>
+	.dish {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		padding: 7px;
+		background: var(--paper);
+		border: 1px solid #ebe1cf;
+		border-radius: var(--radius);
+		box-shadow: var(--shadow);
+	}
+
+	.dish__art {
+		aspect-ratio: 16 / 10;
+		overflow: hidden;
+		border-radius: 9px;
+	}
+
+	.dish__body {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0.75rem;
+		padding: 0.9rem 0.45rem 0.2rem;
+	}
+
+	.dish__name {
+		font-size: 1.2rem;
+		font-weight: 500;
+		letter-spacing: 0;
+	}
+
+	.dish__name a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.dish__name a::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		border-radius: var(--radius);
+	}
+
+	.dish__name a:hover {
+		color: var(--terracotta);
+	}
+
+	.dish:focus-within {
+		outline: 3px solid var(--focus);
+		outline-offset: 3px;
+	}
+
+	.dish__name a:focus-visible {
+		outline: none;
+	}
+
+	.dish__price {
+		margin: 0;
+		color: var(--terracotta);
+		font-family: var(--font-display);
+		font-size: 1.15rem;
+		white-space: nowrap;
+	}
+
+	.dish__meta {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		margin: auto 0 0;
+		padding: 0.4rem 0.45rem 0.45rem;
+		color: var(--leaf);
+		font-family: var(--font-ui);
+		font-size: 0.8rem;
+	}
+
+	@media (max-width: 520px) {
+		.dish__body {
+			flex-direction: column;
+			gap: 0.1rem;
+			padding: 0.7rem 0.3rem 0.1rem;
+		}
+
+		.dish__name {
+			font-size: 1.05rem;
+		}
+
+		.dish__price {
+			font-size: 1rem;
+		}
+	}
+
+	.dish__off {
+		margin-left: auto;
+		color: var(--terracotta-strong);
+	}
+</style>

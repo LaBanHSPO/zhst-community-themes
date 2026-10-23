@@ -1,0 +1,96 @@
+---
+import { getEmDashEntry, decodeSlug } from "emdash";
+import Base from "../../layouts/Base.astro";
+import DishArt from "../../components/DishArt.astro";
+import Icon from "../../components/Icon.astro";
+import { categoryLabel, toDish } from "../../utils/portable-text";
+
+// Detail view for the menu collection's declared urlPattern (/menu/{slug}).
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) {
+	return Astro.redirect("/404");
+}
+
+const { entry, cacheHint } = await getEmDashEntry("menu", slug);
+if (!entry) {
+	return Astro.redirect("/404");
+}
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const dish = toDish(entry.data);
+---
+
+<Base
+	title={dish.name}
+	description={dish.description}
+	content={{ collection: "menu", id: entry.data.id, slug }}
+>
+	<article class="wrap dish-detail">
+		<div class="dish-detail__art" aria-hidden="true"><DishArt category={dish.category} /></div>
+		<div class="dish-detail__body">
+			<p class="eyebrow">
+				<a href="/menu">Menu</a>
+				{dish.category && <><span aria-hidden="true"> · </span>{categoryLabel(dish.category)}</>}
+			</p>
+			<h1 {...entry.edit.name}>{dish.name}</h1>
+			<span class="rule" aria-hidden="true"></span>
+			{dish.price && <p class="dish-detail__price" {...entry.edit.price}>{dish.price}</p>}
+			{dish.description && <p class="dish-detail__desc" {...entry.edit.description}>{dish.description}</p>}
+			{dish.available === false && <p class="dish-detail__status">Currently unavailable</p>}
+			<a class="btn btn--ghost" href="/menu">Back to the menu <Icon name="chevron" size={16} /></a>
+		</div>
+	</article>
+</Base>
+
+<style>
+	.dish-detail {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		align-items: center;
+		gap: clamp(1.5rem, 5vw, 4rem);
+		padding-top: clamp(2rem, 6vw, 4.5rem);
+	}
+
+	.dish-detail__art {
+		aspect-ratio: 16 / 10;
+		overflow: hidden;
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow);
+	}
+
+	.dish-detail .eyebrow a {
+		color: var(--terracotta);
+		text-decoration: none;
+	}
+
+	.dish-detail h1 {
+		margin-block: 0.6rem 1.2rem;
+		font-size: clamp(2.3rem, 5vw, 3.6rem);
+	}
+
+	.dish-detail__price {
+		margin: 1.2rem 0 0;
+		color: var(--terracotta);
+		font-family: var(--font-display);
+		font-size: 1.8rem;
+	}
+
+	.dish-detail__desc {
+		margin: 0.6rem 0 1.75rem;
+		max-width: 32rem;
+		color: var(--ink-soft);
+		font-size: 1.2rem;
+	}
+
+	.dish-detail__status {
+		margin: 0 0 1.5rem;
+		color: var(--terracotta-strong);
+		font-family: var(--font-ui);
+	}
+
+	@media (max-width: 760px) {
+		.dish-detail {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+</style>

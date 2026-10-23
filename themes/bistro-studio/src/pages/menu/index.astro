@@ -1,0 +1,191 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../../layouts/Base.astro";
+import DishArt from "../../components/DishArt.astro";
+import { categoryLabel, categoryRank, toDish } from "../../utils/portable-text";
+
+const { entries, cacheHint } = await getEmDashCollection("menu", { limit: 50 });
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const items = entries.map((entry) => ({ entry, dish: toDish(entry.data) }));
+
+// Group dishes by their category field, keeping the usual course order.
+const groups = new Map<string, typeof items>();
+for (const item of items) {
+	const key = (item.dish.category ?? "").trim().toLowerCase();
+	const list = groups.get(key) ?? [];
+	list.push(item);
+	groups.set(key, list);
+}
+const courses = [...groups.entries()].sort(
+	([a], [b]) => categoryRank(a) - categoryRank(b) || a.localeCompare(b),
+);
+---
+
+<Base title="Menu" description="Dishes, drinks and prices">
+	<header class="wrap page-head">
+		<p class="eyebrow">Food &amp; drink</p>
+		<h1>Our Menu</h1>
+		<span class="rule" aria-hidden="true"></span>
+		{
+			courses.length > 1 && (
+				<nav class="course-nav" aria-label="Courses">
+					{courses.map(([key]) => (
+						<a class="chip" href={`#course-${key || "other"}`}>{categoryLabel(key)}</a>
+					))}
+				</nav>
+			)
+		}
+	</header>
+
+	<div class="wrap">
+		{
+			items.length === 0 ? (
+				<p class="empty">
+					No menu items yet. <a href="/_emdash/admin/content/menu/new">Create one</a>.
+				</p>
+			) : (
+				courses.map(([key, dishes]) => (
+					<section class="course" id={`course-${key || "other"}`} aria-labelledby={`course-title-${key || "other"}`}>
+						<div class="course__head">
+							<div class="course__art" aria-hidden="true"><DishArt category={key} /></div>
+							<h2 id={`course-title-${key || "other"}`}>{categoryLabel(key)}</h2>
+						</div>
+						<ul class="course__list">
+							{dishes.map(({ entry, dish }) => (
+								<li class:list={["dish-row", { "dish-row--off": dish.available === false }]}>
+									<div class="dish-row__line">
+										<h3 {...entry.edit.name}><a href={`/menu/${entry.id}`}>{dish.name}</a></h3>
+										<span class="dish-row__leader" aria-hidden="true" />
+										{dish.price && <p class="dish-row__price" {...entry.edit.price}>{dish.price}</p>}
+									</div>
+									{dish.description && <p class="dish-row__desc" {...entry.edit.description}>{dish.description}</p>}
+									{dish.available === false && <p class="dish-row__status">Currently unavailable</p>}
+								</li>
+							))}
+						</ul>
+					</section>
+				))
+			)
+		}
+	</div>
+</Base>
+
+<style>
+	.course-nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-top: 1.5rem;
+	}
+
+	.course-nav .chip {
+		min-height: 40px;
+		padding-inline: 1rem;
+	}
+
+	.course {
+		display: grid;
+		grid-template-columns: 260px minmax(0, 1fr);
+		gap: clamp(1.5rem, 4vw, 3.5rem);
+		padding-block: 2.5rem;
+		border-top: 1px solid var(--line);
+		scroll-margin-top: 1rem;
+	}
+
+	.course__art {
+		aspect-ratio: 16 / 10;
+		overflow: hidden;
+		border-radius: var(--radius);
+		box-shadow: var(--shadow);
+	}
+
+	.course__head h2 {
+		margin-top: 1.1rem;
+		font-size: 2rem;
+	}
+
+	.course__list {
+		display: grid;
+		gap: 1.5rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.dish-row__line {
+		display: flex;
+		align-items: baseline;
+		gap: 0.75rem;
+	}
+
+	.dish-row h3 {
+		font-size: 1.35rem;
+		font-weight: 500;
+		letter-spacing: 0;
+	}
+
+	.dish-row h3 a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.dish-row h3 a:hover {
+		color: var(--terracotta);
+		text-decoration: underline;
+	}
+
+	.dish-row__leader {
+		flex: 1;
+		min-width: 1.5rem;
+		border-bottom: 2px dotted var(--line);
+		transform: translateY(-0.3em);
+	}
+
+	.dish-row__price {
+		margin: 0;
+		color: var(--terracotta);
+		font-family: var(--font-display);
+		font-size: 1.3rem;
+		white-space: nowrap;
+	}
+
+	.dish-row__desc {
+		margin: 0.3rem 0 0;
+		max-width: 40rem;
+		color: var(--muted);
+	}
+
+	.dish-row__status {
+		margin: 0.3rem 0 0;
+		color: var(--terracotta-strong);
+		font-family: var(--font-ui);
+		font-size: 0.85rem;
+	}
+
+	.dish-row--off h3,
+	.dish-row--off .dish-row__price {
+		color: var(--muted);
+	}
+
+	@media (max-width: 760px) {
+		.course {
+			grid-template-columns: minmax(0, 1fr);
+			gap: 1.25rem;
+		}
+
+		.course__head {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+		}
+
+		.course__art {
+			width: 96px;
+			flex-shrink: 0;
+		}
+
+		.course__head h2 {
+			margin: 0;
+		}
+	}
+</style>

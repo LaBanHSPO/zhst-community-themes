@@ -1,0 +1,46 @@
+---
+import { getEmDashCollection, getTermsForEntries } from "emdash";
+import Base from "../../layouts/Base.astro";
+import PostGrid from "../../components/PostGrid.astro";
+
+const cursor = Astro.url.searchParams.get("cursor") || undefined;
+const {
+	entries: posts,
+	cacheHint,
+	nextCursor,
+} = await getEmDashCollection("posts", {
+	orderBy: { published_at: "desc" },
+	limit: 20,
+	cursor,
+});
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+// Single batched query for tags across every post, instead of calling
+// getEntryTerms() per post (which would be N round-trips).
+const tagsByEntry = await getTermsForEntries(
+	"posts",
+	posts.map((p) => p.data.id),
+	"tag",
+);
+---
+
+<Base title="Journal" description="News from the kitchen">
+	<header class="wrap page-head">
+		<p class="eyebrow">News from the kitchen</p>
+		<h1>Journal</h1>
+		<span class="rule" aria-hidden="true"></span>
+	</header>
+	<div class="wrap">
+		<PostGrid posts={posts} tagsById={tagsByEntry} empty="No journal entries yet." />
+		<nav class="pager" aria-label="Pagination">
+			{cursor && <a class="btn btn--ghost" href="/posts">First page</a>}
+			{
+				nextCursor && (
+					<a class="btn btn--ghost" href={`/posts?cursor=${encodeURIComponent(nextCursor)}`}>
+						Next page
+					</a>
+				)
+			}
+		</nav>
+	</div>
+</Base>

@@ -1,0 +1,36 @@
+---
+import PostCard from "./PostCard.astro";
+
+interface Props {
+	posts: Parameters<typeof PostCard>[0]["post"][];
+	tagsById?: Map<string, { slug: string; label: string }[]>;
+	empty: string;
+}
+
+const { posts, tagsById, empty } = Astro.props;
+---
+
+{
+	posts.length === 0 ? (
+		<p class="empty">{empty}</p>
+	) : (
+		<ul class="post-grid">
+			{posts.map((post) => (
+				<li>
+					<PostCard post={post} tags={tagsById?.get(post.data.id) ?? []} />
+				</li>
+			))}
+		</ul>
+	)
+}
+
+<style>
+	.post-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+		gap: 1.5rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+</style>

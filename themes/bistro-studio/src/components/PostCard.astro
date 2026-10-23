@@ -1,0 +1,134 @@
+---
+import { Image } from "emdash/ui";
+import type { Post } from "../../emdash-env";
+
+interface Props {
+	post: {
+		id: string;
+		data: Pick<Post, "id" | "title" | "excerpt" | "featured_image" | "publishedAt">;
+		edit: Record<string, Record<string, unknown>>;
+	};
+	tags?: { slug: string; label: string }[];
+}
+
+const { post, tags = [] } = Astro.props;
+---
+
+<article class="post-card">
+	<a class="post-card__link" href={`/posts/${post.id}`}>
+		<div class="post-card__media">
+			{
+				post.data.featured_image ? (
+					<div {...post.edit.featured_image}><Image image={post.data.featured_image} /></div>
+				) : (
+					<div class="post-card__placeholder" aria-hidden="true">
+						<svg viewBox="0 0 120 80" focusable="false">
+							<path d="M20 64c18-30 46-46 80-50-6 32-30 52-80 50Z" fill="currentColor" opacity="0.18" />
+							<path d="M20 64 76 30" stroke="currentColor" stroke-width="2.5" fill="none" opacity="0.45" />
+						</svg>
+					</div>
+				)
+			}
+		</div>
+		<div class="post-card__body">
+			{
+				post.data.publishedAt && (
+					<time datetime={post.data.publishedAt.toISOString()}>
+						{post.data.publishedAt.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+					</time>
+				)
+			}
+			<h3 {...post.edit.title}>{post.data.title}</h3>
+			{post.data.excerpt && <p {...post.edit.excerpt}>{post.data.excerpt}</p>}
+		</div>
+	</a>
+	{
+		tags.length > 0 && (
+			<div class="post-card__tags">
+				{tags.map((t) => (
+					<a class="chip" href={`/tag/${t.slug}`}>{t.label}</a>
+				))}
+			</div>
+		)
+	}
+</article>
+
+<style>
+	.post-card {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		background: var(--paper);
+		border: 1px solid #ebe1cf;
+		border-radius: var(--radius);
+		box-shadow: var(--shadow);
+		overflow: hidden;
+	}
+
+	.post-card__link {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.post-card__link:hover h3 {
+		color: var(--terracotta);
+	}
+
+	.post-card__media {
+		aspect-ratio: 16 / 9;
+		overflow: hidden;
+		background: var(--sand);
+	}
+
+	.post-card__media :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.post-card__placeholder {
+		display: grid;
+		place-items: center;
+		height: 100%;
+		color: var(--olive);
+		background: radial-gradient(circle at 70% 30%, #f3e7d2, #e3d3b7);
+	}
+
+	.post-card__placeholder svg {
+		width: 40%;
+	}
+
+	.post-card__body {
+		padding: 1.1rem 1.25rem 1.25rem;
+	}
+
+	.post-card__body time {
+		color: var(--muted);
+		font-family: var(--font-ui);
+		font-size: 0.8rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.post-card__body h3 {
+		margin-top: 0.35rem;
+		font-size: 1.4rem;
+		transition: color 0.2s ease;
+	}
+
+	.post-card__body p {
+		margin: 0.6rem 0 0;
+		color: var(--ink-soft);
+		font-size: 1rem;
+	}
+
+	.post-card__tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		padding: 0 1.25rem 1.25rem;
+	}
+</style>

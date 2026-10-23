@@ -1,0 +1,29 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Not Found">
+	<section class="wrap page-head not-found">
+		<p class="eyebrow">404</p>
+		<h1>Page not found</h1>
+		<span class="rule" aria-hidden="true"></span>
+		<p>The page you're looking for doesn't exist.</p>
+		<p class="not-found__actions">
+			<a class="btn btn--primary" href="/">Go home</a>
+			<a class="btn btn--ghost" href="/menu">View the menu</a>
+		</p>
+	</section>
+</Base>
+
+<style>
+	.not-found .rule {
+		margin-bottom: 1.25rem;
+	}
+
+	.not-found__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: 2rem !important;
+	}
+</style>

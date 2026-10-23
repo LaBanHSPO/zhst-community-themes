@@ -1,0 +1,56 @@
+---
+import {
+	getTaxonomyTermsWithCacheHint,
+	getEmDashCollection,
+	decodeSlug,
+} from "emdash";
+import Base from "../../layouts/Base.astro";
+import PostGrid from "../../components/PostGrid.astro";
+
+const slug = decodeSlug(Astro.params.slug);
+const termsResult = await getTaxonomyTermsWithCacheHint("category", {
+	includeCounts: false,
+});
+const term = slug ? termsResult.data.find((item) => item.slug === slug) : null;
+
+if (!term) {
+	return Astro.redirect("/404");
+}
+
+const cursor = Astro.url.searchParams.get("cursor") || undefined;
+const {
+	entries: posts,
+	cacheHint,
+	nextCursor,
+} = await getEmDashCollection("posts", {
+	where: { category: term.slug },
+	orderBy: { published_at: "desc" },
+	limit: 20,
+	cursor,
+});
+if (Astro.cache?.enabled) {
+	Astro.cache.set(termsResult.cacheHint);
+	Astro.cache.set(cacheHint);
+}
+---
+
+<Base title={`${term.label} — Journal`} description={`Journal entries in ${term.label}`}>
+	<header class="wrap page-head">
+		<p class="eyebrow">Journal category</p>
+		<h1>{term.label}</h1>
+		<span class="rule" aria-hidden="true"></span>
+	</header>
+	<div class="wrap">
+		<PostGrid posts={posts} empty="No entries in this category yet." />
+		<nav class="pager" aria-label="Pagination">
+			{cursor && <a class="btn btn--ghost" href={`/category/${term.slug}`}>First page</a>}
+			{
+				nextCursor && (
+					<a class="btn btn--ghost" href={`/category/${term.slug}?cursor=${encodeURIComponent(nextCursor)}`}>
+						Next page
+					</a>
+				)
+			}
+		</nav>
+	</div>
+</Base>
