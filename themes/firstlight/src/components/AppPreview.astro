@@ -1,0 +1,129 @@
+---
+import Icon from "./Icon.astro";
+import Logo from "./Logo.astro";
+
+/**
+ * The planner concept rebuilt in HTML/CSS (it is product artwork, not a working app).
+ * `home` = Good morning dashboard; `preview` = Today list with times, focus, notes.
+ */
+interface Props {
+	variant?: "home" | "preview";
+	photo?: string;
+	class?: string;
+}
+const { variant = "home", photo = "/images/sunrise-ridge.webp", class: className } = Astro.props;
+
+const nav = [
+	{ icon: "home", label: "Today", active: true },
+	{ icon: "calendar", label: "My week" },
+	{ icon: "circle", label: "Focus" },
+	{ icon: "note", label: "Notes" },
+	{ icon: "settings", label: "Settings" },
+];
+const homeTasks = [
+	{ label: "Plan creative sprint" },
+	{ label: "Review product feedback", done: true },
+	{ label: "Workout" },
+	{ label: "Draft launch announcement" },
+];
+const previewTasks = [
+	{ label: "Review product feedback", time: "9:00 AM", done: true },
+	{ label: "Plan creative sprint", time: "10:30 AM" },
+	{ label: "Workout", time: "12:00 PM" },
+	{ label: "Draft launch announcement", time: "2:00 PM" },
+	{ label: "Read and take notes", time: "4:00 PM" },
+];
+const caption =
+	variant === "home"
+		? "Concept preview of the Firstlight planner: a Good morning dashboard with today’s four tasks, a 45-minute Deep work focus block and a sunrise card reading “A brighter tomorrow begins with a calmer today.”"
+		: "Concept preview of the Firstlight planner: today’s five tasks with times, a 45-minute Deep work focus block, a notes card and a sunrise card.";
+---
+
+<figure class:list={["app", `app-${variant}`, className]}>
+	<figcaption class="sr-only">{caption}</figcaption>
+	<div class="app-frame" aria-hidden="true">
+		<div class="app-side">
+			<div class="app-brand"><Logo size={26} /><span>Firstlight</span></div>
+			<ul class="app-nav">
+				{nav.map((n) => <li class:list={{ active: n.active }}><Icon name={n.icon} size={18} />{n.label}</li>)}
+			</ul>
+		</div>
+		<div class="app-main">
+			<div class="app-head">
+				<div>
+					<p class="app-title">{variant === "home" ? "Good morning" : "Today"}</p>
+					<p class="app-sub">{variant === "home" ? "A clearer day starts here." : "A clearer, calmer day ahead."}</p>
+				</div>
+				<p class="app-date">Tue, Apr 23 <Icon name="sun" size={24} class="app-sun" /></p>
+			</div>
+			{
+				variant === "home" ? (
+					<div class="app-grid">
+						<div class="app-col">
+							<div class="app-card">
+								<p class="app-card-title">Today</p>
+								<ul class="app-tasks">
+									{homeTasks.map((t) => (
+										<li class:list={{ done: t.done }}>
+											<span class="app-check">{t.done && <Icon name="check" size={12} />}</span>
+											{t.label}
+											<Icon name="chevron" size={14} class="app-chev" />
+										</li>
+									))}
+								</ul>
+							</div>
+							<div class="app-card">
+								<p class="app-card-title app-row">Focus <span class="app-meta"><Icon name="clock" size={15} /> 45 min</span></p>
+								<div class="app-focus">
+									<span class="app-play"><Icon name="play" size={18} /></span>
+									<span><strong>Deep work</strong><small>Build what’s next</small></span>
+									<Icon name="chevron" size={16} class="app-chev" />
+								</div>
+							</div>
+						</div>
+						<div class="app-photo" style={`background-image: url('${photo}')`}>
+							<p>A brighter tomorrow begins with a calmer today.</p>
+						</div>
+					</div>
+				) : (
+					<div class="app-grid app-grid-preview">
+						<div class="app-card app-list">
+							<ul class="app-tasks app-tasks-timed">
+								{previewTasks.map((t) => (
+									<li class:list={{ done: t.done }}>
+										<span class="app-check">{t.done && <Icon name="check" size={12} />}</span>
+										{t.label}
+										<span class="app-time">{t.time}</span>
+										<Icon name="chevron" size={14} class="app-chev" />
+									</li>
+								))}
+							</ul>
+							<p class="app-add"><Icon name="plus" size={16} /> Add a new task</p>
+						</div>
+						<div class="app-col">
+							<div class="app-card">
+								<p class="app-card-title app-row"><span class="app-row-start"><Icon name="note" size={18} /> Focus</span> <span class="app-meta"><Icon name="clock" size={15} /> 45 min</span></p>
+								<div class="app-focus">
+									<span class="app-play"><Icon name="play" size={18} /></span>
+									<span><strong>Deep work</strong><small>Build what’s next</small></span>
+									<Icon name="chevron" size={16} class="app-chev" />
+								</div>
+							</div>
+							<div class="app-card">
+								<p class="app-card-title app-row"><span class="app-row-start"><Icon name="note" size={18} /> Notes</span> <Icon name="chevron" size={16} class="app-chev" /></p>
+								<ul class="app-notes">
+									<li>Refine positioning</li>
+									<li>Ideas for the roadmap</li>
+									<li>Keep it simple</li>
+								</ul>
+							</div>
+							<div class="app-photo app-photo-wide" style={`background-image: url('${photo}')`}>
+								<p>A brighter tomorrow begins with a calmer today.</p>
+							</div>
+						</div>
+					</div>
+				)
+			}
+		</div>
+	</div>
+</figure>

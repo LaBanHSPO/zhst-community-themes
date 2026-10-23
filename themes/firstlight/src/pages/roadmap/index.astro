@@ -1,0 +1,64 @@
+---
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+import WaitlistForm from "../../components/WaitlistForm.astro";
+import { STATUSES, getLaunch, getRoadmap, roadmapUrl } from "../../lib/firstlight";
+
+const [{ launch, cacheHint }, roadmap] = await Promise.all([getLaunch(), getRoadmap()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(roadmap.cacheHint);
+}
+const columns = STATUSES.map((s) => ({ ...s, items: roadmap.entries.filter((e) => e.data.stage === s.value) })).filter(
+	(c) => c.items.length > 0,
+);
+---
+
+<Base title="Public roadmap" description="What we’re planning, building and exploring next for Firstlight. No launch dates, just honest progress.">
+	<section class="hero hero-roadmap" aria-labelledby="hero-title">
+		<div class="container">
+			<p class="eyebrow eyebrow-dark">Public roadmap</p>
+			<h1 id="hero-title" class="display display-lg">A clearer future is <span class="lime">within reach.</span></h1>
+			<p class="hero-lede">We’re building {launch.title} step by step, with a focus on what matters most. Here’s what we’re working on next.</p>
+		</div>
+	</section>
+
+	<section class="container roadmap" aria-label="Roadmap">
+		{
+			columns.map((col, i) => (
+				<section class:list={["road-col", `road-${col.value}`]} aria-labelledby={`col-${col.value}`}>
+					{i > 0 && <span class="road-link" aria-hidden="true" />}
+					<header class="road-head">
+						<Icon name={col.icon} size={40} class="road-icon" />
+						<div>
+							<h2 id={`col-${col.value}`}>{col.label}</h2>
+							<p>{col.blurb}</p>
+						</div>
+					</header>
+					<ul class="road-list">
+						{col.items.map((item) => (
+							<li>
+								<span class:list={["road-mark", { "road-mark-on": col.value === "in-progress" }]} aria-hidden="true">
+									{col.value === "in-progress" && <Icon name="check" size={18} />}
+								</span>
+								<div>
+									<a class="road-title" href={roadmapUrl(item.data)}>{item.data.title}</a>
+									<p>{item.data.summary}</p>
+								</div>
+							</li>
+						))}
+					</ul>
+				</section>
+			))
+		}
+	</section>
+
+	<section class="container shape-band" aria-labelledby="shape-title">
+		<Icon name="sun" size={64} class="shape-icon" />
+		<div class="shape-copy">
+			<h2 id="shape-title">Help shape what’s next.</h2>
+			<p>Join the waitlist to get early access and be the first to know as we ship new features.</p>
+		</div>
+		<WaitlistForm id="waitlist-roadmap" email={launch.email} size="md" />
+	</section>
+</Base>

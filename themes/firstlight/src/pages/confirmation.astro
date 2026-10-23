@@ -1,0 +1,128 @@
+---
+import Base from "../layouts/Base.astro";
+import FeatureBand from "../components/FeatureBand.astro";
+import Icon from "../components/Icon.astro";
+import { getFeatures, getLaunch } from "../lib/firstlight";
+
+const [{ launch, cacheHint }, expect, features] = await Promise.all([getLaunch(), getFeatures("expect"), getFeatures("confirmation")]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(expect.cacheHint);
+	Astro.cache.set(features.cacheHint);
+}
+const shareUrl = launch.share_url || Astro.url.origin;
+const prefs = [
+	{ name: "launch", label: "Product launch and early access" },
+	{ name: "updates", label: "Feature updates and tips" },
+];
+---
+
+<Base title="Waitlist confirmation" description="What happens after you send your Firstlight waitlist request, your email preferences and a link to share.">
+	<section class="hero hero-confirm" aria-labelledby="hero-title">
+		<div class="container confirm-grid">
+			<div class="confirm-copy">
+				<span class="confirm-badge" aria-hidden="true"><Icon name="send" size={44} /></span>
+				<h1 id="hero-title" class="display display-xl">Almost <span class="lime">on the list.</span></h1>
+				<p class="hero-lede">
+					Your email app should have opened with a short waitlist request. Send it and we’ll add you by hand and reply to confirm. From then
+					on you’ll be among the first to know when we launch, with early access and product updates in your inbox.
+				</p>
+				<p class="confirm-small">
+					Nothing opened, or haven’t joined yet? Write to {launch.email ? <a href={`mailto:${launch.email}?subject=${encodeURIComponent("Join the Firstlight waitlist")}`}>{launch.email}</a> : "us"} or use the form on the <a href="/">prelaunch home</a>.
+				</p>
+			</div>
+
+			{
+				expect.entries.length > 0 && (
+					<section class="glass expect" aria-labelledby="expect-title">
+						<h2 id="expect-title">What to expect</h2>
+						<ul>
+							{expect.entries.map((e) => (
+								<li>
+									<Icon name={e.data.icon} size={34} class="expect-icon" />
+									<div>
+										<h3>{e.data.title}</h3>
+										<p>{e.data.text}</p>
+									</div>
+								</li>
+							))}
+						</ul>
+					</section>
+				)
+			}
+
+			<form class="glass prefs" id="prefs" data-email={launch.email} aria-labelledby="prefs-title">
+				<h2 id="prefs-title">Your email preferences</h2>
+				<p>Choose what you’d like to hear about.</p>
+				<ul>
+					{
+						prefs.map((p) => (
+							<li>
+								<label class="switch">
+									<input type="checkbox" name={p.name} value={p.label} role="switch" checked />
+									<span class="switch-track" aria-hidden="true" />
+									{p.label}
+								</label>
+							</li>
+						))
+					}
+				</ul>
+				<button class="text-btn" type="submit">Email my choices <Icon name="arrow" size={18} /></button>
+				<p class="form-status" role="status" aria-live="polite" data-status></p>
+			</form>
+
+			<section class="glass share" aria-labelledby="share-title">
+				<h2 id="share-title">Spread the word</h2>
+				<p>Know someone who might be interested? Share {launch.title} with your friends.</p>
+				<div class="share-pill">
+					<label class="sr-only" for="share-url">Link to share</label>
+					<input id="share-url" type="text" value={shareUrl} readonly data-share />
+					<button class="btn btn-lime" type="button" data-copy>Copy link <Icon name="copy" size={20} /></button>
+				</div>
+				<p class="form-status" role="status" aria-live="polite" data-copy-status></p>
+			</section>
+		</div>
+	</section>
+	<FeatureBand features={features.entries} label="What we’re building" />
+</Base>
+
+<script>
+	// Preferences: the site stores nothing, so the choices travel in an email the visitor sends.
+	const prefs = document.querySelector<HTMLFormElement>("#prefs");
+	prefs?.addEventListener("submit", (event) => {
+		event.preventDefault();
+		const status = prefs.querySelector<HTMLElement>("[data-status]");
+		const to = prefs.dataset.email ?? "";
+		if (!status) return;
+		if (!to) {
+			status.textContent = "Email preferences can’t be sent right now.";
+			return;
+		}
+		const chosen = Array.from(prefs.querySelectorAll<HTMLInputElement>("input[type=checkbox]"))
+			.filter((i) => i.checked)
+			.map((i) => i.value);
+		const body = [
+			"Hello Firstlight,",
+			"",
+			chosen.length > 0 ? `Please send me: ${chosen.join(", ")}.` : "Please only email me about my waitlist place and invitation.",
+			"",
+		].join("\n");
+		window.location.href = `mailto:${to}?subject=${encodeURIComponent("My Firstlight email preferences")}&body=${encodeURIComponent(body)}`;
+		status.textContent = "Your email app should open with your choices. They’re saved once you send that email.";
+	});
+
+	// Share link: copies the product link to the clipboard.
+	const copy = document.querySelector<HTMLButtonElement>("[data-copy]");
+	const field = document.querySelector<HTMLInputElement>("[data-share]");
+	const copyStatus = document.querySelector<HTMLElement>("[data-copy-status]");
+	copy?.addEventListener("click", async () => {
+		if (!field || !copyStatus) return;
+		try {
+			await navigator.clipboard.writeText(field.value);
+			copyStatus.textContent = "Link copied.";
+		} catch {
+			field.select();
+			copyStatus.textContent = "Press Ctrl+C (or ⌘C) to copy the selected link.";
+		}
+	});
+</script>

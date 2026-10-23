@@ -1,0 +1,29 @@
+---
+import Base from "../layouts/Base.astro";
+import AppPreview from "../components/AppPreview.astro";
+import FeatureBand from "../components/FeatureBand.astro";
+import WaitlistForm from "../components/WaitlistForm.astro";
+import { getFeatures, getLaunch } from "../lib/firstlight";
+
+const [{ launch, cacheHint }, features] = await Promise.all([getLaunch(), getFeatures("home")]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(features.cacheHint);
+}
+---
+
+<Base title="Something better is taking shape" description="Firstlight is a calmer, clearer way to plan your work and life. Join the waitlist to hear when early access opens.">
+	<section class="hero hero-home" aria-labelledby="hero-title">
+		<div class="container hero-grid">
+			<div class="hero-copy">
+				<h1 id="hero-title" class="display display-xl">Something<br /> better is<br /> <span class="lime">taking shape.</span></h1>
+				<p class="hero-lede">
+					A calmer, clearer way to plan your work and life. {launch.title} helps you focus on what matters most, so brighter days feel within reach.
+				</p>
+				<WaitlistForm id="waitlist-home" email={launch.email} note={launch.waitlist_note} />
+			</div>
+			<AppPreview variant="home" class="hero-app" />
+		</div>
+	</section>
+	<FeatureBand features={features.entries} label="Why Firstlight" />
+</Base>
