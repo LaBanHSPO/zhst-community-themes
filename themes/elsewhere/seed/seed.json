@@ -1,0 +1,2123 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Elsewhere",
+  "description": "A premium slow-travel journal theme: homepage, destination archive, travel article with contents, author page and newsletter page",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "Elsewhere",
+  "tagline": "A travel journal"
+ },
+ "collections": [
+  {
+   "slug": "posts",
+   "label": "Journal stories",
+   "labelSingular": "Story",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "scheduling",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "deck",
+     "label": "Article subtitle",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "excerpt",
+     "label": "Card excerpt",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    },
+    {
+     "slug": "featured_image",
+     "label": "Featured image",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    },
+    {
+     "slug": "photo_alt",
+     "label": "Photo alt text",
+     "type": "string"
+    },
+    {
+     "slug": "region",
+     "label": "Region",
+     "type": "select",
+     "validation": {
+      "options": [
+       "europe",
+       "asia",
+       "coastal"
+      ]
+     },
+     "required": true,
+     "indexed": true,
+     "defaultValue": "europe"
+    },
+    {
+     "slug": "topic",
+     "label": "Topic label",
+     "type": "string"
+    },
+    {
+     "slug": "minutes",
+     "label": "Reading time (minutes)",
+     "type": "integer",
+     "validation": {
+      "min": 1
+     }
+    },
+    {
+     "slug": "updated_on",
+     "label": "Updated on",
+     "type": "datetime"
+    },
+    {
+     "slug": "inline_image",
+     "label": "Inline photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "inline_photo",
+     "label": "Bundled inline photo path",
+     "type": "string"
+    },
+    {
+     "slug": "inline_alt",
+     "label": "Inline photo alt text",
+     "type": "string"
+    },
+    {
+     "slug": "featured",
+     "label": "Featured story on the homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "home_position",
+     "label": "Homepage order (More from the journal)",
+     "type": "number"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "number",
+     "indexed": true
+    }
+   ],
+   "urlPattern": "/posts/{slug}"
+  },
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ],
+   "urlPattern": "/{slug}"
+  },
+  {
+   "slug": "profile",
+   "label": "Author profile",
+   "labelSingular": "Author profile",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "email",
+     "label": "Contact email",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "role",
+     "label": "Short bio line",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Introduction",
+     "type": "text"
+    },
+    {
+     "slug": "portrait",
+     "label": "Portrait (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "portrait_photo",
+     "label": "Bundled portrait path",
+     "type": "string"
+    },
+    {
+     "slug": "avatar_photo",
+     "label": "Bundled avatar path",
+     "type": "string"
+    },
+    {
+     "slug": "portrait_alt",
+     "label": "Portrait alt text",
+     "type": "string"
+    },
+    {
+     "slug": "instagram",
+     "label": "Instagram URL",
+     "type": "url"
+    }
+   ]
+  },
+  {
+   "slug": "topics",
+   "label": "Approach topics",
+   "labelSingular": "Approach topic",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "kicker",
+     "label": "Label",
+     "type": "string"
+    },
+    {
+     "slug": "blurb",
+     "label": "Description",
+     "type": "text"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    },
+    {
+     "slug": "photo_alt",
+     "label": "Photo alt text",
+     "type": "string"
+    },
+    {
+     "slug": "tag",
+     "label": "Linked tag slug",
+     "type": "string"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "number",
+     "indexed": true
+    }
+   ]
+  },
+  {
+   "slug": "perks",
+   "label": "Newsletter benefits",
+   "labelSingular": "Newsletter benefit",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "blurb",
+     "label": "Description",
+     "type": "text"
+    },
+    {
+     "slug": "icon",
+     "label": "Icon (sprig, camera, binoculars)",
+     "type": "string"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "number",
+     "indexed": true
+    }
+   ]
+  },
+  {
+   "slug": "editions",
+   "label": "Newsletter editions",
+   "labelSingular": "Newsletter edition",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "issue",
+     "label": "Issue number",
+     "type": "integer"
+    },
+    {
+     "slug": "month",
+     "label": "Month label",
+     "type": "string"
+    },
+    {
+     "slug": "blurb",
+     "label": "Summary",
+     "type": "text"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    },
+    {
+     "slug": "photo_alt",
+     "label": "Photo alt text",
+     "type": "string"
+    },
+    {
+     "slug": "post_slug",
+     "label": "Linked story slug",
+     "type": "string"
+    }
+   ]
+  }
+ ],
+ "taxonomies": [
+  {
+   "name": "category",
+   "label": "Regions",
+   "labelSingular": "Region",
+   "hierarchical": true,
+   "collections": [
+    "posts"
+   ],
+   "terms": [
+    {
+     "slug": "europe",
+     "label": "Europe"
+    },
+    {
+     "slug": "asia",
+     "label": "Asia"
+    },
+    {
+     "slug": "coastal",
+     "label": "Coastal"
+    }
+   ]
+  },
+  {
+   "name": "tag",
+   "label": "Tags",
+   "labelSingular": "Tag",
+   "hierarchical": false,
+   "collections": [
+    "posts"
+   ],
+   "terms": [
+    {
+     "slug": "slow-travel",
+     "label": "Slow travel"
+    },
+    {
+     "slug": "small-towns",
+     "label": "Small towns"
+    },
+    {
+     "slug": "trains",
+     "label": "Trains"
+    },
+    {
+     "slug": "wellbeing",
+     "label": "Wellbeing"
+    },
+    {
+     "slug": "culture",
+     "label": "Culture"
+    },
+    {
+     "slug": "coastal-walks",
+     "label": "Coastal walks"
+    },
+    {
+     "slug": "nature",
+     "label": "Nature"
+    },
+    {
+     "slug": "food-and-culture",
+     "label": "Food and culture"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Homepage",
+     "url": "/"
+    },
+    {
+     "type": "custom",
+     "label": "Destination archive",
+     "url": "/destinations"
+    },
+    {
+     "type": "custom",
+     "label": "Travel article",
+     "url": "/posts/a-slow-weekend-by-the-sea"
+    },
+    {
+     "type": "custom",
+     "label": "About the author",
+     "url": "/about"
+    },
+    {
+     "type": "custom",
+     "label": "Newsletter",
+     "url": "/newsletter"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "posts": [
+   {
+    "id": "a-quieter-side-of-amalfi",
+    "slug": "a-quieter-side-of-amalfi",
+    "status": "published",
+    "taxonomies": {
+     "category": [
+      "europe"
+     ],
+     "tag": [
+      "slow-travel",
+      "small-towns"
+     ]
+    },
+    "data": {
+     "title": "A Quieter Side of Amalfi",
+     "deck": "Beyond the busy piazzas, a slower rhythm reveals itself.",
+     "excerpt": "Beyond the busy piazzas, a slower rhythm reveals a more soulful Amalfi Coast — with hilltop villages, lemon groves and endless views.",
+     "content": [
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k1",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Leave the main square",
+         "_key": "k2",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k3",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Most visitors arrive by ferry and stay near the harbour. Walk ten minutes uphill and the noise thins out: laundry lines, cats on warm steps and the smell of lemon peel from open kitchen doors.",
+         "_key": "k4",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k5",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Hilltop villages",
+         "_key": "k6",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k7",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "The villages above the coast keep a different clock. Bars open early, close for lunch and fill again at dusk, when everyone seems to know everyone else.",
+         "_key": "k8",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k9",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Lemon groves and long views",
+         "_key": "k10",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k11",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "A terraced path between groves is the best way to understand the landscape. Go early, carry water and stop wherever the sea comes into view.",
+         "_key": "k12",
+         "marks": []
+        }
+       ]
+      }
+     ],
+     "photo": "/images/amalfi-cove.webp",
+     "photo_alt": "Hillside houses above a blue bay on the Amalfi Coast",
+     "region": "europe",
+     "topic": "Europe",
+     "minutes": 6,
+     "updated_on": "2024-03-22T09:00:00.000Z",
+     "position": 10,
+     "featured": true,
+     "home_position": 0
+    }
+   },
+   {
+    "id": "by-train-through-the-highlands",
+    "slug": "by-train-through-the-highlands",
+    "status": "published",
+    "taxonomies": {
+     "category": [
+      "europe"
+     ],
+     "tag": [
+      "slow-travel",
+      "trains"
+     ]
+    },
+    "data": {
+     "title": "By Train Through the Highlands",
+     "deck": "Dramatic landscapes, quiet stations and a kinder way to see Scotland.",
+     "excerpt": "Dramatic landscapes, quiet stations and a kinder way to see Scotland.",
+     "content": [
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k13",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Choosing the line",
+         "_key": "k14",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k15",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "The best Highland journeys are the ones that refuse to hurry: a single carriage, a timetable you can memorise and windows that open onto lochs and moorland.",
+         "_key": "k16",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k17",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to pack",
+         "_key": "k18",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k19",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "A flask, a paper map and a book you will not finish. The scenery does most of the work.",
+         "_key": "k20",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k21",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Getting off early",
+         "_key": "k22",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k23",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Pick a station with one café and one path. An unplanned afternoon is the point of travelling this way.",
+         "_key": "k24",
+         "marks": []
+        }
+       ]
+      }
+     ],
+     "photo": "/images/highlands-train.webp",
+     "photo_alt": "A steam train crossing a stone viaduct above green hills",
+     "region": "europe",
+     "topic": "Europe",
+     "minutes": 5,
+     "updated_on": "2024-02-14T09:00:00.000Z",
+     "position": 20,
+     "home_position": 1
+    }
+   },
+   {
+    "id": "small-towns-big-stories",
+    "slug": "small-towns-big-stories",
+    "status": "published",
+    "taxonomies": {
+     "category": [
+      "europe"
+     ],
+     "tag": [
+      "small-towns",
+      "slow-travel"
+     ]
+    },
+    "data": {
+     "title": "Small Towns, Big Stories",
+     "deck": "Why the smallest places often leave the biggest impression.",
+     "excerpt": "Why the smallest places often leave the biggest impression.",
+     "content": [
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k25",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Start with the lane",
+         "_key": "k26",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k27",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Small towns reward attention. A shuttered door, a hand-painted sign or a neighbour's greeting tells you more than any landmark.",
+         "_key": "k28",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k29",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Eat where the menu is short",
+         "_key": "k30",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k31",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Three dishes, written that morning, usually means someone cares about all three.",
+         "_key": "k32",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k33",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Stay one night more",
+         "_key": "k34",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k35",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "The second morning is when a place stops being a stop and starts feeling like somewhere you know.",
+         "_key": "k36",
+         "marks": []
+        }
+       ]
+      }
+     ],
+     "photo": "/images/small-town-alley.webp",
+     "photo_alt": "A whitewashed lane with flowering bougainvillea and a wall lantern",
+     "region": "europe",
+     "topic": "Culture",
+     "minutes": 4,
+     "updated_on": "2024-02-02T09:00:00.000Z",
+     "position": 30,
+     "home_position": 2
+    }
+   },
+   {
+    "id": "the-art-of-slower-travel",
+    "slug": "the-art-of-slower-travel",
+    "status": "published",
+    "taxonomies": {
+     "category": [
+      "europe"
+     ],
+     "tag": [
+      "slow-travel",
+      "wellbeing"
+     ]
+    },
+    "data": {
+     "title": "The Art of Slower Travel",
+     "deck": "How to linger longer, travel lighter and find more along the way.",
+     "excerpt": "How to linger longer, travel lighter and find more along the way.",
+     "content": [
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k37",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Fewer places, more days",
+         "_key": "k38",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k39",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Choose one region and stay put. Every extra night spent in the same place buys you time to notice things.",
+         "_key": "k40",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k41",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Travel lighter",
+         "_key": "k42",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k43",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "A small bag keeps you walking, taking buses and saying yes to detours.",
+         "_key": "k44",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k45",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Leave room for nothing",
+         "_key": "k46",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k47",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Block out an afternoon with no plan. Most of the memories you keep will come from it.",
+         "_key": "k48",
+         "marks": []
+        }
+       ]
+      }
+     ],
+     "photo": "/images/turquoise-cove.webp",
+     "photo_alt": "A small boat on turquoise water beside rocky cliffs",
+     "region": "europe",
+     "topic": "Wellbeing",
+     "minutes": 5,
+     "updated_on": "2024-01-19T09:00:00.000Z",
+     "position": 40,
+     "home_position": 3
+    }
+   },
+   {
+    "id": "lakes-villages-and-long-afternoons",
+    "slug": "lakes-villages-and-long-afternoons",
+    "status": "published",
+    "taxonomies": {
+     "category": [
+      "europe"
+     ],
+     "tag": [
+      "small-towns",
+      "slow-travel"
+     ]
+    },
+    "data": {
+     "title": "Lakes, Villages and Long Afternoons",
+     "deck": "Sunset on the water and a church bell that keeps its own time.",
+     "excerpt": "A lake shore, a village campanile and an afternoon that refuses to end.",
+     "content": [
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k49",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "The lake road",
+         "_key": "k50",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k51",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Skip the express boats and take the shore road. Every bend has a bench, and every bench has a view.",
+         "_key": "k52",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k53",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Long lunches",
+         "_key": "k54",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k55",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Lunch here is not a pit stop. Order slowly, and expect to still be at the table when the shadows reach the water.",
+         "_key": "k56",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k57",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Evening on the quay",
+         "_key": "k58",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k59",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Wait for the light to turn amber, then walk to the end of the jetty and watch the village switch on, window by window.",
+         "_key": "k60",
+         "marks": []
+        }
+       ]
+      }
+     ],
+     "photo": "/images/lakeside-village.webp",
+     "photo_alt": "A lakeside village with a bell tower at sunset",
+     "region": "europe",
+     "topic": "Europe",
+     "minutes": 4,
+     "updated_on": "2024-01-05T09:00:00.000Z",
+     "position": 50
+    }
+   },
+   {
+    "id": "a-morning-in-kyoto",
+    "slug": "a-morning-in-kyoto",
+    "status": "published",
+    "taxonomies": {
+     "category": [
+      "asia"
+     ],
+     "tag": [
+      "slow-travel",
+      "culture"
+     ]
+    },
+    "data": {
+     "title": "A Morning in Kyoto",
+     "deck": "Cherry blossom, quiet temple lanes and a pagoda before the crowds.",
+     "excerpt": "Blossom, quiet temple lanes and a pagoda seen before the crowds arrive.",
+     "content": [
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k61",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Before the crowds",
+         "_key": "k62",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k63",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Be at the temple gate when it opens. For an hour the lanes belong to monks, gardeners and a few early walkers.",
+         "_key": "k64",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k65",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Tea and a quiet corner",
+         "_key": "k66",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k67",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "A small teahouse off the main path turns a rushed sightseeing day into something closer to a ritual.",
+         "_key": "k68",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k69",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Walk back the long way",
+         "_key": "k70",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k71",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Follow the canal rather than the road. Spring here is as much about petals on the water as petals on the trees.",
+         "_key": "k72",
+         "marks": []
+        }
+       ]
+      }
+     ],
+     "photo": "/images/kyoto-spring.webp",
+     "photo_alt": "Cherry blossom around a pagoda with Mount Fuji in the distance",
+     "region": "asia",
+     "topic": "Asia",
+     "minutes": 6,
+     "updated_on": "2023-12-12T09:00:00.000Z",
+     "position": 60
+    }
+   },
+   {
+    "id": "hidden-coves-of-the-cyclades",
+    "slug": "hidden-coves-of-the-cyclades",
+    "status": "published",
+    "taxonomies": {
+     "category": [
+      "coastal"
+     ],
+     "tag": [
+      "coastal-walks",
+      "nature"
+     ]
+    },
+    "data": {
+     "title": "Hidden Coves of the Cyclades",
+     "deck": "Olive trees, stone paths and water the colour of glass.",
+     "excerpt": "Olive trees, dry-stone paths and swimming coves that stay quiet outside August.",
+     "content": [
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k73",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Following the goat paths",
+         "_key": "k74",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k75",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "The best coves are reached on foot. Wear proper shoes, start early and let the path decide your pace.",
+         "_key": "k76",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k77",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Swim, then sit",
+         "_key": "k78",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k79",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Cold, clear water and a flat rock are all you need. Bring fruit, a hat and nowhere to be.",
+         "_key": "k80",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k81",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "When to go",
+         "_key": "k82",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k83",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Late May and late September give you warm water and empty beaches.",
+         "_key": "k84",
+         "marks": []
+        }
+       ]
+      }
+     ],
+     "photo": "/images/cyclades-path.webp",
+     "photo_alt": "A stone path through olive trees above a turquoise cove",
+     "region": "coastal",
+     "topic": "Coastal",
+     "minutes": 5,
+     "updated_on": "2023-11-28T09:00:00.000Z",
+     "position": 70
+    }
+   },
+   {
+    "id": "sailing-through-a-softer-vietnam",
+    "slug": "sailing-through-a-softer-vietnam",
+    "status": "published",
+    "taxonomies": {
+     "category": [
+      "asia"
+     ],
+     "tag": [
+      "coastal-walks",
+      "slow-travel"
+     ]
+    },
+    "data": {
+     "title": "Sailing Through a Softer Vietnam",
+     "deck": "Limestone islands, mist and mornings on a slow boat.",
+     "excerpt": "Limestone islands, early mist and an unhurried way to move through the bay.",
+     "content": [
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k85",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "The slow boat",
+         "_key": "k86",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k87",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Choose a small boat with a short route. You will see fewer islands, but you will remember every one of them.",
+         "_key": "k88",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k89",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Mist at breakfast",
+         "_key": "k90",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k91",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "The bay is at its best before nine, when the water is flat and the cliffs fade into the haze.",
+         "_key": "k92",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k93",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Kayaks and quiet",
+         "_key": "k94",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k95",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Paddle into a lagoon and stop talking. The silence is the highlight.",
+         "_key": "k96",
+         "marks": []
+        }
+       ]
+      }
+     ],
+     "photo": "/images/halong-bay.webp",
+     "photo_alt": "Limestone islands rising from misty water with fishing boats",
+     "region": "asia",
+     "topic": "Asia",
+     "minutes": 7,
+     "updated_on": "2023-11-10T09:00:00.000Z",
+     "position": 80
+    }
+   },
+   {
+    "id": "a-slow-weekend-by-the-sea",
+    "slug": "a-slow-weekend-by-the-sea",
+    "status": "published",
+    "taxonomies": {
+     "category": [
+      "coastal"
+     ],
+     "tag": [
+      "coastal-walks",
+      "slow-travel",
+      "small-towns"
+     ]
+    },
+    "data": {
+     "title": "A slow weekend by the sea",
+     "deck": "Cobblestone lanes, morning markets and long lunches on the Amalfi Coast.",
+     "excerpt": "Cobblestone lanes, morning markets and long lunches on the Amalfi Coast.",
+     "content": [
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k97",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Arriving in Amalfi",
+         "_key": "k98",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k99",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "The road to Amalfi winds between cliffs and lemon groves, each turn revealing another impossible view. As the sea comes into sight, the pace shifts — conversations soften, time stretches, and the weekend begins to feel like a different kind of escape.",
+         "_key": "k100",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k101",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Amalfi isn't just a place to visit, but a feeling. A mix of sun-warmed stone, the scent of citrus, and the gentle rhythm of life by the water. It's the kind of destination that rewards a slower itinerary, where the best moments come unplanned.",
+         "_key": "k102",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k103",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "A Quieter Pace",
+         "_key": "k104",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k105",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Mornings start late and on purpose. A coffee at the counter, a walk to the harbour and a seat in the shade while the ferries come and go.",
+         "_key": "k106",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k107",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "By midday the lanes empty out and the town exhales. This is the hour to do very little, and to do it well.",
+         "_key": "k108",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k109",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Food, Markets and Local Flavours",
+         "_key": "k110",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k111",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "The morning market is small and honest: lemons the size of fists, anchovies from the night boats, bread still warm from the oven. Buy a little of everything and eat it on the steps.",
+         "_key": "k112",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k113",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Lunch is the main event. Order what the table beside you is eating, and ask for the local white.",
+         "_key": "k114",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k115",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Coastal Walks",
+         "_key": "k116",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k117",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "The Path of the Gods is famous, but the lower terraces are just as rewarding. Start early, follow the stone steps between lemon groves and stop whenever the sea appears.",
+         "_key": "k118",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k119",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Carry water, wear shoes with grip and give yourself twice as long as you think you need.",
+         "_key": "k120",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k121",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Where to Stay",
+         "_key": "k122",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k123",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Choose a small guesthouse above the harbour rather than a hotel on the main road. You will trade a lobby for a terrace and a front-desk clerk for someone who knows which bakery opens first.",
+         "_key": "k124",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k125",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Book for three nights if you can. The second morning is when the town starts to feel familiar.",
+         "_key": "k126",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k127",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Final Thoughts",
+         "_key": "k128",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k129",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "A weekend is not much time, but it is enough to change the speed at which you travel. Leave a little unplanned, walk where the paths are narrow and let the coast set the pace.",
+         "_key": "k130",
+         "marks": []
+        }
+       ]
+      }
+     ],
+     "photo": "/images/village-flowers.webp",
+     "photo_alt": "Pastel houses and bougainvillea above the sea on the Amalfi Coast",
+     "region": "coastal",
+     "topic": "Italy / Coastal towns",
+     "minutes": 8,
+     "updated_on": "2024-04-18T09:00:00.000Z",
+     "position": 85,
+     "inline_photo": "/images/lantern-stair.webp",
+     "inline_alt": "A stone stair beneath a lantern, lemon branches and a view over the sea"
+    }
+   },
+   {
+    "id": "hills-markets-and-morning-light",
+    "slug": "hills-markets-and-morning-light",
+    "status": "published",
+    "taxonomies": {
+     "category": [
+      "europe"
+     ],
+     "tag": [
+      "small-towns",
+      "food-and-culture"
+     ]
+    },
+    "data": {
+     "title": "Hills, Markets and Morning Light",
+     "deck": "From hillside towns in Umbria to the simple pleasures of local markets.",
+     "excerpt": "A month of slow days in Umbria: hillside towns, local markets and the beauty in between.",
+     "content": [
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k131",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Hillside towns",
+         "_key": "k132",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k133",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Umbria's towns sit on their hills like crowns. Park outside the walls and walk up; the climb is part of the arrival.",
+         "_key": "k134",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k135",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Market days",
+         "_key": "k136",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k137",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Every town has its own market morning. Go for the produce, stay for the conversations.",
+         "_key": "k138",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k139",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Morning light",
+         "_key": "k140",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k141",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "The valley fills with gold before breakfast. Get up for it at least once.",
+         "_key": "k142",
+         "marks": []
+        }
+       ]
+      }
+     ],
+     "photo": "/images/umbria-alley.webp",
+     "photo_alt": "A stone lane lined with flowers above the hills of Umbria",
+     "region": "europe",
+     "topic": "Europe",
+     "minutes": 5,
+     "updated_on": "2024-04-02T09:00:00.000Z",
+     "position": 90
+    }
+   },
+   {
+    "id": "coastal-paths-and-wild-places",
+    "slug": "coastal-paths-and-wild-places",
+    "status": "published",
+    "taxonomies": {
+     "category": [
+      "coastal"
+     ],
+     "tag": [
+      "coastal-walks",
+      "nature"
+     ]
+    },
+    "data": {
+     "title": "Coastal Paths and Wild Places",
+     "deck": "Cliff walks, sea air and the kind of quiet that resets a trip.",
+     "excerpt": "Cliff walks, sea air and the kind of quiet that resets a whole trip.",
+     "content": [
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k143",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Pick a path with a view",
+         "_key": "k144",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k145",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Coastal paths work best when they are short enough to finish and long enough to feel earned. Two hours is about right.",
+         "_key": "k146",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k147",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Wild places nearby",
+         "_key": "k148",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k149",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Nature is usually closer than we think. A headland a few stops from the station can feel a long way from anywhere.",
+         "_key": "k150",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k151",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Leave no trace",
+         "_key": "k152",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k153",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Carry out what you carry in, stay on the path and leave the shells where they are.",
+         "_key": "k154",
+         "marks": []
+        }
+       ]
+      }
+     ],
+     "photo": "/images/coast-cliffs.webp",
+     "photo_alt": "Cliffs above deep blue water seen through tree branches",
+     "region": "coastal",
+     "topic": "Coastal",
+     "minutes": 6,
+     "updated_on": "2024-03-05T09:00:00.000Z",
+     "position": 100
+    }
+   },
+   {
+    "id": "long-tables-and-slow-suppers",
+    "slug": "long-tables-and-slow-suppers",
+    "status": "published",
+    "taxonomies": {
+     "category": [
+      "europe"
+     ],
+     "tag": [
+      "food-and-culture",
+      "slow-travel"
+     ]
+    },
+    "data": {
+     "title": "Long Tables and Slow Suppers",
+     "deck": "Shared plates, regional flavours and the stories behind them.",
+     "excerpt": "Shared plates, regional flavours and the stories behind them.",
+     "content": [
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k155",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Eat what grows nearby",
+         "_key": "k156",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k157",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Regional food tells the story of a place faster than any museum. Ask what is in season and start there.",
+         "_key": "k158",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k159",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "The table as a meeting point",
+         "_key": "k160",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k161",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Long tables bring strangers together. Say yes to the invitation to sit down.",
+         "_key": "k162",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "k163",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Bring a recipe home",
+         "_key": "k164",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k165",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Ask for one dish and learn how it is made. It is the best souvenir you can pack.",
+         "_key": "k166",
+         "marks": []
+        }
+       ]
+      }
+     ],
+     "photo": "/images/terrace-table.webp",
+     "photo_alt": "A small table with lemons and a straw hat on a sunny terrace",
+     "region": "europe",
+     "topic": "Culture",
+     "minutes": 5,
+     "updated_on": "2024-02-24T09:00:00.000Z",
+     "position": 110
+    }
+   }
+  ],
+  "pages": [
+   {
+    "id": "privacy",
+    "slug": "privacy",
+    "status": "published",
+    "data": {
+     "title": "Privacy",
+     "content": [
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k167",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "This is a sample privacy page for the Elsewhere theme. The newsletter form opens your own email app with a pre-filled message; the site itself does not collect or store your address.",
+         "_key": "k168",
+         "marks": []
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "k169",
+       "markDefs": [],
+       "children": [
+        {
+         "_type": "span",
+         "text": "Replace this text with your own privacy policy before publishing.",
+         "_key": "k170",
+         "marks": []
+        }
+       ]
+      }
+     ]
+    }
+   }
+  ],
+  "profile": [
+   {
+    "id": "claire",
+    "slug": "claire",
+    "status": "published",
+    "data": {
+     "title": "Claire Montgomery",
+     "email": "hello@elsewhere.example",
+     "role": "A travel writer, curious observer and steady believer in a slower way to see the world.",
+     "intro": "Elsewhere began as a personal journal and has grown into a space for thoughtful travel stories, practical guides and inspiration for deeper, more meaningful journeys.",
+     "portrait_photo": "/images/claire-hero.webp",
+     "avatar_photo": "/images/claire-avatar.webp",
+     "portrait_alt": "Claire smiling in a straw hat on a sunlit terrace above the Amalfi Coast",
+     "instagram": "https://www.instagram.com/"
+    }
+   }
+  ],
+  "topics": [
+   {
+    "id": "small-towns-and-local-life",
+    "slug": "small-towns-and-local-life",
+    "status": "published",
+    "data": {
+     "title": "Small Towns & Local Life",
+     "kicker": "Places I love",
+     "blurb": "Hilltop villages, local markets and the little moments that make a place feel real.",
+     "photo": "/images/hilltop-villa.webp",
+     "photo_alt": "A hilltop stone village among cypress trees",
+     "tag": "small-towns",
+     "position": 10
+    }
+   },
+   {
+    "id": "nature-and-the-outdoors",
+    "slug": "nature-and-the-outdoors",
+    "status": "published",
+    "data": {
+     "title": "Nature & the Outdoors",
+     "kicker": "Ways of travelling",
+     "blurb": "Coastal paths, mountain trails and wild, beautiful places to breathe deeper.",
+     "photo": "/images/coast-cliffs.webp",
+     "photo_alt": "Rocky cliffs above deep blue water",
+     "tag": "nature",
+     "position": 20
+    }
+   },
+   {
+    "id": "food-people-and-traditions",
+    "slug": "food-people-and-traditions",
+    "status": "published",
+    "data": {
+     "title": "Food, People & Traditions",
+     "kicker": "Culture & everyday life",
+     "blurb": "Meaningful encounters, regional flavours and the stories behind them.",
+     "photo": "/images/terrace-table.webp",
+     "photo_alt": "A small table with lemons and a straw hat on a sunny terrace",
+     "tag": "food-and-culture",
+     "position": 30
+    }
+   }
+  ],
+  "perks": [
+   {
+    "id": "inspiring-destinations",
+    "slug": "inspiring-destinations",
+    "status": "published",
+    "data": {
+     "title": "Inspiring destinations",
+     "blurb": "Less obvious places, with practical tips and personal reflections.",
+     "icon": "sprig",
+     "position": 10
+    }
+   },
+   {
+    "id": "meaningful-travel-stories",
+    "slug": "meaningful-travel-stories",
+    "status": "published",
+    "data": {
+     "title": "Meaningful travel stories",
+     "blurb": "Journeys, people and places that stay with you long after the trip.",
+     "icon": "camera",
+     "position": 20
+    }
+   },
+   {
+    "id": "ideas-for-slower-travel",
+    "slug": "ideas-for-slower-travel",
+    "status": "published",
+    "data": {
+     "title": "Ideas for slower travel",
+     "blurb": "Mindful ways to explore, with a focus on culture, nature and local life.",
+     "icon": "binoculars",
+     "position": 30
+    }
+   }
+  ],
+  "editions": [
+   {
+    "id": "issue-28",
+    "slug": "issue-28",
+    "status": "published",
+    "data": {
+     "title": "Hills, Markets and Morning Light",
+     "issue": 28,
+     "month": "Apr 2024",
+     "blurb": "From hillside towns in Umbria to the simple pleasures of local markets, this month's letter is a celebration of slow days and the beauty in between.",
+     "photo": "/images/umbria-alley.webp",
+     "photo_alt": "A stone lane lined with flowers above the hills of Umbria",
+     "post_slug": "hills-markets-and-morning-light"
+    }
+   }
+  ]
+ }
+}

@@ -1,0 +1,33 @@
+---
+import { photoAlt, photoSrc, postUrl, regionLabel, type Post, type Profile } from "../lib/elsewhere";
+
+interface Props {
+	post: Post;
+	profile: Partial<Profile>;
+	headingLevel?: 2 | 3;
+}
+const { post, profile, headingLevel = 3 } = Astro.props;
+const Heading = `h${headingLevel}` as "h2" | "h3";
+const src = photoSrc(post.featured_image, post.photo);
+const avatar = profile.avatar_photo;
+---
+
+<article class="story-card">
+	{
+		src && (
+			<a class="media" href={postUrl(post)} tabindex="-1" aria-hidden="true">
+				<img src={src} alt="" width="358" height="179" loading="lazy" decoding="async" />
+			</a>
+		)
+	}
+	<p class="meta">
+		<b>{regionLabel(post.region)}</b>
+		{post.minutes ? ` · ${post.minutes} min read` : ""}
+	</p>
+	<Heading><a href={postUrl(post)}>{post.title}</a></Heading>
+	{post.excerpt && <p class="excerpt">{post.excerpt}</p>}
+	<p class="byline">
+		{avatar && <img src={avatar} alt="" width="36" height="36" loading="lazy" />}
+		<span>By {profile.title}</span>
+	</p>
+</article>
