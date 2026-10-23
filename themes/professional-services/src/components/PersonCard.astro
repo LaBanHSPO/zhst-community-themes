@@ -1,0 +1,31 @@
+---
+import Monogram from "./Monogram.astro";
+import Arrow from "./Arrow.astro";
+import { entryHref, lines, type Person } from "../lib/practice";
+
+interface Props {
+	person: { id: string; data: Person; edit: Record<string, Record<string, unknown>> };
+}
+const { person } = Astro.props;
+const href = entryHref("/team", person.data);
+const focus = lines(person.data.focus).slice(0, 3);
+---
+
+<article class="person-card">
+	<Monogram name={person.data.title} tone={person.data.tone} />
+	<div class="person-body">
+		<h3 {...person.edit.title}><a href={href}>{person.data.title}</a></h3>
+		<p class="person-role">{person.data.role}</p>
+		{person.data.summary && <p class="person-summary">{person.data.summary}</p>}
+		{
+			focus.length > 0 && (
+				<ul class="tag-list" aria-label="Focus areas">
+					{focus.map((f) => (
+						<li>{f}</li>
+					))}
+				</ul>
+			)
+		}
+		<span class="link-arrow" aria-hidden="true">Profile <Arrow /></span>
+	</div>
+</article>

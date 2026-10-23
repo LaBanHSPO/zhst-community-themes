@@ -1,0 +1,70 @@
+---
+import Base from "../../layouts/Base.astro";
+import PersonCard from "../../components/PersonCard.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { getOffice, getPeople } from "../../lib/practice";
+
+const [peopleResult, officeResult] = await Promise.all([getPeople(), getOffice()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(peopleResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const people = peopleResult.entries;
+const { office } = officeResult;
+---
+
+<Base title="Our Team" description="Meet the Northbridge advisers: senior people who stay close to the work from first question to lasting change.">
+	<section class="page-head">
+		<div class="container page-head-inner">
+			<div>
+				<span class="eyebrow">Our team</span>
+				<h1>People you can build on.</h1>
+				<span class="rule" aria-hidden="true"></span>
+			</div>
+			<p class="lede">
+				A small team of advisers with backgrounds in public service, business, planning and finance. You work with the people you meet, from the first conversation to the final handover.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-flush">
+		<div class="container">
+			{
+				people.length > 0 ? (
+					<div class="team-grid team-grid-full">
+						{people.map((p) => (
+							<PersonCard person={p} />
+						))}
+					</div>
+				) : (
+					<p class="empty">Team profiles will appear here once they are added in the admin.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<section class="section section-warm team-photo-band">
+		<div class="container team-photo-inner">
+			<figure>
+				<img
+					src="/images/studio-team.webp"
+					alt="Four colleagues talking beside a table of drawings in a bright concrete-and-timber studio"
+					width="600"
+					height="458"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+			<div>
+				<span class="eyebrow">Working together</span>
+				<h2 class="section-title">One team around every client.</h2>
+				<span class="rule" aria-hidden="true"></span>
+				<p class="lede">
+					We staff each engagement from across our practices, so strategy, people, places and governance are considered together rather than in separate reports.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<CtaBand office={office} title="Talk to one of our advisers." />
+</Base>

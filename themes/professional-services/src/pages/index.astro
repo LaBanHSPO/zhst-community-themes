@@ -1,0 +1,157 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import ServiceList from "../components/ServiceList.astro";
+import PersonCard from "../components/PersonCard.astro";
+import InsightCard from "../components/InsightCard.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { getInsights, getOffice, getPeople, getServices } from "../lib/practice";
+
+const [servicesResult, peopleResult, insightsResult, officeResult] = await Promise.all([
+	getServices(),
+	getPeople(),
+	getInsights(3),
+	getOffice(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(peopleResult.cacheHint);
+	Astro.cache.set(insightsResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const featured = servicesResult.entries.filter((s) => s.data.featured);
+const services = (featured.length ? featured : servicesResult.entries).slice(0, 4);
+const people = peopleResult.entries.slice(0, 4);
+const insights = insightsResult.entries;
+const { office } = officeResult;
+---
+
+<Base
+	title="Northbridge — Professional Services"
+	description="We help organizations and communities turn complex challenges into enduring opportunities through trusted advice and human insight."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A rooftop terrace beside a concrete and glass office at dusk, looking over a river and the city skyline"
+			width="1448"
+			height="698"
+			fetchpriority="high"
+		/>
+		<div class="hero-shade" aria-hidden="true"></div>
+		<div class="container hero-inner">
+			<div class="hero-copy">
+				<p class="eyebrow hero-eyebrow"><span>People</span> <span>Insight</span> <span>Lasting value</span></p>
+				<span class="rule" aria-hidden="true"></span>
+				<h1 id="hero-title"><span>Expertise you</span> <span>can build on.</span></h1>
+				<a class="btn btn-lg hero-cta" href="/team">Meet our team <Arrow /></a>
+			</div>
+			<p class="hero-note hero-note-top"><span>Ideas</span> <span>People</span> <span>Places</span> <span>Progress</span></p>
+			<p class="hero-note hero-note-bottom"><span>A more resilient</span> <span>tomorrow</span></p>
+		</div>
+	</section>
+
+	<section class="approach" aria-labelledby="approach-title">
+		<div class="container approach-inner">
+			<div class="approach-copy">
+				<span class="eyebrow">Our approach</span>
+				<h2 id="approach-title"><span>Advisory for</span> <span>what’s next.</span></h2>
+				<span class="rule" aria-hidden="true"></span>
+				<p>
+					We help organizations and communities turn complex challenges into enduring opportunities through trusted advice and human insight.
+				</p>
+			</div>
+			<figure class="approach-photo">
+				<img
+					src="/images/approach-meeting.webp"
+					alt="Two advisers in conversation with a client across a meeting table"
+					width="615"
+					height="387"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+			<div class="approach-note">
+				<p class="eyebrow"><span>Different</span> <span>perspectives</span> <span>A brighter</span> <span>tomorrow</span></p>
+				<span class="rule" aria-hidden="true"></span>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-dark" aria-labelledby="services-title">
+		<div class="container split-head">
+			<div>
+				<span class="eyebrow eyebrow-light">What we do</span>
+				<h2 id="services-title" class="section-title">Services shaped around your next decision.</h2>
+				<span class="rule" aria-hidden="true"></span>
+			</div>
+			<div class="split-aside">
+				<p>Four practices, one team. We bring the right mix of people to each piece of work and stay with you from first question to lasting change.</p>
+				<a class="link-arrow" href="/services">All services <Arrow /></a>
+			</div>
+		</div>
+		<div class="container">
+			{
+				services.length > 0 ? (
+					<ServiceList services={services} tone="dark" />
+				) : (
+					<p class="empty">Services will appear here once they are added in the admin.</p>
+				)
+			}
+		</div>
+	</section>
+
+	{
+		people.length > 0 && (
+			<section class="section" aria-labelledby="team-title">
+				<div class="container split-head">
+					<div>
+						<span class="eyebrow">Our team</span>
+						<h2 id="team-title" class="section-title">The people behind the advice.</h2>
+						<span class="rule" aria-hidden="true"></span>
+					</div>
+					<div class="split-aside">
+						<p>You work directly with senior advisers who know your sector, listen first and stay accountable for the outcome.</p>
+						<a class="link-arrow" href="/team">Meet our team <Arrow /></a>
+					</div>
+				</div>
+				<div class="container">
+					<div class="team-grid">
+						{people.map((p) => (
+							<PersonCard person={p} />
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		insights.length > 0 && (
+			<section class="section section-warm" aria-labelledby="insights-title">
+				<div class="container split-head">
+					<div>
+						<span class="eyebrow">Insights</span>
+						<h2 id="insights-title" class="section-title">Thinking for what comes next.</h2>
+						<span class="rule" aria-hidden="true"></span>
+					</div>
+					<div class="split-aside">
+						<p>Short, practical notes from our advisers on strategy, people and the places we share.</p>
+						<a class="link-arrow" href="/insights">All insights <Arrow /></a>
+					</div>
+				</div>
+				<div class="container">
+					<div class="insight-grid">
+						{insights.map((post) => (
+							<InsightCard post={post} />
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} />
+</Base>

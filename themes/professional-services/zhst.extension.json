@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "professional-services",
+	"kind": "theme",
+	"name": "Professional Services",
+	"type": "company",
+	"emdash": "1.2.0",
+	"entry": "themes/professional-services",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": true,
+		"whatsapp": false
+	}
+}

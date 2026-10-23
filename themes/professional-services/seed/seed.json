@@ -1,0 +1,2157 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Professional Services",
+		"description": "An editorial advisory-firm theme: services, team profiles, insights, about and a contact page",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "Northbridge",
+		"tagline": "Professional Services"
+	},
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "eyebrow",
+					"label": "Small label above the title (also used in the footer)",
+					"type": "string"
+				},
+				{
+					"slug": "intro",
+					"label": "Intro paragraph",
+					"type": "text"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "services",
+			"label": "Services",
+			"labelSingular": "Service",
+			"urlPattern": "/services/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Service name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "summary",
+					"label": "One-line summary",
+					"type": "text",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "featured",
+					"label": "Show on the homepage",
+					"type": "boolean",
+					"indexed": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "intro",
+					"label": "Intro paragraph",
+					"type": "text"
+				},
+				{
+					"slug": "content",
+					"label": "Service page content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "outcomes",
+					"label": "What clients can expect (one per line)",
+					"type": "text"
+				},
+				{
+					"slug": "engagement",
+					"label": "Typical engagement (e.g. 8 to 12 weeks)",
+					"type": "string"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Bundled photo path",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "people",
+			"label": "Our Team",
+			"labelSingular": "Team member",
+			"urlPattern": "/team/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "role",
+					"label": "Role",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "summary",
+					"label": "Short bio (cards and profile intro)",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "focus",
+					"label": "Focus areas (one per line)",
+					"type": "text"
+				},
+				{
+					"slug": "tone",
+					"label": "Monogram colour",
+					"type": "select",
+					"required": true,
+					"defaultValue": "teal",
+					"validation": {
+						"options": [
+							"teal",
+							"copper",
+							"stone"
+						]
+					}
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "content",
+					"label": "Profile",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "insights",
+			"label": "Insights",
+			"labelSingular": "Insight",
+			"urlPattern": "/insights/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "topic",
+					"label": "Topic label (e.g. Strategy)",
+					"type": "string"
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "date",
+					"label": "Date shown on the article",
+					"type": "datetime",
+					"indexed": true
+				},
+				{
+					"slug": "reading_time",
+					"label": "Reading time (e.g. 5 min read)",
+					"type": "string"
+				},
+				{
+					"slug": "featured_image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Bundled photo path",
+					"type": "string"
+				},
+				{
+					"slug": "content",
+					"label": "Article",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "principles",
+			"label": "Values",
+			"labelSingular": "Value",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "text",
+					"label": "Text",
+					"type": "text"
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "office",
+			"label": "Office details",
+			"labelSingular": "Office details",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Company name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "street",
+					"label": "Street address",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "locality",
+					"label": "City, state and ZIP",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "country",
+					"label": "Country",
+					"type": "string"
+				},
+				{
+					"slug": "phone",
+					"label": "Phone",
+					"type": "string"
+				},
+				{
+					"slug": "email",
+					"label": "Enquiries email",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "hours",
+					"label": "Office hours",
+					"type": "string"
+				},
+				{
+					"slug": "response_note",
+					"label": "Response note shown on the contact page",
+					"type": "text"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "About",
+					"url": "/about"
+				},
+				{
+					"type": "custom",
+					"label": "Services",
+					"url": "/services"
+				},
+				{
+					"type": "custom",
+					"label": "Our Team",
+					"url": "/team"
+				},
+				{
+					"type": "custom",
+					"label": "Insights",
+					"url": "/insights"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "Trusted advice, built to last.",
+					"eyebrow": "About",
+					"intro": "Northbridge is an independent advisory firm. We help organizations and communities make the decisions that shape them for years, and we stay close until those decisions have taken hold.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We started Northbridge because we kept seeing the same pattern: good organizations, facing important choices, receiving long reports from people who would not be around to see what happened next.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We work differently. A small team of senior advisers works alongside your people, keeps the analysis proportionate to the decision, and stays involved while the change is made.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Who we work with",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Our clients include public bodies, universities, housing and community organizations, and private companies whose work affects the places around them. What they share is a decision that matters and a wish to get it right.",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How we are organized",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We have four practices: strategic advisory, people and organization, places and infrastructure, and governance and risk. Most engagements draw on more than one of them, so you get one team rather than a set of separate opinions.",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "blockquote",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Good advice is measured by what is still working five years later.",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b7",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We are employee-owned and take no commission from suppliers, contractors or software vendors. Our only interest is the quality of your decision.",
+									"_key": "b7s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "how-we-work",
+				"slug": "how-we-work",
+				"status": "published",
+				"data": {
+					"title": "How we work",
+					"eyebrow": "How we work",
+					"intro": "Every engagement follows the same simple rhythm, shaped to your situation and your timetable.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "1. A first conversation",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We listen to what you are facing and what a good outcome would look like. There is no charge and no obligation.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "2. A short proposal",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We describe the questions we would answer, the people involved, the timetable and a fixed fee. You can change the scope before anything starts.",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "3. Working alongside you",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We work in short cycles with your team, sharing findings as we go rather than saving them for a final report.",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "4. Handover and follow-up",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b7",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We leave you with clear decisions, owners and the tools to carry on. We check in three and six months later at no extra cost.",
+									"_key": "b7s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "privacy",
+				"slug": "privacy",
+				"status": "published",
+				"data": {
+					"title": "Privacy notice",
+					"eyebrow": "Privacy",
+					"intro": "How we handle the information you share with us.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This website does not use analytics, advertising trackers or cookies of its own.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "When you use the contact form, your message is prepared in your own email app and only reaches us if you send that email. We use what you send only to reply to you and to prepare any proposal you ask for.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We keep enquiry emails for up to two years unless we start working together, in which case they become part of the engagement record. You can ask us to delete them at any time.",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "To ask about your information, write to the enquiries address shown on the contact page.",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			}
+		],
+		"services": [
+			{
+				"id": "strategic-advisory",
+				"slug": "strategic-advisory",
+				"status": "published",
+				"data": {
+					"title": "Strategic Advisory",
+					"summary": "Clear choices about where to focus, what to stop and how to know it is working.",
+					"featured": true,
+					"position": 10,
+					"photo": "/images/plan-session.webp",
+					"intro": "We help boards and leadership teams agree a direction they can explain in a few sentences and act on the following Monday.",
+					"engagement": "Typically 6 to 12 weeks",
+					"outcomes": "A shared, honest view of where you stand today\nA small number of priorities with owners and dates\nA plan your board, staff and partners can test and support\nEarly measures that show whether the plan is working",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Most organizations do not lack ideas. They lack a shared picture of where they stand and the confidence to say no to good options so they can say yes to the right ones.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What we do",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We start by listening to your leadership, your staff and, where it helps, the people you serve. We bring the evidence together into a handful of strategic questions and work through them with you in focused sessions.",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Strategy reviews and refreshes",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Scenario planning for uncertain markets or funding",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Option appraisal for major investments",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Board strategy days and facilitated decisions",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b7",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What changes",
+									"_key": "b7s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b8",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "You leave with a short strategy, a clear set of priorities and a rhythm for reviewing them, written in your words rather than ours.",
+									"_key": "b8s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "people-organization",
+				"slug": "people-organization",
+				"status": "published",
+				"data": {
+					"title": "People & Organization",
+					"summary": "Structures, roles and leadership habits that help good people do their best work.",
+					"featured": true,
+					"position": 20,
+					"photo": "/images/studio-team.webp",
+					"intro": "We help you design an organization around the work that matters, and bring your people with you through the change.",
+					"engagement": "Typically 8 to 16 weeks",
+					"outcomes": "An organization design that follows your strategy\nClear roles, responsibilities and decision rights\nA change plan your managers can lead themselves\nLeadership development tied to real work",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Reorganizations often redraw boxes without changing how work actually gets done. We start from the work: who decides, who does, and where things get stuck.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What we do",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Organization design and operating models",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Leadership team development and coaching",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Culture and engagement reviews",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Change planning and communication",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How we work",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b7",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We involve the people affected early, test designs against real scenarios before anything is announced, and help your managers explain the change in their own words.",
+									"_key": "b7s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "places-infrastructure",
+				"slug": "places-infrastructure",
+				"status": "published",
+				"data": {
+					"title": "Places & Infrastructure",
+					"summary": "Independent advice on buildings, estates and public spaces that need to serve for decades.",
+					"featured": true,
+					"position": 30,
+					"photo": "/images/model-table.webp",
+					"intro": "We help owners, public bodies and communities decide what to build, refurbish or let go, and how to involve the people who will use it.",
+					"engagement": "Typically 10 to 20 weeks",
+					"outcomes": "A clear brief grounded in how spaces will really be used\nOptions compared on cost, carbon, risk and benefit\nCommunity and stakeholder engagement that informs the plan\nA business case ready for funders and approvals",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Buildings and public spaces outlast the plans that created them. Getting the brief right at the start matters more than any later design detail.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What we do",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Estate strategies and space reviews",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Project briefs and option appraisal",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Business cases for capital investment",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Community and stakeholder engagement",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Independent by design",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b7",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We do not design or build, and we take no fees from contractors. That lets us give owners and communities a straight view of the choices in front of them.",
+									"_key": "b7s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "governance-risk",
+				"slug": "governance-risk",
+				"status": "published",
+				"data": {
+					"title": "Governance & Risk",
+					"summary": "Boards and committees that see the right things in time to act on them.",
+					"featured": true,
+					"position": 40,
+					"photo": "/images/terrace-office.webp",
+					"intro": "We help boards, trustees and leadership teams strengthen how decisions are made, recorded and followed through.",
+					"engagement": "Typically 4 to 10 weeks",
+					"outcomes": "A board and committee structure that fits your size\nRisk reporting that highlights what needs a decision\nShorter, clearer papers and better meetings\nA practical improvement plan with owners",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Good governance is not more paperwork. It is the right people seeing the right information early enough to act.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What we do",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Board effectiveness reviews",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Risk frameworks and reporting",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Committee terms of reference and delegations",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Support for new chairs and trustees",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What changes",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b7",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Meetings get shorter and more decisive, papers become easier to read, and risks are discussed while there is still time to do something about them.",
+									"_key": "b7s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			}
+		],
+		"people": [
+			{
+				"id": "helen-marsh",
+				"slug": "helen-marsh",
+				"status": "published",
+				"data": {
+					"title": "Helen Marsh",
+					"role": "Managing Partner",
+					"tone": "teal",
+					"summary": "Leads strategy work with boards and public bodies. Before Northbridge she ran planning for a regional transport authority.",
+					"focus": "Strategy\nBoard advisory\nPublic sector",
+					"position": 10,
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Helen founded Northbridge after fifteen years in public service, most recently as director of planning for a regional transport authority.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "She works with boards and leadership teams on long-term strategy, especially where decisions affect many partners at once.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How Helen works",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Helen is known for short strategy documents and long conversations. She spends the first weeks of an engagement listening before offering a view.",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "daniel-okafor",
+				"slug": "daniel-okafor",
+				"status": "published",
+				"data": {
+					"title": "Daniel Okafor",
+					"role": "Partner, People & Organization",
+					"tone": "copper",
+					"summary": "Designs organizations around the work that matters and coaches leadership teams through change.",
+					"focus": "Organization design\nLeadership teams\nChange",
+					"position": 20,
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Daniel leads our people and organization practice. He has redesigned organizations in health, education and professional services.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "He believes structure follows work: start with how decisions are made and the boxes on the chart become much easier.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How Daniel works",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Daniel involves the people affected early and tests every design against real scenarios before it is announced.",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "sofia-lindqvist",
+				"slug": "sofia-lindqvist",
+				"status": "published",
+				"data": {
+					"title": "Sofia Lindqvist",
+					"role": "Partner, Places & Infrastructure",
+					"tone": "stone",
+					"summary": "Advises owners and communities on estates, buildings and public spaces built to serve for decades.",
+					"focus": "Estates\nCapital projects\nCommunity engagement",
+					"position": 30,
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Sofia trained as an urban planner and spent a decade advising on university and civic estates before joining Northbridge.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "She helps clients write the brief before the design starts, and makes sure the people who will use a space are heard early.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How Sofia works",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Sofia brings plans, models and site visits into the room so that decisions are made with the place in view.",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "marcus-reed",
+				"slug": "marcus-reed",
+				"status": "published",
+				"data": {
+					"title": "Marcus Reed",
+					"role": "Director, Governance & Risk",
+					"tone": "teal",
+					"summary": "Helps boards and trustees see the right information in time to act on it.",
+					"focus": "Board reviews\nRisk reporting\nTrustee support",
+					"position": 40,
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Marcus has served as company secretary and risk lead for charities and member organizations.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "He works with chairs and committees to make papers shorter, meetings clearer and risks visible earlier.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How Marcus works",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Marcus observes before he recommends, sitting in on board and committee meetings to see how decisions really happen.",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "priya-nair",
+				"slug": "priya-nair",
+				"status": "published",
+				"data": {
+					"title": "Priya Nair",
+					"role": "Senior Adviser, Strategy",
+					"tone": "copper",
+					"summary": "Brings evidence together into a few clear questions, and helps teams answer them.",
+					"focus": "Analysis\nScenario planning\nBusiness cases",
+					"position": 50,
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Priya leads the analysis behind many of our strategy engagements, from market reviews to scenario planning.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "She has a talent for turning large amounts of data into a short list of questions a leadership team can actually discuss.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How Priya works",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Priya shares early findings in plain language, so that clients can challenge them before they harden into conclusions.",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "tom-ashworth",
+				"slug": "tom-ashworth",
+				"status": "published",
+				"data": {
+					"title": "Tom Ashworth",
+					"role": "Senior Adviser, Places",
+					"tone": "stone",
+					"summary": "Supports option appraisals and business cases for buildings, estates and public spaces.",
+					"focus": "Option appraisal\nCarbon and cost\nFunding bids",
+					"position": 60,
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Tom joined Northbridge from a public works department, where he prepared business cases for schools, libraries and community buildings.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "He compares options on cost, carbon, risk and benefit, and writes business cases that funders can follow.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How Tom works",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Tom keeps calculations open and simple, so that clients can rerun them when assumptions change.",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			}
+		],
+		"insights": [
+			{
+				"id": "planning-for-decades",
+				"slug": "planning-for-decades",
+				"status": "published",
+				"data": {
+					"title": "Planning places people will use for decades",
+					"topic": "Places",
+					"reading_time": "6 min read",
+					"date": "2026-10-16T08:00:00.000Z",
+					"photo": "/images/model-review.webp",
+					"excerpt": "Buildings outlast the plans that created them. A good brief starts with how a place will really be used in twenty years, not how it looks on opening day.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Most capital projects are judged on opening day. The people who live and work with them judge them for decades afterwards.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "That gap explains many of the problems we are asked to help with: spaces that are hard to adapt, expensive to run or quietly avoided by the people they were built for.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Start with use, not form",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Before any drawings, we ask clients to describe a typical week in the building ten years from now. Who arrives first? What happens at lunchtime? What changes in the evening?",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Which activities must happen here, and which could happen anywhere?",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What will be different in ten years, and what will stay the same?",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Who will look after the place, and with what budget?",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b7",
+							"style": "blockquote",
+							"children": [
+								{
+									"_type": "span",
+									"text": "The cheapest change to a building is the one made in the brief.",
+									"_key": "b7s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b8",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Bring the users in early",
+									"_key": "b8s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b9",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Engagement works best when there is still something to change. A short series of workshops before the brief is fixed costs little and prevents expensive redesign later.",
+									"_key": "b9s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "before-you-reorganize",
+				"slug": "before-you-reorganize",
+				"status": "published",
+				"data": {
+					"title": "Five questions to ask before you reorganize",
+					"topic": "People",
+					"reading_time": "5 min read",
+					"date": "2026-10-07T08:00:00.000Z",
+					"photo": "/images/studio-team.webp",
+					"excerpt": "A new structure will not fix a decision-making problem. These five questions help leadership teams see what a reorganization can and cannot do.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Reorganizations are often the first answer to a performance problem and rarely the right one on their own.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "The five questions",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What decision is not being made today, and who should make it?",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Where does work wait, and why?",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Which roles overlap, and which gaps does nobody own?",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What will managers do differently on the first Monday?",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How will we know, in three months, that it is working?",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b7",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "If the answers point to unclear decisions rather than the wrong structure, start there. It is quicker, cheaper and kinder to the people involved.",
+									"_key": "b7s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "board-papers",
+				"slug": "board-papers",
+				"status": "published",
+				"data": {
+					"title": "Board papers that are easier to decide on",
+					"topic": "Governance",
+					"reading_time": "4 min read",
+					"date": "2026-09-24T08:00:00.000Z",
+					"photo": "/images/plan-session.webp",
+					"excerpt": "Long papers rarely lead to better decisions. A simple structure helps boards focus on the choice in front of them.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Board members often receive hundreds of pages before a meeting. The important decision can be buried on page forty.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "A one-page front sheet",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We help boards adopt a single front sheet for every paper: the decision needed, the options considered, the recommendation, and the main risks.",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What are we being asked to decide?",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What happens if we do nothing?",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What would change our recommendation?",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Supporting detail still matters, but it belongs in appendices. Meetings become shorter, and discussion moves to the questions that need judgement.",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "engagement-that-changes-the-plan",
+				"slug": "engagement-that-changes-the-plan",
+				"status": "published",
+				"data": {
+					"title": "Community engagement that changes the plan",
+					"topic": "Strategy",
+					"reading_time": "5 min read",
+					"date": "2026-09-10T08:00:00.000Z",
+					"photo": "/images/city-dusk.webp",
+					"excerpt": "Consultation that happens after decisions are made builds frustration. Engagement that happens early builds better plans.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "People can tell the difference between being asked and being told. Engagement only builds trust when it can still change something.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Three habits that help",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Share options, not a finished answer.",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Explain what you heard and what you changed as a result.",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Come back when decisions are made, not only when you need support.",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "blockquote",
+							"children": [
+								{
+									"_type": "span",
+									"text": "If nothing could change, it is a briefing, not a consultation.",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Early engagement takes a few extra weeks. It usually saves months later, when objections would otherwise surface at the approval stage.",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			}
+		],
+		"principles": [
+			{
+				"id": "listen-first",
+				"slug": "listen-first",
+				"status": "published",
+				"data": {
+					"title": "Listen before we advise",
+					"text": "We spend time with your people, partners and evidence before we offer a view.",
+					"position": 10
+				}
+			},
+			{
+				"id": "senior-attention",
+				"slug": "senior-attention",
+				"status": "published",
+				"data": {
+					"title": "Senior attention throughout",
+					"text": "The advisers you meet are the advisers who do the work, from first question to handover.",
+					"position": 20
+				}
+			},
+			{
+				"id": "plain-advice",
+				"slug": "plain-advice",
+				"status": "published",
+				"data": {
+					"title": "Plain, honest advice",
+					"text": "We say what we think in clear language, including when the answer is to wait or do less.",
+					"position": 30
+				}
+			},
+			{
+				"id": "lasting-capability",
+				"slug": "lasting-capability",
+				"status": "published",
+				"data": {
+					"title": "Leave capability behind",
+					"text": "We work alongside your team so the thinking, tools and confidence stay when we leave.",
+					"position": 40
+				}
+			}
+		],
+		"office": [
+			{
+				"id": "office",
+				"slug": "office",
+				"status": "published",
+				"data": {
+					"title": "Northbridge Professional Services",
+					"street": "Suite 600, 210 Riverside Avenue",
+					"locality": "Portland, OR 97204",
+					"country": "United States",
+					"phone": "+1 503 555 0142",
+					"email": "hello@northbridge.example",
+					"hours": "Monday to Friday, 8:30 to 17:30",
+					"response_note": "We reply to every message within two working days. First conversations are informal and free of charge."
+				}
+			}
+		]
+	}
+}
