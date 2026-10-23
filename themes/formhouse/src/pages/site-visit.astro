@@ -1,0 +1,183 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import { getBusiness, telHref } from "../lib/formhouse";
+
+const businessResult = await getBusiness();
+if (Astro.cache?.enabled) Astro.cache.set(businessResult.cacheHint);
+const { business } = businessResult;
+const regions = (business.regions ?? []).map((r) => r.name).filter(Boolean);
+
+const projectTypes = [
+	"Kitchen renovation",
+	"Whole-home renovation",
+	"Living spaces",
+	"Bathroom",
+	"Extension or reconfiguration",
+	"Not sure yet",
+];
+const areas = ["Under 1,000 sq ft", "1,000–2,000 sq ft", "2,000–3,500 sq ft", "3,500–5,000 sq ft", "Over 5,000 sq ft"];
+const budgets = ["Under €75,000", "€75,000–€150,000", "€150,000–€300,000", "€300,000–€600,000", "Over €600,000", "Not sure yet"];
+
+// ?type=kitchen | living | whole-home preselects the project type (linked from project pages).
+const TYPE_BY_KEY: Record<string, string> = {
+	kitchen: "Kitchen renovation",
+	living: "Living spaces",
+	"whole-home": "Whole-home renovation",
+};
+const typeKey = (Astro.url.searchParams.get("type") ?? "").toLowerCase();
+const preselect = Object.hasOwn(TYPE_BY_KEY, typeKey) ? TYPE_BY_KEY[typeKey] : undefined;
+const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Saigon" }).format(new Date());
+const noJs = business.email ? `mailto:${business.email}?subject=${encodeURIComponent("Site visit request")}` : undefined;
+---
+
+<Base
+	title="Book a site visit"
+	description="Book a site visit and our team will come to your property to discuss your ideas, understand the space and explore how we can bring your vision to life."
+	header="light"
+>
+	<div class="visit">
+		<section class="visit-main" aria-labelledby="visit-title">
+			<p class="eyebrow">Book a site visit</p>
+			<h1 id="visit-title" class="display display-visit">Let’s explore<br /> your home’s<br /> potential.</h1>
+			<p class="visit-lede">
+				Book a site visit and our team will come to your property to discuss your ideas, understand the space and explore
+				how we can bring your vision to life.
+			</p>
+
+			<form
+				class="visit-form"
+				id="site-visit-form"
+				aria-label="Site visit request"
+				data-email={business.email}
+				action={noJs}
+				method="post"
+				enctype="text/plain"
+			>
+				<div class="field">
+					<label for="v-type">Project type</label>
+					<select id="v-type" name="type" required>
+						<option value="" selected={!preselect} disabled>Select project type</option>
+						{projectTypes.map((t) => <option selected={t === preselect}>{t}</option>)}
+					</select>
+				</div>
+				<div class="field">
+					<label for="v-area">Property area (sq ft)</label>
+					<select id="v-area" name="area" required>
+						<option value="" selected disabled>Select property area</option>
+						{areas.map((a) => <option>{a}</option>)}
+					</select>
+				</div>
+				<div class="field">
+					<label for="v-location">Location</label>
+					<input
+						id="v-location"
+						class="has-chevron"
+						name="location"
+						type="text"
+						list={regions.length > 0 ? "v-regions" : undefined}
+						autocomplete="address-level2"
+						placeholder="Enter your location"
+						maxlength="120"
+						required
+					/>
+					{regions.length > 0 && <datalist id="v-regions">{regions.map((r) => <option value={r} />)}</datalist>}
+				</div>
+				<div class="field">
+					<label for="v-budget">Budget band</label>
+					<select id="v-budget" name="budget" required>
+						<option value="" selected disabled>Select budget range</option>
+						{budgets.map((b) => <option>{b}</option>)}
+					</select>
+				</div>
+				<div class="field field-wide">
+					<label for="v-date">Preferred visit date</label>
+					<input id="v-date" name="date" type="date" min={today} required />
+				</div>
+				<div class="field">
+					<label for="v-name">Your name</label>
+					<input id="v-name" name="name" type="text" autocomplete="name" placeholder="Full name" maxlength="120" required />
+				</div>
+				<div class="field">
+					<label for="v-email">Email</label>
+					<input id="v-email" name="email" type="email" autocomplete="email" placeholder="your@email.com" maxlength="160" required />
+				</div>
+				<div class="field field-wide">
+					<label for="v-details">Additional details (optional)</label>
+					<textarea
+						id="v-details"
+						name="details"
+						rows="3"
+						maxlength="2000"
+						placeholder="Tell us about your project, ideas or any specific areas you’d like to discuss..."></textarea>
+				</div>
+				<button class="btn btn-block field-wide" type="submit">Request site visit <Arrow /></button>
+				<p class="form-status field-wide" role="status" aria-live="polite" data-status>
+					{
+						business.email ? (
+							<noscript>
+								Without JavaScript, send your request by email to <a href={`mailto:${business.email}`}>{business.email}</a>.
+							</noscript>
+						) : (
+							business.phone && (
+								<>
+									Online requests are not available right now. Please call <a href={telHref(business.phone)}>{business.phone}</a>.
+								</>
+							)
+						)
+					}
+				</p>
+			</form>
+		</section>
+		<figure class="visit-photo">
+			<img
+				src="/images/site-visit.webp"
+				alt="A dining room opening onto a stone terrace with a pool, olive trees and hills, under black pendant lights"
+				width="946"
+				height="857"
+			/>
+		</figure>
+	</div>
+</Base>
+
+<script>
+	// Site visit request: compose an email to the studio. Nothing is sent by the site itself.
+	const form = document.querySelector<HTMLFormElement>("#site-visit-form");
+	const status = form?.querySelector<HTMLElement>("[data-status]");
+	if (form && status) {
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!form.reportValidity()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online requests are not available right now. Please contact the studio by phone.";
+				return;
+			}
+			const data = new FormData(form);
+			const get = (k: string) => String(data.get(k) ?? "").trim();
+			const subject = `Site visit request: ${get("type")} — ${get("location")}`;
+			const body = [
+				"Hello,",
+				"",
+				"I would like to book a site visit.",
+				"",
+				`Project type: ${get("type")}`,
+				`Property area: ${get("area")}`,
+				`Location: ${get("location")}`,
+				`Budget band: ${get("budget")}`,
+				`Preferred visit date: ${get("date")}`,
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				`Additional details: ${get("details") || "None"}`,
+				"",
+			].join("\n");
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+			status.textContent =
+				"Your email app should open with this request ready to send. Nothing is sent until you send that email. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	}
+</script>

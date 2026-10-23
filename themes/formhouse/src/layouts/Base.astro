@@ -1,0 +1,183 @@
+---
+import { getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import Arrow from "../components/Arrow.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getBusiness, telHref } from "../lib/formhouse";
+import "../styles/theme.css";
+
+interface Props {
+	title: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	/** Pass content reference for plugin page contributions on content pages */
+	content?: { collection: string; id: string; slug?: string | null };
+	/** Force which primary-menu URL is marked current. */
+	current?: string;
+	/**
+	 * Header treatment: `overlay` sits transparent over a photo hero (light text), `solid` is the
+	 * charcoal-brown bar, `light` is the stone bar with dark text used beside forms.
+	 */
+	header?: "overlay" | "solid" | "light";
+}
+
+const { title, pageTitle, description, image, canonical, content, current, header = "solid" } = Astro.props;
+const [settingsResult, menuResult, businessResult] = await Promise.all([
+	getSiteSettingsWithCacheHint(),
+	getMenuWithCacheHint("primary"),
+	getBusiness(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(settingsResult.cacheHint);
+	Astro.cache.set(menuResult.cacheHint);
+	Astro.cache.set(businessResult.cacheHint);
+}
+
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(settingsResult.data);
+const titleIncludesSiteName =
+	title === siteTitle || title.endsWith(` | ${siteTitle}`) || title.endsWith(` — ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
+const pageDescription = description ?? siteTagline;
+const menuItems = menuResult.data?.items ?? [];
+const { business } = businessResult;
+
+// The site-visit menu item is shown as the header button; every other item is a text link.
+const CTA_URL = "/site-visit";
+const norm = (url: string) => url.replace(/[?#].*$/, "").replace(/\/$/, "") || "/";
+const ctaItem = menuItems.find((i) => norm(i.url) === CTA_URL);
+const navItems = menuItems.filter((i) => i !== ctaItem);
+const ctaLabel = ctaItem?.label ?? "Book a site visit";
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const currentUrl =
+	current ??
+	menuItems.find((i) => norm(i.url) === path)?.url ??
+	menuItems
+		.filter((i) => norm(i.url) !== "/" && path.startsWith(`${norm(i.url)}/`))
+		.sort((a, b) => b.url.length - a.url.length)[0]?.url;
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description: pageDescription,
+	canonical,
+	image,
+	content,
+	siteName: siteTitle,
+});
+const year = new Intl.DateTimeFormat("en-GB", { year: "numeric", timeZone: "Asia/Saigon" }).format(new Date());
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{fullTitle}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Newsreader:opsz,wght@6..72,200..600&display=swap"
+			rel="stylesheet"
+		/>
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<header class={`site-head site-head-${header}`}>
+			<div class="head-inner container">
+				<a class="wordmark" href="/" aria-label={`${siteTitle} — homepage`}>
+					{
+						siteLogo ? (
+							<img src={siteLogo.url} alt={siteLogo.alt || siteTitle} />
+						) : (
+							<>
+								<span class="wordmark-name">{siteTitle}</span>
+								<span class="wordmark-tag">{siteTagline}</span>
+							</>
+						)
+					}
+				</a>
+				<nav class="nav" aria-label="Primary">
+					{
+						navItems.map((item) => (
+							<a
+								href={item.url}
+								target={item.target}
+								rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+								aria-current={item.url === currentUrl ? "page" : undefined}
+							>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+				<a class="btn head-cta" href={ctaItem?.url ?? CTA_URL} aria-current={ctaItem && ctaItem.url === currentUrl ? "page" : undefined}>
+					{ctaLabel} <Arrow />
+				</a>
+				<details class="mobile-nav">
+					<summary>
+						<svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true" focusable="false">
+							<path d="M0 1h22M0 7h22M0 13h22" stroke="currentColor" stroke-width="1.5" />
+						</svg>
+						<span>Menu</span>
+					</summary>
+					<nav class="mobile-panel" aria-label="Primary (mobile)">
+						{
+							navItems.map((item) => (
+								<a href={item.url} aria-current={item.url === currentUrl ? "page" : undefined}>
+									{item.label}
+								</a>
+							))
+						}
+						<a class="btn" href={ctaItem?.url ?? CTA_URL}>{ctaLabel} <Arrow /></a>
+					</nav>
+				</details>
+			</div>
+		</header>
+
+		<main id="main">
+			<slot />
+		</main>
+
+		<footer class="site-foot">
+			<div class="container foot-inner">
+				<div class="foot-brand">
+					<a class="wordmark" href="/">
+						<span class="wordmark-name">{siteTitle}</span>
+						<span class="wordmark-tag">{siteTagline}</span>
+					</a>
+					<p>Kitchen, living-space and whole-home renovations, designed and managed from first visit to handover.</p>
+				</div>
+				<div class="foot-col">
+					<h2>Explore</h2>
+					{menuItems.map((item) => <a href={item.url}>{item.label}</a>)}
+				</div>
+				<div class="foot-col">
+					<h2>Studio</h2>
+					{business.studio && <p>{business.studio}</p>}
+					{business.phone && <a href={telHref(business.phone)}>{business.phone}</a>}
+					{business.email && <a href={`mailto:${business.email}`}>{business.email}</a>}
+				</div>
+				<div class="foot-cta">
+					<p class="foot-cta-title">Make room for better living.</p>
+					<a class="btn" href={ctaItem?.url ?? CTA_URL}>{ctaLabel} <Arrow /></a>
+				</div>
+			</div>
+			<div class="container foot-bottom">
+				<span>© {year} {siteTitle}. All rights reserved.</span>
+				<span>Built with EmDash</span>
+			</div>
+		</footer>
+
+		<EmDashBodyEnd page={pageCtx} />
+	</body>
+</html>
