@@ -31,6 +31,3 @@ uploads/
 # Local logs and operating-system metadata
 *.log
 .DS_Store
-
-# Local review screenshots (large; kept out of the repository)
-themes/*/screenshots/
