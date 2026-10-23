@@ -1,0 +1,617 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Outline",
+		"description": "An independent creative studio theme: selected work, packages, case studies and a project enquiry form",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "Outline",
+		"tagline": "Good design. Clear results."
+	},
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "projects",
+			"label": "Projects",
+			"labelSingular": "Project",
+			"urlPattern": "/work/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Project name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "categories",
+					"label": "Work filters",
+					"type": "multiSelect",
+					"validation": {
+						"options": [
+							"branding",
+							"web-design",
+							"packaging"
+						]
+					}
+				},
+				{
+					"slug": "tags",
+					"label": "Disciplines (work page)",
+					"type": "string"
+				},
+				{
+					"slug": "home_tags",
+					"label": "Disciplines (homepage card)",
+					"type": "string"
+				},
+				{
+					"slug": "summary",
+					"label": "Summary",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "size",
+					"label": "Work grid size",
+					"type": "select",
+					"defaultValue": "third",
+					"validation": {
+						"options": [
+							"wide",
+							"third"
+						]
+					}
+				},
+				{
+					"slug": "featured",
+					"label": "Show in homepage Selected work",
+					"type": "boolean",
+					"indexed": true
+				},
+				{
+					"slug": "listed",
+					"label": "Show in work grid",
+					"type": "boolean",
+					"indexed": true,
+					"defaultValue": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Bundled photo path",
+					"type": "string"
+				},
+				{
+					"slug": "headline_lead",
+					"label": "Case study headline (black)",
+					"type": "string"
+				},
+				{
+					"slug": "headline_accent",
+					"label": "Case study headline (vermilion)",
+					"type": "string"
+				},
+				{
+					"slug": "lead",
+					"label": "Case study intro",
+					"type": "text"
+				},
+				{
+					"slug": "challenge_title",
+					"label": "Challenge heading",
+					"type": "string"
+				},
+				{
+					"slug": "challenge",
+					"label": "Challenge text",
+					"type": "text"
+				},
+				{
+					"slug": "approach_title",
+					"label": "Approach heading",
+					"type": "string"
+				},
+				{
+					"slug": "approach",
+					"label": "Approach text",
+					"type": "text"
+				},
+				{
+					"slug": "deliverables",
+					"label": "Deliverables (one per line)",
+					"type": "text"
+				},
+				{
+					"slug": "gallery",
+					"label": "Case study images",
+					"type": "repeater",
+					"validation": {
+						"maxItems": 6,
+						"subFields": [
+							{
+								"slug": "image",
+								"label": "Photo (upload)",
+								"type": "image"
+							},
+							{
+								"slug": "photo",
+								"label": "Bundled photo path",
+								"type": "string"
+							},
+							{
+								"slug": "alt",
+								"label": "Alt text",
+								"type": "string",
+								"required": true
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			"slug": "packages",
+			"label": "Packages",
+			"labelSingular": "Package",
+			"urlPattern": "/services#{slug}",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Package name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "number",
+					"label": "Number label",
+					"type": "string"
+				},
+				{
+					"slug": "summary",
+					"label": "Summary",
+					"type": "text"
+				},
+				{
+					"slug": "price",
+					"label": "Price line",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "includes",
+					"label": "What's included (one per line)",
+					"type": "text"
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Bundled photo path",
+					"type": "string"
+				},
+				{
+					"slug": "alt",
+					"label": "Photo alt text",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "studio",
+			"label": "Studio",
+			"labelSingular": "Studio",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Studio name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "email",
+					"label": "Enquiries email",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "phone",
+					"label": "Phone",
+					"type": "string"
+				},
+				{
+					"slug": "street",
+					"label": "Street",
+					"type": "string"
+				},
+				{
+					"slug": "locality",
+					"label": "City line",
+					"type": "string"
+				},
+				{
+					"slug": "response",
+					"label": "Reply time",
+					"type": "string"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Homepage",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "Services & packages",
+					"url": "/services"
+				},
+				{
+					"type": "custom",
+					"label": "Work",
+					"url": "/work"
+				},
+				{
+					"type": "custom",
+					"label": "Case study",
+					"url": "/work/common-ground"
+				},
+				{
+					"type": "custom",
+					"label": "Start a project",
+					"url": "/start-a-project"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "privacy",
+				"slug": "privacy",
+				"status": "published",
+				"data": {
+					"title": "Privacy",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b0",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This is the sample privacy page for the Outline theme. Replace it with your own policy before you publish.",
+									"_key": "s0"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b1",
+							"children": [
+								{
+									"_type": "span",
+									"text": "The enquiry form on this site opens your visitor's email app with their message; the site itself does not store or send what they type.",
+									"_key": "s1"
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"projects": [
+			{
+				"id": "aurelia",
+				"slug": "aurelia",
+				"status": "published",
+				"data": {
+					"title": "Aurelia",
+					"categories": [
+						"branding",
+						"web-design"
+					],
+					"tags": "Branding, Web design",
+					"home_tags": "Branding, Web design, Creative direction",
+					"summary": "Identity, packaging language and a website for a natural skincare brand.",
+					"size": "wide",
+					"featured": true,
+					"listed": true,
+					"position": 10,
+					"photo": "/images/aurelia.webp",
+					"headline_lead": "Natural skincare,",
+					"headline_accent": "brightly told.",
+					"lead": "A complete brand and website for a skincare label that wanted warmth, clarity and a quieter kind of luxury.",
+					"challenge_title": "Stand out on a crowded shelf.",
+					"challenge": "Aurelia makes natural skincare for people who read labels. They needed a name, a look and a website that felt considered and calm without sliding into the clichés of the category.",
+					"approach_title": "A warm, confident identity.",
+					"approach": "We built the identity around a refined serif wordmark, a deep amber palette and generous space, then carried it through packaging and a website that puts the ingredients first.",
+					"deliverables": "Brand strategy\nVisual identity system\nPackaging design direction\nWebsite design and development\nBrand guidelines"
+				}
+			},
+			{
+				"id": "solara-retreats",
+				"slug": "solara-retreats",
+				"status": "published",
+				"data": {
+					"title": "Solara Retreats",
+					"categories": [
+						"branding",
+						"web-design"
+					],
+					"tags": "Branding, Web design",
+					"home_tags": "Branding, Web design",
+					"summary": "A brand and booking website for a collection of design-led retreats.",
+					"size": "wide",
+					"featured": true,
+					"listed": true,
+					"position": 20,
+					"photo": "/images/solara.webp",
+					"headline_lead": "A calmer way",
+					"headline_accent": "to stay at Solara.",
+					"lead": "A brand and website for a small group of retreats that are built into their landscapes.",
+					"challenge_title": "Make a place feel reachable.",
+					"challenge": "Solara's retreats are remote and beautiful, but their old website treated them like any hotel listing. They needed a brand that sells atmosphere before amenities.",
+					"approach_title": "Light, landscape and restraint.",
+					"approach": "We let photography lead, set a quiet type system around it and designed a booking journey that keeps the first screen free of clutter.",
+					"deliverables": "Brand strategy\nVisual identity system\nWebsite design and development\nPhotography art direction\nLaunch support"
+				}
+			},
+			{
+				"id": "pattern",
+				"slug": "pattern",
+				"status": "published",
+				"data": {
+					"title": "Pattern",
+					"categories": [
+						"branding",
+						"packaging"
+					],
+					"tags": "Branding, Packaging",
+					"home_tags": "Branding, Web design, Creative direction",
+					"summary": "A bold identity and printed books for a design and architecture practice.",
+					"size": "third",
+					"featured": true,
+					"listed": true,
+					"position": 30,
+					"photo": "/images/pattern.webp",
+					"headline_lead": "Giving Pattern",
+					"headline_accent": "a bolder shape.",
+					"lead": "An identity and a set of printed pieces for a practice that designs spaces, people and purpose.",
+					"challenge_title": "Say more with less.",
+					"challenge": "Pattern's work is thoughtful, but its materials looked like everyone else's. They wanted a mark and a printed system that could carry a point of view on the cover alone.",
+					"approach_title": "One shape, used with confidence.",
+					"approach": "A single vermilion form became the signature. We paired it with a plain, tightly set typeface and applied it across covers, stationery and signage.",
+					"deliverables": "Brand strategy\nVisual identity system\nBook and print design\nBrand guidelines\nAssets for digital and print"
+				}
+			},
+			{
+				"id": "fora",
+				"slug": "fora",
+				"status": "published",
+				"data": {
+					"title": "Fora",
+					"categories": [
+						"branding",
+						"packaging"
+					],
+					"tags": "Branding, Packaging",
+					"home_tags": "Branding, Packaging",
+					"summary": "Packaging and identity for a plant-based wellness range.",
+					"size": "third",
+					"featured": false,
+					"listed": true,
+					"position": 40,
+					"photo": "/images/fora.webp",
+					"headline_lead": "Plant-based",
+					"headline_accent": "wellness, Fora.",
+					"lead": "Packaging and a brand system for a plant-based wellness range.",
+					"challenge_title": "Look natural without looking plain.",
+					"challenge": "Fora's products are simple and honest. The packaging needed to feel premium and be clear about what is inside, without relying on green leaves.",
+					"approach_title": "Embossed, tactile and quiet.",
+					"approach": "We designed a deep green box with a delicate embossed mark, a short set of clear labels and a palette taken from stone and moss.",
+					"deliverables": "Brand strategy\nVisual identity system\nPackaging design\nPrint production support\nBrand guidelines"
+				}
+			},
+			{
+				"id": "velra",
+				"slug": "velra",
+				"status": "published",
+				"data": {
+					"title": "Velra",
+					"categories": [
+						"branding",
+						"web-design"
+					],
+					"tags": "Branding, Web design",
+					"home_tags": "Branding, Web design",
+					"summary": "A brand and mobile-first website for a boutique stays collection.",
+					"size": "third",
+					"featured": false,
+					"listed": true,
+					"position": 50,
+					"photo": "/images/velra.webp",
+					"headline_lead": "A different kind",
+					"headline_accent": "of stay, Velra.",
+					"lead": "A brand and a mobile-first website for extraordinary places for a calmer tomorrow.",
+					"challenge_title": "Win guests on a small screen.",
+					"challenge": "Most of Velra's guests discover it on their phones. The website had to feel as considered on a handset as the places themselves.",
+					"approach_title": "Designed for the thumb first.",
+					"approach": "We started with the mobile layout, set the headline type large and let a single photograph carry each page before scaling the system up to desktop.",
+					"deliverables": "Brand strategy\nVisual identity system\nMobile-first website design\nDevelopment and CMS setup\nLaunch support"
+				}
+			},
+			{
+				"id": "common-ground",
+				"slug": "common-ground",
+				"status": "published",
+				"data": {
+					"title": "Common Ground",
+					"categories": [
+						"branding",
+						"web-design"
+					],
+					"tags": "Branding, Web design",
+					"home_tags": "Branding, Web design",
+					"summary": "A brand and website for a hospitality brand built around people and place.",
+					"size": "third",
+					"featured": false,
+					"listed": false,
+					"position": 60,
+					"photo": "/images/cs-hero.webp",
+					"headline_lead": "A new chapter for",
+					"headline_accent": "Common Ground.",
+					"lead": "A complete brand and website for a hospitality brand dedicated to people, place and a more considered way of travelling.",
+					"challenge_title": "Bring a meaningful vision to life.",
+					"challenge": "Common Ground set out to create a collection of stays that connect people with nature and local communities. They needed a brand and digital presence that could capture this vision with clarity, warmth and a sense of place.",
+					"approach_title": "A refined identity rooted in place.",
+					"approach": "We developed a visual identity and website that reflects Common Ground's values — thoughtful design, local connection and a lighter footprint. The result is a calm, confident brand that feels both contemporary and enduring.",
+					"deliverables": "Brand strategy\nVisual identity system\nWebsite design and development\nBrand guidelines\nLaunch support",
+					"gallery": [
+						{
+							"photo": "/images/cs-card.webp",
+							"alt": "Letterpress card printed with the Common Ground wordmark"
+						},
+						{
+							"photo": "/images/cs-palette.webp",
+							"alt": "Common Ground colour palette beside an olive tree photograph and brand line"
+						},
+						{
+							"photo": "/images/cs-site.webp",
+							"alt": "Common Ground website shown on a tablet"
+						}
+					]
+				}
+			}
+		],
+		"packages": [
+			{
+				"id": "brand-foundations",
+				"slug": "brand-foundations",
+				"status": "published",
+				"data": {
+					"title": "Brand Foundations",
+					"number": "01",
+					"summary": "A focused package to define your brand and create a distinctive visual identity.",
+					"price": "From $6,000",
+					"includes": "Brand strategy workshop\nVisual identity design\nBrand guidelines\nAssets for digital and print",
+					"position": 10,
+					"photo": "/images/pkg-brand.webp",
+					"alt": "Black stationery box embossed with the Aurelia wordmark"
+				}
+			},
+			{
+				"id": "website-design",
+				"slug": "website-design",
+				"status": "published",
+				"data": {
+					"title": "Website Design",
+					"number": "02",
+					"summary": "A complete website design and build to bring your brand to life online.",
+					"price": "From $12,000",
+					"includes": "UX strategy and content planning\nCustom website design\nDevelopment and CMS setup\nLaunch support and training",
+					"position": 20,
+					"photo": "/images/pkg-web.webp",
+					"alt": "Modern retreat at sunset, from the Solara Retreats website project"
+				}
+			},
+			{
+				"id": "monthly-partnership",
+				"slug": "monthly-partnership",
+				"status": "published",
+				"data": {
+					"title": "Monthly Partnership",
+					"number": "03",
+					"summary": "Ongoing design support to keep your brand evolving and performing.",
+					"price": "From $2,500 / month",
+					"includes": "Ongoing design and development\nContent updates and new pages\nBrand and marketing support\nFlexible scope, pause anytime",
+					"position": 30,
+					"photo": "/images/pkg-partner.webp",
+					"alt": "Printed book with a vermilion shape, from the Pattern project"
+				}
+			}
+		],
+		"studio": [
+			{
+				"id": "main",
+				"slug": "main",
+				"status": "published",
+				"data": {
+					"title": "Outline",
+					"email": "hello@outline.example",
+					"phone": "+1 123 456 7890",
+					"street": "123 Creative Lane",
+					"locality": "Los Angeles, CA 90027",
+					"response": "2 business days"
+				}
+			}
+		]
+	}
+}

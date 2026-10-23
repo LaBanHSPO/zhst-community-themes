@@ -1,0 +1,920 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Wedding Photographer",
+    "description": "A romantic wedding-photographer theme: stories, packages, about page and an inquiry page, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "evermore",
+    "tagline": "Wedding Photographer"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "stories",
+      "label": "Stories",
+      "labelSingular": "Story",
+      "urlPattern": "/stories/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Couple (e.g. Mara & Elio)",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "place",
+          "label": "Place (venue and region)",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "date_label",
+          "label": "Wedding date (as shown, e.g. 14 September 2025)",
+          "type": "string"
+        },
+        {
+          "slug": "summary",
+          "label": "One-line summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover photo path",
+          "type": "string"
+        },
+        {
+          "slug": "gallery",
+          "label": "Photo grid",
+          "type": "repeater",
+          "validation": {
+            "maxItems": 40,
+            "subFields": [
+              {
+                "slug": "image",
+                "label": "Photo (upload)",
+                "type": "image"
+              },
+              {
+                "slug": "photo",
+                "label": "Bundled photo path",
+                "type": "string"
+              },
+              {
+                "slug": "caption",
+                "label": "Caption",
+                "type": "text"
+              }
+            ]
+          }
+        },
+        {
+          "slug": "content",
+          "label": "Story",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "packages",
+      "label": "Packages",
+      "labelSingular": "Package",
+      "urlPattern": "/packages",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Package name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true
+        },
+        {
+          "slug": "price",
+          "label": "Starting price in dollars (whole number)",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "slug": "coverage",
+          "label": "Coverage (e.g. 6 hours)",
+          "type": "string"
+        },
+        {
+          "slug": "includes",
+          "label": "What is included (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "featured",
+          "label": "Highlight as the most-booked option",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "principles",
+      "label": "Approach",
+      "labelSingular": "Approach point",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Text",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "studio",
+      "label": "Studio details",
+      "labelSingular": "Studio details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Studio name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "photographer",
+          "label": "Photographer",
+          "type": "string"
+        },
+        {
+          "slug": "base",
+          "label": "Based in",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Inquiry email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "response",
+          "label": "Reply time (shown beside the inquiry form)",
+          "type": "string"
+        },
+        {
+          "slug": "inquiry_note",
+          "label": "Note shown beside the inquiry form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "Stories",
+          "url": "/stories"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        },
+        {
+          "type": "custom",
+          "label": "Packages",
+          "url": "/packages"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "A quiet photographer for loud, happy days.",
+          "eyebrow": "About",
+          "intro": "evermore is a small wedding photography studio working across Tuscany and wherever else a couple would like to be married.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I started evermore after years of photographing other people's weddings and realising that my favourite frames were never the ones I had planned. They were the ones in between: a father adjusting a tie, a bride laughing mid-sentence, two friends hugging at the edge of the dance floor.",
+                  "_key": "k14s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "So that is how we work. We arrive early, learn the shape of your day, and then stay out of the way. You will get a handful of portraits that are properly directed, because they matter, and the rest will be real.",
+                  "_key": "k15s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How we work",
+                  "_key": "k16s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We take on a limited number of weddings each year, so that every couple gets the same attention before, during and after the day. We answer every inquiry personally, usually within two working days.",
+                  "_key": "k17s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most of our weddings are in Tuscany, but we travel. If you are planning something further away, tell us where and we will send a travel estimate with your quote.",
+                  "_key": "k18s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "terms-and-delivery",
+        "slug": "terms-and-delivery",
+        "status": "published",
+        "data": {
+          "title": "Terms and delivery",
+          "eyebrow": "Good to know",
+          "intro": "A few things that help every wedding run smoothly.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Booking",
+                  "_key": "k19s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k20",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "An inquiry is not a booking. We reply by email, agree the package and date with you, and confirm with a short written agreement and a deposit.",
+                  "_key": "k20s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Delivery",
+                  "_key": "k21s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k22",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Your online gallery arrives within four weeks of the wedding. Elopements are delivered within two weeks.",
+                  "_key": "k22s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Travel",
+                  "_key": "k23s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k24",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Weddings in Tuscany include travel. Further afield, we add the actual cost of travel and a place to stay.",
+                  "_key": "k24s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "stories": [
+      {
+        "id": "mara-and-elio",
+        "slug": "mara-and-elio",
+        "status": "published",
+        "data": {
+          "title": "Mara & Elio",
+          "place": "Villa dei Cipressi, Tuscany",
+          "date_label": "14 September 2025",
+          "summary": "A hilltop ceremony, a long veil and an evening that never quite wanted to end.",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/hero-home.webp",
+          "gallery": [
+            {
+              "photo": "/images/embrace-close.webp",
+              "caption": "Mara and Elio, moments after the ceremony."
+            },
+            {
+              "photo": "/images/bouquet.webp",
+              "caption": "Peonies, garden roses and olive leaves."
+            },
+            {
+              "photo": "/images/veil.webp",
+              "caption": "The veil caught every breeze on the terrace."
+            },
+            {
+              "photo": "/images/hills.webp",
+              "caption": "Cypress trees at the edge of the estate."
+            },
+            {
+              "photo": "/images/table-setting.webp",
+              "caption": "The long table, set for forty guests."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Mara and Elio had one request: no stiff posing, and a lot of time outside. The ceremony was held on the terrace of Villa dei Cipressi as the light turned gold, with their families seated in a loose half circle under the olive trees.",
+                  "_key": "k1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We spent most of the portrait hour walking the grounds with them, saying very little. The best frames came in between the directions: a quiet laugh, a hand held a beat longer, a veil lifting in the wind.",
+                  "_key": "k2s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Dinner was served at a single long table. By the time the candles were lit, nobody was checking a phone.",
+                  "_key": "k3s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "hana-and-theo",
+        "slug": "hana-and-theo",
+        "status": "published",
+        "data": {
+          "title": "Hana & Theo",
+          "place": "Terrazza Lago, Lake Orsa",
+          "date_label": "3 May 2025",
+          "summary": "A small lakeside wedding with forty guests and a sunset worth waiting for.",
+          "featured": true,
+          "position": 20,
+          "photo": "/images/lake-couple.webp",
+          "gallery": [
+            {
+              "photo": "/images/camera.webp",
+              "caption": "Between the ceremony and the toasts."
+            },
+            {
+              "photo": "/images/prints.webp",
+              "caption": "Prints for their parents, made within the week."
+            },
+            {
+              "photo": "/images/lake-couple.webp",
+              "caption": "Hana and Theo on the terrace at sunset."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k4",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Hana and Theo kept their guest list to forty people and their schedule to almost nothing. We arrived two hours before the ceremony to photograph the quiet parts: the hair, the letters, the rings in a small dish.",
+                  "_key": "k4s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "At sunset the whole party drifted down to the water. We stayed back and let it happen.",
+                  "_key": "k5s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "nora-and-james",
+        "slug": "nora-and-james",
+        "status": "published",
+        "data": {
+          "title": "Nora & James",
+          "place": "Via dei Cipressi, Tuscany",
+          "date_label": "21 June 2025",
+          "summary": "A walk down a stone lane after the ceremony, in black and white.",
+          "featured": true,
+          "position": 30,
+          "photo": "/images/walking-bw.webp",
+          "gallery": [
+            {
+              "photo": "/images/walking-bw.webp",
+              "caption": "The lane behind the chapel."
+            },
+            {
+              "photo": "/images/hills.webp",
+              "caption": "The view from the garden wall."
+            },
+            {
+              "photo": "/images/rings-card.webp",
+              "caption": "Nora's vows, written on card for each guest."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k6",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Nora and James walked from the chapel to the dinner on foot, hand in hand, with their guests following at a respectful distance.",
+                  "_key": "k6s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We photographed the lane in black and white to keep the focus on the two of them, and kept the colour for the table and the flowers.",
+                  "_key": "k7s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "isla-and-daniel",
+        "slug": "isla-and-daniel",
+        "status": "published",
+        "data": {
+          "title": "Isla & Daniel",
+          "place": "Podere Alta, Tuscany",
+          "date_label": "8 October 2025",
+          "summary": "An autumn garden dinner with candles, linen and a very long table.",
+          "featured": false,
+          "position": 40,
+          "photo": "/images/table-setting.webp",
+          "gallery": [
+            {
+              "photo": "/images/table-setting.webp",
+              "caption": "The table before the guests arrived."
+            },
+            {
+              "photo": "/images/bouquet.webp",
+              "caption": "The bouquet, left on a chair during dinner."
+            },
+            {
+              "photo": "/images/veil.webp",
+              "caption": "A walk before sunset."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k8",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Isla and Daniel hosted sixty guests at one long table in the garden of Podere Alta. The florist worked only with what was growing within ten miles.",
+                  "_key": "k8s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We photographed the table setting just before the guests arrived, then put the camera down to join the first toast.",
+                  "_key": "k9s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "priya-and-sam",
+        "slug": "priya-and-sam",
+        "status": "published",
+        "data": {
+          "title": "Priya & Sam",
+          "place": "Casa del Colle, Tuscany",
+          "date_label": "17 August 2025",
+          "summary": "Handwritten notes, two gold rings and an intimate ceremony at home.",
+          "featured": false,
+          "position": 50,
+          "photo": "/images/rings-card.webp",
+          "gallery": [
+            {
+              "photo": "/images/rings-card.webp",
+              "caption": "The rings, resting on Priya's note to Sam."
+            },
+            {
+              "photo": "/images/camera-prints.webp",
+              "caption": "Prints from the day, laid out for the family."
+            },
+            {
+              "photo": "/images/embrace-close.webp",
+              "caption": "A quiet minute together."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k10",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Priya and Sam married in the garden of Sam's grandparents' house, with their closest family seated on borrowed chairs.",
+                  "_key": "k10s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The day was full of small written things: place cards, a note slipped into a jacket pocket, a promise on a card beside the rings. We made sure each one was photographed.",
+                  "_key": "k11s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "lucia-and-marc",
+        "slug": "lucia-and-marc",
+        "status": "published",
+        "data": {
+          "title": "Lucía & Marc",
+          "place": "Borgo San Lorenzo, Tuscany",
+          "date_label": "28 September 2025",
+          "summary": "A smiling, easy day with a bride who laughed through her own vows.",
+          "featured": false,
+          "position": 60,
+          "photo": "/images/embrace-close.webp",
+          "gallery": [
+            {
+              "photo": "/images/embrace-close.webp",
+              "caption": "Lucía and Marc, just married."
+            },
+            {
+              "photo": "/images/lake-couple.webp",
+              "caption": "A golden-hour portrait."
+            },
+            {
+              "photo": "/images/walking-bw.webp",
+              "caption": "Walking to the party."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Lucía laughed through her own vows, and Marc did not even try to hold it together. We have never photographed a happier ceremony.",
+                  "_key": "k12s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We kept the portraits short and the dancing long.",
+                  "_key": "k13s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "packages": [
+      {
+        "id": "the-elopement",
+        "slug": "the-elopement",
+        "status": "published",
+        "data": {
+          "title": "The Elopement",
+          "summary": "Quiet, unhurried coverage for a ceremony with very few guests.",
+          "price": 2400,
+          "coverage": "3 hours",
+          "includes": "One photographer for 3 hours\nCeremony and portraits\nOnline gallery of 120 edited photographs\nPrint release for personal use",
+          "featured": false,
+          "position": 10
+        }
+      },
+      {
+        "id": "the-wedding-day",
+        "slug": "the-wedding-day",
+        "status": "published",
+        "data": {
+          "title": "The Wedding Day",
+          "summary": "The full story of your day, from getting ready to the first dance.",
+          "price": 4200,
+          "coverage": "8 hours",
+          "includes": "One photographer for 8 hours\nGetting ready, ceremony, portraits and reception\nOnline gallery of 450 edited photographs\nA pre-wedding call and a venue visit planning note\nPrint release for personal use",
+          "featured": true,
+          "position": 20
+        }
+      },
+      {
+        "id": "the-whole-weekend",
+        "slug": "the-whole-weekend",
+        "status": "published",
+        "data": {
+          "title": "The Whole Weekend",
+          "summary": "Welcome dinner, wedding day and farewell brunch, with a second photographer.",
+          "price": 6800,
+          "coverage": "2 days",
+          "includes": "Two photographers across two days\nWelcome dinner, wedding day and farewell brunch\nOnline gallery of 800 edited photographs\nA keepsake album, 30 pages\nPrint release for personal use",
+          "featured": false,
+          "position": 30
+        }
+      }
+    ],
+    "principles": [
+      {
+        "id": "candid-first",
+        "slug": "candid-first",
+        "status": "published",
+        "data": {
+          "title": "Candid first",
+          "text": "We direct as little as we can. Most of your gallery is the in-between: a laugh, a glance, a moment nobody planned.",
+          "position": 10
+        }
+      },
+      {
+        "id": "a-quiet-presence",
+        "slug": "a-quiet-presence",
+        "status": "published",
+        "data": {
+          "title": "A quiet presence",
+          "text": "Two photographers at most, dressed to blend in, working low and calm. You will forget we are there.",
+          "position": 20
+        }
+      },
+      {
+        "id": "made-to-keep",
+        "slug": "made-to-keep",
+        "status": "published",
+        "data": {
+          "title": "Made to keep",
+          "text": "A tidy, colour-true gallery within four weeks, delivered online with a print release and album options.",
+          "position": 30
+        }
+      }
+    ],
+    "studio": [
+      {
+        "id": "studio",
+        "slug": "studio",
+        "status": "published",
+        "data": {
+          "title": "evermore",
+          "photographer": "Ines Marlowe",
+          "base": "Florence, Italy",
+          "phone": "+39 055 555 0142",
+          "email": "hello@evermore-photo.example",
+          "response": "We reply within two working days.",
+          "inquiry_note": "Tell us about your day and we will reply personally. An inquiry is not a booking; we confirm the date by email once we have spoken."
+        }
+      }
+    ]
+  }
+}

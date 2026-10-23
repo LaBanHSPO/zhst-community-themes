@@ -1,0 +1,37 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import { getGuides, guideUrl, photoAlt, photoSrc } from "../../lib/localways";
+
+const { entries, cacheHint } = await getGuides();
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+---
+
+<Base title="Our guides" description="Meet the locals who lead our food walks and neighborhood experiences.">
+	<section class="page-head container" aria-labelledby="guides-title">
+		<p class="eyebrow">The Localways difference</p>
+		<h1 id="guides-title" class="display display-dark display-md">Our guides</h1>
+		<p class="walk-lede">Our guides are locals, not just tour leaders. They share the places they love, the food they eat and the stories that make their city home.</p>
+	</section>
+	<div class="container guide-list">
+		{
+			entries.length > 0 ? (
+				entries.map(({ data: g }) => {
+					const src = photoSrc(g.image, g.photo);
+					return (
+						<article class="guide-card">
+							{src && <img src={src} alt={photoAlt(g.image, g.photo_alt, g.title)} width="925" height="358" loading="lazy" />}
+							<div>
+								<h2 class="title-md"><a href={guideUrl(g)}>{g.title}</a></h2>
+								{(g.card_text || g.intro) && <p>{g.card_text || g.intro}</p>}
+								<a class="text-link" href={guideUrl(g)} aria-hidden="true" tabindex="-1">Meet {g.title} <Arrow /></a>
+							</div>
+						</article>
+					);
+				})
+			) : (
+				<p class="empty">Our guide profiles are coming soon.</p>
+			)
+		}
+	</div>
+</Base>

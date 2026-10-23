@@ -1,0 +1,181 @@
+---
+import { getEmDashCollection, getEmDashEntry, getSeoMeta, decodeSlug, getSiteSettings } from "emdash";
+import { Image } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+import PropertyCard from "../../components/PropertyCard.astro";
+import { initials } from "../../utils/listing";
+import { MAX_LISTINGS } from "../../utils/queries";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) {
+	return Astro.rewrite("/404");
+}
+
+const { entry: agent, cacheHint } = await getEmDashEntry("agents", slug);
+if (!agent) {
+	return Astro.rewrite("/404");
+}
+
+const { entries: listings, cacheHint: listingsHint } = await getEmDashCollection("properties", {
+	where: { agent: slug },
+	orderBy: { published_at: "desc" },
+	limit: MAX_LISTINGS,
+});
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(listingsHint);
+}
+
+const data = agent.data;
+const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+const seo = getSeoMeta(agent, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+	defaultDescription: data.bio ? data.bio.slice(0, 160) : `${data.title}, ${data.role ?? "property agent"}`,
+});
+const hasPhoto = Boolean(data.photo?.src || data.photo?.id);
+const firstName = data.title.split(/\s+/)[0] ?? data.title;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description}
+	canonical={seo.canonical}
+	content={{ collection: "agents", id: data.id, slug }}
+>
+	<section class="profile">
+		<div class="container profile-grid">
+			<div class="profile-photo">
+				{
+					hasPhoto && data.photo ? (
+						<Image image={data.photo} alt={data.photo.alt || data.title} priority />
+					) : (
+						<span class="profile-initials" aria-hidden="true">{initials(data.title)}</span>
+					)
+				}
+			</div>
+			<div class="profile-copy">
+				<p class="eyebrow">{data.role || "Property agent"}</p>
+				<h1 {...agent.edit.title}>{data.title}</h1>
+				{data.areas && <p class="profile-areas"><Icon name="pin" size={18} /> Covers {data.areas}</p>}
+				{data.bio && <p class="profile-bio" {...agent.edit.bio}>{data.bio}</p>}
+				<ul class="profile-contact">
+					{
+						data.phone && (
+							<li>
+								<Icon name="phone" size={20} />
+								<a href={`tel:${data.phone.replace(/[^\d+]/g, "")}`}>{data.phone}</a>
+							</li>
+						)
+					}
+					{
+						data.email && (
+							<li>
+								<Icon name="mail" size={20} />
+								<a href={`mailto:${data.email}`}>{data.email}</a>
+							</li>
+						)
+					}
+				</ul>
+				<a class="btn" href="/contact">Send a message</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="section container" aria-labelledby="listings-title">
+		<div class="section-head">
+			<div>
+				<p class="eyebrow">Listings</p>
+				<h2 id="listings-title">Homes with {firstName}</h2>
+			</div>
+		</div>
+		{
+			listings.length === 0 ? (
+				<p class="empty">{firstName} has no homes listed right now. <a href="/properties">Browse all properties</a>.</p>
+			) : (
+				<ul class="property-grid">
+					{listings.map((p) => (
+						<li>
+							<PropertyCard slug={p.id} data={p.data} />
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</section>
+</Base>
+
+<style>
+	.profile {
+		padding-block: clamp(2.5rem, 6vw, 4.5rem);
+		background: var(--sand);
+	}
+	.profile-grid {
+		display: grid;
+		grid-template-columns: 15rem minmax(0, 1fr);
+		gap: clamp(1.5rem, 5vw, 4rem);
+		align-items: center;
+	}
+	.profile-photo {
+		width: 15rem;
+		aspect-ratio: 1;
+		border-radius: 50%;
+		overflow: hidden;
+		background: var(--navy);
+	}
+	.profile-photo :global(img) {
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		object-fit: cover;
+	}
+	.profile-initials {
+		display: grid;
+		place-items: center;
+		width: 100%;
+		height: 100%;
+		color: #fff;
+		font-family: var(--font-display);
+		font-size: 4rem;
+	}
+	.profile-areas {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		color: var(--muted);
+	}
+	.profile-bio {
+		font-size: 1.1rem;
+		max-width: 62ch;
+	}
+	.profile-contact {
+		list-style: none;
+		margin: 0 0 1.5rem;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem 2rem;
+	}
+	.profile-contact li {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		color: var(--navy);
+		overflow-wrap: anywhere;
+	}
+	@media (max-width: 720px) {
+		.profile-grid {
+			grid-template-columns: 1fr;
+		}
+		.profile-photo {
+			width: 8rem;
+		}
+		.profile-initials {
+			font-size: 2.4rem;
+		}
+	}
+</style>

@@ -1,0 +1,25 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref } from "../lib/studio";
+import type { StudioData } from "../lib/studio";
+
+interface Props {
+	studio: StudioData;
+}
+const { studio } = Astro.props;
+---
+
+<section class="inquiry-band" aria-labelledby="inquiry-band-title">
+	<div class="wrap inquiry-band-inner">
+		<p class="eyebrow">Now booking weddings</p>
+		<h2 id="inquiry-band-title" class="display">Tell us about your day.</h2>
+		<p class="inquiry-band-copy">Share your date and venue and we will reply personally, usually within two working days.</p>
+		<div class="inquiry-band-actions">
+			<a class="btn btn-light" href="/inquire"><span>Start an inquiry</span><Arrow /></a>
+			<p class="inquiry-band-contact">
+				{studio.email && <a href={`mailto:${studio.email}`}>{studio.email}</a>}
+				{studio.phone && <a href={telHref(studio.phone)}>{studio.phone}</a>}
+			</p>
+		</div>
+	</div>
+</section>

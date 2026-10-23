@@ -1,0 +1,29 @@
+---
+import Arrow from "./Arrow.astro";
+import type { StudioData } from "../lib/studio";
+
+interface Props {
+	studio: StudioData;
+	/** Service slug to pre-select on the contact form. */
+	service?: string;
+}
+const { studio, service } = Astro.props;
+const href = service ? `/contact?service=${service}` : "/contact";
+---
+
+<section class="band" aria-labelledby="band-title">
+	<div class="wrap band-inner">
+		<div class="band-media">
+			<img src="/images/desk-wide.webp" alt="Printed article pages, a notebook and a fountain pen on a wooden desk in golden light" width="1448" height="750" loading="lazy" />
+		</div>
+		<div class="band-copy">
+			<p class="label">Commissions</p>
+			<h2 id="band-title" class="display display-md">Have a piece in mind?</h2>
+			<p class="lede">{studio.newsletter_note || "Send a short note about what you are working on and I will reply with questions, a timeline and a fixed quote."}</p>
+			<p class="band-actions">
+				<a class="btn" href={href}><span>Start a conversation</span><Arrow /></a>
+				{studio.email && <a class="text-link" href={`mailto:${studio.email}`}>{studio.email}</a>}
+			</p>
+		</div>
+	</div>
+</section>

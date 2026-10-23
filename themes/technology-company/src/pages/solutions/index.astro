@@ -1,0 +1,106 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { getOffice, getPrinciples, getSolutions, illustrationSrc, lines } from "../../lib/nexora";
+
+const [solutionsResult, approachResult, officeResult] = await Promise.all([getSolutions(), getPrinciples("approach"), getOffice()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(solutionsResult.cacheHint);
+	Astro.cache.set(approachResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const solutions = solutionsResult.entries;
+const steps = approachResult.entries;
+const { office } = officeResult;
+---
+
+<Base
+	title="Solutions"
+	description="Integrated technology, deep expertise and a collaborative approach to help you move faster, go further and create lasting value."
+>
+	<section class="page-head">
+		<div class="container page-head-inner">
+			<div>
+				<span class="eyebrow">Our solutions</span>
+				<h1>Real progress. Built together.</h1>
+			</div>
+			<p class="lede">
+				Integrated technology, deep expertise and a collaborative approach to help you move faster, go further and create lasting value.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-white">
+		<div class="container">
+			{
+				solutions.length > 0 ? (
+					<div class="solution-rows">
+						{solutions.map((s) => {
+							const href = `/solutions/${s.data.slug ?? s.data.id}`;
+							const caps = lines(s.data.capabilities).slice(0, 4);
+							return (
+								<article class="solution-row">
+									<div class="solution-row-art">
+										<img src={illustrationSrc(s.data.illustration)} alt="" width="220" height="154" loading="lazy" decoding="async" />
+									</div>
+									<div>
+										<h2 {...s.edit.title}>
+											<a href={href}>{s.data.title}</a>
+										</h2>
+										<p class="summary" {...s.edit.summary}>{s.data.summary}</p>
+										{s.data.intro && <p class="intro">{s.data.intro}</p>}
+										<a class="link-arrow" href={href} aria-label={`Explore ${s.data.title}`}>
+											Explore <Arrow />
+										</a>
+									</div>
+									{caps.length > 0 && (
+										<div class="check-list-wrap">
+											<p class="check-list-title">What we deliver</p>
+											<ul class="check-list">
+												{caps.map((c) => (
+													<li>{c}</li>
+												))}
+											</ul>
+										</div>
+									)}
+								</article>
+							);
+						})}
+					</div>
+				) : (
+					<p class="empty">Solutions will appear here once they are added in the admin.</p>
+				)
+			}
+		</div>
+	</section>
+
+	{
+		steps.length > 0 && (
+			<section class="section section-tint" aria-labelledby="how-title">
+				<div class="container approach-light">
+					<div>
+						<span class="eyebrow">How we work</span>
+						<h2 id="how-title">From possibility to progress.</h2>
+						<p class="lede">
+							Every engagement follows the same simple rhythm. You always know what comes next, who is responsible and how progress is measured.
+						</p>
+					</div>
+					<ol class="steps steps-light">
+						{steps.map((step, i) => (
+							<li>
+								<span class="step-num">{String(i + 1).padStart(2, "0")}</span>
+								<div>
+									<h3 {...step.edit.title}>{step.data.title}</h3>
+									{step.data.text && <p>{step.data.text}</p>}
+								</div>
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} title="Not sure where to start?" text="Tell us what you want to achieve. We will suggest a practical first step, even if it is a small one." />
+</Base>

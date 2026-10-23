@@ -1,0 +1,86 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import WaitlistForm from "../components/WaitlistForm.astro";
+import { getFaqs, getLaunch, paragraphs } from "../lib/firstlight";
+
+const [{ launch, cacheHint }, faqs] = await Promise.all([getLaunch(), getFaqs()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(faqs.cacheHint);
+}
+const half = Math.ceil(faqs.entries.length / 2);
+const columns = [faqs.entries.slice(0, half), faqs.entries.slice(half)].filter((c) => c.length > 0);
+const askHref = launch.email ? `mailto:${launch.email}?subject=${encodeURIComponent("A question about Firstlight early access")}` : "/";
+---
+
+<Base title="Early access FAQ" description="Everything you need to know about joining Firstlight early: access, invitations, feedback and pricing.">
+	<section class="hero hero-faq" aria-labelledby="hero-title">
+		<div class="container hero-grid hero-grid-faq">
+			<div class="hero-copy">
+				<h1 id="hero-title" class="display display-lg">Early access <span class="lime">FAQ</span></h1>
+				<p class="hero-lede">Everything you need to know about joining {launch.title} early, how it works, and what to expect as we get closer to launch.</p>
+			</div>
+			<figure class="float-cards">
+				<figcaption class="sr-only">Concept artwork: a Today card with four tasks and a 45-minute Deep work focus card.</figcaption>
+				<div class="float-today app-card" aria-hidden="true">
+					<p class="app-card-title app-row">Today <Icon name="sun" size={26} class="app-sun" /></p>
+					<ul class="app-tasks">
+						<li><span class="app-check"></span>Plan creative sprint</li>
+						<li class="done hl"><span class="app-check"><Icon name="check" size={12} /></span>Review product feedback</li>
+						<li><span class="app-check"></span>Workout</li>
+						<li><span class="app-check"></span>Draft launch announcement</li>
+					</ul>
+				</div>
+				<div class="float-focus app-card" aria-hidden="true">
+					<p class="app-card-title app-row">Focus <span class="app-meta"><Icon name="clock" size={17} /> 45 min</span></p>
+					<div class="app-focus">
+						<span class="app-play"><Icon name="play" size={18} /></span>
+						<span><strong>Deep work</strong><small>Build what’s next</small></span>
+						<Icon name="chevron" size={18} class="app-chev" />
+					</div>
+				</div>
+			</figure>
+		</div>
+	</section>
+
+	<section class="faq-section" aria-labelledby="faq-title">
+		<div class="container">
+			<div class="faq-head">
+				<div>
+					<h2 id="faq-title" class="display display-sm">Frequently asked questions</h2>
+					<p>Clear answers to the big questions about early access, invitations, feedback and pricing.</p>
+				</div>
+				<a class="underline-link" href={askHref}>Can’t find what you’re looking for?</a>
+			</div>
+			<div class="faq-grid">
+				{
+					columns.map((col) => (
+						<div class="faq-col">
+							{col.map((f) => (
+								<details class="faq">
+									<summary>
+										<h3>{f.data.title}</h3>
+										<Icon name="plus-circle" size={26} class="faq-icon" />
+									</summary>
+									<div class="faq-answer">
+										{paragraphs(f.data.answer).map((p) => <p>{p}</p>)}
+									</div>
+								</details>
+							))}
+						</div>
+					))
+				}
+			</div>
+
+			<section class="cta-band cta-band-faq" aria-labelledby="cta-title">
+				<img class="cta-photo" src="/images/banner-sunrise.webp" alt="" width="328" height="88" loading="lazy" />
+				<div class="cta-copy">
+					<h2 id="cta-title">Be the first to know when {launch.title} launches.</h2>
+					<p>Join the waitlist for early access and product updates.</p>
+				</div>
+				<WaitlistForm id="waitlist-faq" email={launch.email} size="md" />
+			</section>
+		</div>
+	</section>
+</Base>

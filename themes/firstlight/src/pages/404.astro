@@ -1,0 +1,18 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+---
+
+<Base title="Page not found">
+	<section class="hero hero-roadmap hero-item notfound" aria-labelledby="nf-title">
+		<div class="container">
+			<p class="eyebrow eyebrow-dark">Error 404</p>
+			<h1 id="nf-title" class="display display-lg">This page isn’t <span class="lime">up yet.</span></h1>
+			<p class="hero-lede">The page you’re looking for doesn’t exist or has moved. Start from the prelaunch home or see what we’re building.</p>
+			<div class="actions">
+				<a class="btn btn-lime" href="/">Prelaunch home <Icon name="arrow" size={20} /></a>
+				<a class="underline-link" href="/roadmap">Public roadmap</a>
+			</div>
+		</div>
+	</section>
+</Base>

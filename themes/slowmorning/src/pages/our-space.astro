@@ -1,0 +1,94 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import { getFeatures, photoSrc } from "../lib/cafe";
+
+const [{ entries: features, cacheHint }, { entries: details, cacheHint: detailHint }] = await Promise.all([
+	getFeatures("our-space"),
+	getFeatures("space-details"),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(detailHint);
+}
+---
+
+<Base
+	title="Our space"
+	description="A warm, welcoming café in the heart of the neighbourhood — seating, quiet hours and a place to linger."
+	overlay
+>
+	<section class="hero hero-space" style="--hero-img:url('/images/space-hero.webp')" aria-labelledby="space-title">
+		<div class="hero-copy">
+			<h1 id="space-title">A calmer<br />kind of café.</h1>
+			<p class="hero-lede">A warm, welcoming space in the heart of the neighbourhood — for slow mornings, catch ups and everything in between.</p>
+			<a class="btn" href="#comfort">Explore our space <Arrow /></a>
+		</div>
+	</section>
+
+	{
+		features.length > 0 && (
+			<section class="trio trio-icons" aria-label="About our space">
+				<ul class="container trio-list">
+					{features.map((f) => {
+						const src = photoSrc(f.data.image, f.data.photo);
+						return (
+							<li>
+								<div class="trio-item">
+									{src ? (
+										<img class="trio-photo" src={src} alt={f.data.image?.alt || ""} width="100" height="100" loading="lazy" />
+									) : (
+										<span class="icon-disc">
+											<Icon name={f.data.icon ?? "cup"} />
+										</span>
+									)}
+									<div class="trio-copy">
+										<h2 {...f.edit.title}>{f.data.title}</h2>
+										{f.data.text && <p>{f.data.text}</p>}
+									</div>
+								</div>
+							</li>
+						);
+					})}
+				</ul>
+			</section>
+		)
+	}
+
+	<section class="split" id="comfort" aria-labelledby="comfort-title">
+		<img class="split-photo" src="/images/space-corner.webp" alt="Round wooden table by a sunny window with a latte, flowers and a green banquette" width="984" height="307" loading="lazy" />
+		<div class="split-copy">
+			<span class="eyebrow">Our space</span>
+			<h2 id="comfort-title">Comfort in <br />every detail.</h2>
+			<p>From sunlit corners to shared tables, we've created a space that feels like a little pause in the everyday. Come as you are, and make yourself at home.</p>
+			<a class="btn" href="/visit">Plan your visit <Arrow /></a>
+		</div>
+	</section>
+
+	{
+		details.length > 0 && (
+			<section class="details" aria-labelledby="details-title">
+				<div class="container">
+					<div class="details-head">
+						<span class="eyebrow">Good to know</span>
+						<h2 id="details-title">Seating &amp; quiet hours</h2>
+					</div>
+					<ul class="details-list">
+						{details.map((f) => (
+							<li>
+								<span class="icon-disc icon-disc-sm">
+									<Icon name={f.data.icon ?? "chair"} />
+								</span>
+								<div>
+									<h3>{f.data.title}</h3>
+									{f.data.text && <p>{f.data.text}</p>}
+								</div>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+</Base>

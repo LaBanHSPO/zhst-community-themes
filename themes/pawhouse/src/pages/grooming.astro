@@ -1,0 +1,125 @@
+---
+import Base from "../layouts/Base.astro";
+import Heart from "../components/Heart.astro";
+import Icon from "../components/Icon.astro";
+import Sparks from "../components/Sparks.astro";
+import { bookingUrl, getGrooming, getHighlights, isPet, money, photoSrc, type Pet } from "../lib/pawhouse";
+
+// Dogs / Cats tabs are plain links: the menu is filtered on the server from ?pet=.
+const petParam = Astro.url.searchParams.get("pet");
+const pet: Pet = isPet(petParam) ? petParam : "dog";
+const [services, features] = await Promise.all([getGrooming(pet), getHighlights("grooming")]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(services.cacheHint);
+	Astro.cache.set(features.cacheHint);
+}
+const tabs: { pet: Pet; label: string; icon: string }[] = [
+	{ pet: "dog", label: "Dogs", icon: "dog" },
+	{ pet: "cat", label: "Cats", icon: "cat" },
+];
+---
+
+<Base title="Grooming menu" description="Professional grooming, tailored to your pet’s needs. Bath & brush, full groom and nail trims with size-based prices.">
+	<section class="hero hero-grooming" aria-labelledby="grooming-title">
+		<div class="hero-media">
+			<img src="/images/hero-grooming.webp" alt="A golden retriever with eyes closed and a big smile being lathered by a groomer" width="942" height="320" fetchpriority="high" />
+		</div>
+		<div class="hero-inner wrap">
+			<div class="hero-copy">
+				<Sparks class="hero-sparks" />
+				<h1 id="grooming-title" class="display display-md">Grooming menu</h1>
+				<p class="hero-sub">Fresh looks, happy tails.<Heart /></p>
+				<p class="hero-lede">Professional grooming, tailored to your pet’s needs. Gentle care, quality products and a stress-free experience from start to finish.</p>
+				<nav class="pet-tabs" aria-label="Show services for">
+					{
+						tabs.map((t) => (
+							<a href={`/grooming?pet=${t.pet}#menu`} aria-current={t.pet === pet ? "page" : undefined}>
+								<Icon name={t.icon} />
+								{t.label}
+							</a>
+						))
+					}
+				</nav>
+			</div>
+		</div>
+	</section>
+
+	<section id="menu" class="wrap groom-grid" aria-label={pet === "cat" ? "Cat grooming services" : "Dog grooming services"}>
+		{
+			services.entries.length === 0 ? (
+				<p class="empty">No {pet === "cat" ? "cat" : "dog"} grooming services are listed yet. <a href={bookingUrl({ book: "grooming", pet })}>Ask us in a booking request.</a></p>
+			) : (
+				services.entries.map((entry) => {
+					const s = entry.data;
+					const src = photoSrc(s.image, s.photo);
+					const tint = s.tint ?? "yellow";
+					return (
+						<article class:list={["groom-card", `tint-${tint}`]}>
+							{src && (
+								<div class="groom-media">
+									<img src={src} alt={s.image?.alt || s.alt || s.title} width="221" height="301" loading="lazy" />
+								</div>
+							)}
+							<div class="groom-body">
+								<h2 class="groom-title">
+									<span>{s.title}</span>
+									{s.icon && <Icon name={s.icon} class={`groom-icon icon-${s.icon}`} />}
+								</h2>
+								{s.summary && <p class="groom-summary">{s.summary}</p>}
+								{(s.prices ?? []).length > 0 && (
+									<table class="price-table">
+										<caption class="sr-only">{s.title} prices by size</caption>
+										<tbody>
+											{(s.prices ?? []).map((p) => (
+												<tr>
+													<th scope="row">{p.size}</th>
+													<td>{money(p.price)}</td>
+												</tr>
+											))}
+										</tbody>
+									</table>
+								)}
+								{(s.includes ?? []).length > 0 && (
+									<ul class="checks">
+										{(s.includes ?? []).map((i) => (
+											<li>{i.item}</li>
+										))}
+									</ul>
+								)}
+								{s.duration && (
+									<p class="duration">
+										<Icon name="clock" />
+										{s.duration}
+									</p>
+								)}
+							</div>
+						</article>
+					);
+				})
+			)
+		}
+	</section>
+
+	<section class="breed-band" aria-labelledby="breed-title">
+		<div class="breed-photo">
+			<img src="/images/cat-towel.webp" alt="A tabby cat wrapped in a soft grey towel after a bath" width="500" height="161" loading="lazy" />
+		</div>
+		<div class="breed-copy">
+			<h2 id="breed-title" class="section-title">Gentle care<br /> for every breed.<Heart /></h2>
+			<p>From curly coats to short hair, our experienced groomers tailor each service to your pet’s coat type, temperament and individual needs.</p>
+		</div>
+		{
+			features.entries.length > 0 && (
+				<ul class="feature-row">
+					{features.entries.map((f) => (
+						<li>
+							<Icon name={f.data.icon ?? "paw"} class={`feature-icon icon-${f.data.icon}`} />
+							<strong>{f.data.title}</strong>
+							{f.data.text && <span>{f.data.text}</span>}
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</section>
+</Base>

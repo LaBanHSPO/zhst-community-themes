@@ -1,0 +1,43 @@
+---
+import { getEmDashEntry, getSeoMeta, decodeSlug, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { photoAlt, photoSrc } from "../lib/press";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: page, cacheHint } = await getEmDashEntry("pages", slug);
+if (!page) return Astro.rewrite("/404");
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+const seo = getSeoMeta(page, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const d = page.data;
+const photo = photoSrc(d.image, d.photo);
+const topic = d.cta_topic || "general";
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.intro}
+	canonical={seo.canonical}
+	content={{ collection: "pages", id: d.id, slug }}
+>
+	<PageHead eyebrow={d.eyebrow} title={d.title} intro={d.intro} edit={{ ...page.edit.title }} />
+	<div class:list={["wrap page-body", { "has-photo": Boolean(photo) }]}>
+		<div class="prose">
+			<PortableText value={d.content} />
+			<p class="page-cta"><a class="btn" href={`/contact?topic=${topic}`}><span>Get in touch</span><Arrow /></a></p>
+		</div>
+		{photo && <img class="page-photo" src={photo} alt={photoAlt(d.image, d.photo, "")} width="600" height="450" loading="lazy" />}
+	</div>
+</Base>

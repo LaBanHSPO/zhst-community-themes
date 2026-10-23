@@ -1,0 +1,1234 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Beauty Studio",
+    "description": "An elegant beauty-studio theme: treatments with prices, gallery, team, about and a booking request page",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "LUMIÈRE",
+    "tagline": "Beauty Studio"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "treatments",
+      "label": "Treatments",
+      "labelSingular": "Treatment",
+      "urlPattern": "/services/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Treatment name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "category",
+          "label": "Category",
+          "type": "select",
+          "required": true,
+          "defaultValue": "facials",
+          "indexed": true,
+          "validation": {
+            "options": [
+              "facials",
+              "nails",
+              "hair"
+            ]
+          }
+        },
+        {
+          "slug": "duration",
+          "label": "Duration (e.g. 60 min)",
+          "type": "string"
+        },
+        {
+          "slug": "price",
+          "label": "Price in dollars (whole number)",
+          "type": "integer"
+        },
+        {
+          "slug": "signature",
+          "label": "Show as a signature treatment on the homepage",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order within its category",
+          "type": "integer"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph (detail page)",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Treatment page content",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "includes",
+          "label": "What is included (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "team",
+      "label": "Team",
+      "labelSingular": "Team member",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "role",
+          "label": "Role",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "summary",
+          "label": "Short bio",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "gallery",
+      "label": "Gallery",
+      "labelSingular": "Photo",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Caption",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "text",
+          "label": "Short note under the caption",
+          "type": "text"
+        },
+        {
+          "slug": "alt",
+          "label": "Image description (alt text)",
+          "type": "string"
+        },
+        {
+          "slug": "wide",
+          "label": "Show wide (spans two columns)",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "principles",
+      "label": "Values",
+      "labelSingular": "Value",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Text",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "studio",
+      "label": "Studio details",
+      "labelSingular": "Studio details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Studio name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "street",
+          "label": "Street address",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "locality",
+          "label": "City, state and ZIP",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "country",
+          "label": "Country",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Booking email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "hours",
+          "label": "Opening hours (one per line, as Day|Hours)",
+          "type": "text"
+        },
+        {
+          "slug": "booking_note",
+          "label": "Note shown beside the booking form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "Services",
+          "url": "/services"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        },
+        {
+          "type": "custom",
+          "label": "Gallery",
+          "url": "/gallery"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "A calm place for everyday beauty.",
+          "eyebrow": "About",
+          "intro": "Lumière is an independent beauty studio for hair, skin and nails. We keep things unhurried, honest and a little bit luxurious.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Lumière opened with a simple idea: a salon visit should feel like a pause, not another appointment to rush through. We keep the space quiet, the schedule generous and the conversation easy.",
+                  "_key": "k23s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k24",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Our team of four covers facials, nails, cutting, colour and styling. Because we are small, you will usually see the same person each time, and they will remember what you liked.",
+                  "_key": "k24s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We use professional products we are happy to name and explain, and we will always tell you what a treatment involves before it begins.",
+                  "_key": "k25s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k26",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Come in for a trim or a full afternoon. Either way, we hope you leave feeling a little brighter than when you arrived.",
+                  "_key": "k26s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "care-and-cancellations",
+        "slug": "care-and-cancellations",
+        "status": "published",
+        "data": {
+          "title": "Care and cancellations",
+          "eyebrow": "Good to know",
+          "intro": "A few things that help every visit run smoothly.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Booking requests",
+                  "_key": "k27s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k28",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Send a request through the booking page and we will reply by email or phone to confirm a time. A request is not a confirmed appointment until we reply.",
+                  "_key": "k28s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Changing or cancelling",
+                  "_key": "k29s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k30",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Please give us at least 24 hours' notice if you need to change or cancel, so we can offer the time to someone else. Late changes may be charged at half the treatment price.",
+                  "_key": "k30s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Before your visit",
+                  "_key": "k31s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k32",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Arrive five minutes early so we can start on time.",
+                  "_key": "k32s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k33",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Tell us about allergies or sensitivities when you book.",
+                  "_key": "k33s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k34",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Colour services need a patch test at least 48 hours beforehand.",
+                  "_key": "k34s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k35",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you are unwell, please let us know and we will rebook without charge.",
+                  "_key": "k35s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "treatments": [
+      {
+        "id": "signature-glow-facial",
+        "slug": "signature-glow-facial",
+        "status": "published",
+        "data": {
+          "title": "Signature Glow Facial",
+          "summary": "Our house facial: a thorough cleanse, gentle exfoliation, massage and a finishing mask.",
+          "category": "facials",
+          "duration": "60 min",
+          "price": 95,
+          "signature": true,
+          "position": 10,
+          "intro": "A calm hour that leaves skin feeling fresh, comfortable and cared for.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We begin with a short conversation about your skin and your day, then tailor each step to what feels right: the cleanser, the exfoliation, the mask and the finishing oils.",
+                  "_key": "k1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A slow facial massage is the heart of the treatment. Expect low light, warm towels and nowhere you need to be.",
+                  "_key": "k2s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "includes": "Skin conversation and double cleanse\nGentle exfoliation\nFacial and shoulder massage\nMask chosen for your skin\nFinishing serum and moisturiser",
+          "photo": "/images/facials.webp"
+        }
+      },
+      {
+        "id": "deep-cleanse-facial",
+        "slug": "deep-cleanse-facial",
+        "status": "published",
+        "data": {
+          "title": "Deep Cleanse Facial",
+          "summary": "A focused cleanse with steam, careful extractions and a soothing mask.",
+          "category": "facials",
+          "duration": "45 min",
+          "price": 75,
+          "signature": false,
+          "position": 20,
+          "intro": "For days when your skin simply wants a reset.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A practical, unhurried treatment built around a thorough cleanse. We use steam to soften the skin, then work through each step with a light touch.",
+                  "_key": "k3s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k4",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We finish with a soothing mask and moisturiser, and talk through a simple routine to keep at home if you would like one.",
+                  "_key": "k4s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "includes": "Steam and double cleanse\nCareful extractions where suitable\nSoothing mask\nMoisturiser and sun protection",
+          "photo": "/images/facials.webp"
+        }
+      },
+      {
+        "id": "hydration-ritual",
+        "slug": "hydration-ritual",
+        "status": "published",
+        "data": {
+          "title": "Hydration Ritual",
+          "summary": "A long, slow facial with layered hydrating masks, a hand and arm massage and a scalp rub.",
+          "category": "facials",
+          "duration": "75 min",
+          "price": 120,
+          "signature": false,
+          "position": 30,
+          "intro": "Our most relaxing facial, with extra time for the parts people love.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Layers of hydrating products are applied one at a time, with warm towels in between, so each step has time to settle.",
+                  "_key": "k5s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k6",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The hand and arm massage and the scalp rub are included as standard. Many guests tell us they come for the hour as much as the facial.",
+                  "_key": "k6s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "includes": "Double cleanse and gentle exfoliation\nLayered hydrating masks\nHand, arm and scalp massage\nFinishing oil and moisturiser",
+          "photo": "/images/facials.webp"
+        }
+      },
+      {
+        "id": "express-refresh",
+        "slug": "express-refresh",
+        "status": "published",
+        "data": {
+          "title": "Express Refresh",
+          "summary": "A quick cleanse, mask and massage for a lunch break or before an event.",
+          "category": "facials",
+          "duration": "30 min",
+          "price": 55,
+          "signature": false,
+          "position": 40,
+          "intro": "Half an hour, start to finish.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A shorter version of our signature facial for when time is tight. We keep the steps that matter: cleanse, mask, a short massage and a light finish.",
+                  "_key": "k7s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k8",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "It works well before a celebration or as a regular monthly stop between longer treatments.",
+                  "_key": "k8s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "includes": "Cleanse and tone\nExpress mask\nShort facial massage\nMoisturiser",
+          "photo": "/images/facials.webp"
+        }
+      },
+      {
+        "id": "classic-manicure",
+        "slug": "classic-manicure",
+        "status": "published",
+        "data": {
+          "title": "Classic Manicure",
+          "summary": "Nail shaping, cuticle care, a hand massage and your choice of polish.",
+          "category": "nails",
+          "duration": "40 min",
+          "price": 38,
+          "signature": false,
+          "position": 10,
+          "intro": "A tidy, polished finish with a few minutes of hand massage.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We shape and buff the nails, tidy the cuticles and soak the hands in warm water before a short massage with hand cream.",
+                  "_key": "k9s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k10",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Choose from our polish shelf, from sheer pinks and neutrals to deep greens and reds, or leave the nails natural with a buffed shine.",
+                  "_key": "k10s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "includes": "Shaping and buffing\nCuticle care\nHand massage\nPolish or natural finish",
+          "photo": "/images/nails.webp"
+        }
+      },
+      {
+        "id": "gel-manicure",
+        "slug": "gel-manicure",
+        "status": "published",
+        "data": {
+          "title": "Gel Manicure",
+          "summary": "Everything in the classic manicure, finished with long-wearing gel colour.",
+          "category": "nails",
+          "duration": "55 min",
+          "price": 52,
+          "signature": true,
+          "position": 20,
+          "intro": "Colour that stays glossy for about two weeks with normal wear.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Our gel manicure starts like the classic, then adds a thin layer of base, two coats of colour and a glossy top coat, each cured under a lamp.",
+                  "_key": "k11s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We remove gel gently and always check the condition of your nails first. If you would like a break from gel, just tell us and we will suggest the classic instead.",
+                  "_key": "k12s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "includes": "Classic manicure steps\nGel base, colour and top coat\nRemoval of old gel, if needed",
+          "photo": "/images/nails.webp"
+        }
+      },
+      {
+        "id": "spa-pedicure",
+        "slug": "spa-pedicure",
+        "status": "published",
+        "data": {
+          "title": "Spa Pedicure",
+          "summary": "A warm foot soak, exfoliation, nail and cuticle care, a leg massage and polish.",
+          "category": "nails",
+          "duration": "60 min",
+          "price": 62,
+          "signature": false,
+          "position": 30,
+          "intro": "Warm water, a good chair and an unhurried hour.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Feet are soaked in warm water, then exfoliated and moisturised. We shape and tidy the nails and finish with a lower-leg massage.",
+                  "_key": "k13s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Add gel colour for a small supplement, or keep it simple with regular polish.",
+                  "_key": "k14s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "includes": "Warm foot soak\nExfoliation and nail care\nLower-leg massage\nPolish or natural finish",
+          "photo": "/images/nails.webp"
+        }
+      },
+      {
+        "id": "cut-and-blow-dry",
+        "slug": "cut-and-blow-dry",
+        "status": "published",
+        "data": {
+          "title": "Cut and Blow-dry",
+          "summary": "A consultation, shampoo, tailored cut and a styled blow-dry.",
+          "category": "hair",
+          "duration": "60 min",
+          "price": 85,
+          "signature": true,
+          "position": 10,
+          "intro": "A cut designed around how you actually wear your hair.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Every cut begins with a conversation about your routine, your hair's natural movement and what you would like to change, or keep.",
+                  "_key": "k15s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "After a relaxing wash and the cut, we blow-dry and style your hair and show you how to recreate it at home.",
+                  "_key": "k16s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "includes": "Consultation\nShampoo and conditioning treatment\nTailored cut\nStyled blow-dry",
+          "photo": "/images/hair.webp"
+        }
+      },
+      {
+        "id": "colour-gloss",
+        "slug": "colour-gloss",
+        "status": "published",
+        "data": {
+          "title": "Colour Gloss",
+          "summary": "A shine-boosting gloss in a shade chosen with you, with a blow-dry to finish.",
+          "category": "hair",
+          "duration": "90 min",
+          "price": 120,
+          "signature": false,
+          "position": 20,
+          "intro": "A refresh in tone for hair that already has colour.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A gloss is a gentle, semi-permanent colour that refreshes tone and adds shine. We will talk through shades before we start and test on a small section if you wish.",
+                  "_key": "k17s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A patch test is required at least 48 hours before your first colour service. Ask us when you book and we will arrange it.",
+                  "_key": "k18s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "includes": "Consultation and shade choice\nGloss application\nShampoo and conditioning\nBlow-dry",
+          "photo": "/images/hair.webp"
+        }
+      },
+      {
+        "id": "event-updo",
+        "slug": "event-updo",
+        "status": "published",
+        "data": {
+          "title": "Event Updo",
+          "summary": "A soft or sleek updo for weddings, parties and special evenings.",
+          "category": "hair",
+          "duration": "60 min",
+          "price": 90,
+          "signature": true,
+          "position": 30,
+          "intro": "Styled to last through the photographs and the dancing.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Bring a few pictures if you have them and wear something similar to your outfit's neckline. We will plan the style together and secure it so it holds all evening.",
+                  "_key": "k19s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k20",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We recommend a trial for weddings. Ask us when you book and we will find a time.",
+                  "_key": "k20s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "includes": "Consultation and planning\nPreparation and styling\nFinishing spray and pins",
+          "photo": "/images/hair.webp"
+        }
+      },
+      {
+        "id": "blow-dry-and-style",
+        "slug": "blow-dry-and-style",
+        "status": "published",
+        "data": {
+          "title": "Blow-dry and Style",
+          "summary": "A relaxed wash and blow-dry in the finish you choose: smooth, bouncy or waved.",
+          "category": "hair",
+          "duration": "45 min",
+          "price": 55,
+          "signature": false,
+          "position": 40,
+          "intro": "A quick lift before an event or a busy week.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A wash and conditioning treatment, then a blow-dry in your favourite finish. It is a simple treatment that we do carefully.",
+                  "_key": "k21s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k22",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Book a Cut and Blow-dry instead if your hair needs shaping first.",
+                  "_key": "k22s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "includes": "Shampoo and conditioning\nBlow-dry and style",
+          "photo": "/images/hair.webp"
+        }
+      }
+    ],
+    "team": [
+      {
+        "id": "amelia-hart",
+        "slug": "amelia-hart",
+        "status": "published",
+        "data": {
+          "title": "Amelia Hart",
+          "role": "Founder and lead stylist",
+          "summary": "Trained in London and Lisbon, Amelia opened Lumière to create a salon where people feel looked after from the first hello.",
+          "position": 10
+        }
+      },
+      {
+        "id": "noor-bennett",
+        "slug": "noor-bennett",
+        "status": "published",
+        "data": {
+          "title": "Noor Bennett",
+          "role": "Skin therapist",
+          "summary": "Noor leads our facial treatments and loves a long conversation about what people want from their routine.",
+          "position": 20
+        }
+      },
+      {
+        "id": "daniel-okafor",
+        "slug": "daniel-okafor",
+        "status": "published",
+        "data": {
+          "title": "Daniel Okafor",
+          "role": "Colour and cutting specialist",
+          "summary": "Daniel works on cuts, glosses and event styling, and always shows you how to recreate the look at home.",
+          "position": 30
+        }
+      },
+      {
+        "id": "mei-tanaka",
+        "slug": "mei-tanaka",
+        "status": "published",
+        "data": {
+          "title": "Mei Tanaka",
+          "role": "Nail artist",
+          "summary": "Mei's manicures and pedicures are known for their clean finish and her calm, unhurried hands.",
+          "position": 40
+        }
+      }
+    ],
+    "gallery": [
+      {
+        "id": "the-styling-floor",
+        "slug": "the-styling-floor",
+        "status": "published",
+        "data": {
+          "title": "The styling floor",
+          "text": "Arched mirrors, brass sconces and velvet chairs in warm afternoon light.",
+          "alt": "Three olive-green velvet chairs in front of arched illuminated mirrors",
+          "photo": "/images/green-chairs.webp",
+          "wide": false,
+          "position": 10
+        }
+      },
+      {
+        "id": "morning-light",
+        "slug": "morning-light",
+        "status": "published",
+        "data": {
+          "title": "Morning light",
+          "text": "A quiet corner of the studio before the first guest arrives.",
+          "alt": "A cream salon chair with a rose towel beside a marble counter",
+          "photo": "/images/salon-chair-light.webp",
+          "wide": true,
+          "position": 20
+        }
+      },
+      {
+        "id": "fresh-flowers",
+        "slug": "fresh-flowers",
+        "status": "published",
+        "data": {
+          "title": "Fresh flowers",
+          "text": "Peonies on the marble counter, replaced every week.",
+          "alt": "Pale pink peonies in a marble vase beside styling brushes",
+          "photo": "/images/peonies-marble.webp",
+          "wide": false,
+          "position": 30
+        }
+      },
+      {
+        "id": "facials",
+        "slug": "facials",
+        "status": "published",
+        "data": {
+          "title": "Facials",
+          "text": "Slow, tailored facials with warm towels.",
+          "alt": "Close-up of a relaxed face with fresh, glowing skin",
+          "photo": "/images/facials.webp",
+          "wide": false,
+          "position": 40
+        }
+      },
+      {
+        "id": "nails",
+        "slug": "nails",
+        "status": "published",
+        "data": {
+          "title": "Nails",
+          "text": "Soft, natural colour and a clean finish.",
+          "alt": "A hand with neutral pink manicured nails resting on a towel",
+          "photo": "/images/nails.webp",
+          "wide": false,
+          "position": 60
+        }
+      },
+      {
+        "id": "hair",
+        "slug": "hair",
+        "status": "published",
+        "data": {
+          "title": "Hair",
+          "text": "Soft updos and everyday styles.",
+          "alt": "A low, softly twisted updo with a gold hoop earring",
+          "photo": "/images/hair.webp",
+          "wide": false,
+          "position": 80
+        }
+      },
+      {
+        "id": "cream-and-gold",
+        "slug": "cream-and-gold",
+        "status": "published",
+        "data": {
+          "title": "Cream and gold",
+          "text": "Our favourite chair, a rose towel and brass details.",
+          "alt": "A cream armchair with brass trim and a rose towel",
+          "photo": "/images/chair-towel.webp",
+          "wide": true,
+          "position": 90
+        }
+      }
+    ],
+    "principles": [
+      {
+        "id": "a-calm-space",
+        "slug": "a-calm-space",
+        "status": "published",
+        "data": {
+          "title": "A calm space",
+          "text": "Soft light, quiet music and enough time. We schedule generously so nobody is hurried in or out.",
+          "position": 10
+        }
+      },
+      {
+        "id": "thoughtful-treatments",
+        "slug": "thoughtful-treatments",
+        "status": "published",
+        "data": {
+          "title": "Thoughtful treatments",
+          "text": "Every treatment begins with a conversation. We recommend what suits you, not what is most expensive.",
+          "position": 20
+        }
+      },
+      {
+        "id": "honest-advice",
+        "slug": "honest-advice",
+        "status": "published",
+        "data": {
+          "title": "Honest advice",
+          "text": "We tell you what a treatment can do and what it cannot, and we will say so if you do not need it.",
+          "position": 30
+        }
+      },
+      {
+        "id": "care-for-the-details",
+        "slug": "care-for-the-details",
+        "status": "published",
+        "data": {
+          "title": "Care for the details",
+          "text": "Warm towels, fresh flowers, clean tools and products we are happy to explain.",
+          "position": 40
+        }
+      }
+    ],
+    "studio": [
+      {
+        "id": "studio",
+        "slug": "studio",
+        "status": "published",
+        "data": {
+          "title": "Lumière Beauty Studio",
+          "street": "14 Marlow Street, Suite 2",
+          "locality": "Portland, OR 97209",
+          "country": "United States",
+          "phone": "+1 503 555 0148",
+          "email": "hello@lumiere-studio.example",
+          "hours": "Tuesday to Friday|9:00 am to 7:00 pm\nSaturday|9:00 am to 5:00 pm\nSunday and Monday|Closed",
+          "booking_note": "We reply to every request within one working day, usually sooner. Requests are only confirmed once we reply."
+        }
+      }
+    ]
+  }
+}

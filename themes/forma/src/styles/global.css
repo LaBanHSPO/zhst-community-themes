@@ -1,0 +1,369 @@
+/*
+ * Forma design system.
+ * Override the custom properties in :root to re-skin the theme.
+ */
+:root {
+	--paper: #f1f0ec;
+	--paper-raised: #f8f7f4;
+	--ink: #141414;
+	--ink-soft: #3b3936;
+	--muted: #5d5a55;
+	--line: #d9d5ce;
+	--accent: #e2621b;
+	--accent-strong: #b5470c;
+	--on-accent: #ffffff;
+
+	--font-display: "Newsreader Variable", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+	--font-body: "Manrope Variable", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+
+	--gutter: clamp(1.25rem, 4.2vw, 4.5rem);
+	--max: 1440px;
+	--measure: 38rem;
+	--section: clamp(4rem, 9vw, 8.5rem);
+
+	--ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+	color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	background: var(--paper-raised);
+	color: var(--ink);
+	font-family: var(--font-body);
+	font-size: 1rem;
+	line-height: 1.65;
+	font-weight: 450;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: var(--font-display);
+	font-weight: 480;
+	letter-spacing: -0.02em;
+	line-height: 1.04;
+	margin: 0;
+	text-wrap: balance;
+}
+
+p {
+	margin: 0 0 1em;
+	text-wrap: pretty;
+}
+
+a {
+	color: inherit;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.2em;
+}
+
+:focus-visible {
+	outline: 2px solid var(--accent-strong);
+	outline-offset: 3px;
+	border-radius: 1px;
+}
+
+.skip-link {
+	position: absolute;
+	left: var(--gutter);
+	top: -100px;
+	z-index: 100;
+	background: var(--ink);
+	color: var(--paper-raised);
+	padding: 0.75rem 1rem;
+	text-decoration: none;
+}
+
+.skip-link:focus {
+	top: 1rem;
+}
+
+.visually-hidden {
+	position: absolute !important;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.wrap {
+	width: 100%;
+	max-width: var(--max);
+	margin-inline: auto;
+	padding-inline: var(--gutter);
+}
+
+/* ---------- Shared pieces ---------- */
+
+.eyebrow {
+	display: inline-flex;
+	align-items: center;
+	gap: 1.25rem;
+	margin: 0 0 1.75rem;
+	font-family: var(--font-body);
+	font-size: 0.72rem;
+	font-weight: 650;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--ink-soft);
+}
+
+.eyebrow::after {
+	content: "";
+	width: 2.75rem;
+	height: 1px;
+	background: currentColor;
+	opacity: 0.45;
+}
+
+.accent-dot {
+	color: var(--accent);
+}
+
+.lede {
+	font-size: clamp(1.05rem, 1.25vw, 1.2rem);
+	line-height: 1.6;
+	color: var(--muted);
+	max-width: var(--measure);
+}
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 2.25rem;
+	padding: 1.1rem 1.6rem;
+	background: var(--accent-strong);
+	color: var(--on-accent);
+	font-size: 1.02rem;
+	font-weight: 550;
+	text-decoration: none;
+	border: 1px solid var(--accent-strong);
+	transition: background-color 0.25s var(--ease), color 0.25s var(--ease);
+}
+
+.btn:hover {
+	background: var(--ink);
+	border-color: var(--ink);
+}
+
+.btn--ghost {
+	background: transparent;
+	color: var(--ink);
+	border-color: var(--ink);
+}
+
+.btn--ghost:hover {
+	background: var(--ink);
+	color: var(--paper-raised);
+}
+
+.btn svg,
+.link-arrow svg {
+	flex: none;
+	transition: transform 0.3s var(--ease);
+}
+
+.btn:hover svg,
+.link-arrow:hover svg {
+	transform: translateX(4px);
+}
+
+.link-arrow {
+	display: inline-flex;
+	align-items: center;
+	gap: 1.75rem;
+	padding-bottom: 0.45rem;
+	border-bottom: 1px solid var(--accent);
+	color: var(--ink-soft);
+	font-size: 0.95rem;
+	font-weight: 550;
+	text-decoration: none;
+}
+
+.link-arrow:hover {
+	color: var(--ink);
+}
+
+.index-num {
+	display: block;
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	color: var(--accent-strong);
+}
+
+.index-num::after {
+	content: "";
+	display: block;
+	width: 1.75rem;
+	height: 1px;
+	margin-top: 0.85rem;
+	background: var(--line);
+}
+
+.section {
+	padding-block: var(--section);
+}
+
+.section-head {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: end;
+	justify-content: space-between;
+	gap: 1.5rem 3rem;
+	margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.section-head h2 {
+	font-size: clamp(2.2rem, 4.4vw, 3.9rem);
+	max-width: 18ch;
+}
+
+.empty-state {
+	padding: clamp(3rem, 7vw, 6rem) 0;
+	border-top: 1px solid var(--line);
+	max-width: 40rem;
+}
+
+.empty-state h2 {
+	font-size: clamp(1.8rem, 3vw, 2.6rem);
+	margin-bottom: 1rem;
+}
+
+.empty-state p {
+	color: var(--muted);
+}
+
+/* Portable Text */
+.prose {
+	max-width: var(--measure);
+	font-size: 1.06rem;
+	color: var(--ink-soft);
+}
+
+.prose h2 {
+	font-size: clamp(1.7rem, 2.6vw, 2.3rem);
+	margin: 2.5rem 0 1rem;
+	color: var(--ink);
+}
+
+.prose h3 {
+	font-size: 1.4rem;
+	margin: 2rem 0 0.75rem;
+	color: var(--ink);
+}
+
+.prose > :first-child {
+	margin-top: 0;
+}
+
+.prose blockquote {
+	margin: 2rem 0;
+	padding-left: 1.5rem;
+	border-left: 2px solid var(--accent);
+	font-family: var(--font-display);
+	font-size: 1.4rem;
+	line-height: 1.35;
+	color: var(--ink);
+}
+
+.prose img {
+	margin-block: 2rem;
+}
+
+/* Media that should crop to a frame */
+.frame {
+	position: relative;
+	overflow: hidden;
+	background: #e6e3dd;
+}
+
+.frame img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.frame--placeholder {
+	display: grid;
+	place-items: center;
+	color: var(--muted);
+	font-family: var(--font-display);
+	font-size: clamp(2.5rem, 6vw, 5rem);
+}
+
+/* CTA band */
+.cta-band {
+	background: var(--ink);
+	color: var(--paper-raised);
+}
+
+.cta-band .wrap {
+	display: grid;
+	grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+	gap: 2.5rem 4rem;
+	align-items: end;
+	padding-block: clamp(4rem, 8vw, 7rem);
+}
+
+.cta-band h2 {
+	font-size: clamp(2.4rem, 5.2vw, 4.6rem);
+}
+
+.cta-band p {
+	color: #c9c5be;
+	max-width: 30rem;
+}
+
+.cta-band .eyebrow {
+	color: #c9c5be;
+}
+
+.cta-band .btn:hover {
+	background: var(--paper-raised);
+	border-color: var(--paper-raised);
+	color: var(--ink);
+}
+
+.cta-band :focus-visible {
+	outline-color: var(--paper-raised);
+}
+
+@media (max-width: 760px) {
+	.cta-band .wrap {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0.01ms !important;
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		scroll-behavior: auto !important;
+	}
+}

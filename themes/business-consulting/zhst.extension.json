@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "business-consulting",
+	"kind": "theme",
+	"name": "Business Consulting",
+	"type": "company",
+	"emdash": "1.2.0",
+	"entry": "themes/business-consulting",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": true,
+		"whatsapp": false
+	}
+}

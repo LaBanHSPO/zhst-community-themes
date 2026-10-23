@@ -1,0 +1,62 @@
+---
+import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import Arrow from "../components/Arrow.astro";
+import ReviewCard from "../components/ReviewCard.astro";
+import { getGuides, getReviews, getSite, guideUrl, photoSrc } from "../lib/fieldtested";
+
+const [reviews, guides, siteResult] = await Promise.all([getReviews(), getGuides(), getSite()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(reviews.cacheHint);
+	Astro.cache.set(guides.cacheHint);
+}
+const latest = reviews.entries.slice(0, 4);
+const featuredGuides = guides.entries.slice(0, 3);
+const { site } = siteResult;
+---
+
+<Base title="Better gear. Better days outside." description="Independent, in-depth reviews and buying advice for people who live for the outdoors.">
+	<Hero
+		image="/images/hero-home.webp"
+		title={"Better gear.\nBetter days outside."}
+		lede="Independent, in-depth reviews and buying advice for people who live for the outdoors."
+	>
+		<a class="btn" href="/reviews">Explore the latest reviews <Arrow /></a>
+	</Hero>
+
+	<div class="wrap">
+		<section class="section" aria-labelledby="latest-title">
+			<div class="sec-head">
+				<h2 id="latest-title">Latest reviews</h2>
+				<span class="rule" aria-hidden="true"></span>
+				<a class="text-link" href="/reviews">View all reviews <Arrow /></a>
+			</div>
+			<div class="rgrid">
+				{latest.map((e) => <ReviewCard review={e.data} />)}
+			</div>
+		</section>
+
+		<section class="section" aria-labelledby="guides-title">
+			<div class="sec-head">
+				<h2 id="guides-title">Buying guides</h2>
+				<span class="rule" aria-hidden="true"></span>
+				<a class="text-link" href="/guides">View all buying guides <Arrow /></a>
+			</div>
+			<div class="ggrid">
+				{
+					featuredGuides.map((e) => (
+						<article class="gcard">
+							<img src={photoSrc(e.data.image, e.data.photo)} alt="" width="320" height="139" loading="lazy" />
+							<a href={guideUrl(e.data)}>
+								<h3>{e.data.card_title ?? e.data.title}</h3>
+								<p>{e.data.summary}</p>
+								<span class="go" aria-hidden="true"><Arrow /></span>
+							</a>
+						</article>
+					))
+				}
+			</div>
+			<p class="disclosure">{site.affiliate_line} <a href="/affiliate-disclosure">Affiliate disclosure</a></p>
+		</section>
+	</div>
+</Base>

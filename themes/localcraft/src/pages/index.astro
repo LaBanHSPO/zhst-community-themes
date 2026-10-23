@@ -1,0 +1,327 @@
+---
+import { Image } from "emdash/ui";
+import type { ImageValue } from "emdash";
+import Base from "../layouts/Base.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+import InquiryPanel from "../components/InquiryPanel.astro";
+import GalleryGrid from "../components/GalleryGrid.astro";
+import { getBusinessDetails } from "../utils/business";
+import { loadOrdered } from "../utils/content";
+
+const [{ details }, services, areas, gallery] = await Promise.all([
+	getBusinessDetails(),
+	loadOrdered("services"),
+	loadOrdered("areas"),
+	loadOrdered("gallery"),
+]);
+if (Astro.cache?.enabled) {
+	for (const hint of [services.cacheHint, areas.cacheHint, gallery.cacheHint]) if (hint) Astro.cache.set(hint);
+}
+
+const featured = services.entries.slice(0, 6);
+const heroImage = details.heroImage as ImageValue | undefined;
+const heroTitle = details.heroTitle ?? "Good work. Right at home.";
+// Break the headline after each sentence, matching the two-line hero in the design.
+const heroLines = heroTitle.match(/[^.!?]+[.!?]?/g)?.map((line) => line.trim()).filter(Boolean) ?? [heroTitle];
+---
+
+<Base title="Home repair services" description={details.heroText}>
+	<section class="lc-hero" aria-labelledby="hero-heading">
+		{
+			heroImage && (heroImage.src || heroImage.id) && (
+				<div class="lc-hero__media">
+					<Image image={heroImage} priority />
+				</div>
+			)
+		}
+		<div class="lc-wrap lc-hero__inner">
+			<div class="lc-hero__copy">
+				{details.heroEyebrow && <p class="lc-eyebrow">{details.heroEyebrow}</p>}
+				<h1 id="hero-heading">
+					{heroLines.map((line) => <span>{line}</span>)}
+				</h1>
+				{details.heroText && <p class="lc-lead">{details.heroText}</p>}
+				<div class="lc-hero__actions">
+					<a class="lc-btn lc-btn--primary lc-btn--lg" href="#inquiry">
+						Request a quote
+						<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"></path></svg>
+					</a>
+					{
+						details.phoneHref && (
+							<a class="lc-hero__call" href={details.phoneHref}>
+								or call <strong>{details.phone}</strong>
+							</a>
+						)
+					}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="lc-wrap lc-home-grid" aria-label="Services and enquiries">
+		<div class="lc-home-services">
+			<h2 class="lc-visually-hidden">Services</h2>
+			{
+				featured.length === 0 ? (
+					<p class="lc-empty">Services will appear here once they are added in the admin.</p>
+				) : (
+					<ul class="lc-home-services__list">
+						{featured.map((service) => (
+							<li>
+								<ServiceCard
+									slug={service.id}
+									title={service.data.title}
+									summary={service.data.summary}
+									icon={service.data.icon}
+								/>
+							</li>
+						))}
+					</ul>
+				)
+			}
+			{
+				services.entries.length > featured.length && (
+					<p class="lc-home-services__more">
+						<a class="lc-link-arrow" href="/services">
+							All {services.entries.length} services
+							<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+						</a>
+					</p>
+				)
+			}
+		</div>
+		<InquiryPanel details={details} />
+	</section>
+
+	{
+		areas.entries.length > 0 && (
+			<section class="lc-section lc-section--tight" aria-labelledby="areas-heading">
+				<div class="lc-wrap lc-home-areas">
+					<div>
+						<p class="lc-eyebrow">Where we work</p>
+						<h2 id="areas-heading">Serving homes across {areas.entries.length} neighbourhoods</h2>
+					</div>
+					<div>
+						<ul class="lc-chips">
+							{areas.entries.map((area) => (
+								<li>
+									<a href={`/areas#${area.id}`}>{area.data.title}</a>
+								</li>
+							))}
+						</ul>
+						<p class="lc-home-areas__more">
+							<a class="lc-link-arrow" href="/areas">
+								See what we offer in each area
+								<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+							</a>
+						</p>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		gallery.entries.length > 0 && (
+			<section class="lc-section lc-section--tight" aria-labelledby="work-heading">
+				<div class="lc-wrap">
+					<div class="lc-section-head">
+						<div>
+							<p class="lc-eyebrow">Recent work</p>
+							<h2 id="work-heading">From the workshop</h2>
+						</div>
+						<a class="lc-link-arrow" href="/about#work">
+							More about our work
+							<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+						</a>
+					</div>
+					<GalleryGrid
+						limit={4}
+						items={gallery.entries.map((item) => ({
+							id: item.id,
+							title: item.data.title,
+							caption: item.data.caption,
+							image: item.data.image,
+						}))}
+					/>
+				</div>
+			</section>
+		)
+	}
+</Base>
+
+<style>
+	.lc-hero {
+		position: relative;
+		overflow: hidden;
+		background: var(--lc-surface);
+		min-height: clamp(420px, 46vw, 600px);
+		display: flex;
+		align-items: center;
+	}
+
+	.lc-hero__media {
+		position: absolute;
+		inset: 0 0 0 auto;
+		width: min(70%, 1100px);
+	}
+
+	.lc-hero__media :global(img) {
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		object-fit: cover;
+		object-position: 35% 40%;
+	}
+
+	/* Fade the photo into the warm white background behind the headline. */
+	.lc-hero__media::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background:
+			linear-gradient(90deg, var(--lc-surface) 0%, rgb(255 253 250 / 85%) 14%, rgb(255 253 250 / 0%) 42%),
+			linear-gradient(0deg, rgb(246 243 238 / 70%) 0%, rgb(246 243 238 / 0%) 18%);
+	}
+
+	.lc-hero__inner {
+		position: relative;
+		padding-block: clamp(3rem, 7vw, 5rem);
+	}
+
+	.lc-hero__copy {
+		max-width: 36rem;
+	}
+
+	.lc-hero h1 span {
+		display: block;
+	}
+
+	.lc-hero .lc-lead {
+		margin-top: 1.4rem;
+		color: #3b4558;
+	}
+
+	.lc-hero__actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 1rem 1.5rem;
+		margin-top: 2rem;
+	}
+
+	.lc-btn--lg {
+		min-height: 60px;
+		padding-inline: 2.25rem;
+		font-size: 1.15rem;
+	}
+
+	.lc-hero__call {
+		color: var(--lc-ink);
+		text-decoration: none;
+	}
+
+	.lc-hero__call:hover strong {
+		text-decoration: underline;
+	}
+
+	.lc-home-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 3fr) minmax(300px, 1.5fr);
+		gap: 1.5rem;
+		margin-top: 1.75rem;
+		align-items: start;
+	}
+
+	.lc-home-services__list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1.4rem;
+	}
+
+	.lc-home-services__more {
+		margin: 1.25rem 0 0;
+	}
+
+	.lc-home-areas {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+		gap: 1.5rem 3rem;
+		align-items: center;
+		padding: clamp(1.5rem, 4vw, 2.5rem);
+		background: var(--lc-navy);
+		border-radius: var(--lc-radius);
+		max-width: calc(var(--lc-wrap) + 0px);
+	}
+
+	.lc-home-areas h2,
+	.lc-home-areas .lc-eyebrow {
+		color: #fff;
+	}
+
+	.lc-home-areas .lc-eyebrow {
+		color: var(--lc-yellow);
+	}
+
+	.lc-home-areas h2 {
+		margin: 0;
+	}
+
+	.lc-home-areas__more {
+		margin: 1rem 0 0;
+	}
+
+	.lc-home-areas__more .lc-link-arrow {
+		color: #fff;
+	}
+
+	.lc-home-areas :focus-visible {
+		outline-color: var(--lc-yellow);
+	}
+
+	@media (max-width: 1180px) {
+		.lc-home-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 860px) {
+		.lc-hero {
+			flex-direction: column;
+			align-items: stretch;
+			min-height: 0;
+		}
+
+		.lc-hero__media {
+			position: relative;
+			width: 100%;
+			aspect-ratio: 16 / 10;
+			order: 2;
+		}
+
+		.lc-hero__media::after {
+			background: linear-gradient(180deg, var(--lc-surface) 0%, rgb(255 253 250 / 0%) 22%);
+		}
+
+		.lc-hero__inner {
+			padding-block: 2.25rem 1.5rem;
+		}
+
+		.lc-home-services__list {
+			grid-template-columns: 1fr;
+		}
+
+		.lc-home-areas {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (min-width: 861px) and (max-width: 1180px) {
+		.lc-home-services__list {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+	}
+</style>

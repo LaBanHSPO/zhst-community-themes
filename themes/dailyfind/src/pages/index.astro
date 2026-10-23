@@ -1,0 +1,64 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import DealCard from "../components/DealCard.astro";
+import { CATEGORIES, getDeals, getStores } from "../lib/dailyfind";
+
+const [dealsResult, storesResult] = await Promise.all([getDeals(), getStores()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(dealsResult.cacheHint);
+	Astro.cache.set(storesResult.cacheHint);
+}
+const storeName = new Map(storesResult.entries.map((s) => [s.data.slug ?? s.id, s.data.title]));
+const featured = dealsResult.entries
+	.filter((e) => e.data.featured)
+	.sort((a, b) => (a.data.home_position ?? 0) - (b.data.home_position ?? 0))
+	.slice(0, 5);
+// A fresh CMS with nothing flagged still shows the first deals.
+const shown = featured.length > 0 ? featured : dealsResult.entries.slice(0, 5);
+const icons: Record<string, string> = Object.fromEntries(
+	CATEGORIES.map((c) => [c.slug, `/images/cat-${c.slug}.webp`]),
+);
+---
+
+<Base title="Dailyfind" description="Home & living deals, updated daily. Photo-led example offers with clearly marked codes and expiry dates.">
+	<section class="hero hero-home" aria-labelledby="hero-title">
+		<img class="hero-photo" src="/images/hero-home.webp" alt="Sunlit living room with a speckled vase of greenery, a wooden coffee table and a sofa with terracotta cushions" width="1102" height="350" />
+		<div class="container hero-copy">
+			<h1 id="hero-title">Useful finds.<br /><em>Better prices.</em></h1>
+			<p class="lede">Discover top home &amp; living deals, updated daily.<br />Stylish spaces for less.</p>
+			<a class="btn btn-lg" href="/deals">Browse today’s deals <Icon name="arrow" size={20} /></a>
+		</div>
+	</section>
+
+	<nav class="container cat-row" aria-label="Shop by category">
+		<ul role="list">
+			{
+				CATEGORIES.map((c) => (
+					<li>
+						<a href={`/deals?category=${c.slug}`}>
+							<span class="cat-dot"><img src={icons[c.slug]} alt="" width="88" height="88" loading="lazy" /></span>
+							<span>{c.label}</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+
+	<section class="section" aria-labelledby="featured-title">
+		<div class="container">
+			<div class="section-head">
+				<h2 id="featured-title" class="h-section">Featured deals</h2>
+				<a class="text-link" href="/deals">View all deals <Icon name="arrow" size={18} /></a>
+			</div>
+			<ul class="deal-grid deal-grid-5" role="list">
+				{shown.map((e) => <li><DealCard deal={e.data} storeName={storeName.get(e.data.store) ?? e.data.store} /></li>)}
+			</ul>
+			<p class="example-note">
+				<strong>Example offers.</strong> Prices, codes and expiry dates are the editor’s listing, not live retailer data.
+				<a href="/disclosure">Affiliate disclosure</a>
+			</p>
+		</div>
+	</section>
+</Base>

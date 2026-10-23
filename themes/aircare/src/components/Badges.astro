@@ -1,0 +1,27 @@
+---
+import Icon from "./Icon.astro";
+import type { Highlight } from "../lib/aircare";
+
+/** Row of icon + short two-line benefit used in the heroes. */
+interface Props {
+	items: Highlight[];
+}
+const { items } = Astro.props;
+---
+
+{
+	items.length > 0 && (
+		<ul class="badges">
+			{items.map((b) => (
+				<li>
+					<Icon name={b.icon ?? "snowflake"} />
+					<span>
+						{b.title}
+						{b.text && <br />}
+						{b.text}
+					</span>
+				</li>
+			))}
+		</ul>
+	)
+}

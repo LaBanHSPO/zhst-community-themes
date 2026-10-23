@@ -1,0 +1,18 @@
+---
+/** Project card: photo, service label, title, short description. */
+import { entryHref, photoSrc } from "../lib/home";
+
+interface Props {
+	project: { data: any; edit: Record<string, Record<string, unknown>> };
+}
+const { project } = Astro.props;
+const p = project.data;
+const src = photoSrc(p.featured_image, p.photo);
+---
+
+<a class="project-card" href={entryHref("/projects", p)}>
+	{src && <img class="project-card-photo" src={src} alt={p.featured_image?.alt ?? ""} width="400" height="300" loading="lazy" decoding="async" />}
+	<span class="project-card-meta">{[p.service, p.location].filter(Boolean).join(" · ")}</span>
+	<span class="project-card-title" {...project.edit.title}>{p.title}</span>
+	<span class="project-card-summary">{p.summary}</span>
+</a>

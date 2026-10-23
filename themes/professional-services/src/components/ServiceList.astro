@@ -1,0 +1,29 @@
+---
+/** Numbered service rows: index, name, summary and a link to the detail page. */
+import Arrow from "./Arrow.astro";
+import { entryHref, indexLabel, type Service } from "../lib/practice";
+
+interface Props {
+	services: { id: string; data: Service; edit: Record<string, Record<string, unknown>> }[];
+	tone?: "light" | "dark";
+	/** Leave this service out while keeping everyone else's number. */
+	excludeId?: string;
+}
+const { services, tone = "light", excludeId } = Astro.props;
+const rows = services.map((s, i) => ({ s, num: indexLabel(i) })).filter(({ s }) => s.data.id !== excludeId);
+---
+
+<ol class:list={["service-list", `is-${tone}`]}>
+	{
+		rows.map(({ s, num }) => (
+			<li>
+				<a class="service-row" href={entryHref("/services", s.data)}>
+					<span class="service-num">{num}</span>
+					<span class="service-name" {...s.edit.title}>{s.data.title}</span>
+					<span class="service-summary">{s.data.summary}</span>
+					<span class="service-go" aria-hidden="true"><Arrow /></span>
+				</a>
+			</li>
+		))
+	}
+</ol>

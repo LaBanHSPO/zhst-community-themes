@@ -1,0 +1,207 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Badges from "../components/Badges.astro";
+import Hero from "../components/Hero.astro";
+import Icon from "../components/Icon.astro";
+import Strip from "../components/Strip.astro";
+import { ISSUES, getBusiness, getGuarantees, telHref } from "../lib/fixwell";
+
+const [badges, strip, businessResult] = await Promise.all([
+	getGuarantees("badges-quote"),
+	getGuarantees("strip"),
+	getBusiness(),
+]);
+if (Astro.cache?.enabled) {
+	for (const hint of [badges.cacheHint, strip.cacheHint, businessResult.cacheHint]) Astro.cache.set(hint);
+}
+const { business } = businessResult;
+
+// Links from service pages preselect the issue type and name the job (?issue=plumbing&job=Leaking taps).
+const issueParam = Astro.url.searchParams.get("issue") ?? "";
+const selectedIssue = ISSUES.some((i) => i.value === issueParam) ? issueParam : "plumbing";
+const jobParam = (Astro.url.searchParams.get("job") ?? "").slice(0, 120);
+const prefill = jobParam ? `${jobParam}: ` : "";
+
+const steps = [
+	{ title: "We receive your details", text: "Tell us about the issue and upload photos if you can." },
+	{ title: "We review your request", text: "Our local team will look at the details and assess the job." },
+	{ title: "We get back to you", text: "We'll contact you with a clear, no-obligation quote, usually within one working day." },
+];
+const times = ["Any time", "Morning (8am–12pm)", "Afternoon (12pm–5pm)", "Evening (5pm–8pm)"];
+---
+
+<Base title="Request a quote" description="Tell us about the job and we'll get back to you with a clear, no-obligation quote.">
+	<Hero photo="/images/hero-quote.webp" alt="A Fixwell plumber working on the waste pipe under a kitchen sink" labelledby="quote-title" class="hero-quote">
+		<span class="eyebrow">Request a quote</span>
+		<h1 id="quote-title" class="display">Get a quote for<br /><span class="accent">your home repair.</span></h1>
+		<p class="hero-lede">Tell us about the job and we’ll get back to you with a clear, no-obligation quote.</p>
+		<Badges items={badges.entries} />
+	</Hero>
+
+	<div class="quote-grid container">
+		<section class="form-card" aria-labelledby="form-title" id="quote-form">
+			<h2 id="form-title" class="title-rule title-md">Request a quote</h2>
+			<form
+				class="quote-form"
+				data-quote
+				data-email={business.email}
+				action={business.email ? `mailto:${business.email}?subject=${encodeURIComponent("Quote request")}` : undefined}
+				method="post"
+				enctype="text/plain"
+			>
+				<fieldset class="issue-set">
+					<legend>What type of issue do you need help with?</legend>
+					<div class="issue-grid">
+						{
+							ISSUES.map((i) => (
+								<label class="issue">
+									<Icon name={i.icon} />
+									<span>{i.label}</span>
+									<input type="radio" name="issue" value={i.label} checked={i.value === selectedIssue} required />
+								</label>
+							))
+						}
+					</div>
+				</fieldset>
+
+				<div class="field-row field-row-job">
+					<div class="field">
+						<label for="q-job">Tell us about the job</label>
+						<textarea id="q-job" name="job" rows="3" required placeholder="Please describe the issue, what’s happening and any relevant details...">{prefill}</textarea>
+					</div>
+					<div class="field">
+						<span class="label" id="q-photo-label">Add a photo (optional)</span>
+						<label class="dropzone" for="q-photo">
+							<Icon name="camera" />
+							<strong data-photo-name>Choose a photo</strong>
+							<span>JPG or PNG, max 10MB</span>
+						</label>
+						<input class="sr-only" id="q-photo" name="photo" type="file" accept="image/jpeg,image/png" aria-labelledby="q-photo-label" aria-describedby="q-photo-note" />
+						<span class="sr-only" id="q-photo-note">You will be asked to attach the photo to the email.</span>
+					</div>
+				</div>
+
+				<div class="field-row">
+					<div class="field">
+						<label for="q-address">Your address</label>
+						<input id="q-address" name="address" type="text" autocomplete="street-address" placeholder="e.g. 12 Oak Road, Bristol" required />
+					</div>
+					<div class="field">
+						<label for="q-postcode">Postcode</label>
+						<input id="q-postcode" name="postcode" type="text" autocomplete="postal-code" placeholder="e.g. BS3 5PL" maxlength="10" required />
+					</div>
+				</div>
+
+				<div class="field-row">
+					<div class="field">
+						<label for="q-phone">Contact phone number</label>
+						<input id="q-phone" name="phone" type="tel" autocomplete="tel" placeholder="e.g. 07123 456789" required />
+					</div>
+					<div class="field">
+						<label for="q-time">Preferred time to be contacted</label>
+						<div class="select">
+							<select id="q-time" name="time">
+								{times.map((t) => <option>{t}</option>)}
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<button class="btn" type="submit">Submit quote request <Arrow /></button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					{
+						business.email ? (
+							<noscript>
+								Without JavaScript, send your request by email to <a href={`mailto:${business.email}`}>{business.email}</a>.
+							</noscript>
+						) : (
+							business.phone && <>Online requests are not available right now. Please call {business.phone}.</>
+						)
+					}
+				</p>
+			</form>
+		</section>
+
+		<aside class="next-card" aria-labelledby="next-title">
+			<h2 id="next-title" class="title-rule title-md">What happens next?</h2>
+			<ol class="steps">
+				{
+					steps.map((s) => (
+						<li>
+							<h3>{s.title}</h3>
+							<p>{s.text}</p>
+						</li>
+					))
+				}
+			</ol>
+			{
+				business.phone && (
+					<div class="call-box">
+						<Icon name="phone" />
+						<div>
+							<h3>Need to speak to someone?</h3>
+							<p>If your issue is urgent, give us a call.</p>
+							<a href={telHref(business.phone)}>{business.phone}</a>
+						</div>
+					</div>
+				)
+			}
+		</aside>
+	</div>
+
+	<Strip items={strip.entries} />
+</Base>
+
+<script>
+	// Quote request: compose an email to the business. Nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-quote]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		const photo = form.querySelector<HTMLInputElement>('input[type="file"]');
+		const photoName = form.querySelector<HTMLElement>("[data-photo-name]");
+		const MAX = 10 * 1024 * 1024;
+
+		photo?.addEventListener("change", () => {
+			const file = photo.files?.[0];
+			photo.setCustomValidity(file && file.size > MAX ? "Please choose a photo under 10MB." : "");
+			if (photoName) photoName.textContent = file ? file.name : "Choose a photo";
+		});
+
+		if (!status) return;
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!form.reportValidity()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online quote requests are not available right now. Please call us instead.";
+				return;
+			}
+			const data = new FormData(form);
+			const get = (k: string) => String(data.get(k) ?? "").trim();
+			const file = photo?.files?.[0];
+			const subject = `Quote request: ${get("issue")} — ${get("postcode")}`;
+			const body = [
+				"Hello,",
+				"",
+				"I would like a quote for the following job.",
+				"",
+				`Issue type: ${get("issue")}`,
+				`About the job: ${get("job")}`,
+				`Address: ${get("address")}`,
+				`Postcode: ${get("postcode")}`,
+				`Contact phone: ${get("phone")}`,
+				`Preferred contact time: ${get("time")}`,
+				file ? `Photo: ${file.name} (attached to this email)` : "",
+				"",
+			].join("\n");
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+			status.textContent = file
+				? "Your email app should open with this request ready to send. Attach your photo before sending; nothing is sent until you send that email. If nothing opened, write to "
+				: "Your email app should open with this request ready to send. Nothing is sent until you send that email. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

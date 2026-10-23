@@ -1,0 +1,71 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import { getPosts, photoAlt, photoSrc, postUrl, regionLabel } from "../lib/elsewhere";
+
+const postsResult = await getPosts();
+if (Astro.cache?.enabled) Astro.cache.set(postsResult.cacheHint);
+const posts = postsResult.entries.map((e) => e.data);
+const featured = posts.find((p) => p.featured) ?? posts[0];
+const more = posts
+	.filter((p) => p.home_position && p.id !== featured?.id)
+	.sort((a, b) => (a.home_position ?? 0) - (b.home_position ?? 0))
+	.slice(0, 3);
+---
+
+<Base title="Elsewhere — a travel journal" description="Thoughtful travel stories, slower journeys and a deeper way to see the world.">
+	<section class="hero hero-home" aria-labelledby="hero-title">
+		<div class="hero-photo">
+			<img src="/images/hero-home.webp" alt="Pastel hillside houses and a church dome above the sea on the Amalfi Coast" width="1012" height="457" fetchpriority="high" />
+		</div>
+		<div class="hero-inner">
+			<h1 id="hero-title" class="h-display">Take the<br />scenic route.</h1>
+			<p class="lede">Thoughtful travel stories, slower journeys and a deeper way to see the world.</p>
+			<a class="btn" href="/destinations">Explore the journal <Icon name="arrow" size={16} /></a>
+		</div>
+	</section>
+
+	<div class="container home-grid">
+		{
+			featured && (
+				<>
+					<div class="featured-text">
+						<p class="eyebrow">Featured story</p>
+						<h2>{featured.title}</h2>
+						<p>{featured.excerpt}</p>
+						<a class="text-link" href={postUrl(featured)}>Read the article <Icon name="arrow" size={14} /></a>
+					</div>
+					<div class="featured-media">
+						<img
+							src="/images/amalfi-terrace.webp"
+							alt="A café table with lemons and a straw hat on a stone terrace above the Amalfi Coast"
+							width="442"
+							height="315"
+						/>
+					</div>
+				</>
+			)
+		}
+		<section class="journal-more" aria-labelledby="more-title">
+			<h2 id="more-title" class="eyebrow">More from the journal</h2>
+			<ul class="mini-grid" role="list">
+				{
+					more.map((p) => (
+						<li class="mini-card">
+							<img
+								src={photoSrc(p.featured_image, p.photo)}
+								alt={photoAlt(p.featured_image, p.photo_alt, p.title)}
+								width="211"
+								height="162"
+								loading="lazy"
+							/>
+							<p class="eyebrow">{p.topic ?? regionLabel(p.region)}</p>
+							<h3><a href={postUrl(p)}>{p.title}</a></h3>
+							<a class="arrow-link" href={postUrl(p)} aria-label={`Read ${p.title}`}><Icon name="arrow" size={22} /></a>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+	</div>
+</Base>

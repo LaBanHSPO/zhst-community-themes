@@ -1,0 +1,103 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import Title from "../components/Title.astro";
+import { getServices, photoAlt, photoSrc, serviceUrl, twoLines } from "../lib/luma";
+
+const servicesResult = await getServices();
+if (Astro.cache?.enabled) Astro.cache.set(servicesResult.cacheHint);
+
+const cards = servicesResult.entries
+	.map((e) => e.data)
+	.filter((s) => s.show_on_home !== false)
+	.sort((a, b) => (a.home_position ?? a.position ?? 99) - (b.home_position ?? b.position ?? 99))
+	.slice(0, 4);
+
+const highlights = [
+	{ icon: "calendar", text: "Flexible appointments" },
+	{ icon: "tooth", text: "Comprehensive dental care" },
+	{ icon: "heart", text: "A calm and welcoming experience" },
+];
+---
+
+<Base
+	title="Luma Dental — Feel at ease with your smile"
+	description="Gentle, modern and personalized dental care for every stage of life at Luma Dental."
+	image="/images/hero-home.webp"
+>
+	<section class="hero hero-home" aria-labelledby="hero-title">
+		<div class="hero-media">
+			<img
+				src="/images/hero-home.webp"
+				alt="A smiling dentist talking with a relaxed patient in a bright treatment room, a dental X-ray on the screen behind them"
+				width="882"
+				height="491"
+				fetchpriority="high"
+			/>
+		</div>
+		<div class="container hero-copy">
+			<p class="eyebrow">Healthy smiles. Brighter days.</p>
+			<h1 id="hero-title" class="title title-hero">Feel at ease<br /> with your smile<span class="dot">.</span></h1>
+			<p class="lede">
+				Gentle, modern and personalized dental care<br class="br-wide" /> for every stage of life. At Luma Dental, we make<br
+					class="br-wide"
+				/> it easy to achieve a healthier, brighter smile.
+			</p>
+			<a class="btn" href="/request-appointment">Request appointment <Arrow /></a>
+			<ul class="hero-points" role="list">
+				{
+					highlights.map((h) => (
+						<li>
+							<Icon name={h.icon} />
+							<span>{twoLines(h.text)[0]}<br />{twoLines(h.text)[1]}</span>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+
+	{
+		cards.length > 0 && (
+			<section class="home-services" aria-labelledby="services-title">
+				<div class="container">
+					<div class="section-head">
+						<div>
+							<p class="eyebrow">Our services</p>
+							<Title id="services-title" class="title-section" text="Complete care for a lifetime of healthy smiles" />
+						</div>
+						<a class="btn btn-outline" href="/services">View all services <Arrow /></a>
+					</div>
+					<ul class="care-grid care-grid-home" role="list">
+						{cards.map((s) => {
+							const home = photoSrc(s.home_image, s.home_photo);
+							const src = home ?? photoSrc(s.image, s.photo);
+							const alt = home
+								? photoAlt(s.home_image, s.home_alt, s.home_title ?? s.title)
+								: photoAlt(s.image, s.photo_alt, s.title);
+							const name = s.home_title || s.title;
+							return (
+								<li>
+									<a class="care-card care-card-sm" href={serviceUrl(s)}>
+										<span class="care-photo">
+											{src && <img src={src} alt={alt} width="294" height="110" loading="lazy" />}
+										</span>
+										<span class="care-icon">
+											<Icon name={s.icon} />
+										</span>
+										<h3 class="care-name">{name}</h3>
+										{(s.home_summary || s.summary) && <p class="care-text">{s.home_summary || s.summary}</p>}
+										<span class="care-arrow">
+											<Arrow />
+										</span>
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+</Base>

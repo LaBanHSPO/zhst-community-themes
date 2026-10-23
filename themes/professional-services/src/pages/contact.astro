@@ -1,0 +1,228 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import { getOffice, getServices, mapHref, telHref } from "../lib/practice";
+
+const [{ office, cacheHint }, servicesResult] = await Promise.all([getOffice(), getServices()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(servicesResult.cacheHint);
+}
+const topics = [...servicesResult.entries.map((s) => s.data.title), "Something else"];
+const requested = Astro.url.searchParams.get("topic");
+const selected = requested && topics.includes(requested) ? requested : undefined;
+// "Talk to …" links on team profiles pass the adviser's name; only plain names are echoed back.
+const withParam = (Astro.url.searchParams.get("with") ?? "").trim();
+const adviser = /^[\p{L} .'-]{2,60}$/u.test(withParam) ? withParam : "";
+---
+
+<Base title="Contact" description="Tell us what you are working on. We reply to every message within two working days.">
+	<section class="page-head">
+		<div class="container page-head-inner">
+			<div>
+				<span class="eyebrow">Contact</span>
+				<h1>Let’s talk about what’s next.</h1>
+				<span class="rule" aria-hidden="true"></span>
+			</div>
+			<p class="lede">
+				Tell us a little about your organization and the challenge in front of you. A first conversation is informal, confidential and free of charge.
+			</p>
+		</div>
+	</section>
+
+	<section class="contact-section">
+		<div class="container contact-grid">
+			<div class="contact-form">
+				<h2>Send us a note</h2>
+				<p>Fields marked optional can be left blank. Your message is prepared in your own email app, so nothing is stored on this site.</p>
+				<form
+					data-contact-form
+					data-email={office.email}
+					action={office.email ? `mailto:${office.email}` : undefined}
+					method="post"
+					enctype="text/plain"
+					novalidate
+				>
+					<div class="form-grid">
+						<div class="field">
+							<label for="c-name">Name</label>
+							<input id="c-name" name="name" type="text" autocomplete="name" required aria-describedby="c-name-err" />
+							<span class="field-error" id="c-name-err" data-error-for="c-name"></span>
+						</div>
+						<div class="field">
+							<label for="c-org">Organization <span class="optional">(optional)</span></label>
+							<input id="c-org" name="organization" type="text" autocomplete="organization" />
+						</div>
+						<div class="field">
+							<label for="c-email">Email</label>
+							<input id="c-email" name="email" type="email" autocomplete="email" required aria-describedby="c-email-err" />
+							<span class="field-error" id="c-email-err" data-error-for="c-email"></span>
+						</div>
+						<div class="field">
+							<label for="c-phone">Phone <span class="optional">(optional)</span></label>
+							<input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+						</div>
+						{
+							adviser && (
+								<div class="field full">
+									<label for="c-with">Adviser you would like to speak with</label>
+									<input id="c-with" name="adviser" type="text" value={adviser} />
+								</div>
+							)
+						}
+						<div class="field full">
+							<label for="c-topic">What would you like to talk about?</label>
+							<select id="c-topic" name="topic">
+								{topics.map((t) => <option selected={t === selected}>{t}</option>)}
+							</select>
+						</div>
+						<div class="field full">
+							<label for="c-message">Your message</label>
+							<textarea
+								id="c-message"
+								name="message"
+								rows="5"
+								required
+								aria-describedby="c-message-err"
+								placeholder="What is happening in your organization, and what would a good outcome look like?"
+							></textarea>
+							<span class="field-error" id="c-message-err" data-error-for="c-message"></span>
+						</div>
+					</div>
+					<button class="btn btn-lg" type="submit">Prepare my email <Arrow /></button>
+					<p class="form-status" role="status" aria-live="polite" data-status>
+						<noscript>
+							This form needs JavaScript to prepare your email.
+							{office.email && <>Write to <a href={`mailto:${office.email}`}>{office.email}</a> instead.</>}
+						</noscript>
+					</p>
+				</form>
+			</div>
+
+			<aside class="contact-aside" aria-label="Contact details">
+				<div class="contact-card">
+					<h2>Prefer to call or write?</h2>
+					<dl class="contact-list">
+						{
+							office.phone && (
+								<div>
+									<dt>Phone</dt>
+									<dd><a href={telHref(office.phone)}>{office.phone}</a></dd>
+								</div>
+							)
+						}
+						{
+							office.email && (
+								<div>
+									<dt>Email</dt>
+									<dd><a href={`mailto:${office.email}`}>{office.email}</a></dd>
+								</div>
+							)
+						}
+						{
+							(office.street || office.locality) && (
+								<div>
+									<dt>Office</dt>
+									<dd>
+										<a href={mapHref(office)} target="_blank" rel="noopener noreferrer">
+											{office.street}{office.street && <br />}
+											{office.locality}{office.country && <>, {office.country}</>}
+										</a>
+									</dd>
+								</div>
+							)
+						}
+						{
+							office.hours && (
+								<div>
+									<dt>Hours</dt>
+									<dd>{office.hours}</dd>
+								</div>
+							)
+						}
+					</dl>
+				</div>
+				<div class="contact-card">
+					<h2>What happens next</h2>
+					<ol class="next-steps">
+						<li>{office.response_note || "We reply to every message within two working days."}</li>
+						<li>We arrange a short call to understand your situation and goals.</li>
+						<li>If we are a good fit, we send a brief proposal with a fixed fee.</li>
+					</ol>
+				</div>
+				<figure class="contact-photo">
+					<img
+						src="/images/studio-team.webp"
+						alt="Four colleagues talking beside a table of drawings in a bright studio"
+						width="600"
+						height="458"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			</aside>
+		</div>
+	</section>
+</Base>
+
+<script>
+	// Compose an enquiry email in the visitor's own email app. Nothing is sent or stored by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLTextAreaElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("input[required], textarea[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const valueMissing = input.value.trim() === "";
+				const message = valueMissing
+					? "Please fill this in."
+					: !input.validity.valid
+						? input.type === "email"
+							? "Please enter a valid email address."
+							: "Please check this field."
+						: "";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online enquiries are not available right now. Please call the office.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const subject = `Enquiry: ${get("topic")}${get("organization") ? ` (${get("organization")})` : ""}`;
+			const body = [
+				"Hello,",
+				"",
+				get("message"),
+				"",
+				`Name: ${get("name")}`,
+				get("organization") ? `Organization: ${get("organization")}` : "",
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				get("adviser") ? `Adviser: ${get("adviser")}` : "",
+				`Topic: ${get("topic")}`,
+			]
+				.filter((line, i) => line !== "" || i === 1 || i === 3)
+				.join("\n");
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+			status.textContent =
+				"Your email app should open with this message ready to send. It is only sent when you send that email. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

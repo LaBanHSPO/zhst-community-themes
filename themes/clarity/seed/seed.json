@@ -1,0 +1,1358 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Clarity",
+  "description": "A SaaS product marketing theme for an AI writing workspace: homepage, features, pricing with a plan comparison, a customer workflow story and a book-a-demo form",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "Clarity",
+  "tagline": "From rough notes to ready to share"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "benefits",
+   "label": "Benefits",
+   "labelSingular": "Benefit",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Benefit",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "Homepage text",
+     "type": "text"
+    },
+    {
+     "slug": "demo_text",
+     "label": "Book a demo text",
+     "type": "text"
+    },
+    {
+     "slug": "icon",
+     "label": "Icon",
+     "type": "select",
+     "validation": {
+      "options": [
+       "pen",
+       "doc",
+       "sparkle",
+       "people"
+      ]
+     },
+     "defaultValue": "sparkle"
+    },
+    {
+     "slug": "on_home",
+     "label": "Show on homepage strip",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "on_demo",
+     "label": "Show on Book a demo page",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "stages",
+   "label": "Workflow stages",
+   "labelSingular": "Workflow stage",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Stage",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "short",
+     "label": "Strip text",
+     "type": "string"
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Section eyebrow",
+     "type": "string"
+    },
+    {
+     "slug": "headline",
+     "label": "Section headline",
+     "type": "string"
+    },
+    {
+     "slug": "body",
+     "label": "Section text",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "points",
+     "label": "Annotated points",
+     "type": "repeater",
+     "validation": {
+      "maxItems": 4,
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "Point",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "text",
+        "label": "Detail",
+        "type": "text"
+       }
+      ]
+     }
+    },
+    {
+     "slug": "icon",
+     "label": "Icon",
+     "type": "select",
+     "validation": {
+      "options": [
+       "list",
+       "pen",
+       "sparkle",
+       "upload"
+      ]
+     },
+     "defaultValue": "sparkle"
+    },
+    {
+     "slug": "preview",
+     "label": "Product preview",
+     "type": "select",
+     "validation": {
+      "options": [
+       "outline",
+       "draft",
+       "edit",
+       "share"
+      ]
+     },
+     "defaultValue": "outline"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "capabilities",
+   "label": "Capabilities",
+   "labelSingular": "Capability",
+   "supports": [
+    "revisions",
+    "search"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "text",
+     "label": "Text",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "link_label",
+     "label": "Link label",
+     "type": "string"
+    },
+    {
+     "slug": "link_url",
+     "label": "Link URL",
+     "type": "string"
+    },
+    {
+     "slug": "preview",
+     "label": "Preview illustration",
+     "type": "select",
+     "validation": {
+      "options": [
+       "assistant",
+       "templates",
+       "tone"
+      ]
+     },
+     "defaultValue": "assistant"
+    },
+    {
+     "slug": "items",
+     "label": "Preview items",
+     "type": "repeater",
+     "validation": {
+      "maxItems": 6,
+      "subFields": [
+       {
+        "slug": "label",
+        "label": "Label",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "icon",
+        "label": "Icon (pen, doc, sparkle, people, user, chat, upload, list, check, mail, chart, megaphone, target, clock, wave, refresh)",
+        "type": "string"
+       }
+      ]
+     }
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "plans",
+   "label": "Plans",
+   "labelSingular": "Plan",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Plan name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "blurb",
+     "label": "Who it is for",
+     "type": "string"
+    },
+    {
+     "slug": "price_monthly",
+     "label": "Price per month, billed monthly (USD)",
+     "type": "number",
+     "required": true
+    },
+    {
+     "slug": "price_yearly",
+     "label": "Price per month, billed yearly (USD)",
+     "type": "number",
+     "required": true
+    },
+    {
+     "slug": "period_free",
+     "label": "Price label when free (e.g. forever)",
+     "type": "string"
+    },
+    {
+     "slug": "seats_note",
+     "label": "Seats note under the price",
+     "type": "string"
+    },
+    {
+     "slug": "cta_label",
+     "label": "Button label",
+     "type": "string"
+    },
+    {
+     "slug": "cta_url",
+     "label": "Button URL",
+     "type": "string"
+    },
+    {
+     "slug": "featured",
+     "label": "Highlight this plan",
+     "type": "boolean"
+    },
+    {
+     "slug": "badge",
+     "label": "Badge",
+     "type": "string"
+    },
+    {
+     "slug": "features",
+     "label": "Plan features",
+     "type": "repeater",
+     "validation": {
+      "maxItems": 8,
+      "subFields": [
+       {
+        "slug": "text",
+        "label": "Feature",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "icon",
+        "label": "Icon (pen, doc, sparkle, people, user, chat, upload, list, check, mail, chart, megaphone, target, clock, wave)",
+        "type": "string"
+       }
+      ]
+     }
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "comparison",
+   "label": "Plan comparison",
+   "labelSingular": "Comparison row",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Row",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "free",
+     "label": "Free (text, or yes / no)",
+     "type": "string"
+    },
+    {
+     "slug": "solo",
+     "label": "Solo (text, or yes / no)",
+     "type": "string"
+    },
+    {
+     "slug": "team",
+     "label": "Team (text, or yes / no)",
+     "type": "string"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "workflows",
+   "label": "Customer workflows",
+   "labelSingular": "Customer workflow",
+   "urlPattern": "/customer-workflow/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "Listing summary",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Eyebrow",
+     "type": "string"
+    },
+    {
+     "slug": "headline",
+     "label": "Headline",
+     "type": "string"
+    },
+    {
+     "slug": "headline_accent",
+     "label": "Headline (violet)",
+     "type": "string"
+    },
+    {
+     "slug": "lede",
+     "label": "Intro",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "input_title",
+     "label": "Input panel title",
+     "type": "string"
+    },
+    {
+     "slug": "input_meta",
+     "label": "Input panel time",
+     "type": "string"
+    },
+    {
+     "slug": "input_lines",
+     "label": "Input notes",
+     "type": "repeater",
+     "validation": {
+      "maxItems": 20,
+      "subFields": [
+       {
+        "slug": "time",
+        "label": "Timestamp",
+        "type": "string"
+       },
+       {
+        "slug": "text",
+        "label": "Note",
+        "type": "string",
+        "required": true
+       }
+      ]
+     }
+    },
+    {
+     "slug": "output_title",
+     "label": "Output document title",
+     "type": "string"
+    },
+    {
+     "slug": "output_sections",
+     "label": "Output sections",
+     "type": "repeater",
+     "validation": {
+      "maxItems": 8,
+      "subFields": [
+       {
+        "slug": "nav",
+        "label": "Outline label",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "icon",
+        "label": "Icon (doc, pen, target, clock, list)",
+        "type": "string"
+       },
+       {
+        "slug": "heading",
+        "label": "Heading",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "body",
+        "label": "Text",
+        "type": "text"
+       },
+       {
+        "slug": "bullets",
+        "label": "Bullet points (one per line)",
+        "type": "text"
+       }
+      ]
+     }
+    },
+    {
+     "slug": "steps",
+     "label": "Steps",
+     "type": "repeater",
+     "validation": {
+      "maxItems": 6,
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "Step",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "text",
+        "label": "Text",
+        "type": "text"
+       },
+       {
+        "slug": "icon",
+        "label": "Icon (chat, doc, sparkle, upload)",
+        "type": "string"
+       }
+      ]
+     }
+    },
+    {
+     "slug": "story_eyebrow",
+     "label": "Story eyebrow",
+     "type": "string"
+    },
+    {
+     "slug": "story_title",
+     "label": "Story headline",
+     "type": "string"
+    },
+    {
+     "slug": "story_text",
+     "label": "Story text",
+     "type": "text"
+    },
+    {
+     "slug": "image",
+     "label": "Story photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Story photo (bundled path)",
+     "type": "string"
+    },
+    {
+     "slug": "photo_alt",
+     "label": "Story photo alt text",
+     "type": "string"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "agenda",
+   "label": "Demo agenda",
+   "labelSingular": "Agenda item",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Item",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "Text",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "company",
+   "label": "Company details",
+   "labelSingular": "Company details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Company name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "email",
+     "label": "Demo requests email",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "support_email",
+     "label": "Support email",
+     "type": "string"
+    },
+    {
+     "slug": "footer_text",
+     "label": "Footer text",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Homepage",
+     "url": "/"
+    },
+    {
+     "type": "custom",
+     "label": "Features",
+     "url": "/features"
+    },
+    {
+     "type": "custom",
+     "label": "Pricing",
+     "url": "/pricing"
+    },
+    {
+     "type": "custom",
+     "label": "Customer workflow",
+     "url": "/customer-workflow/meeting-notes-to-brief"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "About Clarity",
+     "content": [
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b1",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Clarity is a focused AI writing workspace. It helps people turn rough notes, meeting transcripts and half-formed ideas into clear writing they are ready to share.",
+         "_key": "s1"
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We build for the whole writing process, not just the first draft: plan an outline, draft with AI in context, refine for clarity and tone, then export or share with your team.",
+         "_key": "s2"
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "b3",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How we think about AI",
+         "_key": "s3"
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b4",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Your words stay yours. Clarity suggests, you decide: every change is shown before it is applied, and nothing is published without you.",
+         "_key": "s4"
+        }
+       ]
+      }
+     ]
+    }
+   }
+  ],
+  "benefits": [
+   {
+    "id": "write-faster",
+    "slug": "write-faster",
+    "status": "published",
+    "data": {
+     "title": "Write faster",
+     "text": "Turn ideas into first drafts in seconds.",
+     "demo_text": "Turn ideas into strong drafts in seconds.",
+     "icon": "pen",
+     "on_home": true,
+     "on_demo": true,
+     "position": 1
+    }
+   },
+   {
+    "id": "clearer-results",
+    "slug": "clearer-results",
+    "status": "published",
+    "data": {
+     "title": "Clearer results",
+     "text": "Get writing that’s focused and effective.",
+     "demo_text": "Get writing that’s focused and effective.",
+     "icon": "doc",
+     "on_home": true,
+     "on_demo": true,
+     "position": 2
+    }
+   },
+   {
+    "id": "stay-in-flow",
+    "slug": "stay-in-flow",
+    "status": "published",
+    "data": {
+     "title": "Stay in flow",
+     "text": "Plan, draft, and refine without leaving your workspace.",
+     "demo_text": "Plan, draft, and refine without leaving your workspace.",
+     "icon": "sparkle",
+     "on_home": true,
+     "on_demo": false,
+     "position": 3
+    }
+   },
+   {
+    "id": "for-everyone",
+    "slug": "for-everyone",
+    "status": "published",
+    "data": {
+     "title": "For everyone",
+     "text": "Built for individuals and teams across any use case.",
+     "demo_text": "Built for individuals and teams across any use case.",
+     "icon": "people",
+     "on_home": true,
+     "on_demo": true,
+     "position": 4
+    }
+   }
+  ],
+  "stages": [
+   {
+    "id": "outline",
+    "slug": "outline",
+    "status": "published",
+    "data": {
+     "title": "Outline",
+     "short": "Turn your ideas into a clear structure",
+     "eyebrow": "Research to outline",
+     "headline": "Start with structure, not a blank page.",
+     "body": "Paste in research notes, links or a rough brain dump. Clarity pulls out the main points and proposes an outline you can reorder, rename and trim before a single paragraph is written.",
+     "points": [
+      {
+       "title": "Key points, pulled from your notes",
+       "text": "Each heading is traced back to the note it came from."
+      },
+      {
+       "title": "Drag to reorder",
+       "text": "Move sections around until the argument flows."
+      },
+      {
+       "title": "Your outline, your call",
+       "text": "Nothing is drafted until you approve the structure."
+      }
+     ],
+     "icon": "list",
+     "preview": "outline",
+     "position": 1
+    }
+   },
+   {
+    "id": "draft",
+    "slug": "draft",
+    "status": "published",
+    "data": {
+     "title": "Draft",
+     "short": "Create with AI, iterating in context",
+     "eyebrow": "Outline to draft",
+     "headline": "Draft section by section, in context.",
+     "body": "Ask Clarity to write one section at a time. It reads the outline and the paragraphs around it, so each draft fits the piece instead of starting from scratch.",
+     "points": [
+      {
+       "title": "Ask Clarity, inline",
+       "text": "Write an instruction right where the paragraph should go."
+      },
+      {
+       "title": "Draft one section at a time",
+       "text": "Keep control of length and order."
+      },
+      {
+       "title": "Keep or try again",
+       "text": "Accept a draft, or ask for another take with a short note."
+      }
+     ],
+     "icon": "pen",
+     "preview": "draft",
+     "position": 2
+    }
+   },
+   {
+    "id": "edit",
+    "slug": "edit",
+    "status": "published",
+    "data": {
+     "title": "Edit",
+     "short": "Refine for clarity, tone, and impact",
+     "eyebrow": "Draft to edit",
+     "headline": "See every suggestion before it lands.",
+     "body": "Select a sentence and choose Improve writing, Fix grammar, Shorten or Change tone. Clarity shows the proposed edit next to your original, and you decide what to apply.",
+     "points": [
+      {
+       "title": "Side-by-side changes",
+       "text": "Removed words are struck through, additions highlighted."
+      },
+      {
+       "title": "One-click tone shifts",
+       "text": "More concise, more professional, more casual or more persuasive."
+      },
+      {
+       "title": "Apply or dismiss",
+       "text": "Your original stays untouched until you choose Apply."
+      }
+     ],
+     "icon": "sparkle",
+     "preview": "edit",
+     "position": 3
+    }
+   },
+   {
+    "id": "share",
+    "slug": "share",
+    "status": "published",
+    "data": {
+     "title": "Share",
+     "short": "Export and collaborate with ease",
+     "eyebrow": "Edit to share",
+     "headline": "Hand it off in the format people need.",
+     "body": "Share a link with your team for comments, or export a clean document when the piece is ready. Formatting, headings and lists come along intact.",
+     "points": [
+      {
+       "title": "Share for review",
+       "text": "Invite teammates to read and comment."
+      },
+      {
+       "title": "Export cleanly",
+       "text": "Download as Word, PDF, Markdown or copy as rich text."
+      },
+      {
+       "title": "Keep versions",
+       "text": "Every shared version stays in the document history."
+      }
+     ],
+     "icon": "upload",
+     "preview": "share",
+     "position": 4
+    }
+   }
+  ],
+  "capabilities": [
+   {
+    "id": "ai-writing-assistant",
+    "slug": "ai-writing-assistant",
+    "status": "published",
+    "data": {
+     "title": "AI-powered writing assistant",
+     "text": "Get unstuck and move faster with context-aware suggestions, outlines, and full drafts — right where you write.",
+     "link_label": "Explore AI tools",
+     "link_url": "/features#stage-draft",
+     "preview": "assistant",
+     "items": [
+      {
+       "label": "Ask Clarity…",
+       "icon": "sparkle"
+      },
+      {
+       "label": "Write an outline",
+       "icon": "refresh"
+      },
+      {
+       "label": "Turn into a first draft",
+       "icon": "refresh"
+      },
+      {
+       "label": "Make this more compelling",
+       "icon": "refresh"
+      },
+      {
+       "label": "Change the tone",
+       "icon": "refresh"
+      },
+      {
+       "label": "Simplify this section",
+       "icon": "refresh"
+      }
+     ],
+     "position": 1
+    }
+   },
+   {
+    "id": "ready-to-use-templates",
+    "slug": "ready-to-use-templates",
+    "status": "published",
+    "data": {
+     "title": "Ready-to-use templates",
+     "text": "Start with proven templates for blog posts, product updates, emails, plans, and more.",
+     "link_label": "Browse templates",
+     "link_url": "/features#stage-outline",
+     "preview": "templates",
+     "items": [
+      {
+       "label": "Blog post",
+       "icon": "doc"
+      },
+      {
+       "label": "Product update",
+       "icon": "megaphone"
+      },
+      {
+       "label": "Marketing email",
+       "icon": "mail"
+      },
+      {
+       "label": "Strategic plan",
+       "icon": "chart"
+      }
+     ],
+     "position": 2
+    }
+   },
+   {
+    "id": "rewrite-in-your-tone",
+    "slug": "rewrite-in-your-tone",
+    "status": "published",
+    "data": {
+     "title": "Rewrite in your tone",
+     "text": "Adjust length, tone, and style in seconds, so your writing always fits your audience and purpose.",
+     "link_label": "See editing features",
+     "link_url": "/features#stage-edit",
+     "preview": "tone",
+     "items": [
+      {
+       "label": "More concise",
+       "icon": "pen"
+      },
+      {
+       "label": "More professional",
+       "icon": "target"
+      },
+      {
+       "label": "More casual",
+       "icon": "sparkle"
+      },
+      {
+       "label": "More persuasive",
+       "icon": "check"
+      }
+     ],
+     "position": 3
+    }
+   }
+  ],
+  "plans": [
+   {
+    "id": "free",
+    "slug": "free",
+    "status": "published",
+    "data": {
+     "title": "Free",
+     "blurb": "A great way to try Clarity.",
+     "price_monthly": 0,
+     "price_yearly": 0,
+     "period_free": "forever",
+     "seats_note": "",
+     "cta_label": "Get started",
+     "cta_url": "/book-a-demo?plan=free",
+     "featured": false,
+     "badge": "",
+     "features": [
+      {
+       "text": "10,000 AI words per month",
+       "icon": "pen"
+      },
+      {
+       "text": "1 seat",
+       "icon": "user"
+      },
+      {
+       "text": "Access to core writing tools",
+       "icon": "doc"
+      },
+      {
+       "text": "Standard AI models",
+       "icon": "sparkle"
+      },
+      {
+       "text": "Email support",
+       "icon": "chat"
+      }
+     ],
+     "position": 1
+    }
+   },
+   {
+    "id": "solo",
+    "slug": "solo",
+    "status": "published",
+    "data": {
+     "title": "Solo",
+     "blurb": "For individuals who write regularly.",
+     "price_monthly": 16,
+     "price_yearly": 13,
+     "period_free": "",
+     "seats_note": "",
+     "cta_label": "Get started",
+     "cta_url": "/book-a-demo?plan=solo",
+     "featured": true,
+     "badge": "Most popular",
+     "features": [
+      {
+       "text": "100,000 AI words per month",
+       "icon": "pen"
+      },
+      {
+       "text": "1 seat",
+       "icon": "user"
+      },
+      {
+       "text": "All writing tools and templates",
+       "icon": "doc"
+      },
+      {
+       "text": "Advanced AI models",
+       "icon": "sparkle"
+      },
+      {
+       "text": "Priority support",
+       "icon": "chat"
+      }
+     ],
+     "position": 2
+    }
+   },
+   {
+    "id": "team",
+    "slug": "team",
+    "status": "published",
+    "data": {
+     "title": "Team",
+     "blurb": "For teams who create together.",
+     "price_monthly": 40,
+     "price_yearly": 32,
+     "period_free": "",
+     "seats_note": "for up to 5 seats",
+     "cta_label": "Get started",
+     "cta_url": "/book-a-demo?plan=team",
+     "featured": false,
+     "badge": "",
+     "features": [
+      {
+       "text": "500,000 AI words per month",
+       "icon": "pen"
+      },
+      {
+       "text": "Up to 5 seats (add more anytime)",
+       "icon": "people"
+      },
+      {
+       "text": "All writing tools and templates",
+       "icon": "doc"
+      },
+      {
+       "text": "Advanced AI models",
+       "icon": "sparkle"
+      },
+      {
+       "text": "Priority support",
+       "icon": "chat"
+      }
+     ],
+     "position": 3
+    }
+   }
+  ],
+  "comparison": [
+   {
+    "id": "ai-words",
+    "slug": "ai-words",
+    "status": "published",
+    "data": {
+     "title": "AI words per month",
+     "free": "10,000",
+     "solo": "100,000",
+     "team": "500,000",
+     "position": 1
+    }
+   },
+   {
+    "id": "seats",
+    "slug": "seats",
+    "status": "published",
+    "data": {
+     "title": "Seats included",
+     "free": "1",
+     "solo": "1",
+     "team": "Up to 5",
+     "position": 2
+    }
+   },
+   {
+    "id": "tools-templates",
+    "slug": "tools-templates",
+    "status": "published",
+    "data": {
+     "title": "All writing tools and templates",
+     "free": "no",
+     "solo": "yes",
+     "team": "yes",
+     "position": 3
+    }
+   },
+   {
+    "id": "advanced-models",
+    "slug": "advanced-models",
+    "status": "published",
+    "data": {
+     "title": "Advanced AI models",
+     "free": "no",
+     "solo": "yes",
+     "team": "yes",
+     "position": 4
+    }
+   },
+   {
+    "id": "priority-support",
+    "slug": "priority-support",
+    "status": "published",
+    "data": {
+     "title": "Priority support",
+     "free": "no",
+     "solo": "yes",
+     "team": "yes",
+     "position": 5
+    }
+   },
+   {
+    "id": "add-seats",
+    "slug": "add-seats",
+    "status": "published",
+    "data": {
+     "title": "Add more seats anytime",
+     "free": "no",
+     "solo": "no",
+     "team": "yes",
+     "position": 6
+    }
+   }
+  ],
+  "workflows": [
+   {
+    "id": "meeting-notes-to-brief",
+    "slug": "meeting-notes-to-brief",
+    "status": "published",
+    "data": {
+     "title": "From meeting notes to a publishable brief",
+     "summary": "A campaign kickoff call becomes a structured executive brief: capture the notes, let Clarity find the key points, refine the draft and share it.",
+     "eyebrow": "Customer workflow",
+     "headline": "From meeting notes to a",
+     "headline_accent": "publishable brief.",
+     "lede": "Turn real conversations into clear, structured writing — in minutes. Clarity helps you capture, organize, and transform your ideas into polished content you can share with confidence.",
+     "input_title": "Meeting notes",
+     "input_meta": "Today, 10:00 AM",
+     "input_lines": [
+      {
+       "time": "00:00",
+       "text": "Kickoff for Q3 campaign"
+      },
+      {
+       "time": "02:15",
+       "text": "Focus on small business segment"
+      },
+      {
+       "time": "05:42",
+       "text": "Emphasize simplicity and speed"
+      },
+      {
+       "time": "08:30",
+       "text": "Need messaging and key points"
+      },
+      {
+       "time": "11:20",
+       "text": "Include use cases and examples"
+      },
+      {
+       "time": "14:10",
+       "text": "Target launch in early July"
+      },
+      {
+       "time": "16:05",
+       "text": "Align with product and design"
+      },
+      {
+       "time": "18:45",
+       "text": "Next steps: draft brief"
+      }
+     ],
+     "output_title": "Q3 Campaign Brief",
+     "output_sections": [
+      {
+       "nav": "Executive brief",
+       "icon": "doc",
+       "heading": "Overview",
+       "body": "Launch a focused campaign for small businesses, highlighting the simplicity and speed of Clarity. The goal is to drive awareness and trial through clear, compelling messaging and real-world use cases.",
+       "bullets": ""
+      },
+      {
+       "nav": "Key messages",
+       "icon": "pen",
+       "heading": "Key messages",
+       "body": "",
+       "bullets": "Turn ideas into clear, compelling writing — faster.\nBuilt for small teams and growing businesses.\nReal examples that show the value in everyday work."
+      },
+      {
+       "nav": "Use cases",
+       "icon": "target",
+       "heading": "Use cases",
+       "body": "Show the product doing everyday work small teams already do:",
+       "bullets": "Turning a sales call into a follow-up email.\nWriting a weekly product update from a changelog.\nDrafting a landing page from a one-page plan."
+      },
+      {
+       "nav": "Timeline",
+       "icon": "clock",
+       "heading": "Timeline",
+       "body": "",
+       "bullets": "Brief approved by product and design.\nMessaging and examples drafted in Clarity.\nCampaign launches in early July."
+      },
+      {
+       "nav": "Next steps",
+       "icon": "list",
+       "heading": "Next steps",
+       "body": "",
+       "bullets": "Share this brief with product and design for comments.\nCollect two real customer examples per use case.\nSchedule the launch review."
+      }
+     ],
+     "steps": [
+      {
+       "title": "Capture",
+       "text": "Bring in meeting notes, voice recordings, or rough ideas.",
+       "icon": "chat"
+      },
+      {
+       "title": "Organize",
+       "text": "Clarity finds the key points and structures your content.",
+       "icon": "doc"
+      },
+      {
+       "title": "Refine",
+       "text": "Edit, expand, and tailor the draft with AI assistance.",
+       "icon": "sparkle"
+      },
+      {
+       "title": "Share",
+       "text": "Export a polished brief, doc, or post — ready to publish.",
+       "icon": "upload"
+      }
+     ],
+     "story_eyebrow": "Turn conversations into action",
+     "story_title": "Less busywork.\nMore momentum.",
+     "story_text": "Clarity removes the gap between what you discuss and what you deliver. Spend less time formatting and more time moving ideas forward.",
+     "photo": "/images/writer-brief.webp",
+     "photo_alt": "A writer at a sunny desk reviewing the Q3 Campaign Brief in Clarity on her laptop",
+     "position": 1
+    }
+   }
+  ],
+  "agenda": [
+   {
+    "id": "intro",
+    "slug": "intro",
+    "status": "published",
+    "data": {
+     "title": "A short intro to Clarity",
+     "text": "See how Clarity helps you write more clearly and efficiently.",
+     "position": 1
+    }
+   },
+   {
+    "id": "walkthrough",
+    "slug": "walkthrough",
+    "status": "published",
+    "data": {
+     "title": "A live product walkthrough",
+     "text": "Explore key features with real examples.",
+     "position": 2
+    }
+   },
+   {
+    "id": "discussion",
+    "slug": "discussion",
+    "status": "published",
+    "data": {
+     "title": "A tailored discussion",
+     "text": "We’ll focus on your use case and answer your questions.",
+     "position": 3
+    }
+   }
+  ],
+  "company": [
+   {
+    "id": "main",
+    "slug": "main",
+    "status": "published",
+    "data": {
+     "title": "Clarity",
+     "email": "demo@clarity.example",
+     "support_email": "help@clarity.example",
+     "footer_text": "A focused AI writing workspace. Plan, draft, and refine with AI — from rough notes to ready to share."
+    }
+   }
+  ]
+ }
+}

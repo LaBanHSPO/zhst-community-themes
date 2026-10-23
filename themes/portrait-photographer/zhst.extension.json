@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "portrait-photographer",
+	"kind": "theme",
+	"name": "Portrait Photographer",
+	"type": "bio",
+	"emdash": "1.2.0",
+	"entry": "themes/portrait-photographer",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

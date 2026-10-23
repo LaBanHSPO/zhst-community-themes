@@ -1,0 +1,75 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import Icon from "../../components/Icon.astro";
+import Title from "../../components/Title.astro";
+import { getServices, photoAlt, photoSrc, serviceUrl } from "../../lib/luma";
+
+const servicesResult = await getServices();
+if (Astro.cache?.enabled) Astro.cache.set(servicesResult.cacheHint);
+const groups = servicesResult.entries.map((e) => e.data).filter((s) => s.show_on_services !== false);
+---
+
+<Base
+	title="Services"
+	description="Preventive, restorative and cosmetic dental care at Luma Dental, for every stage of life."
+	image="/images/hero-services.webp"
+>
+	<section class="hero hero-services" aria-labelledby="hero-title">
+		<div class="hero-media">
+			<img
+				src="/images/hero-services.webp"
+				alt="A dentist examining a smiling patient with a dental mirror"
+				width="1067"
+				height="364"
+				fetchpriority="high"
+			/>
+		</div>
+		<div class="container hero-copy">
+			<p class="eyebrow">Our services</p>
+			<h1 id="hero-title" class="title title-hero title-hero-services">
+				Complete care<br /> for a healthier<span class="dot">,</span><br /> brighter smile<span class="dot">.</span>
+			</h1>
+			<p class="lede">
+				From preventive care to advanced treatments,<br class="br-wide" /> we provide gentle, modern and personalized<br
+					class="br-wide"
+				/> dental services for every stage of life.
+			</p>
+		</div>
+	</section>
+
+	<section class="services-list" aria-labelledby="groups-title">
+		<div class="container section-head section-head-split">
+			<div>
+				<p class="eyebrow">Our services</p>
+				<Title id="groups-title" class="title-section" text="Personalized dental care for every smile" />
+			</div>
+			<p class="section-note">
+				Explore our comprehensive range of dental services, designed to keep your smile healthy, confident and beautiful.
+			</p>
+		</div>
+		<ul class="container-wide care-grid care-grid-services" role="list">
+			{
+				groups.map((s) => {
+					const src = photoSrc(s.image, s.photo);
+					return (
+						<li class="care-card care-card-lg">
+							<span class="care-photo">
+								{src && <img src={src} alt={photoAlt(s.image, s.photo_alt, s.title)} width="422" height="150" loading="lazy" />}
+							</span>
+							<span class="care-icon">
+								<Icon name={s.icon} />
+							</span>
+							<h3 class="care-name">{s.title}</h3>
+							{s.summary && <p class="care-text">{s.summary}</p>}
+							<a class="btn btn-outline" href={serviceUrl(s)}>
+								{s.cta_label || `Explore ${s.title.toLowerCase()}`} <Arrow />
+							</a>
+						</li>
+					);
+				})
+			}
+		</ul>
+		{groups.length === 0 && <p class="container empty">Services will appear here once they are published.</p>}
+	</section>
+</Base>

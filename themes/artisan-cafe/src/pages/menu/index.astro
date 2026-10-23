@@ -1,0 +1,88 @@
+---
+import Base from "../../layouts/Base.astro";
+import { SECTIONS, getItems, itemUrl, photoSrc } from "../../lib/cafe";
+
+const { entries: items, cacheHint } = await getItems();
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const groups = SECTIONS.map((s) => ({ ...s, items: items.filter((i) => i.data.category === s.slug) })).filter(
+	(g) => g.items.length > 0,
+);
+---
+
+<Base title="Menu" description="Coffee, tea, pastries and brunch — everything on the Artisan Café menu, with prices." overlay>
+	<section class="photo-hero page-hero" style="--hero-img:url('/images/bar-wide.webp')" aria-labelledby="menu-title">
+		<div class="container">
+			<span class="eyebrow">The menu</span>
+			<h1 id="menu-title">Made slowly,<br />served warm.</h1>
+			<p class="hero-sub">{groups.map((g) => g.label).join(" · ") || "Coffee · Pastries"}</p>
+		</div>
+	</section>
+
+	{
+		groups.length > 0 && (
+			<nav class="menu-tabs" aria-label="Menu sections" data-tabs>
+				<div class="container">
+					{groups.map((g, i) => (
+						<a href={`#${g.slug}`} data-tab={g.slug} class:list={{ "is-active": i === 0 }}>
+							{g.label}
+						</a>
+					))}
+				</div>
+			</nav>
+		)
+	}
+
+	<div class="container">
+		{groups.length === 0 && <p class="empty">Add menu items in the admin to fill this page.</p>}
+		{
+			groups.map((g, gi) => (
+				<section class="menu-section" id={g.slug} aria-labelledby={`${g.slug}-title`}>
+					<div class="menu-section-head">
+						<span class="eyebrow">{String(gi + 1).padStart(2, "0")}</span>
+						<h2 class="section-title" id={`${g.slug}-title`}>{g.title}</h2>
+						<p>{g.note}</p>
+					</div>
+					<ul class="menu-list">
+						{g.items.map((item) => {
+							const src = photoSrc(item.data.image, item.data.photo);
+							return (
+								<li>
+									<a class:list={["menu-row", { "has-thumb": src }]} href={itemUrl(item.data)}>
+										{src && <img class="thumb" src={src} alt="" loading="lazy" width="76" height="76" />}
+										<h3 {...item.edit.title}>{item.data.title}</h3>
+										<span class="price">{item.data.price}</span>
+										{item.data.summary && <p>{item.data.summary}</p>}
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				</section>
+			))
+		}
+		<p class="menu-foot-note">Oat, almond and whole milk at no extra cost. Please tell us about any allergies — every item page lists its allergens.</p>
+	</div>
+</Base>
+
+<script>
+	// Tabs are in-page anchors; underline the tab of the section being read.
+	const tabs = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-tabs] [data-tab]"));
+	const sections = tabs
+		.map((t) => document.getElementById(t.dataset.tab ?? ""))
+		.filter((s): s is HTMLElement => Boolean(s));
+	const mark = (slug: string) => tabs.forEach((t) => t.classList.toggle("is-active", t.dataset.tab === slug));
+	if (sections.length && "IntersectionObserver" in window) {
+		const io = new IntersectionObserver(
+			(entries) => {
+				const visible = entries
+					.filter((e) => e.isIntersecting)
+					.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+				if (visible[0]) mark((visible[0].target as HTMLElement).id);
+			},
+			{ rootMargin: "-30% 0px -55% 0px" },
+		);
+		sections.forEach((s) => io.observe(s));
+	}
+	tabs.forEach((t) => t.addEventListener("click", () => mark(t.dataset.tab ?? "")));
+</script>

@@ -1,0 +1,12 @@
+---
+/** The Together sun-and-neighbor mark. Decorative: the wordmark text carries the name. */
+interface Props {
+	class?: string;
+}
+const { class: cls } = Astro.props;
+---
+
+<svg class:list={["logo-mark", cls]} viewBox="0 0 64 60" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+	<path d="M17 53 26 41.5a10 10 0 1 1 12 0L47 53" stroke-width="7"></path>
+	<path d="M6 34h7M51 34h7M14.5 17.5l4.6 4.6M49.5 17.5l-4.6 4.6M32 6v7" stroke-width="6"></path>
+</svg>

@@ -1,0 +1,342 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../layouts/Base.astro";
+import CourseCard from "../components/CourseCard.astro";
+import InstructorAvatar from "../components/InstructorAvatar.astro";
+
+const [coursesResult, instructorsResult] = await Promise.all([
+	getEmDashCollection("courses", { orderBy: { created_at: "asc" }, limit: 100 }),
+	getEmDashCollection("instructors", { orderBy: { created_at: "asc" }, limit: 4 }),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(coursesResult.cacheHint);
+	Astro.cache.set(instructorsResult.cacheHint);
+}
+if (coursesResult.error) console.error("[coursecraft] failed to load courses:", coursesResult.error);
+
+// Collection `where` filters take string values only, so pick featured courses here.
+// Fall back to the first courses when none are marked as featured.
+const allCourses = coursesResult.entries;
+const marked = allCourses.filter((c) => c.data.featured === true);
+const featured = (marked.length > 0 ? marked : allCourses).slice(0, 3);
+const instructors = instructorsResult.entries;
+---
+
+<Base title="Build skills. Make your next move." description="Practical online courses for real progress. Learn from experienced instructors and apply new skills in your life and work.">
+	<section class="hero" aria-labelledby="hero-title">
+		<div class="container hero-inner">
+			<div class="hero-copy">
+				<p class="eyebrow">Learn&nbsp;&nbsp;Grow&nbsp;&nbsp;Belong</p>
+				<h1 id="hero-title">
+					Build skills.<br />
+					<span class="hero-line2">Make your next move.</span>
+				</h1>
+				<p class="hero-lede">
+					Practical online courses for real progress. Learn from experienced instructors and apply new skills in your life and work.
+				</p>
+				<a class="btn btn-primary btn-lg" href="/courses">
+					Explore courses <span class="arrow" aria-hidden="true">→</span>
+				</a>
+			</div>
+		</div>
+		<div class="hero-media">
+			<img
+				src="/media/hero-learner.jpg"
+				width="336"
+				height="530"
+				alt="A learner wearing headphones smiles at her laptop while taking notes"
+				fetchpriority="high"
+			/>
+		</div>
+	</section>
+
+	<section class="section featured" aria-labelledby="featured-title">
+		<div class="container">
+			<div class="section-head">
+				<h2 id="featured-title">Featured courses</h2>
+				<a class="text-link" href="/courses">View all courses <span class="arrow" aria-hidden="true">→</span></a>
+			</div>
+			{
+				featured.length > 0 ? (
+					<ul class="course-grid" role="list">
+						{featured.map((course) => (
+							<li>
+								<CourseCard course={course} />
+							</li>
+						))}
+					</ul>
+				) : (
+					<div class="empty-state">
+						<h3>No courses published yet</h3>
+						<p>Courses you publish in the admin will appear here.</p>
+					</div>
+				)
+			}
+		</div>
+	</section>
+
+	<section class="section questions" aria-labelledby="questions-title">
+		<div class="container">
+			<p class="eyebrow">Choose with confidence</p>
+			<h2 id="questions-title">Every course page answers three questions</h2>
+			<ol class="question-grid" role="list">
+				<li>
+					<span class="q-num" aria-hidden="true">01</span>
+					<h3>Is this course for me?</h3>
+					<p>See the level, the time it takes and what you should know before you start.</p>
+				</li>
+				<li>
+					<span class="q-num" aria-hidden="true">02</span>
+					<h3>What will I learn?</h3>
+					<p>Read the learning outcomes and a module-by-module curriculum overview.</p>
+				</li>
+				<li>
+					<span class="q-num" aria-hidden="true">03</span>
+					<h3>Who will guide me?</h3>
+					<p>Meet the instructor, their background and the other courses they teach.</p>
+				</li>
+			</ol>
+		</div>
+	</section>
+
+	{
+		instructors.length > 0 && (
+			<section class="section instructors" aria-labelledby="instructors-title">
+				<div class="container">
+					<div class="section-head">
+						<h2 id="instructors-title">Meet the instructors</h2>
+						<a class="text-link" href="/instructors">
+							All instructors <span class="arrow" aria-hidden="true">→</span>
+						</a>
+					</div>
+					<ul class="instructor-row" role="list">
+						{instructors.map((person) => (
+							<li>
+								<a class="instructor-chip" href={`/instructors/${person.id}`}>
+									<InstructorAvatar name={person.data.name} photo={person.data.photo} size={64} />
+									<span>
+										<strong>{person.data.name}</strong>
+										{person.data.role && <span class="chip-role">{person.data.role}</span>}
+									</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="section cta-band" aria-labelledby="cta-title">
+		<div class="container cta-inner">
+			<div>
+				<h2 id="cta-title">Not sure where to start?</h2>
+				<p>Tell us what you want to learn and we will point you to the right course.</p>
+			</div>
+			<a class="btn btn-outline btn-lg" href="/contact">Ask a question</a>
+		</div>
+	</section>
+</Base>
+
+<style>
+	.hero {
+		position: relative;
+		overflow: hidden;
+		min-height: clamp(460px, 44vw, 600px);
+		display: flex;
+		align-items: center;
+		padding-block: 2.5rem 3rem;
+	}
+
+	/* The photo starts below the header so nav links keep full contrast. */
+	@media (min-width: 861px) {
+		.hero {
+			min-height: clamp(500px, 42vw, 600px);
+		}
+	}
+
+	.hero-inner {
+		position: relative;
+		z-index: 1;
+	}
+
+	.hero-copy {
+		max-width: min(44rem, 56vw);
+	}
+
+	.hero h1 {
+		font-size: clamp(2.6rem, 5.4vw, 4.6rem);
+		line-height: 1.06;
+		margin-bottom: 1.4rem;
+	}
+
+	.hero-line2 {
+		font-size: 0.86em;
+	}
+
+	@media (min-width: 1100px) {
+		.hero-line2 {
+			white-space: nowrap;
+		}
+	}
+
+	.hero-lede {
+		max-width: 27rem;
+		font-size: 1.2rem;
+		line-height: 1.6;
+		color: var(--color-ink-soft);
+		margin-bottom: 2rem;
+	}
+
+	.hero-media {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		width: min(46%, 660px);
+	}
+
+	.hero-media img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 40% 20%;
+	}
+
+	.hero-media::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(90deg, var(--color-bg) 0%, rgb(247 246 242 / 0.6) 18%, transparent 42%);
+		pointer-events: none;
+	}
+
+	@media (max-width: 860px) {
+		.hero {
+			flex-direction: column;
+			align-items: stretch;
+			padding-block: 1.5rem 0;
+			min-height: 0;
+		}
+
+		.hero-copy {
+			max-width: none;
+		}
+
+		.hero-media {
+			position: relative;
+			width: 100%;
+			height: 320px;
+			margin-top: 2rem;
+		}
+
+		.hero-media::before {
+			background: linear-gradient(180deg, var(--color-bg) 0%, transparent 30%);
+		}
+	}
+
+	.featured {
+		padding-top: clamp(2rem, 4vw, 3rem);
+	}
+
+	.course-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+		gap: 1.75rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.questions {
+		background: var(--color-surface);
+		border-block: 1px solid var(--color-line);
+	}
+
+	.questions h2 {
+		max-width: 30rem;
+	}
+
+	.question-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+		gap: 2rem;
+		margin: 2rem 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.question-grid li {
+		padding-top: 1.25rem;
+		border-top: 3px solid var(--color-accent);
+	}
+
+	.question-grid p {
+		color: var(--color-ink-soft);
+		margin: 0;
+	}
+
+	.q-num {
+		display: block;
+		margin-bottom: 0.5rem;
+		font-size: 0.85rem;
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		color: var(--color-muted);
+	}
+
+	.instructor-row {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+		gap: 1rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.instructor-chip {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding: 1rem;
+		background: var(--color-surface);
+		border: 1px solid var(--color-line);
+		border-radius: var(--radius-md);
+		text-decoration: none;
+	}
+
+	.instructor-chip:hover {
+		border-color: var(--color-ink-soft);
+	}
+
+	.instructor-chip strong {
+		display: block;
+		font-family: var(--font-display);
+		font-size: 1.15rem;
+	}
+
+	.chip-role {
+		display: block;
+		font-size: 0.9rem;
+		color: var(--color-ink-soft);
+	}
+
+	.cta-band {
+		padding-block: 0;
+	}
+
+	.cta-inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 1.5rem;
+		padding-block: 2.5rem;
+		border-top: 1px solid var(--color-line);
+	}
+
+	.cta-inner p {
+		margin: 0;
+		color: var(--color-ink-soft);
+	}
+</style>

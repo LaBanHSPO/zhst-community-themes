@@ -1,0 +1,135 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import Icon from "../../components/Icon.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { photoSrc, quoteUrl } from "../../lib/brightworks";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.redirect("/404");
+
+const { entry: project, cacheHint } = await getEmDashEntry("projects", slug);
+if (!project) return Astro.redirect("/404");
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+const seo = getSeoMeta(project, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+
+const d = project.data;
+const heroSrc = photoSrc(d.hero_image, d.hero_photo);
+const beforeSrc = photoSrc(d.before_image, d.before_photo);
+const afterSrc = photoSrc(d.after_image, d.after_photo);
+const gallery = (d.gallery ?? [])
+	.map((g) => ({ src: photoSrc(g.image, g.photo), alt: g.alt || g.image?.alt || d.title }))
+	.filter((g): g is { src: string; alt: string } => Boolean(g.src));
+const deliverables = d.deliverables ?? [];
+const hasCompare = Boolean(beforeSrc && afterSrc);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.lede}
+	canonical={seo.canonical}
+	content={{ collection: "projects", id: project.data.id, slug }}
+>
+	<section class="case-hero" aria-labelledby="case-title">
+		{
+			heroSrc && (
+				<div class="case-hero-media">
+					<img src={heroSrc} alt={d.hero_image?.alt || `${d.title} shopfront signage at dusk`} width="1032" height="428" fetchpriority="high" />
+				</div>
+			)
+		}
+		<div class="case-hero-copy container-wide">
+			<span class="eyebrow eyebrow-dark eyebrow-rule">{d.eyebrow || "Project case study"}</span>
+			<h1 id="case-title" class="display display-dark" {...project.edit.headline}>
+				{d.headline || d.title}
+				{d.headline_accent && <span class="accent">{d.headline_accent}</span>}
+			</h1>
+			{d.lede && <p class="hero-lede">{d.lede}</p>}
+		</div>
+	</section>
+
+	<section class:list={["case-body container-wide", { "has-compare": hasCompare }]} aria-label="Project details">
+		{
+			hasCompare ? (
+				<div class="compare">
+					<figure class="compare-before">
+						<img src={beforeSrc} alt={d.before_image?.alt || `${d.title} before the new signage`} width="344" height="208" loading="lazy" />
+						<figcaption>Before</figcaption>
+					</figure>
+					<figure class="compare-after">
+						<img src={afterSrc} alt={d.after_image?.alt || `${d.title} after the new signage`} width="499" height="208" loading="lazy" />
+						<figcaption>After</figcaption>
+					</figure>
+				</div>
+			) : (
+				afterSrc && (
+					<figure class="compare compare-single">
+						<img src={afterSrc} alt={d.after_image?.alt || `${d.title} signage after installation`} width="499" height="208" loading="lazy" />
+					</figure>
+				)
+			)
+		}
+		{
+			d.brief && (
+				<div class="brief">
+					<h2 class="title-sm title-rule">Client brief</h2>
+					<p>{d.brief}</p>
+				</div>
+			)
+		}
+		{
+			deliverables.length > 0 && (
+				<div class="deliverables">
+					<h2 class="title-sm title-rule">Materials &amp; deliverables</h2>
+					<ul>
+						{deliverables.map((item) => (
+							<li>
+								<Icon name={item.icon ?? "sign"} />
+								<div>
+									<h3>{item.title}</h3>
+									{item.text && <p>{item.text}</p>}
+								</div>
+							</li>
+						))}
+					</ul>
+				</div>
+			)
+		}
+	</section>
+
+	{
+		gallery.length > 0 && (
+			<section class="gallery container-wide" aria-label={`${d.title} project photos`}>
+				<ul class:list={["gallery-grid", `count-${Math.min(gallery.length, 4)}`]}>
+					{gallery.map((g) => (
+						<li>
+							<img src={g.src} alt={g.alt} loading="lazy" />
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+
+	<section class="quote-band" aria-labelledby="case-cta-title">
+		<div class="container quote-band-inner">
+			<div>
+				<span class="eyebrow">Ready to start?</span>
+				<h2 id="case-cta-title" class="title-md">Planning a fresh face for <span class="accent">your business?</span></h2>
+				<p>Tell us about your project and we'll provide a tailored, no-obligation quote.</p>
+			</div>
+			<div class="actions">
+				<a class="btn btn-lg" href={quoteUrl()}>Request a quote <Arrow /></a>
+				<a class="link-arrow link-light" href="/projects"><span>More projects</span> <Arrow /></a>
+			</div>
+		</div>
+	</section>
+</Base>

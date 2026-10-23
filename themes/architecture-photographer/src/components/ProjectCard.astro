@@ -1,0 +1,23 @@
+---
+import { photoAlt, photoSrc, projectHref, projectMeta } from "../lib/studio";
+import type { Project } from "../lib/studio";
+
+interface Props {
+	project: { data: Project };
+	/** Large cards use a wider crop. */
+	wide?: boolean;
+}
+const { project, wide = false } = Astro.props;
+const p = project.data;
+const src = photoSrc(p.image, p.photo);
+---
+
+<a class:list={["project-card", { "is-wide": wide }]} href={projectHref(p)}>
+	<span class="project-card-media">
+		{src && <img src={src} alt={photoAlt(p.image, p.photo, p.title)} width="720" height="540" loading="lazy" />}
+	</span>
+	<span class="project-card-body">
+		<span class="project-card-title">{p.title}</span>
+		<span class="project-card-meta">{projectMeta(p)}</span>
+	</span>
+</a>

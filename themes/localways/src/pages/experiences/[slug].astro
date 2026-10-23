@@ -1,0 +1,161 @@
+---
+import { getEmDashEntry, decodeSlug } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import Icon from "../../components/Icon.astro";
+import { bookingUrl, getCompany, lines, money, paragraphs, photoAlt, photoSrc } from "../../lib/localways";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.redirect("/404");
+
+const [{ entry, cacheHint }, { company }] = await Promise.all([getEmDashEntry("experiences", slug), getCompany()]);
+if (!entry) return Astro.redirect("/404");
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const e = entry.data;
+const heroSrc = photoSrc(e.hero_image, e.hero_photo) ?? photoSrc(e.image, e.photo);
+const heroAlt = e.hero_image?.alt || e.hero_alt || photoAlt(e.image, e.photo_alt, e.title);
+const gallery = (e.gallery ?? [])
+	.map((g) => ({ src: photoSrc(g.image, g.photo), alt: g.image?.alt || g.alt }))
+	.filter((g): g is { src: string; alt: string } => Boolean(g.src))
+	.slice(0, 4);
+const storySrc = photoSrc(e.story_image, e.story_photo);
+const mapSrc = photoSrc(e.map_image, e.map_photo);
+const itinerary = e.itinerary ?? [];
+const inclusions = e.inclusions ?? [];
+const meeting = lines(e.meeting_point);
+const story = paragraphs(e.story);
+const request = bookingUrl(e);
+---
+
+<Base
+	title={e.headline || e.title}
+	description={e.intro ?? e.subtitle}
+	image={heroSrc}
+	content={{ collection: "experiences", id: e.id, slug: e.slug }}
+>
+	<section class="walk-top" aria-labelledby="walk-title">
+		<div class="walk-intro">
+			<a class="back-link" href="/experiences"><Icon name="back" /> All experiences</a>
+			<h1 id="walk-title" class="display display-dark" {...entry.edit.title}>{e.headline || e.title}</h1>
+			{e.intro && <p class="walk-lede">{e.intro}</p>}
+			<ul class="walk-facts" role="list">
+				<li><Icon name="clock" /> {e.duration}</li>
+				{e.group_size && <li><Icon name="users" /> {e.group_size}</li>}
+				{e.guide_note && <li><Icon name="map" /> {e.guide_note}</li>}
+			</ul>
+			<a class="btn btn-lg" href={request}>Check availability <Arrow /></a>
+		</div>
+		{
+			heroSrc && (
+				<div class:list={["walk-gallery", `walk-gallery-${gallery.length}`]}>
+					<img class="walk-main" src={heroSrc} alt={heroAlt} width="578" height="422" fetchpriority="high" />
+					{gallery.map((g, i) => (
+						<img class:list={["walk-thumb", { "walk-thumb-wide": i === 0 }]} src={g.src} alt={g.alt} width={i === 0 ? 562 : 176} height={i === 0 ? 234 : 176} loading="lazy" />
+					))}
+				</div>
+			)
+		}
+	</section>
+
+	<div class="walk-body">
+		{
+			itinerary.length > 0 && (
+				<section class="itinerary" aria-labelledby="itinerary-title">
+					<h2 id="itinerary-title" class="eyebrow eyebrow-ink">The itinerary</h2>
+					<ol class="timeline" role="list">
+						{itinerary.map((stop, i) => (
+							<li>
+								<span class="timeline-num" aria-hidden="true">{i + 1}</span>
+								<div>
+									<h3><span class="sr-only">Stop {i + 1}: </span>{stop.title}</h3>
+									{stop.text && <p>{stop.text}</p>}
+									{stop.minutes && <p class="timeline-time">{stop.minutes}</p>}
+								</div>
+							</li>
+						))}
+					</ol>
+				</section>
+			)
+		}
+
+		{
+			(storySrc || story.length > 0) && (
+				<section class="walk-story" aria-labelledby={story.length > 0 ? "story-title" : undefined}>
+					{storySrc && <img src={storySrc} alt={photoAlt(e.story_image, e.story_alt, e.title)} width="558" height="256" loading="lazy" />}
+					{story.length > 0 && (
+						<>
+							<h2 id="story-title" class="title-md">{e.story_title || "About this walk"}</h2>
+							{story.map((p) => <p>{p}</p>)}
+						</>
+					)}
+				</section>
+			)
+		}
+
+		<aside class="walk-side" aria-label="Tour details">
+			<div class="side-card side-facts">
+				<div>
+					<Icon name="clock" />
+					<p><span class="side-label">Duration</span><strong>{e.duration}</strong></p>
+				</div>
+				<div>
+					<Icon name="tag" />
+					<p>
+						<span class="side-label">Price</span>
+						<strong>{money(e.price, company.currency)}</strong> <span class="per">per person</span>
+					</p>
+				</div>
+			</div>
+
+			{
+				meeting.length > 0 && (
+					<div class:list={["side-card side-meet", { "has-map": mapSrc }]}>
+						<div class="side-row">
+							<Icon name="pin" />
+							<div>
+								<h2 class="side-title">Meeting point</h2>
+								<p>{meeting.map((l, i) => <>{l}{i < meeting.length - 1 && <br />}</>)}</p>
+								{e.map_url && (
+									<a class="text-link text-link-sm" href={e.map_url} target="_blank" rel="noopener noreferrer">
+										View on map <Arrow /><span class="sr-only"> (opens in a new tab)</span>
+									</a>
+								)}
+							</div>
+						</div>
+						{mapSrc && <img class="side-map" src={mapSrc} alt={photoAlt(e.map_image, e.map_alt, "Map of the meeting point")} width="232" height="98" loading="lazy" />}
+					</div>
+				)
+			}
+
+			{
+				(inclusions.length > 0 || e.dietary_notes) && (
+					<div class="side-card side-list">
+						{inclusions.length > 0 && (
+							<div class="side-row">
+								<Icon name="utensils" class="icon-lg" />
+								<div>
+									<h2 class="side-title">What’s included</h2>
+									<ul class="checks" role="list">
+										{inclusions.map((i) => (
+											<li><Icon name="check" /> {i.text}</li>
+										))}
+									</ul>
+								</div>
+							</div>
+						)}
+						{e.dietary_notes && (
+							<div class="side-row side-diet">
+								<Icon name="leaf" class="icon-lg" />
+								<div>
+									<h2 class="side-title">Dietary notes</h2>
+									<p>{e.dietary_notes}</p>
+								</div>
+							</div>
+						)}
+					</div>
+				)
+			}
+		</aside>
+	</div>
+</Base>

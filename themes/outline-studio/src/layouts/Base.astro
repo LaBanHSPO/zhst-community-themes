@@ -1,0 +1,167 @@
+---
+import { getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getStudio } from "../lib/outline";
+import "../styles/theme.css";
+
+interface Props {
+	title: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	/** Pass content reference for plugin page contributions on content pages */
+	content?: { collection: string; id: string; slug?: string | null };
+	/** Show the vermilion "Start a project" pill in the header (pages without a hero photo behind it). */
+	headCta?: boolean;
+}
+
+const { title, pageTitle, description, image, canonical, content, headCta = true } = Astro.props;
+const [settingsResult, menuResult, studioResult] = await Promise.all([
+	getSiteSettingsWithCacheHint(),
+	getMenuWithCacheHint("primary"),
+	getStudio(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(settingsResult.cacheHint);
+	Astro.cache.set(menuResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(settingsResult.data);
+const titleIncludesSiteName =
+	title === siteTitle || title.endsWith(` | ${siteTitle}`) || title.endsWith(` — ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
+const pageDescription = description ?? siteTagline;
+const navItems = menuResult.data?.items ?? [];
+const { studio } = studioResult;
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const clean = (url: string) => url.replace(/\/$/, "") || "/";
+// Exact match wins (the "Case study" link points at one project); otherwise the
+// longest section prefix, so any other /work/<slug> page highlights "Work".
+const currentUrl =
+	navItems.find((i) => clean(i.url) === path)?.url ??
+	navItems
+		.filter((i) => clean(i.url) !== "/" && path.startsWith(`${clean(i.url)}/`))
+		.sort((a, b) => b.url.length - a.url.length)[0]?.url;
+
+// The site name carries a vermilion full stop: "Outline" + "."
+const wordmarkText = siteTitle.replace(/\.$/, "");
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description: pageDescription,
+	canonical,
+	image,
+	content,
+	siteName: siteTitle,
+});
+const year = new Intl.DateTimeFormat("en-US", { year: "numeric", timeZone: "Asia/Saigon" }).format(new Date());
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{fullTitle}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<header class="site-head">
+			<div class="head-inner">
+				<a class="wordmark" href="/" aria-label={`${wordmarkText} — homepage`}>
+					{siteLogo ? <img src={siteLogo.url} alt={siteLogo.alt || siteTitle} /> : <>{wordmarkText}<span class="dot">.</span></>}
+				</a>
+				<nav class="nav" aria-label="Primary">
+					{
+						navItems.map((item) => (
+							<a
+								href={item.url}
+								target={item.target}
+								rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+								aria-current={item.url === currentUrl ? "page" : undefined}
+							>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+				{headCta && (
+					<a class="btn btn-sm head-cta" href="/start-a-project">
+						Start a project
+						<svg class="arrow" width="18" height="12" viewBox="0 0 18 12" aria-hidden="true" focusable="false">
+							<path d="M0 6h16M11 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5" />
+						</svg>
+					</a>
+				)}
+				<details class="mobile-nav">
+					<summary>
+						<svg width="16" height="12" viewBox="0 0 16 12" aria-hidden="true" focusable="false">
+							<path d="M0 1h16M0 6h16M0 11h16" stroke="currentColor" stroke-width="1.5" />
+						</svg>
+						Menu
+					</summary>
+					<nav class="mobile-panel" aria-label="Primary (mobile)">
+						{
+							navItems.map((item) => (
+								<a href={item.url} aria-current={item.url === currentUrl ? "page" : undefined}>
+									{item.label}
+								</a>
+							))
+						}
+					</nav>
+				</details>
+			</div>
+		</header>
+
+		<main id="main">
+			<slot />
+		</main>
+
+		<footer class="site-foot">
+			<div class="foot-inner">
+				<div class="foot-brand">
+					<a class="wordmark" href="/">{wordmarkText}<span class="dot">.</span></a>
+					<p>{siteTagline}</p>
+				</div>
+				<div>
+					<h2>Studio</h2>
+					<address>
+						{studio.street && <>{studio.street}<br /></>}
+						{studio.locality}
+					</address>
+					{studio.phone && <a href={`tel:${studio.phone.replace(/[^\d+]/g, "")}`}>{studio.phone}</a>}
+					{studio.email && <a href={`mailto:${studio.email}`}>{studio.email}</a>}
+				</div>
+				<div>
+					<h2>Explore</h2>
+					{navItems.map((item) => <a href={item.url}>{item.label}</a>)}
+					<a href="/privacy">Privacy</a>
+				</div>
+			</div>
+			<div class="foot-bottom">
+				<span>© {year} {wordmarkText}. All rights reserved.</span>
+				<span>Built with EmDash</span>
+			</div>
+		</footer>
+
+		<EmDashBodyEnd page={pageCtx} />
+	</body>
+</html>

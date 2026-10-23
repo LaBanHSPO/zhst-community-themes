@@ -1,0 +1,52 @@
+---
+import Base from "../../layouts/Base.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { WORK_FILTERS, getProjects } from "../../lib/outline";
+
+const { entries, cacheHint } = await getProjects();
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const requested = Astro.url.searchParams.get("type") ?? "all";
+const filter = WORK_FILTERS.find((f) => f.slug === requested)?.slug ?? "all";
+const listed = entries.filter((e) => e.data.listed !== false);
+const shown = filter === "all" ? listed : listed.filter((e) => e.data.categories?.includes(filter));
+const layout = filter === "all" ? "is-asym" : shown.length === 2 ? "is-two" : "is-three";
+---
+
+<Base
+	title="Work"
+	description="A selection of brand identities, websites and packaging we’ve created for ambitious brands."
+>
+	<section class="page-hero work-hero">
+		<p class="eyebrow">Our work</p>
+		<h1>
+			<span class="line">Ideas into <span class="accent">impact.</span></span>
+		</h1>
+		<div class="work-intro">
+			<p class="lead">A selection of brand identities, websites and packaging we’ve created for ambitious brands.</p>
+			<nav class="chips" aria-label="Filter work">
+				{
+					WORK_FILTERS.map((f) => (
+						<a
+							class="chip"
+							href={f.slug === "all" ? "/work" : `/work?type=${f.slug}`}
+							aria-current={f.slug === filter ? "page" : undefined}
+						>
+							{f.label}
+						</a>
+					))
+				}
+			</nav>
+		</div>
+	</section>
+
+	<section class="section work-list" aria-label={`Projects: ${WORK_FILTERS.find((f) => f.slug === filter)?.label}`}>
+		<div class:list={["work-grid", layout]}>
+			{
+				shown.map((e) => (
+					<ProjectCard project={e.data} size={filter === "all" && e.data.size === "wide" ? "wide" : "third"} />
+				))
+			}
+		</div>
+	</section>
+</Base>

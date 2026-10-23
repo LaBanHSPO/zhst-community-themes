@@ -1,0 +1,138 @@
+---
+import { getSiteSettings } from "emdash";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getDishes, getHours, getVenue, mapLinks } from "../lib/montre";
+
+const [dishesResult, hoursResult, venueResult, settings] = await Promise.all([
+	getDishes(),
+	getHours(),
+	getVenue(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(dishesResult.cacheHint);
+	Astro.cache.set(hoursResult.cacheHint);
+	Astro.cache.set(venueResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const featured = dishesResult.entries.filter((d) => d.data.featured).slice(0, 5);
+const hours = hoursResult.entries;
+const { venue } = venueResult;
+const links = mapLinks(venue);
+const numerals = ["I", "II", "III", "IV", "V"];
+---
+
+<Base title={siteTitle} description="Contemporary dining. Seasonal ingredients. Unforgettable moments." current="/">
+	<section class="hero" aria-labelledby="hero-title">
+		<img class="hero-bg" src="/images/hero-scallops.webp" alt="" width="1448" height="700" fetchpriority="high" />
+		<div class="hero-copy">
+			<h1 id="hero-title">A taste worth<br />discovering.</h1>
+			<p class="hero-lede">Contemporary dining. Seasonal ingredients.<br /> Unforgettable moments.</p>
+			<a class="btn btn-lg" href="/reserve">Reserve a table <Arrow /></a>
+		</div>
+		<p class="hero-marker" aria-hidden="true">
+			<span class="marker-rule"></span>
+			<span>Good food<br />brighter<br />company</span>
+		</p>
+	</section>
+
+	<section class="philosophy" aria-labelledby="philosophy-title">
+		<div class="philosophy-copy">
+			<span class="eyebrow">Our philosophy</span>
+			<h2 id="philosophy-title">Thoughtful food<br />for meaningful moments.</h2>
+			<p>We craft contemporary cuisine inspired by the seasons,<br class="wide-only" /> bringing people together around the table.</p>
+			<a class="text-link" href="/our-story">Our story <Arrow /></a>
+		</div>
+		<figure class="philosophy-photo">
+			<img
+				src="/images/dining-room.webp"
+				alt="The dining room at night: an olive tree, round tables set with glasses and pendant lights"
+				width="760"
+				height="367"
+				loading="lazy"
+			/>
+			<figcaption aria-hidden="true">
+				<span>Simple<br />ingredients<br />exceptional<br />experiences</span>
+				<span class="caption-rule"></span>
+			</figcaption>
+		</figure>
+	</section>
+
+	{
+		featured.length > 0 && (
+			<section class="tasting" aria-labelledby="tasting-title">
+				<div class="tasting-copy">
+					<span class="eyebrow">The tasting menu</span>
+					<h2 id="tasting-title">Let the kitchen<br />choose for you.</h2>
+					{venue.tasting_note && <p class="tasting-note">{venue.tasting_note}</p>}
+					<ol class="tasting-list">
+						{featured.map((d, i) => (
+							<li>
+								<span class="tasting-num" aria-hidden="true">{numerals[i]}</span>
+								<div>
+									<h3 {...d.edit.title}>{d.data.title}</h3>
+									{d.data.description && <p>{d.data.description}</p>}
+								</div>
+							</li>
+						))}
+					</ol>
+					<a class="text-link text-link-light" href="/menu">See the full menu <Arrow /></a>
+				</div>
+				<div class="tasting-photo">
+					<img
+						src="/images/beef-dinner.webp"
+						alt="Aged beef fillet with glazed carrots and parsnip cream, a glass of red wine and a candle"
+						width="1448"
+						height="1086"
+						loading="lazy"
+					/>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="visit-band" aria-labelledby="visit-title">
+		<div class="visit-photo">
+			<img
+				src="/images/red-wine-candle.webp"
+				alt="A glass of red wine, wild flowers and a candle on black marble"
+				width="420"
+				height="610"
+				loading="lazy"
+			/>
+		</div>
+		<div class="visit-copy">
+			<span class="eyebrow">Visit us</span>
+			<h2 id="visit-title">Your table is waiting.</h2>
+			{
+				(venue.street || venue.locality) && (
+					<p class="visit-address">
+						{venue.street}
+						{venue.street && venue.locality && <br />}
+						{venue.locality}
+					</p>
+				)
+			}
+			{
+				hours.length > 0 && (
+					<dl class="hours-list">
+						{hours.map((h) => (
+							<div>
+								<dt>{h.data.title}</dt>
+								<dd>{h.data.hours}</dd>
+							</div>
+						))}
+					</dl>
+				)
+			}
+			<div class="actions">
+				<a class="btn" href="/reserve">Reserve a table <Arrow /></a>
+				<a class="text-link" href={links.directions} target="_blank" rel="noopener noreferrer">
+					Get directions<span class="sr-only"> (opens Google Maps in a new tab)</span> <Arrow />
+				</a>
+			</div>
+		</div>
+	</section>
+</Base>

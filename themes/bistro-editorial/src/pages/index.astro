@@ -1,0 +1,86 @@
+---
+import { getEmDashCollection, getSiteSettings } from "emdash";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { dishUrl, formatPrice, photoSrc } from "../lib/bistro";
+
+const { entries: featured, cacheHint } = await getEmDashCollection("dishes", {
+	where: { featured: "1" },
+	orderBy: { position: "asc" },
+	limit: 3,
+});
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const { siteTitle, siteTagline } = resolveStarterSiteIdentity(await getSiteSettings());
+---
+
+<Base title={siteTitle} description={siteTagline} overlay>
+	<section class="hero hero-home" style="--hero-img:url('/images/hero-dining.webp')" aria-labelledby="hero-title">
+		<div class="hero-copy">
+			<h1 id="hero-title">Good food.<br />Great company.</h1>
+			<hr class="rule" />
+			<p class="lede-caps">Seasonal food. Thoughtful drinks. A warm welcome.</p>
+			<a class="btn" href="/reserve">Reserve a table</a>
+		</div>
+	</section>
+
+	<section class="home-feature">
+		<div class="container home-feature-grid">
+			<div>
+				<div class="section-head">
+					<div>
+						<span class="eyebrow">Seasonal dishes</span>
+						<h2>Inspired by the season.</h2>
+					</div>
+					<a class="link-arrow" href="/menu">View full menu <Arrow /></a>
+				</div>
+				{
+					featured.length === 0 ? (
+						<p class="empty">Mark dishes as “Show on homepage” in the admin to feature them here.</p>
+					) : (
+						<div class="dish-trio">
+							{featured.map((d) => {
+								const src = photoSrc(d.data.image, d.data.photo);
+								return (
+									<a class="dish-card" href={dishUrl(d.data)}>
+										<div class="ph">
+											{src && <img src={src} alt={d.data.image?.alt || d.data.title} loading="lazy" width="274" height="190" />}
+										</div>
+										<div class="row">
+											<span {...d.edit.title}>{d.data.title}</span>
+											<span>{formatPrice(d.data.price)}</span>
+										</div>
+										{d.data.summary && <p class="sub">{d.data.summary}</p>}
+									</a>
+								);
+							})}
+						</div>
+					)
+				}
+			</div>
+			<div class="vline" aria-hidden="true"></div>
+			<aside class="story-teaser" aria-labelledby="story-title">
+				<img src="/images/story-table.webp" alt="Candlelit table with red flowers and wine glasses" width="384" height="173" loading="lazy" />
+				<div>
+					<span class="eyebrow">Our story</span>
+					<h2 id="story-title">A Neighborhood Table</h2>
+					<p>
+						Bistro was born from a simple idea — great food brings people together. We're a neighborhood restaurant
+						where seasonal ingredients, good drinks and warm hospitality always have a place.
+					</p>
+					<a class="link-arrow" href="/our-story">Our story <Arrow /></a>
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	<section class="join-band" aria-labelledby="join-title">
+		<div class="container">
+			<div class="copy">
+				<span class="eyebrow">Food brings us together</span>
+				<h2 id="join-title">Join us at the table.</h2>
+				<a class="btn" href="/reserve">Reserve a table</a>
+			</div>
+		</div>
+	</section>
+</Base>

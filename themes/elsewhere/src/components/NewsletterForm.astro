@@ -1,0 +1,36 @@
+---
+interface Props {
+	email: string;
+	button: string;
+	id: string;
+	note?: string;
+	showFallback?: boolean;
+}
+const { email, button, id, note, showFallback = true } = Astro.props;
+import Icon from "./Icon.astro";
+---
+
+<form
+	class="signup-form"
+	action={`mailto:${email}`}
+	method="post"
+	enctype="text/plain"
+	data-mailto={email}
+	data-subject="Newsletter subscription request"
+	novalidate
+>
+	<div class="signup">
+		<label class="visually-hidden" for={`${id}-email`}>Your email address</label>
+		<input id={`${id}-email`} type="email" name="email" placeholder="Your email address" autocomplete="email" required />
+		<button class="btn" type="submit">{button} <Icon name="arrow" size={16} /></button>
+	</div>
+	{note && <p class="signup-note">{note}</p>}
+	<p class="form-status" role="status" aria-live="polite"></p>
+	{
+		showFallback && email && (
+			<p class="signup-fallback">
+				This site does not send email itself. Submitting opens your email app; or write to <a href={`mailto:${email}`}>{email}</a>.
+			</p>
+		)
+	}
+</form>

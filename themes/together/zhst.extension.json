@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "together",
+	"kind": "theme",
+	"name": "Together",
+	"type": "company",
+	"emdash": "1.2.0",
+	"entry": "themes/together",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

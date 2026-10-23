@@ -1,0 +1,149 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import { getVenue, photoSrc } from "../lib/bistro";
+
+const [{ venue, cacheHint }, hoursResult, spacesResult] = await Promise.all([
+	getVenue(),
+	getEmDashCollection("hours", { orderBy: { position: "asc" }, limit: 14 }),
+	getEmDashCollection("spaces", { orderBy: { position: "asc" }, limit: 24 }),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(hoursResult.cacheHint);
+	Astro.cache.set(spacesResult.cacheHint);
+}
+const hours = hoursResult.entries;
+const spaces = spacesResult.entries
+	.map((s) => ({ src: photoSrc(s.data.image, s.data.photo), alt: s.data.image?.alt || s.data.title }))
+	.filter((s): s is { src: string; alt: string } => Boolean(s.src));
+const fullAddress = [venue.street, venue.locality].filter(Boolean).join(", ");
+const directions =
+	venue.directions_url || `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(fullAddress)}`;
+---
+
+<Base title="Visit us" description={`Find ${venue.title} at ${fullAddress}: opening hours, map and directions.`} overlay>
+	<section class="hero hero-visit" style="--hero-img:url('/images/visit-exterior.webp')" aria-labelledby="visit-title">
+		<div class="hero-copy">
+			<h1 id="visit-title">Visit Us</h1>
+			<p class="lede-caps">A neighborhood restaurant for seasonal food, thoughtful drinks and warm hospitality.</p>
+		</div>
+	</section>
+
+	<section class="visit-info">
+		<div class="visit-grid">
+			<div>
+				<span class="eyebrow">Location</span>
+				<h2>Our Address</h2>
+				<address>
+					{venue.street}<br />
+					{venue.locality}
+				</address>
+				<a class="btn btn-sm" href={directions} target="_blank" rel="noopener noreferrer">
+					Get directions <Arrow /><span class="sr-only"> (opens in a new tab)</span>
+				</a>
+			</div>
+			<div>
+				<span class="eyebrow">Opening hours</span>
+				<h2>Hours</h2>
+				{
+					hours.length === 0 ? (
+						<p class="empty">Opening hours coming soon.</p>
+					) : (
+						<table class="hours-table">
+							<caption class="sr-only">Opening hours by day</caption>
+							<tbody>
+								{hours.map((h) => (
+									<tr>
+										<th scope="row">{h.data.title}</th>
+										<td>{h.data.hours}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					)
+				}
+			</div>
+			<div>
+				<span class="eyebrow">Find us</span>
+				<h2>On the Map</h2>
+				<a class="map" href={directions} target="_blank" rel="noopener noreferrer" aria-label={`Open directions to ${fullAddress} in a map (new tab)`}>
+					<svg viewBox="0 0 394 158" aria-hidden="true" focusable="false">
+						<rect width="394" height="158" fill="#efebe5" />
+						<path d="M0 108c22-8 34 6 50 22s12 28 2 28H0z" fill="#b9d3e2" />
+						<path d="M0 60c18 6 30 22 32 40S22 140 0 150z" fill="#c4dbe8" />
+						<path d="M70 92l70-16 52 60-56 22H90z" fill="#d6e5cc" />
+						<path d="M330 120l64-28v66h-80z" fill="#d6e5cc" />
+						<g stroke="#ffffff" stroke-width="7" fill="none">
+							<path d="M40 0l120 158M190 0l-40 158M260 0l40 158M0 40l394 30M0 92l394 -40M120 158l274-110" />
+						</g>
+						<g stroke="#ffffff" stroke-width="3" fill="none">
+							<path d="M90 0l30 158M330 0l-50 158M0 18l394 20M0 128l394-12M220 0l-110 158M360 0l34 40" />
+						</g>
+						<path d="M150 46l244 70" stroke="#ffffff" stroke-width="9" />
+						<text x="196" y="86" font-family="Mulish, sans-serif" font-size="11" fill="#4a423e" transform="rotate(16 196 86)">
+							{venue.map_label ?? ""}
+						</text>
+						<text x="128" y="110" font-family="Mulish, sans-serif" font-size="10" fill="#4a423e" text-anchor="middle">
+							{(venue.map_park ?? "").split(" ").slice(0, 1).join(" ")}
+						</text>
+						<text x="128" y="123" font-family="Mulish, sans-serif" font-size="10" fill="#4a423e" text-anchor="middle">
+							{(venue.map_park ?? "").split(" ").slice(1).join(" ")}
+						</text>
+						<g transform="translate(176 26)">
+							<path d="M12 36S0 22 0 12a12 12 0 0 1 24 0c0 10-12 24-12 24z" fill="#7d1f2a" />
+							<circle cx="12" cy="12" r="4.5" fill="#fff" />
+						</g>
+						<text x="211" y="52" font-family="Newsreader, Georgia, serif" font-size="19" fill="#2b2523">{venue.title}</text>
+					</svg>
+				</a>
+			</div>
+		</div>
+	</section>
+
+	{
+		spaces.length > 0 && (
+			<section class="gallery-section" aria-labelledby="space-title" data-carousel>
+				<div class="section-head">
+					<div>
+						<span class="eyebrow">Our space</span>
+						<h2 id="space-title">A Look Inside</h2>
+					</div>
+					<div class="gallery-nav">
+						<button class="round-btn" type="button" data-dir="-1" aria-label="Scroll gallery left">
+							<svg viewBox="0 0 12 12" aria-hidden="true">
+								<path d="M8 1L3 6l5 5" fill="none" stroke="currentColor" stroke-width="1.5" />
+							</svg>
+						</button>
+						<button class="round-btn" type="button" data-dir="1" aria-label="Scroll gallery right">
+							<svg viewBox="0 0 12 12" aria-hidden="true">
+								<path d="M4 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5" />
+							</svg>
+						</button>
+					</div>
+				</div>
+				<ul class="gallery-row" data-track tabindex="0" aria-label="Photos of the restaurant">
+					{spaces.map((s) => (
+						<li>
+							<img src={s.src} alt={s.alt} loading="lazy" width="341" height="197" />
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+</Base>
+
+<script>
+	document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((root) => {
+		const track = root.querySelector<HTMLElement>("[data-track]");
+		if (!track) return;
+		const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		root.querySelectorAll<HTMLButtonElement>("[data-dir]").forEach((b) =>
+			b.addEventListener("click", () => {
+				track.scrollBy({ left: Number(b.dataset.dir) * track.clientWidth * 0.8, behavior: reduce ? "auto" : "smooth" });
+			}),
+		);
+	});
+</script>

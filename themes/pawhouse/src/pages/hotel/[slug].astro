@@ -1,0 +1,109 @@
+---
+import { getEmDashEntry, decodeSlug } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import Heart from "../../components/Heart.astro";
+import Icon from "../../components/Icon.astro";
+import Sparks from "../../components/Sparks.astro";
+import { bookingUrl, getHighlights, getRooms, photoSrc, roomUrl } from "../../lib/pawhouse";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.redirect("/404");
+
+const { entry, cacheHint } = await getEmDashEntry("rooms", slug);
+if (!entry) return Astro.redirect("/404");
+
+const [rooms, info] = await Promise.all([getRooms(), getHighlights("hotel")]);
+if (Astro.cache?.enabled) {
+	for (const hint of [cacheHint, rooms.cacheHint, info.cacheHint]) Astro.cache.set(hint);
+}
+
+const r = entry.data;
+const key = r.slug ?? r.id;
+const src = photoSrc(r.image, r.photo);
+const others = rooms.entries.filter((e) => (e.data.slug ?? e.data.id) !== key);
+const includes = r.includes ?? [];
+---
+
+<Base title={r.title} description={r.lede ?? r.summary} image={src} content={{ collection: "rooms", id: r.id, slug: key }} current="/hotel">
+	<section class="wrap room-hero" aria-labelledby="room-title">
+		<div class="room-hero-copy">
+			<a class="back-link" href="/hotel"><Arrow /> Pet hotel</a>
+			<Sparks class="hero-sparks" />
+			<h1 id="room-title" class="display display-md">{r.title}<Heart /></h1>
+			{r.lede && <p class="hero-lede">{r.lede}</p>}
+			<dl class="room-facts">
+				{r.best_for && (<div><dt>Best for</dt><dd>{r.best_for}</dd></div>)}
+				{r.space && (<div><dt>Space</dt><dd>{r.space}</dd></div>)}
+			</dl>
+			<a class="btn btn-md" href={bookingUrl({ book: "hotel", room: key })}>Request a stay <Icon name="calendar" /> <Arrow /></a>
+		</div>
+		{
+			src && (
+				<div class="room-hero-media">
+					<img src={src} alt={r.image?.alt || r.alt || r.title} width="560" height="290" fetchpriority="high" />
+				</div>
+			)
+		}
+	</section>
+
+	{
+		includes.length > 0 && (
+			<section class="wrap room-included tint-yellow" aria-labelledby="included-title">
+				<h2 id="included-title" class="rooms-title"><Icon name="house" />What’s included</h2>
+				<ul class="checks checks-grid">
+					{includes.map((i) => <li>{i.item}</li>)}
+				</ul>
+			</section>
+		)
+	}
+
+	{
+		info.entries.length > 0 && (
+			<ul class="wrap info-row" aria-label="Staying with us">
+				{info.entries.map((h) => (
+					<li>
+						<span class={`info-icon tone-${h.data.tone ?? "yellow"}`}>
+							<Icon name={h.data.icon ?? "paw"} />
+						</span>
+						<div>
+							<h2>{h.data.title}</h2>
+							{h.data.text && <p>{h.data.text}</p>}
+						</div>
+					</li>
+				))}
+			</ul>
+		)
+	}
+
+	{
+		others.length > 0 && (
+			<section class="wrap rooms-band rooms-band-pink" aria-labelledby="others-title">
+				<div class="rooms-head">
+					<h2 id="others-title" class="rooms-title"><Icon name="house" />Other rooms</h2>
+				</div>
+				<div class="rooms-grid rooms-grid-2">
+					{others.map((o) => {
+						const os = photoSrc(o.data.image, o.data.photo);
+						return (
+							<article class="room-card">
+								{os && (
+									<div class="room-media">
+										<img src={os} alt={o.data.image?.alt || o.data.alt || o.data.title} width="273" height="140" loading="lazy" />
+									</div>
+								)}
+								<div class="room-body">
+									<h3>{o.data.title}</h3>
+									{o.data.summary && <p>{o.data.summary}</p>}
+									<a class="pill pill-sm" href={roomUrl(o.data)}>
+										View details<span class="sr-only">: {o.data.title}</span> <Arrow />
+									</a>
+								</div>
+							</article>
+						);
+					})}
+				</div>
+			</section>
+		)
+	}
+</Base>

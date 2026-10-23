@@ -1,0 +1,21 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+---
+
+<Base title="Page not found">
+	<section class="notfound">
+		<div class="container notfound-inner">
+			<span class="eyebrow">Error 404</span>
+			<span class="rule" aria-hidden="true"></span>
+			<h1>Nothing to build on here.</h1>
+			<p>The page you are looking for has moved or never existed. These are good places to start again.</p>
+			<div class="actions">
+				<a class="btn" href="/">Back to home <Arrow /></a>
+				<a class="btn btn-outline" href="/team">Meet our team</a>
+				<a class="btn btn-outline" href="/services">Our services</a>
+			</div>
+			<p class="eyebrow notfound-note"><span>Ideas</span> <span>People</span> <span>Places</span> <span>Progress</span></p>
+		</div>
+	</section>
+</Base>

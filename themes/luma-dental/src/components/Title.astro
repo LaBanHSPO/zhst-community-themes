@@ -1,0 +1,13 @@
+---
+/** Headline whose final full stop is the teal dot from the designs. */
+interface Props {
+	text: string;
+	as?: "h1" | "h2" | "h3";
+	id?: string;
+	class?: string;
+}
+const { text, as: Tag = "h2", id, class: cls } = Astro.props;
+const body = text.trim().replace(/[.!?]$/, "");
+---
+
+<Tag id={id} class:list={["title", cls]}>{body}<span class="dot">.</span></Tag>

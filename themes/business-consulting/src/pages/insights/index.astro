@@ -1,0 +1,94 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import InsightCard from "../../components/InsightCard.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { articleDate, formatDate, getOffice, photoSrc } from "../../lib/consulting";
+
+const PAGE_SIZE = 13;
+const cursor = Astro.url.searchParams.get("cursor") || undefined;
+const [insightsResult, officeResult] = await Promise.all([
+	getEmDashCollection("insights", { orderBy: { date: "desc" }, limit: PAGE_SIZE, cursor }),
+	getOffice(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(insightsResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const { entries, nextCursor } = insightsResult;
+// The newest article leads the first page; later pages are a plain grid.
+const lead = cursor ? undefined : entries[0];
+const rest = cursor ? entries : entries.slice(1);
+const { office } = officeResult;
+const leadSrc = lead ? photoSrc(lead.data.featured_image, lead.data.photo) : undefined;
+const leadDate = lead ? articleDate(lead.data.date, lead.data.publishedAt) : null;
+---
+
+<Base title="Insights" description="Practical ideas on strategy, organisation and change from the Northbridge team.">
+	<section class="page-head">
+		<div class="container page-head-inner">
+			<div>
+				<span class="eyebrow">Insights</span>
+				<h1>Ideas for your next move.</h1>
+			</div>
+			<p class="lede">Short, practical notes from our work with leadership teams on strategy, organisation and lasting change.</p>
+		</div>
+	</section>
+
+	<section class="section section-warm section-flush">
+		<div class="container">
+			{
+				entries.length === 0 && (
+					<p class="empty">No insights have been published yet. Please check back soon.</p>
+				)
+			}
+			{
+				lead && (
+					<article class="insight-feature">
+						<div class="insight-photo">
+							{leadSrc && <img src={leadSrc} alt={lead.data.featured_image?.alt ?? ""} />}
+						</div>
+						<div class="insight-body">
+							<p class="meta">
+								<span>Latest</span>
+								{lead.data.topic && <span class="topic">{lead.data.topic}</span>}
+								{leadDate && <time datetime={leadDate.toISOString()}>{formatDate(leadDate)}</time>}
+							</p>
+							<h3 {...lead.edit.title}>
+								<a href={`/insights/${lead.data.slug ?? lead.data.id}`}>{lead.data.title}</a>
+							</h3>
+							{lead.data.excerpt && <p class="insight-excerpt">{lead.data.excerpt}</p>}
+							<p class="reading">
+								<span class="link-arrow">Read the article <Arrow /></span>
+							</p>
+						</div>
+					</article>
+				)
+			}
+			{
+				rest.length > 0 && (
+					<div class="insight-grid">
+						{rest.map((post) => (
+							<InsightCard post={post} />
+						))}
+					</div>
+				)
+			}
+			{
+				(cursor || nextCursor) && (
+					<nav class="pager" aria-label="More insights">
+						{cursor ? <a class="link-arrow" href="/insights">Latest insights</a> : <span />}
+						{nextCursor && (
+							<a class="link-arrow" href={`/insights?cursor=${encodeURIComponent(nextCursor)}`}>
+								Older insights <Arrow />
+							</a>
+						)}
+					</nav>
+				)
+			}
+		</div>
+	</section>
+
+	<CtaBand office={office} title="Want to talk an idea through?" />
+</Base>

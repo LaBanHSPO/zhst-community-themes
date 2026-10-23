@@ -1,0 +1,44 @@
+---
+/** Rounded tinted card with a photo, an icon title, short text and a pill link. */
+import Arrow from "./Arrow.astro";
+import Icon from "./Icon.astro";
+import { photoSrc, type Preview } from "../lib/pawhouse";
+
+interface Props {
+	card: Preview;
+	/** Photo on the right instead of the left. */
+	reverse?: boolean;
+	headingLevel?: 2 | 3;
+	size?: "lg" | "md";
+}
+const { card, reverse = false, headingLevel = 2, size = "lg" } = Astro.props;
+const src = photoSrc(card.image, card.photo);
+const H = `h${headingLevel}` as "h2" | "h3";
+const tint = card.tint ?? "yellow";
+const iconTone = "coral";
+---
+
+<article class:list={["preview", `tint-${tint}`, `preview-${size}`, { "preview-reverse": reverse }]}>
+	{
+		src && (
+			<div class="preview-media">
+				<img src={src} alt={card.image?.alt || card.alt || card.title} loading="lazy" width="400" height="252" />
+			</div>
+		)
+	}
+	<div class="preview-body">
+		<H class="preview-title">
+			<span>{card.title}</span>
+			{card.icon && <Icon name={card.icon} class={`preview-icon tone-${iconTone}`} />}
+		</H>
+		{card.text && <p>{card.text}</p>}
+		{
+			card.link && (
+				<a class="pill" href={card.link}>
+					{card.link_label || "Learn more"}
+					<Arrow />
+				</a>
+			)
+		}
+	</div>
+</article>

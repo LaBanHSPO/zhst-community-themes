@@ -1,0 +1,101 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import ArticleCard from "../components/ArticleCard.astro";
+import CommissionBand from "../components/CommissionBand.astro";
+import { getArticles, getServices, getStudio, lines } from "../lib/studio";
+
+const [articlesResult, servicesResult, studioResult] = await Promise.all([getArticles(), getServices(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(articlesResult.cacheHint);
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const all = articlesResult.entries;
+const featured = all.filter((a) => a.data.featured);
+const articles = (featured.length > 0 ? featured : all).slice(0, 3);
+const services = servicesResult.entries;
+const sectors = lines(studioResult.studio.sectors);
+---
+
+<Base
+	title="Freelance writer"
+	description="Thoughtful writing for a more curious, connected world. Selected articles, essays and copy by an independent writer, and a simple way to start a commission."
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-desk.webp"
+			alt="A sunlit writing desk with stacked books, a mug, a potted plant, an open notebook and pinned coastal photographs"
+			width="1018"
+			height="592"
+			fetchpriority="high"
+		/>
+		<div class="wrap hero-copy">
+			<h1 id="hero-title" class="hero-title">
+				<span>Words that</span>
+				<span>move ideas</span>
+				<span class="accent">forward.</span>
+			</h1>
+			<p class="hero-sub">Thoughtful writing for a more curious, connected world.</p>
+			<a class="btn" href="/work"><span>Read selected work</span><Arrow /></a>
+		</div>
+	</section>
+
+	<section class="section" aria-labelledby="featured-title">
+		<div class="wrap">
+			<div class="section-head">
+				<div>
+					<p class="label">Featured writing</p>
+					<h2 id="featured-title" class="display section-title">Ideas, people and the wider picture.</h2>
+				</div>
+				<a class="text-link" href="/work"><span>View all work</span><Arrow /></a>
+			</div>
+			{
+				articles.length === 0 ? (
+					<p class="empty">New writing is on its way.</p>
+				) : (
+					<div class="featured">
+						{articles.map((a, i) => <ArticleCard article={a} eager={i < 3} />)}
+						<aside class="aside-quote" aria-label="Closing thought">
+							<span class="rule" aria-hidden="true" />
+							<blockquote>Different<br />perspectives<br />make a brighter<br />tomorrow.</blockquote>
+							<span class="rule" aria-hidden="true" />
+							<span class="sign">Same ideas.<br />A brighter world.</span>
+						</aside>
+					</div>
+				)
+			}
+		</div>
+	</section>
+
+	{
+		services.length > 0 && (
+			<section class="services-section" aria-labelledby="services-title">
+				<div class="wrap">
+					<p class="label">What I write</p>
+					<h2 id="services-title" class="display display-md" style="max-width: 11em">Four ways to work together.</h2>
+					<ul class="services-grid">
+						{services.map((s) => (
+							<li class="service">
+								<h3 {...s.edit.title}>{s.data.title}</h3>
+								<p>{s.data.text}</p>
+								<a class="text-link" href={`/contact?service=${s.data.slug ?? s.data.id}`}><span>Ask about {s.data.title.toLowerCase()}</span><Arrow /></a>
+							</li>
+						))}
+					</ul>
+					{
+						sectors.length > 0 && (
+							<div class="sectors">
+								<p class="label">Who I write for</p>
+								<ul>{sectors.map((s) => <li>{s}</li>)}</ul>
+							</div>
+						)
+					}
+				</div>
+			</section>
+		)
+	}
+
+	<CommissionBand studio={studioResult.studio} />
+</Base>

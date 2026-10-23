@@ -1,0 +1,122 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { CATEGORIES, entryHref, formatPrice, getStudio, getTreatments, hoursRows } from "../lib/studio";
+
+const [treatmentsResult, studioResult] = await Promise.all([getTreatments(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(treatmentsResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const all = treatmentsResult.entries;
+const flagged = all.filter((t) => t.data.signature);
+const signature = (flagged.length > 0 ? flagged : all).slice(0, 4);
+const hours = hoursRows(studioResult.studio.hours);
+---
+
+<Base
+	title="LUMIÈRE Beauty Studio"
+	description="An independent beauty studio for hair, skin and nails. Your everyday, elevated."
+	overlay
+>
+	<section class="hero">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A bright salon with arched illuminated mirrors and olive-green velvet chairs"
+			width="1448"
+			height="710"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<h1>Your everyday,<br /><em>elevated.</em></h1>
+			<p class="hero-eyebrow">Beauty <span aria-hidden="true">·</span> Care <span aria-hidden="true">·</span> A brighter you</p>
+			<a class="btn btn-lg" href="/book">Book a visit <Arrow /></a>
+		</div>
+		<p class="hero-note">Good<br />Beauty<br />Brighter<br />Days<span class="note-rule" aria-hidden="true"></span></p>
+	</section>
+
+	<section class="intro" aria-labelledby="services-title">
+		<div class="intro-copy">
+			<p class="eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span>Our services</p>
+			<h2 id="services-title" class="display">Intentional beauty for <em>real life.</em></h2>
+			<p class="lede">Thoughtful treatments, a calm space and a more confident you.</p>
+		</div>
+		<ul class="cards">
+			{
+				CATEGORIES.map((c) => (
+					<li>
+						<a class="card" href={`/services#${c.slug}`}>
+							<img src={c.photo} alt={c.alt} width="256" height="246" loading="lazy" />
+							<span class="card-label">
+								<span>{c.label}</span>
+								<Arrow />
+							</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	{
+		signature.length > 0 && (
+			<section class="band band-tint" aria-labelledby="signature-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span>Signature treatments</p>
+							<h2 id="signature-title" class="display">A few of our <em>favourites.</em></h2>
+						</div>
+						<a class="link-arrow" href="/services">All treatments <Arrow /></a>
+					</div>
+					<ul class="menu-list">
+						{signature.map((t) => (
+							<li>
+								<a class="menu-row" href={entryHref("/services", t.data)}>
+									<span class="menu-main">
+										<span class="menu-name" {...t.edit.title}>{t.data.title}</span>
+										<span class="menu-desc">{t.data.summary}</span>
+									</span>
+									<span class="menu-meta">
+										{t.data.duration && <span>{t.data.duration}</span>}
+										{t.data.price != null && <strong>{formatPrice(t.data.price)}</strong>}
+									</span>
+									<Arrow />
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="band studio" aria-labelledby="studio-title">
+		<div class="wrap studio-grid">
+			<figure class="studio-photo">
+				<img src="/images/green-chairs.webp" alt="Olive-green velvet chairs in front of arched illuminated mirrors" width="570" height="620" loading="lazy" />
+			</figure>
+			<div class="studio-copy">
+				<p class="eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span>The studio</p>
+				<h2 id="studio-title" class="display">A quiet room, <em>full of light.</em></h2>
+				<p class="lede">
+					Arched mirrors, brass lamps and a few plants make up our small studio. We keep the schedule generous, the music low and
+					the conversation easy, so a visit feels like a pause rather than another appointment.
+				</p>
+				<ul class="ticks">
+					<li>Hair, skin and nails under one roof</li>
+					<li>Treatments tailored after a short conversation</li>
+					<li>Walk-ins welcome when we have space</li>
+				</ul>
+				<p class="studio-links">
+					<a class="btn btn-outline" href="/about">About the studio <Arrow /></a>
+					<a class="link-arrow" href="/gallery">See the gallery <Arrow /></a>
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<CtaBand studio={studioResult.studio} hours={hours} />
+</Base>

@@ -1,0 +1,54 @@
+---
+import { Image } from "emdash/ui";
+import type { Instructor } from "../../emdash-env";
+import { initials } from "../utils/courses";
+
+interface Props {
+	name: string;
+	photo?: Instructor["photo"];
+	size?: number;
+	class?: string;
+}
+
+const { name, photo, size = 96, class: className } = Astro.props;
+const hasPhoto = Boolean(photo && (photo.src || photo.id));
+---
+
+<span class:list={["avatar", className]} style={`--avatar-size:${size}px`}>
+	{
+		hasPhoto ? (
+			<Image image={photo} alt={photo?.alt || `Photo of ${name}`} class="avatar-img" />
+		) : (
+			<span class="avatar-fallback avatar-initials" role="img" aria-label={`${name} (no photo)`}>
+				{initials(name)}
+			</span>
+		)
+	}
+</span>
+
+<style>
+	.avatar {
+		display: inline-block;
+		flex: none;
+		width: var(--avatar-size);
+		height: var(--avatar-size);
+		border-radius: 50%;
+		overflow: hidden;
+		background: var(--color-surface-muted);
+	}
+
+	.avatar :global(.avatar-img),
+	.avatar :global(img) {
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		object-fit: cover;
+		object-position: 50% 25%;
+	}
+
+	.avatar-initials {
+		width: 100%;
+		height: 100%;
+		font-size: calc(var(--avatar-size) * 0.36);
+	}
+</style>

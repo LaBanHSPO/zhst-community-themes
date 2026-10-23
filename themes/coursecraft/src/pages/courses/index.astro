@@ -1,0 +1,166 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../../layouts/Base.astro";
+import CourseCard from "../../components/CourseCard.astro";
+import { LEVELS, isLevel, levelLabel, plural } from "../../utils/courses";
+
+const requested = Astro.url.searchParams.get("level");
+const level = isLevel(requested) ? requested : null;
+const unknownLevel = requested !== null && requested !== "" && !level;
+
+const result = await getEmDashCollection("courses", {
+	...(level ? { where: { level } } : {}),
+	orderBy: { created_at: "asc" },
+});
+if (Astro.cache?.enabled) Astro.cache.set(result.cacheHint);
+if (result.error) console.error("[coursecraft] failed to load courses:", result.error);
+
+const courses = result.entries;
+const filters = [
+	{ value: null, label: "All levels", href: "/courses" },
+	...LEVELS.map((value) => ({ value, label: levelLabel(value), href: `/courses?level=${value}` })),
+];
+const heading = level ? `${levelLabel(level)} courses` : "All courses";
+---
+
+<Base
+	title={level ? `${levelLabel(level)} courses` : "Courses"}
+	description="Browse practical courses by level, with learning outcomes, prerequisites and a curriculum overview for each."
+	canonical={level ? `/courses?level=${level}` : "/courses"}
+>
+	<div class="container">
+		<header class="page-head">
+			<p class="eyebrow">Course catalog</p>
+			<h1>Courses</h1>
+			<p class="lede">
+				Every course lists its level, what you will learn and what you need before you start.
+			</p>
+		</header>
+
+		<nav class="level-filter" aria-label="Filter courses by level">
+			<ul role="list">
+				{
+					filters.map((f) => (
+						<li>
+							<a href={f.href} aria-current={f.value === level ? "page" : undefined}>
+								{f.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<section aria-labelledby="results-title" class="results">
+			<div class="results-head">
+				<h2 id="results-title">{heading}</h2>
+				<p class="results-count">{plural(courses.length, "course")}</p>
+			</div>
+
+			{
+				unknownLevel && (
+					<p class="notice" role="status">
+						“{requested}” is not a course level, so all courses are shown.
+					</p>
+				)
+			}
+
+			{
+				result.error ? (
+					<div class="empty-state" role="alert">
+						<h3>Courses could not be loaded</h3>
+						<p>Please try again in a moment.</p>
+					</div>
+				) : courses.length > 0 ? (
+					<ul class="course-grid" role="list">
+						{courses.map((course) => (
+							<li>
+								<CourseCard course={course} showOutline />
+							</li>
+						))}
+					</ul>
+				) : (
+					<div class="empty-state">
+						<h3>{level ? `No ${levelLabel(level).toLowerCase()} courses yet` : "No courses published yet"}</h3>
+						<p>
+							{level
+								? "Try another level, or browse the full catalog."
+								: "Courses published in the admin will appear here."}
+						</p>
+						{level && (
+							<a class="btn btn-outline" href="/courses">
+								Show all courses
+							</a>
+						)}
+					</div>
+				)
+			}
+		</section>
+	</div>
+</Base>
+
+<style>
+	.level-filter ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		margin: 0 0 2.25rem;
+		padding: 0;
+		list-style: none;
+	}
+
+	.level-filter a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		padding: 0.5rem 1.15rem;
+		border: 1px solid var(--color-line);
+		border-radius: var(--radius-pill);
+		background: var(--color-surface);
+		font-weight: 500;
+		text-decoration: none;
+	}
+
+	.level-filter a:hover {
+		border-color: var(--color-ink-soft);
+	}
+
+	.level-filter a[aria-current="page"] {
+		background: var(--color-accent);
+		border-color: var(--color-accent);
+		font-weight: 600;
+	}
+
+	.results-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.results-head h2 {
+		font-size: 1.6rem;
+		margin: 0;
+	}
+
+	.results-count {
+		margin: 0;
+		color: var(--color-muted);
+	}
+
+	.notice {
+		padding: 0.75rem 1rem;
+		border-radius: var(--radius-sm);
+		background: var(--color-surface-muted);
+	}
+
+	.course-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+		gap: 1.75rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+</style>

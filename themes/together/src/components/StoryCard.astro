@@ -1,0 +1,26 @@
+---
+import { isoOf, storyDateShort } from "../lib/together";
+
+interface Props {
+	title: string;
+	excerpt?: string | null;
+	date?: string | null;
+	href: string;
+	photo?: string;
+	alt: string;
+	layout?: "stack" | "row";
+	headingLevel?: 2 | 3;
+}
+const { title, excerpt, date, href, photo, alt, layout = "stack", headingLevel = 3 } = Astro.props;
+const Heading = `h${headingLevel}` as "h2" | "h3";
+const iso = isoOf(date);
+---
+
+<article class:list={["story-card", `story-card-${layout}`]}>
+	{photo && <img class="story-card-img" src={photo} alt={alt} width="280" height="116" loading="lazy" />}
+	<div class="story-card-body">
+		{iso && <time class="story-card-date" datetime={iso}>{storyDateShort(date)}</time>}
+		<Heading class="story-card-title"><a href={href}>{title}</a></Heading>
+		{excerpt && <p class="story-card-text">{excerpt}</p>}
+	</div>
+</article>

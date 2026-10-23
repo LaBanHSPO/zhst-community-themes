@@ -1,0 +1,171 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import SolutionCard from "../components/SolutionCard.astro";
+import IndustryIcon from "../components/IndustryIcon.astro";
+import OpeningRow from "../components/OpeningRow.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { getIndustries, getOffice, getOpenings, getPrinciples, getSolutions } from "../lib/nexora";
+
+const [solutionsResult, industriesResult, approachResult, openingsResult, officeResult] = await Promise.all([
+	getSolutions(),
+	getIndustries(),
+	getPrinciples("approach"),
+	getOpenings(3),
+	getOffice(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(solutionsResult.cacheHint);
+	Astro.cache.set(industriesResult.cacheHint);
+	Astro.cache.set(approachResult.cacheHint);
+	Astro.cache.set(openingsResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const featured = solutionsResult.entries.filter((s) => s.data.featured);
+const solutions = (featured.length ? featured : solutionsResult.entries).slice(0, 3);
+const industries = industriesResult.entries.slice(0, 6);
+const steps = approachResult.entries;
+const openings = openingsResult.entries;
+const { office } = officeResult;
+---
+
+<Base
+	title="Nexora — Technology for a brighter tomorrow"
+	description="We help forward-thinking organizations turn ambition into what's next — with technology, expertise and a more open tomorrow."
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A cantilevered glass and concrete building beside still water, with mountains on the horizon at dusk"
+			width="1448"
+			height="706"
+			fetchpriority="high"
+		/>
+		<div class="hero-shade" aria-hidden="true"></div>
+		<div class="hero-inner">
+			<p class="hero-eyebrow">Technology for a brighter tomorrow</p>
+			<h1 id="hero-title"><span>Build what</span> <span>comes next.</span></h1>
+			<p class="hero-lede">
+				We help forward-thinking organizations turn ambition into what's next — with technology, expertise and a more open tomorrow.
+			</p>
+			<a class="btn btn-lg hero-cta" href="/solutions">Explore solutions <Arrow /></a>
+			<p class="hero-note hero-note-left"><span>From possibility</span> <span>to progress</span></p>
+			<ul class="hero-list" aria-label="What we bring together">
+				<li>Ideas</li>
+				<li>Infrastructure</li>
+				<li>People</li>
+				<li>Progress</li>
+			</ul>
+			<p class="hero-note hero-note-right"><span>A more</span> <span>open tomorrow</span></p>
+		</div>
+	</section>
+
+	<section class="solutions-band" aria-labelledby="solutions-title">
+		<div class="container solutions-inner">
+			<div class="solutions-intro">
+				<span class="eyebrow">Our solutions</span>
+				<h2 id="solutions-title"><span>Real progress.</span> <span>Built together.</span></h2>
+				<p>Integrated technology, deep expertise and a collaborative approach to help you move faster, go further and create lasting value.</p>
+			</div>
+			{
+				solutions.length > 0 ? (
+					<div class="solution-grid">
+						{solutions.map((s) => (
+							<SolutionCard solution={s} />
+						))}
+					</div>
+				) : (
+					<p class="empty">Solutions will appear here once they are added in the admin.</p>
+				)
+			}
+		</div>
+	</section>
+
+	{
+		industries.length > 0 && (
+			<section class="section section-white" aria-labelledby="industries-title">
+				<div class="container">
+					<div class="section-head">
+						<div>
+							<span class="eyebrow">Industries</span>
+							<h2 id="industries-title">Built for the sectors that keep the world moving.</h2>
+						</div>
+						<a class="link-arrow" href="/industries">All industries <Arrow /></a>
+					</div>
+					<ul class="industry-tiles">
+						{industries.map((ind) => (
+							<li>
+								<a href={`/industries#${ind.data.slug ?? ind.data.id}`}>
+									<IndustryIcon icon={ind.data.icon} />
+									<span class="industry-tile-title">{ind.data.title}</span>
+									<span class="industry-tile-text">{ind.data.summary}</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="approach" aria-labelledby="approach-title">
+		<div class="container approach-inner">
+			<figure class="approach-photo">
+				<img
+					src="/images/building-glass.webp"
+					alt="Light pouring through the glass facade beneath a cantilevered concrete volume"
+					width="748"
+					height="706"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+			<div class="approach-copy">
+				<span class="eyebrow eyebrow-light">How we work</span>
+				<h2 id="approach-title">From possibility to progress.</h2>
+				<p class="lede">
+					One accountable team, a clear plan and steady delivery. Every engagement follows the same simple rhythm, shaped around your goals.
+				</p>
+				{
+					steps.length > 0 && (
+						<ol class="steps">
+							{steps.map((step, i) => (
+								<li>
+									<span class="step-num">{String(i + 1).padStart(2, "0")}</span>
+									<div>
+										<h3 {...step.edit.title}>{step.data.title}</h3>
+										{step.data.text && <p>{step.data.text}</p>}
+									</div>
+								</li>
+							))}
+						</ol>
+					)
+				}
+				<a class="link-arrow link-light" href="/about">More about Nexora <Arrow /></a>
+			</div>
+		</div>
+	</section>
+
+	{
+		openings.length > 0 && (
+			<section class="section section-tint" aria-labelledby="careers-title">
+				<div class="container careers-teaser">
+					<div class="careers-intro">
+						<span class="eyebrow">Careers</span>
+						<h2 id="careers-title">Do the best work of your career.</h2>
+						<p>Join small, multidisciplinary teams solving real problems for organizations that matter. We invest in learning, mentoring and flexible ways of working.</p>
+						<a class="link-arrow" href="/careers">View all openings <Arrow /></a>
+					</div>
+					<ul class="opening-list">
+						{openings.map((o) => (
+							<OpeningRow opening={o} />
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} />
+</Base>

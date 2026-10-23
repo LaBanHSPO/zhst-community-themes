@@ -1,0 +1,181 @@
+---
+import { getEmDashCollection, getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+
+const [pageResult, chartsResult] = await Promise.all([
+	getEmDashEntry("pages", "size-guide"),
+	getEmDashCollection("size_charts", { orderBy: { sort_order: "asc" }, limit: 20 }),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(pageResult.cacheHint);
+	Astro.cache.set(chartsResult.cacheHint);
+}
+
+const page = pageResult.entry;
+const charts = chartsResult.entries.map((c) => {
+	const d = c.data;
+	const keys = (["a", "b", "c", "d"] as const).filter((k) => {
+		const heading = d[`column_${k}`]?.trim();
+		return Boolean(heading) || (d.rows ?? []).some((r) => r?.[k]?.trim());
+	});
+	return {
+		id: c.id,
+		title: d.title,
+		appliesTo: d.applies_to ?? null,
+		unitNote: d.unit_note ?? null,
+		columns: keys.map((k) => ({ key: k, label: d[`column_${k}`]?.trim() || "—" })),
+		rows: (d.rows ?? []).filter((r) => r?.size?.trim()),
+	};
+});
+const title = page?.data.title ?? "Size guide";
+---
+
+<Base
+	title={title}
+	description="Body measurements for tops, trousers and shoes."
+	content={page ? { collection: "pages", id: page.data.id, slug: "size-guide" } : undefined}
+>
+	<div class="container page-head">
+		<nav aria-label="Breadcrumb" class="crumbs">
+			<a href="/">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">{title}</span>
+		</nav>
+		<h1>{title}</h1>
+		{
+			page?.data.content && page.data.content.length > 0 && (
+				<div class="lede prose">
+					<PortableText value={page.data.content} />
+				</div>
+			)
+		}
+	</div>
+
+	<div class="container">
+		{
+			charts.length === 0 ? (
+				<p class="notice">Size charts have not been published yet. <a href="/contact">Ask us</a> about a specific fit.</p>
+			) : (
+				<>
+					<nav class="chart-nav" aria-label="Size charts">
+						<ul>
+							{charts.map((c) => (
+								<li>
+									<a href={`#chart-${c.id}`}>{c.title}</a>
+								</li>
+							))}
+						</ul>
+					</nav>
+					{charts.map((c) => (
+						<section class="chart" id={`chart-${c.id}`} aria-labelledby={`chart-${c.id}-heading`}>
+							<h2 id={`chart-${c.id}-heading`}>{c.title}</h2>
+							{c.appliesTo && <p class="applies">{c.appliesTo}</p>}
+							{c.rows.length === 0 ? (
+								<p class="muted">No sizes listed yet.</p>
+							) : (
+								<div class="table-wrap" tabindex="0" role="region" aria-labelledby={`chart-${c.id}-heading`}>
+									<table>
+										{c.unitNote && <caption>{c.unitNote}</caption>}
+										<thead>
+											<tr>
+												<th scope="col">Size</th>
+												{c.columns.map((col) => (
+													<th scope="col">{col.label}</th>
+												))}
+											</tr>
+										</thead>
+										<tbody>
+											{c.rows.map((r) => (
+												<tr>
+													<th scope="row">{r.size}</th>
+													{c.columns.map((col) => (
+														<td>{r[col.key] || "—"}</td>
+													))}
+												</tr>
+											))}
+										</tbody>
+									</table>
+								</div>
+							)}
+						</section>
+					))}
+				</>
+			)
+		}
+		<p class="notice help">
+			Between sizes or unsure about a fit? <a href="/contact">Ask us</a> and include your usual size in another brand.
+		</p>
+	</div>
+</Base>
+
+<style>
+	.chart-nav ul {
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		padding: 0;
+		margin: 0 0 var(--space-6);
+	}
+	.chart-nav a {
+		display: inline-block;
+		padding: 0.4rem 0.9rem;
+		border: 1px solid var(--color-line);
+		border-radius: 999px;
+		color: var(--color-ink);
+		text-decoration: none;
+	}
+	.chart-nav a:hover {
+		border-color: var(--color-ink);
+	}
+	.chart {
+		margin-bottom: var(--space-7);
+		scroll-margin-top: 6rem;
+	}
+	.chart h2 {
+		font-size: var(--step-2);
+		margin-bottom: var(--space-2);
+	}
+	.applies,
+	.muted {
+		color: var(--color-muted);
+	}
+	.table-wrap {
+		overflow-x: auto;
+		border: 1px solid var(--color-line);
+	}
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		min-width: 32rem;
+		font-variant-numeric: tabular-nums;
+	}
+	caption {
+		caption-side: bottom;
+		text-align: left;
+		padding: var(--space-3) var(--space-4);
+		font-size: var(--step--1);
+		color: var(--color-muted);
+	}
+	th,
+	td {
+		text-align: left;
+		padding: 0.75rem 1rem;
+		border-bottom: 1px solid var(--color-line);
+	}
+	thead th {
+		background: var(--color-band);
+		color: var(--color-ink);
+		font-weight: 600;
+	}
+	tbody th {
+		color: var(--color-ink);
+		font-weight: 600;
+	}
+	tbody tr:last-child th,
+	tbody tr:last-child td {
+		border-bottom: 0;
+	}
+	.help {
+		margin-top: var(--space-6);
+	}
+</style>

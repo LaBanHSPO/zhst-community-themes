@@ -1,0 +1,111 @@
+---
+import { getEmDashCollection, getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import { Form } from "@emdash-cms/plugin-forms/ui";
+import Base from "../layouts/Base.astro";
+import AgentCard from "../components/AgentCard.astro";
+
+// Intro copy is editable as the "contact" page in the admin; the route works without it.
+const { entry: page, cacheHint: pageHint } = await getEmDashEntry("pages", "contact");
+const { entries: agents, cacheHint: agentsHint } = await getEmDashCollection("agents", {
+	orderBy: { title: "asc" },
+	limit: 50,
+});
+if (Astro.cache?.enabled) {
+	Astro.cache.set(pageHint);
+	Astro.cache.set(agentsHint);
+}
+const title = page?.data.title || "Contact";
+---
+
+<Base
+	title={title}
+	description="Contact Haven about buying, renting or selling a home."
+	content={page ? { collection: "pages", id: page.data.id, slug: "contact" } : undefined}
+>
+	<header class="page-head">
+		<div class="container">
+			<p class="eyebrow">Get in touch</p>
+			<h1>{title}</h1>
+			{
+				page?.data.content && page.data.content.length > 0 ? (
+					<div class="lede prose">
+						<PortableText value={page.data.content} />
+					</div>
+				) : (
+					<p class="lede">Send us a message about buying, renting or selling and the right agent will get back to you.</p>
+				)
+			}
+		</div>
+	</header>
+
+	<div class="container contact-grid">
+		<section class="contact-form" aria-labelledby="message-title">
+			<h2 id="message-title">Send a message</h2>
+			<p class="note">
+				Asking about a particular home? Use the viewing request on its property page so the agent knows which listing you mean.
+				A viewing request is an inquiry; the agent will reply to arrange a time.
+			</p>
+			<div class="form-slot">
+				<Form id="inquiry" />
+				<p class="form-fallback">
+					The online form is not available right now. Please call or email one of our agents directly.
+				</p>
+			</div>
+		</section>
+
+		<section class="contact-agents" aria-labelledby="agents-title">
+			<h2 id="agents-title">Our agents</h2>
+			{
+				agents.length === 0 ? (
+					<p class="empty">Agent details will appear here once they are added in the admin.</p>
+				) : (
+					<ul>
+						{agents.map((a) => (
+							<li>
+								<AgentCard slug={a.id} data={a.data} />
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</section>
+	</div>
+</Base>
+
+<style>
+	.contact-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+		gap: clamp(2rem, 5vw, 4rem);
+		padding-bottom: 4.5rem;
+	}
+	.contact-form {
+		padding: clamp(1.5rem, 4vw, 2.5rem);
+		background: var(--paper);
+		border: 1px solid var(--line);
+		border-radius: 6px;
+	}
+	.contact-form h2,
+	.contact-agents h2 {
+		font-size: 1.7rem;
+	}
+	.note {
+		color: var(--muted);
+	}
+	.contact-agents ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 1rem;
+	}
+	.lede :global(p:last-child) {
+		margin-bottom: 0;
+	}
+	@media (max-width: 900px) {
+		.contact-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

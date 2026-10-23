@@ -1,0 +1,115 @@
+---
+import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import Arrow from "../components/Arrow.astro";
+import { getProducts, getSite, lines, photoAlt, photoSrc } from "../lib/fieldtested";
+
+const [{ entries, cacheHint }, { site }] = await Promise.all([getProducts(), getSite()]);
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const items = entries.map((e) => e.data);
+const rows: { label: string; key: "weight" | "capacity" | "torso" | "max_load" | "frame" | "access" | "best_for" }[] = [
+	{ label: "Weight (size M)", key: "weight" },
+	{ label: "Capacity", key: "capacity" },
+	{ label: "Torso fit range", key: "torso" },
+	{ label: "Max load (rec.)", key: "max_load" },
+	{ label: "Frame type", key: "frame" },
+	{ label: "Access", key: "access" },
+	{ label: "Best for", key: "best_for" },
+];
+---
+
+<Base title="Compare backpacks" description="See key specs side by side to find the right pack for your next adventure.">
+	<Hero
+		compact
+		image="/images/hero-strip.webp"
+		title="Compare backpacks"
+		lede="See key specs side by side to find the right pack for your next adventure."
+	/>
+	<div class="wrap">
+		<div class="cmp-wrap" tabindex="0" role="region" aria-label="Backpack comparison table, scrolls sideways on small screens">
+			<table class="cmp">
+				<caption class="sr-only">Backpack specifications side by side, with the reviewer’s noted price</caption>
+				<thead>
+					<tr>
+						<td></td>
+						{
+							items.map((p) => (
+								<th scope="col">
+									<img class="p-photo" src={photoSrc(p.image, p.photo)} alt={photoAlt(p.image, p.photo_alt, p.title)} width="339" height="170" loading="lazy" />
+									<div class="p-info">
+										<p class="kicker">{p.brand}</p>
+										<h2>{p.review_slug ? <a href={`/reviews/${p.review_slug}`}>{p.title}</a> : p.title}</h2>
+										<p>{p.blurb}</p>
+									</div>
+								</th>
+							))
+						}
+					</tr>
+				</thead>
+				<tbody>
+					{
+						rows.map((r) => (
+							<tr>
+								<th scope="row">{r.label}</th>
+								{items.map((p) => <td>{p[r.key]}</td>)}
+							</tr>
+						))
+					}
+					<tr>
+						<th scope="row">Key features</th>
+						{items.map((p) => <td><ul>{lines(p.features).map((f) => <li>{f}</li>)}</ul></td>)}
+					</tr>
+					<tr>
+						<th scope="row">Reviewer’s noted price</th>
+						{
+							items.map((p) => (
+								<td>
+									<span class="price">{p.price}</span>
+									<span class="price-note">Indicative, not a live price</span>
+									{p.retailer_url && (
+										<a class="btn btn-sm" href={p.retailer_url} rel="sponsored noopener" target="_blank">
+											View at {p.retailer_name} <Arrow />
+											<span class="sr-only"> (affiliate link, opens in a new tab)</span>
+										</a>
+									)}
+								</td>
+							))
+						}
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="cmp-cards">
+			{
+				items.map((p) => (
+					<article class="cmp-card">
+						<img class="p-photo" src={photoSrc(p.image, p.photo)} alt={photoAlt(p.image, p.photo_alt, p.title)} width="339" height="170" loading="lazy" />
+						<div class="p-info">
+							<p class="kicker">{p.brand}</p>
+							<h2>{p.review_slug ? <a href={`/reviews/${p.review_slug}`}>{p.title}</a> : p.title}</h2>
+							<p>{p.blurb}</p>
+						</div>
+						<dl>
+							{rows.map((r) => <div><dt>{r.label}</dt><dd>{p[r.key]}</dd></div>)}
+							<div><dt>Key features</dt><dd><ul>{lines(p.features).map((f) => <li>{f}</li>)}</ul></dd></div>
+							<div>
+								<dt>Reviewer’s noted price</dt>
+								<dd>
+									<span class="price">{p.price}</span>
+									<span class="price-note">Indicative, not a live price</span>
+									{p.retailer_url && (
+										<a class="btn btn-sm" href={p.retailer_url} rel="sponsored noopener" target="_blank">
+											View at {p.retailer_name} <Arrow />
+											<span class="sr-only"> (affiliate link, opens in a new tab)</span>
+										</a>
+									)}
+								</dd>
+							</div>
+						</dl>
+					</article>
+				))
+			}
+		</div>
+		<p class="cmp-note">{site.affiliate_line} {site.price_disclaimer} <a class="text-link text-link-ul" href="/affiliate-disclosure">Affiliate disclosure</a></p>
+	</div>
+</Base>

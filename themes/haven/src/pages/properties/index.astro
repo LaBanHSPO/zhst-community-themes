@@ -1,0 +1,58 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../../layouts/Base.astro";
+import PropertyCard from "../../components/PropertyCard.astro";
+import SearchForm from "../../components/SearchForm.astro";
+import { distinctLocations, plural } from "../../utils/listing";
+import { MAX_LISTINGS } from "../../utils/queries";
+
+const { entries, cacheHint } = await getEmDashCollection("properties", {
+	orderBy: { published_at: "desc" },
+	limit: MAX_LISTINGS,
+});
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const locations = distinctLocations(entries.map((e) => e.data.location));
+const forSale = entries.filter((e) => e.data.listing_type === "sale").length;
+const toRent = entries.filter((e) => e.data.listing_type === "rent").length;
+---
+
+<Base title="Properties" description="Homes for sale and to rent, with prices, key facts and photos.">
+	<header class="page-head">
+		<div class="container">
+			<p class="eyebrow">Properties</p>
+			<h1>All homes</h1>
+			<p class="lede">
+				{plural(entries.length, "home", "homes")} listed —
+				<a href="/search?listing=sale">{forSale} for sale</a> and
+				<a href="/search?listing=rent">{toRent} to rent</a>.
+			</p>
+		</div>
+	</header>
+
+	<div class="container page-search">
+		<SearchForm locations={locations} label="Filter properties" />
+	</div>
+
+	<section class="section container" aria-label="Property listings">
+		{
+			entries.length === 0 ? (
+				<p class="empty">No properties are listed yet. Please check back soon or <a href="/contact">get in touch</a>.</p>
+			) : (
+				<ul class="property-grid">
+					{entries.map((p) => (
+						<li>
+							<PropertyCard slug={p.id} data={p.data} headingLevel="h2" />
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</section>
+</Base>
+
+<style>
+	.page-search {
+		margin-bottom: -1rem;
+	}
+</style>

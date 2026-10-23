@@ -1,0 +1,76 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import { Form } from "@emdash-cms/plugin-forms/ui";
+import Base from "../layouts/Base.astro";
+import ContactDetails from "../components/ContactDetails.astro";
+
+// The page text is editable as the "contact" page; the layout still works if it is missing.
+const { entry: page, cacheHint } = await getEmDashEntry("pages", "contact");
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const title = page?.data.title ?? "Contact";
+const intro = page?.data.intro ?? "Questions about a course, a start date or a group booking? Send us a note.";
+---
+
+<Base
+	title={title}
+	description={intro}
+	content={page ? { collection: "pages", id: page.data.id, slug: page.id } : undefined}
+>
+	<div class="container">
+		<header class="page-head">
+			<p class="eyebrow">Get in touch</p>
+			<h1>{title}</h1>
+			<p class="lede">{intro}</p>
+		</header>
+
+		<div class="contact-layout">
+			<section class="contact-form" aria-labelledby="form-title">
+				<h2 id="form-title">Send an inquiry</h2>
+				{page?.data.content && page.data.content.length > 0 && (
+					<div class="prose">
+						<PortableText value={page.data.content} />
+					</div>
+				)}
+				<div class="form-slot">
+					<Form id="inquiry" />
+				</div>
+			</section>
+			<aside aria-label="Contact details">
+				<ContactDetails />
+			</aside>
+		</div>
+	</div>
+</Base>
+
+<style>
+	.contact-layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+		gap: clamp(2rem, 5vw, 4rem);
+		align-items: start;
+	}
+
+	.contact-form {
+		padding: clamp(1.4rem, 3vw, 2.25rem);
+		background: var(--color-surface);
+		border: 1px solid var(--color-line);
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow-card);
+	}
+
+	.contact-form h2 {
+		font-size: 1.6rem;
+	}
+
+	.form-slot:not(:has(form)) {
+		display: none;
+	}
+
+	@media (max-width: 860px) {
+		.contact-layout {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "artisan-cafe",
+	"kind": "theme",
+	"name": "Artisan Café",
+	"type": "restaurant",
+	"emdash": "1.2.0",
+	"entry": "themes/artisan-cafe",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": false,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

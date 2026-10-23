@@ -1,0 +1,77 @@
+---
+/** Inline line icons (24px grid, stroke = currentColor). Unknown names render nothing. */
+interface Props {
+	name: string | null | undefined;
+	size?: number;
+	class?: string;
+}
+const { name, size = 24, class: className } = Astro.props;
+
+const PATHS: Record<string, string> = {
+	pen: '<path d="M4 20l1-4.2L15.6 5.2a2 2 0 0 1 2.8 0l.4.4a2 2 0 0 1 0 2.8L8.2 19 4 20z"/><path d="M14 7l3 3"/>',
+	doc: '<path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M14 3v5h5M8.5 12.5h7M8.5 16h7"/>',
+	sparkle: '<path d="M10 3.5l1.6 4.9 4.9 1.6-4.9 1.6L10 16.5l-1.6-4.9L3.5 10l4.9-1.6z"/><path d="M18 14l.8 2.2L21 17l-2.2.8L18 20l-.8-2.2L15 17l2.2-.8z"/>',
+	people: '<circle cx="9" cy="8" r="3.2"/><path d="M3 19.5c.6-3.3 3-5.2 6-5.2s5.4 1.9 6 5.2"/><circle cx="16.5" cy="8.6" r="2.6"/><path d="M16.8 14.4c2.3.3 3.8 2 4.2 4.6"/>',
+	user: '<circle cx="12" cy="8" r="3.5"/><path d="M5 20c.7-3.6 3.5-5.6 7-5.6s6.3 2 7 5.6"/>',
+	chat: '<path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-5 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M8 9h8M8 12.5h5"/>',
+	upload: '<path d="M12 15V4M7.5 8.5L12 4l4.5 4.5"/><path d="M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/>',
+	list: '<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>',
+	check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+	"check-circle": '<circle cx="12" cy="12" r="8.5"/><path d="M8.2 12.3l2.6 2.6 5-5.2"/>',
+	mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/>',
+	chart: '<path d="M5 20V12M10 20V7M15 20v-6M20 20V4"/>',
+	megaphone: '<path d="M4 10v4a1 1 0 0 0 1 1h2l8 4V5L7 9H5a1 1 0 0 0-1 1z"/><path d="M18 9.5a3.5 3.5 0 0 1 0 5M7 15l1 4.5"/>',
+	target: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/>',
+	clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+	refresh: '<path d="M19 8a7.5 7.5 0 0 0-13.4 1M5 16a7.5 7.5 0 0 0 13.4-1"/><path d="M19 4v4h-4M5 20v-4h4"/>',
+	wave: '<path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 10.5v3"/>',
+	search: '<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/>',
+	plus: '<path d="M12 5v14M5 12h14"/>',
+	home: '<path d="M4 11l8-6.5 8 6.5"/><path d="M6 9.5V20h12V9.5"/>',
+	drafts: '<path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M14 3v5h5"/>',
+	shared: '<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.6-3 2.7-4.8 5.5-4.8s4.9 1.8 5.5 4.8"/><path d="M15 6.2a3 3 0 0 1 0 5.6M17.5 14.6c1.6.6 2.6 2.1 3 4.4"/>',
+	templates: '<rect x="4" y="4" width="16" height="16" rx="2.5"/><path d="M8 9h8M8 12.5h8M8 16h5"/>',
+	folder: '<path d="M3.5 7a2 2 0 0 1 2-2h4l2 2.5h7a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/>',
+	archive: '<rect x="3.5" y="4.5" width="17" height="4" rx="1"/><path d="M5 8.5V18a1.5 1.5 0 0 0 1.5 1.5h11A1.5 1.5 0 0 0 19 18V8.5M10 12h4"/>',
+	"chevron-right": '<path d="M9.5 6l6 6-6 6"/>',
+	"chevron-down": '<path d="M6 9.5l6 6 6-6"/>',
+	"arrow-right": '<path d="M4 12h15M13.5 6.5L19 12l-5.5 5.5"/>',
+	"arrow-left": '<path d="M20 12H5M10.5 6.5L5 12l5.5 5.5"/>',
+	dots: '<circle cx="12" cy="5.5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="18.5" r="1.2"/>',
+	bold: '<path d="M7 5h6a3.5 3.5 0 0 1 0 7H7zM7 12h7a3.5 3.5 0 0 1 0 7H7z"/>',
+	italic: '<path d="M11 5h7M6 19h7M14.5 5l-5 14"/>',
+	underline: '<path d="M7 4v7a5 5 0 0 0 10 0V4M5 20h14"/>',
+	bullets: '<path d="M10 6h10M10 12h10M10 18h10"/><circle cx="5" cy="6" r="1"/><circle cx="5" cy="12" r="1"/><circle cx="5" cy="18" r="1"/>',
+	numbers: '<path d="M10 6h10M10 12h10M10 18h10M4 5l1.5-1v5M4 14.5a1.5 1.5 0 1 1 2.5 1.2L4 18h3"/>',
+	link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+	image: '<rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M20.5 16l-5-5-9 8.5"/>',
+	type: '<path d="M5 7V5h14v2M12 5v14M9 19h6"/>',
+	play: '<path d="M9 7.5v9l7.5-4.5z" fill="currentColor" stroke="none"/>',
+	shorten: '<path d="M4 7h16M4 12h16M4 17h10"/>',
+	briefcase: '<rect x="3.5" y="7" width="17" height="12" rx="2"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7M3.5 12.5h17"/>',
+	tone: '<path d="M4 6h16v10H9l-5 4z"/><path d="M8 10h8"/>',
+	comment: '<path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-5 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>',
+	download: '<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 19.5h14"/>',
+	history: '<path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.5"/><path d="M4 4v4.5h4.5M12 8v4l3 2"/>',
+};
+const body = name ? PATHS[name] : undefined;
+---
+
+{
+	body && (
+		<svg
+			class={className}
+			width={size}
+			height={size}
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="1.7"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+			focusable="false"
+			set:html={body}
+		/>
+	)
+}

@@ -1,0 +1,78 @@
+---
+import { decodeSlug, getEmDashEntry } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+import WaitlistForm from "../../components/WaitlistForm.astro";
+import { getLaunch, getRoadmap, paragraphs, roadmapUrl, statusInfo } from "../../lib/firstlight";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.redirect("/404");
+const { entry, cacheHint } = await getEmDashEntry("roadmap", slug);
+if (!entry) return Astro.redirect("/404");
+
+const [{ launch, cacheHint: launchHint }, roadmap] = await Promise.all([getLaunch(), getRoadmap()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(launchHint);
+	Astro.cache.set(roadmap.cacheHint);
+}
+const item = entry.data;
+const status = statusInfo(item.stage);
+const siblings = roadmap.entries.filter((e) => e.data.stage === item.stage && e.data.id !== item.id);
+---
+
+<Base title={item.title} description={item.summary} content={{ collection: "roadmap", id: item.id, slug }}>
+	<section class="hero hero-roadmap hero-item" aria-labelledby="item-title">
+		<div class="container">
+			<a class="back-link" href="/roadmap"><Icon name="arrow" size={18} class="flip" /> Public roadmap</a>
+			<p class:list={["status-pill", `status-${status.value}`]}><Icon name={status.icon} size={18} /> {status.label}</p>
+			<h1 id="item-title" class="display display-lg" {...entry.edit.title}>{item.title}</h1>
+			<p class="hero-lede">{item.summary}</p>
+		</div>
+	</section>
+
+	<section class="container item-body">
+		<div class="item-main">
+			<h2>What it is</h2>
+			{paragraphs(item.details).map((p) => <p>{p}</p>)}
+			{
+				item.why && (
+					<>
+						<h2>Why we’re building it</h2>
+						{paragraphs(item.why).map((p) => <p>{p}</p>)}
+					</>
+				)
+			}
+			<p class="item-note">Roadmap items show what we intend to build, not promised dates. Plans can change as we learn from early access members.</p>
+		</div>
+		{
+			siblings.length > 0 && (
+				<aside class="item-aside road-col" aria-labelledby="also-title">
+					<h2 id="also-title">Also {status.label.toLowerCase()}</h2>
+					<ul class="road-list">
+						{siblings.map((s) => (
+							<li>
+								<span class:list={["road-mark", { "road-mark-on": s.data.stage === "in-progress" }]} aria-hidden="true">
+									{s.data.stage === "in-progress" && <Icon name="check" size={18} />}
+								</span>
+								<div>
+									<a class="road-title" href={roadmapUrl(s.data)}>{s.data.title}</a>
+									<p>{s.data.summary}</p>
+								</div>
+							</li>
+						))}
+					</ul>
+				</aside>
+			)
+		}
+	</section>
+
+	<section class="container shape-band" aria-labelledby="shape-title">
+		<Icon name="sun" size={64} class="shape-icon" />
+		<div class="shape-copy">
+			<h2 id="shape-title">Want a say in this?</h2>
+			<p>Early access members tell us what to build first. Join the waitlist to be invited.</p>
+		</div>
+		<WaitlistForm id="waitlist-item" email={launch.email} size="md" />
+	</section>
+</Base>

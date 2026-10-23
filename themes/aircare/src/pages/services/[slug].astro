@@ -1,0 +1,97 @@
+---
+import { getEmDashEntry, decodeSlug } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import Badges from "../../components/Badges.astro";
+import Hero from "../../components/Hero.astro";
+import { getHighlights, getSteps, photoSrc, requestUrl } from "../../lib/aircare";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.redirect("/404");
+
+const { entry, cacheHint } = await getEmDashEntry("services", slug);
+if (!entry) return Astro.redirect("/404");
+
+const key = entry.data.slug ?? entry.data.id;
+const [stepsResult, badges] = await Promise.all([getSteps(key), getHighlights(`service-${key}`)]);
+if (Astro.cache?.enabled) {
+	for (const hint of [cacheHint, stepsResult.cacheHint, badges.cacheHint]) Astro.cache.set(hint);
+}
+
+const s = entry.data;
+const hero = photoSrc(s.hero_image, s.hero_photo) ?? photoSrc(s.image, s.photo);
+const steps = stepsResult.entries;
+const included = s.included ?? [];
+const price = typeof s.price_from === "number" ? s.price_from : null;
+const bookLabel = s.book_label || "Request service";
+---
+
+<Base
+	title={s.title}
+	description={s.lede ?? s.summary}
+	image={hero}
+	content={{ collection: "services", id: s.id, slug: key }}
+>
+	<Hero photo={hero} alt={s.hero_image?.alt || `An Aircare technician at work: ${s.title}`} labelledby="service-title" class="hero-service">
+		<h1 id="service-title" class="display display-service">
+			{s.headline ?? s.title}
+			{s.headline_accent && <><br /><span class="accent">{s.headline_accent}</span></>}
+		</h1>
+		{s.lede && <p class="hero-lede">{s.lede}</p>}
+		<Badges items={badges.entries} />
+		<aside slot="aside" class="price-card" aria-labelledby="price-title">
+			<h2 id="price-title" class="price-label">
+				{s.title}
+				{price !== null ? <span> from</span> : <span> pricing</span>}
+			</h2>
+			{
+				price !== null ? (
+					<p class="price">
+						<span class="price-currency">$</span>
+						<span class="price-amount">{price.toLocaleString("en-US")}</span>
+						{s.price_unit && <span class="price-unit">/ {s.price_unit}</span>}
+					</p>
+				) : (
+					<p class="price price-request">Quoted on request</p>
+				)
+			}
+			{
+				included.length > 0 && (
+					<>
+						<h3 class="price-included">What’s included</h3>
+						<ul class="checklist">
+							{included.map((i) => <li>{i.item}</li>)}
+						</ul>
+					</>
+				)
+			}
+			<a class="btn btn-block btn-md" href={requestUrl(key)}>{bookLabel} <Arrow /></a>
+		</aside>
+	</Hero>
+
+	{
+		steps.length > 0 && (
+			<section class="process container" aria-labelledby="process-title">
+				<h2 id="process-title" class="section-title">{s.process_title || `How our ${s.title.toLowerCase()} works`}</h2>
+				{s.process_text && <p class="section-sub">{s.process_text}</p>}
+				<ol class="steps">
+					{steps.map((step, i) => {
+						const src = photoSrc(step.data.image, step.data.photo);
+						return (
+							<li class="step">
+								<div class="step-media">
+									{src && <img src={src} alt={step.data.image?.alt || step.data.title} width="335" height="147" loading="lazy" />}
+									<span class="step-num" aria-hidden="true">{i + 1}</span>
+								</div>
+								<div class="step-body">
+									<h3><span class="sr-only">Step {i + 1}: </span>{step.data.title}</h3>
+									{step.data.text && <p>{step.data.text}</p>}
+								</div>
+							</li>
+						);
+					})}
+				</ol>
+			</section>
+		)
+	}
+</Base>

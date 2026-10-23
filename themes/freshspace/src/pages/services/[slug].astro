@@ -1,0 +1,130 @@
+---
+import { getEmDashEntry, decodeSlug } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import Hero from "../../components/Hero.astro";
+import Icon from "../../components/Icon.astro";
+import { photoSrc, requestUrl } from "../../lib/freshspace";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.redirect("/404");
+
+const { entry: service, cacheHint } = await getEmDashEntry("services", slug);
+if (!service) return Astro.redirect("/404");
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const d = service.data;
+const hero = photoSrc(d.image, d.photo);
+const before = photoSrc(d.before_image, d.before_photo);
+const after = photoSrc(d.after_image, d.after_photo);
+const rooms = d.rooms ?? [];
+const tasks = d.tasks ?? [];
+const included = d.included ?? [];
+const excluded = d.excluded ?? [];
+const headline = d.headline || d.title;
+---
+
+<Base
+	title={d.title}
+	description={d.summary}
+	image={hero}
+	content={{ collection: "services", id: d.id, slug }}
+>
+	<Hero photo={hero} alt={d.image?.alt || `${d.title}: a spotless kitchen`} labelledby="service-title" class="hero-service">
+		<h1 id="service-title" class="display display-md" {...(d.headline ? service.edit.headline : service.edit.title)}>
+			{headline}{d.headline_accent && <><br /><span class="accent">{d.headline_accent}</span></>}
+		</h1>
+		{d.summary && <p class="hero-lede">{d.summary}</p>}
+		<a class="btn btn-lg" href={requestUrl({ service: slug })}>Book your cleaning <Arrow /></a>
+	</Hero>
+
+	<div class:list={["container-detail detail-grid", { "detail-grid-single": !(before && after) }]}>
+		{
+			before && after && (
+				<section class="before-after" aria-label="Before and after a deep clean">
+					<figure>
+						<img src={before} alt={d.before_image?.alt || "Before: a gas stove top covered in burnt-on grease and food residue"} loading="lazy" decoding="async" />
+						<figcaption class="pill">Before</figcaption>
+					</figure>
+					<figure>
+						<img src={after} alt={d.after_image?.alt || "After: the same stove top cleaned to a shine"} loading="lazy" decoding="async" />
+						<figcaption class="pill pill-mint">After</figcaption>
+					</figure>
+				</section>
+			)
+		}
+		{
+			(rooms.length > 0 || tasks.length > 0) && (
+				<section class="panel panel-mint rooms-panel" aria-labelledby="rooms-title">
+					<h2 id="rooms-title">{d.rooms_title || "Rooms & tasks"}</h2>
+					<div class="rooms-cols">
+						{rooms.length > 0 && (
+							<ul class="checks checks-lg">
+								{rooms.map((r) => (
+									<li>
+										<span class="check-dot check-solid">
+											<Icon name="check" />
+										</span>
+										<span>
+											<strong>{r.room}</strong>
+											{r.text && <> – {r.text}</>}
+										</span>
+									</li>
+								))}
+							</ul>
+						)}
+						{tasks.length > 0 && (
+							<ul class="checks checks-lg">
+								{tasks.map((t) => (
+									<li>
+										<span class="check-dot check-solid">
+											<Icon name="check" />
+										</span>
+										<span>{t.item}</span>
+									</li>
+								))}
+							</ul>
+						)}
+					</div>
+				</section>
+			)
+		}
+	</div>
+
+	{
+		(included.length > 0 || excluded.length > 0) && (
+			<div class="container-detail scope-grid">
+				{included.length > 0 && (
+					<section class="panel panel-mint scope" aria-labelledby="included-title">
+						<span class="scope-badge scope-yes">
+							<Icon name="check" />
+						</span>
+						<div>
+							<h2 id="included-title">What’s included</h2>
+							<ul class="bullets">
+								{included.map((i) => (
+									<li>{i.item}</li>
+								))}
+							</ul>
+						</div>
+					</section>
+				)}
+				{excluded.length > 0 && (
+					<section class="panel panel-blush scope" aria-labelledby="excluded-title">
+						<span class="scope-badge scope-no">
+							<Icon name="x" />
+						</span>
+						<div>
+							<h2 id="excluded-title">What’s not included</h2>
+							<ul class="bullets bullets-red">
+								{excluded.map((i) => (
+									<li>{i.item}</li>
+								))}
+							</ul>
+						</div>
+					</section>
+				)}
+			</div>
+		)
+	}
+</Base>

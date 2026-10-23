@@ -1,0 +1,1032 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Localcraft",
+		"description": "Home-services site: services with clear scope, service areas, work gallery, team and quote or callback inquiries",
+		"author": "ZeroHostCMS community"
+	},
+	"settings": {
+		"title": "Localcraft",
+		"tagline": "Home repair done right"
+	},
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "business",
+			"label": "Business details",
+			"labelSingular": "Business details",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Internal name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "phone",
+					"label": "Phone number",
+					"type": "string"
+				},
+				{
+					"slug": "email",
+					"label": "Email address",
+					"type": "string"
+				},
+				{
+					"slug": "base",
+					"label": "Based in",
+					"type": "string"
+				},
+				{
+					"slug": "hours",
+					"label": "Office hours",
+					"type": "string"
+				},
+				{
+					"slug": "response_note",
+					"label": "Response note",
+					"type": "text"
+				},
+				{
+					"slug": "hero_eyebrow",
+					"label": "Home hero eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "hero_title",
+					"label": "Home hero headline",
+					"type": "string"
+				},
+				{
+					"slug": "hero_text",
+					"label": "Home hero text",
+					"type": "text"
+				},
+				{
+					"slug": "hero_image",
+					"label": "Home hero image",
+					"type": "image"
+				},
+				{
+					"slug": "footer_left",
+					"label": "Footer line (left)",
+					"type": "string"
+				},
+				{
+					"slug": "footer_right",
+					"label": "Footer line (right)",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "services",
+			"label": "Services",
+			"labelSingular": "Service",
+			"urlPattern": "/services/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "summary",
+					"label": "Summary",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "icon",
+					"label": "Icon",
+					"type": "select",
+					"validation": {
+						"options": [
+							"hammer",
+							"pipe",
+							"roller",
+							"saw",
+							"tile",
+							"wrench"
+						]
+					}
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured image",
+					"type": "image"
+				},
+				{
+					"slug": "content",
+					"label": "Description",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "included",
+					"label": "What's included (one item per line)",
+					"type": "text"
+				},
+				{
+					"slug": "not_included",
+					"label": "Not included (one item per line)",
+					"type": "text"
+				},
+				{
+					"slug": "typical_job",
+					"label": "Typical job note",
+					"type": "string"
+				},
+				{
+					"slug": "order",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "areas",
+			"label": "Service areas",
+			"labelSingular": "Service area",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Area name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "summary",
+					"label": "Summary",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "notes",
+					"label": "Visit notes",
+					"type": "text"
+				},
+				{
+					"slug": "order",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "team",
+			"label": "Team",
+			"labelSingular": "Team member",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "role",
+					"label": "Role",
+					"type": "string"
+				},
+				{
+					"slug": "photo",
+					"label": "Photo",
+					"type": "image"
+				},
+				{
+					"slug": "bio",
+					"label": "Short bio",
+					"type": "text"
+				},
+				{
+					"slug": "order",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "gallery",
+			"label": "Work gallery",
+			"labelSingular": "Gallery item",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "image",
+					"label": "Image",
+					"type": "image"
+				},
+				{
+					"slug": "caption",
+					"label": "Caption",
+					"type": "text"
+				},
+				{
+					"slug": "order",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		}
+	],
+	"taxonomies": [
+		{
+			"name": "area",
+			"label": "Service areas",
+			"labelSingular": "Service area",
+			"hierarchical": false,
+			"collections": [
+				"services"
+			],
+			"terms": [
+				{
+					"slug": "harbourside",
+					"label": "Harbourside"
+				},
+				{
+					"slug": "millbrook",
+					"label": "Millbrook"
+				},
+				{
+					"slug": "eastvale",
+					"label": "Eastvale"
+				},
+				{
+					"slug": "cedar-heights",
+					"label": "Cedar Heights"
+				},
+				{
+					"slug": "old-quarry",
+					"label": "Old Quarry"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Services",
+					"url": "/services"
+				},
+				{
+					"type": "custom",
+					"label": "Service areas",
+					"url": "/areas"
+				},
+				{
+					"type": "custom",
+					"label": "About",
+					"url": "/about"
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About Localcraft",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k0",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k1",
+									"text": "Localcraft is a small team of home-repair tradespeople working out of a workshop in Millbrook. We started with weekend repairs for neighbours and grew into a team that covers repairs, plumbing fixes, painting, carpentry, tiling and assembly.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "k2",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k3",
+									"text": "We keep things straightforward: tell us what needs doing, we read every request, and we call or email back to talk through the job. We would rather explain what we do not take on than promise something we cannot deliver.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "k4",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k5",
+									"text": "How a request works",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "k6",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k7",
+									"text": "Send a quote or callback request with a short description and, if you can, a photo. We reply to talk through scope and timing. A request is the start of a conversation; it is not a booking, and nothing is scheduled until we have agreed it with you.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "contact",
+				"slug": "contact",
+				"status": "published",
+				"data": {
+					"title": "Contact",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k8",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k9",
+									"text": "Call us during office hours, email, or send the form below. Tell us what needs doing, roughly where you are, and whether you would like a quote or simply a call back.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"business": [
+			{
+				"id": "details",
+				"slug": "details",
+				"status": "published",
+				"data": {
+					"title": "Localcraft business details",
+					"phone": "+1 555 0142",
+					"email": "hello@localcraft.example.com",
+					"base": "Workshop in Millbrook",
+					"hours": "Mon to Fri, 8am to 5pm",
+					"response_note": "We aim to reply to enquiries within one working day. A request is not a booked appointment; we will call or email to talk it through.",
+					"hero_eyebrow": "Local people. Solid solutions.",
+					"hero_title": "Good work. Right at home.",
+					"hero_text": "Reliable home repair services to keep your home comfortable, functional and looking its best.",
+					"hero_image": {
+						"provider": "external",
+						"id": "localcraft-hero-workshop",
+						"src": "/media/hero-workshop.jpg",
+						"alt": "A craftsman in a canvas apron planing timber in a bright workshop"
+					},
+					"footer_left": "A more comfortable home is a brighter tomorrow.",
+					"footer_right": "Local homes. Stronger communities."
+				}
+			}
+		],
+		"services": [
+			{
+				"id": "service-repairs",
+				"slug": "repairs",
+				"status": "published",
+				"data": {
+					"title": "Repairs",
+					"summary": "Fix what matters. From door handles to drywall, we take care of the details.",
+					"icon": "hammer",
+					"featured_image": {
+						"provider": "external",
+						"id": "localcraft-planing-detail",
+						"src": "/media/planing-detail.jpg",
+						"alt": "Hands guiding a hand plane along a timber board in the workshop"
+					},
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k10",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k11",
+									"text": "Small household repairs are the bulk of our work: the sticking door, the loose shelf, the dent in the hallway wall. We look at the job, explain what we think it needs, and agree the scope with you before starting.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "k12",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k13",
+									"text": "If something turns out to be bigger than a repair, we will say so and suggest who to talk to.",
+									"marks": []
+								}
+							]
+						}
+					],
+					"included": "Doors, hinges, handles and locks that stick or rattle\nPatching and sanding small holes and dents in plasterboard\nRe-fixing loose shelves, rails and curtain tracks\nSealant and caulking around baths, sinks and windows\nMinor fence and gate adjustments",
+					"not_included": "Structural work or load-bearing walls\nRoofing and work at height above a single storey\nGas, mains electrical or anything requiring a licensed trade\nEmergency call-outs",
+					"typical_job": "Most repair visits are a few hours; we confirm scope after reviewing your request.",
+					"order": 1
+				},
+				"taxonomies": {
+					"area": [
+						"harbourside",
+						"millbrook",
+						"eastvale",
+						"cedar-heights",
+						"old-quarry"
+					]
+				}
+			},
+			{
+				"id": "service-plumbing",
+				"slug": "plumbing",
+				"status": "published",
+				"data": {
+					"title": "Plumbing",
+					"summary": "Leaky taps, running toilets and more. Fast, dependable plumbing solutions.",
+					"icon": "pipe",
+					"featured_image": {
+						"provider": "external",
+						"id": "localcraft-tool-wall",
+						"src": "/media/tool-wall.jpg",
+						"alt": "Pegboard wall of hand tools above a workbench"
+					},
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k14",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k15",
+									"text": "We handle everyday plumbing fixes inside the home: dripping taps, running cisterns, slow drains and replacing like-for-like fittings.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "k16",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k17",
+									"text": "Tell us what you are seeing and, if you can, send a photo of the fitting. It helps us bring the right parts.",
+									"marks": []
+								}
+							]
+						}
+					],
+					"included": "Dripping and stiff taps (washers, cartridges, aerators)\nRunning or slow-filling toilet cisterns\nClearing slow sink and basin drains\nReplacing like-for-like taps, shower heads and toilet seats\nFitting washing-machine and dishwasher connections",
+					"not_included": "Gas appliances, boilers and hot-water cylinders\nNew pipe runs, bathroom refits or moving fixtures\nBlocked sewer lines and excavation\nEmergency call-outs",
+					"typical_job": "Simple fixes are often done in one visit; parts may need a second visit.",
+					"order": 2
+				},
+				"taxonomies": {
+					"area": [
+						"harbourside",
+						"millbrook",
+						"eastvale"
+					]
+				}
+			},
+			{
+				"id": "service-painting",
+				"slug": "painting",
+				"status": "published",
+				"data": {
+					"title": "Painting",
+					"summary": "Freshen up your space inside or out. Clean results and careful craftsmanship.",
+					"icon": "roller",
+					"featured_image": {
+						"provider": "external",
+						"id": "localcraft-workshop-poster",
+						"src": "/media/workshop-poster.jpg",
+						"alt": "Dark workshop sign reading Better homes, brighter days with a yellow house logo"
+					},
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k18",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k19",
+									"text": "We paint single rooms, hallways, doors, trims and small exterior areas. Preparation is most of the job: filling, sanding and protecting floors and furniture before any paint goes on.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "k20",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k21",
+									"text": "You choose the colours; we can suggest finishes that suit the room and how it is used.",
+									"marks": []
+								}
+							]
+						}
+					],
+					"included": "Walls, ceilings and trims for single rooms and hallways\nInterior doors and skirting boards\nFilling, sanding and priming before painting\nDust sheets and masking of floors and fittings\nFences, gates and small exterior timber areas",
+					"not_included": "Whole-house exteriors and multi-storey scaffolding\nWallpaper hanging or removal\nLead paint removal\nSupplying colour-matched specialist coatings",
+					"typical_job": "A typical room takes one to three days including preparation and drying time.",
+					"order": 3
+				},
+				"taxonomies": {
+					"area": [
+						"millbrook",
+						"eastvale",
+						"cedar-heights"
+					]
+				}
+			},
+			{
+				"id": "service-carpentry",
+				"slug": "carpentry",
+				"status": "published",
+				"data": {
+					"title": "Carpentry",
+					"summary": "Shelving, trims and small builds made to fit your home.",
+					"icon": "saw",
+					"featured_image": {
+						"provider": "external",
+						"id": "localcraft-bench-shavings",
+						"src": "/media/bench-shavings.jpg",
+						"alt": "Pale timber board on a workbench covered in fresh wood shavings"
+					},
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k22",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k23",
+									"text": "From a run of alcove shelves to replacing a damaged skirting board, we measure on site and cut to fit. Most pieces are built in our Millbrook workshop and fitted in one visit.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "k24",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k25",
+									"text": "We are happy to work with timber you have already chosen or recommend something suitable.",
+									"marks": []
+								}
+							]
+						}
+					],
+					"included": "Alcove and wall-mounted shelving\nReplacing skirting boards, architraves and trims\nEasing and re-hanging internal doors\nSimple garden planters and bench seats\nRepairs to decking boards and steps",
+					"not_included": "Staircases and structural framing\nFitted kitchens and wardrobes\nDecks and pergolas needing permits\nBespoke furniture commissions",
+					"typical_job": "Measuring visit first, then fitting once the pieces are ready.",
+					"order": 4
+				},
+				"taxonomies": {
+					"area": [
+						"millbrook",
+						"cedar-heights",
+						"old-quarry"
+					]
+				}
+			},
+			{
+				"id": "service-tiling",
+				"slug": "tiling",
+				"status": "published",
+				"data": {
+					"title": "Tiling & grout",
+					"summary": "Re-grouting, re-sealing and small tiling repairs for kitchens and bathrooms.",
+					"icon": "tile",
+					"featured_image": {
+						"provider": "external",
+						"id": "localcraft-crate-detail",
+						"src": "/media/crate-detail.jpg",
+						"alt": "Wooden crate stencilled with Good work builds happier homes"
+					},
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k26",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k27",
+									"text": "Tired grout and cracked tiles make a room look older than it is. We regrout, replace individual tiles where matching tiles are available, and reseal edges so water stays where it should.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "k28",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k29",
+									"text": "Splashbacks and small areas are fine; full bathroom tiling is outside what we offer.",
+									"marks": []
+								}
+							]
+						}
+					],
+					"included": "Raking out and regrouting wall and floor tiles\nReplacing individual cracked tiles (when matches are available)\nResealing showers, baths and worktops\nSmall kitchen splashbacks",
+					"not_included": "Full bathroom or wet-room installations\nUnderfloor heating\nWaterproofing membranes and tanking\nNatural stone restoration",
+					"typical_job": "Regrouting a shower usually takes a day, plus curing time before use.",
+					"order": 5
+				},
+				"taxonomies": {
+					"area": [
+						"harbourside",
+						"eastvale",
+						"old-quarry"
+					]
+				}
+			},
+			{
+				"id": "service-assembly-and-fixtures",
+				"slug": "assembly-and-fixtures",
+				"status": "published",
+				"data": {
+					"title": "Assembly & fixtures",
+					"summary": "Flat-pack, wall mounting and fixtures put together properly.",
+					"icon": "wrench",
+					"featured_image": {
+						"provider": "external",
+						"id": "localcraft-workshop-wide",
+						"src": "/media/workshop-wide.jpg",
+						"alt": "Bright workshop with a pendant lamp, timber shelves and a yellow house sign"
+					},
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k30",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k31",
+									"text": "Flat-pack furniture, wall-mounted TVs, mirrors, blinds and curtain poles: the jobs that take an afternoon and the right fixings. We check the wall type before drilling and use fixings rated for the load.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "k32",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k33",
+									"text": "Please have items delivered and unpacked in the right room before the visit if you can.",
+									"marks": []
+								}
+							]
+						}
+					],
+					"included": "Flat-pack furniture assembly\nMounting TVs, mirrors, pictures and shelves\nFitting blinds, curtain poles and tracks\nAnchoring tall furniture to walls for safety",
+					"not_included": "Wiring, sockets or hard-wired light fittings\nMoving heavy furniture between floors\nDisposal of packaging in bulk\nAppliance installation needing a licensed trade",
+					"typical_job": "Most assembly jobs are completed in a single visit.",
+					"order": 6
+				},
+				"taxonomies": {
+					"area": [
+						"harbourside",
+						"millbrook",
+						"cedar-heights"
+					]
+				}
+			}
+		],
+		"areas": [
+			{
+				"id": "area-harbourside",
+				"slug": "harbourside",
+				"status": "published",
+				"data": {
+					"title": "Harbourside",
+					"summary": "Terraced houses and apartments around the old harbour wall.",
+					"notes": "Street parking is limited; let us know if there is a loading bay or driveway we can use.",
+					"order": 1
+				}
+			},
+			{
+				"id": "area-millbrook",
+				"slug": "millbrook",
+				"status": "published",
+				"data": {
+					"title": "Millbrook",
+					"summary": "Family homes along the brook and the newer streets east of the school.",
+					"notes": "Our workshop is in Millbrook, so this is usually the easiest area for short visits.",
+					"order": 2
+				}
+			},
+			{
+				"id": "area-eastvale",
+				"slug": "eastvale",
+				"status": "published",
+				"data": {
+					"title": "Eastvale",
+					"summary": "Post-war bungalows and semi-detached homes on the eastern ridge.",
+					"notes": "Many Eastvale homes have older fittings; we will mention it if a part needs to be sourced first.",
+					"order": 3
+				}
+			},
+			{
+				"id": "area-cedar-heights",
+				"slug": "cedar-heights",
+				"status": "published",
+				"data": {
+					"title": "Cedar Heights",
+					"summary": "Hillside homes with decks, fences and plenty of exterior paintwork.",
+					"notes": "Exterior work here depends on the weather; we will talk through timing when we reply.",
+					"order": 4
+				}
+			},
+			{
+				"id": "area-old-quarry",
+				"slug": "old-quarry",
+				"status": "published",
+				"data": {
+					"title": "Old Quarry",
+					"summary": "Converted cottages and small workshops on the edge of town.",
+					"notes": "Some lanes are narrow; tell us about access when you send your request.",
+					"order": 5
+				}
+			}
+		],
+		"team": [
+			{
+				"id": "team-dan-okafor",
+				"slug": "dan-okafor",
+				"status": "published",
+				"data": {
+					"title": "Dan Okafor",
+					"role": "Founder, carpentry and repairs",
+					"photo": {
+						"provider": "external",
+						"id": "localcraft-craftsman-portrait",
+						"src": "/media/craftsman-portrait.jpg",
+						"alt": "A craftsman in a cap, safety glasses and canvas apron planing timber"
+					},
+					"bio": "Dan set up Localcraft after years of fixing friends' homes at weekends. He looks after carpentry, repairs and most first visits.",
+					"order": 1
+				}
+			},
+			{
+				"id": "team-priya-hale",
+				"slug": "priya-hale",
+				"status": "published",
+				"data": {
+					"title": "Priya Hale",
+					"role": "Painting and finishes",
+					"bio": "Priya leads painting jobs and is the person to ask about preparation, finishes and how long a room will be out of use.",
+					"order": 2
+				}
+			},
+			{
+				"id": "team-marco-lindqvist",
+				"slug": "marco-lindqvist",
+				"status": "published",
+				"data": {
+					"title": "Marco Lindqvist",
+					"role": "Plumbing fixes and tiling",
+					"bio": "Marco handles everyday plumbing fixes, regrouting and resealing, and keeps the van stocked with common parts.",
+					"order": 3
+				}
+			},
+			{
+				"id": "team-ana-reyes",
+				"slug": "ana-reyes",
+				"status": "published",
+				"data": {
+					"title": "Ana Reyes",
+					"role": "Office and enquiries",
+					"bio": "Ana reads every enquiry, calls people back and coordinates which of the team is best placed to help.",
+					"order": 4
+				}
+			}
+		],
+		"gallery": [
+			{
+				"id": "gallery-planed-oak-shelf",
+				"slug": "planed-oak-shelf",
+				"status": "published",
+				"data": {
+					"title": "Planing a shelf board",
+					"image": {
+						"provider": "external",
+						"id": "localcraft-planing-detail",
+						"src": "/media/planing-detail.jpg",
+						"alt": "Hands guiding a hand plane along a timber board"
+					},
+					"caption": "Shelf boards are planed and finished in the workshop before fitting.",
+					"order": 1
+				}
+			},
+			{
+				"id": "gallery-tool-wall",
+				"slug": "tool-wall",
+				"status": "published",
+				"data": {
+					"title": "The tool wall",
+					"image": {
+						"provider": "external",
+						"id": "localcraft-tool-wall",
+						"src": "/media/tool-wall.jpg",
+						"alt": "Pegboard wall of hand tools above a workbench"
+					},
+					"caption": "Every tool has a place, which keeps visits quick and tidy.",
+					"order": 2
+				}
+			},
+			{
+				"id": "gallery-bench-shavings",
+				"slug": "bench-shavings",
+				"status": "published",
+				"data": {
+					"title": "Fresh shavings",
+					"image": {
+						"provider": "external",
+						"id": "localcraft-bench-shavings",
+						"src": "/media/bench-shavings.jpg",
+						"alt": "Pale timber board on a workbench covered in fresh wood shavings"
+					},
+					"caption": "Trim pieces cut to size for a hallway refresh.",
+					"order": 3
+				}
+			},
+			{
+				"id": "gallery-workshop-sign",
+				"slug": "workshop-sign",
+				"status": "published",
+				"data": {
+					"title": "Workshop sign",
+					"image": {
+						"provider": "external",
+						"id": "localcraft-workshop-poster",
+						"src": "/media/workshop-poster.jpg",
+						"alt": "Dark workshop sign reading Better homes, brighter days"
+					},
+					"caption": "The motto on the workshop wall.",
+					"order": 4
+				}
+			},
+			{
+				"id": "gallery-crate-detail",
+				"slug": "crate-detail",
+				"status": "published",
+				"data": {
+					"title": "Parts crate",
+					"image": {
+						"provider": "external",
+						"id": "localcraft-crate-detail",
+						"src": "/media/crate-detail.jpg",
+						"alt": "Wooden crate stencilled with Good work builds happier homes"
+					},
+					"caption": "Common fittings travel in crates like this one.",
+					"order": 5
+				}
+			},
+			{
+				"id": "gallery-workshop",
+				"slug": "workshop",
+				"status": "published",
+				"data": {
+					"title": "The workshop",
+					"image": {
+						"provider": "external",
+						"id": "localcraft-workshop-wide",
+						"src": "/media/workshop-wide.jpg",
+						"alt": "Bright workshop with a pendant lamp and timber shelves"
+					},
+					"caption": "Our Millbrook workshop, where most carpentry is prepared.",
+					"order": 6
+				}
+			}
+		]
+	}
+}

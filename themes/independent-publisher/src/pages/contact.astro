@@ -1,0 +1,164 @@
+---
+import Base from "../layouts/Base.astro";
+import { getPress, getTopics, telHref } from "../lib/press";
+
+const [{ press, cacheHint }, topicsResult] = await Promise.all([getPress(), getTopics()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(topicsResult.cacheHint);
+}
+const topics = topicsResult.entries;
+
+// ?topic=<slug> pre-selects a topic (links from the home page, submissions band and book pages).
+const wanted = Astro.url.searchParams.get("topic");
+const selected = topics.find((t) => (t.data.slug ?? t.data.id) === wanted);
+---
+
+<Base title="Contact" description="Write to Cord & Page about submissions, rights, events, bookshop orders or anything else. We reply personally." current="/contact">
+	<div class="wrap contact">
+		<section aria-labelledby="contact-title">
+			<p class="label">Contact</p>
+			<h1 id="contact-title" class="display">Write to the press.</h1>
+			<p class="lede">
+				Choose what your message is about and we will route it to the right person. Nothing is sent until you send the email that opens.
+			</p>
+
+			<form
+				class="contact-form"
+				data-contact-form
+				data-email={press.email}
+				action={press.email ? `mailto:${press.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field">
+						<label for="c-name">Your name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field full">
+						<label for="c-topic">What is it about?</label>
+						<select id="c-topic" name="topic" required>
+							<option value="" selected={!selected}>Choose a topic</option>
+							{
+								topics.map((t) => (
+									<option value={t.data.title} data-email={t.data.email} selected={selected?.data.id === t.data.id}>
+										{t.data.title}
+									</option>
+								))
+							}
+						</select>
+						<span class="field-error" data-error-for="c-topic"></span>
+					</div>
+					<div class="field full">
+						<label for="c-subject">Subject</label>
+						<input id="c-subject" name="subject" type="text" placeholder="e.g. A debut novel about two sisters and a river" required />
+						<span class="field-error" data-error-for="c-subject"></span>
+					</div>
+					<div class="field full">
+						<label for="c-notes">Message <span class="optional">(optional)</span></label>
+						<textarea id="c-notes" name="notes" rows="6" placeholder="Tell us a little about you, your book or your question…"></textarea>
+					</div>
+				</div>
+				<button class="btn btn-block" type="submit"><span>Write your message</span></button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{press.email && <>Write to <a href={`mailto:${press.email}`}>{press.email}</a> with what you need.</>}
+					</noscript>
+				</p>
+			</form>
+		</section>
+
+		<aside class="contact-side" aria-label="Direct contact">
+			<h2>Prefer to write directly?</h2>
+			<p class="direct">
+				{press.email && <a href={`mailto:${press.email}`}>{press.email}</a>}
+				{press.phone && <a href={telHref(press.phone)}>{press.phone}</a>}
+			</p>
+			{press.response && <p class="small">{press.response}</p>}
+			{press.base && <p class="small">{press.base}</p>}
+			{press.contact_note && <p class="small">{press.contact_note}</p>}
+			<ul class="topic-list">
+				{
+					topics.map((t) => (
+						<li>
+							<strong>{t.data.title}</strong>
+							<span>{t.data.text}</span>
+							{t.data.email && <a href={`mailto:${t.data.email}`}>{t.data.email}</a>}
+						</li>
+					))
+				}
+			</ul>
+		</aside>
+	</div>
+</Base>
+
+<script>
+	// Compose an email to the right desk; the press replies to it. Nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLSelectElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input[required], select[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? input.tagName === "SELECT"
+							? "Please choose an option."
+							: "Please fill this in."
+						: input.getAttribute("type") === "email"
+							? "Please enter a valid email address."
+							: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const select = form.querySelector<HTMLSelectElement>("select[name=topic]");
+			const chosen = select?.selectedOptions[0];
+			const email = chosen?.dataset.email || form.dataset.email || "";
+			if (!email) {
+				status.textContent = "Online messages are not available right now. Please call.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const subject = `${get("topic")}: ${get("subject")}`;
+			const lines = [
+				"Hello,",
+				"",
+				`Topic: ${get("topic")}`,
+				`Subject: ${get("subject")}`,
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				get("notes") ? `Message: ${get("notes")}` : "",
+				"",
+				"Thank you.",
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this message ready to send. It is only sent when you send that email. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

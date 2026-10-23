@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Heart from "../components/Heart.astro";
+import Sparks from "../components/Sparks.astro";
+import { bookingUrl } from "../lib/pawhouse";
+---
+
+<Base title="Page not found">
+	<section class="wrap notfound" aria-labelledby="nf-title">
+		<Sparks class="hero-sparks" />
+		<p class="eyebrow">Error 404</p>
+		<h1 id="nf-title" class="display display-md">This page ran off<br /> to play.<Heart /></h1>
+		<p class="hero-lede">The page you’re looking for doesn’t exist or has moved. Have a look at our grooming menu or pet hotel, or send us a booking request.</p>
+		<div class="actions">
+			<a class="btn btn-md" href="/grooming">Grooming menu <Arrow /></a>
+			<a class="pill" href={bookingUrl()}>Request booking <Arrow /></a>
+		</div>
+	</section>
+</Base>

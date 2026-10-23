@@ -1,0 +1,195 @@
+---
+import { getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getProfile } from "../lib/elsewhere";
+import Icon from "../components/Icon.astro";
+import "../styles/theme.css";
+
+interface Props {
+	title: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	/** Pass content reference for plugin page contributions on content pages */
+	content?: { collection: string; id: string; slug?: string | null };
+}
+
+const { title, pageTitle, description, image, canonical, content } = Astro.props;
+const [settingsResult, menuResult, profileResult] = await Promise.all([
+	getSiteSettingsWithCacheHint(),
+	getMenuWithCacheHint("primary"),
+	getProfile(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(settingsResult.cacheHint);
+	Astro.cache.set(menuResult.cacheHint);
+	Astro.cache.set(profileResult.cacheHint);
+}
+
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(settingsResult.data);
+const titleIncludesSiteName =
+	title === siteTitle || title.endsWith(` | ${siteTitle}`) || title.endsWith(` — ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
+const pageDescription = description ?? siteTagline;
+const navItems = menuResult.data?.items ?? [];
+const { profile } = profileResult;
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isCurrent = (url: string) => {
+	const target = url.replace(/\/$/, "") || "/";
+	if (target === "/") return path === "/";
+	return path === target || path.startsWith(`${target}/`);
+};
+// Story pages sit under the "Travel article" link; archives, categories and tags under the destination archive.
+const articleNav = navItems.find((i) => /^\/posts\/.+/.test(i.url));
+const archiveNav = navItems.find((i) => i.url === "/destinations");
+const currentUrl =
+	navItems.find((i) => isCurrent(i.url))?.url ??
+	(/^\/posts\/.+/.test(path) ? articleNav?.url : undefined) ??
+	(/^\/(posts|category|tag)(\/|$)/.test(path) ? archiveNav?.url : undefined);
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description: pageDescription,
+	canonical,
+	image,
+	content,
+	siteName: siteTitle,
+});
+const year = new Intl.DateTimeFormat("en-US", { year: "numeric", timeZone: "Asia/Saigon" }).format(new Date());
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{fullTitle}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&display=swap"
+			rel="stylesheet"
+		/>
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<header class="site-head">
+			<div class="head-inner">
+				<a class="wordmark" href="/" aria-label={`${siteTitle} — homepage`}>
+					{
+						siteLogo ? (
+							<img src={siteLogo.url} alt={siteLogo.alt || siteTitle} />
+						) : (
+							<>
+								<span class="wordmark-name">{siteTitle}</span>
+								<span class="wordmark-sub">{siteTagline}</span>
+							</>
+						)
+					}
+				</a>
+				<nav class="nav" aria-label="Primary">
+					{
+						navItems.map((item) => (
+							<a
+								href={item.url}
+								target={item.target}
+								rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+								aria-current={item.url === currentUrl ? "page" : undefined}
+							>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+				<a class="search-link" href="/destinations#search" aria-label="Search destinations">
+					<Icon name="search" size={22} />
+				</a>
+				<details class="mobile-nav">
+					<summary>
+						<Icon name="menu" size={16} />
+						Menu
+					</summary>
+					<nav class="mobile-panel" aria-label="Primary (mobile)">
+						{
+							navItems.map((item) => (
+								<a href={item.url} aria-current={item.url === currentUrl ? "page" : undefined}>
+									{item.label}
+								</a>
+							))
+						}
+						<a class="mobile-search" href="/destinations#search">Search destinations</a>
+					</nav>
+				</details>
+			</div>
+		</header>
+
+		<main id="main">
+			<slot />
+		</main>
+
+		<footer class="site-foot">
+			<div class="container foot-inner">
+				<div class="foot-brand">
+					<a class="wordmark" href="/">
+						<span class="wordmark-name">{siteTitle}</span>
+						<span class="wordmark-sub">{siteTagline}</span>
+					</a>
+					<p>Slow-travel stories, places to linger and notes from the road.</p>
+				</div>
+				<div>
+					<h2>Explore</h2>
+					{navItems.map((item) => <a href={item.url}>{item.label}</a>)}
+				</div>
+				<div>
+					<h2>Say hello</h2>
+					{profile.email && <a href={`mailto:${profile.email}`}>{profile.email}</a>}
+					<a href="/privacy">Privacy</a>
+				</div>
+			</div>
+			<div class="container foot-bottom">
+				<span>© {year} {siteTitle}. All rights reserved.</span>
+				<span>Built with EmDash</span>
+			</div>
+		</footer>
+
+		<EmDashBodyEnd page={pageCtx} />
+	</body>
+</html>
+
+<script>
+	// The site never sends mail itself: a valid form opens the visitor's email app with a pre-filled message.
+	document.querySelectorAll<HTMLFormElement>("form[data-mailto]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>(".form-status");
+		const setStatus = (text: string, state: "ok" | "error") => {
+			if (!status) return;
+			status.textContent = text;
+			status.dataset.state = state;
+		};
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			const input = form.querySelector<HTMLInputElement>('input[type="email"]');
+			const address = input?.value.trim() ?? "";
+			if (!input || !address || !input.checkValidity()) {
+				setStatus("Please enter a valid email address.", "error");
+				input?.focus();
+				return;
+			}
+			const to = form.dataset.mailto ?? "";
+			const subject = form.dataset.subject ?? "Newsletter subscription request";
+			const body = `Hello,\n\nPlease add this address to the newsletter list:\n${address}\n\nThank you.`;
+			setStatus("Your email app should open with a pre-filled message. Nothing has been sent from this site; press send there to ask for the newsletter.", "ok");
+			window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+		});
+	});
+</script>

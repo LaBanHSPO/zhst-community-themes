@@ -1,0 +1,1398 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Architecture Photographer",
+    "description": "An architecture photography portfolio: projects with category filter, journal, about page and a commission page, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "KELLEN",
+    "tagline": "Architecture Photographer"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "image",
+          "label": "Side photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled side photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "projects",
+      "label": "Projects",
+      "labelSingular": "Project",
+      "urlPattern": "/work/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Project name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "category",
+          "label": "Category (work filter)",
+          "type": "select",
+          "required": true,
+          "indexed": true,
+          "defaultValue": "civic",
+          "validation": {
+            "options": [
+              "civic",
+              "interiors",
+              "residential"
+            ]
+          }
+        },
+        {
+          "slug": "architect",
+          "label": "Architect (credit)",
+          "type": "string",
+          "searchable": true
+        },
+        {
+          "slug": "place",
+          "label": "Location",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "year",
+          "label": "Year",
+          "type": "string"
+        },
+        {
+          "slug": "programme",
+          "label": "Building type (e.g. Public library)",
+          "type": "string"
+        },
+        {
+          "slug": "summary",
+          "label": "One-line summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover photo path",
+          "type": "string"
+        },
+        {
+          "slug": "gallery",
+          "label": "Photo sequence",
+          "type": "repeater",
+          "validation": {
+            "maxItems": 40,
+            "subFields": [
+              {
+                "slug": "image",
+                "label": "Photo (upload)",
+                "type": "image"
+              },
+              {
+                "slug": "photo",
+                "label": "Bundled photo path",
+                "type": "string"
+              },
+              {
+                "slug": "caption",
+                "label": "Caption",
+                "type": "text"
+              }
+            ]
+          }
+        },
+        {
+          "slug": "content",
+          "label": "Project notes",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "posts",
+      "label": "Journal",
+      "labelSingular": "Journal post",
+      "urlPattern": "/journal/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "date_label",
+          "label": "Date (as shown, e.g. 12 March 2026)",
+          "type": "string"
+        },
+        {
+          "slug": "topic",
+          "label": "Topic label (e.g. Field notes)",
+          "type": "string"
+        },
+        {
+          "slug": "summary",
+          "label": "One-line summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Post",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "principles",
+      "label": "Approach",
+      "labelSingular": "Approach point",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Text",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "studio",
+      "label": "Studio details",
+      "labelSingular": "Studio details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Studio name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "base",
+          "label": "Based in",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Commission email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "response",
+          "label": "Reply time (shown beside the commission form)",
+          "type": "string"
+        },
+        {
+          "slug": "commission_note",
+          "label": "Note shown beside the commission form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Work",
+          "url": "/work"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        },
+        {
+          "type": "custom",
+          "label": "Journal",
+          "url": "/journal"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "Photographs that read the building.",
+          "eyebrow": "About",
+          "intro": "KELLEN is an architecture photography practice for architects, developers and studios who want their buildings seen the way they were designed.",
+          "photo": "/images/prints-camera.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k33",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We photograph new buildings, interiors and the places around them. Our work is slow and deliberate: we scout the site, study how light moves across it and return when the conditions are right.",
+                  "_key": "k33s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k34",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How we work",
+                  "_key": "k34s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k35",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Every commission begins with a conversation about what the architect wants the building to say. We then plan the days around the sun, the weather and the people who will use the space.",
+                  "_key": "k35s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k36",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We shoot on a tripod, with a tilt-shift lens, and we do not rearrange rooms unless asked. The result is photography that is sharp, calm and true to the drawings.",
+                  "_key": "k36s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k37",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Who we work with",
+                  "_key": "k37s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k38",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Architects, interior designers, developers and public bodies, mostly in coastal and mountain regions, and wherever a good building is waiting for good light. We take a limited number of commissions each year so every project gets full attention.",
+                  "_key": "k38s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k39",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What you receive",
+                  "_key": "k39s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k40",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A curated set of edited images, delivered web-ready and print-ready, with a usage licence that covers publication, awards entries and your own website. Delivery is usually within two weeks of the shoot.",
+                  "_key": "k40s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "usage-and-licensing",
+        "slug": "usage-and-licensing",
+        "status": "published",
+        "data": {
+          "title": "Usage and licensing",
+          "eyebrow": "Usage and licensing",
+          "intro": "A few plain notes on how photographs are delivered and used.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k41",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Commissions",
+                  "_key": "k41s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k42",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A commission is agreed by email: we confirm the scope, the dates and a fee, and ask for a deposit. An enquiry on this website is not a booking.",
+                  "_key": "k42s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k43",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Licence",
+                  "_key": "k43s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k44",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Photographs are licensed to the architect and the client for publication, competitions, awards entries and their own websites and social channels. Further uses are agreed in writing.",
+                  "_key": "k44s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k45",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Delivery",
+                  "_key": "k45s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k46",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Final images are delivered through a private link, web-ready and print-ready, usually within two weeks of the shoot.",
+                  "_key": "k46s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "projects": [
+      {
+        "id": "harbour-rotunda",
+        "slug": "harbour-rotunda",
+        "status": "published",
+        "data": {
+          "title": "Harbour Rotunda",
+          "category": "civic",
+          "architect": "Marenne Voss Studio",
+          "place": "Port Alder, Northern Coast",
+          "year": "2024",
+          "programme": "Maritime museum",
+          "summary": "A spiralling concrete shell that opens a single oculus to the harbour sky.",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/civic.webp",
+          "gallery": [
+            {
+              "photo": "/images/print-pool.webp",
+              "caption": "The shell and its reflecting pool, minutes before sunset."
+            },
+            {
+              "photo": "/images/curve-soffit.webp",
+              "caption": "The soffit edge turns away from the sea wind."
+            },
+            {
+              "photo": "/images/sea-horizon.webp",
+              "caption": "From the upper terrace the museum looks back at the water."
+            },
+            {
+              "photo": "/images/pavilion-pool.webp",
+              "caption": "The public arcade at the foot of the rotunda."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The museum was designed as one continuous gesture: a ramp that winds up through the shell and releases visitors under a single circular opening. The architects wanted the building to feel carved rather than assembled.",
+                  "_key": "k1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We photographed it over three evenings. The oculus only reads as a pure circle for a few minutes each day, so most of the work was waiting, and being in the same spot at the same time each time the light was right.",
+                  "_key": "k2s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "meridian-library",
+        "slug": "meridian-library",
+        "status": "published",
+        "data": {
+          "title": "Meridian Library",
+          "category": "civic",
+          "architect": "Okoro & Lind Architects",
+          "place": "Northfield, Inland Valley",
+          "year": "2023",
+          "programme": "Public library",
+          "summary": "A sweeping concrete canopy shelters reading rooms, a courtyard and a long reflecting pool.",
+          "featured": true,
+          "position": 20,
+          "photo": "/images/print-pool.webp",
+          "gallery": [
+            {
+              "photo": "/images/civic.webp",
+              "caption": "Looking up through the stair rotunda."
+            },
+            {
+              "photo": "/images/pavilion-pool.webp",
+              "caption": "The reading terrace at dusk, with the pool beyond."
+            },
+            {
+              "photo": "/images/curve-soffit.webp",
+              "caption": "The canopy edge, a single curve over four storeys."
+            },
+            {
+              "photo": "/images/print-interior.webp",
+              "caption": "A study hall, lit by tall timber fins."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Meridian is a library that behaves like a public square. The canopy reaches well beyond the glass so that people can shelter, meet and read outside in any weather.",
+                  "_key": "k3s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k4",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The brief for the photographs was to show the building working: slow mornings with a few readers, and the long blue hour when the whole facade glows from within.",
+                  "_key": "k4s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "cloister-hall",
+        "slug": "cloister-hall",
+        "status": "published",
+        "data": {
+          "title": "Cloister Hall",
+          "category": "civic",
+          "architect": "Halden Reyes Partners",
+          "place": "Saint Orrin, Western Isles",
+          "year": "2022",
+          "programme": "Community hall and archive",
+          "summary": "A calm community hall organised around a sunlit stone cloister.",
+          "featured": false,
+          "position": 30,
+          "photo": "/images/curve-soffit.webp",
+          "gallery": [
+            {
+              "photo": "/images/civic.webp",
+              "caption": "The cloister roof opens to the sky."
+            },
+            {
+              "photo": "/images/sea-horizon.webp",
+              "caption": "The hall faces the water across a low terrace."
+            },
+            {
+              "photo": "/images/pavilion-pool.webp",
+              "caption": "Evening on the north walk."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Cloister Hall holds a village archive, a small theatre and a kitchen that anyone can book. Everything faces the central court, and the court faces the weather.",
+                  "_key": "k5s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k6",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We stayed two days and shot in every kind of light the islands offered: low cloud, hard sun and a long, quiet evening.",
+                  "_key": "k6s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "house-of-oak-and-light",
+        "slug": "house-of-oak-and-light",
+        "status": "published",
+        "data": {
+          "title": "House of Oak and Light",
+          "category": "interiors",
+          "architect": "Atelier Brandt Sol",
+          "place": "Kestrel Heights, Hillside Quarter",
+          "year": "2025",
+          "programme": "Private residence, interior",
+          "summary": "Walnut, travertine and floor-to-ceiling glass in a hillside living hall.",
+          "featured": true,
+          "position": 40,
+          "photo": "/images/interiors.webp",
+          "gallery": [
+            {
+              "photo": "/images/glass-living.webp",
+              "caption": "The living room opens onto the terrace."
+            },
+            {
+              "photo": "/images/print-interior.webp",
+              "caption": "A quiet landing between the library and the garden."
+            },
+            {
+              "photo": "/images/pavilion-pool.webp",
+              "caption": "From the pool terrace looking back into the house."
+            },
+            {
+              "photo": "/images/camera-lens.webp",
+              "caption": "Test frames before the final set-up."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The house is organised by light. A wall of oak breaks up the long south glazing and draws the eye to a single chair by the window, which became the heart of the series.",
+                  "_key": "k7s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k8",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Interior work depends on patience: we shoot at several times through the day, never relight, and let the room show how it changes.",
+                  "_key": "k8s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "still-room",
+        "slug": "still-room",
+        "status": "published",
+        "data": {
+          "title": "Still Room",
+          "category": "interiors",
+          "architect": "Voss & Almeida",
+          "place": "Marlow Court, Old Town",
+          "year": "2024",
+          "programme": "Reading room and gallery",
+          "summary": "A timber-finned hall where afternoon light moves across a stone floor.",
+          "featured": true,
+          "position": 50,
+          "photo": "/images/print-interior.webp",
+          "gallery": [
+            {
+              "photo": "/images/interiors.webp",
+              "caption": "Warm oak against pale plaster."
+            },
+            {
+              "photo": "/images/glass-living.webp",
+              "caption": "Glass and olive in the south room."
+            },
+            {
+              "photo": "/images/print-pool.webp",
+              "caption": "The room is entered from the long pool court."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Still Room is almost empty by design: a stone floor, timber fins and a single bowl on a plinth. The architects asked for photographs that felt as quiet as the space.",
+                  "_key": "k9s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k10",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We kept the camera low and level, and waited for the fins to throw their shadows across the floor.",
+                  "_key": "k10s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "glass-salon",
+        "slug": "glass-salon",
+        "status": "published",
+        "data": {
+          "title": "The Glass Salon",
+          "category": "interiors",
+          "architect": "Studio Perrault Wyn",
+          "place": "Seabright, Southern Shore",
+          "year": "2023",
+          "programme": "Private residence, living areas",
+          "summary": "A curved glass living room that reads as a continuation of the terrace and the sea beyond.",
+          "featured": false,
+          "position": 60,
+          "photo": "/images/glass-living.webp",
+          "gallery": [
+            {
+              "photo": "/images/hero-home.webp",
+              "caption": "The salon from the infinity pool at golden hour."
+            },
+            {
+              "photo": "/images/interiors.webp",
+              "caption": "A corner of the oak-lined hall."
+            },
+            {
+              "photo": "/images/residential.webp",
+              "caption": "The entrance loggia, framed by an olive tree."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The curved glazing is the whole idea: from inside the room there is no visible edge between the sofa, the terrace and the water.",
+                  "_key": "k11s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Photographing glass means managing reflections. We shot at dusk so the interior lights balanced the sky.",
+                  "_key": "k12s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "cape-villa",
+        "slug": "cape-villa",
+        "status": "published",
+        "data": {
+          "title": "Cape Villa",
+          "category": "residential",
+          "architect": "Halden Reyes Partners",
+          "place": "Cape Linden, Southern Shore",
+          "year": "2025",
+          "programme": "Private villa",
+          "summary": "A monolithic stone portal frames an ancient olive tree and a view of the bay.",
+          "featured": true,
+          "position": 70,
+          "photo": "/images/residential.webp",
+          "gallery": [
+            {
+              "photo": "/images/hero-home.webp",
+              "caption": "The villa's cantilevered terrace over the water."
+            },
+            {
+              "photo": "/images/glass-living.webp",
+              "caption": "Inside, the living room opens to the bay."
+            },
+            {
+              "photo": "/images/sea-horizon.webp",
+              "caption": "The infinity pool dissolves into the horizon."
+            },
+            {
+              "photo": "/images/print-pool.webp",
+              "caption": "The curved garden pavilion in the last light."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Cape Villa is built around a single frame of stone. Visitors arrive through it, look through it and, from the house, see the sea through it.",
+                  "_key": "k13s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The olive tree on the right is older than the house. The architects moved the entrance twice to keep it.",
+                  "_key": "k14s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "concrete-court-house",
+        "slug": "concrete-court-house",
+        "status": "published",
+        "data": {
+          "title": "Concrete Court House",
+          "category": "residential",
+          "architect": "Marenne Voss Studio",
+          "place": "Rowan Ridge, Highland Plateau",
+          "year": "2024",
+          "programme": "Private house with pool court",
+          "summary": "Board-marked concrete, a long pool and a glazed living pavilion on a ridge.",
+          "featured": true,
+          "position": 80,
+          "photo": "/images/pavilion-pool.webp",
+          "gallery": [
+            {
+              "photo": "/images/glass-living.webp",
+              "caption": "The living room, lit by a single lamp."
+            },
+            {
+              "photo": "/images/sea-horizon.webp",
+              "caption": "The pool edge disappears into the valley."
+            },
+            {
+              "photo": "/images/print-interior.webp",
+              "caption": "Timber and stone in the library."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The house is a single long volume that steps down a ridge. A deep concrete canopy shades the glass and gives the pool court its quiet.",
+                  "_key": "k15s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We worked early and late to catch the soft light that makes the board-marked concrete glow.",
+                  "_key": "k16s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "cantilever-house",
+        "slug": "cantilever-house",
+        "status": "published",
+        "data": {
+          "title": "Cantilever House",
+          "category": "residential",
+          "architect": "Atelier Brandt Sol",
+          "place": "Cape Linden, Southern Shore",
+          "year": "2026",
+          "programme": "Private house",
+          "summary": "A sweeping concrete cantilever over an infinity pool, sea and mountains at golden hour.",
+          "featured": true,
+          "position": 90,
+          "photo": "/images/hero-home.webp",
+          "gallery": [
+            {
+              "photo": "/images/curve-soffit.webp",
+              "caption": "The soffit curve, seen from the lawn."
+            },
+            {
+              "photo": "/images/glass-living.webp",
+              "caption": "Through the curved glass, a quiet living room."
+            },
+            {
+              "photo": "/images/sea-horizon.webp",
+              "caption": "The pool and the open sea."
+            },
+            {
+              "photo": "/images/prints-camera.webp",
+              "caption": "Proof prints and a lens on the site table."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The cantilever reaches over the water like a diving board for light. Underneath, a curved glass wall wraps the living room.",
+                  "_key": "k17s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This was our longest shoot of the year: four evenings to find the angle where concrete, glass and horizon line up.",
+                  "_key": "k18s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "posts": [
+      {
+        "id": "the-last-hour-on-a-cantilever",
+        "slug": "the-last-hour-on-a-cantilever",
+        "status": "published",
+        "data": {
+          "title": "The last hour of light on a coastal cantilever",
+          "date_label": "14 September 2026",
+          "topic": "Field notes",
+          "summary": "Why the best frame of a building often arrives after the sun has gone.",
+          "position": 10,
+          "photo": "/images/hero-home.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most architecture photographs are made in the hour either side of sunset, but the frame people remember usually comes a little later, when the sky has gone soft and the interior lights start to hold their own.",
+                  "_key": "k19s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k20",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Plan around the sky",
+                  "_key": "k20s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We scout every site at least a day early and mark where the sun will fall on each elevation. A cantilever like the one in these pictures only lines up for about twelve minutes.",
+                  "_key": "k21s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k22",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Then be patient",
+                  "_key": "k22s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The rest is waiting. We set up the tripod, level it, and shoot in small steps as the light changes. The final image is rarely the one we planned.",
+                  "_key": "k23s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "photographing-glass",
+        "slug": "photographing-glass",
+        "status": "published",
+        "data": {
+          "title": "Photographing glass: how to make a building disappear",
+          "date_label": "2 August 2026",
+          "topic": "Technique",
+          "summary": "Reflections, balance and the thirty-minute window when inside and outside match.",
+          "position": 20,
+          "photo": "/images/glass-living.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k24",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Glass is the hardest material to photograph honestly. Too much reflection and the building becomes a mirror; too little and it looks like nothing is there.",
+                  "_key": "k24s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Balance the exposure",
+                  "_key": "k25s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k26",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "At dusk the sky and the lit interior are close in brightness. That is when a glazed wall finally reads as a wall, and the view through it feels real.",
+                  "_key": "k26s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A polarising filter helps, but the real tool is timing.",
+                  "_key": "k27s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "a-small-stool-and-a-tilt-shift",
+        "slug": "a-small-stool-and-a-tilt-shift",
+        "status": "published",
+        "data": {
+          "title": "Why we carry a tilt-shift lens and a small stool",
+          "date_label": "19 June 2026",
+          "topic": "Kit",
+          "summary": "Two inexpensive things that keep verticals straight and viewpoints honest.",
+          "position": 30,
+          "photo": "/images/camera-lens.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k28",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A tilt-shift lens keeps verticals vertical without distorting a building. A small stool lets us lift the camera by half a metre and see the room the way a visitor does.",
+                  "_key": "k28s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Neither is expensive. Both change the way a space looks.",
+                  "_key": "k29s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "briefing-an-interiors-shoot",
+        "slug": "briefing-an-interiors-shoot",
+        "status": "published",
+        "data": {
+          "title": "A short brief for photographing interiors",
+          "date_label": "21 May 2026",
+          "topic": "For architects",
+          "summary": "What to prepare before we arrive so the room looks like the architecture you designed.",
+          "position": 40,
+          "photo": "/images/print-interior.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k30",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The best interior photographs begin with a clear room. Clear surfaces, working lights and curtains that hang straight make an enormous difference.",
+                  "_key": "k30s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Three things to prepare",
+                  "_key": "k31s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k32",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Tell us which views matter most to the architect, when the room is at its best, and who needs to be out of the way. We will plan the rest.",
+                  "_key": "k32s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "principles": [
+      {
+        "id": "read",
+        "slug": "read",
+        "status": "published",
+        "data": {
+          "title": "Read the building first",
+          "text": "We walk the site before we lift the camera, and study the drawings, so the photographs follow the architect's intent.",
+          "position": 10
+        }
+      },
+      {
+        "id": "light",
+        "slug": "light",
+        "status": "published",
+        "data": {
+          "title": "Light, then composition",
+          "text": "We return for the hour when the light does the architecture justice, and shoot in small steps as it changes.",
+          "position": 20
+        }
+      },
+      {
+        "id": "honest",
+        "slug": "honest",
+        "status": "published",
+        "data": {
+          "title": "Honest, never staged",
+          "text": "No heavy retouching, no rearranged rooms. A building should look like itself, only more so.",
+          "position": 30
+        }
+      },
+      {
+        "id": "ready",
+        "slug": "ready",
+        "status": "published",
+        "data": {
+          "title": "Ready to publish",
+          "text": "Edited sets arrive web-ready and print-ready, with a usage licence for publication and awards entries.",
+          "position": 40
+        }
+      }
+    ],
+    "studio": [
+      {
+        "id": "studio",
+        "slug": "studio",
+        "status": "published",
+        "data": {
+          "title": "KELLEN",
+          "base": "Los Angeles, California",
+          "phone": "+1 (310) 555-0148",
+          "email": "studio@kellen-architecture.example",
+          "response": "We reply within two working days.",
+          "commission_note": "Tell us about the building, where it is and when it is ready. An enquiry is not a booking; we confirm scope, dates and fee by email."
+        }
+      }
+    ]
+  }
+}

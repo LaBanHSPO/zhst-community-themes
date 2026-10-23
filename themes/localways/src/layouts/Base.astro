@@ -1,0 +1,176 @@
+---
+import { getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import Icon from "../components/Icon.astro";
+import Logo from "../components/Logo.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getCompany } from "../lib/localways";
+import "../styles/theme.css";
+
+interface Props {
+	title: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	/** Pass content reference for plugin page contributions on content pages */
+	content?: { collection: string; id: string; slug?: string | null };
+	/** Force which primary-menu URL is marked current. */
+	current?: string;
+}
+
+const { title, pageTitle, description, image, canonical, content, current } = Astro.props;
+const [settingsResult, menuResult, companyResult] = await Promise.all([
+	getSiteSettingsWithCacheHint(),
+	getMenuWithCacheHint("primary"),
+	getCompany(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(settingsResult.cacheHint);
+	Astro.cache.set(menuResult.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+}
+
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(settingsResult.data);
+const titleIncludesSiteName =
+	title === siteTitle || title.endsWith(` | ${siteTitle}`) || title.endsWith(` — ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
+const pageDescription = description ?? siteTagline;
+const menuItems = menuResult.data?.items ?? [];
+const { company } = companyResult;
+
+const norm = (url: string) => url.replace(/[?#].*$/, "").replace(/\/$/, "") || "/";
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+// Exact match first; otherwise the longest menu URL that prefixes the path (e.g. /experiences/x -> Experiences).
+const currentUrl =
+	current ??
+	menuItems.find((i) => norm(i.url) === path)?.url ??
+	menuItems
+		.filter((i) => norm(i.url) !== "/" && path.startsWith(`${norm(i.url)}/`))
+		.sort((a, b) => b.url.length - a.url.length)[0]?.url;
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description: pageDescription,
+	canonical,
+	image,
+	content,
+	siteName: siteTitle,
+});
+const year = new Intl.DateTimeFormat("en-GB", { year: "numeric", timeZone: "Asia/Saigon" }).format(new Date());
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{fullTitle}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&family=Newsreader:opsz,wght@6..72,500..700&display=swap"
+			rel="stylesheet"
+		/>
+		<script is:inline>document.documentElement.classList.add("js");</script>
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<header class="site-head">
+			<div class="head-inner">
+				<a class="wordmark" href="/" aria-label={`${siteTitle} — homepage`}>
+					{
+						siteLogo ? (
+							<img src={siteLogo.url} alt={siteLogo.alt || siteTitle} />
+						) : (
+							<>
+								<Logo />
+								<span class="wordmark-text">
+									<span class="wordmark-name">{siteTitle}</span>
+									{siteTagline && <span class="wordmark-tag">{siteTagline}</span>}
+								</span>
+							</>
+						)
+					}
+				</a>
+				<nav class="nav" aria-label="Primary">
+					{
+						menuItems.map((item) => (
+							<a
+								href={item.url}
+								target={item.target}
+								rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+								aria-current={item.url === currentUrl ? "page" : undefined}
+							>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+				<a class="head-find" href="/experiences" aria-label="Find an experience">
+					<Icon name="search" />
+				</a>
+				<details class="mobile-nav">
+					<summary>
+						<svg width="22" height="14" viewBox="0 0 22 14" aria-hidden="true" focusable="false">
+							<path d="M0 1h22M0 7h22M0 13h22" stroke="currentColor" stroke-width="1.7" />
+						</svg>
+						<span>Menu</span>
+					</summary>
+					<nav class="mobile-panel" aria-label="Primary (mobile)">
+						{
+							menuItems.map((item) => (
+								<a href={item.url} aria-current={item.url === currentUrl ? "page" : undefined}>
+									{item.label}
+								</a>
+							))
+						}
+					</nav>
+				</details>
+			</div>
+		</header>
+
+		<main id="main">
+			<slot />
+		</main>
+
+		<footer class="site-foot">
+			<div class="container foot-inner">
+				<div class="foot-brand">
+					<a class="wordmark wordmark-light" href="/">
+						<Logo />
+						<span class="wordmark-text">
+							<span class="wordmark-name">{siteTitle}</span>
+							{siteTagline && <span class="wordmark-tag">{siteTagline}</span>}
+						</span>
+					</a>
+					{company.footer_blurb && <p>{company.footer_blurb}</p>}
+				</div>
+				<nav class="foot-col" aria-label="Footer">
+					<h2>Explore</h2>
+					{menuItems.map((item) => <a href={item.url}>{item.label}</a>)}
+				</nav>
+				<div class="foot-col">
+					<h2>Get in touch</h2>
+					{company.city && <p>Food walks in {company.city}</p>}
+					{company.email && <a href={`mailto:${company.email}`}>{company.email}</a>}
+					{company.phone && <a href={`tel:${company.phone.replace(/[^\d+]/g, "")}`}>{company.phone}</a>}
+				</div>
+			</div>
+			<div class="container foot-bottom">
+				<span>© {year} {siteTitle}. All rights reserved.</span>
+				<span>Built with EmDash</span>
+			</div>
+		</footer>
+
+		<EmDashBodyEnd page={pageCtx} />
+	</body>
+</html>

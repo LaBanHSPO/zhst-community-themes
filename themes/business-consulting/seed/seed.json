@@ -1,0 +1,1710 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Business Consulting",
+		"description": "A calm, editorial management-consultancy theme: services, insights, about and a talk-to-us contact page",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "Northbridge",
+		"tagline": "Business Consulting"
+	},
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "eyebrow",
+					"label": "Small label above the title",
+					"type": "string"
+				},
+				{
+					"slug": "intro",
+					"label": "Intro paragraph",
+					"type": "text"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "services",
+			"label": "Services",
+			"labelSingular": "Service",
+			"urlPattern": "/services/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Service name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "summary",
+					"label": "Card description (one or two short lines)",
+					"type": "text",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "icon",
+					"label": "Icon",
+					"type": "select",
+					"required": true,
+					"indexed": true,
+					"defaultValue": "chart",
+					"validation": {
+						"options": [
+							"chart",
+							"people",
+							"gear",
+							"compass"
+						]
+					}
+				},
+				{
+					"slug": "tone",
+					"label": "Icon colour",
+					"type": "select",
+					"required": true,
+					"indexed": true,
+					"defaultValue": "navy",
+					"validation": {
+						"options": [
+							"navy",
+							"sage",
+							"taupe"
+						]
+					}
+				},
+				{
+					"slug": "featured",
+					"label": "Show on the homepage",
+					"type": "boolean",
+					"indexed": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "intro",
+					"label": "Intro paragraph on the service page",
+					"type": "text"
+				},
+				{
+					"slug": "content",
+					"label": "Service page content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "outcomes",
+					"label": "What clients can expect (one per line)",
+					"type": "text"
+				},
+				{
+					"slug": "engagement",
+					"label": "Typical engagement (e.g. 8 to 12 weeks)",
+					"type": "string"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Bundled photo path",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "insights",
+			"label": "Insights",
+			"labelSingular": "Insight",
+			"urlPattern": "/insights/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "topic",
+					"label": "Topic label (e.g. Strategy)",
+					"type": "string"
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "date",
+					"label": "Date shown on the article",
+					"type": "datetime",
+					"indexed": true
+				},
+				{
+					"slug": "reading_time",
+					"label": "Reading time (e.g. 5 min read)",
+					"type": "string"
+				},
+				{
+					"slug": "featured_image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Bundled photo path",
+					"type": "string"
+				},
+				{
+					"slug": "content",
+					"label": "Article",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "principles",
+			"label": "Approach & values",
+			"labelSingular": "Approach step or value",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "text",
+					"label": "Text",
+					"type": "text"
+				},
+				{
+					"slug": "placement",
+					"label": "Where it appears",
+					"type": "select",
+					"required": true,
+					"indexed": true,
+					"defaultValue": "approach",
+					"validation": {
+						"options": [
+							"approach",
+							"values"
+						]
+					}
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "people",
+			"label": "Team",
+			"labelSingular": "Team member",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "role",
+					"label": "Role",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "bio",
+					"label": "Short bio",
+					"type": "text"
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "office",
+			"label": "Office details",
+			"labelSingular": "Office details",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Company name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "street",
+					"label": "Street address",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "locality",
+					"label": "City and postcode",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "country",
+					"label": "Country",
+					"type": "string"
+				},
+				{
+					"slug": "phone",
+					"label": "Phone",
+					"type": "string"
+				},
+				{
+					"slug": "email",
+					"label": "Enquiries email",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "hours",
+					"label": "Office hours",
+					"type": "string"
+				},
+				{
+					"slug": "response_note",
+					"label": "Response note shown on the contact page",
+					"type": "text"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "About",
+					"url": "/about"
+				},
+				{
+					"type": "custom",
+					"label": "Services",
+					"url": "/services"
+				},
+				{
+					"type": "custom",
+					"label": "Insights",
+					"url": "/insights"
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "Independent advice for leaders who want to move forward.",
+					"eyebrow": "About Northbridge",
+					"intro": "Northbridge is a small, senior team of consultants who help organisations make clear choices and see them through. We work with founders, chief executives and leadership teams across services, technology and the public sector.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We started Northbridge because we saw too many good organisations receive long reports and too little help acting on them. Our work is built around a simple idea: advice should leave you clearer, more capable and ready to act.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We keep our team deliberately small. The people you meet at the start are the people who do the work, and we only take on engagements where we believe we can make a real difference.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Who we work with",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Our clients range from growing companies preparing for their next stage to established organisations rethinking how they operate. What they share is ambition and a willingness to look honestly at what needs to change.",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "working-together",
+				"slug": "working-together",
+				"status": "published",
+				"data": {
+					"title": "What working together looks like",
+					"eyebrow": "Working together",
+					"intro": "Every engagement is shaped around your situation, but most follow a similar rhythm. Here is what to expect from the first conversation onwards.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "An initial conversation",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We start with an informal call to understand what you are facing. There is no charge and no obligation, and we will tell you honestly if we are not the right fit.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "A short proposal",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "If it makes sense to continue, we send a short proposal setting out the questions we would work on, who would be involved, the timeline and a fixed fee.",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Regular check-ins",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "During the engagement you will have a single point of contact and a fortnightly review of progress, so there are no surprises at the end.",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "privacy",
+				"slug": "privacy",
+				"status": "published",
+				"data": {
+					"title": "Privacy notice",
+					"eyebrow": "Privacy",
+					"intro": "This sample notice explains how this website handles information. Replace it with your own before publishing.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This website does not use analytics, advertising cookies or third-party trackers, and it does not store messages sent through the contact page. The contact form prepares an email in your own email app; nothing is sent until you send that email.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "If you write to us, we use your details only to reply and to arrange any follow-up you ask for. You can ask us to delete your correspondence at any time.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			}
+		],
+		"services": [
+			{
+				"id": "strategy-growth",
+				"slug": "strategy-growth",
+				"status": "published",
+				"data": {
+					"title": "Strategy & Growth",
+					"summary": "Sharper strategy, new opportunities, sustainable momentum.",
+					"icon": "chart",
+					"tone": "navy",
+					"featured": true,
+					"position": 10,
+					"intro": "We help leadership teams decide where to play and how to win, then turn that choice into a plan people can act on.",
+					"photo": "/images/planning-session.webp",
+					"engagement": "Typically 6 to 12 weeks",
+					"outcomes": "A clear, shared view of where you are heading and why\nA short list of priorities with owners and timelines\nA growth case your board and team can test and support\nMeasures that tell you early whether the plan is working",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Most organisations do not lack ideas. They lack a shared, honest picture of where they stand and the confidence to say no to good options so they can say yes to the right ones.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What we do",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We start with listening: to your leadership team, your people and, where it helps, your customers. We bring the evidence together into a small number of strategic questions and work through them with you in focused sessions rather than long reports.",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Market and position review, grounded in your own data",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Strategic options and the trade-offs between them",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Growth planning for new services, markets or partnerships",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Board and leadership team facilitation",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b7",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How it feels to work with us",
+									"_key": "b7s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b8",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "You will see working drafts early and often. We would rather test a rough idea with you on day ten than present a polished one on day sixty.",
+									"_key": "b8s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "people-organisation",
+				"slug": "people-organisation",
+				"status": "published",
+				"data": {
+					"title": "People & Organisation",
+					"summary": "Stronger teams, healthier cultures, greater performance.",
+					"icon": "people",
+					"tone": "sage",
+					"featured": true,
+					"position": 20,
+					"intro": "Strategy only moves as fast as the organisation behind it. We help you shape structures, roles and ways of working that make the right things easier.",
+					"photo": "/images/team-laptop.webp",
+					"engagement": "Typically 8 to 16 weeks",
+					"outcomes": "Roles and decision rights that people understand\nAn organisation design that fits the strategy, not the org chart of five years ago\nLeaders equipped to have the conversations change requires\nA practical plan for culture, not a poster on the wall",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Growth, mergers and new leadership all stretch an organisation in ways that are easy to feel and hard to name. Meetings multiply, decisions stall and good people start to drift.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What we do",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Organisation design and operating model reviews",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Leadership team effectiveness and development",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Culture diagnostics and practical action plans",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Capability building for managers leading change",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Our approach",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b7",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We work alongside your HR and leadership teams, involve the people affected early, and design for the organisation you are becoming. Every recommendation comes with the steps to put it in place.",
+									"_key": "b7s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "transformation",
+				"slug": "transformation",
+				"status": "published",
+				"data": {
+					"title": "Transformation",
+					"summary": "Turn ambitious ideas into real, lasting change.",
+					"icon": "gear",
+					"tone": "taupe",
+					"featured": true,
+					"position": 30,
+					"intro": "From a new operating model to a new way of serving customers, we help you plan, sequence and deliver change that lasts beyond the launch.",
+					"photo": "/images/strategy-tiles.webp",
+					"engagement": "Typically 3 to 12 months",
+					"outcomes": "A realistic roadmap with clear stages and decision points\nGovernance that speeds decisions up rather than slowing them down\nVisible early wins that build confidence\nYour own people able to carry the change forward",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Large programmes rarely fail for lack of planning. They fail when the plan stops matching reality and nobody feels able to say so.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What we do",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Transformation design and roadmapping",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Programme leadership and governance support",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Process and service redesign",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Change communication and engagement",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Built to hand over",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b7",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We measure our success by how little you need us at the end. Each engagement includes coaching and tools so your teams can keep improving after we step back.",
+									"_key": "b7s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "leadership-advisory",
+				"slug": "leadership-advisory",
+				"status": "published",
+				"data": {
+					"title": "Leadership Advisory",
+					"summary": "A trusted sounding board for the decisions that matter most.",
+					"icon": "compass",
+					"tone": "navy",
+					"featured": false,
+					"position": 40,
+					"intro": "Some decisions are too important to make alone and too sensitive to share widely. We offer senior leaders a confidential, experienced sounding board.",
+					"photo": "/images/client-meeting.webp",
+					"engagement": "Monthly or as needed",
+					"outcomes": "Space to think through difficult choices with someone independent\nHonest challenge before decisions become commitments\nPreparation for board, investor and team conversations",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "New chief executives, founders preparing for the next stage and leaders facing a difficult restructure often tell us the same thing: they need someone to think with.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What we do",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "One-to-one advisory sessions for chief executives and directors",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Support for first 100 days in a new role",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Preparation for board and investor discussions",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Sessions are confidential and arranged around your diary, in person or online.",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			}
+		],
+		"insights": [
+			{
+				"id": "strategy-on-a-page",
+				"slug": "strategy-on-a-page",
+				"status": "published",
+				"data": {
+					"title": "Why your strategy should fit on a single page",
+					"topic": "Strategy",
+					"reading_time": "5 min read",
+					"date": "2026-10-14T08:00:00.000Z",
+					"photo": "/images/team-workshop.webp",
+					"excerpt": "If your team cannot explain the strategy in two minutes, it is not yet a strategy. Here is how we help leaders get to one page.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Long strategy documents feel thorough. They also tend to sit unread on shared drives while day-to-day decisions are made on instinct.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "A strategy that fits on one page forces the hard choices into the open: where you will focus, what you will stop doing and how you will know it is working.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Three questions to start with",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Who do we serve best, and what do they value most?",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What will we do differently from the alternatives they have?",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What are we prepared to stop doing to make room for it?",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Test it with the people who will use it",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b7",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Share the draft with managers two or three levels below the leadership team. Ask them which decisions it would change next week. If the answer is none, keep working.",
+									"_key": "b7s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b8",
+							"style": "blockquote",
+							"children": [
+								{
+									"_type": "span",
+									"text": "A good strategy is one your team can use to say no without asking permission.",
+									"_key": "b8s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b9",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "The page is not the end of the work, but it is the clearest sign that the thinking is done.",
+									"_key": "b9s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "decisions-in-growing-teams",
+				"slug": "decisions-in-growing-teams",
+				"status": "published",
+				"data": {
+					"title": "Making decisions faster as your organisation grows",
+					"topic": "People & Organisation",
+					"reading_time": "6 min read",
+					"date": "2026-09-30T08:00:00.000Z",
+					"photo": "/images/team-laptop.webp",
+					"excerpt": "Growth adds people, meetings and sign-offs. A few simple agreements about who decides what can give teams their pace back.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "In a team of twenty, everyone knows who to ask. In a team of two hundred, the same question can travel through four meetings before anyone feels able to answer it.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Name the decisions, not just the roles",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Job descriptions rarely say which decisions a role owns. List the twenty decisions that come up most often and agree, for each, who decides, who must be consulted and who simply needs to know.",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Make it safe to decide",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Clarity on paper only helps if people feel trusted to act on it. Leaders set the tone by backing reasonable decisions that turn out wrong and talking openly about what they learned.",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Revisit the agreements every six months. Organisations change, and decision rights should change with them.",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "change-that-sticks",
+				"slug": "change-that-sticks",
+				"status": "published",
+				"data": {
+					"title": "Five habits of change programmes that last",
+					"topic": "Transformation",
+					"reading_time": "7 min read",
+					"date": "2026-09-16T08:00:00.000Z",
+					"photo": "/images/strategy-tiles.webp",
+					"excerpt": "Launch day is the easy part. What separates lasting change from a short-lived initiative is what happens in the months after.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Most transformation plans are strongest at the start: clear goals, energy and executive attention. The risk comes later, when attention moves on and old habits return.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What lasting programmes have in common",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "They define success in terms customers and colleagues would notice.",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "They sequence the work so early stages fund and inform later ones.",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "They give frontline managers the tools and time to lead the change.",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "They review progress honestly and adjust the plan without blame.",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "They plan the handover from the start, so the change outlives the programme.",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": [],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "b7",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "None of these are complicated. All of them require steady attention long after the launch event.",
+									"_key": "b7s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "first-hundred-days",
+				"slug": "first-hundred-days",
+				"status": "published",
+				"data": {
+					"title": "A practical guide to a leader's first hundred days",
+					"topic": "Leadership",
+					"reading_time": "4 min read",
+					"date": "2026-09-02T08:00:00.000Z",
+					"photo": "/images/client-meeting.webp",
+					"excerpt": "New leaders feel pressure to act quickly. The best first hundred days balance listening, a few early wins and a clear story about what comes next.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "b0",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "The first weeks in a senior role shape how colleagues, boards and customers see a new leader for years. It pays to plan them deliberately.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Listen widely, then share what you heard",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Meet people across levels and locations, not only your direct reports. Then play back what you heard. It shows you listened and gives everyone a common starting point.",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b3",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Choose a few visible early wins",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b4",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Pick two or three problems that frustrate people and can be fixed quickly. Solving them builds trust for the harder choices to come.",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b5",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Tell a clear story about what comes next",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "b6",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "By day one hundred, people should know what you believe, what will change and what will stay the same.",
+									"_key": "b6s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			}
+		],
+		"principles": [
+			{
+				"id": "listen",
+				"slug": "listen",
+				"status": "published",
+				"data": {
+					"title": "Listen first",
+					"text": "We spend time with your people, customers and data before we offer a view.",
+					"placement": "approach",
+					"position": 10
+				}
+			},
+			{
+				"id": "clarify",
+				"slug": "clarify",
+				"status": "published",
+				"data": {
+					"title": "Clarify the choices",
+					"text": "We turn what we learn into a small number of clear options and honest trade-offs.",
+					"placement": "approach",
+					"position": 20
+				}
+			},
+			{
+				"id": "act",
+				"slug": "act",
+				"status": "published",
+				"data": {
+					"title": "Act together",
+					"text": "We plan and deliver alongside your team, testing ideas early and adjusting as we go.",
+					"placement": "approach",
+					"position": 30
+				}
+			},
+			{
+				"id": "embed",
+				"slug": "embed",
+				"status": "published",
+				"data": {
+					"title": "Make it last",
+					"text": "We build the skills and habits that keep the change going after we step back.",
+					"placement": "approach",
+					"position": 40
+				}
+			},
+			{
+				"id": "candour",
+				"slug": "candour",
+				"status": "published",
+				"data": {
+					"title": "Candour with care",
+					"text": "We tell you what we see, kindly and plainly, even when it is not what you hoped to hear.",
+					"placement": "values",
+					"position": 10
+				}
+			},
+			{
+				"id": "practical",
+				"slug": "practical",
+				"status": "published",
+				"data": {
+					"title": "Practical over perfect",
+					"text": "Advice is only useful if it can be acted on. We design for the organisation you have.",
+					"placement": "values",
+					"position": 20
+				}
+			},
+			{
+				"id": "people",
+				"slug": "people",
+				"status": "published",
+				"data": {
+					"title": "People at the centre",
+					"text": "Change happens through people. We involve them early and respect their experience.",
+					"placement": "values",
+					"position": 30
+				}
+			},
+			{
+				"id": "independence",
+				"slug": "independence",
+				"status": "published",
+				"data": {
+					"title": "Independent thinking",
+					"text": "We have no products to sell and no software to install, only an honest perspective.",
+					"placement": "values",
+					"position": 40
+				}
+			}
+		],
+		"people": [
+			{
+				"id": "eleanor-shaw",
+				"slug": "eleanor-shaw",
+				"status": "published",
+				"data": {
+					"title": "Eleanor Shaw",
+					"role": "Managing Partner",
+					"bio": "Leads strategy work with boards and leadership teams; previously ran planning for a regional services group.",
+					"position": 10
+				}
+			},
+			{
+				"id": "daniel-okafor",
+				"slug": "daniel-okafor",
+				"status": "published",
+				"data": {
+					"title": "Daniel Okafor",
+					"role": "Partner, People & Organisation",
+					"bio": "Specialises in organisation design and leadership team development for growing businesses.",
+					"position": 20
+				}
+			},
+			{
+				"id": "mei-lin-chen",
+				"slug": "mei-lin-chen",
+				"status": "published",
+				"data": {
+					"title": "Mei Lin Chen",
+					"role": "Principal, Transformation",
+					"bio": "Designs and steers change programmes, with a focus on service redesign and governance.",
+					"position": 30
+				}
+			},
+			{
+				"id": "tom-hargreaves",
+				"slug": "tom-hargreaves",
+				"status": "published",
+				"data": {
+					"title": "Tom Hargreaves",
+					"role": "Senior Consultant",
+					"bio": "Works across strategy and transformation engagements, from research to roadmap.",
+					"position": 40
+				}
+			}
+		],
+		"office": [
+			{
+				"id": "office",
+				"slug": "office",
+				"status": "published",
+				"data": {
+					"title": "Northbridge Business Consulting",
+					"street": "Level 4, 18 Harbour Lane",
+					"locality": "Bristol BS1 4QA",
+					"country": "United Kingdom",
+					"phone": "+44 117 496 0123",
+					"email": "hello@northbridge.example",
+					"hours": "Monday to Friday, 9:00 to 17:30",
+					"response_note": "We reply to every message within two working days. First conversations are informal and free of charge."
+				}
+			}
+		]
+	}
+}

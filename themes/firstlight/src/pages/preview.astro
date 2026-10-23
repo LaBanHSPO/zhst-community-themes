@@ -1,0 +1,77 @@
+---
+import Base from "../layouts/Base.astro";
+import AppPreview from "../components/AppPreview.astro";
+import FeatureBand from "../components/FeatureBand.astro";
+import WaitlistForm from "../components/WaitlistForm.astro";
+import { getFeatures, getHighlights, getLaunch, lines, photoAlt, photoSrc } from "../lib/firstlight";
+
+const [{ launch, cacheHint }, features, highlights] = await Promise.all([getLaunch(), getFeatures("preview"), getHighlights()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(features.cacheHint);
+	Astro.cache.set(highlights.cacheHint);
+}
+---
+
+<Base title="Product preview" description="A calmer way to plan your day: a first look at Firstlight’s Today view, focus blocks and notes.">
+	<section class="hero hero-preview" aria-labelledby="hero-title">
+		<div class="container hero-grid hero-grid-preview">
+			<div class="hero-copy">
+				<h1 id="hero-title" class="display display-lg">A calmer way<br /> to <span class="lime">plan your day.</span></h1>
+				<p class="hero-lede hero-lede-lg">
+					<strong>Bring your tasks, notes and goals together in one clear view.</strong> {launch.title} helps you focus on what matters most, so brighter days feel within reach.
+				</p>
+				<WaitlistForm id="waitlist-preview" email={launch.email} />
+			</div>
+			<AppPreview variant="preview" photo="/images/sunrise-peak.webp" class="hero-app hero-app-preview" />
+		</div>
+	</section>
+	<FeatureBand features={features.entries} label="What the planner does" divided />
+
+	{
+		highlights.entries.length > 0 && (
+			<section class="light" aria-label="Inside Firstlight">
+				<div class="container highlights">
+					{highlights.entries.map((h, i) => {
+						const src = photoSrc(h.data.image, h.data.photo);
+						return (
+							<article class:list={["highlight", { "highlight-flip": i % 2 === 1 }]}>
+								{src && (
+									<img
+										class="highlight-photo"
+										src={src}
+										alt={photoAlt(h.data.image, h.data.photo_alt, "Sunrise over the mountains")}
+										loading={i === 0 ? "eager" : "lazy"}
+										width="705"
+										height="330"
+									/>
+								)}
+								<div class="highlight-copy">
+									{h.data.eyebrow && <p class="eyebrow">{h.data.eyebrow}</p>}
+									<h2 class="display display-md">
+										{h.data.title} {h.data.accent && <span class="lime-ink">{h.data.accent}</span>}
+									</h2>
+									<p class="highlight-text">{h.data.text}</p>
+									{lines(h.data.points).length > 0 && (
+										<ul class="ticks">
+											{lines(h.data.points).map((p) => <li>{p}</li>)}
+										</ul>
+									)}
+								</div>
+							</article>
+						);
+					})}
+				</div>
+			</section>
+		)
+	}
+
+	<section class="container cta-band" aria-labelledby="cta-title">
+		<img class="cta-photo" src="/images/banner-sunrise.webp" alt="" width="328" height="88" loading="lazy" />
+		<div class="cta-copy">
+			<h2 id="cta-title">Want to try it first?</h2>
+			<p>Join the waitlist for early access and product updates.</p>
+		</div>
+		<WaitlistForm id="waitlist-preview-cta" email={launch.email} size="md" />
+	</section>
+</Base>

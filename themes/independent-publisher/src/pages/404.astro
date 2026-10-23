@@ -1,0 +1,21 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+---
+
+<Base title="Page not found">
+	<div class="wrap">
+		<section class="notfound" aria-labelledby="nf-title">
+			<div>
+				<p class="label">Error 404</p>
+				<h1 id="nf-title" class="display">This page has been left out of the collection.</h1>
+				<p class="lede">The page you are looking for has moved or never existed. These are good places to start again.</p>
+				<div class="actions">
+					<a class="btn" href="/"><span>Back to home</span><Arrow /></a>
+					<a class="text-link" href="/books"><span>Browse the books</span><Arrow /></a>
+				</div>
+			</div>
+			<img src="/images/journal-olive.webp" alt="An olive branch in a speckled vase beside a row of cloth-bound books" width="640" height="480" />
+		</section>
+	</div>
+</Base>

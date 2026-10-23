@@ -1,0 +1,60 @@
+---
+import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import Icon from "../components/Icon.astro";
+import PostCard from "../components/PostCard.astro";
+import { getPosts } from "../lib/maya";
+
+const { entries, cacheHint } = await getPosts(100);
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const latest = entries
+	.filter((e) => e.data.featured)
+	.sort((a, b) => (a.data.home_position ?? 0) - (b.data.home_position ?? 0))
+	.slice(0, 4);
+// A fresh CMS with nothing flagged still shows the newest stories.
+const stories = latest.length > 0 ? latest : entries.slice(0, 4);
+---
+
+<Base title="Maya" description="Seasonal recipes, everyday rituals and a more intentional way of living, from Maya's kitchen to yours.">
+	<Hero variant="home" image="/images/hero-maya.webp" alt="Maya resting her chin on her hand in a sunlit kitchen, a bowl of oranges and a speckled mug on the counter">
+		<p class="crumbs">
+			<span>Food</span><span aria-hidden="true">/</span><span>Home</span><span aria-hidden="true">/</span><span>A more intentional life</span>
+		</p>
+		<h1>Stories worth <br /><em>slowing down for.</em></h1>
+		<p class="lede">Seasonal recipes, everyday rituals and a more intentional way of living — from my kitchen to yours.</p>
+		<a class="btn" href="/library">Explore the latest <Icon name="arrow" size={16} /></a>
+	</Hero>
+
+	<section class="section home-latest" aria-labelledby="latest-title">
+		<div class="container home-latest-grid">
+			<div class="latest">
+				<div class="section-head">
+					<h2 id="latest-title" class="h-section">Latest stories</h2>
+					<a class="text-link" href="/library">View all stories <Icon name="arrow" size={14} /></a>
+				</div>
+				{
+					stories.length === 0 ? (
+						<p class="empty">New stories are on their way.</p>
+					) : (
+						<ul class="card-row" role="list">
+							{stories.map((e) => (
+								<li>
+									<PostCard post={e.data} eyebrow={e.data.terms?.category?.[0]?.label ?? (e.data.kind === "recipe" ? "Recipes" : "Lifestyle")} meta={false} />
+								</li>
+							))}
+						</ul>
+					)
+				}
+			</div>
+			<aside class="promo-card" aria-labelledby="promo-title">
+				<div class="promo-copy">
+					<p class="eyebrow">Partnerships</p>
+					<h2 id="promo-title">Let’s create something good together.</h2>
+					<p>I partner with brands that share my love for great food, intentional living and a more beautiful everyday.</p>
+					<a class="btn btn-sm" href="/media-kit">View my media kit <Icon name="arrow" size={14} /></a>
+				</div>
+				<img class="promo-sprig" src="/images/olive-branch.webp" alt="" width="207" height="290" loading="lazy" />
+			</aside>
+		</div>
+	</section>
+</Base>

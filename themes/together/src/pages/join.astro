@@ -1,0 +1,206 @@
+---
+import { getEmDashEntry } from "emdash";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import ScriptWord from "../components/ScriptWord.astro";
+import { entryKey, getAssociation, lines, longDate, timeRange } from "../lib/together";
+
+const { association } = await getAssociation();
+const neighborhoods = lines(association.neighborhoods);
+const interests = lines(association.interests);
+const participation = [
+	{ value: "Volunteer", label: "Volunteer" },
+	{ value: "Become a member", label: "Become a member" },
+	{ value: "Stay informed", label: "Stay informed (events and news)" },
+];
+
+// Optional context from "Register for this event" and activity links.
+const eventSlug = (Astro.url.searchParams.get("event") ?? "").trim();
+const eventResult = eventSlug ? await getEmDashEntry("events", eventSlug) : null;
+if (Astro.cache?.enabled && eventResult) Astro.cache.set(eventResult.cacheHint);
+const event = eventResult?.entry?.data ?? null;
+const eventLabel = event ? `${event.title} — ${longDate(event.starts_at)}, ${timeRange(event.starts_at, event.ends_at)}` : "";
+const interest = (Astro.url.searchParams.get("interest") ?? "").trim().slice(0, 120);
+const comments = interest ? `I’m interested in ${interest}.` : "";
+---
+
+<Base title={event ? `Register: ${event.title}` : "Join us"} description="Whether you want to volunteer, become a member, or simply stay connected, there’s a place for you at Together.">
+	<section class="hero hero-join" aria-labelledby="hero-title">
+		<img class="hero-blur" src="/images/hero-join.webp" alt="" aria-hidden="true" width="98" height="50" />
+		<img class="hero-photo" src="/images/hero-join.webp" alt="A smiling volunteer talks with an older neighbor in front of the Together tent at a park event" width="1052" height="308" fetchpriority="high" />
+		<div class="hero-inner">
+			<h1 id="hero-title" class="display display-join">Join <ScriptWord text="us" class="script-join" /></h1>
+			<p class="join-tagline">Stronger neighbors.<br /> Brighter tomorrows.</p>
+			<p class="hero-lede">
+				Whether you want to volunteer, become a member, or simply stay connected, there’s a place for you at Together.
+			</p>
+		</div>
+	</section>
+
+	<div class="container join-layout">
+		<section class="join-card" aria-labelledby="form-title">
+			<h2 id="form-title" class="title-xl">Get involved</h2>
+			<p class="join-lede">Tell us a little about yourself and how you’d like to participate.</p>
+			{
+				event && (
+					<p class="join-event">
+						<Icon name="calendar" />
+						<span>You’re registering for <strong>{event.title}</strong>, {longDate(event.starts_at)}, {timeRange(event.starts_at, event.ends_at)}. <a href={`/events/${encodeURIComponent(entryKey(event))}`}>Event details</a></span>
+					</p>
+				)
+			}
+			<form
+				class="join-form"
+				id="join-form"
+				data-email={association.email}
+				action={association.email ? `mailto:${association.email}?subject=${encodeURIComponent("Join Together")}` : undefined}
+				method="post"
+				enctype="text/plain"
+			>
+				{event && <input type="hidden" name="event" value={eventLabel} />}
+				<div class="field">
+					<label for="j-first">First name <span class="req" aria-hidden="true">*</span></label>
+					<input id="j-first" name="first_name" type="text" autocomplete="given-name" placeholder="First name" maxlength="80" required />
+				</div>
+				<div class="field">
+					<label for="j-last">Last name <span class="req" aria-hidden="true">*</span></label>
+					<input id="j-last" name="last_name" type="text" autocomplete="family-name" placeholder="Last name" maxlength="80" required />
+				</div>
+				<div class="field">
+					<label for="j-email">Email address <span class="req" aria-hidden="true">*</span></label>
+					<input id="j-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" maxlength="160" required />
+				</div>
+				<div class="field">
+					<label for="j-phone">Phone number</label>
+					<input id="j-phone" name="phone" type="tel" autocomplete="tel" placeholder="(555) 123-4567" maxlength="40" />
+				</div>
+				<div class="field">
+					<label for="j-hood">Your neighborhood <span class="req" aria-hidden="true">*</span></label>
+					<span class="control">
+						<select id="j-hood" name="neighborhood" required>
+							<option value="" selected disabled>Select your neighborhood</option>
+							{neighborhoods.map((n) => <option value={n}>{n}</option>)}
+						</select>
+						<Icon name="chevron" class="control-chevron" />
+					</span>
+				</div>
+				<fieldset class="field field-radios">
+					<legend>How would you like to participate? <span class="req req-red" aria-hidden="true">*</span></legend>
+					{
+						participation.map((p, i) => (
+							<label class="choice">
+								<input type="radio" name="participation" value={p.value} checked={i === 0} required />
+								<span>{p.label}</span>
+							</label>
+						))
+					}
+				</fieldset>
+				{
+					interests.length > 0 && (
+						<fieldset class="field field-checks">
+							<legend>What are you interested in?</legend>
+							<p class="hint" id="j-interests-hint">You can choose more than one.</p>
+							<div class="checks">
+								{interests.map((it) => (
+									<label class="choice">
+										<input type="checkbox" name="interests" value={it} aria-describedby="j-interests-hint" />
+										<span>{it}</span>
+									</label>
+								))}
+							</div>
+						</fieldset>
+					)
+				}
+				<div class="field field-comments">
+					<label for="j-comments">Comments (optional)</label>
+					<textarea id="j-comments" name="comments" rows="3" maxlength="1500" placeholder="Tell us more about your interests or ideas...">{comments}</textarea>
+				</div>
+				<label class="choice consent">
+					<input type="checkbox" name="consent" value="yes" required />
+					<span>I agree to receive emails about Together’s activities, events and volunteer opportunities. You can unsubscribe at any time.</span>
+				</label>
+				<div class="form-actions">
+					<button class="btn btn-lg" type="submit">Submit <Arrow /></button>
+					{association.join_note && <p class="form-note">{association.join_note}</p>}
+				</div>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					{
+						association.email && (
+							<noscript>
+								Without JavaScript, send your details by email to <a href={`mailto:${association.email}`}>{association.email}</a>.
+							</noscript>
+						)
+					}
+				</p>
+			</form>
+		</section>
+
+		<aside class="join-side" aria-labelledby="side-title">
+			<h2 id="side-title" class="title-lg">Make a difference close to home</h2>
+			<p class="side-lede">Our volunteers and members help create a cleaner, greener, kinder neighborhood for everyone.</p>
+			<ul class="benefits" role="list">
+				<li>
+					<span class="benefit-icon"><Icon name="leaf" /></span>
+					<div><h3>Greener spaces</h3><p>Plant trees, maintain gardens and care for our shared spaces.</p></div>
+				</li>
+				<li>
+					<span class="benefit-icon"><Icon name="people" /></span>
+					<div><h3>Stronger connections</h3><p>Meet neighbors and build a more welcoming community.</p></div>
+				</li>
+				<li>
+					<span class="benefit-icon"><Icon name="calendar" /></span>
+					<div><h3>Brighter events</h3><p>Help plan and support local events that bring us together.</p></div>
+				</li>
+			</ul>
+			<img class="side-photo" src="/images/join-cleanup.webp" alt="Volunteers in Together T-shirts collecting litter on a tree-lined street" width="440" height="128" loading="lazy" />
+		</aside>
+	</div>
+</Base>
+
+<script>
+	// Join form: validates in the browser, then opens the visitor's email app with a pre-filled message.
+	// Nothing is sent by the site itself.
+	const form = document.querySelector<HTMLFormElement>("#join-form");
+	const status = form?.querySelector<HTMLElement>("[data-status]");
+
+	form?.addEventListener("submit", (event) => {
+		event.preventDefault();
+		if (!status || !form.reportValidity()) return;
+		const email = form.dataset.email ?? "";
+		if (!email) {
+			status.textContent = "Online sign-up is not available right now. Please contact us directly.";
+			return;
+		}
+		const data = new FormData(form);
+		const get = (k: string) => String(data.get(k) ?? "").trim();
+		const name = `${get("first_name")} ${get("last_name")}`.trim();
+		const participation = get("participation");
+		const interests = data.getAll("interests").map(String);
+		const eventLabel = get("event");
+		const subject = eventLabel ? `Event registration: ${eventLabel.split(" — ")[0]} (${name})` : `Join Together: ${participation} (${name})`;
+		const body = [
+			"Hello Together,",
+			"",
+			eventLabel ? `I would like to register for: ${eventLabel}` : "I would like to get involved.",
+			"",
+			`Name: ${name}`,
+			`Email: ${get("email")}`,
+			`Phone: ${get("phone") || "Not given"}`,
+			`Neighborhood: ${get("neighborhood")}`,
+			`How I'd like to participate: ${participation}`,
+			`Interests: ${interests.length > 0 ? interests.join(", ") : "None selected"}`,
+			`Comments: ${get("comments") || "None"}`,
+			"",
+			"I agree to receive emails about Together's activities, events and volunteer opportunities.",
+			"",
+		].join("\n");
+		window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+		status.textContent =
+			"Your email app should open with your details ready to send. Nothing is sent until you send that email. If nothing opened, write to ";
+		const link = document.createElement("a");
+		link.href = `mailto:${email}`;
+		link.textContent = email;
+		status.append(link, ".");
+	});
+</script>

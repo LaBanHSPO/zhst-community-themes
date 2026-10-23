@@ -1,0 +1,104 @@
+---
+import { getEmDashEntry } from "emdash";
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import Arrow from "../components/Arrow.astro";
+import { COURSES, getDishes, getVenue, photoSrc } from "../lib/montre";
+
+const [{ entries: dishes, cacheHint }, allergyPage, venueResult] = await Promise.all([
+	getDishes(),
+	getEmDashEntry("pages", "allergies"),
+	getVenue(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allergyPage.cacheHint);
+	Astro.cache.set(venueResult.cacheHint);
+}
+const { venue } = venueResult;
+
+const courses = COURSES.map((c) => ({ ...c, dishes: dishes.filter((d) => d.data.course === c.slug) })).filter(
+	(c) => c.dishes.length > 0,
+);
+---
+
+<Base title="Menu" description="Our seasonal à la carte menu and tasting menu, with prices.">
+	<PageHead
+		id="menu-title"
+		eyebrow="The menu"
+		title="Seasonal, precise, generous."
+		intro="The menu follows our growers and the day boat, so a few dishes may change before you visit."
+		image="/images/beef-dinner.webp"
+	>
+		{
+			courses.length > 0 && (
+				<nav class="course-nav" aria-label="Courses">
+					{courses.map((c) => (
+						<a href={`#${c.slug}`}>{c.label}</a>
+					))}
+				</nav>
+			)
+		}
+	</PageHead>
+
+	{
+		venue.tasting_note && (
+			<section class="tasting-strip" aria-label="Tasting menu">
+				<span class="eyebrow">The tasting menu</span>
+				<p>{venue.tasting_note}</p>
+				<a class="text-link" href="/reserve">Reserve a table <Arrow /></a>
+			</section>
+		)
+	}
+
+	<div class="menu-body">
+		{
+			courses.length === 0 ? (
+				<p class="empty-note">The menu is being written. Please check back soon, or call us for tonight's dishes.</p>
+			) : (
+				courses.map((c) => (
+					<section class="course" id={c.slug} aria-labelledby={`${c.slug}-title`}>
+						<header class="course-head">
+							<h2 id={`${c.slug}-title`}>{c.label}</h2>
+							<p>{c.note}</p>
+						</header>
+						<ul class="menu-list">
+							{c.dishes.map((d) => {
+								const src = photoSrc(d.data.image, d.data.photo);
+								return (
+									<li class:list={["menu-item", { "has-photo": src }]}>
+										{src && <img src={src} alt={d.data.image?.alt || d.data.title} width="88" height="88" loading="lazy" />}
+										<div class="menu-item-text">
+											<div class="menu-item-top">
+												<h3 {...d.edit.title}>{d.data.title}</h3>
+												<span class="leader" aria-hidden="true" />
+												<span class="price">{d.data.price}</span>
+											</div>
+											{d.data.description && <p>{d.data.description}</p>}
+											{d.data.dietary && <span class="dietary">{d.data.dietary}</span>}
+										</div>
+									</li>
+								);
+							})}
+						</ul>
+					</section>
+				))
+			)
+		}
+		<aside class="menu-note">
+			<p>
+				V vegetarian · VG vegan · GF gluten-free. Please tell us about allergies before you order{
+					allergyPage.entry ? (
+						<>
+							{" — "}
+							<a href="/allergies">how we handle them</a>.
+						</>
+					) : (
+						"."
+					)
+				}
+			</p>
+			<a class="btn" href="/reserve">Reserve a table <Arrow /></a>
+		</aside>
+	</div>
+</Base>

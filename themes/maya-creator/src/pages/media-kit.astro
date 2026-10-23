@@ -1,0 +1,82 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import Icon from "../components/Icon.astro";
+import { photoAlt, photoSrc, sortByPosition } from "../lib/maya";
+
+const [interestsResult, formatsResult] = await Promise.all([
+	getEmDashCollection("interests", { limit: 12 }),
+	getEmDashCollection("formats", { limit: 12 }),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(interestsResult.cacheHint);
+	Astro.cache.set(formatsResult.cacheHint);
+}
+const interests = sortByPosition(interestsResult.entries);
+const formats = sortByPosition(formatsResult.entries);
+---
+
+<Base title="Partnerships / media kit" description="Creator positioning, audience interests and the ways Maya collaborates with brands.">
+	<Hero variant="kit" image="/images/hero-maya.webp" alt="Maya resting her chin on her hand in a sunlit kitchen, a bowl of oranges and a speckled mug on the counter">
+		<p class="eyebrow">Partnerships <span aria-hidden="true">/</span> Media kit</p>
+		<h1>Let’s create something good together.</h1>
+		<p class="lede">I partner with brands that share my love for great food, intentional living and a more beautiful everyday.</p>
+		<a class="btn" href="#formats">View my media kit <Icon name="arrow" size={16} /></a>
+	</Hero>
+
+	<section class="interests" id="interests" aria-labelledby="interests-title">
+		<div class="container interests-grid">
+			<div class="interests-intro">
+				<p class="eyebrow">Audience interests</p>
+				<h2 id="interests-title" class="h-section">Shared values, real connection.</h2>
+				<p>
+					My community comes to me for reliable recipes, practical inspiration and a slower, more intentional way of living. I love working
+					with brands that align with these passions.
+				</p>
+			</div>
+			<ul class="interest-list" role="list">
+				{
+					interests.map((e) => (
+						<li>
+							<Icon name={e.data.icon} size={44} class="interest-icon" />
+							<h3>{e.data.title}</h3>
+							<p>{e.data.blurb}</p>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+
+	<section class="section formats" id="formats" aria-labelledby="formats-title">
+		<div class="container">
+			<div class="section-head">
+				<div>
+					<p class="eyebrow">Collaboration formats</p>
+					<h2 id="formats-title" class="h-section">Thoughtful ways to work together.</h2>
+				</div>
+				<a class="btn btn-outline btn-sm" href="/collaborate">View my media kit <Icon name="arrow" size={14} /></a>
+			</div>
+			<ul class="format-grid" role="list">
+				{
+					formats.map((e) => (
+						<li class="format-card">
+							<img
+								src={photoSrc(e.data.image, e.data.photo)}
+								alt={photoAlt(e.data.image, e.data.photo_alt, e.data.title)}
+								width="200"
+								height="130"
+								loading="lazy"
+							/>
+							<div>
+								<h3>{e.data.title}</h3>
+								<p>{e.data.blurb}</p>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+</Base>

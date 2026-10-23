@@ -1,0 +1,110 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../../layouts/Base.astro";
+import InstructorAvatar from "../../components/InstructorAvatar.astro";
+
+const result = await getEmDashCollection("instructors", { orderBy: { created_at: "asc" } });
+if (Astro.cache?.enabled) Astro.cache.set(result.cacheHint);
+if (result.error) console.error("[coursecraft] failed to load instructors:", result.error);
+const instructors = result.entries;
+---
+
+<Base title="Instructors" description="Meet the instructors behind each course: their background, how they teach and what they teach.">
+	<div class="container">
+		<header class="page-head">
+			<p class="eyebrow">Who will guide you</p>
+			<h1>Instructors</h1>
+			<p class="lede">Practitioners who teach what they do every day. Read their background before you choose a course.</p>
+		</header>
+
+		{
+			instructors.length > 0 ? (
+				<ul class="people" role="list">
+					{instructors.map((person) => (
+						<li>
+							<article class="person">
+								<InstructorAvatar name={person.data.name} photo={person.data.photo} size={112} />
+								<div>
+									<h2>
+										<a href={`/instructors/${person.id}`}>{person.data.name}</a>
+									</h2>
+									{person.data.role && <p class="role">{person.data.role}</p>}
+									{person.data.short_bio && <p class="bio">{person.data.short_bio}</p>}
+								</div>
+							</article>
+						</li>
+					))}
+				</ul>
+			) : (
+				<div class="empty-state">
+					<h2>No instructors yet</h2>
+					<p>Instructor profiles published in the admin will appear here.</p>
+				</div>
+			)
+		}
+	</div>
+</Base>
+
+<style>
+	.people {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+		gap: 1.5rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.person {
+		position: relative;
+		display: flex;
+		gap: 1.25rem;
+		height: 100%;
+		padding: 1.5rem;
+		background: var(--color-surface);
+		border: 1px solid var(--color-line);
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow-card);
+	}
+
+	.person:focus-within {
+		outline: 3px solid var(--color-focus);
+		outline-offset: 3px;
+	}
+
+	.person h2 {
+		font-size: 1.45rem;
+		margin-bottom: 0.2rem;
+	}
+
+	.person h2 a {
+		text-decoration: none;
+	}
+
+	.person h2 a::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+	}
+
+	.person h2 a:focus-visible {
+		outline: none;
+	}
+
+	.role {
+		color: var(--color-muted);
+		margin-bottom: 0.6rem;
+	}
+
+	.bio {
+		margin: 0;
+		color: var(--color-ink-soft);
+		font-size: 0.98rem;
+	}
+
+	@media (max-width: 480px) {
+		.person {
+			flex-direction: column;
+		}
+	}
+</style>

@@ -1,0 +1,271 @@
+---
+import { getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import Icon from "../components/Icon.astro";
+import "../styles/theme.css";
+
+interface Props {
+	title: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	/** Pass content reference for plugin page contributions on content pages */
+	content?: { collection: string; id: string; slug?: string | null };
+}
+
+const { title, pageTitle, description, image, canonical, content } = Astro.props;
+const [settingsResult, menuResult] = await Promise.all([
+	getSiteSettingsWithCacheHint(),
+	getMenuWithCacheHint("primary"),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(settingsResult.cacheHint);
+	Astro.cache.set(menuResult.cacheHint);
+}
+
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(settingsResult.data);
+const titleIncludesSiteName =
+	title === siteTitle || title.endsWith(` | ${siteTitle}`) || title.endsWith(` — ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
+const pageDescription = description ?? siteTagline;
+const navItems = menuResult.data?.items ?? [];
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const revealing = Astro.url.searchParams.get("reveal") === "1";
+const isCurrent = (url: string) => {
+	const [target, query] = url.split("?");
+	const clean = target.replace(/\/$/, "") || "/";
+	if (clean === "/") return path === "/";
+	if (query) return path === clean && revealing === query.includes("reveal=1");
+	return path === clean && !revealing;
+};
+// Offer pages highlight "Offer detail" (or "Reveal code" while the dialog is open); store pages highlight store offers.
+const currentUrl =
+	navItems.find((i) => isCurrent(i.url))?.url ??
+	(path.startsWith("/deals/")
+		? navItems.find((i) => (revealing ? /\?reveal=1/.test(i.url) : /^\/deals\/[^?]+$/.test(i.url)))?.url
+		: undefined) ??
+	(path.startsWith("/stores/") ? navItems.find((i) => i.url.startsWith("/stores/"))?.url : undefined);
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description: pageDescription,
+	canonical,
+	image,
+	content,
+	siteName: siteTitle,
+});
+const year = new Intl.DateTimeFormat("en-US", { year: "numeric", timeZone: "Asia/Saigon" }).format(new Date());
+const split = /^daily(find)$/i.test(siteTitle) ? ["Daily", "find"] : null;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{fullTitle}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<header class="site-head">
+			<div class="head-inner">
+				<a class="wordmark" href="/" aria-label={`${siteTitle} — homepage`}>
+					{
+						siteLogo ? (
+							<img src={siteLogo.url} alt={siteLogo.alt || siteTitle} />
+						) : (
+							<>
+								<Icon name="house" size={38} class="wordmark-icon" stroke={2.2} />
+								<span class="wordmark-text">
+									{split ? <><span>{split[0]}</span><span class="wm-accent">{split[1]}</span></> : siteTitle}
+								</span>
+							</>
+						)
+					}
+				</a>
+				<nav class="nav" aria-label="Primary">
+					{
+						navItems.map((item) => (
+							<a
+								href={item.url}
+								target={item.target}
+								rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+								aria-current={item.url === currentUrl ? "page" : undefined}
+							>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+				<div class="head-tools">
+					<form class="head-search" action="/deals" method="get" role="search">
+						<label>
+							<span class="visually-hidden">Search home deals, brands or products</span>
+							<Icon name="search" size={20} />
+							<input type="search" name="q" placeholder="Search deals, brands, products…" maxlength="80" />
+						</label>
+					</form>
+					<a class="tool-link" href="/deals?saved=1" aria-label="Saved deals">
+						<Icon name="heart" size={26} />
+						<span class="saved-count" data-saved-count hidden></span>
+					</a>
+					<a class="tool-link" href="/deals" aria-label="Browse all deals">
+						<Icon name="bag" size={26} />
+					</a>
+				</div>
+				<details class="mobile-nav">
+					<summary>
+						<svg width="16" height="12" viewBox="0 0 16 12" aria-hidden="true" focusable="false">
+							<path d="M0 1h16M0 6h16M0 11h16" stroke="currentColor" stroke-width="1.6"></path>
+						</svg>
+						Menu
+					</summary>
+					<div class="mobile-panel">
+						<form action="/deals" method="get" role="search" class="mobile-search">
+							<label>
+								<span class="visually-hidden">Search home deals, brands or products</span>
+								<Icon name="search" size={18} />
+								<input type="search" name="q" placeholder="Search home deals…" maxlength="80" />
+							</label>
+						</form>
+						<nav aria-label="Primary (mobile)">
+							{
+								navItems.map((item) => (
+									<a href={item.url} aria-current={item.url === currentUrl ? "page" : undefined}>
+										{item.label}
+									</a>
+								))
+							}
+							<a href="/deals?saved=1">Saved deals</a>
+						</nav>
+					</div>
+				</details>
+			</div>
+		</header>
+
+		<main id="main">
+			<slot />
+		</main>
+
+		<footer class="site-foot">
+			<div class="container foot-inner">
+				<div class="foot-brand">
+					<a class="wordmark" href="/" aria-label={`${siteTitle} — homepage`}>
+						<Icon name="house" size={32} class="wordmark-icon" stroke={2.2} />
+						<span class="wordmark-text">
+							{split ? <><span>{split[0]}</span><span class="wm-accent">{split[1]}</span></> : siteTitle}
+						</span>
+					</a>
+					<p>{siteTagline}</p>
+				</div>
+				<div class="foot-links">
+					<h2>Explore</h2>
+					{navItems.map((item) => <a href={item.url}>{item.label}</a>)}
+				</div>
+				<div class="foot-disclosure">
+					<h2>Sponsored links</h2>
+					<p>
+						Some links on Dailyfind are affiliate links and carry <code>rel="sponsored"</code>. We may earn a commission
+						if you buy through them, at no extra cost to you. Prices, codes and dates are the editor’s listing, not
+						live retailer data. <a href="/disclosure">Read the full disclosure</a>.
+					</p>
+				</div>
+			</div>
+			<div class="container foot-bottom">
+				<span>© {year} {siteTitle}. Sample listings for demonstration.</span>
+				<span>Built with EmDash</span>
+			</div>
+		</footer>
+
+		<p id="copy-status" class="visually-hidden" role="status" aria-live="polite"></p>
+		<EmDashBodyEnd page={pageCtx} />
+	</body>
+</html>
+
+<script>
+	// Saved deals live in this browser only; nothing leaves the device.
+	const KEY = "dailyfind-saved";
+	const read = (): string[] => {
+		try {
+			const v = JSON.parse(localStorage.getItem(KEY) ?? "[]");
+			return Array.isArray(v) ? v.filter((x) => typeof x === "string") : [];
+		} catch {
+			return [];
+		}
+	};
+	let saved = read();
+	const paint = () => {
+		document.querySelectorAll<HTMLButtonElement>("[data-save]").forEach((btn) => {
+			btn.setAttribute("aria-pressed", String(saved.includes(btn.dataset.save ?? "")));
+		});
+		document.querySelectorAll<HTMLElement>("[data-saved-count]").forEach((el) => {
+			el.hidden = saved.length === 0;
+			el.textContent = String(saved.length);
+		});
+		document.dispatchEvent(new CustomEvent("dailyfind:saved", { detail: saved }));
+	};
+	document.addEventListener("click", (event) => {
+		const btn = (event.target as Element).closest<HTMLButtonElement>("[data-save]");
+		if (!btn) return;
+		const id = btn.dataset.save ?? "";
+		saved = saved.includes(id) ? saved.filter((s) => s !== id) : [...saved, id];
+		try {
+			localStorage.setItem(KEY, JSON.stringify(saved));
+		} catch {
+			/* storage unavailable: keep the in-memory state for this page view */
+		}
+		paint();
+	});
+	paint();
+
+	// Copy a coupon code. Falls back to selecting the text when the clipboard API is unavailable.
+	const status = document.getElementById("copy-status");
+	document.addEventListener("click", async (event) => {
+		const btn = (event.target as Element).closest<HTMLButtonElement>("[data-copy]");
+		if (!btn) return;
+		const code = btn.dataset.copy ?? "";
+		const label = btn.dataset.label ?? btn.textContent ?? "Copy";
+		btn.dataset.label = label;
+		let ok = false;
+		try {
+			await navigator.clipboard.writeText(code);
+			ok = true;
+		} catch {
+			const field = document.createElement("textarea");
+			field.value = code;
+			field.setAttribute("readonly", "");
+			field.style.position = "fixed";
+			field.style.opacity = "0";
+			document.body.appendChild(field);
+			field.select();
+			try {
+				ok = document.execCommand("copy");
+			} catch {
+				ok = false;
+			}
+			field.remove();
+		}
+		if (status) status.textContent = ok ? `Code ${code} copied.` : `Copy failed. The code is ${code}.`;
+		btn.textContent = ok ? "Copied" : code;
+		window.setTimeout(() => {
+			btn.textContent = label;
+		}, 2200);
+	});
+</script>

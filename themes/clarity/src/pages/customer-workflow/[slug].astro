@@ -1,0 +1,153 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import Base from "../../layouts/Base.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import Icon from "../../components/Icon.astro";
+import Logo from "../../components/Logo.astro";
+import NotesCard from "../../components/NotesCard.astro";
+import Steps from "../../components/Steps.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { DEMO_URL, lines, photoSrc } from "../../lib/clarity";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.redirect("/404");
+
+const { entry: workflow, cacheHint } = await getEmDashEntry("workflows", slug);
+if (!workflow) return Astro.redirect("/404");
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+const seo = getSeoMeta(workflow, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+
+const d = workflow.data;
+const notes = d.input_lines ?? [];
+const sections = d.output_sections ?? [];
+const steps = d.steps ?? [];
+const storySrc = photoSrc(d.image, d.photo);
+const storyAlt = d.photo_alt || d.image?.alt || d.title;
+const overview = sections[0];
+const keyList = sections.find((s, i) => i > 0 && lines(s.bullets).length > 0);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.lede ?? d.summary}
+	canonical={seo.canonical}
+	content={{ collection: "workflows", id: workflow.data.id, slug }}
+>
+	<section class="hero wf-hero" aria-labelledby="wf-title">
+		<div class="container hero-grid">
+			<div class="hero-copy">
+				{d.eyebrow && <span class="eyebrow">{d.eyebrow}</span>}
+				<h1 id="wf-title" class="display">
+					{d.headline ?? d.title}
+					{d.headline_accent && <> <span class="accent">{d.headline_accent}</span></>}
+				</h1>
+				{d.lede && <p class="lede">{d.lede}</p>}
+				<a class="btn btn-lg" href={DEMO_URL}>Book a demo <Icon name="arrow-right" size={22} /></a>
+			</div>
+			<div class="wf-visual" role="img" aria-label={`Sample input and output: ${d.input_title ?? "meeting notes"} with timestamps on the left, turned by Clarity into the ${d.output_title ?? "brief"} on the right.`}>
+				<NotesCard title={d.input_title} meta={d.input_meta} lines={notes} />
+				<div class="wf-arrow" aria-hidden="true">
+					<span class="spark"><Icon name="sparkle" size={30} /></span>
+					<svg width="48" height="12" viewBox="0 0 48 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 6h45M41 1l5 5-5 5" /></svg>
+				</div>
+				<div class="brief-app">
+					<div class="brief-side">
+						<div class="app-brand"><Logo size={18} /> Clarity</div>
+						<ul>
+							{sections.map((s, i) => <li class:list={{ on: i === 0 }}><Icon name={s.icon ?? "doc"} /> {s.nav}</li>)}
+						</ul>
+					</div>
+					<div class="brief-main">
+						<div class="brief-top">
+							<span class="app-pill">Share</span>
+							<span class="app-pill app-pill-dark">Export <Icon name="chevron-down" size={10} /></span>
+						</div>
+						<h3>{d.output_title}</h3>
+						{overview && (
+							<>
+								<h4>{overview.heading}</h4>
+								{overview.body && <p>{overview.body}</p>}
+							</>
+						)}
+						{keyList && (
+							<>
+								<h4>{keyList.heading}</h4>
+								<ul>{lines(keyList.bullets).map((b) => <li>{b}</li>)}</ul>
+							</>
+						)}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="container wf-steps" aria-label="How the workflow runs">
+		<Steps items={steps} class="steps-roomy" />
+	</section>
+
+	<section class="story-split" aria-labelledby="story-title">
+		{
+			storySrc && (
+				<div class="story-media">
+					<img src={storySrc} alt={storyAlt} width="938" height="280" loading="lazy" />
+				</div>
+			)
+		}
+		<div class="story-copy">
+			{
+				d.story_eyebrow && (
+					<span class="eyebrow">
+						{d.story_eyebrow.split(" ").map((w, i) => (i === 1 ? <b>{w} </b> : `${w} `))}
+					</span>
+				)
+			}
+			<h2 id="story-title" class="h2">{d.story_title}</h2>
+			{d.story_text && <p class="lede">{d.story_text}</p>}
+			<a class="btn btn-lg" href={DEMO_URL}>Book a demo <Icon name="arrow-right" size={22} /></a>
+		</div>
+	</section>
+
+	<section class="section section-tint" aria-labelledby="io-title">
+		<div class="container">
+			<div class="section-head">
+				<span class="eyebrow">The actual sample</span>
+				<h2 id="io-title" class="h2">What went in, and what came out.</h2>
+				<p>The notes below are the real input for this workflow; the brief is what Clarity drafted from them and the team refined.</p>
+			</div>
+			<div class="io">
+				<div class="io-col">
+					<span class="io-label"><Icon name="wave" size={18} /> Input · {d.input_title}</span>
+					<NotesCard title={d.input_title} meta={d.input_meta} lines={notes} />
+				</div>
+				<div class="io-col">
+					<span class="io-label"><Icon name="doc" size={18} /> Output · {d.output_title}</span>
+					<article class="brief-doc" aria-label={d.output_title ?? "Output"}>
+						<h3>{d.output_title}</h3>
+						{
+							sections.map((s) => (
+								<section>
+									<h4>
+										<Icon name={s.icon ?? "doc"} /> {s.heading}
+									</h4>
+									{s.body && <p>{s.body}</p>}
+									{lines(s.bullets).length > 0 && <ul>{lines(s.bullets).map((b) => <li>{b}</li>)}</ul>}
+								</section>
+							))
+						}
+					</article>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<div style="padding-top:clamp(3rem,5vw,4.5rem)">
+		<CtaBand eyebrow="Your own workflow" title="Bring your notes to the demo." text="Show us a real meeting, brief or draft and we’ll walk through it in Clarity together." />
+	</div>
+</Base>

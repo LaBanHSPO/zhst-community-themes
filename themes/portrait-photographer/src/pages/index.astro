@@ -1,0 +1,211 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import BookBand from "../components/BookBand.astro";
+import {
+	formatPrice,
+	getApproach,
+	getJournal,
+	getSessions,
+	getStudio,
+	getWork,
+	journalHref,
+	photoAlt,
+	photoSrc,
+	workHref,
+} from "../lib/studio";
+
+const [workResult, journalResult, sessionsResult, approachResult, studioResult] = await Promise.all([
+	getWork(),
+	getJournal(),
+	getSessions(),
+	getApproach(),
+	getStudio(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(workResult.cacheHint);
+	Astro.cache.set(journalResult.cacheHint);
+	Astro.cache.set(sessionsResult.cacheHint);
+	Astro.cache.set(approachResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const allWork = workResult.entries;
+const featured = allWork.filter((w) => w.data.featured);
+const series = (featured.length > 0 ? featured : allWork).slice(0, 3);
+const posts = journalResult.entries.slice(0, 3);
+const sessions = sessionsResult.entries.slice(0, 3);
+const approach = approachResult.entries;
+---
+
+<Base
+	title="Portrait photographer"
+	description="Portraits with personality. Real people, deeper stories: browse portrait series, read the journal and book a session."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A woman with freckles resting her chin on her hand, window-light shadows on the dark wall behind her"
+			width="1448"
+			height="660"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<h1 id="hero-title" class="hero-title">Portraits<br />with personality.</h1>
+			<p class="hero-kicker">Real people. Deeper stories.</p>
+			<a class="btn" href="/work"><span>Explore portraits</span><Arrow /></a>
+		</div>
+	</section>
+
+	<section class="look" aria-labelledby="look-title">
+		<div class="look-copy">
+			<p class="eyebrow">A closer look</p>
+			<h2 id="look-title" class="display">People<br />in focus.</h2>
+			<span class="rule" aria-hidden="true"></span>
+			<p class="look-text">Authentic portraits for a more interesting world.</p>
+		</div>
+		<ul class="look-grid">
+			<li>
+				<a href="/work" tabindex="-1" aria-hidden="true">
+					<img src="/images/man-bw.webp" alt="" width="660" height="758" loading="eager" />
+				</a>
+			</li>
+			<li>
+				<a href="/work" tabindex="-1" aria-hidden="true">
+					<img src="/images/redhead.webp" alt="" width="668" height="758" loading="eager" />
+				</a>
+			</li>
+			<li>
+				<a href="/work" tabindex="-1" aria-hidden="true">
+					<img src="/images/grey-hair.webp" alt="" width="652" height="758" loading="eager" />
+				</a>
+			</li>
+		</ul>
+		<p class="sr-only">
+			Three portraits: a man laughing in black and white, a red-haired woman with freckles, and a grey-haired man
+			looking away from the camera.
+		</p>
+	</section>
+
+	{
+		series.length > 0 && (
+			<section class="band" aria-labelledby="series-title">
+				<div class="band-inner">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Recent series</p>
+							<h2 id="series-title" class="display">Faces we keep returning to.</h2>
+						</div>
+						<a class="text-link" href="/work"><span>All work</span><Arrow /></a>
+					</div>
+					<ul class="series-cards">
+						{series.map((s) => {
+							const src = photoSrc(s.data.image, s.data.photo);
+							return (
+								<li>
+									<a class="series-card" href={workHref(s.data)}>
+										{src && (
+											<img src={src} alt={photoAlt(s.data.image, s.data.photo, s.data.title)} width="600" height="720" loading="lazy" />
+										)}
+										<span class="series-card-meta">
+											<span class="series-card-name" {...s.edit.title}>{s.data.title}</span>
+											<span class="series-card-sub">{[s.data.category, s.data.year_label].filter(Boolean).join(" · ")}</span>
+										</span>
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		approach.length > 0 && (
+			<section class="approach" aria-labelledby="approach-title">
+				<div class="approach-photo">
+					<img src="/images/woman-bw.webp" alt="Black-and-white portrait of a woman resting her chin on her hand" width="1200" height="1200" loading="lazy" />
+				</div>
+				<div class="approach-body">
+					<p class="eyebrow eyebrow-light">My approach</p>
+					<h2 id="approach-title" class="display display-light">
+						Less posing.<br />More presence.
+					</h2>
+					<ul class="approach-list">
+						{approach.map((a) => (
+							<li>
+								<h3 {...a.edit.title}>{a.data.title}</h3>
+								{a.data.text && <p>{a.data.text}</p>}
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		sessions.length > 0 && (
+			<section class="band band-deep" aria-labelledby="sessions-title">
+				<div class="band-inner">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Sessions</p>
+							<h2 id="sessions-title" class="display">Simple ways to sit.</h2>
+						</div>
+						<a class="text-link" href="/book"><span>Book a session</span><Arrow /></a>
+					</div>
+					<ul class="teaser-list">
+						{sessions.map((p) => (
+							<li>
+								<a class="teaser" href={`/book?session=${encodeURIComponent(p.data.slug ?? p.data.id)}`}>
+									<span class="teaser-name" {...p.edit.title}>{p.data.title}</span>
+									<span class="teaser-text">{p.data.summary}</span>
+									<span class="teaser-price">
+										{p.data.duration && <span>{p.data.duration}</span>}
+										<strong>From {formatPrice(p.data.price)}</strong>
+									</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		posts.length > 0 && (
+			<section class="band" aria-labelledby="journal-title">
+				<div class="band-inner">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Journal</p>
+							<h2 id="journal-title" class="display">Notes from the studio.</h2>
+						</div>
+						<a class="text-link" href="/journal"><span>All posts</span><Arrow /></a>
+					</div>
+					<ul class="post-cards">
+						{posts.map((p) => {
+							const src = photoSrc(p.data.image, p.data.photo);
+							return (
+								<li>
+									<a class="post-card" href={journalHref(p.data)}>
+										{src && <img src={src} alt={photoAlt(p.data.image, p.data.photo, p.data.title)} width="600" height="440" loading="lazy" />}
+										<span class="post-card-date">{p.data.date_label}</span>
+										<span class="post-card-name" {...p.edit.title}>{p.data.title}</span>
+										<span class="post-card-excerpt">{p.data.excerpt}</span>
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<BookBand studio={studioResult.studio} />
+</Base>

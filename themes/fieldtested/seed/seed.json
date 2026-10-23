@@ -1,0 +1,1665 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Fieldtested",
+  "description": "An independent outdoor gear review theme: review catalog, review articles, a comparison table and buying guides with an affiliate disclosure",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "Fieldtested",
+  "tagline": "Better gear. Better days outside."
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "posts",
+   "label": "Field notes",
+   "labelSingular": "Field note",
+   "urlPattern": "/posts/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo",
+    "scheduling"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "featured_image",
+     "label": "Featured Image",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    },
+    {
+     "slug": "photo_alt",
+     "label": "Photo alt text",
+     "type": "string"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    },
+    {
+     "slug": "excerpt",
+     "label": "Excerpt",
+     "type": "text"
+    }
+   ]
+  },
+  {
+   "slug": "reviews",
+   "label": "Reviews",
+   "labelSingular": "Review",
+   "urlPattern": "/reviews/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Review title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "product",
+     "label": "Product name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "brand",
+     "label": "Brand",
+     "type": "string",
+     "indexed": true
+    },
+    {
+     "slug": "gear_type",
+     "label": "Gear type",
+     "type": "select",
+     "validation": {
+      "options": [
+       "Backpacks",
+       "Tents",
+       "Sleeping bags",
+       "Hiking shoes",
+       "Jackets",
+       "Stoves",
+       "Accessories"
+      ]
+     }
+    },
+    {
+     "slug": "activities",
+     "label": "Activities",
+     "type": "multiSelect",
+     "validation": {
+      "options": [
+       "hiking",
+       "camping",
+       "travel"
+      ]
+     }
+    },
+    {
+     "slug": "summary",
+     "label": "One-line summary",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "author",
+     "label": "Author",
+     "type": "string"
+    },
+    {
+     "slug": "author_photo",
+     "label": "Author photo path",
+     "type": "string"
+    },
+    {
+     "slug": "date",
+     "label": "Published",
+     "type": "datetime",
+     "required": true,
+     "indexed": true
+    },
+    {
+     "slug": "updated",
+     "label": "Updated",
+     "type": "datetime"
+    },
+    {
+     "slug": "demo",
+     "label": "Show 'Demo review' label",
+     "type": "boolean",
+     "defaultValue": true
+    },
+    {
+     "slug": "lead",
+     "label": "Opening paragraph",
+     "type": "text"
+    },
+    {
+     "slug": "pros",
+     "label": "Pros (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "cons",
+     "label": "Cons (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "specs",
+     "label": "Key specifications (one 'Label | value' per line)",
+     "type": "text"
+    },
+    {
+     "slug": "sections",
+     "label": "Review sections (first = A closer look)",
+     "type": "repeater",
+     "validation": {
+      "maxItems": 8,
+      "subFields": [
+       {
+        "slug": "heading",
+        "label": "Heading",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "body",
+        "label": "Body",
+        "type": "text"
+       }
+      ]
+     }
+    },
+    {
+     "slug": "bottom_line",
+     "label": "The bottom line",
+     "type": "text"
+    },
+    {
+     "slug": "retailer_name",
+     "label": "Retailer name",
+     "type": "string"
+    },
+    {
+     "slug": "retailer_url",
+     "label": "Retailer link",
+     "type": "url"
+    },
+    {
+     "slug": "alt_retailer_name",
+     "label": "Second retailer name",
+     "type": "string"
+    },
+    {
+     "slug": "alt_retailer_url",
+     "label": "Second retailer link",
+     "type": "url"
+    },
+    {
+     "slug": "price_note",
+     "label": "Reviewer's noted price",
+     "type": "string"
+    },
+    {
+     "slug": "image",
+     "label": "Card photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled card photo path",
+     "type": "string"
+    },
+    {
+     "slug": "photo_alt",
+     "label": "Photo alt text",
+     "type": "string"
+    },
+    {
+     "slug": "hero_photo",
+     "label": "Bundled wide photo path (review page)",
+     "type": "string"
+    },
+    {
+     "slug": "side_photo",
+     "label": "Bundled product photo path (side card)",
+     "type": "string"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "guides",
+   "label": "Buying guides",
+   "labelSingular": "Buying guide",
+   "urlPattern": "/guides/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "card_title",
+     "label": "Title on the card",
+     "type": "string"
+    },
+    {
+     "slug": "summary",
+     "label": "Card summary",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "hero_lede",
+     "label": "Page intro",
+     "type": "text"
+    },
+    {
+     "slug": "jump_label",
+     "label": "Hero button label",
+     "type": "string"
+    },
+    {
+     "slug": "short_answer",
+     "label": "The short answer",
+     "type": "text"
+    },
+    {
+     "slug": "sections",
+     "label": "Guide sections",
+     "type": "repeater",
+     "validation": {
+      "maxItems": 8,
+      "subFields": [
+       {
+        "slug": "heading",
+        "label": "Heading",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "body",
+        "label": "Body",
+        "type": "text"
+       }
+      ]
+     }
+    },
+    {
+     "slug": "picks_title",
+     "label": "Top picks heading",
+     "type": "string"
+    },
+    {
+     "slug": "picks",
+     "label": "Top picks",
+     "type": "repeater",
+     "validation": {
+      "maxItems": 8,
+      "subFields": [
+       {
+        "slug": "label",
+        "label": "Label",
+        "type": "string"
+       },
+       {
+        "slug": "name",
+        "label": "Product",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "blurb",
+        "label": "Blurb",
+        "type": "string"
+       },
+       {
+        "slug": "url",
+        "label": "Link (internal path or retailer URL)",
+        "type": "string"
+       },
+       {
+        "slug": "image",
+        "label": "Photo (upload)",
+        "type": "image"
+       },
+       {
+        "slug": "photo",
+        "label": "Bundled photo path",
+        "type": "string"
+       },
+       {
+        "slug": "alt",
+        "label": "Alt text",
+        "type": "string"
+       }
+      ]
+     }
+    },
+    {
+     "slug": "faqs",
+     "label": "FAQs",
+     "type": "repeater",
+     "validation": {
+      "maxItems": 8,
+      "subFields": [
+       {
+        "slug": "question",
+        "label": "Question",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "answer",
+        "label": "Answer",
+        "type": "text"
+       }
+      ]
+     }
+    },
+    {
+     "slug": "image",
+     "label": "Card photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled card photo path",
+     "type": "string"
+    },
+    {
+     "slug": "photo_alt",
+     "label": "Photo alt text",
+     "type": "string"
+    },
+    {
+     "slug": "hero_photo",
+     "label": "Bundled hero photo path",
+     "type": "string"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "products",
+   "label": "Compared products",
+   "labelSingular": "Compared product",
+   "urlPattern": "/compare",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Product name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "brand",
+     "label": "Brand",
+     "type": "string"
+    },
+    {
+     "slug": "blurb",
+     "label": "Blurb",
+     "type": "text"
+    },
+    {
+     "slug": "weight",
+     "label": "Weight",
+     "type": "string"
+    },
+    {
+     "slug": "capacity",
+     "label": "Capacity",
+     "type": "string"
+    },
+    {
+     "slug": "torso",
+     "label": "Torso fit range",
+     "type": "string"
+    },
+    {
+     "slug": "max_load",
+     "label": "Max load (rec.)",
+     "type": "string"
+    },
+    {
+     "slug": "frame",
+     "label": "Frame type",
+     "type": "string"
+    },
+    {
+     "slug": "access",
+     "label": "Access",
+     "type": "string"
+    },
+    {
+     "slug": "best_for",
+     "label": "Best for",
+     "type": "string"
+    },
+    {
+     "slug": "features",
+     "label": "Key features (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "price",
+     "label": "Typical price (reviewer's note)",
+     "type": "string"
+    },
+    {
+     "slug": "retailer_name",
+     "label": "Retailer name",
+     "type": "string"
+    },
+    {
+     "slug": "retailer_url",
+     "label": "Retailer link",
+     "type": "url"
+    },
+    {
+     "slug": "review_slug",
+     "label": "Review slug (optional)",
+     "type": "string"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    },
+    {
+     "slug": "photo_alt",
+     "label": "Photo alt text",
+     "type": "string"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "site",
+   "label": "Site details",
+   "labelSingular": "Site details",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "footer_disclosure",
+     "label": "Footer disclosure",
+     "type": "text"
+    },
+    {
+     "slug": "affiliate_line",
+     "label": "Short affiliate line",
+     "type": "string"
+    },
+    {
+     "slug": "price_disclaimer",
+     "label": "Price disclaimer",
+     "type": "string"
+    },
+    {
+     "slug": "demo_label",
+     "label": "Demo label",
+     "type": "string"
+    }
+   ]
+  }
+ ],
+ "taxonomies": [
+  {
+   "name": "category",
+   "label": "Categories",
+   "labelSingular": "Category",
+   "hierarchical": true,
+   "collections": [
+    "posts"
+   ],
+   "terms": [
+    {
+     "slug": "gear-care",
+     "label": "Gear care"
+    },
+    {
+     "slug": "trail-notes",
+     "label": "Trail notes"
+    }
+   ]
+  },
+  {
+   "name": "tag",
+   "label": "Tags",
+   "labelSingular": "Tag",
+   "hierarchical": false,
+   "collections": [
+    "posts"
+   ],
+   "terms": [
+    {
+     "slug": "packs",
+     "label": "Packs"
+    },
+    {
+     "slug": "layers",
+     "label": "Layers"
+    },
+    {
+     "slug": "stoves",
+     "label": "Stoves"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Homepage",
+     "url": "/"
+    },
+    {
+     "type": "custom",
+     "label": "Review catalog",
+     "url": "/reviews"
+    },
+    {
+     "type": "custom",
+     "label": "Review article",
+     "url": "/reviews/osprey-exos-58"
+    },
+    {
+     "type": "custom",
+     "label": "Compare backpacks",
+     "url": "/compare"
+    },
+    {
+     "type": "custom",
+     "label": "Buying guide",
+     "url": "/guides/how-to-choose-a-daypack"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "affiliate-disclosure",
+    "slug": "affiliate-disclosure",
+    "status": "published",
+    "data": {
+     "title": "Affiliate disclosure",
+     "content": [
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b0",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Fieldtested is an independent publication. Some links on this site are affiliate links: if you buy through them we may earn a commission, at no extra cost to you.",
+         "_key": "b0s"
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b1",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Retailer links are marked as sponsored. Prices shown are the reviewer’s noted price at the time of writing and may have changed; always check the retailer.",
+         "_key": "b1s"
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "This is sample text for the theme. Replace it with your own disclosure before you publish.",
+         "_key": "b2s"
+        }
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "About our reviews",
+     "content": [
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b0",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Fieldtested is a demo outdoor-gear review theme. Every review in this demo is labelled as a demo review and contains sample content only.",
+         "_key": "b0s"
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b1",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Replace these pages, the review entries and the retailer links with your own before you publish.",
+         "_key": "b1s"
+        }
+       ]
+      }
+     ]
+    }
+   }
+  ],
+  "posts": [
+   {
+    "id": "post-pack-your-pack",
+    "slug": "how-we-pack-a-daypack",
+    "status": "published",
+    "data": {
+     "title": "How we pack a daypack for a long day out",
+     "excerpt": "A simple order for loading a daypack so the things you need are never at the bottom.",
+     "photo": "/images/pick-talon.webp",
+     "photo_alt": "Dark green daypack on a rocky ridge",
+     "content": [
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b0",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Heavy items sit close to your back and mid-height, light items go at the bottom, and anything you may need quickly lives in the lid or a side pocket.",
+         "_key": "b0s"
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b1",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Keep rain gear and a warm layer together near the top. Small items such as a headlamp and first-aid kit go in one labelled pouch so you can find them without unpacking.",
+         "_key": "b1s"
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "This is a sample field note for the theme; replace it with your own.",
+         "_key": "b2s"
+        }
+       ]
+      }
+     ]
+    },
+    "taxonomies": {
+     "category": [
+      "gear-care"
+     ],
+     "tag": [
+      "packs"
+     ]
+    }
+   },
+   {
+    "id": "post-layers",
+    "slug": "layering-for-cold-mornings",
+    "status": "published",
+    "data": {
+     "title": "Layering for cold mornings on the trail",
+     "excerpt": "Three layers, one rule: start slightly cool and add layers at the first stop.",
+     "photo": "/images/rv-jacket.webp",
+     "photo_alt": "Green down jacket on a rocky outcrop",
+     "content": [
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b0",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A base layer manages moisture, a mid layer adds warmth and a shell blocks wind and rain. Starting a little cool means you will not overheat in the first mile.",
+         "_key": "b0s"
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b1",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Stop at the first viewpoint to adjust. Taking a layer off before you sweat is easier than drying out after.",
+         "_key": "b1s"
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "This is a sample field note for the theme; replace it with your own.",
+         "_key": "b2s"
+        }
+       ]
+      }
+     ]
+    },
+    "taxonomies": {
+     "category": [
+      "trail-notes"
+     ],
+     "tag": [
+      "layers"
+     ]
+    }
+   },
+   {
+    "id": "post-stove",
+    "slug": "stove-care-basics",
+    "status": "published",
+    "data": {
+     "title": "Stove care basics for the season",
+     "excerpt": "A few minutes of cleaning and a leak check keep a canister stove dependable.",
+     "photo": "/images/rv-stove.webp",
+     "photo_alt": "Black camping stove on a rock with blurred mountains behind",
+     "content": [
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b0",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Check the O-ring for cracks, wipe grit from the burner and test the igniter at home rather than on the trail.",
+         "_key": "b0s"
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b1",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Store canisters upright and dry, and keep a lighter as a backup.",
+         "_key": "b1s"
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "This is a sample field note for the theme; replace it with your own.",
+         "_key": "b2s"
+        }
+       ]
+      }
+     ]
+    },
+    "taxonomies": {
+     "category": [
+      "gear-care"
+     ],
+     "tag": [
+      "stoves"
+     ]
+    }
+   }
+  ],
+  "reviews": [
+   {
+    "id": "osprey-exos-58",
+    "slug": "osprey-exos-58",
+    "status": "published",
+    "data": {
+     "title": "Osprey Exos 58 Review",
+     "product": "Osprey Exos 58",
+     "brand": "Osprey",
+     "gear_type": "Backpacks",
+     "activities": [
+      "hiking"
+     ],
+     "summary": "A lightweight thru-hiking favorite that keeps getting better.",
+     "author": "Alex Carter",
+     "author_photo": "/images/av-alex.webp",
+     "date": "2024-03-14T10:00:00+07:00",
+     "updated": "2024-05-14T10:00:00+07:00",
+     "lead": "The Osprey Exos 58 continues to be one of the most popular lightweight backpacks for long-distance hikers, and for good reason. It strikes an impressive balance between low weight, all-day comfort and real-world durability. After testing it on a range of trips, here’s how it performs.",
+     "pros": "Exceptionally lightweight for its capacity\nComfortable carry, even on long days\nWell-ventilated back panel\nSimple, streamlined feature set\nProven reliability on long-distance trails",
+     "cons": "Minimal padding on hip belt\nNot ideal for very heavy loads\nSide pockets can be tricky to access while moving\nFewer organization options than heavier packs",
+     "specs": "Capacity | 58 liters (M/L)\nWeight (claimed) | 2 lb 10 oz (1.19 kg)\nTorso sizes | S/M, M/L\nLoad range | Up to 30 lbs (14 kg)\nFrame | Internal, tensioned mesh\nMaterial | 100D recycled nylon\nHydration compatible | Yes\nRain cover | Not included\nSizes | S/M, M/L",
+     "sections": [
+      {
+       "heading": "A closer look",
+       "body": "The Osprey Exos 58 is designed for hikers who want to cover big miles with a light and comfortable pack. The latest version refines an already proven formula with improved materials and a more stable carry, while keeping the weight impressively low. It’s a great option for thru-hikes, week-long trips and anyone who values simplicity and efficiency."
+      },
+      {
+       "heading": "Performance",
+       "body": "With a light load the frame disappears and the pack moves with you. The tensioned mesh back panel keeps a gap between the pack and your back, which helps on warm climbs. Push past the recommended load and the suspension starts to feel its limits, so this is a pack for people who have already trimmed their base weight."
+      },
+      {
+       "heading": "Comfort & fit",
+       "body": "Two torso sizes keep the fit straightforward, and the shoulder straps are slim but supportive. The hip belt is the thinnest part of the design: it carries a light load well, but heavier loads would benefit from more padding."
+      },
+      {
+       "heading": "Features",
+       "body": "A stretch front pocket, two side pockets, a removable top lid and a hydration sleeve cover the essentials. There is no built-in rain cover, so budget for one separately."
+      }
+     ],
+     "bottom_line": "A light, comfortable pack that rewards a trimmed-down kit. If your loads stay under about 30 lbs, the Exos 58 is hard to fault; if you regularly carry more, look at a pack with a sturdier hip belt.",
+     "retailer_name": "REI",
+     "retailer_url": "https://rei.example/products/osprey-exos-58",
+     "alt_retailer_name": "Backcountry",
+     "alt_retailer_url": "https://backcountry.example/osprey-exos-58",
+     "price_note": "Reviewer’s noted price: about $260. Check the retailer for today’s price.",
+     "photo": "/images/rv-backpack.webp",
+     "photo_alt": "Olive green hiking backpack resting on a rocky ridge with snow-capped peaks behind",
+     "hero_photo": "/images/hero-review.webp",
+     "side_photo": "/images/side-exos.webp",
+     "demo": true,
+     "position": 10
+    }
+   },
+   {
+    "id": "salomon-x-ultra-4",
+    "slug": "salomon-x-ultra-4",
+    "status": "published",
+    "data": {
+     "title": "Salomon X Ultra 4 Review",
+     "product": "Salomon X Ultra 4",
+     "brand": "Salomon",
+     "gear_type": "Hiking shoes",
+     "activities": [
+      "hiking"
+     ],
+     "summary": "A versatile trail shoe that handles big miles with ease.",
+     "author": "Jamie Park",
+     "author_photo": "/images/av-jamie.webp",
+     "date": "2024-03-02T10:00:00+07:00",
+     "updated": "2024-03-02T10:00:00+07:00",
+     "lead": "The X Ultra 4 sits between a trail runner and a hiking boot: more support than a running shoe, far lighter than a boot. This demo review looks at who it suits and where it asks for compromise.",
+     "pros": "Light and agile on rough ground\nGrippy outsole on dry rock and dirt\nQuick, secure lacing system\nComfortable out of the box",
+     "cons": "Standard version is not waterproof\nLimited ankle support with a heavy pack\nToe box runs slightly narrow",
+     "specs": "Weight (pair, claimed) | about 1 lb 15 oz (880 g)\nHeel-to-toe drop | 10 mm\nUpper | Synthetic mesh with welded overlays\nOutsole | Contagrip\nWaterproof | Not in this version\nBest for | Day hikes and light overnights",
+     "sections": [
+      {
+       "heading": "A closer look",
+       "body": "A low-cut shoe with a protective toe cap and a lacing system that cinches with one pull. It is built for hikers who prefer to move quickly over mixed terrain."
+      },
+      {
+       "heading": "Performance",
+       "body": "On dry trails the outsole grips confidently. In wet conditions the mesh upper lets water in, so consider the waterproof version if your trips are often damp."
+      },
+      {
+       "heading": "Comfort & fit",
+       "body": "Cushioning is firm rather than plush, and the heel holds well. Hikers with wide feet should try a pair before buying."
+      },
+      {
+       "heading": "Features",
+       "body": "Quick-lace pocket, protective rand and a gusseted tongue that keeps small debris out."
+      }
+     ],
+     "bottom_line": "A fast, comfortable shoe for day hikes and light overnights. Carry heavier loads or wade through wet ground often and a boot will serve you better.",
+     "retailer_name": "REI",
+     "retailer_url": "https://rei.example/products/salomon-x-ultra-4",
+     "photo": "/images/rv-shoes.webp",
+     "photo_alt": "Grey and black trail shoe on a rock with mountains in the distance",
+     "demo": true,
+     "position": 20
+    }
+   },
+   {
+    "id": "msr-hubba-hubba-2",
+    "slug": "msr-hubba-hubba-2",
+    "status": "published",
+    "data": {
+     "title": "MSR Hubba Hubba 2 Review",
+     "product": "MSR Hubba Hubba 2",
+     "brand": "MSR",
+     "gear_type": "Tents",
+     "activities": [
+      "camping"
+     ],
+     "summary": "Still a top choice for backcountry comfort and reliability.",
+     "author": "Taylor Kim",
+     "author_photo": "/images/av-taylor.webp",
+     "date": "2024-02-20T10:00:00+07:00",
+     "updated": "2024-02-20T10:00:00+07:00",
+     "lead": "A two-person backpacking tent that has stayed popular for years. This demo review weighs its livability against its packed weight.",
+     "pros": "Two doors and two vestibules\nRoomy interior for two\nQuick, color-coded pitch\nStable in moderate wind",
+     "cons": "Heavier than ultralight tents\nVentilation needs the vents propped open\nFootprint sold separately",
+     "specs": "Capacity | 2 people\nPacked weight (claimed) | about 3 lb 7 oz (1.56 kg)\nFloor area | about 29 sq ft\nDoors | 2\nPoles | Aluminum, single hub\nSeasons | Three-season",
+     "sections": [
+      {
+       "heading": "A closer look",
+       "body": "A freestanding, single-hub design with a symmetrical layout, so both sleepers get their own door and gear space."
+      },
+      {
+       "heading": "Performance",
+       "body": "Pitching is simple even in fading light. Guy lines add stability when the wind picks up."
+      },
+      {
+       "heading": "Comfort & fit",
+       "body": "The near-vertical walls give more usable room than the floor area suggests. Two sleepers with regular-width pads fit with a little to spare."
+      },
+      {
+       "heading": "Features",
+       "body": "Interior pockets, a gear loft loop and two generous vestibules for boots and packs."
+      }
+     ],
+     "bottom_line": "A dependable, comfortable shelter for two. If every ounce counts, an ultralight tent will save weight; otherwise this one is easy to live with.",
+     "retailer_name": "REI",
+     "retailer_url": "https://rei.example/products/msr-hubba-hubba-2",
+     "photo": "/images/rv-tent.webp",
+     "photo_alt": "Light grey backpacking tent pitched in an alpine meadow at sunset",
+     "demo": true,
+     "position": 30
+    }
+   },
+   {
+    "id": "patagonia-down-sweater",
+    "slug": "patagonia-down-sweater",
+    "status": "published",
+    "data": {
+     "title": "Patagonia Down Sweater Review",
+     "product": "Patagonia Down Sweater",
+     "brand": "Patagonia",
+     "gear_type": "Jackets",
+     "activities": [
+      "hiking",
+      "travel"
+     ],
+     "summary": "A classic for a reason: warm, lightweight and incredibly versatile.",
+     "author": "Morgan Lee",
+     "author_photo": "/images/av-morgan.webp",
+     "date": "2024-02-08T10:00:00+07:00",
+     "updated": "2024-02-08T10:00:00+07:00",
+     "lead": "An insulated jacket that works as a camp layer, a travel layer and a cold-morning layer. This demo review covers how it earns its place in a pack.",
+     "pros": "Warm for its weight\nCompresses small\nSimple, sensible pocket layout\nEasy to layer under a shell",
+     "cons": "Down loses warmth when soaked\nShell fabric needs care around sharp edges\nNot a rain jacket",
+     "specs": "Insulation | 800-fill-power recycled down\nWeight (claimed) | about 12 oz (340 g), men’s M\nShell | Recycled polyester ripstop\nPockets | Two zippered hand, one chest\nPacks into | Its own chest pocket",
+     "sections": [
+      {
+       "heading": "A closer look",
+       "body": "Quilted baffles and a close, athletic cut make it easy to layer. The fabric is soft and quiet."
+      },
+      {
+       "heading": "Performance",
+       "body": "Plenty of warmth for cool evenings and early starts. Pair it with a shell if rain is likely."
+      },
+      {
+       "heading": "Comfort & fit",
+       "body": "Trim through the body with room to add a thin layer underneath. Sleeves are long enough to stay put when reaching."
+      },
+      {
+       "heading": "Features",
+       "body": "Zippered pockets, an elastic hem and cuffs, and a stuff-in-pocket design that keeps it tidy in a bag."
+      }
+     ],
+     "bottom_line": "A layer most hikers will use more than they expect. Keep it dry and it will serve for seasons.",
+     "retailer_name": "REI",
+     "retailer_url": "https://rei.example/products/patagonia-down-sweater",
+     "photo": "/images/rv-jacket.webp",
+     "photo_alt": "Green quilted down jacket laid on a rocky outcrop with mountains behind",
+     "demo": true,
+     "position": 40
+    }
+   },
+   {
+    "id": "nemo-disco-15",
+    "slug": "nemo-disco-15",
+    "status": "published",
+    "data": {
+     "title": "Nemo Disco 15 Review",
+     "product": "Nemo Disco 15",
+     "brand": "Nemo",
+     "gear_type": "Sleeping bags",
+     "activities": [
+      "camping"
+     ],
+     "summary": "A comfortable, roomy bag for three-season adventures.",
+     "author": "Alex Carter",
+     "author_photo": "/images/av-alex.webp",
+     "date": "2024-01-28T10:00:00+07:00",
+     "updated": "2024-01-28T10:00:00+07:00",
+     "lead": "A spoon-shaped down bag designed for side sleepers who dislike being squeezed. This demo review looks at room versus weight.",
+     "pros": "Spoon shape gives room to shift\nWarm collar and draft tube\nSoft, comfortable lining",
+     "cons": "Heavier than mummy-style bags\nBulkier when packed",
+     "specs": "Temperature rating | 15°F (-9°C)\nShape | Spoon\nFill | Down\nWeight (claimed) | about 2 lb 11 oz (1.22 kg), regular\nLengths | Regular, Long",
+     "sections": [
+      {
+       "heading": "A closer look",
+       "body": "A wider cut at the elbows and knees lets you change position in the night without dragging the bag around."
+      },
+      {
+       "heading": "Performance",
+       "body": "The draft collar and hood hold heat well on cold nights. Pair with an insulated pad in shoulder season."
+      },
+      {
+       "heading": "Comfort & fit",
+       "body": "Roomy without feeling cavernous. Taller sleepers should look at the long size."
+      },
+      {
+       "heading": "Features",
+       "body": "Stash pocket, glow-in-the-dark zipper pull and a compression sack."
+      }
+     ],
+     "bottom_line": "Worth the extra ounces if you sleep on your side. Weight-focused hikers will want a narrower bag.",
+     "retailer_name": "REI",
+     "retailer_url": "https://rei.example/products/nemo-disco-15",
+     "photo": "/images/rv-bag.webp",
+     "photo_alt": "Blue sleeping bag on a yellow pad beside a mountain lake at dusk",
+     "demo": true,
+     "position": 50
+    }
+   },
+   {
+    "id": "jetboil-flash",
+    "slug": "jetboil-flash",
+    "status": "published",
+    "data": {
+     "title": "Jetboil Flash Review",
+     "product": "Jetboil Flash",
+     "brand": "Jetboil",
+     "gear_type": "Stoves",
+     "activities": [
+      "camping",
+      "hiking"
+     ],
+     "summary": "A simple, reliable stove that gets the job done fast.",
+     "author": "Riley Chen",
+     "author_photo": "/images/av-riley.webp",
+     "date": "2024-01-15T10:00:00+07:00",
+     "updated": "2024-01-15T10:00:00+07:00",
+     "lead": "A canister stove that nests into its own cooking cup. This demo review is aimed at people who mostly boil water for coffee and dehydrated meals.",
+     "pros": "Fast boil for hot drinks and meals\nPush-button ignition\nPacks neatly into one unit",
+     "cons": "Best at boiling water, not simmering\nCup size limits group cooking",
+     "specs": "Capacity | 1 liter cup\nWeight (claimed) | about 13 oz (371 g)\nFuel | Isobutane-propane canister\nIgnition | Push-button\nBest for | Solo and two-person trips",
+     "sections": [
+      {
+       "heading": "A closer look",
+       "body": "A narrow burner under an insulated cup keeps heat where it is needed. The whole kit stows inside the cup."
+      },
+      {
+       "heading": "Performance",
+       "body": "Quick to boil in calm conditions; a windscreen helps when it picks up."
+      },
+      {
+       "heading": "Comfort & fit",
+       "body": "The cup sleeve is comfortable to hold, and the lid has a drinking spout and strainer."
+      },
+      {
+       "heading": "Features",
+       "body": "Fuel-canister stabilizer, measuring cup lid and a built-in igniter."
+      }
+     ],
+     "bottom_line": "A great fit for fast meals and hot drinks. Cooks who like to simmer will want a different stove.",
+     "retailer_name": "REI",
+     "retailer_url": "https://rei.example/products/jetboil-flash",
+     "photo": "/images/rv-stove.webp",
+     "photo_alt": "Black camping stove and cup on a rock with blurred mountains behind",
+     "demo": true,
+     "position": 60
+    }
+   },
+   {
+    "id": "osprey-farpoint-40",
+    "slug": "osprey-farpoint-40",
+    "status": "published",
+    "data": {
+     "title": "Osprey Farpoint 40 Review",
+     "product": "Osprey Farpoint 40",
+     "brand": "Osprey",
+     "gear_type": "Backpacks",
+     "activities": [
+      "travel"
+     ],
+     "summary": "A carry-on-friendly travel pack that opens like a suitcase.",
+     "author": "Jamie Park",
+     "author_photo": "/images/av-jamie.webp",
+     "date": "2023-12-12T10:00:00+07:00",
+     "updated": "2023-12-12T10:00:00+07:00",
+     "lead": "A travel backpack with a full clamshell opening and a stowable harness. This demo review is for people packing light for city and trail trips.",
+     "pros": "Opens flat like a suitcase\nHarness tucks away for checking\nSize suits most carry-on rules",
+     "cons": "Less suspension than a hiking pack\nLimited exterior storage",
+     "specs": "Capacity | 40 liters\nWeight (claimed) | about 3 lb 1 oz (1.4 kg)\nAccess | Panel-loading clamshell\nHarness | Stowable\nBest for | One-bag travel",
+     "sections": [
+      {
+       "heading": "A closer look",
+       "body": "Compression straps and a lockable zipper layout keep a full load tidy."
+      },
+      {
+       "heading": "Performance",
+       "body": "Comfortable for city days and short trail walks, but it is not built for long, heavy mileage."
+      },
+      {
+       "heading": "Comfort & fit",
+       "body": "The harness is padded and adjustable and the back panel is ventilated."
+      },
+      {
+       "heading": "Features",
+       "body": "Laptop sleeve, two internal compression panels and a detachable daypack-style strap."
+      }
+     ],
+     "bottom_line": "A strong pick for one-bag travel. Check your airline’s current carry-on limits before relying on any pack.",
+     "retailer_name": "REI",
+     "retailer_url": "https://rei.example/products/osprey-farpoint-40",
+     "photo": "/images/pick-talon.webp",
+     "photo_alt": "Dark green daypack-style backpack standing on rock with a mountain range behind",
+     "demo": true,
+     "position": 70
+    }
+   },
+   {
+    "id": "pack-it-cubes",
+    "slug": "pack-it-cubes",
+    "status": "published",
+    "data": {
+     "title": "Pack-It Cubes Review",
+     "product": "Pack-It packing cubes",
+     "brand": "Eagle Creek",
+     "gear_type": "Accessories",
+     "activities": [
+      "travel",
+      "hiking"
+     ],
+     "summary": "Simple packing cubes that keep a travel bag in order.",
+     "author": "Riley Chen",
+     "author_photo": "/images/av-riley.webp",
+     "date": "2023-11-20T10:00:00+07:00",
+     "updated": "2023-11-20T10:00:00+07:00",
+     "lead": "Packing cubes are an unglamorous gear category, but they change how a bag works. This demo review covers a basic set.",
+     "pros": "Keeps clothes sorted by day or type\nLight, easy to wash\nWorks in both travel and hiking packs",
+     "cons": "Adds a few ounces\nMesh panels can snag",
+     "specs": "Material | Ripstop nylon\nSet | Small, medium and large cubes\nClosure | Zipper\nBest for | Travel and multi-day trips",
+     "sections": [
+      {
+       "heading": "A closer look",
+       "body": "Three sizes cover shirts, socks and bulky layers; the lid mesh helps you see what is inside."
+      },
+      {
+       "heading": "Performance",
+       "body": "They make repacking quick and keep wet items apart from dry ones."
+      },
+      {
+       "heading": "Comfort & fit",
+       "body": "Sized to slot into carry-on packs without dead space."
+      },
+      {
+       "heading": "Features",
+       "body": "Side handles, mesh vents and a sturdy zipper."
+      }
+     ],
+     "bottom_line": "An inexpensive upgrade for anyone who packs and repacks often.",
+     "retailer_name": "REI",
+     "retailer_url": "https://rei.example/products/pack-it-cubes",
+     "photo": "/images/pick-trailblazer.webp",
+     "photo_alt": "Teal backpack on rocks with mountains in the distance",
+     "demo": true,
+     "position": 80
+    }
+   }
+  ],
+  "guides": [
+   {
+    "id": "best-hiking-backpacks",
+    "slug": "best-hiking-backpacks",
+    "status": "published",
+    "data": {
+     "title": "The best hiking backpacks for every adventure",
+     "card_title": "The best hiking backpacks for every adventure",
+     "summary": "From day hikes to thru-hikes, find the right pack for your next trip.",
+     "hero_lede": "Three packs that cover long weekends to long trails, with the numbers side by side.",
+     "jump_label": "Jump to our top picks",
+     "short_answer": "Match the pack to the heaviest load you realistically carry: ultralight frames suit light kits, internal-frame packs suit most trips, and a sturdier suspension is worth the weight once loads climb past 30 lb. The three packs below sit at different points on that scale.",
+     "sections": [
+      {
+       "heading": "How to choose",
+       "body": "Start with capacity for your longest trip, then check the manufacturer’s recommended load range. Torso length matters more than height: measure it and compare to each pack’s fit range."
+      }
+     ],
+     "picks_title": "Our top backpack picks",
+     "picks": [
+      {
+       "label": "Ultralight",
+       "name": "Osprey Exos 58",
+       "blurb": "Light and well ventilated for fast trips.",
+       "url": "/reviews/osprey-exos-58",
+       "photo": "/images/cmp-exos.webp",
+       "alt": "Olive green backpack on rocks"
+      },
+      {
+       "label": "All-round",
+       "name": "REI Co-op Flash 55",
+       "blurb": "A versatile pack for long weekends.",
+       "url": "/compare",
+       "photo": "/images/cmp-flash.webp",
+       "alt": "Black backpack on rocks"
+      },
+      {
+       "label": "Heavy loads",
+       "name": "Gregory Baltoro 65",
+       "blurb": "Built for the heaviest, longest trips.",
+       "url": "/compare",
+       "photo": "/images/cmp-baltoro.webp",
+       "alt": "Orange backpack on rocks"
+      }
+     ],
+     "faqs": [
+      {
+       "question": "Is a lighter pack always better?",
+       "answer": "Not if the pack is working against the load you carry. A lighter frame saves weight only when your kit is light too."
+      }
+     ],
+     "photo": "/images/hero-guide.webp",
+     "photo_alt": "Hiker with a green backpack looking over a lake and mountains",
+     "hero_photo": "/images/hero-guide.webp",
+     "position": 10
+    }
+   },
+   {
+    "id": "how-to-choose-a-tent",
+    "slug": "how-to-choose-a-tent",
+    "status": "published",
+    "data": {
+     "title": "How to choose a tent",
+     "card_title": "How to choose a tent",
+     "summary": "Key features, trade-offs and our top picks for different trips and terrains.",
+     "hero_lede": "Weight, space and weather protection pull in different directions. Here is how to balance them.",
+     "jump_label": "Jump to our top picks",
+     "short_answer": "Pick the smallest tent that still lets you sit up and keep gear dry. Then choose between freestanding comfort and lighter, trekking-pole designs based on how far you carry it.",
+     "sections": [
+      {
+       "heading": "Size and weight",
+       "body": "Add one person to the number you plan to sleep: a two-person tent is a snug fit for two and comfortable for one with gear. Vestibules matter as much as floor area."
+      },
+      {
+       "heading": "Weather protection",
+       "body": "Three-season tents suit spring to fall. Look for a full-coverage fly, taped seams and guy-out points for wind."
+      }
+     ],
+     "picks_title": "Our top tent pick",
+     "picks": [
+      {
+       "label": "Backcountry",
+       "name": "MSR Hubba Hubba 2",
+       "blurb": "Roomy and dependable for two.",
+       "url": "/reviews/msr-hubba-hubba-2",
+       "photo": "/images/rv-tent.webp",
+       "alt": "Grey tent in a meadow at sunset"
+      }
+     ],
+     "faqs": [
+      {
+       "question": "Do I need a footprint?",
+       "answer": "It protects the floor from abrasion and is optional for most trips."
+      }
+     ],
+     "photo": "/images/rv-tent.webp",
+     "photo_alt": "Light grey tent pitched in a meadow at sunset",
+     "hero_photo": "/images/hero-home.webp",
+     "position": 20
+    }
+   },
+   {
+    "id": "hiking-gear-checklist",
+    "slug": "hiking-gear-checklist",
+    "status": "published",
+    "data": {
+     "title": "Hiking gear checklist",
+     "card_title": "Hiking gear checklist",
+     "summary": "A practical, no-nonsense list for a safer, more comfortable trip outside.",
+     "hero_lede": "What to carry for a day hike or an overnight, grouped so nothing gets forgotten.",
+     "jump_label": "Jump to the checklist",
+     "short_answer": "Cover shelter, warmth, water, food, navigation and first aid, then add what the weather and distance call for.",
+     "sections": [
+      {
+       "heading": "Day hike",
+       "body": "Water and a way to treat more, food, a map or offline route, a warm layer, a rain shell, sun protection, a headlamp and a small first-aid kit."
+      },
+      {
+       "heading": "Overnight additions",
+       "body": "Shelter, a sleeping bag and pad, a stove and fuel, extra food and a spare warm layer."
+      }
+     ],
+     "picks_title": "Gear from our reviews",
+     "picks": [
+      {
+       "label": "Warmth",
+       "name": "Patagonia Down Sweater",
+       "blurb": "A packable insulated layer.",
+       "url": "/reviews/patagonia-down-sweater",
+       "photo": "/images/rv-jacket.webp",
+       "alt": "Green down jacket on a rock"
+      },
+      {
+       "label": "Sleep",
+       "name": "Nemo Disco 15",
+       "blurb": "A roomy three-season bag.",
+       "url": "/reviews/nemo-disco-15",
+       "photo": "/images/rv-bag.webp",
+       "alt": "Blue sleeping bag by a lake"
+      },
+      {
+       "label": "Cook",
+       "name": "Jetboil Flash",
+       "blurb": "Fast boil for hot drinks.",
+       "url": "/reviews/jetboil-flash",
+       "photo": "/images/rv-stove.webp",
+       "alt": "Black stove on a rock"
+      }
+     ],
+     "faqs": [
+      {
+       "question": "How often should I update my checklist?",
+       "answer": "Adjust it for each season and trip length, and after every trip note what you did not use."
+      }
+     ],
+     "photo": "/images/pick-trailblazer.webp",
+     "photo_alt": "Teal backpack on rocks with mountains in the distance",
+     "hero_photo": "/images/hero-guide.webp",
+     "position": 30
+    }
+   },
+   {
+    "id": "how-to-choose-a-daypack",
+    "slug": "how-to-choose-a-daypack",
+    "status": "published",
+    "data": {
+     "title": "How to choose a daypack",
+     "card_title": "How to choose a daypack",
+     "summary": "Capacity, fit and materials, and four daypacks worth a look.",
+     "hero_lede": "Find the right daypack for your hikes, from short local trails to full days in the mountains. We’ll break down what matters, how to choose, and our top picks.",
+     "jump_label": "Jump to our top picks",
+     "short_answer": "A great daypack is comfortable, fits your gear, and works for the way you hike. The right choice depends on your typical trip length, the gear you carry, and how you like a pack to fit. Below we break down the key factors to consider and recommend our favorite daypacks for a range of uses.",
+     "sections": [
+      {
+       "heading": "Daypack capacity",
+       "body": "Most day hikes fit in 18 to 28 liters. Go smaller for short, warm-weather walks and larger when you carry extra layers, food for the day or camera gear."
+      },
+      {
+       "heading": "Fit and comfort",
+       "body": "Check torso length and choose a hip belt that sits on your hip bones. Padded shoulder straps and a ventilated back panel make long days easier."
+      },
+      {
+       "heading": "Materials and features",
+       "body": "Ripstop nylon resists snags. Look for a hydration sleeve, stretch side pockets for bottles and a lid or zip pocket for small items."
+      },
+      {
+       "heading": "How we choose",
+       "body": "We compare published specifications, fit options and features across brands, and we note where a claim comes from the maker. This page contains sample content for the theme and does not describe real testing."
+      }
+     ],
+     "picks_title": "Our top daypack picks",
+     "picks": [
+      {
+       "label": "All-round",
+       "name": "Osprey Talon 22",
+       "blurb": "A versatile, comfortable pack that works for most day hikes.",
+       "url": "https://retailer.example/osprey-talon-22",
+       "photo": "/images/pick-talon.webp",
+       "alt": "Dark green daypack on a rocky ridge"
+      },
+      {
+       "label": "Lightweight",
+       "name": "Salomon Trailblazer 20",
+       "blurb": "A streamlined, light option for fast and light days.",
+       "url": "https://retailer.example/salomon-trailblazer-20",
+       "photo": "/images/pick-trailblazer.webp",
+       "alt": "Blue daypack on rocks with mountains behind"
+      },
+      {
+       "label": "Technical terrain",
+       "name": "Arc’teryx Mantis 26",
+       "blurb": "Rugged, comfortable and organised for bigger days.",
+       "url": "https://retailer.example/arcteryx-mantis-26",
+       "photo": "/images/pick-mantis.webp",
+       "alt": "Black daypack on a rocky outcrop"
+      },
+      {
+       "label": "Budget friendly",
+       "name": "REI Co-op Flash 22",
+       "blurb": "A capable, value-packed choice for everyday use.",
+       "url": "https://retailer.example/rei-flash-22",
+       "photo": "/images/pick-flash22.webp",
+       "alt": "Red daypack on rocks with mountains behind"
+      }
+     ],
+     "faqs": [
+      {
+       "question": "What size daypack do I need?",
+       "answer": "Between 18 and 28 liters covers most day hikes. Choose the lower end for warm, short outings and the upper end for cold weather or long days."
+      },
+      {
+       "question": "Should a daypack have a hip belt?",
+       "answer": "For loads over about 10 lb a hip belt moves weight off your shoulders. For lighter loads a simple sternum strap may be enough."
+      },
+      {
+       "question": "Are the picks affiliate links?",
+       "answer": "Yes. The retailer links on this page are affiliate links, and we may earn a commission if you buy, at no extra cost to you."
+      }
+     ],
+     "photo": "/images/hero-guide.webp",
+     "photo_alt": "Hiker with a grey backpack looking over a lake and mountains",
+     "hero_photo": "/images/hero-guide.webp",
+     "position": 40
+    }
+   }
+  ],
+  "products": [
+   {
+    "id": "exos-58",
+    "slug": "exos-58",
+    "status": "published",
+    "data": {
+     "title": "Exos 58",
+     "brand": "Osprey",
+     "blurb": "A lightweight thru-hiking favorite that keeps getting better.",
+     "weight": "2 lb 7 oz (1.11 kg)",
+     "capacity": "58 L",
+     "torso": "15 – 22 in",
+     "max_load": "25 lb",
+     "frame": "Ultralight frame",
+     "access": "Top load + side zip",
+     "best_for": "Thru-hiking, fast & light trips",
+     "features": "Ultra-lightweight design\nExcellent ventilation\nRemovable top lid",
+     "price": "$260",
+     "retailer_name": "REI",
+     "retailer_url": "https://rei.example/products/osprey-exos-58",
+     "review_slug": "osprey-exos-58",
+     "photo": "/images/cmp-exos.webp",
+     "photo_alt": "Olive green Osprey-style backpack on rocks with a mountain range behind",
+     "position": 10
+    }
+   },
+   {
+    "id": "flash-55",
+    "slug": "flash-55",
+    "status": "published",
+    "data": {
+     "title": "Flash 55",
+     "brand": "REI Co-op",
+     "blurb": "A versatile, well-rounded pack for long weekends and beyond.",
+     "weight": "2 lb 14 oz (1.30 kg)",
+     "capacity": "58 L",
+     "torso": "17 – 21 in",
+     "max_load": "30 lb",
+     "frame": "Internal frame",
+     "access": "Top load + front zip",
+     "best_for": "Weekend and multi-day hiking",
+     "features": "Durable and versatile\nLarge stretch pockets\nRemovable top lid",
+     "price": "$229",
+     "retailer_name": "REI",
+     "retailer_url": "https://rei.example/products/rei-flash-55",
+     "photo": "/images/cmp-flash.webp",
+     "photo_alt": "Black backpack on rocks with pine trees and mountains behind",
+     "position": 20
+    }
+   },
+   {
+    "id": "baltoro-65",
+    "slug": "baltoro-65",
+    "status": "published",
+    "data": {
+     "title": "Baltoro 65",
+     "brand": "Gregory",
+     "blurb": "Maximum comfort and load-carrying for big mountain trips.",
+     "weight": "5 lb 1 oz (2.29 kg)",
+     "capacity": "65 L",
+     "torso": "16 – 22 in",
+     "max_load": "50 lb",
+     "frame": "Internal frame",
+     "access": "Top load + front U-zip",
+     "best_for": "Heavy loads, extended trips",
+     "features": "Exceptional load-carrying comfort\nAdjustable torso length\nMultiple access points",
+     "price": "$340",
+     "retailer_name": "Backcountry",
+     "retailer_url": "https://backcountry.example/gregory-baltoro-65",
+     "photo": "/images/cmp-baltoro.webp",
+     "photo_alt": "Orange backpack on rocks with a lake and mountains in the distance",
+     "position": 30
+    }
+   }
+  ],
+  "site": [
+   {
+    "id": "main",
+    "slug": "main",
+    "status": "published",
+    "data": {
+     "title": "Fieldtested",
+     "footer_disclosure": "Fieldtested is an independent publication. We may earn a commission from purchases made through our links, at no extra cost to you.",
+     "affiliate_line": "We may earn a commission from purchases made through our links, at no extra cost to you.",
+     "price_disclaimer": "Prices and availability are subject to change.",
+     "demo_label": "Demo review"
+    }
+   }
+  ]
+ }
+}

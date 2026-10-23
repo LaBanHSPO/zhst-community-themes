@@ -1,0 +1,177 @@
+---
+/**
+ * Inquiry block: contact details are always visible; the forms-plugin form
+ * with slug `inquiry` renders beside them when it exists in the admin.
+ * On product pages the product name is shown and, if the form has a field
+ * named `product`, it is pre-filled client-side.
+ */
+import "@emdash-cms/plugin-forms/styles";
+import { Form } from "@emdash-cms/plugin-forms/ui";
+import type { StudioDetails } from "../lib/catalog";
+import { telHref } from "../lib/catalog";
+
+interface Props {
+	studio: StudioDetails;
+	heading?: string;
+	intro?: string | null;
+	product?: string | null;
+	headingId?: string;
+}
+
+const {
+	studio,
+	heading = "Send an inquiry",
+	intro,
+	product,
+	headingId = "inquiry-heading",
+} = Astro.props;
+const mailSubject = product ? `Inquiry: ${product}` : "Inquiry";
+const mailHref = studio.email
+	? `mailto:${studio.email}?subject=${encodeURIComponent(mailSubject)}`
+	: null;
+---
+
+<section class="inquiry" aria-labelledby={headingId} id="inquiry">
+	<div class="inquiry__details">
+		<p class="label label-rule">Inquiries</p>
+		<h2 id={headingId} class="inquiry__heading">{heading}</h2>
+		{
+			product && (
+				<p class="inquiry__product">
+					<span class="label">Asking about</span>
+					<strong>{product}</strong>
+				</p>
+			)
+		}
+		{intro && <p class="inquiry__intro">{intro}</p>}
+		{
+			(studio.email || studio.phone || studio.address.length > 0 || studio.hours) && (
+				<dl class="inquiry__contact">
+					{studio.email && mailHref && (
+						<div>
+							<dt class="label">Email</dt>
+							<dd><a href={mailHref}>{studio.email}</a></dd>
+						</div>
+					)}
+					{studio.phone && (
+						<div>
+							<dt class="label">Phone</dt>
+							<dd><a href={telHref(studio.phone)}>{studio.phone}</a></dd>
+						</div>
+					)}
+					{studio.address.length > 0 && (
+						<div>
+							<dt class="label">Studio</dt>
+							<dd>
+								{studio.address.map((line, i) => (
+									<>
+										{i > 0 && <br />}
+										{line}
+									</>
+								))}
+							</dd>
+						</div>
+					)}
+					{studio.hours && (
+						<div>
+							<dt class="label">Visits</dt>
+							<dd>{studio.hours}</dd>
+						</div>
+					)}
+				</dl>
+			)
+		}
+	</div>
+
+	<div class="inquiry__form" data-inquiry-product={product || undefined}>
+		<Form id="inquiry" />
+		<p class="inquiry__fallback">
+			{
+				mailHref ? (
+					<>
+						The online inquiry form is not available right now. Please email{" "}
+						<a href={mailHref}>{studio.email}</a>
+						{studio.phone && <> or call {studio.phone}</>} and we will reply within a few working days.
+					</>
+				) : (
+					<>The online inquiry form is not available right now. Please use the contact details on this page.</>
+				)
+			}
+		</p>
+	</div>
+</section>
+
+<script>
+	for (const container of document.querySelectorAll<HTMLElement>("[data-inquiry-product]")) {
+		const product = container.dataset.inquiryProduct;
+		if (!product) continue;
+		const field = container.querySelector<HTMLInputElement | HTMLTextAreaElement>(
+			'input[name="product"], textarea[name="product"]',
+		);
+		if (field && !field.value) field.value = product;
+	}
+</script>
+
+<style>
+	.inquiry {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+		gap: clamp(2rem, 6vw, 6rem);
+		align-items: start;
+	}
+
+	.inquiry__heading {
+		font-size: clamp(2.25rem, 4vw, 3.25rem);
+		margin: 1rem 0 1.25rem;
+	}
+
+	.inquiry__product {
+		display: flex;
+		flex-direction: column;
+		gap: 0.1rem;
+		padding: 1rem 1.25rem;
+		background: var(--color-surface);
+		border-left: 2px solid var(--color-olive);
+	}
+
+	.inquiry__product strong {
+		font-family: var(--font-display);
+		font-size: 1.5rem;
+		font-weight: 500;
+	}
+
+	.inquiry__intro {
+		color: var(--color-muted);
+	}
+
+	.inquiry__contact {
+		display: grid;
+		gap: 1rem;
+		margin: 1.5rem 0 0;
+	}
+
+	.inquiry__contact dd {
+		margin: 0;
+	}
+
+	.inquiry__form {
+		background: #fbf8f3;
+		border: 1px solid var(--color-line);
+		padding: clamp(1.25rem, 4vw, 2.5rem);
+	}
+
+	.inquiry__fallback {
+		margin: 0;
+		color: var(--color-muted);
+	}
+
+	.inquiry__form:has(.ec-form) .inquiry__fallback {
+		display: none;
+	}
+
+	@media (max-width: 56rem) {
+		.inquiry {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

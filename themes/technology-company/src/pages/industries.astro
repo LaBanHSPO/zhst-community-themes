@@ -1,0 +1,67 @@
+---
+import Base from "../layouts/Base.astro";
+import IndustryIcon from "../components/IndustryIcon.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { getIndustries, getOffice, lines } from "../lib/nexora";
+
+const [industriesResult, officeResult] = await Promise.all([getIndustries(), getOffice()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(industriesResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const industries = industriesResult.entries;
+const { office } = officeResult;
+---
+
+<Base
+	title="Industries"
+	description="Technology, data and digital services for the sectors that keep the world moving."
+>
+	<section class="page-head">
+		<div class="container page-head-inner">
+			<div>
+				<span class="eyebrow">Industries</span>
+				<h1>Built for the sectors that keep the world moving.</h1>
+			</div>
+			<p class="lede">
+				Every sector has its own rules, risks and rhythms. Our teams bring that context to every engagement, so technology choices fit the way your industry really works.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-white">
+		<div class="container">
+			{
+				industries.length > 0 ? (
+					<div class="industry-grid">
+						{industries.map((ind) => {
+							const focus = lines(ind.data.focus);
+							return (
+								<article class="industry-card" id={ind.data.slug ?? ind.data.id}>
+									<IndustryIcon icon={ind.data.icon} />
+									<h2 {...ind.edit.title}>{ind.data.title}</h2>
+									<p {...ind.edit.summary}>{ind.data.summary}</p>
+									{focus.length > 0 && (
+										<ul class="check-list" aria-label={`Where we help in ${ind.data.title}`}>
+											{focus.map((item) => (
+												<li>{item}</li>
+											))}
+										</ul>
+									)}
+								</article>
+							);
+						})}
+					</div>
+				) : (
+					<p class="empty">Industries will appear here once they are added in the admin.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<CtaBand
+		office={office}
+		title="Don't see your sector?"
+		text="The patterns we use travel well. Tell us about your organization and we will share how we would approach it."
+	/>
+</Base>

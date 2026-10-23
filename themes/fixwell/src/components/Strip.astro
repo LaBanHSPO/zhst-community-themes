@@ -1,0 +1,29 @@
+---
+/** Light band of three guarantees that closes most pages. */
+import Icon from "./Icon.astro";
+import type { Guarantee } from "../lib/fixwell";
+
+interface Props {
+	items: { data: Guarantee }[];
+	label?: string;
+}
+const { items, label = "Our promise" } = Astro.props;
+---
+
+{
+	items.length > 0 && (
+		<section class="strip" aria-label={label}>
+			<ul class="container strip-list">
+				{items.map((g) => (
+					<li>
+						<Icon name={g.data.icon ?? "house"} />
+						<div>
+							<h2>{g.data.title}</h2>
+							{g.data.text && <p>{g.data.text}</p>}
+						</div>
+					</li>
+				))}
+			</ul>
+		</section>
+	)
+}

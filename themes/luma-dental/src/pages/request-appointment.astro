@@ -1,0 +1,335 @@
+---
+import { getEmDashEntry } from "emdash";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import {
+	entryKey,
+	getClinic,
+	getServices,
+	isoDay,
+	photoAlt,
+	photoSrc,
+	prettyDay,
+	telHref,
+	timeOptions,
+	validIso,
+} from "../lib/luma";
+
+const q = Astro.url.searchParams;
+const dentistParam = (q.get("dentist") ?? "").trim().slice(0, 80);
+const [servicesResult, clinicResult, dentistResult] = await Promise.all([
+	getServices(),
+	getClinic(),
+	dentistParam ? getEmDashEntry("dentists", dentistParam) : Promise.resolve(null),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(clinicResult.cacheHint);
+	if (dentistResult) Astro.cache.set(dentistResult.cacheHint);
+}
+const { clinic } = clinicResult;
+const dentist = dentistResult?.entry?.data ?? null;
+
+const services = servicesResult.entries.map((e) => ({ key: entryKey(e.data), title: e.data.title }));
+const serviceParam = q.get("service") ?? "";
+const selectedService = services.some((s) => s.key === serviceParam) ? serviceParam : "";
+
+// Prefill from a dentist profile (?slot=YYYY-MM-DD 9:00 AM) or explicit ?date=&time=.
+const today = isoDay(0);
+const slotMatch = /^(\d{4}-\d{2}-\d{2}) (\d{1,2}:\d{2} [AP]M)$/i.exec((q.get("slot") ?? "").trim());
+let date = validIso(slotMatch?.[1] ?? q.get("date")) ?? "";
+if (date && date < today) date = "";
+const times = timeOptions();
+const timeParam = (slotMatch?.[2] ?? q.get("time") ?? "").trim().toUpperCase();
+const time = /^\d{1,2}:\d{2} [AP]M$/.test(timeParam) ? timeParam : "";
+if (time && !times.includes(time)) times.push(time);
+
+const clinicPhoto = photoSrc(clinic.image, clinic.photo);
+const mapPhoto = photoSrc(clinic.map_image, clinic.map_photo);
+const note =
+	clinic.request_note ??
+	"This is an appointment request, not a confirmed booking. We’ll contact you to confirm a time. Please don’t include medical records or health details here.";
+---
+
+<Base
+	title="Request appointment"
+	description="Request an appointment at Luma Dental. Tell us a little about your visit and we’ll find a time that works for you."
+	image="/images/hero-appointment.webp"
+>
+	<section class="hero hero-appointment" aria-labelledby="hero-title">
+		<div class="hero-media">
+			<img
+				src="/images/hero-appointment.webp"
+				alt="A smiling dentist chatting with a patient in the dental chair"
+				width="842"
+				height="223"
+				fetchpriority="high"
+			/>
+		</div>
+		<div class="container hero-copy">
+			<p class="eyebrow">Appointment request</p>
+			<h1 id="hero-title" class="title title-hero title-hero-appointment">Book your appointment<span class="dot">.</span></h1>
+			<p class="lede">
+				Convenient, flexible appointments with our friendly team.<br class="br-wide" /> We look forward to welcoming you to {clinic.title}.
+			</p>
+		</div>
+	</section>
+
+	<div class="container booking">
+		<section class="booking-form panel" aria-labelledby="form-title">
+			<h2 id="form-title" class="title-form">Appointment details</h2>
+			<p class="form-lede">Tell us a little about your visit and we’ll find a time that works for you.</p>
+
+			<form
+				class="appt-form"
+				id="appt-form"
+				aria-label="Appointment request"
+				data-email={clinic.email}
+				data-clinic={clinic.title}
+				action={clinic.email ? `mailto:${clinic.email}?subject=${encodeURIComponent("Appointment request")}` : undefined}
+				method="post"
+				enctype="text/plain"
+			>
+				{
+					dentist && (
+						<>
+							<input type="hidden" name="dentist" value={dentist.title} />
+							<p class="prefill-note">
+								<Icon name="user" />
+								<span>{`Requesting a visit with ${dentist.title}${date && time ? ` on ${prettyDay(date)} at ${time}` : ""}. You can change the details below.`}</span>
+							</p>
+						</>
+					)
+				}
+
+				<fieldset class="field field-wide">
+					<legend>I am a</legend>
+					<div class="choice-row">
+						<label class="choice">
+							<input type="radio" name="patient" value="New patient" checked required />
+							<Icon name="user" />
+							<span>
+								<strong>New patient</strong>
+								<span>First time at {clinic.title}</span>
+							</span>
+						</label>
+						<label class="choice">
+							<input type="radio" name="patient" value="Existing patient" />
+							<Icon name="user" />
+							<span>
+								<strong>Existing patient</strong>
+								<span>I’ve visited {clinic.title} before</span>
+							</span>
+						</label>
+					</div>
+				</fieldset>
+
+				<div class="field field-wide">
+					<label for="a-service">Service</label>
+					<span class="control control-icon">
+						<Icon name="tooth" class="control-lead" />
+						<select id="a-service" name="service" required>
+							<option value="" selected={!selectedService} disabled>Select a service</option>
+							{services.map((s) => <option value={s.title} selected={s.key === selectedService}>{s.title}</option>)}
+							<option value="Not sure yet">Not sure yet</option>
+						</select>
+						<Icon name="chevron" class="control-chevron" />
+					</span>
+				</div>
+
+				<div class="field">
+					<label for="a-date">Preferred date</label>
+					<span class="control control-icon date-wrap">
+						<Icon name="calendar" class="control-lead" />
+						<input id="a-date" class="date-input" name="date" type="date" min={today} value={date} required />
+						<span class="date-pretty" aria-hidden="true">{date ? prettyDay(date) : "Choose a date"}</span>
+						<Icon name="calendar" class="control-trail" />
+					</span>
+				</div>
+				<div class="field">
+					<label for="a-time">Preferred time</label>
+					<span class="control control-icon">
+						<Icon name="clock" class="control-lead" />
+						<select id="a-time" name="time" required>
+							<option value="" selected={!time} disabled>Select a time</option>
+							{times.map((t) => <option value={t} selected={t === time}>{t}</option>)}
+						</select>
+						<Icon name="chevron" class="control-chevron" />
+					</span>
+				</div>
+
+				<div class="field">
+					<label for="a-name">Your name</label>
+					<span class="control control-icon">
+						<Icon name="user" class="control-lead" />
+						<input id="a-name" name="name" type="text" autocomplete="name" placeholder="Full name" maxlength="120" required />
+					</span>
+				</div>
+				<div class="field">
+					<label for="a-phone">Phone number</label>
+					<span class="control control-icon">
+						<Icon name="phone" class="control-lead" />
+						<input id="a-phone" name="phone" type="tel" autocomplete="tel" placeholder="Phone number" maxlength="40" required />
+					</span>
+				</div>
+				<div class="field field-wide">
+					<label for="a-email">Email address</label>
+					<span class="control control-icon">
+						<Icon name="mail" class="control-lead" />
+						<input id="a-email" name="email" type="email" autocomplete="email" placeholder="Email address" maxlength="160" required />
+					</span>
+				</div>
+				<div class="field field-wide">
+					<label for="a-notes">Additional information (optional)</label>
+					<span class="control control-icon control-area">
+						<Icon name="chat" class="control-lead" />
+						<textarea
+							id="a-notes"
+							name="notes"
+							rows="1"
+							maxlength="1000"
+							placeholder="Let us know if you have any questions or special requests."></textarea>
+					</span>
+				</div>
+
+				<div class="field-wide form-foot">
+					<button class="btn btn-lg" type="submit">Request appointment <Arrow /></button>
+					<p class="form-note">{note}</p>
+				</div>
+				<p class="form-status field-wide" role="status" aria-live="polite" data-status>
+					{
+						clinic.email ? (
+							<noscript>
+								Without JavaScript, send your request by email to <a href={`mailto:${clinic.email}`}>{clinic.email}</a>.
+							</noscript>
+						) : (
+							clinic.phone && (
+								<>
+									Online requests are not available right now. Please call <a href={telHref(clinic.phone)}>{clinic.phone}</a>.
+								</>
+							)
+						)
+					}
+				</p>
+			</form>
+		</section>
+
+		<aside class="clinic-card" aria-labelledby="clinic-title">
+			{clinicPhoto && <img class="clinic-photo" src={clinicPhoto} alt={photoAlt(clinic.image, clinic.photo_alt, `${clinic.title} reception`)} width="456" height="197" loading="lazy" />}
+			<div class="clinic-address">
+				<Icon name="pin" />
+				<div>
+					<h2 id="clinic-title">Our clinic</h2>
+					{
+						(clinic.address_line1 || clinic.address_line2) && (
+							<p>
+								{clinic.address_line1}
+								{clinic.address_line1 && clinic.address_line2 && <br />}
+								{clinic.address_line2}
+							</p>
+						)
+					}
+					{
+						clinic.directions_url && (
+							<a class="text-link" href={clinic.directions_url} target="_blank" rel="noopener noreferrer">
+								Get directions <Arrow />
+								<span class="sr-only">(opens in a new tab)</span>
+							</a>
+						)
+					}
+				</div>
+			</div>
+			{mapPhoto && <img class="clinic-map" src={mapPhoto} alt={photoAlt(clinic.map_image, clinic.map_alt, `Map showing ${clinic.title}`)} width="456" height="179" loading="lazy" />}
+			<div class="clinic-meta">
+				{
+					(clinic.hours ?? []).length > 0 && (
+						<div>
+							<Icon name="clock" />
+							<div>
+								<h3>Opening hours</h3>
+								{(clinic.hours ?? []).map((h) => (
+									<p>
+										{h.days}: {h.time}
+									</p>
+								))}
+							</div>
+						</div>
+					)
+				}
+				{
+					clinic.phone && (
+						<div>
+							<Icon name="phone" />
+							<div>
+								<h3>Call us</h3>
+								<p>
+									<a href={telHref(clinic.phone)}>{clinic.phone}</a>
+								</p>
+								{clinic.phone_note && <p>{clinic.phone_note}</p>}
+							</div>
+						</div>
+					)
+				}
+			</div>
+		</aside>
+	</div>
+</Base>
+
+<script>
+	// Appointment request email. Nothing is sent by the site itself.
+	const form = document.querySelector<HTMLFormElement>("#appt-form");
+	const status = form?.querySelector<HTMLElement>("[data-status]");
+	const day = new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+	const pretty = (iso: string) => (iso ? day.format(new Date(`${iso}T00:00:00Z`)) : "");
+
+	for (const input of document.querySelectorAll<HTMLInputElement>("input.date-input")) {
+		const label = input.parentElement?.querySelector<HTMLElement>(".date-pretty");
+		if (!label) continue;
+		const update = () => {
+			label.textContent = input.value ? pretty(input.value).replace(/, \d{4}$/, "") : "Choose a date";
+			input.classList.toggle("is-empty", !input.value);
+		};
+		input.addEventListener("input", update);
+		input.addEventListener("change", update);
+		update();
+	}
+
+	if (form && status) {
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!form.reportValidity()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online requests are not available right now. Please contact the clinic by phone.";
+				return;
+			}
+			const data = new FormData(form);
+			const get = (k: string) => String(data.get(k) ?? "").trim();
+			const subject = `Appointment request: ${get("service")}, ${pretty(get("date"))} ${get("time")}`;
+			const body = [
+				"Hello,",
+				"",
+				"I would like to request an appointment. Please contact me to confirm a time.",
+				"",
+				`I am a: ${get("patient")}`,
+				`Service: ${get("service")}`,
+				...(get("dentist") ? [`Dentist: ${get("dentist")}`] : []),
+				`Preferred date: ${pretty(get("date"))}`,
+				`Preferred time: ${get("time")}`,
+				`Name: ${get("name")}`,
+				`Phone: ${get("phone")}`,
+				`Email: ${get("email")}`,
+				`Additional information: ${get("notes") || "None"}`,
+				"",
+			].join("\n");
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+			status.textContent =
+				"Your email app should open with this request ready to send. Nothing is sent until you send that email. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	}
+</script>

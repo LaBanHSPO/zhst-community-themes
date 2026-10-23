@@ -1,0 +1,892 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Neighborhood Bistro",
+		"description": "A warm neighborhood restaurant theme: seasonal menu, our story, visit page and table requests",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "Neighborhood Bistro",
+		"tagline": "Seasonal food and welcoming tables"
+	},
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "eyebrow",
+					"label": "Small label above the title",
+					"type": "string"
+				},
+				{
+					"slug": "intro",
+					"label": "Intro line",
+					"type": "text"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "dishes",
+			"label": "Menu",
+			"labelSingular": "Dish",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Dish name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "course",
+					"label": "Course",
+					"type": "select",
+					"required": true,
+					"indexed": true,
+					"defaultValue": "mains",
+					"validation": {
+						"options": [
+							"snacks",
+							"starters",
+							"mains",
+							"sides",
+							"desserts",
+							"drinks"
+						]
+					}
+				},
+				{
+					"slug": "price",
+					"label": "Price (as displayed, e.g. $24)",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "description",
+					"label": "Description",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "dietary",
+					"label": "Dietary notes (e.g. V · GF)",
+					"type": "string"
+				},
+				{
+					"slug": "featured",
+					"label": "Feature on the homepage",
+					"type": "boolean",
+					"indexed": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Bundled photo path",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "highlights",
+			"label": "Highlights",
+			"labelSingular": "Highlight",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "text",
+					"label": "Text",
+					"type": "text"
+				},
+				{
+					"slug": "placement",
+					"label": "Where it appears",
+					"type": "select",
+					"required": true,
+					"indexed": true,
+					"defaultValue": "story",
+					"validation": {
+						"options": [
+							"story",
+							"booking"
+						]
+					}
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "hours",
+			"label": "Opening hours",
+			"labelSingular": "Opening hours row",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Days",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "hours",
+					"label": "Hours",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "venue",
+			"label": "Restaurant details",
+			"labelSingular": "Restaurant details",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "street",
+					"label": "Street address",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "locality",
+					"label": "Postcode and city",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "country",
+					"label": "Country",
+					"type": "string"
+				},
+				{
+					"slug": "phone",
+					"label": "Phone",
+					"type": "string"
+				},
+				{
+					"slug": "email",
+					"label": "Reservations email",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "directions_url",
+					"label": "Directions link (optional, defaults to Google Maps)",
+					"type": "string"
+				},
+				{
+					"slug": "getting_here",
+					"label": "Getting here (transit, parking, access)",
+					"type": "text"
+				},
+				{
+					"slug": "booking_note",
+					"label": "Booking note (party sizes, deposits)",
+					"type": "text"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Home",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "Menu",
+					"url": "/menu"
+				},
+				{
+					"type": "custom",
+					"label": "Our Story",
+					"url": "/our-story"
+				},
+				{
+					"type": "custom",
+					"label": "Visit",
+					"url": "/visit"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "our-story",
+				"slug": "our-story",
+				"status": "published",
+				"data": {
+					"title": "A table for the whole street.",
+					"eyebrow": "Our story",
+					"intro": "Neighborhood Bistro opened on a quiet corner with twelve tables, a wood-fired stove and a simple idea: cook honest, seasonal food for the people who live around us.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b0",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We started as a Sunday supper club in a borrowed kitchen. Neighbors brought wine, we brought whatever the market had that morning, and the evenings ran long. When the old corner bakery closed, it felt like the right room to keep that table going.",
+									"_key": "b0s"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b1",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Today our kitchen still works the same way. We buy from a handful of small farms and one fishmonger we trust, write the menu around what arrives, and keep it short so everything on it is cooked with care.",
+									"_key": "b1s"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"_key": "b2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Who cooks for you",
+									"_key": "b2s"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b3",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Our chef grew up in her grandmother's kitchen and spent ten years in city restaurants before coming home to cook the food she loves to eat. The front of house is run by her brother, who knows most regulars by name and the rest by their usual order.",
+									"_key": "b3s"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b4",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Whether you come for a glass at the bar, a long dinner with friends or a birthday with the whole family, we hope you leave feeling like a neighbor.",
+									"_key": "b4s"
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "private-dining",
+				"slug": "private-dining",
+				"status": "published",
+				"data": {
+					"title": "Private dining",
+					"eyebrow": "Gatherings",
+					"intro": "Our back room seats up to twenty-four for birthdays, rehearsal dinners and long Sunday lunches.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b0",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We build a sharing menu with you around the season: a few snacks to start, two or three starters for the table, a choice of mains and something sweet to finish.",
+									"_key": "b0s"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"_key": "b1",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How it works",
+									"_key": "b1s"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Send us your date, the number of guests and anything we should know. We reply within two working days with menu ideas and a quote. A deposit holds the room.",
+									"_key": "b2s"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b3",
+							"children": [
+								{
+									"_type": "span",
+									"text": "The room has its own entrance, a long oak table and a small speaker for music or a few words.",
+									"_key": "b3s"
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "allergies",
+				"slug": "allergies",
+				"status": "published",
+				"data": {
+					"title": "Allergies & dietary needs",
+					"eyebrow": "Good to know",
+					"intro": "We cook everything from scratch, so we can usually adapt a dish for you.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b0",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Please tell your server about any allergy before you order. Our menu marks vegetarian (V), vegan (VG) and gluten-free (GF) dishes, but our kitchen handles nuts, gluten, dairy and shellfish, so we cannot guarantee any dish is free of traces.",
+									"_key": "b0s"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b1",
+							"children": [
+								{
+									"_type": "span",
+									"text": "If you have a severe allergy, mention it when you request a table and the chef will plan ahead.",
+									"_key": "b1s"
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"dishes": [
+			{
+				"id": "warm-sourdough-cultured-butter",
+				"slug": "warm-sourdough-cultured-butter",
+				"status": "published",
+				"data": {
+					"title": "Warm sourdough & cultured butter",
+					"course": "snacks",
+					"price": "$7",
+					"description": "Our own loaf, baked each afternoon, with sea-salted butter.",
+					"featured": false,
+					"position": 10,
+					"dietary": "V"
+				}
+			},
+			{
+				"id": "marinated-olives",
+				"slug": "marinated-olives",
+				"status": "published",
+				"data": {
+					"title": "Marinated olives",
+					"course": "snacks",
+					"price": "$6",
+					"description": "Castelvetrano and Kalamata, orange zest, fennel seed.",
+					"featured": false,
+					"position": 20,
+					"dietary": "VG · GF"
+				}
+			},
+			{
+				"id": "gougeres",
+				"slug": "gougeres",
+				"status": "published",
+				"data": {
+					"title": "Gougères",
+					"course": "snacks",
+					"price": "$9",
+					"description": "Three warm cheese puffs with aged Comté.",
+					"featured": false,
+					"position": 30,
+					"dietary": "V"
+				}
+			},
+			{
+				"id": "roasted-beet-salad",
+				"slug": "roasted-beet-salad",
+				"status": "published",
+				"data": {
+					"title": "Roasted beet salad",
+					"course": "starters",
+					"price": "$15",
+					"description": "Golden and red beets, whipped goat cheese, blood orange, toasted walnuts.",
+					"featured": false,
+					"position": 40,
+					"dietary": "V · GF",
+					"photo": "/images/dish-beets.webp"
+				}
+			},
+			{
+				"id": "chilled-pea-soup",
+				"slug": "chilled-pea-soup",
+				"status": "published",
+				"data": {
+					"title": "Chilled pea soup",
+					"course": "starters",
+					"price": "$12",
+					"description": "Spring peas, mint, crème fraîche and a little lemon oil.",
+					"featured": false,
+					"position": 50,
+					"dietary": "V · GF"
+				}
+			},
+			{
+				"id": "steak-tartare",
+				"slug": "steak-tartare",
+				"status": "published",
+				"data": {
+					"title": "Steak tartare",
+					"course": "starters",
+					"price": "$18",
+					"description": "Hand-cut beef, cornichon, shallot, egg yolk, crisp potato.",
+					"featured": false,
+					"position": 60,
+					"dietary": "GF"
+				}
+			},
+			{
+				"id": "burrata-stone-fruit",
+				"slug": "burrata-stone-fruit",
+				"status": "published",
+				"data": {
+					"title": "Burrata & stone fruit",
+					"course": "starters",
+					"price": "$16",
+					"description": "Charred peaches, basil, aged balsamic, grilled bread.",
+					"featured": false,
+					"position": 70,
+					"dietary": "V"
+				}
+			},
+			{
+				"id": "seared-scallops",
+				"slug": "seared-scallops",
+				"status": "published",
+				"data": {
+					"title": "Seared scallops",
+					"course": "mains",
+					"price": "$34",
+					"description": "Parsnip purée, asparagus, brown butter and pea shoots.",
+					"featured": true,
+					"position": 80,
+					"dietary": "GF",
+					"photo": "/images/dish-scallops.webp"
+				}
+			},
+			{
+				"id": "crispy-skin-salmon",
+				"slug": "crispy-skin-salmon",
+				"status": "published",
+				"data": {
+					"title": "Crispy-skin salmon",
+					"course": "mains",
+					"price": "$31",
+					"description": "Heirloom carrots, cherry tomatoes, new potatoes, salsa verde.",
+					"featured": true,
+					"position": 90,
+					"dietary": "GF",
+					"photo": "/images/dish-salmon.webp"
+				}
+			},
+			{
+				"id": "half-roast-chicken",
+				"slug": "half-roast-chicken",
+				"status": "published",
+				"data": {
+					"title": "Half roast chicken",
+					"course": "mains",
+					"price": "$28",
+					"description": "Thyme jus, buttered greens and our garlic fries.",
+					"featured": false,
+					"position": 100
+				}
+			},
+			{
+				"id": "wild-mushroom-risotto",
+				"slug": "wild-mushroom-risotto",
+				"status": "published",
+				"data": {
+					"title": "Wild mushroom risotto",
+					"course": "mains",
+					"price": "$24",
+					"description": "Carnaroli rice, porcini, mascarpone, parmesan.",
+					"featured": false,
+					"position": 110,
+					"dietary": "V · GF"
+				}
+			},
+			{
+				"id": "bistro-steak-frites",
+				"slug": "bistro-steak-frites",
+				"status": "published",
+				"data": {
+					"title": "Bistro steak frites",
+					"course": "mains",
+					"price": "$36",
+					"description": "Grass-fed flat iron, béarnaise, frites, watercress.",
+					"featured": false,
+					"position": 120,
+					"dietary": "GF"
+				}
+			},
+			{
+				"id": "garlic-fries",
+				"slug": "garlic-fries",
+				"status": "published",
+				"data": {
+					"title": "Garlic fries",
+					"course": "sides",
+					"price": "$7",
+					"description": "Rosemary salt and aioli.",
+					"featured": false,
+					"position": 130,
+					"dietary": "V"
+				}
+			},
+			{
+				"id": "market-greens",
+				"slug": "market-greens",
+				"status": "published",
+				"data": {
+					"title": "Market greens",
+					"course": "sides",
+					"price": "$8",
+					"description": "Whatever looks best this week, lemon and olive oil.",
+					"featured": false,
+					"position": 140,
+					"dietary": "VG · GF"
+				}
+			},
+			{
+				"id": "bread-olive-oil",
+				"slug": "bread-olive-oil",
+				"status": "published",
+				"data": {
+					"title": "Bread & olive oil",
+					"course": "sides",
+					"price": "$5",
+					"description": "Sourdough with peppery new-season oil.",
+					"featured": false,
+					"position": 150,
+					"dietary": "VG",
+					"photo": "/images/bread-and-oil.webp"
+				}
+			},
+			{
+				"id": "dark-chocolate-pot",
+				"slug": "dark-chocolate-pot",
+				"status": "published",
+				"data": {
+					"title": "Dark chocolate pot",
+					"course": "desserts",
+					"price": "$11",
+					"description": "Salted caramel, crème fraîche, cocoa nib crumble.",
+					"featured": false,
+					"position": 160,
+					"dietary": "V · GF"
+				}
+			},
+			{
+				"id": "lemon-tart",
+				"slug": "lemon-tart",
+				"status": "published",
+				"data": {
+					"title": "Lemon tart",
+					"course": "desserts",
+					"price": "$10",
+					"description": "Brûléed lemon curd, almond pastry, berries.",
+					"featured": false,
+					"position": 170,
+					"dietary": "V"
+				}
+			},
+			{
+				"id": "seasonal-sorbet",
+				"slug": "seasonal-sorbet",
+				"status": "published",
+				"data": {
+					"title": "Seasonal sorbet",
+					"course": "desserts",
+					"price": "$8",
+					"description": "Two scoops, ask us for today's flavours.",
+					"featured": false,
+					"position": 180,
+					"dietary": "VG · GF"
+				}
+			},
+			{
+				"id": "house-white-by-the-glass",
+				"slug": "house-white-by-the-glass",
+				"status": "published",
+				"data": {
+					"title": "House white, by the glass",
+					"course": "drinks",
+					"price": "$12",
+					"description": "Crisp, mineral Loire Sauvignon Blanc.",
+					"featured": true,
+					"position": 190,
+					"photo": "/images/wine-and-candle.webp"
+				}
+			},
+			{
+				"id": "house-red-by-the-glass",
+				"slug": "house-red-by-the-glass",
+				"status": "published",
+				"data": {
+					"title": "House red, by the glass",
+					"course": "drinks",
+					"price": "$12",
+					"description": "Juicy Côtes du Rhône, light chill in summer.",
+					"featured": false,
+					"position": 200
+				}
+			},
+			{
+				"id": "neighborhood-spritz",
+				"slug": "neighborhood-spritz",
+				"status": "published",
+				"data": {
+					"title": "Neighborhood spritz",
+					"course": "drinks",
+					"price": "$13",
+					"description": "Bitter orange aperitivo, sparkling wine, soda.",
+					"featured": false,
+					"position": 210
+				}
+			},
+			{
+				"id": "garden-cooler",
+				"slug": "garden-cooler",
+				"status": "published",
+				"data": {
+					"title": "Garden cooler",
+					"course": "drinks",
+					"price": "$7",
+					"description": "Cucumber, mint, lime and soda. Alcohol-free.",
+					"featured": false,
+					"position": 220,
+					"dietary": "VG"
+				}
+			}
+		],
+		"highlights": [
+			{
+				"id": "story-0",
+				"status": "published",
+				"data": {
+					"title": "Cooked with the season",
+					"text": "Our menu follows what the farms and fishermen bring us, so it changes a little every week.",
+					"placement": "story",
+					"position": 10
+				},
+				"slug": "story-0"
+			},
+			{
+				"id": "story-1",
+				"status": "published",
+				"data": {
+					"title": "Made for sharing",
+					"text": "Small plates, big bowls and long tables. Good meals feel better when they are passed around.",
+					"placement": "story",
+					"position": 20
+				},
+				"slug": "story-1"
+			},
+			{
+				"id": "story-2",
+				"status": "published",
+				"data": {
+					"title": "A neighborly welcome",
+					"text": "Regulars, first-timers and families with little ones are all welcome at our tables.",
+					"placement": "story",
+					"position": 30
+				},
+				"slug": "story-2"
+			},
+			{
+				"id": "booking-3",
+				"status": "published",
+				"data": {
+					"title": "Book ahead for weekends",
+					"text": "Friday and Saturday evenings fill up quickly; we hold a few tables for walk-ins.",
+					"placement": "booking",
+					"position": 40
+				},
+				"slug": "booking-3"
+			},
+			{
+				"id": "booking-4",
+				"status": "published",
+				"data": {
+					"title": "Larger groups",
+					"text": "For parties of seven or more, send us a note and we'll plan a sharing menu together.",
+					"placement": "booking",
+					"position": 50
+				},
+				"slug": "booking-4"
+			},
+			{
+				"id": "booking-5",
+				"status": "published",
+				"data": {
+					"title": "Dietary needs",
+					"text": "Tell us about allergies when you book; most dishes can be adapted.",
+					"placement": "booking",
+					"position": 60
+				},
+				"slug": "booking-5"
+			}
+		],
+		"hours": [
+			{
+				"id": "h1",
+				"status": "published",
+				"data": {
+					"title": "Monday",
+					"hours": "Closed",
+					"position": 10
+				},
+				"slug": "h1"
+			},
+			{
+				"id": "h2",
+				"status": "published",
+				"data": {
+					"title": "Tuesday – Thursday",
+					"hours": "5:00 – 10:00 pm",
+					"position": 20
+				},
+				"slug": "h2"
+			},
+			{
+				"id": "h3",
+				"status": "published",
+				"data": {
+					"title": "Friday – Saturday",
+					"hours": "5:00 – 11:00 pm",
+					"position": 30
+				},
+				"slug": "h3"
+			},
+			{
+				"id": "h4",
+				"status": "published",
+				"data": {
+					"title": "Sunday",
+					"hours": "11:30 am – 9:00 pm",
+					"position": 40
+				},
+				"slug": "h4"
+			}
+		],
+		"venue": [
+			{
+				"id": "venue",
+				"status": "published",
+				"data": {
+					"title": "Neighborhood Bistro",
+					"street": "214 Elm Street",
+					"locality": "Portland, OR 97214",
+					"country": "United States",
+					"phone": "(555) 014-2290",
+					"email": "tables@neighborhoodbistro.example",
+					"getting_here": "We're two blocks from the Elm & 5th bus stop (lines 4 and 15). Street parking is free after 6 pm, and there's a bike rack right outside the door. The dining room and restroom are step-free.",
+					"booking_note": "We take requests for up to six guests here. For seven or more, or for the private room, send us a note and we'll plan it together."
+				},
+				"slug": "venue"
+			}
+		]
+	}
+}

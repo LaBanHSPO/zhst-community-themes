@@ -1,0 +1,23 @@
+---
+/** Service card: rounded photo, line icon, bold title and a one-line summary. */
+import Icon from "./Icon.astro";
+import { entryHref, photoSrc } from "../lib/home";
+
+interface Props {
+	service: { data: any; edit: Record<string, Record<string, unknown>> };
+}
+const { service } = Astro.props;
+const s = service.data;
+const src = photoSrc(s.image, s.photo);
+---
+
+<a class="service-card" href={entryHref("/services", s)}>
+	{src && <img class="service-card-photo" src={src} alt={s.image?.alt ?? ""} width="292" height="178" loading="lazy" decoding="async" />}
+	<span class="service-card-body">
+		<span class="service-card-icon"><Icon name={s.icon ?? "wrench"} size={38} /></span>
+		<span class="service-card-text">
+			<span class="service-card-title" {...service.edit.title}>{s.title}</span>
+			<span class="service-card-summary">{s.summary}</span>
+		</span>
+	</span>
+</a>

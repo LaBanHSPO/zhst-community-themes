@@ -1,0 +1,80 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+	slug: string;
+	title: string;
+	summary?: string | null;
+	icon?: string | null;
+	headingLevel?: "h2" | "h3";
+}
+
+const { slug, title, summary, icon, headingLevel = "h3" } = Astro.props;
+const Heading = headingLevel;
+const href = `/services/${encodeURIComponent(slug)}`;
+---
+
+<article class="lc-card lc-service">
+	<Icon name={icon} size={104} />
+	<Heading class="lc-service__title">
+		<a href={href}>{title}</a>
+	</Heading>
+	{summary && <p>{summary}</p>}
+	<span class="lc-link-arrow" aria-hidden="true">
+		Learn more
+		<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+	</span>
+</article>
+
+<style>
+	.lc-service {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		padding: 1.5rem 1.85rem 1.85rem;
+		height: 100%;
+		transition: box-shadow 0.15s ease, transform 0.15s ease;
+	}
+
+	.lc-service :global(.lc-icon) {
+		align-self: center;
+		margin-bottom: 0.75rem;
+	}
+
+	.lc-service__title {
+		font-size: 1.6rem;
+		margin-bottom: 0.6rem;
+	}
+
+	.lc-service__title a {
+		text-decoration: none;
+		color: inherit;
+	}
+
+	/* Whole card is clickable via the heading link. */
+	.lc-service__title a::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		border-radius: var(--lc-radius);
+	}
+
+	.lc-service p {
+		color: var(--lc-muted);
+		flex: 1;
+	}
+
+	.lc-service:hover {
+		box-shadow: 0 10px 28px rgb(19 33 60 / 12%);
+	}
+
+	.lc-service:has(a:focus-visible) {
+		outline: 3px solid var(--lc-focus);
+		outline-offset: 3px;
+	}
+
+	.lc-service a:focus-visible {
+		outline: none;
+	}
+</style>

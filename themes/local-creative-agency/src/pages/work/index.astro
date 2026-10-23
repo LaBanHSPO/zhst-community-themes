@@ -1,0 +1,62 @@
+---
+import Base from "../../layouts/Base.astro";
+import WorkCard from "../../components/WorkCard.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { getOffice, getProjects, tagList, tagSlug } from "../../lib/agency";
+
+const [projectsResult, officeResult] = await Promise.all([getProjects(), getOffice()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(projectsResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const all = projectsResult.entries;
+const { office } = officeResult;
+
+// Discipline filter: one chip per tag used by at least one case study, in order of first use.
+const tags: { label: string; slug: string }[] = [];
+for (const p of all) {
+	for (const label of tagList(p.data.tags)) {
+		const slug = tagSlug(label);
+		if (!tags.some((t) => t.slug === slug)) tags.push({ label, slug });
+	}
+}
+const requested = Astro.url.searchParams.get("discipline");
+const active = tags.find((t) => t.slug === requested);
+const projects = active ? all.filter((p) => tagList(p.data.tags).some((t) => tagSlug(t) === active.slug)) : all;
+---
+
+<Base title="Work" description="Selected case studies from LOCAL: brand, packaging, website and campaign projects for purposeful local brands." current="/work">
+	<section class="page-head">
+		<div class="container page-head-inner">
+			<p class="eyebrow">Work</p>
+			<h1>Real brands. Brighter stories.</h1>
+			<p class="lede">A selection of recent projects, from first sketches to launch. The brands are fictional; the way we work is not.</p>
+		</div>
+	</section>
+
+	<section class="section list-section">
+		<div class="container">
+			{
+				tags.length > 1 && (
+					<nav class="filter" aria-label="Filter by discipline">
+						<a href="/work" aria-current={active ? undefined : "true"}>All</a>
+						{tags.map((t) => (
+							<a href={`/work?discipline=${t.slug}`} aria-current={active?.slug === t.slug ? "true" : undefined}>{t.label}</a>
+						))}
+					</nav>
+				)
+			}
+			{
+				projects.length > 0 ? (
+					<div class="work-grid">
+						{projects.map((p) => <WorkCard project={p} />)}
+					</div>
+				) : (
+					<p class="empty">No case studies match this filter yet.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<CtaBand office={office} />
+</Base>

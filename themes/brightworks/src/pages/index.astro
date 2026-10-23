@@ -1,0 +1,62 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PhotoHero from "../components/PhotoHero.astro";
+import { getServices, photoSrc, quoteUrl, serviceUrl } from "../lib/brightworks";
+
+const servicesResult = await getServices();
+if (Astro.cache?.enabled) Astro.cache.set(servicesResult.cacheHint);
+const cards = servicesResult.entries.filter((s) => s.data.on_home).slice(0, 3);
+---
+
+<Base title="Make your business stand out" description="High quality commercial signage, print and professional installation for local businesses.">
+	<PhotoHero photo="/images/hero-home.webp" alt="Illuminated Riverside Coffee Co. lettering on a timber shopfront at dusk" labelledby="home-title" class="hero-home">
+		<span class="eyebrow eyebrow-spaced">Signs Print Installation</span>
+		<h1 id="home-title" class="display">Make your business <span class="accent">stand out<span class="dot">.</span></span></h1>
+		<p class="hero-lede">High quality commercial signage, print and professional installation for local businesses.</p>
+		<a class="btn btn-lg" href={quoteUrl()}>Request a quote <Arrow /></a>
+	</PhotoHero>
+
+	{
+		cards.length > 0 && (
+			<section class="home-services" aria-labelledby="home-services-title">
+				<h2 id="home-services-title" class="sr-only">Our services</h2>
+				<ul class="preview-grid container-wide">
+					{cards.map((s) => {
+						const src = photoSrc(s.data.card_image, s.data.card_photo) ?? photoSrc(s.data.image, s.data.photo);
+						return (
+							<li class="preview">
+								{src && <img src={src} alt={s.data.card_image?.alt || ""} width="273" height="160" loading="lazy" />}
+								<div class="preview-copy">
+									<h3>{s.data.home_title || s.data.title}</h3>
+									{(s.data.home_text || s.data.summary) && <p>{s.data.home_text || s.data.summary}</p>}
+									<a class="link-arrow" href={serviceUrl(s.data)}>
+										<span>{s.data.home_link_label || `View ${s.data.title.toLowerCase()}`}</span> <Arrow />
+									</a>
+								</div>
+							</li>
+						);
+					})}
+				</ul>
+			</section>
+		)
+	}
+
+	<section class="approach" aria-labelledby="approach-title">
+		<div class="approach-media">
+			<img src="/images/approach.webp" alt="Brightworks wall sign reading Local businesses, brighter communities on a corner building" width="890" height="173" loading="lazy" />
+		</div>
+		<div class="approach-copy">
+			<span class="eyebrow eyebrow-dark">Our approach</span>
+			<h2 id="approach-title" class="title-xl">More than signs.<br />A brighter local presence.</h2>
+			<p>
+				We help local businesses bring their brand to life with high impact signage, print and professional installation.
+				From storefront signs to window graphics, one local team takes your project from first idea to final fixing.
+			</p>
+			<div class="actions">
+				<a class="btn" href="/services">Explore our services <Arrow /></a>
+				<a class="link-arrow" href="/projects"><span>See our projects</span> <Arrow /></a>
+			</div>
+		</div>
+	</section>
+</Base>

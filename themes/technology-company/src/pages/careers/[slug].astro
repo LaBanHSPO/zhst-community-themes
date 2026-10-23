@@ -1,0 +1,163 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import OpeningRow from "../../components/OpeningRow.astro";
+import { formatDate, getOffice, getOpenings, lines, postedDate } from "../../lib/nexora";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: opening, cacheHint } = await getEmDashEntry("openings", slug);
+if (!opening) return Astro.rewrite("/404");
+
+const [allResult, officeResult, settings] = await Promise.all([getOpenings(), getOffice(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(opening, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const { office } = officeResult;
+const others = allResult.entries.filter((o) => o.data.id !== opening.data.id).slice(0, 3);
+const responsibilities = lines(opening.data.responsibilities);
+const requirements = lines(opening.data.requirements);
+const posted = postedDate(opening.data.posted, opening.data.publishedAt);
+const careersEmail = office.careers_email || office.email;
+const roleUrl = new URL(Astro.url.pathname, Astro.url.origin).toString();
+const applyBody = [
+	"Hello,",
+	"",
+	`I would like to apply for the ${opening.data.title} role (${opening.data.team}, ${opening.data.location}).`,
+	"",
+	"A few lines about me and why this role interests me:",
+	"",
+	"",
+	"My CV or portfolio is attached / linked here:",
+	"",
+	`Role page: ${roleUrl}`,
+].join("\n");
+const applyHref = careersEmail
+	? `mailto:${careersEmail}?subject=${encodeURIComponent(`Application: ${opening.data.title}`)}&body=${encodeURIComponent(applyBody)}`
+	: undefined;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? opening.data.summary}
+	canonical={seo.canonical}
+	content={{ collection: "openings", id: opening.data.id, slug }}
+	current="/careers"
+>
+	<section class="page-head is-narrow">
+		<div class="container page-head-inner">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/careers">Careers</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{opening.data.title}</span>
+			</nav>
+			<span class="eyebrow">{opening.data.team}</span>
+			<h1 {...opening.edit.title}>{opening.data.title}</h1>
+			<p class="lede" {...opening.edit.summary}>{opening.data.summary}</p>
+			<ul class="role-meta" aria-label="Role details">
+				<li class="chip">{opening.data.location}</li>
+				<li class="chip">{opening.data.work_type}</li>
+				{posted && <li class="chip">Posted <time datetime={posted.toISOString()}>{formatDate(posted)}</time></li>}
+			</ul>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="container careers-layout">
+			<div>
+				{
+					opening.data.content && opening.data.content.length > 0 && (
+						<div class="role-section prose">
+							<h2>About the role</h2>
+							<PortableText value={opening.data.content} />
+						</div>
+					)
+				}
+				{
+					responsibilities.length > 0 && (
+						<div class="role-section">
+							<h2>What you will do</h2>
+							<ul class="check-list">
+								{responsibilities.map((r) => (
+									<li>{r}</li>
+								))}
+							</ul>
+						</div>
+					)
+				}
+				{
+					requirements.length > 0 && (
+						<div class="role-section">
+							<h2>What you will bring</h2>
+							<ul class="check-list">
+								{requirements.map((r) => (
+									<li>{r}</li>
+								))}
+							</ul>
+						</div>
+					)
+				}
+			</div>
+			<aside class="careers-side detail-aside-sticky" aria-label="Apply for this role">
+				<div class="side-card">
+					<h2>Apply for this role</h2>
+					<p>Applications are made by email. The button opens your own email app with the role filled in; attach your CV or portfolio and send it when you are ready.</p>
+					{
+						applyHref ? (
+							<>
+								<a class="btn btn-block" href={applyHref}>Apply by email <Arrow /></a>
+								<p class="apply-note">
+									Or write to <a href={`mailto:${careersEmail}`}>{careersEmail}</a> with “Application: {opening.data.title}” as the subject. Nothing is stored on this site.
+								</p>
+							</>
+						) : (
+							<p class="apply-note">Applications are not open online right now. Please <a href="/contact">get in touch</a> instead.</p>
+						)
+					}
+				</div>
+				<div class="side-card">
+					<h2>What happens next</h2>
+					<ol class="next-steps">
+						<li>We read every application and reply within five working days.</li>
+						<li>A short call with someone from the {opening.data.team} team.</li>
+						<li>A practical conversation about real work, then a decision within days.</li>
+					</ol>
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="section section-tint" aria-labelledby="more-roles">
+				<div class="container">
+					<div class="section-head">
+						<div>
+							<span class="eyebrow">More openings</span>
+							<h2 id="more-roles">Other roles you might like.</h2>
+						</div>
+						<a class="link-arrow" href="/careers">All openings <Arrow /></a>
+					</div>
+					<ul class="opening-list">
+						{others.map((o) => (
+							<OpeningRow opening={o} />
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+</Base>

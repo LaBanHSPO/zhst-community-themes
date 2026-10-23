@@ -1,0 +1,11 @@
+---
+/** The three short yellow "joy" strokes drawn beside headings and photos. Decorative. */
+interface Props {
+	class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<svg class:list={["sparks", className]} viewBox="0 0 60 64" aria-hidden="true" focusable="false">
+	<path d="M6 58h15M12 34l13 9M44 6l-5 17" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" />
+</svg>

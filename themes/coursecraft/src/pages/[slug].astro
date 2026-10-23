@@ -1,0 +1,41 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+
+const { slug } = Astro.params;
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: page, cacheHint } = await getEmDashEntry("pages", slug);
+if (!page) return Astro.rewrite("/404");
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+---
+
+<Base
+	title={page.data.title}
+	description={page.data.intro}
+	content={{ collection: "pages", id: page.data.id, slug: page.id }}
+>
+	<article class="container">
+		<header class="page-head">
+			<h1 {...page.edit.title}>{page.data.title}</h1>
+			{page.data.intro && <p class="lede">{page.data.intro}</p>}
+		</header>
+		{
+			page.data.content && page.data.content.length > 0 && (
+				<div class="prose">
+					<PortableText value={page.data.content} />
+				</div>
+			)
+		}
+		<p class="page-cta">
+			<a class="btn btn-primary" href="/courses">Browse courses <span class="arrow" aria-hidden="true">→</span></a>
+		</p>
+	</article>
+</Base>
+
+<style>
+	.page-cta {
+		margin-top: 2.5rem;
+	}
+</style>

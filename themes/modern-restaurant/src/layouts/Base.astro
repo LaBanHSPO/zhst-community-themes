@@ -1,0 +1,192 @@
+---
+import { getEmDashCollection, getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import "@fontsource-variable/newsreader/opsz.css";
+import "@fontsource-variable/newsreader/opsz-italic.css";
+import "@fontsource-variable/dm-sans";
+import Logo from "../components/Logo.astro";
+import Arrow from "../components/Arrow.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getHours, getVenue, mapLinks, telHref } from "../lib/montre";
+import "../styles/theme.css";
+
+interface Props {
+	title: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	/** Pass content reference for plugin page contributions on content pages */
+	content?: { collection: string; id: string; slug?: string | null };
+	/** Force which primary-menu URL is marked current. */
+	current?: string;
+}
+
+const { title, pageTitle, description, image, canonical, content, current } = Astro.props;
+const [settingsResult, menuResult, venueResult, hoursResult, pagesResult] = await Promise.all([
+	getSiteSettingsWithCacheHint(),
+	getMenuWithCacheHint("primary"),
+	getVenue(),
+	getHours(),
+	getEmDashCollection("pages", { limit: 12 }),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(settingsResult.cacheHint);
+	Astro.cache.set(menuResult.cacheHint);
+	Astro.cache.set(venueResult.cacheHint);
+	Astro.cache.set(hoursResult.cacheHint);
+	Astro.cache.set(pagesResult.cacheHint);
+}
+
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(settingsResult.data);
+const titleIncludesSiteName =
+	title === siteTitle || title.endsWith(` | ${siteTitle}`) || title.endsWith(` — ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
+const pageDescription = description ?? siteTagline;
+const navItems = menuResult.data?.items ?? [];
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const norm = (url: string) => url.replace(/\/$/, "") || "/";
+const { venue } = venueResult;
+const hours = hoursResult.entries;
+const links = mapLinks(venue);
+// CMS pages that are not in the primary menu (e.g. private dining, allergies) are linked from the footer.
+const menuUrls = new Set(navItems.map((i) => norm(i.url)));
+const extraPages = pagesResult.entries
+	.map((p) => ({ url: `/${p.data.slug ?? p.data.id}`, label: p.data.title }))
+	.filter((p) => !menuUrls.has(p.url));
+
+const currentUrl =
+	current ??
+	navItems.find((i) => norm(i.url) === path)?.url ??
+	navItems.find((i) => norm(i.url) !== "/" && path.startsWith(`${norm(i.url)}/`))?.url;
+const onReserve = path === "/reserve";
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description: pageDescription,
+	canonical,
+	image,
+	content,
+	siteName: siteTitle,
+});
+const year = new Intl.DateTimeFormat("en-US", { year: "numeric", timeZone: "Asia/Saigon" }).format(new Date());
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="theme-color" content="#120f0c" />
+		<title>{fullTitle}</title>
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<header class="site-head">
+			<div class="head-inner">
+				<Logo title={siteTitle} tagline={siteTagline} logo={siteLogo} class="head-logo" />
+				<nav class="nav" aria-label="Primary">
+					{
+						navItems.map((item) => (
+							<a
+								href={item.url}
+								target={item.target}
+								rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+								aria-current={item.url === currentUrl ? "page" : undefined}
+							>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+				<a class="btn-outline head-cta" href="/reserve" aria-current={onReserve ? "page" : undefined}>Reserve a table</a>
+				<details class="mobile-nav">
+					<summary aria-label="Open menu">
+						<svg class="burger" width="22" height="12" viewBox="0 0 22 12" aria-hidden="true" focusable="false">
+							<path d="M0 1h22M0 11h22" stroke="currentColor" stroke-width="1.3" />
+						</svg>
+						<svg class="close" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+							<path d="M1 1l14 14M15 1L1 15" stroke="currentColor" stroke-width="1.3" />
+						</svg>
+					</summary>
+					<nav class="mobile-panel" aria-label="Primary (mobile)">
+						{
+							navItems.map((item) => (
+								<a href={item.url} aria-current={item.url === currentUrl ? "page" : undefined}>
+									{item.label}
+								</a>
+							))
+						}
+						<a class="btn" href="/reserve" aria-current={onReserve ? "page" : undefined}>
+							Reserve a table <Arrow />
+						</a>
+						{venue.phone && <a class="mobile-phone" href={telHref(venue.phone)}>Call {venue.phone}</a>}
+					</nav>
+				</details>
+			</div>
+		</header>
+
+		<main id="main">
+			<slot />
+		</main>
+
+		<footer class="site-foot">
+			<div class="foot-inner">
+				<div class="foot-brand">
+					<Logo title={siteTitle} tagline={siteTagline} logo={siteLogo} />
+					<a class="btn foot-cta" href="/reserve">Reserve a table <Arrow /></a>
+				</div>
+				<div>
+					<h2>Visit</h2>
+					<address>
+						{venue.street && <>{venue.street}<br /></>}
+						{venue.locality && <>{venue.locality}<br /></>}
+						{venue.country}
+					</address>
+					<a class="foot-map" href={links.map} target="_blank" rel="noopener noreferrer">
+						View on map<span class="sr-only"> (opens Google Maps in a new tab)</span>
+					</a>
+				</div>
+				<div>
+					<h2>Hours</h2>
+					<dl class="foot-hours">
+						{
+							hours.map((h) => (
+								<div>
+									<dt>{h.data.title}</dt>
+									<dd>{h.data.hours}</dd>
+								</div>
+							))
+						}
+					</dl>
+				</div>
+				<div>
+					<h2>Contact</h2>
+					<ul class="foot-links">
+						{venue.phone && <li><a href={telHref(venue.phone)}>{venue.phone}</a></li>}
+						{venue.email && <li><a href={`mailto:${venue.email}`}>{venue.email}</a></li>}
+					</ul>
+					<h2 class="foot-sub">Explore</h2>
+					<ul class="foot-links">
+						{navItems.map((item) => <li><a href={item.url}>{item.label}</a></li>)}
+						{extraPages.map((p) => <li><a href={p.url}>{p.label}</a></li>)}
+					</ul>
+				</div>
+			</div>
+			<div class="foot-bottom">
+				<span>© {year} {siteTitle}</span>
+				<span>Built with EmDash</span>
+			</div>
+		</footer>
+
+		<EmDashBodyEnd page={pageCtx} />
+	</body>
+</html>

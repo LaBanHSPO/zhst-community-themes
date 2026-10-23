@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import { quoteUrl } from "../lib/fixwell";
+---
+
+<Base title="Page not found">
+	<section class="notfound container" aria-labelledby="nf-title">
+		<span class="eyebrow eyebrow-muted">Error 404</span>
+		<h1 id="nf-title" class="display display-dark">This page needs <span class="accent">a repair.</span></h1>
+		<p>The page you’re looking for doesn’t exist or has moved. Try our services, or tell us about the job and we’ll sort it.</p>
+		<div class="actions">
+			<a class="btn btn-lg" href="/services">See our services <Arrow /></a>
+			<a class="btn btn-lg btn-outline" href={quoteUrl()}>Request a quote</a>
+		</div>
+	</section>
+</Base>

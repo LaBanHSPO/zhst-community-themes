@@ -1,0 +1,165 @@
+---
+import { getEmDashEntry, decodeSlug } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import Icon from "../../components/Icon.astro";
+import { entryKey, photoAlt, photoSrc, slotsForWeek, twoLines } from "../../lib/luma";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.redirect("/404");
+
+const { entry, cacheHint } = await getEmDashEntry("dentists", slug);
+if (!entry) return Astro.redirect("/404");
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const d = entry.data;
+const week = Astro.url.searchParams.get("week") === "next" ? "next" : "this";
+const slots = slotsForWeek(d.slots, week);
+const shortName = d.short_name || d.title;
+const portrait = photoSrc(d.image, d.photo);
+const approachSrc = photoSrc(d.approach_image, d.approach_photo);
+const highlights = d.highlights ?? [];
+const qualifications = d.qualifications ?? [];
+const areas = d.areas ?? [];
+---
+
+<Base
+	title={d.title}
+	description={d.bio ?? d.credentials}
+	image={portrait}
+	content={{ collection: "dentists", id: d.id, slug: d.slug }}
+>
+	<section class="dentist-hero" aria-labelledby="dentist-name">
+		{
+			portrait && (
+				<div class="dentist-portrait">
+					<img src={portrait} alt={photoAlt(d.image, d.photo_alt, `Portrait of ${d.title}`)} width="645" height="512" fetchpriority="high" />
+				</div>
+			)
+		}
+		<div class="dentist-intro">
+			{d.eyebrow && <p class="eyebrow">{d.eyebrow}</p>}
+			<h1 id="dentist-name" class="title title-dentist">{d.title}</h1>
+			{d.credentials && <p class="dentist-credentials">{d.credentials}</p>}
+			{d.bio && <p class="dentist-bio">{d.bio}</p>}
+			{
+				highlights.length > 0 && (
+					<ul class="hero-points hero-points-dentist" role="list">
+						{highlights.map((h) => (
+							<li>
+								<Icon name={h.icon} />
+								<span>{twoLines(h.text)[0]}<br />{twoLines(h.text)[1]}</span>
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</div>
+
+		<aside class="slot-card" id="book" aria-labelledby="slot-title">
+			<h2 id="slot-title" class="slot-title">Request an appointment</h2>
+			<p class="slot-lede">Choose a convenient time to see {d.title}.</p>
+			<form class="week-form" method="get" action="#book">
+				<label class="sr-only" for="week">Week</label>
+				<span class="control control-icon">
+					<Icon name="calendar" class="control-lead" />
+					<select id="week" name="week" data-autosubmit>
+						<option value="this" selected={week === "this"}>This week</option>
+						<option value="next" selected={week === "next"}>Next week</option>
+					</select>
+					<Icon name="chevron" class="control-chevron" />
+				</span>
+				<noscript><button class="btn btn-outline btn-sm" type="submit">Show times</button></noscript>
+			</form>
+			<form class="slot-form" method="get" action="/request-appointment">
+				<input type="hidden" name="dentist" value={entryKey(d)} />
+				{
+					slots.length > 0 ? (
+						<fieldset>
+							<legend class="sr-only">Preferred time {week === "next" ? "next week" : "this week"}</legend>
+							{slots.map((slot, i) => (
+								<label class="slot">
+									<input type="radio" name="slot" value={`${slot.date} ${slot.time}`} checked={i === 0} required />
+									<span class="slot-day">{slot.label}</span>
+									<span class="slot-time">{slot.time}</span>
+								</label>
+							))}
+						</fieldset>
+					) : (
+						<p class="slot-empty">No request times are listed for this week. Request an appointment and we’ll suggest a time.</p>
+					)
+				}
+				<button class="btn btn-block btn-lg" type="submit">Request appointment <Arrow /></button>
+			</form>
+		</aside>
+	</section>
+
+	<div class="dentist-more">
+		{
+			qualifications.length > 0 && (
+				<section class="dentist-col" aria-labelledby="qual-title">
+					<h2 id="qual-title" class="col-title">
+						<span class="col-icon"><Icon name="cap" /></span>
+						Qualifications &amp; experience
+					</h2>
+					<ul class="qual-list" role="list">
+						{qualifications.map((q) => (
+							<li>
+								<strong>{q.title}</strong>
+								{q.detail && <span>{q.detail}</span>}
+							</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+		{
+			areas.length > 0 && (
+				<section class="dentist-col" aria-labelledby="areas-title">
+					<h2 id="areas-title" class="col-title">
+						<span class="col-icon"><Icon name="tooth" /></span>
+						Areas of practice
+					</h2>
+					<ul class="area-list" role="list">
+						{areas.map((a) => (
+							<li>
+								<Icon name="check" />
+								{a.name}
+							</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+		{
+			d.approach && (
+				<section class="dentist-col" aria-labelledby="approach-title">
+					<h2 id="approach-title" class="col-title">
+						<span class="col-icon"><Icon name="heart" /></span>
+						{shortName}’s approach
+					</h2>
+					<p class="approach-text">{d.approach}</p>
+					{d.signature && <p class="signature">{d.signature}</p>}
+				</section>
+			)
+		}
+		{
+			approachSrc && (
+				<img
+					class="approach-photo"
+					src={approachSrc}
+					alt={photoAlt(d.approach_image, d.approach_alt, `${d.title} with a patient`)}
+					width="382"
+					height="282"
+					loading="lazy"
+				/>
+			)
+		}
+	</div>
+</Base>
+
+<script>
+	for (const select of document.querySelectorAll<HTMLSelectElement>("select[data-autosubmit]")) {
+		select.addEventListener("change", () => select.form?.requestSubmit());
+	}
+</script>

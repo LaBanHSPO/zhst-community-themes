@@ -1,0 +1,57 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import InquiryBand from "../../components/InquiryBand.astro";
+import { getStories, getStudio, photoAlt, photoSrc, storyHref } from "../../lib/studio";
+
+const [storiesResult, studioResult] = await Promise.all([getStories(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(storiesResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const stories = storiesResult.entries;
+---
+
+<Base title="Stories" description="Real wedding stories from evermore: couples, places and the moments we kept.">
+	<PageHead
+		id="stories-title"
+		eyebrow="Stories"
+		title="Real weddings, told honestly."
+		intro="A few of the days we have been lucky enough to photograph. Open a story to see the whole gallery."
+	/>
+
+	<section class="stories" aria-labelledby="stories-title">
+		{
+			stories.length === 0 ? (
+				<p class="empty-note">New stories are on their way. In the meantime, send us a note and say hello.</p>
+			) : (
+				<ul class="story-grid">
+					{stories.map((s) => {
+						const src = photoSrc(s.data.image, s.data.photo);
+						return (
+							<li>
+								<a class="story-card" href={storyHref(s.data)}>
+									{src && (
+										<img
+											src={src}
+											alt={photoAlt(s.data.image, s.data.photo, s.data.title)}
+											width="600"
+											height="720"
+											loading="lazy"
+										/>
+									)}
+									<span class="story-card-meta">
+										<span class="story-card-name" {...s.edit.title}>{s.data.title}</span>
+										<span class="story-card-place">{[s.data.place, s.data.date_label].filter(Boolean).join(" · ")}</span>
+									</span>
+								</a>
+							</li>
+						);
+					})}
+				</ul>
+			)
+		}
+	</section>
+
+	<InquiryBand studio={studioResult.studio} />
+</Base>

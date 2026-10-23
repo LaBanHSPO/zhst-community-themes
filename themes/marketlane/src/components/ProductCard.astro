@@ -1,0 +1,136 @@
+---
+import { Image } from "emdash/ui";
+import type { Product } from "../../emdash-env";
+import { formatPrice, getColors, getCoverImage } from "../lib/catalog";
+
+interface Props {
+	slug: string;
+	product: Product;
+	headingLevel?: "h2" | "h3";
+	priority?: boolean;
+}
+
+const { slug, product, headingLevel = "h3", priority = false } = Astro.props;
+const Heading = headingLevel;
+const cover = getCoverImage(product);
+const colors = getColors(product);
+const href = `/products/${encodeURIComponent(slug)}`;
+---
+
+<article class="card">
+	<a class="card-link" href={href}>
+		<div class="card-media">
+			{
+				cover ? (
+					<Image image={cover} alt={cover.alt || product.title} priority={priority} />
+				) : (
+					<div class="card-placeholder">
+						<span>Image coming soon</span>
+					</div>
+				)
+			}
+			{product.is_new && <span class="card-badge">New</span>}
+		</div>
+		<Heading class="card-title">{product.title}</Heading>
+	</a>
+	<p class="card-price">{formatPrice(product.price)}</p>
+	{
+		colors.length > 0 && (
+			<p class="card-colors">
+				<span class="sr-only">Colors: {colors.map((c) => c.name).join(", ")}</span>
+				<span class="swatches" aria-hidden="true">
+					{colors.slice(0, 5).map((c) => (
+						<span class="dot" style={c.swatch ? `--swatch:${c.swatch}` : undefined} title={c.name} />
+					))}
+					{colors.length > 5 && <span class="more">+{colors.length - 5}</span>}
+				</span>
+			</p>
+		)
+	}
+</article>
+
+<style>
+	.card {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+	}
+	.card-link {
+		color: inherit;
+		text-decoration: none;
+	}
+	.card-media {
+		position: relative;
+		aspect-ratio: 4 / 3;
+		background: var(--color-tile);
+		overflow: hidden;
+	}
+	.card-media :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.4s ease;
+	}
+	.card-link:hover .card-media :global(img) {
+		transform: scale(1.03);
+	}
+	.card-placeholder {
+		display: grid;
+		place-items: center;
+		width: 100%;
+		height: 100%;
+		color: var(--color-muted);
+		font-size: var(--step--1);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		background: repeating-linear-gradient(135deg, #f3f3f1 0 12px, #eeeeeb 12px 24px);
+	}
+	.card-badge {
+		position: absolute;
+		top: 0.75rem;
+		left: 0.75rem;
+		background: #fff;
+		color: var(--color-ink);
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		padding: 0.2rem 0.55rem;
+	}
+	.card-title {
+		font-family: var(--font-body);
+		font-size: 1rem;
+		font-weight: 500;
+		letter-spacing: 0;
+		line-height: 1.35;
+		color: var(--color-ink);
+		margin: 1rem 0 0.15rem;
+	}
+	.card-link:hover .card-title {
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+	.card-price {
+		margin: 0 0 0.6rem;
+		color: var(--color-ink);
+	}
+	.card-colors {
+		margin: 0;
+	}
+	.swatches {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+	}
+	.dot {
+		width: 1.25rem;
+		height: 1.25rem;
+		border-radius: 50%;
+		background: var(--swatch, #ccc);
+		box-shadow: inset 0 0 0 1px rgba(15, 26, 43, 0.18);
+	}
+	.more {
+		font-size: var(--step--1);
+		color: var(--color-muted);
+	}
+</style>

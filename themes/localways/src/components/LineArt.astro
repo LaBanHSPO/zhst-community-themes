@@ -1,0 +1,33 @@
+---
+/** Hand-drawn style olive branch and hill-town skyline used on the dark teal bands. Decorative. */
+interface Props {
+	class?: string;
+}
+const { class: cls } = Astro.props;
+---
+
+<svg class:list={["line-art", cls]} viewBox="0 0 320 170" aria-hidden="true" focusable="false">
+	<g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+		<path d="M18 165c6-34 18-74 44-118" />
+		<path d="M30 120c-12-4-20-14-22-26 12 3 21 12 22 26z" />
+		<path d="M33 104c9-9 20-12 31-10-6 10-17 14-31 10z" />
+		<path d="M40 86c-11-6-16-17-15-29 11 6 16 17 15 29z" />
+		<path d="M45 74c8-10 18-15 29-14-5 11-15 16-29 14z" />
+		<path d="M53 58c-9-8-12-19-9-30 10 8 12 19 9 30z" />
+		<path d="M58 49c6-10 15-17 26-18-3 11-12 17-26 18z" />
+		<path d="M24 140c10-7 22-8 32-4-9 8-21 9-32 4z" />
+		<path d="M92 165c40-26 120-34 226-14" />
+		<path d="M108 158v-48h26v42" />
+		<path d="M114 122h5M124 122h5M114 134h5M124 134h5" />
+		<path d="M134 110v-26h22v66" />
+		<path d="M140 96h4M148 96h4M140 108h4M148 108h4" />
+		<path d="M156 150V40l8-22 8 22v108" />
+		<path d="M160 58h8M160 74h8M164 18V6" />
+		<path d="M172 120h28v28" />
+		<path d="M200 148V98a18 18 0 0 1 36 0v50" />
+		<path d="M218 80v-8M206 108h24M210 120v12M226 120v12" />
+		<path d="M236 126h30v24M246 136h6M256 136h6" />
+		<path d="M266 140h22v10" />
+		<path d="M178 132h6M190 132h6" />
+	</g>
+</svg>

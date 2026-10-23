@@ -1,0 +1,521 @@
+---
+import "../styles/theme.css";
+import { getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import LiveSearch from "emdash/ui/search";
+import { resolveSiteIdentity } from "../utils/site-identity";
+
+interface Props {
+	title: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	/** Pass content reference for plugin page contributions on content pages */
+	content?: { collection: string; id: string; slug?: string | null };
+}
+
+const { title, pageTitle, description, image, canonical, content } = Astro.props;
+const [settingsResult, menuResult] = await Promise.all([
+	getSiteSettingsWithCacheHint(),
+	getMenuWithCacheHint("primary"),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(settingsResult.cacheHint);
+	Astro.cache.set(menuResult.cacheHint);
+}
+
+const { siteTitle, siteTagline, siteLogo } = resolveSiteIdentity(settingsResult.data);
+const titleIncludesSiteName =
+	title === siteTitle || title.endsWith(` | ${siteTitle}`) || title.endsWith(` — ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
+const pageDescription = description ?? siteTagline;
+const menuItems = menuResult.data?.items ?? [];
+
+const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+function isCurrent(url: string): boolean {
+	const target = url.replace(/\/$/, "") || "/";
+	if (target === "/") return currentPath === "/";
+	return currentPath === target || currentPath.startsWith(`${target}/`);
+}
+
+// Split the wordmark like the design ("COURSE" bold + "CRAFT" light) only for the default name.
+const wordmark =
+	siteTitle.toLowerCase() === "coursecraft" ? { strong: "COURSE", light: "CRAFT" } : null;
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description: pageDescription,
+	canonical,
+	image,
+	content,
+	siteName: siteTitle,
+});
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="color-scheme" content="light" />
+		<title>{fullTitle}</title>
+		<script is:inline>document.documentElement.classList.add("js");</script>
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<header class="site-header">
+			<div class="container header-inner">
+				<a class="brand" href="/" aria-label={`${siteTitle} home`}>
+					{
+						siteLogo ? (
+							<img class="brand-logo" src={siteLogo.url} alt="" />
+						) : (
+							<svg class="brand-mark" viewBox="0 0 40 32" aria-hidden="true" focusable="false">
+								<path d="M19 30C19 17 12 7 1 4c0 13 7 23 18 26z" fill="#d4ec3a" />
+								<path d="M21 30C21 17 28 7 39 4c0 13-7 23-18 26z" fill="#a9c712" />
+								<path d="M20 31V14" stroke="#141b2d" stroke-width="2.4" stroke-linecap="round" />
+							</svg>
+						)
+					}
+					<span class="brand-name">
+						{
+							wordmark ? (
+								<>
+									<strong>{wordmark.strong}</strong>
+									<span>{wordmark.light}</span>
+								</>
+							) : (
+								<strong>{siteTitle}</strong>
+							)
+						}
+					</span>
+				</a>
+
+				<button
+					class="menu-toggle"
+					type="button"
+					aria-expanded="false"
+					aria-controls="site-menu"
+				>
+					<span class="menu-icon" aria-hidden="true"></span>
+					<span class="menu-label">Menu</span>
+				</button>
+
+				<div class="site-menu" id="site-menu">
+					<nav class="site-nav" aria-label="Primary">
+						<ul role="list">
+							{
+								menuItems.map((item) => (
+									<li>
+										<a
+											href={item.url}
+											target={item.target}
+											rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+											aria-current={isCurrent(item.url) ? "page" : undefined}
+										>
+											{item.label}
+										</a>
+									</li>
+								))
+							}
+						</ul>
+					</nav>
+					<div class="header-actions">
+						<button
+							class="search-toggle"
+							type="button"
+							aria-expanded="false"
+							aria-controls="site-search"
+						>
+							<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+								<circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2" />
+								<path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+							</svg>
+							<span class="visually-hidden">Search</span>
+						</button>
+						<a class="btn btn-primary header-cta" href="/courses">Start learning</a>
+					</div>
+				</div>
+			</div>
+			<div class="search-panel" id="site-search" role="search" aria-label="Site">
+				<div class="container">
+					<LiveSearch
+						class="site-search"
+						placeholder="Search courses, instructors and pages…"
+						collections={["courses", "instructors", "pages"]}
+					/>
+				</div>
+			</div>
+		</header>
+
+		<main id="main" tabindex="-1">
+			<slot />
+		</main>
+
+		<footer class="site-footer">
+			<div class="container footer-inner">
+				<div class="footer-brand">
+					<p class="footer-title">{siteTitle}</p>
+					<p class="footer-tagline">{siteTagline}</p>
+				</div>
+				<nav aria-label="Footer">
+					<ul role="list" class="footer-links">
+						<li><a href="/courses">All courses</a></li>
+						<li><a href="/instructors">Instructors</a></li>
+						<li><a href="/about">About</a></li>
+						<li><a href="/contact">Contact</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="container footer-note">
+				<p>© {year} {siteTitle}. Course information only — enrollment is arranged with each instructor.</p>
+			</div>
+		</footer>
+
+		<EmDashBodyEnd page={pageCtx} />
+
+		<script>
+			const menuToggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
+			const menu = document.getElementById("site-menu");
+			menuToggle?.addEventListener("click", () => {
+				const open = menuToggle.getAttribute("aria-expanded") !== "true";
+				menuToggle.setAttribute("aria-expanded", String(open));
+				menu?.toggleAttribute("data-open", open);
+			});
+
+			const searchToggle = document.querySelector<HTMLButtonElement>(".search-toggle");
+			const panel = document.getElementById("site-search");
+			const input = panel?.querySelector<HTMLInputElement>("input[type='search']");
+			input?.setAttribute("aria-label", "Search the site");
+			searchToggle?.addEventListener("click", () => {
+				const open = searchToggle.getAttribute("aria-expanded") !== "true";
+				searchToggle.setAttribute("aria-expanded", String(open));
+				panel?.toggleAttribute("data-open", open);
+				if (open) input?.focus();
+			});
+			document.addEventListener("keydown", (event) => {
+				if (event.key !== "Escape") return;
+				if (panel?.hasAttribute("data-open")) {
+					panel.removeAttribute("data-open");
+					searchToggle?.setAttribute("aria-expanded", "false");
+					searchToggle?.focus();
+				} else if (menu?.hasAttribute("data-open")) {
+					menu.removeAttribute("data-open");
+					menuToggle?.setAttribute("aria-expanded", "false");
+					menuToggle?.focus();
+				}
+			});
+		</script>
+
+		<style>
+			.site-header {
+				position: relative;
+				z-index: 20;
+			}
+
+			.header-inner {
+				display: flex;
+				align-items: center;
+				gap: 1.5rem;
+				min-height: 88px;
+				padding-block: 0.75rem;
+			}
+
+			.brand {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.75rem;
+				text-decoration: none;
+				color: var(--color-ink);
+				margin-right: auto;
+			}
+
+			.brand-mark {
+				width: 40px;
+				height: 32px;
+			}
+
+			.brand-logo {
+				height: 40px;
+				width: auto;
+			}
+
+			.brand-name {
+				font-size: 1.45rem;
+				letter-spacing: 0.02em;
+				line-height: 1;
+			}
+
+			.brand-name strong {
+				font-weight: 800;
+			}
+
+			.brand-name span {
+				font-weight: 400;
+			}
+
+			.site-menu {
+				display: flex;
+				align-items: center;
+				gap: 2rem;
+			}
+
+			.site-nav ul {
+				display: flex;
+				gap: 0.5rem;
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+
+			.site-nav a {
+				display: inline-block;
+				padding: 0.5rem 0.9rem;
+				border-radius: var(--radius-pill);
+				font-weight: 500;
+				font-size: 1.02rem;
+				text-decoration: none;
+			}
+
+			.site-nav a:hover {
+				background: var(--color-surface-muted);
+			}
+
+			.site-nav a[aria-current="page"] {
+				box-shadow: inset 0 -3px 0 var(--color-accent);
+				border-radius: 0;
+			}
+
+			.header-actions {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+			}
+
+			.search-toggle,
+			.menu-toggle {
+				display: inline-grid;
+				place-items: center;
+				min-width: 44px;
+				min-height: 44px;
+				border: 0;
+				border-radius: var(--radius-pill);
+				background: transparent;
+				color: var(--color-ink);
+				cursor: pointer;
+			}
+
+			.search-toggle:hover,
+			.search-toggle[aria-expanded="true"] {
+				background: var(--color-surface-muted);
+			}
+
+			.menu-toggle {
+				display: none;
+				grid-auto-flow: column;
+				gap: 0.5rem;
+				padding: 0 0.9rem;
+				font: 600 0.95rem var(--font-body);
+				border: 1px solid var(--color-line);
+			}
+
+			.menu-icon,
+			.menu-icon::before,
+			.menu-icon::after {
+				display: block;
+				width: 18px;
+				height: 2px;
+				background: currentColor;
+				border-radius: 2px;
+			}
+
+			.menu-icon {
+				position: relative;
+			}
+
+			.menu-icon::before,
+			.menu-icon::after {
+				content: "";
+				position: absolute;
+				left: 0;
+			}
+
+			.menu-icon::before {
+				top: -6px;
+			}
+
+			.menu-icon::after {
+				top: 6px;
+			}
+
+			.search-panel {
+				display: none;
+				padding-block: 0 1.25rem;
+			}
+
+			.search-panel[data-open] {
+				display: block;
+			}
+
+			:global(html:not(.js)) .search-panel {
+				display: block;
+			}
+
+			:global(html:not(.js)) .search-toggle {
+				display: none;
+			}
+
+			.search-panel :global(.site-search) {
+				display: block;
+				max-width: 40rem;
+				margin-left: auto;
+				--emdash-search-border: var(--color-line);
+				--emdash-search-hover: var(--color-surface-muted);
+			}
+
+			.search-panel :global(.emdash-live-search-input) {
+				min-height: 48px;
+				border-radius: var(--radius-pill);
+				padding-inline: 1.25rem;
+				font: inherit;
+			}
+
+			.search-panel :global(.emdash-live-search-input:focus-visible) {
+				outline: 3px solid var(--color-focus);
+				outline-offset: 2px;
+			}
+
+			@media (max-width: 860px) {
+				.menu-toggle {
+					display: inline-grid;
+				}
+
+				.site-menu {
+					display: none;
+					position: absolute;
+					top: 100%;
+					left: 0;
+					right: 0;
+					flex-direction: column;
+					align-items: stretch;
+					gap: 1rem;
+					padding: 1rem var(--gutter) 1.5rem;
+					background: var(--color-bg);
+					border-bottom: 1px solid var(--color-line);
+					box-shadow: 0 16px 24px rgb(20 27 45 / 0.08);
+				}
+
+				.site-menu[data-open] {
+					display: flex;
+				}
+
+				:global(html:not(.js)) .site-menu {
+					display: flex;
+					position: static;
+					box-shadow: none;
+				}
+
+				:global(html:not(.js)) .menu-toggle {
+					display: none;
+				}
+
+				.site-nav ul {
+					flex-direction: column;
+					gap: 0;
+				}
+
+				.site-nav a {
+					display: block;
+					padding: 0.85rem 0.25rem;
+					border-bottom: 1px solid var(--color-line);
+					border-radius: 0;
+				}
+
+				.site-nav a[aria-current="page"] {
+					box-shadow: inset 4px 0 0 var(--color-accent);
+					padding-left: 0.85rem;
+				}
+
+				.header-actions {
+					justify-content: space-between;
+				}
+
+				.header-cta {
+					flex: 1;
+				}
+
+				.brand-name {
+					font-size: 1.25rem;
+				}
+			}
+
+			main:focus {
+				outline: none;
+			}
+
+			.site-footer {
+				margin-top: var(--section-gap);
+				border-top: 1px solid var(--color-line);
+				background: var(--color-surface-muted);
+			}
+
+			.footer-inner {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-between;
+				gap: 2rem;
+				padding-block: 2.5rem 1.5rem;
+			}
+
+			.footer-title {
+				font-family: var(--font-display);
+				font-size: 1.4rem;
+				font-weight: 650;
+				margin: 0 0 0.25rem;
+			}
+
+			.footer-tagline {
+				color: var(--color-ink-soft);
+				margin: 0;
+			}
+
+			.footer-links {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem 1.5rem;
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+
+			.footer-links a {
+				text-decoration: none;
+				font-weight: 500;
+			}
+
+			.footer-links a:hover {
+				text-decoration: underline;
+			}
+
+			.footer-note {
+				padding-bottom: 2rem;
+				font-size: 0.875rem;
+				color: var(--color-muted);
+			}
+
+			.footer-note p {
+				margin: 0;
+			}
+		</style>
+	</body>
+</html>

@@ -1,0 +1,83 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { Image, PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import PageHeader from "../components/PageHeader.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { RESERVED_PAGE_SLUGS } from "../utils/content";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) {
+	return Astro.rewrite("/404");
+}
+
+// Home, Studio, Services and Contact have dedicated layouts.
+const dedicated = RESERVED_PAGE_SLUGS[slug];
+if (dedicated && dedicated !== Astro.url.pathname) {
+	return Astro.redirect(dedicated, 301);
+}
+
+const { entry: page, error, cacheHint } = await getEmDashEntry("pages", slug);
+if (error) {
+	return new Response("Could not load the page", { status: 500 });
+}
+if (!page) {
+	return Astro.rewrite("/404");
+}
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+const seo = getSeoMeta(page, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+	defaultDescription: page.data.lede,
+});
+const hasContent = Array.isArray(page.data.content) && page.data.content.length > 0;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description}
+	canonical={seo.canonical}
+	content={{ collection: "pages", id: page.data.id, slug }}
+>
+	<PageHeader title={page.data.title} eyebrow={page.data.eyebrow} lede={page.data.lede} />
+	{
+		page.data.hero_image && (
+			<figure class="wrap page-cover">
+				<div class="frame">
+					<Image image={page.data.hero_image} priority sizes="100vw" />
+				</div>
+			</figure>
+		)
+	}
+	{
+		hasContent && (
+			<section class="section">
+				<div class="wrap">
+					<div class="prose" {...page.edit.content}>
+						<PortableText value={page.data.content} />
+					</div>
+				</div>
+			</section>
+		)
+	}
+</Base>
+
+<style>
+	.page-cover {
+		margin: 0 auto;
+	}
+
+	.page-cover .frame {
+		aspect-ratio: 21 / 9;
+	}
+
+	@media (max-width: 900px) {
+		.page-cover .frame {
+			aspect-ratio: 4 / 3;
+		}
+	}
+</style>

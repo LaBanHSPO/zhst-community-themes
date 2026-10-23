@@ -1,0 +1,36 @@
+---
+import Arrow from "./Arrow.astro";
+import { photoAlt, photoSrc, projectUrl, type Project } from "../lib/formhouse";
+
+interface Props {
+	project: Project;
+	headingLevel?: "h2" | "h3";
+}
+
+const { project: p, headingLevel = "h2" } = Astro.props;
+const Heading = headingLevel;
+const src = photoSrc(p.image, p.photo) ?? photoSrc(p.hero_image, p.hero_photo);
+const alt = photoAlt(p.image, p.photo_alt, `${p.title}, ${p.location ?? "renovated home"}`);
+const href = projectUrl(p);
+---
+
+<article class="project-card">
+	{
+		src && (
+			<div class="project-card-media">
+				<img src={src} alt={alt} width="753" height="284" loading="lazy" />
+			</div>
+		)
+	}
+	<div class="project-card-body">
+		<div>
+			<Heading class="project-card-title"><a href={href}>{p.title}</a></Heading>
+			<p class="meta">
+				{p.location && <span>{p.location}</span>}
+				{p.location && <span aria-hidden="true">/</span>}
+				<span>{p.category}</span>
+			</p>
+		</div>
+		<a class="text-link" href={href} aria-label={`View project: ${p.title}`}>View project <Arrow /></a>
+	</div>
+</article>

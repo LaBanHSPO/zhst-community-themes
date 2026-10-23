@@ -1,0 +1,883 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Firstlight",
+		"description": "A bold prelaunch site for a calm productivity product: prelaunch home with a waitlist field, product preview, public roadmap with roadmap item pages, early access FAQ and a waitlist confirmation page",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "Firstlight",
+		"tagline": "A calmer way to plan your day"
+	},
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "features",
+			"label": "Benefits",
+			"labelSingular": "Benefit",
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "text",
+					"label": "Short text",
+					"type": "text",
+					"required": true
+				},
+				{
+					"slug": "icon",
+					"label": "Icon",
+					"type": "select",
+					"required": true,
+					"defaultValue": "sun",
+					"validation": {
+						"options": [
+							"sun",
+							"leaf",
+							"bars",
+							"mail",
+							"rocket"
+						]
+					}
+				},
+				{
+					"slug": "placement",
+					"label": "Where it shows",
+					"type": "select",
+					"required": true,
+					"indexed": true,
+					"defaultValue": "home",
+					"validation": {
+						"options": [
+							"home",
+							"preview",
+							"confirmation",
+							"expect"
+						]
+					}
+				},
+				{
+					"slug": "position",
+					"label": "Order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "highlights",
+			"label": "Preview highlights",
+			"labelSingular": "Highlight",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Heading (before the lime accent)",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "eyebrow",
+					"label": "Eyebrow, e.g. PLAN",
+					"type": "string"
+				},
+				{
+					"slug": "accent",
+					"label": "Lime accent at the end of the heading",
+					"type": "string"
+				},
+				{
+					"slug": "text",
+					"label": "Paragraph",
+					"type": "text",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "points",
+					"label": "Bullet points (one per line)",
+					"type": "text"
+				},
+				{
+					"slug": "position",
+					"label": "Order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Photo: bundled path",
+					"type": "string"
+				},
+				{
+					"slug": "photo_alt",
+					"label": "Photo: alt text",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "roadmap",
+			"label": "Roadmap",
+			"labelSingular": "Roadmap item",
+			"urlPattern": "/roadmap/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Feature",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "summary",
+					"label": "One-line summary",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "stage",
+					"label": "Column",
+					"type": "select",
+					"required": true,
+					"indexed": true,
+					"defaultValue": "planned",
+					"validation": {
+						"options": [
+							"planned",
+							"in-progress",
+							"next"
+						]
+					}
+				},
+				{
+					"slug": "details",
+					"label": "What it is (paragraphs separated by a blank line)",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "why",
+					"label": "Why we are building it",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "position",
+					"label": "Order in its column",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "faqs",
+			"label": "FAQ",
+			"labelSingular": "Question",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Question",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "answer",
+					"label": "Answer (paragraphs separated by a blank line)",
+					"type": "text",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "position",
+					"label": "Order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "launch",
+			"label": "Launch details",
+			"labelSingular": "Launch details",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Product name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "email",
+					"label": "Contact email (waitlist requests are addressed here)",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "share_url",
+					"label": "Link people share",
+					"type": "string"
+				},
+				{
+					"slug": "waitlist_note",
+					"label": "Note under the homepage waitlist field",
+					"type": "string"
+				},
+				{
+					"slug": "footer_blurb",
+					"label": "Footer description",
+					"type": "text"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Prelaunch home",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "Product preview",
+					"url": "/preview"
+				},
+				{
+					"type": "custom",
+					"label": "Public roadmap",
+					"url": "/roadmap"
+				},
+				{
+					"type": "custom",
+					"label": "Early access FAQ",
+					"url": "/faq"
+				},
+				{
+					"type": "custom",
+					"label": "Waitlist confirmation",
+					"url": "/confirmation"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "privacy",
+				"slug": "privacy",
+				"status": "published",
+				"data": {
+					"title": "How we handle your email",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "p1",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "p1s",
+									"text": "When you join the waitlist, you send us an email from your own email app. We keep your address and the preferences you share in our waitlist, and nowhere else.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"_key": "h1",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "h1s",
+									"text": "What we send",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "p2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "p2s",
+									"text": "Launch updates, your early access invitation and, if you chose them, occasional product news. Nothing from anyone else.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"_key": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "h2s",
+									"text": "Leaving the list",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "p3",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "p3s",
+									"text": "Reply to any of our emails with “remove me”, or write to hello@firstlight.app, and we delete your address from the waitlist.",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"features": [
+			{
+				"id": "home-1",
+				"slug": "home-1",
+				"status": "published",
+				"data": {
+					"title": "A calmer way to plan",
+					"text": "Bring your tasks, notes and goals together in one clear view.",
+					"icon": "sun",
+					"placement": "home",
+					"position": 1
+				}
+			},
+			{
+				"id": "home-2",
+				"slug": "home-2",
+				"status": "published",
+				"data": {
+					"title": "More focus, less noise",
+					"text": "Designed to help you do what matters without the distractions.",
+					"icon": "leaf",
+					"placement": "home",
+					"position": 2
+				}
+			},
+			{
+				"id": "home-3",
+				"slug": "home-3",
+				"status": "published",
+				"data": {
+					"title": "Brighten what’s next",
+					"text": "Small, consistent steps toward a more meaningful day.",
+					"icon": "bars",
+					"placement": "home",
+					"position": 3
+				}
+			},
+			{
+				"id": "preview-1",
+				"slug": "preview-1",
+				"status": "published",
+				"data": {
+					"title": "Plan with less overwhelm",
+					"text": "See your day’s tasks in a clean, focused view.",
+					"icon": "sun",
+					"placement": "preview",
+					"position": 1
+				}
+			},
+			{
+				"id": "preview-2",
+				"slug": "preview-2",
+				"status": "published",
+				"data": {
+					"title": "Stay in flow",
+					"text": "Built-in focus blocks help you do meaningful work.",
+					"icon": "leaf",
+					"placement": "preview",
+					"position": 2
+				}
+			},
+			{
+				"id": "preview-3",
+				"slug": "preview-3",
+				"status": "published",
+				"data": {
+					"title": "Capture what matters",
+					"text": "Jot down ideas, notes and next steps without breaking your focus.",
+					"icon": "bars",
+					"placement": "preview",
+					"position": 3
+				}
+			},
+			{
+				"id": "confirmation-1",
+				"slug": "confirmation-1",
+				"status": "published",
+				"data": {
+					"title": "A calmer way to plan",
+					"text": "Focus on what matters, with less noise and more clarity.",
+					"icon": "sun",
+					"placement": "confirmation",
+					"position": 1
+				}
+			},
+			{
+				"id": "confirmation-2",
+				"slug": "confirmation-2",
+				"status": "published",
+				"data": {
+					"title": "Built for real life",
+					"text": "Designed to fit your work, your goals and your everyday.",
+					"icon": "leaf",
+					"placement": "confirmation",
+					"position": 2
+				}
+			},
+			{
+				"id": "confirmation-3",
+				"slug": "confirmation-3",
+				"status": "published",
+				"data": {
+					"title": "Brighter days ahead",
+					"text": "We can’t wait to share what we’re building with you.",
+					"icon": "bars",
+					"placement": "confirmation",
+					"position": 3
+				}
+			},
+			{
+				"id": "expect-1",
+				"slug": "expect-1",
+				"status": "published",
+				"data": {
+					"title": "Launch updates",
+					"text": "We’ll email you as we get closer to launch.",
+					"icon": "mail",
+					"placement": "expect",
+					"position": 1
+				}
+			},
+			{
+				"id": "expect-2",
+				"slug": "expect-2",
+				"status": "published",
+				"data": {
+					"title": "Early access",
+					"text": "You’ll be one of the first to try Firstlight.",
+					"icon": "rocket",
+					"placement": "expect",
+					"position": 2
+				}
+			},
+			{
+				"id": "expect-3",
+				"slug": "expect-3",
+				"status": "published",
+				"data": {
+					"title": "Product news",
+					"text": "Occasional updates on new features and ways to get more from your day.",
+					"icon": "sun",
+					"placement": "expect",
+					"position": 3
+				}
+			}
+		],
+		"highlights": [
+			{
+				"id": "plan",
+				"slug": "plan",
+				"status": "published",
+				"data": {
+					"eyebrow": "Plan",
+					"title": "Start each day with",
+					"accent": "clarity.",
+					"position": 1,
+					"text": "See your most important tasks, set your focus, and make progress without the noise. Firstlight helps you create a plan that fits your day, not someone else’s.",
+					"points": "A short list for today, not an endless backlog\nTimes on the tasks that need them\nUnfinished tasks move to tomorrow when you say so",
+					"photo": "/images/sunrise-pines.webp",
+					"photo_alt": "Sunrise over a sea of clouds between forested mountain ridges, pine trees in the foreground"
+				}
+			},
+			{
+				"id": "focus",
+				"slug": "focus",
+				"status": "published",
+				"data": {
+					"eyebrow": "Focus",
+					"title": "Protect time for",
+					"accent": "deep work.",
+					"position": 2,
+					"text": "Start a focus block from any task. Firstlight quiets the rest of your list until the timer ends, so one thing gets your full attention.",
+					"points": "Focus blocks from 15 to 90 minutes\nOne task in view while the timer runs\nA quiet note of what you finished",
+					"photo": "/images/hero-sunrise.webp",
+					"photo_alt": "The sun rising over layered mountain ridges with mist filling the valleys"
+				}
+			},
+			{
+				"id": "notes",
+				"slug": "notes",
+				"status": "published",
+				"data": {
+					"eyebrow": "Notes",
+					"title": "Keep ideas",
+					"accent": "within reach.",
+					"position": 3,
+					"text": "Quick notes live right next to your plan. Capture a thought in a second, then turn it into a task when you’re ready for it.",
+					"points": "Capture from anywhere in the app\nTurn any note line into a task\nSimple lists, no formatting to fuss over",
+					"photo": "/images/sunrise-peak.webp",
+					"photo_alt": "A golden sunrise behind a mountain peak under scattered clouds"
+				}
+			}
+		],
+		"roadmap": [
+			{
+				"id": "calendar-integration",
+				"slug": "calendar-integration",
+				"status": "published",
+				"data": {
+					"title": "Calendar integration",
+					"summary": "Bring your tasks and events together",
+					"stage": "planned",
+					"details": "See the meetings already on your calendar beside the tasks you plan for the day, so your plan fits the time you really have.\n\nWe plan to start with read-only calendars: your events appear in Today and My week, and Firstlight never changes them.",
+					"why": "A plan that ignores your meetings is a plan you abandon by lunchtime. Early testers asked for this more than anything else.",
+					"position": 1
+				}
+			},
+			{
+				"id": "mobile-apps",
+				"slug": "mobile-apps",
+				"status": "published",
+				"data": {
+					"title": "Mobile apps",
+					"summary": "Stay in sync on the go",
+					"stage": "planned",
+					"details": "Phone apps for checking today’s plan, ticking off tasks and capturing a quick note away from your desk.\n\nThey will share the same calm Today view as the web app rather than a cut-down version of it.",
+					"why": "Plans change between meetings and on the way home. You should be able to adjust yours without opening a laptop.",
+					"position": 2
+				}
+			},
+			{
+				"id": "rich-task-templates",
+				"slug": "rich-task-templates",
+				"status": "published",
+				"data": {
+					"title": "Rich task templates",
+					"summary": "Get started faster with proven workflows",
+					"stage": "planned",
+					"details": "Reusable starting points for recurring work, such as a weekly review, a launch checklist or a writing session.\n\nTemplates add a ready-made set of tasks and a suggested focus block, which you can then edit.",
+					"why": "Many days look alike. Templates save you from rebuilding the same plan each week.",
+					"position": 3
+				}
+			},
+			{
+				"id": "collaboration-basics",
+				"slug": "collaboration-basics",
+				"status": "published",
+				"data": {
+					"title": "Collaboration basics",
+					"summary": "Share plans with a small circle",
+					"stage": "planned",
+					"details": "Share a single plan or list with a few people, for example a partner, a co-founder or a small team, and see who is doing what.",
+					"why": "Some plans involve other people. We want sharing to stay as calm as planning alone.",
+					"position": 4
+				}
+			},
+			{
+				"id": "custom-themes",
+				"slug": "custom-themes",
+				"status": "published",
+				"data": {
+					"title": "Custom themes",
+					"summary": "Make Firstlight feel like home",
+					"stage": "planned",
+					"details": "Choose light, dark and a few warm colour themes, and pick the photo that greets you each morning.",
+					"why": "You will look at your plan every day, so it should feel like yours.",
+					"position": 5
+				}
+			},
+			{
+				"id": "core-planning-experience",
+				"slug": "core-planning-experience",
+				"status": "published",
+				"data": {
+					"title": "Core planning experience",
+					"summary": "A calmer, clearer way to plan your day",
+					"stage": "in-progress",
+					"details": "The heart of Firstlight: a Today view, a simple week view and tasks that can carry a time when they need one.\n\nWe are refining how tasks move between days and how much of the week to show at once.",
+					"why": "Everything else builds on this. It has to feel effortless before we add anything more.",
+					"position": 1
+				}
+			},
+			{
+				"id": "focus-mode",
+				"slug": "focus-mode",
+				"status": "published",
+				"data": {
+					"title": "Focus mode",
+					"summary": "Minimize distractions, maximize progress",
+					"stage": "in-progress",
+					"details": "Start a focus block from any task. The rest of your list fades back until the timer ends.\n\nWe are testing block lengths and the gentlest way to tell you that time is up.",
+					"why": "Planning only helps if you then get to do the work. Focus mode protects that time.",
+					"position": 2
+				}
+			},
+			{
+				"id": "notes-and-quick-capture",
+				"slug": "notes-and-quick-capture",
+				"status": "published",
+				"data": {
+					"title": "Notes and quick capture",
+					"summary": "Jot ideas and tasks in one place",
+					"stage": "in-progress",
+					"details": "A notes area beside your plan, plus a quick-capture shortcut that saves a thought without leaving what you are doing.",
+					"why": "Ideas arrive at inconvenient moments. Capturing them quickly keeps them from pulling you out of focus.",
+					"position": 3
+				}
+			},
+			{
+				"id": "beautiful-intuitive-design",
+				"slug": "beautiful-intuitive-design",
+				"status": "published",
+				"data": {
+					"title": "A beautiful, intuitive design",
+					"summary": "Thoughtful details for a brighter experience",
+					"stage": "in-progress",
+					"details": "Clear type, calm colours and a morning greeting with a fresh photo. We are polishing spacing, keyboard shortcuts and accessibility as we go.",
+					"why": "A tool you enjoy opening is a tool you keep using.",
+					"position": 4
+				}
+			},
+			{
+				"id": "smarter-suggestions",
+				"slug": "smarter-suggestions",
+				"status": "published",
+				"data": {
+					"title": "Smarter suggestions",
+					"summary": "Helpful nudges based on your context",
+					"stage": "next",
+					"details": "Gentle suggestions such as moving a task that keeps slipping, or leaving room in a day that is already full.\n\nSuggestions will always be optional and easy to switch off.",
+					"why": "We want Firstlight to notice patterns you might miss, without nagging.",
+					"position": 1
+				}
+			},
+			{
+				"id": "deeper-integrations",
+				"slug": "deeper-integrations",
+				"status": "published",
+				"data": {
+					"title": "Deeper integrations",
+					"summary": "Connect more of your favorite tools",
+					"stage": "next",
+					"details": "Bring tasks in from the places they already start, such as email, issue trackers and notes apps. We are still exploring which tools to support first.",
+					"why": "Your work lives in many places. Your plan should be able to see it.",
+					"position": 2
+				}
+			},
+			{
+				"id": "advanced-focus-tools",
+				"slug": "advanced-focus-tools",
+				"status": "published",
+				"data": {
+					"title": "Advanced focus tools",
+					"summary": "Timers, insights and mindfulness features",
+					"stage": "next",
+					"details": "Optional extras for focus mode: custom timer patterns, a weekly look at where your focus time went, and short breathing breaks between blocks.",
+					"why": "Once focus mode is solid, we want to help you understand and protect your best hours.",
+					"position": 3
+				}
+			},
+			{
+				"id": "expanded-collaboration",
+				"slug": "expanded-collaboration",
+				"status": "published",
+				"data": {
+					"title": "Expanded collaboration",
+					"summary": "Larger teams and shared spaces",
+					"stage": "next",
+					"details": "Shared spaces for teams who plan together, building on the collaboration basics once those feel right for small groups.",
+					"why": "Teams have asked about this. We want to get small-group sharing right first.",
+					"position": 4
+				}
+			},
+			{
+				"id": "more-ways-to-personalize",
+				"slug": "more-ways-to-personalize",
+				"status": "published",
+				"data": {
+					"title": "More ways to personalize",
+					"summary": "Layouts, views and additional preferences",
+					"stage": "next",
+					"details": "More control over how your day looks: compact and spacious layouts, which views appear in the sidebar and when your week starts.",
+					"why": "Everyone plans a little differently. A few good options go a long way.",
+					"position": 5
+				}
+			}
+		],
+		"faqs": [
+			{
+				"id": "faq-1",
+				"slug": "faq-1",
+				"status": "published",
+				"data": {
+					"title": "What is the Firstlight early access program?",
+					"answer": "Early access is a small, invite-only preview of Firstlight before it launches publicly. Members use the planner, focus mode and notes while we are still shaping them.\n\nTheir feedback decides what we refine and what we build next.",
+					"position": 1
+				}
+			},
+			{
+				"id": "faq-2",
+				"slug": "faq-2",
+				"status": "published",
+				"data": {
+					"title": "How do I join the waitlist?",
+					"answer": "Enter your email address in any Join waitlist field. Your email app opens with a short waitlist request addressed to us, and you send it like any other email.\n\nWe add each request to the list by hand and reply to confirm, so you know when you are on it.",
+					"position": 2
+				}
+			},
+			{
+				"id": "faq-3",
+				"slug": "faq-3",
+				"status": "published",
+				"data": {
+					"title": "When will invitations be sent?",
+					"answer": "We send invitations in small batches, roughly in the order requests arrive, whenever we are ready to welcome more people.\n\nWe have not set a launch date and will not announce one until the product is ready. When your invitation is ready, it arrives by email.",
+					"position": 3
+				}
+			},
+			{
+				"id": "faq-4",
+				"slug": "faq-4",
+				"status": "published",
+				"data": {
+					"title": "Who can join early access?",
+					"answer": "Anyone who plans their own work and wants a calmer way to do it. Early access runs in a desktop web browser; mobile apps are on our roadmap.",
+					"position": 4
+				}
+			},
+			{
+				"id": "faq-5",
+				"slug": "faq-5",
+				"status": "published",
+				"data": {
+					"title": "What will early access include?",
+					"answer": "The parts of Firstlight we are actively building: the core planning experience, focus mode, and notes and quick capture. You can follow what comes next on the public roadmap.",
+					"position": 5
+				}
+			},
+			{
+				"id": "faq-6",
+				"slug": "faq-6",
+				"status": "published",
+				"data": {
+					"title": "Will early access be free?",
+					"answer": "Yes. Early access costs nothing and needs no payment details.\n\nWe will share pricing plans with early access members before launch, and nobody is moved to a paid plan without choosing one.",
+					"position": 6
+				}
+			},
+			{
+				"id": "faq-7",
+				"slug": "faq-7",
+				"status": "published",
+				"data": {
+					"title": "How can I give feedback?",
+					"answer": "Reply to any email from us, or use the feedback option inside the app once you have access. We read every message, and recurring requests go straight onto the roadmap.",
+					"position": 7
+				}
+			},
+			{
+				"id": "faq-8",
+				"slug": "faq-8",
+				"status": "published",
+				"data": {
+					"title": "What happens after early access?",
+					"answer": "When Firstlight launches publicly, early access members keep their plans and notes. You can choose a plan or simply stop using it, and we can delete your data on request.",
+					"position": 8
+				}
+			}
+		],
+		"launch": [
+			{
+				"id": "launch",
+				"slug": "firstlight",
+				"status": "published",
+				"data": {
+					"title": "Firstlight",
+					"email": "hello@firstlight.app",
+					"share_url": "https://firstlight.app",
+					"waitlist_note": "Be the first to know when Firstlight launches.",
+					"footer_blurb": "A calmer, clearer way to plan your work and life. Firstlight is in prelaunch; join the waitlist to hear when early access opens."
+				}
+			}
+		]
+	}
+}

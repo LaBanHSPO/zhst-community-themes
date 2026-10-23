@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import { requestUrl } from "../lib/aircare";
+---
+
+<Base title="Page not found">
+	<section class="notfound container" aria-labelledby="nf-title">
+		<span class="eyebrow eyebrow-muted">Error 404</span>
+		<h1 id="nf-title" class="display display-dark">This page has <span class="accent-bright">gone cold.</span></h1>
+		<p>The page you’re looking for doesn’t exist or has moved. Browse our services, or tell us what you need and we’ll take care of the rest.</p>
+		<div class="actions">
+			<a class="btn btn-lg" href="/services">See our services <Arrow /></a>
+			<a class="btn btn-lg btn-outline" href={requestUrl()}>Request service</a>
+		</div>
+	</section>
+</Base>

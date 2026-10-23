@@ -1,0 +1,113 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import ServiceIcon from "../components/ServiceIcon.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { getOffice, getPeople, getPrinciples, initials } from "../lib/consulting";
+
+const [pageResult, valuesResult, peopleResult, officeResult] = await Promise.all([
+	getEmDashEntry("pages", "about"),
+	getPrinciples("values"),
+	getPeople(),
+	getOffice(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(pageResult.cacheHint);
+	Astro.cache.set(valuesResult.cacheHint);
+	Astro.cache.set(peopleResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const page = pageResult.entry;
+const values = valuesResult.entries;
+const people = peopleResult.entries;
+const { office } = officeResult;
+const valueIcons = ["compass", "gear", "people", "chart"] as const;
+const valueTones = ["navy", "sage", "taupe", "navy"] as const;
+---
+
+<Base
+	title="About"
+	description={page?.data.intro ?? "Who we are and how we work."}
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<section class="page-head">
+		<div class="container page-head-inner">
+			<div>
+				<span class="eyebrow">{page?.data.eyebrow || "About us"}</span>
+				<h1 {...page?.edit.title}>{page?.data.title ?? "About us"}</h1>
+			</div>
+			{page?.data.intro && <p class="lede">{page.data.intro}</p>}
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<figure class="about-photo">
+				<img
+					src="/images/team-workshop.webp"
+					alt="Three consultants studying a plan at a stone table in front of a city skyline"
+					width="1448"
+					height="1086"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+			{
+				page?.data.content && page.data.content.length > 0 && (
+					<div class="about-body">
+						<div>
+							<span class="eyebrow">Our story</span>
+						</div>
+						<div class="prose">
+							<PortableText value={page.data.content} />
+						</div>
+					</div>
+				)
+			}
+		</div>
+	</section>
+
+	{
+		values.length > 0 && (
+			<section class="section section-warm" aria-labelledby="values-title">
+				<div class="container">
+					<span class="eyebrow">What we believe</span>
+					<h2 id="values-title" class="section-title">The way we work with you.</h2>
+					<div class="value-grid">
+						{values.map((v, i) => (
+							<article class="value-card">
+								<ServiceIcon icon={valueIcons[i % 4]} tone={valueTones[i % 4]} size="sm" />
+								<h3 {...v.edit.title}>{v.data.title}</h3>
+								{v.data.text && <p>{v.data.text}</p>}
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		people.length > 0 && (
+			<section class="section" aria-labelledby="team-title">
+				<div class="container">
+					<span class="eyebrow">Our team</span>
+					<h2 id="team-title" class="section-title">The people you will work with.</h2>
+					<div class="team-grid">
+						{people.map((p) => (
+							<article class="person">
+								<span class="monogram" aria-hidden="true">{initials(p.data.title)}</span>
+								<h3 {...p.edit.title}>{p.data.title}</h3>
+								<p class="role">{p.data.role}</p>
+								{p.data.bio && <p>{p.data.bio}</p>}
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} title="Let's talk about what comes next." />
+</Base>

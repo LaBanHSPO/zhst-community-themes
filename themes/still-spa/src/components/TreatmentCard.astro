@@ -1,0 +1,40 @@
+---
+import Arrow from "./Arrow.astro";
+import type { Treatment } from "../lib/still";
+import { appointmentUrl, minutes, money, photoSrc, slugOf, treatmentUrl } from "../lib/still";
+
+interface Props {
+	treatment: Treatment;
+	headingLevel?: "h3" | "h2";
+}
+const { treatment: t, headingLevel = "h3" } = Astro.props;
+const Heading = headingLevel;
+const src = photoSrc(t.image, t.photo);
+const duration = minutes(t.duration);
+const price = money(t.price);
+---
+<article class="t-card">
+	{
+		src && (
+			<div class="t-card-media">
+				<img src={src} alt={t.image?.alt || t.alt || t.title} width="309" height="137" loading="lazy" />
+			</div>
+		)
+	}
+	<div class="t-card-body">
+		<Heading class="t-card-title"><a href={treatmentUrl(t)}>{t.title}</a></Heading>
+		{t.summary && <p class="t-card-text">{t.summary}</p>}
+		{
+			(duration || price) && (
+				<p class="t-card-meta">
+					{duration && <span>{duration}</span>}
+					{duration && price && <span class="meta-rule" aria-hidden="true" />}
+					{price && <strong>{price}</strong>}
+				</p>
+			)
+		}
+		<a class="btn btn-block btn-sm" href={appointmentUrl({ treatment: slugOf(t) })}>
+			Book treatment<span class="sr-only">: {t.title}</span> <Arrow />
+		</a>
+	</div>
+</article>
