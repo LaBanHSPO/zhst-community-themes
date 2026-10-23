@@ -1,0 +1,78 @@
+---
+import { Image } from "emdash/ui";
+import type { ImageValue } from "emdash";
+
+export interface GalleryItem {
+	id: string;
+	title: string;
+	caption?: string | null;
+	image?: ImageValue | null;
+}
+
+interface Props {
+	items: GalleryItem[];
+	limit?: number;
+}
+
+const { items, limit } = Astro.props;
+const visible = items.filter((item) => item.image?.src || item.image?.id).slice(0, limit ?? items.length);
+---
+
+{
+	visible.length === 0 ? (
+		<p class="lc-empty">Photos of recent work will appear here once they are added in the admin.</p>
+	) : (
+		<ul class="lc-gallery">
+			{visible.map((item) => (
+				<li class="lc-gallery__item">
+					<figure>
+						{item.image && <Image image={item.image} alt={item.image.alt || item.title} />}
+						<figcaption>
+							<strong>{item.title}</strong>
+							{item.caption && <span>{item.caption}</span>}
+						</figcaption>
+					</figure>
+				</li>
+			))}
+		</ul>
+	)
+}
+
+<style>
+	.lc-gallery {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+		gap: 1.25rem;
+	}
+
+	.lc-gallery figure {
+		margin: 0;
+		background: var(--lc-surface);
+		border: 1px solid var(--lc-line);
+		border-radius: var(--lc-radius);
+		overflow: hidden;
+		height: 100%;
+	}
+
+	.lc-gallery :global(img) {
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		height: auto;
+		object-fit: cover;
+	}
+
+	.lc-gallery figcaption {
+		display: grid;
+		gap: 0.2rem;
+		padding: 0.85rem 1rem 1rem;
+		font-size: 0.95rem;
+		color: var(--lc-muted);
+	}
+
+	.lc-gallery figcaption strong {
+		color: var(--lc-navy);
+	}
+</style>

@@ -1,0 +1,181 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import InquiryPanel from "../components/InquiryPanel.astro";
+import { getBusinessDetails } from "../utils/business";
+
+const [pageResult, { details }] = await Promise.all([
+	getEmDashEntry("pages", "contact").catch((error: unknown) => {
+		console.error("[localcraft] Failed to load contact page:", error);
+		return { entry: null, cacheHint: undefined };
+	}),
+	getBusinessDetails(),
+]);
+const page = pageResult.entry;
+if (Astro.cache?.enabled && pageResult.cacheHint) Astro.cache.set(pageResult.cacheHint);
+const title = page?.data.title ?? "Contact";
+---
+
+<Base
+	title={title}
+	description="Call, email or send a quote or callback request."
+	content={page ? { collection: "pages", id: page.data.id, slug: "contact" } : undefined}
+	quoteHref="#inquiry"
+>
+	<section class="lc-pagehead">
+		<div class="lc-wrap">
+			<p class="lc-eyebrow">Get in touch</p>
+			<h1>{title}</h1>
+			{
+				page?.data.content && page.data.content.length > 0 ? (
+					<div class="lc-lead lc-contact-lead">
+						<PortableText value={page.data.content} />
+					</div>
+				) : (
+					<p class="lc-lead">Call, email, or send a quote or callback request below.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<div class="lc-wrap lc-section--tight lc-contact">
+		<div class="lc-contact__direct">
+			{
+				details.phoneHref && (
+					<a class="lc-card lc-contact__card" href={details.phoneHref}>
+						<span class="lc-contact__label">Call us</span>
+						<span class="lc-contact__value">{details.phone}</span>
+						{details.hours && <span class="lc-contact__meta">{details.hours}</span>}
+					</a>
+				)
+			}
+			{
+				details.emailHref && (
+					<a class="lc-card lc-contact__card" href={details.emailHref}>
+						<span class="lc-contact__label">Email us</span>
+						<span class="lc-contact__value lc-contact__value--email">{details.email}</span>
+						<span class="lc-contact__meta">Photos of the job are welcome</span>
+					</a>
+				)
+			}
+			{
+				details.base && (
+					<div class="lc-card lc-contact__card">
+						<span class="lc-contact__label">Based in</span>
+						<span class="lc-contact__value">{details.base}</span>
+						<span class="lc-contact__meta">
+							<a href="/areas">See our service areas</a>
+						</span>
+					</div>
+				)
+			}
+			{
+				!details.phoneHref && !details.emailHref && (
+					<p class="lc-empty">
+						Contact details have not been added yet. Add a phone number and email under Business details in the
+						admin.
+					</p>
+				)
+			}
+			<div class="lc-contact__expect">
+				<h2>What happens next</h2>
+				<ol>
+					<li>We read your request and check it fits our services and areas.</li>
+					<li>We call or email you back to talk through the job.</li>
+					<li>If it's a good fit, we agree the scope and a time together.</li>
+				</ol>
+				<p>
+					Sending a request does not book an appointment or fix a price. Nothing is scheduled until we have agreed it
+					with you.
+				</p>
+			</div>
+		</div>
+		<InquiryPanel
+			details={details}
+			heading="Request a quote or callback"
+			intro="Tell us what needs doing, your neighbourhood, and whether you'd like a quote or a call back."
+		/>
+	</div>
+</Base>
+
+<style>
+	.lc-contact-lead :global(p:last-child) {
+		margin-bottom: 0;
+	}
+
+	.lc-contact {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(300px, 1.1fr);
+		gap: 2rem 3rem;
+		align-items: start;
+		padding-block: clamp(2rem, 5vw, 3.5rem);
+	}
+
+	.lc-contact__direct {
+		display: grid;
+		gap: 1rem;
+	}
+
+	.lc-contact__card {
+		display: grid;
+		gap: 0.2rem;
+		padding: 1.25rem 1.5rem;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	a.lc-contact__card:hover {
+		border-color: var(--lc-navy);
+	}
+
+	.lc-contact__label {
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--lc-muted);
+	}
+
+	.lc-contact__value {
+		font-size: 1.5rem;
+		font-weight: 800;
+		color: var(--lc-navy);
+		overflow-wrap: anywhere;
+	}
+
+	.lc-contact__value--email {
+		font-size: 1.2rem;
+	}
+
+	.lc-contact__meta {
+		color: var(--lc-muted);
+		font-size: 0.95rem;
+	}
+
+	.lc-contact__expect {
+		margin-top: 1rem;
+	}
+
+	.lc-contact__expect h2 {
+		font-size: 1.35rem;
+	}
+
+	.lc-contact__expect ol {
+		padding-left: 1.25rem;
+		margin: 0 0 1rem;
+		display: grid;
+		gap: 0.4rem;
+	}
+
+	.lc-contact__expect p {
+		color: var(--lc-muted);
+		font-size: 0.95rem;
+	}
+
+	@media (max-width: 900px) {
+		.lc-contact {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

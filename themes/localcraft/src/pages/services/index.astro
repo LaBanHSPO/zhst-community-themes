@@ -1,0 +1,64 @@
+---
+import Base from "../../layouts/Base.astro";
+import ServiceCard from "../../components/ServiceCard.astro";
+import { loadOrdered } from "../../utils/content";
+
+const services = await loadOrdered("services");
+if (Astro.cache?.enabled && services.cacheHint) Astro.cache.set(services.cacheHint);
+---
+
+<Base title="Services" description="Home repair services with a clear scope: what is included and what is not.">
+	<section class="lc-pagehead">
+		<div class="lc-wrap">
+			<p class="lc-eyebrow">What we do</p>
+			<h1>Services</h1>
+			<p class="lc-lead">
+				Each service lists what we take on and what we don't, so you know before you ask. Not sure which fits?
+				Send a request and describe the job.
+			</p>
+		</div>
+	</section>
+
+	<section class="lc-wrap lc-section--tight" aria-label="All services">
+		{
+			services.entries.length === 0 ? (
+				<p class="lc-empty">No services have been published yet.</p>
+			) : (
+				<ul class="lc-services-grid">
+					{services.entries.map((service) => (
+						<li>
+							<ServiceCard
+								slug={service.id}
+								title={service.data.title}
+								summary={service.data.summary}
+								icon={service.data.icon}
+								headingLevel="h2"
+							/>
+						</li>
+					))}
+				</ul>
+			)
+		}
+		<p class="lc-services-note">
+			Prices depend on the job. We do not publish fixed prices or confirm appointments online; every request starts
+			with a conversation. <a href="/contact#inquiry">Request a quote or a callback</a>.
+		</p>
+	</section>
+</Base>
+
+<style>
+	.lc-services-grid {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+		gap: 1.4rem;
+	}
+
+	.lc-services-note {
+		margin-top: 2rem;
+		color: var(--lc-muted);
+		max-width: 70ch;
+	}
+</style>
