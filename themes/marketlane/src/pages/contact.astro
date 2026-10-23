@@ -1,0 +1,383 @@
+---
+import "@emdash-cms/plugin-forms/styles";
+import { getEmDashCollection, getEmDashEntry } from "emdash";
+import { Image, PortableText } from "emdash/ui";
+import { Form } from "@emdash-cms/plugin-forms/ui";
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import { formatPrice, getColors, getCoverImage, getSizes } from "../lib/catalog";
+
+/** Slug of the forms-plugin form this page embeds. Create it in the admin (see README). */
+const INQUIRY_FORM_ID = "inquiry";
+
+const q = Astro.url.searchParams;
+const productParam = (q.get("product") ?? "").trim().toLowerCase();
+const colorParam = (q.get("color") ?? "").trim().toLowerCase();
+const sizeParam = (q.get("size") ?? "").trim();
+
+const [pageResult, contactsResult, productResult] = await Promise.all([
+	getEmDashEntry("pages", "contact"),
+	getEmDashCollection("contacts", { orderBy: { created_at: "asc" }, limit: 10 }),
+	/^[a-z0-9][a-z0-9-]{0,63}$/.test(productParam)
+		? getEmDashEntry("products", productParam)
+		: Promise.resolve(null),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(pageResult.cacheHint);
+	Astro.cache.set(contactsResult.cacheHint);
+	if (productResult) Astro.cache.set(productResult.cacheHint);
+}
+
+const page = pageResult.entry;
+const contacts = contactsResult.entries;
+const primaryEmail = contacts.find((c) => c.data.email)?.data.email ?? null;
+
+// Only values that exist on the product are echoed back; anything else is ignored.
+const product = productResult?.entry ?? null;
+const selection = product
+	? (() => {
+			const p = product.data;
+			const color = getColors(p).find((c) => c.slug === colorParam) ?? null;
+			const size = getSizes(p).find((s) => s.available && s.label === sizeParam) ?? null;
+			const image = color?.image ?? getCoverImage(p);
+			const parts = [`${p.title} (${formatPrice(p.price)})`];
+			if (color) parts.push(`Color: ${color.name}`);
+			parts.push(size ? `Size: ${size.label}` : "Size: not chosen");
+			return { slug: product.id, product: p, color, size, image, line: parts.join(" · ") };
+		})()
+	: null;
+const unknownProduct = productParam !== "" && !selection;
+
+const inquiryText = selection ? `I'd like to ask about: ${selection.line}` : "";
+const mailtoHref = primaryEmail
+	? `mailto:${primaryEmail}?subject=${encodeURIComponent(
+			selection ? `Inquiry: ${selection.product.title}` : "Inquiry",
+		)}${inquiryText ? `&body=${encodeURIComponent(`${inquiryText}\n\n`)}` : ""}`
+	: null;
+const hasPageContent = Array.isArray(page?.data.content) && (page?.data.content?.length ?? 0) > 0;
+---
+
+<Base
+	title={page?.data.title ?? "Contact"}
+	description="Ask about a product, its fit or availability."
+	content={page ? { collection: "pages", id: page.data.id, slug: "contact" } : undefined}
+>
+	<div class="container page-head">
+		<nav aria-label="Breadcrumb" class="crumbs">
+			<a href="/">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">Contact</span>
+		</nav>
+		<h1>{page?.data.title ?? "Contact"}</h1>
+		{
+			hasPageContent ? (
+				<div class="lede prose">
+					<PortableText value={page?.data.content} />
+				</div>
+			) : (
+				<p class="lede">Questions about a piece, its fit or availability? Send us a note.</p>
+			)
+		}
+	</div>
+
+	<div class="container contact-grid">
+		<div class="contact-main">
+			{
+				selection && (
+					<section class="selection" aria-labelledby="selection-heading">
+						<h2 id="selection-heading">You are asking about</h2>
+						<div class="selection-body">
+							<div class="selection-media">
+								{selection.image ? (
+									<Image image={selection.image} alt={selection.image.alt || selection.product.title} width={240} height={180} />
+								) : (
+									<div class="selection-placeholder" />
+								)}
+							</div>
+							<dl>
+								<div>
+									<dt>Product</dt>
+									<dd>
+										<a href={`/products/${encodeURIComponent(selection.slug)}`}>{selection.product.title}</a>
+									</dd>
+								</div>
+								<div>
+									<dt>Price</dt>
+									<dd>{formatPrice(selection.product.price)}</dd>
+								</div>
+								{selection.color && (
+									<div>
+										<dt>Color</dt>
+										<dd>{selection.color.name}</dd>
+									</div>
+								)}
+								<div>
+									<dt>Size</dt>
+									<dd>{selection.size ? selection.size.label : "Not chosen yet"}</dd>
+								</div>
+							</dl>
+						</div>
+						<p class="selection-line">
+							<span class="label">Include this in your message:</span>
+							<output data-inquiry-text>{inquiryText}</output>
+						</p>
+						<p class="selection-actions">
+							<a class="text-link" href={`/products/${encodeURIComponent(selection.slug)}`}>Change selection</a>
+						</p>
+						<p class="notice">
+							<strong>Purchase coming soon.</strong> This is an inquiry, not an order. Nothing is reserved or
+							charged; we will reply by email about fit and availability.
+						</p>
+					</section>
+				)
+			}
+			{
+				unknownProduct && (
+					<p class="notice">
+						We could not find that product. It may have been renamed or removed; <a href="/category">browse the shop</a>
+						or tell us what you are looking for below.
+					</p>
+				)
+			}
+
+			<section class="inquiry" aria-labelledby="inquiry-heading">
+				<h2 id="inquiry-heading">Send an inquiry</h2>
+				<div class="form-slot" data-inquiry-slot>
+					<Form id={INQUIRY_FORM_ID} />
+					<div class="form-fallback">
+						<p>
+							The online inquiry form is not available right now.
+							{mailtoHref ? " Email us instead and we will reply within one business day." : " Use the contact details on this page to reach us."}
+						</p>
+					</div>
+				</div>
+				{
+					mailtoHref && (
+						<p class="mailto">
+							<a class="btn btn-secondary" href={mailtoHref}>
+								<Icon name="mail" size={20} />
+								{selection ? "Email this inquiry" : "Email us"}
+							</a>
+						</p>
+					)
+				}
+			</section>
+		</div>
+
+		<aside class="contact-aside" aria-label="Contact details">
+			{
+				contacts.length === 0 ? (
+					<p class="muted">Contact details have not been added yet.</p>
+				) : (
+					contacts.map((c) => (
+						<section class="contact-card">
+							<h2>{c.data.name}</h2>
+							<ul>
+								{c.data.email && (
+									<li>
+										<Icon name="mail" size={20} />
+										<a href={`mailto:${c.data.email}`}>{c.data.email}</a>
+									</li>
+								)}
+								{c.data.phone && (
+									<li>
+										<Icon name="phone" size={20} />
+										<a href={`tel:${c.data.phone.replace(/[^+\d]/g, "")}`}>{c.data.phone}</a>
+									</li>
+								)}
+								{c.data.address && (
+									<li>
+										<Icon name="pin" size={20} />
+										<span class="pre">{c.data.address}</span>
+									</li>
+								)}
+								{c.data.hours && (
+									<li>
+										<Icon name="clock" size={20} />
+										<span class="pre">{c.data.hours}</span>
+									</li>
+								)}
+							</ul>
+							{c.data.note && <p class="muted">{c.data.note}</p>}
+						</section>
+					))
+				)
+			}
+			<p class="muted small">
+				Need help with sizing first? See the <a href="/size-guide">size guide</a>.
+			</p>
+		</aside>
+	</div>
+</Base>
+
+<script>
+	// Prefill the inquiry form (when the admin form has matching fields) with the visible selection.
+	const text = document.querySelector<HTMLOutputElement>("[data-inquiry-text]")?.textContent?.trim();
+	const slot = document.querySelector<HTMLElement>("[data-inquiry-slot]");
+	if (text && slot) {
+		const params = new URLSearchParams(window.location.search);
+		const fill = (name: string, value: string) => {
+			const el = slot.querySelector<HTMLInputElement | HTMLTextAreaElement>(
+				`input[name="${name}"], textarea[name="${name}"]`,
+			);
+			if (el && !el.value.trim() && value) el.value = value;
+		};
+		fill("message", `${text}\n\n`);
+		fill("product", params.get("product") ?? "");
+		fill("color", params.get("color") ?? "");
+		fill("size", params.get("size") ?? "");
+	}
+</script>
+
+<style>
+	.contact-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+		gap: var(--space-7);
+		align-items: start;
+	}
+	.contact-main {
+		display: grid;
+		gap: var(--space-6);
+	}
+	.selection {
+		border: 1px solid var(--color-line);
+		padding: var(--space-5);
+		display: grid;
+		gap: var(--space-4);
+	}
+	.selection h2,
+	.inquiry h2,
+	.contact-card h2 {
+		font-size: var(--step-2);
+		margin: 0;
+	}
+	.selection-body {
+		display: grid;
+		grid-template-columns: 9rem minmax(0, 1fr);
+		gap: var(--space-5);
+		align-items: start;
+	}
+	.selection-media {
+		background: var(--color-tile);
+		aspect-ratio: 4 / 3;
+		overflow: hidden;
+	}
+	.selection-media :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.selection-placeholder {
+		width: 100%;
+		height: 100%;
+		background: repeating-linear-gradient(135deg, #f3f3f1 0 10px, #eeeeeb 10px 20px);
+	}
+	dl {
+		margin: 0;
+		display: grid;
+		gap: 0.35rem;
+	}
+	dl div {
+		display: grid;
+		grid-template-columns: 5rem 1fr;
+		gap: var(--space-3);
+	}
+	dt {
+		color: var(--color-muted);
+	}
+	dd {
+		margin: 0;
+		color: var(--color-ink);
+		font-weight: 500;
+	}
+	.selection-line {
+		margin: 0;
+		display: grid;
+		gap: 0.35rem;
+	}
+	.selection-line .label {
+		font-size: var(--step--1);
+		color: var(--color-muted);
+	}
+	.selection-line output {
+		display: block;
+		padding: var(--space-3) var(--space-4);
+		background: var(--color-tile);
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.9rem;
+		color: var(--color-ink);
+		overflow-wrap: anywhere;
+	}
+	.selection-actions,
+	.selection .notice {
+		margin: 0;
+	}
+	.inquiry {
+		display: grid;
+		gap: var(--space-4);
+	}
+	.form-fallback {
+		border: 1px dashed #c9cbd1;
+		padding: var(--space-4) var(--space-5);
+		color: var(--color-muted);
+	}
+	.form-fallback p {
+		margin: 0;
+	}
+	/* The forms plugin renders nothing when the form does not exist; show the fallback only then. */
+	.form-slot:has(.ec-form) .form-fallback {
+		display: none;
+	}
+	.mailto {
+		margin: 0;
+	}
+	.mailto .btn {
+		min-height: 3rem;
+		padding: 0.6rem 1.4rem;
+		font-size: 1rem;
+	}
+	.contact-aside {
+		display: grid;
+		gap: var(--space-5);
+		background: var(--color-band);
+		padding: var(--space-5);
+	}
+	.contact-card ul {
+		list-style: none;
+		padding: 0;
+		margin: var(--space-4) 0;
+		display: grid;
+		gap: var(--space-3);
+	}
+	.contact-card li {
+		display: grid;
+		grid-template-columns: 1.5rem 1fr;
+		gap: var(--space-3);
+		align-items: start;
+	}
+	.contact-card li :global(svg) {
+		margin-top: 0.15rem;
+		color: var(--color-ink);
+	}
+	.contact-card a {
+		color: var(--color-ink);
+	}
+	.pre {
+		white-space: pre-line;
+	}
+	.muted {
+		color: var(--color-muted);
+		margin: 0;
+	}
+	.small {
+		font-size: var(--step--1);
+	}
+	@media (max-width: 860px) {
+		.contact-grid {
+			grid-template-columns: 1fr;
+		}
+		.selection-body {
+			grid-template-columns: 6.5rem minmax(0, 1fr);
+			gap: var(--space-4);
+		}
+	}
+</style>

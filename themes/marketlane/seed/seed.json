@@ -1,0 +1,2021 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Marketlane",
+		"description": "Campaign-led fashion and lifestyle storefront concept with product options and inquiries (no checkout).",
+		"author": "ZeroHostCMS community"
+	},
+	"settings": {
+		"title": "Marketlane",
+		"tagline": "Modern essentials for a more considered wardrobe."
+	},
+	"collections": [
+		{
+			"slug": "products",
+			"label": "Products",
+			"labelSingular": "Product",
+			"urlPattern": "/products/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "price",
+					"label": "Price (USD)",
+					"type": "number",
+					"required": true,
+					"validation": {
+						"min": 0
+					}
+				},
+				{
+					"slug": "summary",
+					"label": "Summary",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "image",
+					"label": "Main image",
+					"type": "image"
+				},
+				{
+					"slug": "gallery",
+					"label": "Gallery",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "image",
+								"type": "image",
+								"label": "Image",
+								"required": true
+							},
+							{
+								"slug": "caption",
+								"type": "string",
+								"label": "Caption"
+							}
+						]
+					}
+				},
+				{
+					"slug": "colors",
+					"label": "Colors",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "name",
+								"type": "string",
+								"label": "Color name",
+								"required": true
+							},
+							{
+								"slug": "swatch",
+								"type": "string",
+								"label": "Swatch hex (e.g. #e8e1d3)"
+							},
+							{
+								"slug": "image",
+								"type": "image",
+								"label": "Image for this color"
+							}
+						]
+					}
+				},
+				{
+					"slug": "sizes",
+					"label": "Sizes",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "label",
+								"type": "string",
+								"label": "Size label",
+								"required": true
+							},
+							{
+								"slug": "available",
+								"type": "boolean",
+								"label": "Offered"
+							}
+						]
+					}
+				},
+				{
+					"slug": "description",
+					"label": "Description",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "materials",
+					"label": "Materials",
+					"type": "text"
+				},
+				{
+					"slug": "care",
+					"label": "Care",
+					"type": "text"
+				},
+				{
+					"slug": "fit_notes",
+					"label": "Fit notes",
+					"type": "text"
+				},
+				{
+					"slug": "featured",
+					"label": "Show in Our favorites",
+					"type": "boolean"
+				},
+				{
+					"slug": "is_new",
+					"label": "New arrival",
+					"type": "boolean"
+				}
+			]
+		},
+		{
+			"slug": "campaigns",
+			"label": "Collections",
+			"labelSingular": "Collection",
+			"urlPattern": "/collections/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "eyebrow",
+					"label": "Eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "headline",
+					"label": "Headline",
+					"type": "string",
+					"searchable": true
+				},
+				{
+					"slug": "intro",
+					"label": "Intro",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "vertical_note",
+					"label": "Hero side note",
+					"type": "string"
+				},
+				{
+					"slug": "hero_image",
+					"label": "Campaign image",
+					"type": "image"
+				},
+				{
+					"slug": "story",
+					"label": "Story",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "size_charts",
+			"label": "Size charts",
+			"labelSingular": "Size chart",
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "applies_to",
+					"label": "Applies to",
+					"type": "string"
+				},
+				{
+					"slug": "unit_note",
+					"label": "Unit note",
+					"type": "string"
+				},
+				{
+					"slug": "column_a",
+					"label": "Column A heading",
+					"type": "string"
+				},
+				{
+					"slug": "column_b",
+					"label": "Column B heading",
+					"type": "string"
+				},
+				{
+					"slug": "column_c",
+					"label": "Column C heading",
+					"type": "string"
+				},
+				{
+					"slug": "column_d",
+					"label": "Column D heading",
+					"type": "string"
+				},
+				{
+					"slug": "rows",
+					"label": "Rows",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "size",
+								"type": "string",
+								"label": "Size",
+								"required": true
+							},
+							{
+								"slug": "a",
+								"type": "string",
+								"label": "Column A"
+							},
+							{
+								"slug": "b",
+								"type": "string",
+								"label": "Column B"
+							},
+							{
+								"slug": "c",
+								"type": "string",
+								"label": "Column C"
+							},
+							{
+								"slug": "d",
+								"type": "string",
+								"label": "Column D"
+							}
+						]
+					}
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "contacts",
+			"label": "Contact details",
+			"labelSingular": "Contact detail",
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "name",
+					"label": "Name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "email",
+					"label": "Email",
+					"type": "string"
+				},
+				{
+					"slug": "phone",
+					"label": "Phone",
+					"type": "string"
+				},
+				{
+					"slug": "address",
+					"label": "Address",
+					"type": "text"
+				},
+				{
+					"slug": "hours",
+					"label": "Opening hours",
+					"type": "text"
+				},
+				{
+					"slug": "note",
+					"label": "Note",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		}
+	],
+	"taxonomies": [
+		{
+			"name": "category",
+			"label": "Categories",
+			"labelSingular": "Category",
+			"hierarchical": false,
+			"collections": [
+				"products"
+			],
+			"terms": [
+				{
+					"slug": "knitwear",
+					"label": "Knitwear"
+				},
+				{
+					"slug": "trousers",
+					"label": "Trousers"
+				},
+				{
+					"slug": "shoes",
+					"label": "Shoes"
+				},
+				{
+					"slug": "outerwear",
+					"label": "Outerwear"
+				},
+				{
+					"slug": "accessories",
+					"label": "Accessories"
+				}
+			]
+		},
+		{
+			"name": "department",
+			"label": "Departments",
+			"labelSingular": "Department",
+			"hierarchical": false,
+			"collections": [
+				"products"
+			],
+			"terms": [
+				{
+					"slug": "women",
+					"label": "Women"
+				},
+				{
+					"slug": "men",
+					"label": "Men"
+				}
+			]
+		},
+		{
+			"name": "collection",
+			"label": "Collection tags",
+			"labelSingular": "Collection tag",
+			"hierarchical": false,
+			"collections": [
+				"products"
+			],
+			"terms": [
+				{
+					"slug": "everyday-favorites",
+					"label": "Everyday Favorites"
+				},
+				{
+					"slug": "weekend-tailoring",
+					"label": "Weekend Tailoring"
+				},
+				{
+					"slug": "quiet-layers",
+					"label": "Quiet Layers"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "New arrivals",
+					"url": "/category?new=1"
+				},
+				{
+					"type": "custom",
+					"label": "Women",
+					"url": "/category?department=women"
+				},
+				{
+					"type": "custom",
+					"label": "Men",
+					"url": "/category?department=men"
+				},
+				{
+					"type": "custom",
+					"label": "Collections",
+					"url": "/collections"
+				},
+				{
+					"type": "custom",
+					"label": "About",
+					"url": "/about"
+				}
+			]
+		},
+		{
+			"name": "footer",
+			"label": "Footer Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Shop all",
+					"url": "/category"
+				},
+				{
+					"type": "custom",
+					"label": "Collections",
+					"url": "/collections"
+				},
+				{
+					"type": "custom",
+					"label": "Size guide",
+					"url": "/size-guide"
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
+				},
+				{
+					"type": "custom",
+					"label": "About",
+					"url": "/about"
+				}
+			]
+		}
+	],
+	"content": {
+		"products": [
+			{
+				"id": "product-ribbed-knit-sweater",
+				"slug": "ribbed-knit-sweater",
+				"status": "published",
+				"data": {
+					"title": "Ribbed Knit Sweater",
+					"price": 89,
+					"summary": "A relaxed crew-neck sweater in a soft rib that layers easily over shirts and dresses.",
+					"description": [
+						{
+							"_type": "block",
+							"_key": "k3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k4",
+									"text": "Part of a small-batch range designed to be worn often and kept for years. Available in 3 colourways; choose a colour and size to see the options."
+								}
+							]
+						}
+					],
+					"materials": "Cotton and recycled wool blend, mid-weight rib.",
+					"care": "Hand wash cold or machine wash on a wool cycle. Dry flat.",
+					"fit_notes": "Relaxed through the body with dropped shoulders. Size down for a closer fit.",
+					"featured": true,
+					"is_new": false,
+					"colors": [
+						{
+							"name": "Oat",
+							"swatch": "#e8e1d3",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/ribbed-knit-sweater-oat.jpg",
+								"src": "/images/products/ribbed-knit-sweater-oat.jpg",
+								"alt": "Ribbed Knit Sweater in oat",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "ribbed-knit-sweater-oat.jpg"
+							}
+						},
+						{
+							"name": "Stone grey",
+							"swatch": "#9a9a98",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/ribbed-knit-sweater-stone-grey.jpg",
+								"src": "/images/products/ribbed-knit-sweater-stone-grey.jpg",
+								"alt": "Ribbed Knit Sweater in stone grey",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "ribbed-knit-sweater-stone-grey.jpg"
+							}
+						},
+						{
+							"name": "Black",
+							"swatch": "#1d1d1f",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/ribbed-knit-sweater-black.jpg",
+								"src": "/images/products/ribbed-knit-sweater-black.jpg",
+								"alt": "Ribbed Knit Sweater in black",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "ribbed-knit-sweater-black.jpg"
+							}
+						}
+					],
+					"sizes": [
+						{
+							"label": "XS",
+							"available": true
+						},
+						{
+							"label": "S",
+							"available": true
+						},
+						{
+							"label": "M",
+							"available": true
+						},
+						{
+							"label": "L",
+							"available": true
+						},
+						{
+							"label": "XL",
+							"available": false
+						}
+					],
+					"image": {
+						"provider": "external",
+						"id": "seed:/images/products/ribbed-knit-sweater-oat.jpg",
+						"src": "/images/products/ribbed-knit-sweater-oat.jpg",
+						"alt": "Ribbed Knit Sweater in oat, studio shot",
+						"width": 630,
+						"height": 472,
+						"mimeType": "image/jpeg",
+						"filename": "ribbed-knit-sweater-oat.jpg"
+					},
+					"gallery": [
+						{
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/ribbed-knit-sweater-detail.jpg",
+								"src": "/images/products/ribbed-knit-sweater-detail.jpg",
+								"alt": "Close-up of the ribbed knit sweater fabric",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "ribbed-knit-sweater-detail.jpg"
+							},
+							"caption": "Fabric detail"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": [
+						"knitwear"
+					],
+					"department": [
+						"women"
+					],
+					"collection": [
+						"everyday-favorites"
+					]
+				}
+			},
+			{
+				"id": "product-relaxed-crew-knit",
+				"slug": "relaxed-crew-knit",
+				"status": "published",
+				"data": {
+					"title": "Relaxed Crew Knit",
+					"price": 82,
+					"summary": "An easy weekend knit with a boxy shape and a tidy ribbed hem.",
+					"description": [
+						{
+							"_type": "block",
+							"_key": "k7",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k8",
+									"text": "Part of a small-batch range designed to be worn often and kept for years. Available in 2 colourways; choose a colour and size to see the options."
+								}
+							]
+						}
+					],
+					"materials": "Organic cotton, open-gauge rib.",
+					"care": "Machine wash cold. Dry flat to keep the shape.",
+					"fit_notes": "Boxy, slightly cropped. True to size.",
+					"featured": false,
+					"is_new": true,
+					"colors": [
+						{
+							"name": "Sage",
+							"swatch": "#a9b29a",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/relaxed-crew-knit-sage.jpg",
+								"src": "/images/products/relaxed-crew-knit-sage.jpg",
+								"alt": "Relaxed Crew Knit in sage",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "relaxed-crew-knit-sage.jpg"
+							}
+						},
+						{
+							"name": "Navy",
+							"swatch": "#2a3550",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/relaxed-crew-knit-navy.jpg",
+								"src": "/images/products/relaxed-crew-knit-navy.jpg",
+								"alt": "Relaxed Crew Knit in navy",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "relaxed-crew-knit-navy.jpg"
+							}
+						}
+					],
+					"sizes": [
+						{
+							"label": "XS",
+							"available": true
+						},
+						{
+							"label": "S",
+							"available": true
+						},
+						{
+							"label": "M",
+							"available": true
+						},
+						{
+							"label": "L",
+							"available": true
+						},
+						{
+							"label": "XL",
+							"available": true
+						}
+					],
+					"image": {
+						"provider": "external",
+						"id": "seed:/images/products/relaxed-crew-knit-sage.jpg",
+						"src": "/images/products/relaxed-crew-knit-sage.jpg",
+						"alt": "Relaxed Crew Knit in sage, studio shot",
+						"width": 630,
+						"height": 472,
+						"mimeType": "image/jpeg",
+						"filename": "relaxed-crew-knit-sage.jpg"
+					},
+					"gallery": [
+						{
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/relaxed-crew-knit-detail.jpg",
+								"src": "/images/products/relaxed-crew-knit-detail.jpg",
+								"alt": "Close-up of the relaxed crew knit fabric",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "relaxed-crew-knit-detail.jpg"
+							},
+							"caption": "Fabric detail"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": [
+						"knitwear"
+					],
+					"department": [
+						"men"
+					],
+					"collection": [
+						"weekend-tailoring"
+					]
+				}
+			},
+			{
+				"id": "product-wide-leg-trousers",
+				"slug": "wide-leg-trousers",
+				"status": "published",
+				"data": {
+					"title": "Wide Leg Trousers",
+					"price": 95,
+					"summary": "High-rise pleated trousers with a fluid wide leg and a clean front.",
+					"description": [
+						{
+							"_type": "block",
+							"_key": "k11",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k12",
+									"text": "Part of a small-batch range designed to be worn often and kept for years. Available in 3 colourways; choose a colour and size to see the options."
+								}
+							]
+						}
+					],
+					"materials": "Lyocell and linen twill with a soft drape.",
+					"care": "Machine wash cold, line dry, warm iron.",
+					"fit_notes": "High rise, full length. Model wears size S.",
+					"featured": true,
+					"is_new": false,
+					"colors": [
+						{
+							"name": "Sand",
+							"swatch": "#c9b89c",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/wide-leg-trousers-sand.jpg",
+								"src": "/images/products/wide-leg-trousers-sand.jpg",
+								"alt": "Wide Leg Trousers in sand",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "wide-leg-trousers-sand.jpg"
+							}
+						},
+						{
+							"name": "Olive",
+							"swatch": "#6f6d4c",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/wide-leg-trousers-olive.jpg",
+								"src": "/images/products/wide-leg-trousers-olive.jpg",
+								"alt": "Wide Leg Trousers in olive",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "wide-leg-trousers-olive.jpg"
+							}
+						},
+						{
+							"name": "Black",
+							"swatch": "#1c1c1c",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/wide-leg-trousers-black.jpg",
+								"src": "/images/products/wide-leg-trousers-black.jpg",
+								"alt": "Wide Leg Trousers in black",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "wide-leg-trousers-black.jpg"
+							}
+						}
+					],
+					"sizes": [
+						{
+							"label": "XS",
+							"available": false
+						},
+						{
+							"label": "S",
+							"available": true
+						},
+						{
+							"label": "M",
+							"available": true
+						},
+						{
+							"label": "L",
+							"available": true
+						},
+						{
+							"label": "XL",
+							"available": true
+						}
+					],
+					"image": {
+						"provider": "external",
+						"id": "seed:/images/products/wide-leg-trousers-sand.jpg",
+						"src": "/images/products/wide-leg-trousers-sand.jpg",
+						"alt": "Wide Leg Trousers in sand, studio shot",
+						"width": 630,
+						"height": 472,
+						"mimeType": "image/jpeg",
+						"filename": "wide-leg-trousers-sand.jpg"
+					},
+					"gallery": [
+						{
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/wide-leg-trousers-detail.jpg",
+								"src": "/images/products/wide-leg-trousers-detail.jpg",
+								"alt": "Close-up of the wide leg trousers fabric",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "wide-leg-trousers-detail.jpg"
+							},
+							"caption": "Fabric detail"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": [
+						"trousers"
+					],
+					"department": [
+						"women"
+					],
+					"collection": [
+						"everyday-favorites"
+					]
+				}
+			},
+			{
+				"id": "product-pleated-chino",
+				"slug": "pleated-chino",
+				"status": "published",
+				"data": {
+					"title": "Pleated Chino",
+					"price": 78,
+					"summary": "A single-pleat chino with a tapered leg, made for everyday wear.",
+					"description": [
+						{
+							"_type": "block",
+							"_key": "k15",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k16",
+									"text": "Part of a small-batch range designed to be worn often and kept for years. Available in 2 colourways; choose a colour and size to see the options."
+								}
+							]
+						}
+					],
+					"materials": "Cotton twill with a little stretch.",
+					"care": "Machine wash cold inside out. Tumble dry low.",
+					"fit_notes": "Mid rise, tapered leg. Waist sizes in inches.",
+					"featured": false,
+					"is_new": true,
+					"colors": [
+						{
+							"name": "Stone",
+							"swatch": "#b9b3a6",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/pleated-chino-stone.jpg",
+								"src": "/images/products/pleated-chino-stone.jpg",
+								"alt": "Pleated Chino in stone",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "pleated-chino-stone.jpg"
+							}
+						},
+						{
+							"name": "Charcoal",
+							"swatch": "#3c3d40",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/pleated-chino-charcoal.jpg",
+								"src": "/images/products/pleated-chino-charcoal.jpg",
+								"alt": "Pleated Chino in charcoal",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "pleated-chino-charcoal.jpg"
+							}
+						}
+					],
+					"sizes": [
+						{
+							"label": "28",
+							"available": true
+						},
+						{
+							"label": "30",
+							"available": true
+						},
+						{
+							"label": "32",
+							"available": true
+						},
+						{
+							"label": "34",
+							"available": true
+						},
+						{
+							"label": "36",
+							"available": false
+						}
+					],
+					"image": {
+						"provider": "external",
+						"id": "seed:/images/products/pleated-chino-stone.jpg",
+						"src": "/images/products/pleated-chino-stone.jpg",
+						"alt": "Pleated Chino in stone, studio shot",
+						"width": 630,
+						"height": 472,
+						"mimeType": "image/jpeg",
+						"filename": "pleated-chino-stone.jpg"
+					},
+					"gallery": [
+						{
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/pleated-chino-detail.jpg",
+								"src": "/images/products/pleated-chino-detail.jpg",
+								"alt": "Close-up of the pleated chino fabric",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "pleated-chino-detail.jpg"
+							},
+							"caption": "Fabric detail"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": [
+						"trousers"
+					],
+					"department": [
+						"men"
+					],
+					"collection": [
+						"weekend-tailoring"
+					]
+				}
+			},
+			{
+				"id": "product-classic-leather-sneakers",
+				"slug": "classic-leather-sneakers",
+				"status": "published",
+				"data": {
+					"title": "Classic Leather Sneakers",
+					"price": 120,
+					"summary": "Low-profile court sneakers with a suede heel tab and a cushioned footbed.",
+					"description": [
+						{
+							"_type": "block",
+							"_key": "k19",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k20",
+									"text": "Part of a small-batch range designed to be worn often and kept for years. Available in 3 colourways; choose a colour and size to see the options."
+								}
+							]
+						}
+					],
+					"materials": "Leather upper, suede trim, rubber cup sole.",
+					"care": "Wipe clean with a damp cloth. Air dry.",
+					"fit_notes": "Runs true to size. Half sizes should size up.",
+					"featured": true,
+					"is_new": false,
+					"colors": [
+						{
+							"name": "White",
+							"swatch": "#f4f4f2",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/classic-leather-sneakers-white.jpg",
+								"src": "/images/products/classic-leather-sneakers-white.jpg",
+								"alt": "Classic Leather Sneakers in white",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "classic-leather-sneakers-white.jpg"
+							}
+						},
+						{
+							"name": "Grey",
+							"swatch": "#a5a5a5",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/classic-leather-sneakers-grey.jpg",
+								"src": "/images/products/classic-leather-sneakers-grey.jpg",
+								"alt": "Classic Leather Sneakers in grey",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "classic-leather-sneakers-grey.jpg"
+							}
+						},
+						{
+							"name": "Black",
+							"swatch": "#222222",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/classic-leather-sneakers-black.jpg",
+								"src": "/images/products/classic-leather-sneakers-black.jpg",
+								"alt": "Classic Leather Sneakers in black",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "classic-leather-sneakers-black.jpg"
+							}
+						}
+					],
+					"sizes": [
+						{
+							"label": "EU 37",
+							"available": false
+						},
+						{
+							"label": "EU 38",
+							"available": true
+						},
+						{
+							"label": "EU 39",
+							"available": true
+						},
+						{
+							"label": "EU 40",
+							"available": true
+						},
+						{
+							"label": "EU 41",
+							"available": true
+						},
+						{
+							"label": "EU 42",
+							"available": true
+						},
+						{
+							"label": "EU 43",
+							"available": true
+						},
+						{
+							"label": "EU 44",
+							"available": true
+						}
+					],
+					"image": {
+						"provider": "external",
+						"id": "seed:/images/products/classic-leather-sneakers-white.jpg",
+						"src": "/images/products/classic-leather-sneakers-white.jpg",
+						"alt": "Classic Leather Sneakers in white, studio shot",
+						"width": 630,
+						"height": 472,
+						"mimeType": "image/jpeg",
+						"filename": "classic-leather-sneakers-white.jpg"
+					},
+					"gallery": [
+						{
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/classic-leather-sneakers-detail.jpg",
+								"src": "/images/products/classic-leather-sneakers-detail.jpg",
+								"alt": "Close-up of the classic leather sneakers fabric",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "classic-leather-sneakers-detail.jpg"
+							},
+							"caption": "Fabric detail"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": [
+						"shoes"
+					],
+					"department": [
+						"women",
+						"men"
+					],
+					"collection": [
+						"everyday-favorites"
+					]
+				}
+			},
+			{
+				"id": "product-court-low-sneaker",
+				"slug": "court-low-sneaker",
+				"status": "published",
+				"data": {
+					"title": "Court Low Sneaker",
+					"price": 98,
+					"summary": "A lighter court shoe with a tonal finish for warmer days.",
+					"description": [
+						{
+							"_type": "block",
+							"_key": "k23",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k24",
+									"text": "Part of a small-batch range designed to be worn often and kept for years. Available in 2 colourways; choose a colour and size to see the options."
+								}
+							]
+						}
+					],
+					"materials": "Coated canvas upper, rubber sole.",
+					"care": "Spot clean only.",
+					"fit_notes": "Slightly narrow. Wide feet may prefer a size up.",
+					"featured": false,
+					"is_new": true,
+					"colors": [
+						{
+							"name": "Cream",
+							"swatch": "#e9e0cc",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/court-low-sneaker-cream.jpg",
+								"src": "/images/products/court-low-sneaker-cream.jpg",
+								"alt": "Court Low Sneaker in cream",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "court-low-sneaker-cream.jpg"
+							}
+						},
+						{
+							"name": "Forest",
+							"swatch": "#3e5a45",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/court-low-sneaker-forest.jpg",
+								"src": "/images/products/court-low-sneaker-forest.jpg",
+								"alt": "Court Low Sneaker in forest",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "court-low-sneaker-forest.jpg"
+							}
+						}
+					],
+					"sizes": [
+						{
+							"label": "EU 37",
+							"available": true
+						},
+						{
+							"label": "EU 38",
+							"available": true
+						},
+						{
+							"label": "EU 39",
+							"available": true
+						},
+						{
+							"label": "EU 40",
+							"available": true
+						},
+						{
+							"label": "EU 41",
+							"available": true
+						},
+						{
+							"label": "EU 42",
+							"available": true
+						},
+						{
+							"label": "EU 43",
+							"available": true
+						},
+						{
+							"label": "EU 44",
+							"available": true
+						}
+					],
+					"image": {
+						"provider": "external",
+						"id": "seed:/images/products/court-low-sneaker-cream.jpg",
+						"src": "/images/products/court-low-sneaker-cream.jpg",
+						"alt": "Court Low Sneaker in cream, studio shot",
+						"width": 630,
+						"height": 472,
+						"mimeType": "image/jpeg",
+						"filename": "court-low-sneaker-cream.jpg"
+					},
+					"gallery": [
+						{
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/court-low-sneaker-detail.jpg",
+								"src": "/images/products/court-low-sneaker-detail.jpg",
+								"alt": "Close-up of the court low sneaker fabric",
+								"width": 630,
+								"height": 472,
+								"mimeType": "image/jpeg",
+								"filename": "court-low-sneaker-detail.jpg"
+							},
+							"caption": "Fabric detail"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": [
+						"shoes"
+					],
+					"department": [
+						"women",
+						"men"
+					],
+					"collection": [
+						"weekend-tailoring"
+					]
+				}
+			},
+			{
+				"id": "product-utility-overshirt",
+				"slug": "utility-overshirt",
+				"status": "published",
+				"data": {
+					"title": "Utility Overshirt",
+					"price": 110,
+					"summary": "A heavyweight overshirt with twin chest pockets, worn open or buttoned.",
+					"description": [
+						{
+							"_type": "block",
+							"_key": "k27",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k28",
+									"text": "Part of a small-batch range designed to be worn often and kept for years. Available in 3 colourways; choose a colour and size to see the options."
+								}
+							]
+						}
+					],
+					"materials": "Brushed cotton twill, horn-effect buttons.",
+					"care": "Machine wash cold. Hang to dry.",
+					"fit_notes": "Straight, roomy fit designed to layer over knitwear.",
+					"featured": true,
+					"is_new": false,
+					"colors": [
+						{
+							"name": "Black",
+							"swatch": "#1b1b1d",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/utility-overshirt-black.jpg",
+								"src": "/images/products/utility-overshirt-black.jpg",
+								"alt": "Utility Overshirt in black",
+								"width": 632,
+								"height": 474,
+								"mimeType": "image/jpeg",
+								"filename": "utility-overshirt-black.jpg"
+							}
+						},
+						{
+							"name": "Olive",
+							"swatch": "#686a45",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/utility-overshirt-olive.jpg",
+								"src": "/images/products/utility-overshirt-olive.jpg",
+								"alt": "Utility Overshirt in olive",
+								"width": 632,
+								"height": 474,
+								"mimeType": "image/jpeg",
+								"filename": "utility-overshirt-olive.jpg"
+							}
+						},
+						{
+							"name": "Navy",
+							"swatch": "#1f2a44",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/utility-overshirt-navy.jpg",
+								"src": "/images/products/utility-overshirt-navy.jpg",
+								"alt": "Utility Overshirt in navy",
+								"width": 632,
+								"height": 474,
+								"mimeType": "image/jpeg",
+								"filename": "utility-overshirt-navy.jpg"
+							}
+						}
+					],
+					"sizes": [
+						{
+							"label": "XS",
+							"available": false
+						},
+						{
+							"label": "S",
+							"available": true
+						},
+						{
+							"label": "M",
+							"available": true
+						},
+						{
+							"label": "L",
+							"available": true
+						},
+						{
+							"label": "XL",
+							"available": true
+						}
+					],
+					"image": {
+						"provider": "external",
+						"id": "seed:/images/products/utility-overshirt-black.jpg",
+						"src": "/images/products/utility-overshirt-black.jpg",
+						"alt": "Utility Overshirt in black, studio shot",
+						"width": 632,
+						"height": 474,
+						"mimeType": "image/jpeg",
+						"filename": "utility-overshirt-black.jpg"
+					},
+					"gallery": [
+						{
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/utility-overshirt-detail.jpg",
+								"src": "/images/products/utility-overshirt-detail.jpg",
+								"alt": "Close-up of the utility overshirt fabric",
+								"width": 632,
+								"height": 474,
+								"mimeType": "image/jpeg",
+								"filename": "utility-overshirt-detail.jpg"
+							},
+							"caption": "Fabric detail"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": [
+						"outerwear"
+					],
+					"department": [
+						"men",
+						"women"
+					],
+					"collection": [
+						"everyday-favorites"
+					]
+				}
+			},
+			{
+				"id": "product-field-jacket",
+				"slug": "field-jacket",
+				"status": "published",
+				"data": {
+					"title": "Field Jacket",
+					"price": 145,
+					"summary": "A lined field jacket with patch pockets and a storm collar.",
+					"description": [
+						{
+							"_type": "block",
+							"_key": "k31",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k32",
+									"text": "Part of a small-batch range designed to be worn often and kept for years. Available in 2 colourways; choose a colour and size to see the options."
+								}
+							]
+						}
+					],
+					"materials": "Waxed-effect cotton shell, cotton lining.",
+					"care": "Specialist clean only.",
+					"fit_notes": "Regular fit with room for a knit underneath.",
+					"featured": false,
+					"is_new": true,
+					"colors": [
+						{
+							"name": "Khaki",
+							"swatch": "#8f8460",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/field-jacket-khaki.jpg",
+								"src": "/images/products/field-jacket-khaki.jpg",
+								"alt": "Field Jacket in khaki",
+								"width": 632,
+								"height": 474,
+								"mimeType": "image/jpeg",
+								"filename": "field-jacket-khaki.jpg"
+							}
+						},
+						{
+							"name": "Rust",
+							"swatch": "#8a4a2c",
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/field-jacket-rust.jpg",
+								"src": "/images/products/field-jacket-rust.jpg",
+								"alt": "Field Jacket in rust",
+								"width": 632,
+								"height": 474,
+								"mimeType": "image/jpeg",
+								"filename": "field-jacket-rust.jpg"
+							}
+						}
+					],
+					"sizes": [
+						{
+							"label": "XS",
+							"available": false
+						},
+						{
+							"label": "S",
+							"available": true
+						},
+						{
+							"label": "M",
+							"available": true
+						},
+						{
+							"label": "L",
+							"available": true
+						},
+						{
+							"label": "XL",
+							"available": false
+						}
+					],
+					"image": {
+						"provider": "external",
+						"id": "seed:/images/products/field-jacket-khaki.jpg",
+						"src": "/images/products/field-jacket-khaki.jpg",
+						"alt": "Field Jacket in khaki, studio shot",
+						"width": 632,
+						"height": 474,
+						"mimeType": "image/jpeg",
+						"filename": "field-jacket-khaki.jpg"
+					},
+					"gallery": [
+						{
+							"image": {
+								"provider": "external",
+								"id": "seed:/images/products/field-jacket-detail.jpg",
+								"src": "/images/products/field-jacket-detail.jpg",
+								"alt": "Close-up of the field jacket fabric",
+								"width": 632,
+								"height": 474,
+								"mimeType": "image/jpeg",
+								"filename": "field-jacket-detail.jpg"
+							},
+							"caption": "Fabric detail"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": [
+						"outerwear"
+					],
+					"department": [
+						"men"
+					],
+					"collection": [
+						"weekend-tailoring"
+					]
+				}
+			},
+			{
+				"id": "product-market-canvas-tote",
+				"slug": "market-canvas-tote",
+				"status": "published",
+				"data": {
+					"title": "Market Canvas Tote",
+					"price": 38,
+					"summary": "A sturdy everyday tote with an inside pocket. Product photography is on the way.",
+					"description": [
+						{
+							"_type": "block",
+							"_key": "k35",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k36",
+									"text": "Part of a small-batch range designed to be worn often and kept for years. Available in 2 colourways; choose a colour and size to see the options."
+								}
+							]
+						}
+					],
+					"materials": "Heavy cotton canvas, webbing handles.",
+					"care": "Spot clean.",
+					"fit_notes": "40 x 38 cm with a 12 cm gusset.",
+					"featured": false,
+					"is_new": true,
+					"colors": [
+						{
+							"name": "Natural",
+							"swatch": "#e6dcc6"
+						},
+						{
+							"name": "Ink",
+							"swatch": "#1f2433"
+						}
+					],
+					"sizes": [
+						{
+							"label": "One size",
+							"available": true
+						}
+					]
+				},
+				"taxonomies": {
+					"category": [
+						"accessories"
+					],
+					"department": [
+						"women",
+						"men"
+					]
+				}
+			}
+		],
+		"campaigns": [
+			{
+				"id": "campaign-everyday-favorites",
+				"slug": "everyday-favorites",
+				"status": "published",
+				"data": {
+					"title": "Everyday Favorites",
+					"eyebrow": "Autumn edit",
+					"headline": "Find your everyday favorites",
+					"intro": "Modern essentials for a more considered wardrobe. Timeless style, made for real life.",
+					"vertical_note": "Good clothes brighter days",
+					"hero_image": {
+						"provider": "external",
+						"id": "seed:/images/campaigns/everyday-favorites.jpg",
+						"src": "/images/campaigns/everyday-favorites.jpg",
+						"alt": "A woman in an oat knit sweater and light jeans sits by a sunlit white wall beside a potted olive tree",
+						"width": 892,
+						"height": 479,
+						"mimeType": "image/jpeg",
+						"filename": "everyday-favorites.jpg"
+					},
+					"story": [
+						{
+							"_type": "block",
+							"_key": "k37",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k38",
+									"text": "Soft knits, easy trousers and shoes that go with everything. The Everyday Favorites edit gathers the pieces we reach for most, in a palette of oat, sand and ink."
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "k39",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k40",
+									"text": "Every item is shown with its colours and sizes so you can compare at a glance."
+								}
+							]
+						}
+					],
+					"sort_order": 1
+				}
+			},
+			{
+				"id": "campaign-weekend-tailoring",
+				"slug": "weekend-tailoring",
+				"status": "published",
+				"data": {
+					"title": "Weekend Tailoring",
+					"eyebrow": "New season",
+					"headline": "Sharp lines, slow weekends",
+					"intro": "Tailored shapes in relaxed fabrics: pleated chinos, a lined field jacket and knits that keep it easy.",
+					"vertical_note": "Made to be worn often",
+					"hero_image": {
+						"provider": "external",
+						"id": "seed:/images/campaigns/weekend-tailoring.jpg",
+						"src": "/images/campaigns/weekend-tailoring.jpg",
+						"alt": "A dark overshirt and pleated sand trousers laid side by side on a pale studio backdrop",
+						"width": 892,
+						"height": 335,
+						"mimeType": "image/jpeg",
+						"filename": "weekend-tailoring.jpg"
+					},
+					"story": [
+						{
+							"_type": "block",
+							"_key": "k41",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k42",
+									"text": "Weekend Tailoring takes the structure of a workday wardrobe and loosens it up. Think brushed twill, softer shoulders and colours borrowed from the park."
+								}
+							]
+						}
+					],
+					"sort_order": 2
+				}
+			},
+			{
+				"id": "campaign-quiet-layers",
+				"slug": "quiet-layers",
+				"status": "published",
+				"data": {
+					"title": "Quiet Layers",
+					"eyebrow": "Coming soon",
+					"headline": "Quiet layers for colder mornings",
+					"intro": "A winter capsule of fine knits and outer layers. The pieces are still being finalised.",
+					"hero_image": {
+						"provider": "external",
+						"id": "seed:/images/campaigns/quiet-layers.jpg",
+						"src": "/images/campaigns/quiet-layers.jpg",
+						"alt": "Olive branches in a stone planter casting soft shadows on a white wall",
+						"width": 704,
+						"height": 958,
+						"mimeType": "image/jpeg",
+						"filename": "quiet-layers.jpg"
+					},
+					"story": [
+						{
+							"_type": "block",
+							"_key": "k43",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k44",
+									"text": "We are still sampling fabrics for this edit. Ask us to be notified when it lands."
+								}
+							]
+						}
+					],
+					"sort_order": 3,
+					"vertical_note": ""
+				}
+			}
+		],
+		"size_charts": [
+			{
+				"id": "chart-tops",
+				"slug": "tops",
+				"status": "published",
+				"data": {
+					"title": "Tops and knitwear",
+					"applies_to": "Knitwear, overshirts and jackets",
+					"unit_note": "Body measurements in centimetres.",
+					"column_a": "Chest",
+					"column_b": "Waist",
+					"column_c": "Sleeve",
+					"column_d": "",
+					"rows": [
+						{
+							"size": "XS",
+							"a": "80-84",
+							"b": "64-68",
+							"c": "58",
+							"d": ""
+						},
+						{
+							"size": "S",
+							"a": "86-90",
+							"b": "70-74",
+							"c": "60",
+							"d": ""
+						},
+						{
+							"size": "M",
+							"a": "92-96",
+							"b": "76-80",
+							"c": "62",
+							"d": ""
+						},
+						{
+							"size": "L",
+							"a": "98-104",
+							"b": "82-88",
+							"c": "64",
+							"d": ""
+						},
+						{
+							"size": "XL",
+							"a": "106-112",
+							"b": "90-96",
+							"c": "66",
+							"d": ""
+						}
+					],
+					"sort_order": 1
+				}
+			},
+			{
+				"id": "chart-bottoms",
+				"slug": "bottoms",
+				"status": "published",
+				"data": {
+					"title": "Trousers",
+					"applies_to": "Wide leg trousers (XS-XL) and chinos (waist sizes)",
+					"unit_note": "Body measurements in centimetres. Chino waist sizes are in inches.",
+					"column_a": "Waist",
+					"column_b": "Hip",
+					"column_c": "Inseam",
+					"column_d": "Chino size",
+					"rows": [
+						{
+							"size": "XS",
+							"a": "64-68",
+							"b": "88-92",
+							"c": "78",
+							"d": "28"
+						},
+						{
+							"size": "S",
+							"a": "70-74",
+							"b": "94-98",
+							"c": "79",
+							"d": "30"
+						},
+						{
+							"size": "M",
+							"a": "76-80",
+							"b": "100-104",
+							"c": "80",
+							"d": "32"
+						},
+						{
+							"size": "L",
+							"a": "82-88",
+							"b": "106-110",
+							"c": "81",
+							"d": "34"
+						},
+						{
+							"size": "XL",
+							"a": "90-96",
+							"b": "112-116",
+							"c": "82",
+							"d": "36"
+						}
+					],
+					"sort_order": 2
+				}
+			},
+			{
+				"id": "chart-shoes",
+				"slug": "shoes",
+				"status": "published",
+				"data": {
+					"title": "Shoes",
+					"applies_to": "All sneakers",
+					"unit_note": "Foot length in centimetres, measured heel to longest toe.",
+					"column_a": "UK",
+					"column_b": "US (W)",
+					"column_c": "US (M)",
+					"column_d": "Foot length",
+					"rows": [
+						{
+							"size": "EU 37",
+							"a": "4",
+							"b": "6.5",
+							"c": "5",
+							"d": "23.5"
+						},
+						{
+							"size": "EU 38",
+							"a": "5",
+							"b": "7.5",
+							"c": "6",
+							"d": "24.0"
+						},
+						{
+							"size": "EU 39",
+							"a": "6",
+							"b": "8.5",
+							"c": "6.5",
+							"d": "24.7"
+						},
+						{
+							"size": "EU 40",
+							"a": "6.5",
+							"b": "9",
+							"c": "7",
+							"d": "25.3"
+						},
+						{
+							"size": "EU 41",
+							"a": "7.5",
+							"b": "10",
+							"c": "8",
+							"d": "26.0"
+						},
+						{
+							"size": "EU 42",
+							"a": "8",
+							"b": "10.5",
+							"c": "8.5",
+							"d": "26.7"
+						},
+						{
+							"size": "EU 43",
+							"a": "9",
+							"b": "11.5",
+							"c": "9.5",
+							"d": "27.3"
+						},
+						{
+							"size": "EU 44",
+							"a": "9.5",
+							"b": "12",
+							"c": "10",
+							"d": "28.0"
+						}
+					],
+					"sort_order": 3
+				}
+			}
+		],
+		"contacts": [
+			{
+				"id": "contact-studio",
+				"slug": "studio",
+				"status": "published",
+				"data": {
+					"name": "Marketlane Studio",
+					"email": "hello@marketlane.example",
+					"phone": "+1 555 0142",
+					"address": "48 Linden Row\nRiverside District",
+					"hours": "Mon-Fri 10:00-18:00\nSat 11:00-16:00",
+					"note": "Fitting appointments by request."
+				}
+			}
+		],
+		"pages": [
+			{
+				"id": "page-about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About Marketlane",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k45",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k46",
+									"text": "Marketlane is a small, fictional label making modern essentials for a more considered wardrobe."
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "k47",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k48",
+									"text": "We release a few focused collections each year and keep every piece in the range long enough to become a favourite."
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "k49",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k50",
+									"text": "Ordering"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "k51",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k52",
+									"text": "Online ordering is not available yet. Choose a colour and size on any product and send us an inquiry; we reply by email."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "page-size-guide",
+				"slug": "size-guide",
+				"status": "published",
+				"data": {
+					"title": "Size guide",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k53",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k54",
+									"text": "Measure over light clothing with a soft tape. If you fall between two sizes, choose the larger size for a relaxed fit or the smaller for a closer fit."
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "k55",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k56",
+									"text": "Each product page also lists its own fit notes."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "page-contact",
+				"slug": "contact",
+				"status": "published",
+				"data": {
+					"title": "Contact",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k57",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"_key": "k58",
+									"text": "Questions about a piece, its fit or when it will be available? Send us a note and we will reply within one business day."
+								}
+							]
+						}
+					]
+				}
+			}
+		]
+	}
+}

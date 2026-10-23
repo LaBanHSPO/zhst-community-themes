@@ -1,0 +1,149 @@
+---
+import { getEmDashCollection } from "emdash";
+import { Image } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+
+const [campaignsResult, productsResult] = await Promise.all([
+	getEmDashCollection("campaigns", { orderBy: { sort_order: "asc" }, limit: 50 }),
+	// Used only to count products per collection tag; terms are hydrated onto each entry.
+	getEmDashCollection("products", { limit: 200 }),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(campaignsResult.cacheHint);
+	Astro.cache.set(productsResult.cacheHint);
+}
+
+const counts = new Map<string, number>();
+for (const p of productsResult.entries) {
+	for (const t of p.data.terms?.collection ?? []) counts.set(t.slug, (counts.get(t.slug) ?? 0) + 1);
+}
+const campaigns = campaignsResult.entries;
+---
+
+<Base title="Collections" description="Seasonal campaigns and curated edits from Marketlane.">
+	<div class="container page-head">
+		<nav aria-label="Breadcrumb" class="crumbs">
+			<a href="/">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">Collections</span>
+		</nav>
+		<h1>Collections</h1>
+		<p class="lede">Every launch has its own story. Start with a campaign, then compare the pieces side by side.</p>
+	</div>
+
+	<div class="container">
+		{
+			campaigns.length === 0 ? (
+				<div class="empty">
+					<p>No collections have been published yet.</p>
+					<a class="text-link" href="/category">Browse all products</a>
+				</div>
+			) : (
+				<ol class="campaign-list">
+					{campaigns.map((c, i) => {
+						const count = counts.get(c.id) ?? 0;
+						return (
+							<li class:list={["campaign", { reverse: i % 2 === 1 }]}>
+								<div class="campaign-media">
+									{c.data.hero_image && (c.data.hero_image.src || c.data.hero_image.id) ? (
+										<Image image={c.data.hero_image} priority={i === 0} />
+									) : (
+										<div class="campaign-fallback" />
+									)}
+								</div>
+								<div class="campaign-copy">
+									{c.data.eyebrow && <p class="eyebrow">{c.data.eyebrow}</p>}
+									<h2>
+										<a href={`/collections/${encodeURIComponent(c.id)}`}>{c.data.title}</a>
+									</h2>
+									{c.data.intro && <p>{c.data.intro}</p>}
+									<p class="count">
+										{count === 0 ? "Pieces coming soon" : `${count} ${count === 1 ? "piece" : "pieces"}`}
+									</p>
+									<a class="text-link" href={`/collections/${encodeURIComponent(c.id)}`} aria-hidden="true" tabindex="-1">
+										View collection <Icon name="arrow" size={18} />
+									</a>
+								</div>
+							</li>
+						);
+					})}
+				</ol>
+			)
+		}
+	</div>
+</Base>
+
+<style>
+	.campaign-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: var(--space-7);
+	}
+	.campaign {
+		display: grid;
+		grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+		background: var(--color-band);
+	}
+	.campaign.reverse .campaign-media {
+		order: 2;
+	}
+	.campaign-media {
+		position: relative;
+		min-height: 20rem;
+		overflow: hidden;
+	}
+	.campaign-media :global(img) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		object-fit: cover;
+	}
+	.campaign-fallback {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(120deg, #e4e2dd, #f4f3f0);
+	}
+	.campaign-copy {
+		align-self: center;
+		padding: var(--space-7) var(--space-6);
+	}
+	.campaign-copy h2 a {
+		color: inherit;
+		text-decoration: none;
+	}
+	.campaign-copy h2 a:hover {
+		text-decoration: underline;
+		text-underline-offset: 0.15em;
+	}
+	.campaign-copy p {
+		color: #4a5060;
+	}
+	.count {
+		font-size: var(--step--1);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+	.empty {
+		border: 1px dashed #c9cbd1;
+		padding: var(--space-7);
+		text-align: center;
+	}
+	@media (max-width: 860px) {
+		.campaign {
+			grid-template-columns: 1fr;
+		}
+		.campaign.reverse .campaign-media {
+			order: 0;
+		}
+		.campaign-media {
+			min-height: 0;
+			aspect-ratio: 16 / 10;
+		}
+		.campaign-copy {
+			padding: var(--space-5);
+		}
+	}
+</style>
