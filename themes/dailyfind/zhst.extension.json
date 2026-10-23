@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "dailyfind",
+	"kind": "theme",
+	"name": "Dailyfind",
+	"type": "directory",
+	"emdash": "1.2.0",
+	"entry": "themes/dailyfind",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": false,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

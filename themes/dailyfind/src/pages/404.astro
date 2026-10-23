@@ -1,0 +1,16 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+---
+
+<Base title="Page not found">
+	<section class="notfound container">
+		<p class="eyebrow">404</p>
+		<h1>This find has sold out.</h1>
+		<p>The page you are looking for does not exist or has moved.</p>
+		<div class="actions">
+			<a class="btn" href="/deals">Browse the deals <Icon name="arrow" size={18} /></a>
+			<a class="btn btn-outline" href="/">Back to the homepage</a>
+		</div>
+	</section>
+</Base>

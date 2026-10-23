@@ -1,0 +1,61 @@
+---
+import Icon from "./Icon.astro";
+import { dealUrl, entryKey, formatDate, isExpired, money, photoSrc, type Deal } from "../lib/dailyfind";
+
+interface Props {
+	deal: Deal;
+	storeName: string;
+	showCode?: boolean;
+	headingLevel?: "h2" | "h3";
+}
+const { deal, storeName, showCode = false, headingLevel = "h3" } = Astro.props;
+const Heading = headingLevel;
+const src = photoSrc(deal.image, deal.photo);
+const key = entryKey(deal);
+const expired = isExpired(deal.expires);
+---
+
+<article class="deal-card" data-deal={key}>
+	<div class="deal-photo" data-fit={deal.image_fit === "contain" ? "contain" : undefined}>
+		<a href={dealUrl(deal)} tabindex="-1" aria-hidden="true">
+			{src && <img src={src} alt="" loading="lazy" />}
+		</a>
+		{deal.discount ? <span class="badge">{deal.discount}% OFF</span> : null}
+		<button class="heart" type="button" data-save={key} aria-pressed="false" aria-label={`Save ${deal.title}`}>
+			<Icon name="heart" size={18} />
+		</button>
+	</div>
+	<div class="deal-body">
+		<Heading class="deal-title"><a href={dealUrl(deal)}>{deal.title}</a></Heading>
+		<p class="price">
+			<strong>{money(deal.price)}</strong>
+			{
+				deal.was_price ? (
+					<s>
+						<span class="visually-hidden">Original price </span>
+						{money(deal.was_price)}
+					</s>
+				) : null
+			}
+		</p>
+		<p class="deal-store">{storeName}</p>
+		{
+			showCode && deal.code && !expired && (
+				<div class="code-row">
+					<span class="code-box">{deal.code}</span>
+					<button class="btn-copy" type="button" data-copy={deal.code} aria-label={`Copy code ${deal.code}`}>
+						Copy
+					</button>
+				</div>
+			)
+		}
+		{
+			showCode && (
+				<p class="deal-meta">
+					{expired ? "Offer ended" : "Expires"} {formatDate(deal.expires)}
+					{deal.valid_for ? <>{" "}<span aria-hidden="true">|</span> {deal.valid_for}</> : null}
+				</p>
+			)
+		}
+	</div>
+</article>

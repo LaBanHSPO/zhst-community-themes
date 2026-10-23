@@ -1,0 +1,350 @@
+---
+import { getEmDashEntry, getSeoMeta, decodeSlug, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+import DealCard from "../../components/DealCard.astro";
+import {
+	categoryLabel,
+	entryKey,
+	formatDate,
+	getDeals,
+	getStores,
+	isExpired,
+	money,
+	photoSrc,
+	safeUrl,
+	storeUrl,
+} from "../../lib/dailyfind";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.redirect("/404");
+
+const { entry, cacheHint } = await getEmDashEntry("deals", slug);
+if (!entry) return Astro.redirect("/404");
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const deal = entry.data;
+
+const [dealsResult, storesResult, settings] = await Promise.all([getDeals(), getStores(), getSiteSettings()]);
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const stores = new Map(storesResult.entries.map((s) => [s.data.slug ?? s.id, s.data]));
+const store = stores.get(deal.store);
+const storeName = store?.title ?? deal.store;
+const retailerUrl = safeUrl(deal.deal_url);
+const expired = isExpired(deal.expires);
+
+const gallery = (deal.gallery ?? [])
+	.map((g) => ({ src: photoSrc(g.image, g.photo), alt: g.alt }))
+	.filter((g): g is { src: string; alt: string } => Boolean(g.src));
+const mainSrc = photoSrc(deal.image, deal.photo);
+const imgParam = Number.parseInt(Astro.url.searchParams.get("img") ?? "1", 10);
+const imgIndex = Number.isInteger(imgParam) && imgParam >= 1 && imgParam <= gallery.length ? imgParam - 1 : 0;
+const main = gallery.length > 0 ? gallery[imgIndex] : mainSrc ? { src: mainSrc, alt: deal.photo_alt ?? deal.title } : null;
+
+const revealing = Astro.url.searchParams.get("reveal") === "1" && Boolean(deal.code) && !expired;
+const plainParams = new URLSearchParams(Astro.url.searchParams);
+plainParams.delete("reveal");
+const here = Astro.url.pathname;
+const closeHref = plainParams.toString() ? `${here}?${plainParams}` : here;
+const revealParams = new URLSearchParams(plainParams);
+revealParams.set("reveal", "1");
+const revealHref = `${here}?${revealParams}`;
+
+const firstCat = (deal.categories ?? []).find((c) =>
+	dealsResult.entries.some((e) => entryKey(e.data) !== entryKey(entry.data) && e.data.categories?.includes(c)),
+);
+const related = firstCat
+	? dealsResult.entries.filter((e) => entryKey(e.data) !== entryKey(entry.data) && e.data.categories?.includes(firstCat)).slice(0, 4)
+	: [];
+const crumbCat = (deal.categories ?? [])[0];
+
+const seo = getSeoMeta(entry, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const sponsoredRel = "sponsored noopener";
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={deal.summary ?? seo.description}
+	canonical={seo.canonical}
+	content={{ collection: "deals", id: deal.id, slug }}
+>
+	<div class="container offer-page">
+		<nav class="crumbs" aria-label="Breadcrumb">
+			<ol>
+				<li><a href="/">Home</a></li>
+				<li><a href="/deals">Deals catalog</a></li>
+				{crumbCat && <li><a href={`/deals?category=${crumbCat}`}>{categoryLabel(crumbCat)}</a></li>}
+				<li aria-current="page">{deal.title}</li>
+			</ol>
+		</nav>
+
+		<section class:list={["offer", { "has-thumbs": gallery.length > 1 }]} aria-labelledby="offer-title">
+			{
+				gallery.length > 1 && (
+					<ul class="thumbs" role="list" aria-label="Product photos">
+						{gallery.map((g, i) => (
+							<li>
+								<a href={`${here}?img=${i + 1}`} aria-current={i === imgIndex ? "true" : undefined} aria-label={`Photo ${i + 1}: ${g.alt}`}>
+									<img src={g.src} alt="" width="118" height="122" />
+								</a>
+							</li>
+						))}
+					</ul>
+				)
+			}
+			<div class="offer-photo" data-fit={deal.image_fit === "contain" ? "contain" : undefined}>
+				{main && <img src={main.src} alt={main.alt} />}
+			</div>
+
+			<div class="offer-info">
+				{deal.discount ? <p class="badge badge-soft">{deal.discount}% OFF</p> : null}
+				<h1 id="offer-title" {...entry.edit.title}>{deal.title}</h1>
+				{deal.summary && <p class="offer-summary">{deal.summary}</p>}
+				<p class="offer-price">
+					<strong>{money(deal.price)}</strong>
+					{
+						deal.was_price ? (
+							<s>
+								<span class="visually-hidden">Original price </span>
+								{money(deal.was_price)}
+							</s>
+						) : null
+					}
+				</p>
+				<p class="offer-store">
+					at
+					{
+						retailerUrl ? (
+							<a href={retailerUrl} target="_blank" rel={sponsoredRel}>
+								<strong>{storeName}</strong> <Icon name="external" size={18} />
+								<span class="visually-hidden">(opens the retailer’s site in a new tab)</span>
+							</a>
+						) : (
+							<strong>{storeName}</strong>
+						)
+					}
+				</p>
+				<div class="offer-cta">
+					{
+						expired || !deal.code ? (
+							<p class="btn btn-lg btn-block is-disabled" role="status">
+								{expired ? "This offer has ended" : "No code needed"}
+							</p>
+						) : (
+							<a class="btn btn-lg btn-block" href={revealHref} data-reveal-open aria-haspopup="dialog">
+								Reveal code <Icon name="arrow" size={22} />
+							</a>
+						)
+					}
+					<button class="heart heart-lg" type="button" data-save={entryKey(entry.data)} aria-pressed="false" aria-label={`Save ${deal.title}`}>
+						<Icon name="heart" size={26} />
+					</button>
+				</div>
+
+				<dl class="facts">
+					<div>
+						<Icon name="calendar" size={26} />
+						<div>
+							<dt>{expired ? "Offer ended" : "Offer expires"}</dt>
+							<dd>{formatDate(deal.expires)}</dd>
+						</div>
+					</div>
+					<div>
+						<Icon name="tag" size={26} />
+						<div>
+							<dt>Valid for</dt>
+							<dd>{deal.valid_for}</dd>
+						</div>
+					</div>
+					<div>
+						<Icon name="person" size={26} />
+						<div>
+							<dt>Exclusions</dt>
+							<dd>{deal.exclusions}</dd>
+						</div>
+					</div>
+				</dl>
+
+				{
+					retailerUrl && (
+						<p class="shop-link">
+							<a href={retailerUrl} target="_blank" rel={sponsoredRel}>
+								Shop at {storeName} <Icon name="external" size={18} />
+								<span class="visually-hidden">(opens in a new tab)</span>
+							</a>
+						</p>
+					)
+				}
+				<p class="disclosure">
+					We may earn a commission if you make a purchase through our link. This comes at no additional cost to you and
+					helps support {siteTitle}. Prices, codes and dates are the editor’s listing, not live retailer data.
+				</p>
+
+				{
+					store?.perks && store.perks.length > 0 && (
+						<div class="store-card">
+							<p class="store-card-label">Available at</p>
+							<p class="store-card-name">{storeName}</p>
+							<ul role="list">
+								{store.perks.map((p) => (
+									<li>
+										<Icon name={p.icon ?? "tag"} size={30} />
+										<span>
+											<strong>{p.title}</strong>
+											{p.note && <small>{p.note}</small>}
+										</span>
+									</li>
+								))}
+							</ul>
+							<p><a class="text-link" href={storeUrl(deal.store)}>See {storeName} offers <Icon name="arrow" size={16} /></a></p>
+						</div>
+					)
+				}
+			</div>
+		</section>
+	</div>
+
+	<section class="about" aria-labelledby="about-title">
+		<div class="container about-grid">
+			<div class="about-copy">
+				<h2 id="about-title" class="h-section">About this deal</h2>
+				<PortableText value={deal.content} />
+			</div>
+			{
+				deal.highlights && deal.highlights.length > 0 && (
+					<ul class="highlights" role="list">
+						{deal.highlights.map((h) => (
+							<li>
+								<span class="hl-dot"><Icon name={h.icon ?? "home"} size={42} stroke={1.5} /></span>
+								<span>{h.label}</span>
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+
+	{
+		related.length > 0 && firstCat && (
+			<section class="section" aria-labelledby="more-title">
+				<div class="container">
+					<div class="section-head">
+						<h2 id="more-title" class="h-section">More {categoryLabel(firstCat).toLowerCase()} deals</h2>
+						<a class="text-link" href={`/deals?category=${firstCat}`}>
+							View all {categoryLabel(firstCat).toLowerCase()} deals <Icon name="arrow" size={18} />
+						</a>
+					</div>
+					<ul class="deal-grid deal-grid-4" role="list">
+						{related.map((e) => (
+							<li>
+								<DealCard deal={e.data} storeName={stores.get(e.data.store)?.title ?? e.data.store} />
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		deal.code && !expired && (
+			<div class="modal" id="reveal-modal" hidden={!revealing} data-modal>
+				<a class="modal-backdrop" href={closeHref} data-reveal-close aria-label="Close the code dialog" tabindex="-1"></a>
+				<div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="reveal-title" tabindex="-1">
+					<a class="modal-close" href={closeHref} data-reveal-close aria-label="Close">
+						<Icon name="close" size={24} />
+					</a>
+					<svg class="modal-ticket" viewBox="0 0 150 120" width="150" height="120" aria-hidden="true" focusable="false">
+						<circle cx="75" cy="62" r="56" fill="#ffe6d6" />
+						<g transform="rotate(-14 75 62)">
+							<path d="M38 40h74a5 5 0 0 1 5 5v9a7 7 0 0 0 0 14v9a5 5 0 0 1-5 5H38a5 5 0 0 1-5-5v-9a7 7 0 0 0 0-14v-9a5 5 0 0 1 5-5Z" fill="#cf4410" />
+							<circle cx="62" cy="52" r="5.500" fill="none" stroke="#fff" stroke-width="3.500" />
+							<circle cx="88" cy="72" r="5.500" fill="none" stroke="#fff" stroke-width="3.500" />
+							<path d="M90 48 60 76" stroke="#fff" stroke-width="3.500" stroke-linecap="round" />
+						</g>
+					</svg>
+					<h2 id="reveal-title">Here’s your code!</h2>
+					<p class="modal-lede">Use this code at {storeName} {deal.code_note ?? "at checkout"}.</p>
+					<div class="modal-code">
+						<output class="modal-code-text" aria-label="Coupon code">{deal.code}</output>
+						<Icon name="copy" size={22} class="modal-code-icon" />
+						<button class="btn btn-sm" type="button" data-copy={deal.code}>Copy code</button>
+					</div>
+					{
+						retailerUrl && (
+							<a class="btn btn-outline btn-block" href={retailerUrl} target="_blank" rel={sponsoredRel}>
+								Shop at {storeName} <Icon name="arrow" size={20} />
+								<span class="visually-hidden">(opens in a new tab)</span>
+							</a>
+						)
+					}
+					<details class="modal-terms">
+						<summary>Terms &amp; conditions <Icon name="chevron" size={20} /></summary>
+						<p>
+							We may earn a commission when you make a purchase through our links at no extra cost to you. This helps us
+							keep finding great deals for you.
+						</p>
+						<p>
+							The code, price and expiry date ({formatDate(deal.expires)}) are the editor’s listing, not live retailer
+							data, and are not verified in real time. {deal.valid_for ? `Valid for: ${deal.valid_for}.` : ""}
+							{deal.exclusions ? ` ${deal.exclusions}.` : ""} Confirm everything at the retailer before you buy.
+						</p>
+					</details>
+				</div>
+			</div>
+		)
+	}
+</Base>
+
+<script>
+	const modal = document.querySelector<HTMLElement>("[data-modal]");
+	if (modal) {
+		const card = modal.querySelector<HTMLElement>(".modal-card");
+		let opener: HTMLElement | null = null;
+		const setQuery = (open: boolean) => {
+			const url = new URL(location.href);
+			if (open) url.searchParams.set("reveal", "1");
+			else url.searchParams.delete("reveal");
+			history.replaceState(null, "", url);
+		};
+		const open = (from: HTMLElement | null) => {
+			opener = from;
+			modal.hidden = false;
+			document.body.classList.add("modal-open");
+			setQuery(true);
+			card?.focus();
+		};
+		const close = () => {
+			modal.hidden = true;
+			document.body.classList.remove("modal-open");
+			setQuery(false);
+			opener?.focus();
+		};
+		document.querySelectorAll<HTMLElement>("[data-reveal-open]").forEach((el) =>
+			el.addEventListener("click", (e) => {
+				e.preventDefault();
+				open(el);
+			}),
+		);
+		modal.querySelectorAll<HTMLElement>("[data-reveal-close]").forEach((el) =>
+			el.addEventListener("click", (e) => {
+				e.preventDefault();
+				close();
+			}),
+		);
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "Escape" && !modal.hidden) close();
+		});
+		if (!modal.hidden) {
+			document.body.classList.add("modal-open");
+			card?.focus();
+		}
+	}
+</script>
