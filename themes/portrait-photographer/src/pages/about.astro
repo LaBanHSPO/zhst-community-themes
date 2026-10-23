@@ -1,0 +1,79 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import BookBand from "../components/BookBand.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getApproach, getStudio } from "../lib/studio";
+
+const [{ entry: page, cacheHint }, approachResult, studioResult, settings] = await Promise.all([
+	getEmDashEntry("pages", "about"),
+	getApproach(),
+	getStudio(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	if (cacheHint) Astro.cache.set(cacheHint);
+	Astro.cache.set(approachResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page ? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" }) : null;
+const approach = approachResult.entries;
+const hasBody = Boolean(page?.data.content && page.data.content.length > 0);
+const { studio } = studioResult;
+---
+
+<Base
+	title={seo?.title ?? "About"}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? page?.data.intro ?? "About KELLEN, a small portrait photography studio."}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<PageHead
+		id="about-title"
+		eyebrow={page?.data.eyebrow ?? "About"}
+		title={page?.data.title ?? "I make portraits of people being themselves."}
+		intro={page?.data.intro}
+		edit={page ? { ...page.edit.title } : {}}
+	/>
+
+	<section class="about-story">
+		<figure class="about-photo">
+			<img
+				src="/images/camera.webp"
+				alt="A black camera with a wide lens resting on a stone ledge"
+				width="640"
+				height="390"
+				loading="lazy"
+			/>
+			{studio.photographer && <figcaption>{studio.photographer}{studio.base ? `, ${studio.base}` : ""}</figcaption>}
+		</figure>
+		<div class="prose">
+			{hasBody ? <PortableText value={page!.data.content} /> : <p>The story is coming soon.</p>}
+		</div>
+	</section>
+
+	{
+		approach.length > 0 && (
+			<section class="approach approach-solo" aria-labelledby="values-title">
+				<div class="band-inner">
+					<p class="eyebrow eyebrow-light">How I work</p>
+					<h2 id="values-title" class="display display-light">What to expect.</h2>
+					<ul class="approach-list">
+						{approach.map((a) => (
+							<li>
+								<h3 {...a.edit.title}>{a.data.title}</h3>
+								{a.data.text && <p>{a.data.text}</p>}
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<BookBand studio={studio} />
+</Base>
