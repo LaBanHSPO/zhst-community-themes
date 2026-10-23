@@ -1,0 +1,360 @@
+---
+// This launcher deliberately does not load business records or CMS collections.
+// Every link opens the private plugin workspace, which EmDash protects with its own session.
+Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
+
+const workspace = "/_emdash/admin/plugins/erp-mini/workspace";
+type IconName = "home" | "customers" | "items" | "quotations" | "orders";
+const modules: { tab: string; label: string; icon: IconName; tone: "blue" | "teal"; summary: string; holds: string }[] = [
+  { tab: "customers", label: "Customers", icon: "customers", tone: "blue", summary: "Contacts and company details in one place.", holds: "Customers and contacts" },
+  { tab: "items", label: "Items", icon: "items", tone: "teal", summary: "Products and services with exact unit prices.", holds: "Catalog and unit prices" },
+  { tab: "quotes", label: "Quotations", icon: "quotations", tone: "blue", summary: "Build offers from your item catalog.", holds: "Offers built from items" },
+  { tab: "orders", label: "Orders", icon: "orders", tone: "teal", summary: "Track accepted sales to fulfillment.", holds: "Fulfillment or cancellation" },
+];
+const stages = [
+  { name: "Draft", detail: "Editable offer", tone: "slate" },
+  { name: "Submitted", detail: "Sent for a decision", tone: "teal" },
+  { name: "Accepted", detail: "Ready to convert", tone: "blue" },
+  { name: "Sales order", detail: "Open until handled", tone: "navy" },
+  { name: "Fulfilled", detail: "Or cancelled", tone: "green" },
+];
+const href = (tab?: string) => (tab ? `${workspace}?erpTab=${tab}` : workspace);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content="Sign in to your private CRM and sales workspace." />
+    <meta name="theme-color" content="#14273d" />
+    <title>ERP Mini — CRM &amp; sales workspace</title>
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1h-5v-6h-5v6h-5a1 1 0 0 1-1-1z" /></symbol>
+      <symbol id="i-customers" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20c.4-3.8 3-6 6.5-6s6.1 2.2 6.5 6z" /><circle cx="17" cy="9" r="2.6" /><path d="M16.5 14.2c2.8.1 4.6 2 5 5.8h-4.3" /></symbol>
+      <symbol id="i-items" viewBox="0 0 24 24"><path d="M12 2.8 20.5 7.5v9L12 21.2 3.5 16.5v-9z" /><path d="M3.8 7.6 12 12.2l8.2-4.6M12 12.2v8.8" /></symbol>
+      <symbol id="i-quotations" viewBox="0 0 24 24"><path d="M6 2.8h8.5L19.5 8v12.2a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3.8a1 1 0 0 1 1-1z" /><path d="M14 3v5.5h5.3M8.5 12.5h7M8.5 16h7" /></symbol>
+      <symbol id="i-orders" viewBox="0 0 24 24"><path d="M2.5 3.5h2.8l2.4 11.2h10.6l2.2-8H6.6" /><circle cx="9.3" cy="19" r="1.6" /><circle cx="17" cy="19" r="1.6" /></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h14M13 6.5l5.5 5.5-5.5 5.5" /></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10.5" rx="2" /><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" /></symbol>
+      <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="4" /><path d="M4 20.5c.8-4 3.9-6.3 8-6.3s7.2 2.3 8 6.3z" /></symbol>
+      <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2" /><path d="M3.5 10h17M8 3v4M16 3v4" /></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></symbol>
+    </svg>
+
+    <div class="shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="ERP Mini home">
+          <svg class="cube" viewBox="0 0 40 40" aria-hidden="true">
+            <path d="M20 3 35 11.5 20 20 5 11.5z" fill="#5fd3c9" />
+            <path d="M5 11.5 20 20v17L5 28.5z" fill="#1f9aa6" />
+            <path d="M35 11.5 20 20v17l15-8.5z" fill="#2a74b8" />
+          </svg>
+          <span>ERP Mini</span>
+        </a>
+        <p class="status"><svg aria-hidden="true"><use href="#i-lock" /></svg><span>Private workspace <span class="status-detail">· administrator sign-in required</span></span></p>
+        <div class="topbar-actions">
+          <a class="signin" href={href()}>
+            <span class="signin-label">Sign in</span>
+            <span class="avatar" aria-hidden="true"><svg><use href="#i-user" /></svg></span>
+          </a>
+          <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="workspace-nav">
+            <svg aria-hidden="true"><use href="#i-menu" /></svg><span class="visually-hidden">Workspace sections</span>
+          </button>
+        </div>
+      </header>
+
+      <aside class="sidebar">
+        <nav id="workspace-nav" aria-label="Workspace sections">
+          <ul>
+            <li><a href="/" aria-current="page"><svg aria-hidden="true"><use href="#i-home" /></svg>Overview</a></li>
+            {modules.map((module) => (
+              <li><a href={href(module.tab)}><svg aria-hidden="true"><use href={`#i-${module.icon}`} /></svg>{module.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+        <svg class="ridge" viewBox="0 0 260 220" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 120 70 60l55 45 50-55 85 70v100H0z" fill="#1d3550" />
+          <path d="M0 165 60 120l60 40 70-50 70 55v55H0z" fill="#183049" />
+        </svg>
+      </aside>
+
+      <main id="content" tabindex="-1">
+        <div class="intro">
+          <div>
+            <h1>Welcome to ERP Mini</h1>
+            <p>Your private CRM and sales workspace.</p>
+          </div>
+          <p class="today" data-today hidden><svg aria-hidden="true"><use href="#i-calendar" /></svg><time></time></p>
+        </div>
+
+        <ul class="modules" aria-label="Workspace modules">
+          {modules.map((module) => (
+            <li class="module">
+              <span class={`tile ${module.tone}`} aria-hidden="true"><svg><use href={`#i-${module.icon}`} /></svg></span>
+              <div>
+                <h2>{module.label}</h2>
+                <p>{module.summary}</p>
+                <a href={href(module.tab)} aria-label={`Open ${module.label}`}>Open <svg aria-hidden="true"><use href="#i-arrow" /></svg></a>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <div class="panels">
+          <section class="panel" aria-labelledby="pipeline-title">
+            <div class="panel-head">
+              <h2 id="pipeline-title"><svg aria-hidden="true"><use href="#i-quotations" /></svg>Quotation pipeline</h2>
+              <a href={href("quotes")}>View quotations</a>
+            </div>
+            <ol class="stages">
+              {stages.map((stage, index) => (
+                <li>
+                  <span class="stage-step">{String(index + 1).padStart(2, "0")}</span>
+                  <span class="stage-name">{stage.name}</span>
+                  <span class="stage-detail">{stage.detail}</span>
+                  <span class={`stage-bar ${stage.tone}`} style={`--reach:${(index + 1) / stages.length}`} aria-hidden="true"></span>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          <section class="panel" aria-labelledby="records-title">
+            <div class="panel-head">
+              <h2 id="records-title"><svg aria-hidden="true"><use href="#i-items" /></svg>Where your records live</h2>
+              <a href={href()}>Open workspace</a>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th scope="col">Section</th><th scope="col">Keeps</th><th scope="col"><span class="visually-hidden">Link</span></th></tr></thead>
+                <tbody>
+                  {modules.map((module) => (
+                    <tr>
+                      <th scope="row">{module.label}</th>
+                      <td>{module.holds}</td>
+                      <td><a class={`chip ${module.tone}`} href={href(module.tab)} aria-label={`Open ${module.label}`}>Open</a></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <section class="access" aria-labelledby="access-title">
+          <div>
+            <h2 id="access-title">Sign in to see your data</h2>
+            <p>Business records stay in the private workspace. This page never shows customers, items, quotations or orders.</p>
+          </div>
+          <a class="primary" href={href()}>Open workspace <svg aria-hidden="true"><use href="#i-arrow" /></svg></a>
+        </section>
+      </main>
+
+      <footer class="footer"><span>Independent EmDash ERP</span><span>Administrator access required. Sign in securely with EmDash.</span></footer>
+    </div>
+
+    <script is:inline>
+      (() => {
+        const today = document.querySelector("[data-today]");
+        const time = today && today.querySelector("time");
+        if (time) {
+          const now = new Date();
+          const pad = (value) => String(value).padStart(2, "0");
+          time.dateTime = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+          time.textContent = now.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric", year: "numeric" });
+          today.hidden = false;
+        }
+        const toggle = document.querySelector(".menu-toggle");
+        const nav = document.getElementById("workspace-nav");
+        if (!toggle || !nav) return;
+        document.documentElement.classList.add("js");
+        const setOpen = (open) => {
+          toggle.setAttribute("aria-expanded", String(open));
+          document.documentElement.classList.toggle("nav-open", open);
+        };
+        toggle.addEventListener("click", () => setOpen(toggle.getAttribute("aria-expanded") !== "true"));
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+            setOpen(false);
+            toggle.focus();
+          }
+        });
+        matchMedia("(min-width: 64rem)").addEventListener("change", (event) => { if (event.matches) setOpen(false); });
+      })();
+    </script>
+  </body>
+</html>
+<style>
+  :global(:root) {
+    color-scheme: light;
+    --navy-950: #0f1f31;
+    --navy-900: #14273d;
+    --navy-800: #1b334d;
+    --navy-700: #24435f;
+    --slate-50: #f4f7fa;
+    --slate-100: #eaeff4;
+    --slate-200: #dce3ea;
+    --slate-500: #5b6878;
+    --ink: #14243a;
+    --surface: #ffffff;
+    --blue: #1f5fbf;
+    --blue-soft: #e5eefc;
+    --teal: #0f766e;
+    --teal-bright: #19b6b0;
+    --teal-soft: #dcf3ef;
+    --active: #1d6584;
+    --focus: #19b6b0;
+    --radius: 0.75rem;
+    --sidebar: 16.5rem;
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+    --space-4: 2rem;
+  }
+  :global(*) { box-sizing: border-box; }
+  :global(body) { margin: 0; background: var(--slate-50); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  svg { width: 1.25rem; height: 1.25rem; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 0.375rem; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+  .skip { position: absolute; left: var(--space-2); top: -4rem; z-index: 10; padding: 0.75rem 1rem; background: var(--surface); color: var(--ink); border-radius: 0.5rem; font-weight: 650; }
+  .skip:focus { top: var(--space-2); }
+
+  .shell { min-height: 100vh; display: grid; grid-template-columns: var(--sidebar) minmax(0, 1fr); grid-template-rows: auto 1fr auto; grid-template-areas: "top top" "side main" "side foot"; }
+
+  .topbar { grid-area: top; display: flex; align-items: center; gap: var(--space-3); min-height: 4.75rem; padding: 0 var(--space-3) 0 0; background: var(--navy-800); color: #f3f7fb; }
+  .brand { width: var(--sidebar); display: flex; align-items: center; gap: 0.75rem; padding-inline: var(--space-3); font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; text-decoration: none; align-self: stretch; background: var(--navy-900); }
+  .brand .cube { width: 2.4rem; height: 2.4rem; stroke: none; }
+  .status { flex: 1; display: flex; align-items: center; gap: 0.625rem; max-width: 36rem; margin: 0; padding: 0.7rem 1rem; border-radius: 0.6rem; background: rgb(255 255 255 / 0.08); border: 1px solid rgb(255 255 255 / 0.12); color: #c9d6e3; font-size: 0.9375rem; }
+  .status svg { color: var(--teal-bright); }
+  .topbar-actions { margin-left: auto; display: flex; align-items: center; gap: var(--space-1); }
+  .signin { display: flex; align-items: center; gap: 0.75rem; min-height: 44px; padding: 0.25rem 0.25rem 0.25rem 0.75rem; border-radius: 999px; text-decoration: none; font-weight: 600; }
+  .signin:hover .signin-label { text-decoration: underline; text-underline-offset: 0.2em; }
+  .avatar { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 50%; background: var(--teal-bright); color: var(--navy-950); }
+  .avatar svg { width: 1.5rem; height: 1.5rem; fill: currentColor; stroke: none; }
+  .menu-toggle { display: none; }
+
+  .sidebar { grid-area: side; position: relative; overflow: hidden; background: var(--navy-900); color: #d7e1ec; padding-top: var(--space-3); }
+  .sidebar ul { list-style: none; margin: 0; padding: 0 0 0 var(--space-1); display: grid; gap: 0.35rem; position: relative; z-index: 1; }
+  .sidebar a { display: flex; align-items: center; gap: 1rem; min-height: 3.25rem; padding: 0 var(--space-3); border-radius: 0.6rem 0 0 0.6rem; text-decoration: none; font-size: 1.0625rem; }
+  .sidebar a svg { width: 1.45rem; height: 1.45rem; color: #a9bdd2; }
+  .sidebar a:hover { background: rgb(255 255 255 / 0.06); color: #fff; }
+  .sidebar a[aria-current="page"] { background: var(--active); color: #fff; font-weight: 650; box-shadow: inset 3px 0 0 var(--teal-bright); }
+  .sidebar a[aria-current="page"] svg { color: #fff; }
+  .ridge { position: absolute; inset: auto 0 0 0; width: 100%; height: 14rem; stroke: none; }
+
+  main { grid-area: main; padding: var(--space-4) var(--space-4) var(--space-3); display: grid; gap: var(--space-3); align-content: start; outline: none; }
+  .intro { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-2); }
+  h1 { margin: 0; font-size: clamp(1.9rem, 3.2vw, 2.5rem); line-height: 1.15; letter-spacing: -0.03em; font-weight: 750; color: var(--navy-950); }
+  .intro p { margin: 0.25rem 0 0; color: var(--slate-500); font-size: 1.0625rem; }
+  .today { display: flex; align-items: center; gap: 0.6rem; margin: 0; padding: 0.7rem 1rem; border: 1px solid var(--slate-200); border-radius: 0.6rem; background: var(--surface); color: #334256; font-size: 0.9375rem; white-space: nowrap; }
+  .today[hidden] { display: none; }
+  .today svg { color: var(--slate-500); }
+
+  .modules { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); }
+  .module { display: flex; gap: var(--space-2); padding: 1.25rem; background: var(--surface); border: 1px solid var(--slate-200); border-radius: var(--radius); box-shadow: 0 1px 2px rgb(20 36 58 / 0.04); }
+  .tile { display: grid; place-items: center; width: 3.75rem; height: 3.75rem; flex: none; border-radius: 0.75rem; }
+  .tile svg { width: 1.9rem; height: 1.9rem; stroke-width: 1.6; }
+  .tile.blue { background: var(--blue-soft); color: var(--blue); }
+  .tile.teal { background: var(--teal-soft); color: var(--teal); }
+  .module h2 { margin: 0; font-size: 1rem; font-weight: 650; }
+  .module p { margin: 0.2rem 0 0.5rem; color: var(--slate-500); font-size: 0.875rem; line-height: 1.45; }
+  .module a, .panel-head a { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--blue); font-weight: 600; font-size: 0.9375rem; text-decoration: none; min-height: 32px; }
+  .module a svg { width: 1.05rem; height: 1.05rem; transition: transform 0.15s ease; }
+  .module a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+  .module a:hover svg { transform: translateX(2px); }
+
+  .panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
+  .panel { background: var(--surface); border: 1px solid var(--slate-200); border-radius: var(--radius); padding: 1.25rem; box-shadow: 0 1px 2px rgb(20 36 58 / 0.04); min-width: 0; }
+  .panel-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); margin-bottom: 0.875rem; }
+  .panel-head h2 { display: flex; align-items: center; gap: 0.625rem; margin: 0; font-size: 1.125rem; font-weight: 700; color: var(--navy-950); }
+  .panel-head h2 svg { width: 1.5rem; height: 1.5rem; color: var(--blue); }
+  .panel-head a { white-space: nowrap; }
+  .panel-head a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+
+  .stages { list-style: none; margin: 0; padding: 0; }
+  .stages li { display: grid; grid-template-columns: 2.25rem 7.5rem minmax(0, 1fr) 30%; align-items: center; gap: var(--space-1); min-height: 2.75rem; border-top: 1px solid var(--slate-100); font-size: 0.9375rem; }
+  .stages li:first-child { border-top: 0; background: var(--slate-50); border-radius: 0.5rem; }
+  .stage-step { color: var(--slate-500); font-size: 0.75rem; font-variant-numeric: tabular-nums; padding-left: 0.6rem; }
+  .stage-name { font-weight: 600; }
+  .stage-detail { color: var(--slate-500); font-size: 0.875rem; }
+  .stage-bar { position: relative; height: 0.7rem; border-radius: 999px; background: var(--slate-100); margin-right: 0.5rem; overflow: hidden; }
+  .stage-bar::after { content: ""; position: absolute; inset: 0 auto 0 0; width: calc(var(--reach) * 100%); border-radius: inherit; background: var(--bar); }
+  .stage-bar::before { content: ""; position: absolute; inset: 0; z-index: 1; background: repeating-linear-gradient(90deg, transparent 0 calc(20% - 3px), var(--surface) calc(20% - 3px) 20%); }
+  .stage-bar.slate { --bar: #b8c6d6; }
+  .stage-bar.teal { --bar: var(--teal-bright); }
+  .stage-bar.blue { --bar: #2f6fd6; }
+  .stage-bar.navy { --bar: var(--navy-700); }
+  .stage-bar.green { --bar: #4cb877; }
+
+  .table-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+  thead th { background: var(--slate-100); color: #334256; text-align: left; font-weight: 600; font-size: 0.875rem; padding: 0.6rem 0.75rem; }
+  thead th:first-child { border-radius: 0.5rem 0 0 0.5rem; }
+  thead th:last-child { border-radius: 0 0.5rem 0.5rem 0; }
+  tbody th, tbody td { padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--slate-100); text-align: left; }
+  tbody th { font-weight: 600; }
+  tbody td { color: #3c4a5c; }
+  tbody tr:last-child > * { border-bottom: 0; }
+  tbody td:last-child { text-align: right; }
+  .chip { display: inline-flex; align-items: center; justify-content: center; min-width: 4.5rem; min-height: 32px; padding: 0 0.85rem; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 650; text-decoration: none; }
+  .chip.blue { background: var(--blue-soft); color: #1a4f9e; }
+  .chip.teal { background: var(--teal-soft); color: #0b5f58; }
+  .chip:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+
+  .access { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: 1.5rem 1.75rem; border-radius: var(--radius); background: linear-gradient(120deg, var(--navy-900), var(--navy-700)); color: #e6eef6; }
+  .access h2 { margin: 0; font-size: 1.25rem; color: #fff; }
+  .access p { margin: 0.25rem 0 0; color: #c3d1df; max-width: 38rem; font-size: 0.9375rem; }
+  .primary { display: inline-flex; align-items: center; gap: 0.75rem; flex: none; min-height: 48px; padding: 0.8rem 1.4rem; border-radius: 0.6rem; background: var(--teal-bright); color: var(--navy-950); font-weight: 700; text-decoration: none; }
+  .primary:hover { background: #3fcac4; }
+  .primary:active { background: #12a19c; }
+  .access .primary:focus-visible { outline-color: #fff; }
+
+  .footer { grid-area: foot; display: flex; justify-content: space-between; gap: var(--space-2); padding: var(--space-2) var(--space-4) var(--space-3); color: var(--slate-500); font-size: 0.8125rem; }
+
+  @media (max-width: 80rem) {
+    .modules { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 72rem) {
+    .panels { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 63.99rem) {
+    .shell { grid-template-columns: minmax(0, 1fr); grid-template-areas: "top" "side" "main" "foot"; grid-template-rows: auto auto 1fr auto; }
+    .topbar { min-height: 4rem; gap: var(--space-1); padding-right: var(--space-2); }
+    .brand { width: auto; background: none; font-size: 1.3rem; padding-inline: var(--space-2) 0; }
+    .brand .cube { width: 2rem; height: 2rem; }
+    .status { display: none; }
+    .signin-label { display: none; }
+    .signin { padding: 0; }
+    .avatar { width: 2.5rem; height: 2.5rem; }
+    :global(html.js) .menu-toggle { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgb(255 255 255 / 0.2); border-radius: 0.6rem; background: transparent; color: #fff; cursor: pointer; }
+    :global(html.js) .sidebar { display: none; }
+    :global(html.js.nav-open) .sidebar { display: block; }
+    .sidebar { padding: var(--space-1) var(--space-2) var(--space-2); border-top: 1px solid rgb(255 255 255 / 0.08); }
+    .sidebar ul { padding: 0; }
+    .sidebar a { border-radius: 0.6rem; padding-inline: var(--space-2); min-height: 3rem; }
+    .ridge { display: none; }
+    main { padding: var(--space-3) var(--space-2) var(--space-2); gap: var(--space-2); }
+    .footer { flex-direction: column; gap: 0.25rem; padding: var(--space-2); }
+  }
+  @media (max-width: 40rem) {
+    .intro { flex-direction: column; gap: 0.75rem; }
+    .modules { grid-template-columns: 1fr; gap: 0.75rem; }
+    .module { padding: 1rem; }
+    .tile { width: 3.25rem; height: 3.25rem; }
+    .stages li { grid-template-columns: 2rem minmax(0, 1fr) 28%; grid-template-areas: "step name bar" "step detail bar"; row-gap: 0; padding-block: 0.5rem; }
+    .stage-step { grid-area: step; }
+    .stage-name { grid-area: name; }
+    .stage-detail { grid-area: detail; font-size: 0.8125rem; }
+    .stage-bar { grid-area: bar; }
+    .panel-head { flex-wrap: wrap; row-gap: 0.25rem; }
+    .access { flex-direction: column; align-items: stretch; padding: 1.25rem; }
+    .primary { justify-content: center; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(*), :global(*::before), :global(*::after) { transition: none !important; animation: none !important; }
+  }
+</style>
