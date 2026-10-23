@@ -1,0 +1,21 @@
+---
+/** "Bright" + yellow "works" with a sunburst over the "i" and the spaced service line underneath. */
+interface Props {
+	name: string;
+	tagline?: string;
+}
+const { name, tagline } = Astro.props;
+// Two-tone split for the default name; any other single word splits roughly in half.
+const lower = name.toLowerCase();
+const cut = lower.startsWith("bright") ? 6 : /^\S{4,}$/.test(name) ? Math.ceil(name.length / 2) : name.length;
+const first = name.slice(0, cut);
+const rest = name.slice(cut);
+---
+
+<span class="wordmark-name">
+	<svg class="wordmark-rays" viewBox="0 0 40 18" aria-hidden="true" focusable="false">
+		<path d="M20 2v8M9 5.5l4.5 6M31 5.5l-4.5 6M2 12l7.5 3M38 12l-7.5 3" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" />
+	</svg>
+	{first}<span class="accent">{rest}</span>
+</span>
+{tagline && <span class="wordmark-tag">{tagline}</span>}

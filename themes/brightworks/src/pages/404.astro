@@ -1,0 +1,19 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import { quoteUrl } from "../lib/brightworks";
+---
+
+<Base title="Page not found">
+	<section class="notfound" aria-labelledby="nf-title">
+		<div class="container">
+			<span class="eyebrow eyebrow-yellow">Error 404</span>
+			<h1 id="nf-title" class="display display-md">This sign has <span class="accent">gone dark<span class="dot">.</span></span></h1>
+			<p class="hero-lede">The page you’re looking for doesn’t exist or has moved. Try our services, or tell us about your project.</p>
+			<div class="actions">
+				<a class="btn btn-lg" href="/services">See our services <Arrow /></a>
+				<a class="btn btn-lg btn-outline" href={quoteUrl()}>Request a quote</a>
+			</div>
+		</div>
+	</section>
+</Base>

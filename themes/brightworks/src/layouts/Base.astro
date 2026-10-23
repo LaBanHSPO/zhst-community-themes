@@ -1,0 +1,176 @@
+---
+import { getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import Wordmark from "../components/Wordmark.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getBusiness, getServices, quoteUrl, serviceUrl, telHref } from "../lib/brightworks";
+import "../styles/theme.css";
+
+interface Props {
+	title: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	/** Pass content reference for plugin page contributions on content pages */
+	content?: { collection: string; id: string; slug?: string | null };
+	/** Force which primary-menu URL is marked current. */
+	current?: string;
+}
+
+const { title, pageTitle, description, image, canonical, content, current } = Astro.props;
+const [settingsResult, menuResult, businessResult, servicesResult] = await Promise.all([
+	getSiteSettingsWithCacheHint(),
+	getMenuWithCacheHint("primary"),
+	getBusiness(),
+	getServices(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(settingsResult.cacheHint);
+	Astro.cache.set(menuResult.cacheHint);
+	Astro.cache.set(businessResult.cacheHint);
+	Astro.cache.set(servicesResult.cacheHint);
+}
+
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(settingsResult.data);
+const titleIncludesSiteName =
+	title === siteTitle || title.endsWith(` | ${siteTitle}`) || title.endsWith(` — ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
+const pageDescription = description ?? siteTagline;
+const navItems = menuResult.data?.items ?? [];
+const { business } = businessResult;
+const services = servicesResult.entries;
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const norm = (url: string) => url.replace(/\/$/, "") || "/";
+const currentUrl =
+	current ??
+	navItems.find((i) => norm(i.url) === path)?.url ??
+	navItems
+		.filter((i) => norm(i.url) !== "/" && path.startsWith(`${norm(i.url)}/`))
+		.sort((a, b) => b.url.length - a.url.length)[0]?.url ??
+	// e.g. any /projects/* page highlights the menu item that points at one project.
+	navItems.find((i) => norm(i.url) !== "/" && norm(i.url).split("/")[1] === path.split("/")[1])?.url;
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description: pageDescription,
+	canonical,
+	image,
+	content,
+	siteName: siteTitle,
+});
+const year = new Intl.DateTimeFormat("en-AU", { year: "numeric", timeZone: "Asia/Saigon" }).format(new Date());
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{fullTitle}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap"
+			rel="stylesheet"
+		/>
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<header class="site-head">
+			<div class="head-inner container">
+				<a class="wordmark" href="/" aria-label={`${siteTitle} — homepage`}>
+					{siteLogo ? <img src={siteLogo.url} alt={siteLogo.alt || siteTitle} /> : <Wordmark name={siteTitle} tagline={siteTagline} />}
+				</a>
+				<nav class="nav" aria-label="Primary">
+					{
+						navItems.map((item) => (
+							<a
+								href={item.url}
+								target={item.target}
+								rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+								aria-current={item.url === currentUrl ? "page" : undefined}
+							>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+				<a class="btn head-cta" href={quoteUrl()}>Request a quote <Arrow /></a>
+				<details class="mobile-nav">
+					<summary>
+						<svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true" focusable="false">
+							<path d="M0 1h20M0 7h20M0 13h20" stroke="currentColor" stroke-width="2" />
+						</svg>
+						<span>Menu</span>
+					</summary>
+					<nav class="mobile-panel" aria-label="Primary (mobile)">
+						{
+							navItems.map((item) => (
+								<a href={item.url} aria-current={item.url === currentUrl ? "page" : undefined}>
+									{item.label}
+								</a>
+							))
+						}
+						<a class="btn" href={quoteUrl()}>Request a quote <Arrow /></a>
+					</nav>
+				</details>
+			</div>
+		</header>
+
+		<main id="main">
+			<slot />
+		</main>
+
+		<footer class="site-foot">
+			<div class="container foot-inner">
+				<div class="foot-brand">
+					<a class="wordmark" href="/" aria-label={`${siteTitle} — homepage`}>
+						<Wordmark name={siteTitle} tagline={siteTagline} />
+					</a>
+					<p>Commercial signage, print and professional installation for local businesses{business.region ? `. ${business.region}.` : "."}</p>
+					<a class="btn" href={quoteUrl()}>Request a quote <Arrow /></a>
+				</div>
+				<div>
+					<h2>Services</h2>
+					<ul>
+						{services.map((s) => <li><a href={serviceUrl(s.data)}>{s.data.title}</a></li>)}
+					</ul>
+				</div>
+				<div>
+					<h2>Explore</h2>
+					<ul>
+						{navItems.map((item) => <li><a href={item.url}>{item.label}</a></li>)}
+						<li><a href="/projects">All projects</a></li>
+					</ul>
+				</div>
+				<div>
+					<h2>Contact</h2>
+					<ul class="foot-contact">
+						{business.phone && <li><Icon name="phone" /><a href={telHref(business.phone)}>{business.phone}</a></li>}
+						{business.email && <li><Icon name="mail" /><a href={`mailto:${business.email}`}>{business.email}</a></li>}
+						{business.address && <li><Icon name="pin" /><span>{business.address}</span></li>}
+						{business.hours && <li><Icon name="clock" /><span>{business.hours}</span></li>}
+					</ul>
+				</div>
+			</div>
+			<div class="container foot-bottom">
+				<span>© {year} {siteTitle}. All rights reserved.</span>
+				<span>Built with EmDash</span>
+			</div>
+		</footer>
+
+		<EmDashBodyEnd page={pageCtx} />
+	</body>
+</html>

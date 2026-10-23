@@ -1,0 +1,1196 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Brightworks",
+  "description": "A signage, print and installation company theme: services, a signage detail page with material choices, project case studies and a quote request form",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "Brightworks",
+  "tagline": "Signs Print Installation"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "services",
+   "label": "Services",
+   "labelSingular": "Service",
+   "urlPattern": "/services/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Service name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "Services page card text",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "link_label",
+     "label": "Services page link label",
+     "type": "string"
+    },
+    {
+     "slug": "on_home",
+     "label": "Show on homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "home_title",
+     "label": "Homepage card title",
+     "type": "string"
+    },
+    {
+     "slug": "home_text",
+     "label": "Homepage card text",
+     "type": "text"
+    },
+    {
+     "slug": "home_link_label",
+     "label": "Homepage link label",
+     "type": "string"
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Detail eyebrow",
+     "type": "string"
+    },
+    {
+     "slug": "headline",
+     "label": "Detail headline",
+     "type": "string"
+    },
+    {
+     "slug": "headline_accent",
+     "label": "Detail headline (yellow)",
+     "type": "string"
+    },
+    {
+     "slug": "lede",
+     "label": "Detail intro",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "options_eyebrow",
+     "label": "Options eyebrow",
+     "type": "string"
+    },
+    {
+     "slug": "options_title",
+     "label": "Options title",
+     "type": "string"
+    },
+    {
+     "slug": "options_text",
+     "label": "Options intro",
+     "type": "text"
+    },
+    {
+     "slug": "process_title",
+     "label": "Process title",
+     "type": "string"
+    },
+    {
+     "slug": "process_text",
+     "label": "Process intro",
+     "type": "string"
+    },
+    {
+     "slug": "cta_title",
+     "label": "Quote panel title",
+     "type": "string"
+    },
+    {
+     "slug": "cta_accent",
+     "label": "Quote panel title (yellow)",
+     "type": "string"
+    },
+    {
+     "slug": "cta_text",
+     "label": "Quote panel text",
+     "type": "string"
+    },
+    {
+     "slug": "quote_type",
+     "label": "Quote form sign type",
+     "type": "select",
+     "defaultValue": "not-sure",
+     "validation": {
+      "options": [
+       "exterior",
+       "illuminated",
+       "interior",
+       "window",
+       "print",
+       "installation",
+       "not-sure"
+      ]
+     }
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Services page photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Services page photo (bundled path)",
+     "type": "string"
+    },
+    {
+     "slug": "card_image",
+     "label": "Homepage card photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "card_photo",
+     "label": "Homepage card photo (bundled path)",
+     "type": "string"
+    },
+    {
+     "slug": "hero_image",
+     "label": "Detail hero photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "hero_photo",
+     "label": "Detail hero photo (bundled path)",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "choices",
+   "label": "Service choices",
+   "labelSingular": "Service choice",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Option",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "Description",
+     "type": "text"
+    },
+    {
+     "slug": "service",
+     "label": "Service slug",
+     "type": "string",
+     "required": true,
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Photo (bundled path)",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "steps",
+   "label": "Process steps",
+   "labelSingular": "Process step",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Step",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "Description",
+     "type": "text"
+    },
+    {
+     "slug": "icon",
+     "label": "Icon",
+     "type": "select",
+     "defaultValue": "chat",
+     "validation": {
+      "options": [
+       "chat",
+       "document",
+       "pencil",
+       "gear",
+       "truck",
+       "wrench"
+      ]
+     }
+    },
+    {
+     "slug": "placement",
+     "label": "Shown on",
+     "type": "select",
+     "required": true,
+     "indexed": true,
+     "defaultValue": "services",
+     "validation": {
+      "options": [
+       "services",
+       "detail",
+       "quote"
+      ]
+     }
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "projects",
+   "label": "Projects",
+   "labelSingular": "Project",
+   "urlPattern": "/projects/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Client / project name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "Listing summary",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Eyebrow",
+     "type": "string"
+    },
+    {
+     "slug": "headline",
+     "label": "Headline",
+     "type": "string"
+    },
+    {
+     "slug": "headline_accent",
+     "label": "Headline (yellow)",
+     "type": "string"
+    },
+    {
+     "slug": "lede",
+     "label": "Intro",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "brief",
+     "label": "Client brief",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "deliverables",
+     "label": "Materials & deliverables",
+     "type": "repeater",
+     "validation": {
+      "maxItems": 8,
+      "subFields": [
+       {
+        "slug": "title",
+        "label": "Deliverable",
+        "type": "string",
+        "required": true
+       },
+       {
+        "slug": "text",
+        "label": "Detail",
+        "type": "string"
+       },
+       {
+        "slug": "icon",
+        "label": "Icon (sign, window, aframe, print, lettering, wrench)",
+        "type": "string"
+       }
+      ]
+     }
+    },
+    {
+     "slug": "service",
+     "label": "Related service slug",
+     "type": "string"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "hero_image",
+     "label": "Hero photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "hero_photo",
+     "label": "Hero photo (bundled path)",
+     "type": "string"
+    },
+    {
+     "slug": "before_image",
+     "label": "Before photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "before_photo",
+     "label": "Before photo (bundled path)",
+     "type": "string"
+    },
+    {
+     "slug": "after_image",
+     "label": "After photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "after_photo",
+     "label": "After photo (bundled path)",
+     "type": "string"
+    },
+    {
+     "slug": "gallery",
+     "label": "Gallery",
+     "type": "repeater",
+     "validation": {
+      "maxItems": 8,
+      "subFields": [
+       {
+        "slug": "image",
+        "label": "Photo (upload)",
+        "type": "image"
+       },
+       {
+        "slug": "photo",
+        "label": "Bundled photo path",
+        "type": "string"
+       },
+       {
+        "slug": "alt",
+        "label": "Alt text",
+        "type": "string",
+        "required": true
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "slug": "business",
+   "label": "Business details",
+   "labelSingular": "Business details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Business name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "email",
+     "label": "Quote requests email",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "address",
+     "label": "Workshop address",
+     "type": "text"
+    },
+    {
+     "slug": "hours",
+     "label": "Opening hours",
+     "type": "string"
+    },
+    {
+     "slug": "region",
+     "label": "Area served",
+     "type": "string"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Homepage",
+     "url": "/"
+    },
+    {
+     "type": "custom",
+     "label": "Services",
+     "url": "/services"
+    },
+    {
+     "type": "custom",
+     "label": "Signage detail",
+     "url": "/services/exterior-signage"
+    },
+    {
+     "type": "custom",
+     "label": "Project case study",
+     "url": "/projects/harpers-local-market"
+    },
+    {
+     "type": "custom",
+     "label": "Request quote",
+     "url": "/quote"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "status": "published",
+    "data": {
+     "title": "About Brightworks",
+     "content": [
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b1",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Brightworks is a local signage, print and installation company. We design, make and fit signs for shops, cafés, clinics, offices and the small businesses that keep a high street busy.",
+         "_key": "b1s"
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Everything runs through one team: a site visit, clear options and pricing, visuals for your approval, production in our workshop and installation by our own fitters.",
+         "_key": "b2s"
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "h2",
+       "_key": "h1",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Working with us",
+         "_key": "h1s"
+        }
+       ]
+      },
+      {
+       "_type": "block",
+       "style": "normal",
+       "_key": "b3",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Tell us what you need on the Request a quote page and we will get back to you with a tailored, no-obligation quote.",
+         "_key": "b3s"
+        }
+       ]
+      }
+     ]
+    },
+    "slug": "about"
+   }
+  ],
+  "services": [
+   {
+    "id": "exterior-signage",
+    "status": "published",
+    "data": {
+     "title": "Exterior Signs",
+     "summary": "Storefront signs, building signs, window graphics and exterior branding that gets your business noticed.",
+     "link_label": "View exterior signage",
+     "on_home": true,
+     "home_title": "Business Signage",
+     "home_text": "Custom exterior and interior signage that gets you noticed.",
+     "home_link_label": "View signage services",
+     "eyebrow": "Shopfront signage",
+     "headline": "Signs that bring your",
+     "headline_accent": "business to life.",
+     "lede": "Custom shopfront signage designed, manufactured and professionally installed to make your business stand out on the high street and beyond.",
+     "options_eyebrow": "Material choices",
+     "options_title": "A style for every business",
+     "options_text": "From sleek non-illuminated signs to eye-catching illuminated shopfronts, we offer a range of materials and finishes to suit your brand, budget and building.",
+     "process_title": "From design to installation",
+     "process_text": "A simple, end-to-end service to bring your signage project to life.",
+     "cta_title": "Get a free,",
+     "cta_accent": "no-obligation quote.",
+     "cta_text": "Tell us about your project and we'll provide a tailored quote for your business.",
+     "quote_type": "exterior",
+     "position": 1,
+     "photo": "/images/svc-exterior.webp",
+     "card_photo": "/images/card-signage.webp",
+     "hero_photo": "/images/hero-signage.webp"
+    },
+    "slug": "exterior-signage"
+   },
+   {
+    "id": "interior-signage",
+    "status": "published",
+    "data": {
+     "title": "Interior Signage",
+     "summary": "Wall graphics, dimensional lettering, wayfinding, office branding and custom interior solutions.",
+     "link_label": "View interior signage",
+     "on_home": false,
+     "eyebrow": "Interior signage",
+     "headline": "Spaces that speak",
+     "headline_accent": "for your brand.",
+     "lede": "Wall graphics, lettering and wayfinding for receptions, offices, clinics and shops, designed around the way people move through your space.",
+     "options_eyebrow": "What we make",
+     "options_title": "Inside, done properly",
+     "options_text": "From a single reception sign to a full office fit-out, we plan interior signage that is clear, consistent and easy to live with.",
+     "process_title": "From design to installation",
+     "process_text": "A simple, end-to-end service to bring your signage project to life.",
+     "cta_title": "Get a free,",
+     "cta_accent": "no-obligation quote.",
+     "cta_text": "Tell us about your space and we'll provide a tailored quote for your business.",
+     "quote_type": "interior",
+     "position": 2,
+     "photo": "/images/svc-interior.webp"
+    },
+    "slug": "interior-signage"
+   },
+   {
+    "id": "print-solutions",
+    "status": "published",
+    "data": {
+     "title": "Print Solutions",
+     "summary": "Business cards, brochures, banners, posters, flyers and large format printing for marketing, events and in-store use.",
+     "link_label": "View print services",
+     "on_home": true,
+     "home_title": "Print Solutions",
+     "home_text": "High quality print for marketing, events and in-store materials.",
+     "home_link_label": "View print services",
+     "eyebrow": "Print solutions",
+     "headline": "Print that works as",
+     "headline_accent": "hard as you do.",
+     "lede": "Stationery, marketing print, banners and large format graphics, produced to match your signage so your brand looks the same everywhere.",
+     "options_eyebrow": "What we print",
+     "options_title": "From cards to large format",
+     "options_text": "Short runs or big campaigns, on stocks and materials chosen for how and where each piece will be used.",
+     "process_title": "From design to delivery",
+     "process_text": "One team from artwork checks to the finished print.",
+     "cta_title": "Get a free,",
+     "cta_accent": "no-obligation quote.",
+     "cta_text": "Tell us what you need printed and we'll provide a tailored quote.",
+     "quote_type": "print",
+     "position": 3,
+     "photo": "/images/svc-print.webp",
+     "card_photo": "/images/card-print.webp"
+    },
+    "slug": "print-solutions"
+   },
+   {
+    "id": "installation",
+    "status": "published",
+    "data": {
+     "title": "Professional Installation",
+     "summary": "Safe, reliable installation by an experienced local team. We handle permits, site surveys and install nationwide where needed.",
+     "link_label": "View installation services",
+     "on_home": true,
+     "home_title": "Professional Installation",
+     "home_text": "Safe, reliable installation by an experienced local team.",
+     "home_link_label": "View installation services",
+     "eyebrow": "Professional installation",
+     "headline": "Fitted safely,",
+     "headline_accent": "fitted right.",
+     "lede": "Our own installers survey the site, plan the fixings and fit your signage with care, at height or at street level, with as little disruption as possible.",
+     "options_eyebrow": "What's covered",
+     "options_title": "Every install, start to finish",
+     "options_text": "We look after the practical side so your new signage goes up once, safely and in the right place.",
+     "process_title": "From survey to installation",
+     "process_text": "A simple, end-to-end service to get your signage up.",
+     "cta_title": "Get a free,",
+     "cta_accent": "no-obligation quote.",
+     "cta_text": "Tell us about the site and we'll provide a tailored installation quote.",
+     "quote_type": "installation",
+     "position": 4,
+     "photo": "/images/svc-installation.webp",
+     "card_photo": "/images/card-installation.webp",
+     "hero_photo": "/images/hero-services.webp"
+    },
+    "slug": "installation"
+   }
+  ],
+  "choices": [
+   {
+    "id": "3d-lettering",
+    "status": "published",
+    "data": {
+     "title": "3D Lettering",
+     "text": "Premium built-up letters for a bold, professional look.",
+     "service": "exterior-signage",
+     "position": 1,
+     "photo": "/images/mat-3d-lettering.webp"
+    },
+    "slug": "3d-lettering"
+   },
+   {
+    "id": "flat-panel-signs",
+    "status": "published",
+    "data": {
+     "title": "Flat Panel Signs",
+     "text": "Versatile and cost-effective signage for any business.",
+     "service": "exterior-signage",
+     "position": 2,
+     "photo": "/images/mat-flat-panel.webp"
+    },
+    "slug": "flat-panel-signs"
+   },
+   {
+    "id": "illuminated-signs",
+    "status": "published",
+    "data": {
+     "title": "Illuminated Signs",
+     "text": "LED illumination to keep your business visible day and night.",
+     "service": "exterior-signage",
+     "position": 3,
+     "photo": "/images/mat-illuminated.webp"
+    },
+    "slug": "illuminated-signs"
+   },
+   {
+    "id": "projecting-signs",
+    "status": "published",
+    "data": {
+     "title": "Projecting Signs",
+     "text": "Make an impact from multiple angles with stylish projecting signage.",
+     "service": "exterior-signage",
+     "position": 4,
+     "photo": "/images/mat-projecting.webp"
+    },
+    "slug": "projecting-signs"
+   },
+   {
+    "id": "wall-graphics",
+    "status": "published",
+    "data": {
+     "title": "Wall Graphics",
+     "text": "Printed or cut-vinyl graphics for feature walls and reception areas.",
+     "service": "interior-signage",
+     "position": 1
+    },
+    "slug": "wall-graphics"
+   },
+   {
+    "id": "dimensional-lettering",
+    "status": "published",
+    "data": {
+     "title": "Dimensional Lettering",
+     "text": "Raised letters and logos for receptions and meeting rooms.",
+     "service": "interior-signage",
+     "position": 2
+    },
+    "slug": "dimensional-lettering"
+   },
+   {
+    "id": "wayfinding",
+    "status": "published",
+    "data": {
+     "title": "Wayfinding",
+     "text": "Clear directional and door signs that help visitors find their way.",
+     "service": "interior-signage",
+     "position": 3
+    },
+    "slug": "wayfinding"
+   },
+   {
+    "id": "office-branding",
+    "status": "published",
+    "data": {
+     "title": "Office Branding",
+     "text": "Window manifestation, values walls and branded meeting spaces.",
+     "service": "interior-signage",
+     "position": 4
+    },
+    "slug": "office-branding"
+   },
+   {
+    "id": "cards-stationery",
+    "status": "published",
+    "data": {
+     "title": "Cards & Stationery",
+     "text": "Business cards, letterheads and compliment slips that match your sign.",
+     "service": "print-solutions",
+     "position": 1
+    },
+    "slug": "cards-stationery"
+   },
+   {
+    "id": "brochures-flyers",
+    "status": "published",
+    "data": {
+     "title": "Brochures & Flyers",
+     "text": "Folded and flat print for marketing, menus and price lists.",
+     "service": "print-solutions",
+     "position": 2
+    },
+    "slug": "brochures-flyers"
+   },
+   {
+    "id": "banners-posters",
+    "status": "published",
+    "data": {
+     "title": "Banners & Posters",
+     "text": "Event banners, pull-ups and posters in-store or outdoors.",
+     "service": "print-solutions",
+     "position": 3
+    },
+    "slug": "banners-posters"
+   },
+   {
+    "id": "large-format",
+    "status": "published",
+    "data": {
+     "title": "Large Format",
+     "text": "Window posters, boards and display graphics printed big.",
+     "service": "print-solutions",
+     "position": 4
+    },
+    "slug": "large-format"
+   },
+   {
+    "id": "site-surveys",
+    "status": "published",
+    "data": {
+     "title": "Site Surveys",
+     "text": "We measure up and check the wall, fixings and access before anything is made.",
+     "service": "installation",
+     "position": 1
+    },
+    "slug": "site-surveys"
+   },
+   {
+    "id": "permits",
+    "status": "published",
+    "data": {
+     "title": "Permits & Approvals",
+     "text": "Help preparing the drawings your landlord or local council asks for.",
+     "service": "installation",
+     "position": 2
+    },
+    "slug": "permits"
+   },
+   {
+    "id": "fitting-at-height",
+    "status": "published",
+    "data": {
+     "title": "Fitting at Height",
+     "text": "Trained fitters with the right access equipment for fascias and high walls.",
+     "service": "installation",
+     "position": 3
+    },
+    "slug": "fitting-at-height"
+   },
+   {
+    "id": "removal",
+    "status": "published",
+    "data": {
+     "title": "Removal & Replacement",
+     "text": "Old signage taken down, the wall made good and the new sign fitted.",
+     "service": "installation",
+     "position": 4
+    },
+    "slug": "removal"
+   }
+  ],
+  "steps": [
+   {
+    "id": "services-consult",
+    "status": "published",
+    "data": {
+     "title": "Consult",
+     "text": "Talk about your goals and get expert advice.",
+     "icon": "chat",
+     "placement": "services",
+     "position": 1
+    },
+    "slug": "services-consult"
+   },
+   {
+    "id": "services-design",
+    "status": "published",
+    "data": {
+     "title": "Design",
+     "text": "We create designs and materials.",
+     "icon": "document",
+     "placement": "services",
+     "position": 2
+    },
+    "slug": "services-design"
+   },
+   {
+    "id": "services-produce",
+    "status": "published",
+    "data": {
+     "title": "Produce",
+     "text": "High quality print and fabrication.",
+     "icon": "gear",
+     "placement": "services",
+     "position": 3
+    },
+    "slug": "services-produce"
+   },
+   {
+    "id": "services-install",
+    "status": "published",
+    "data": {
+     "title": "Install",
+     "text": "Our team installs your signage.",
+     "icon": "truck",
+     "placement": "services",
+     "position": 4
+    },
+    "slug": "services-install"
+   },
+   {
+    "id": "detail-consultation",
+    "status": "published",
+    "data": {
+     "title": "Consultation",
+     "text": "We discuss your goals, site and ideas.",
+     "icon": "chat",
+     "placement": "detail",
+     "position": 1
+    },
+    "slug": "detail-consultation"
+   },
+   {
+    "id": "detail-design",
+    "status": "published",
+    "data": {
+     "title": "Design & Visuals",
+     "text": "We create designs and visuals for your approval.",
+     "icon": "pencil",
+     "placement": "detail",
+     "position": 2
+    },
+    "slug": "detail-design"
+   },
+   {
+    "id": "detail-production",
+    "status": "published",
+    "data": {
+     "title": "Production",
+     "text": "Your signage is crafted using high quality materials.",
+     "icon": "gear",
+     "placement": "detail",
+     "position": 3
+    },
+    "slug": "detail-production"
+   },
+   {
+    "id": "detail-installation",
+    "status": "published",
+    "data": {
+     "title": "Installation",
+     "text": "Our experienced team installs with minimal disruption.",
+     "icon": "truck",
+     "placement": "detail",
+     "position": 4
+    },
+    "slug": "detail-installation"
+   },
+   {
+    "id": "quote-tell-us",
+    "status": "published",
+    "data": {
+     "title": "Tell us about your project",
+     "text": "Share your requirements and any files or inspiration.",
+     "icon": "chat",
+     "placement": "quote",
+     "position": 1
+    },
+    "slug": "quote-tell-us"
+   },
+   {
+    "id": "quote-tailored",
+    "status": "published",
+    "data": {
+     "title": "Get a tailored quote",
+     "text": "We'll provide clear options and pricing for your needs.",
+     "icon": "document",
+     "placement": "quote",
+     "position": 2
+    },
+    "slug": "quote-tailored"
+   },
+   {
+    "id": "quote-approve",
+    "status": "published",
+    "data": {
+     "title": "Approve and produce",
+     "text": "We finalise the details and produce your signage.",
+     "icon": "pencil",
+     "placement": "quote",
+     "position": 3
+    },
+    "slug": "quote-approve"
+   },
+   {
+    "id": "quote-install",
+    "status": "published",
+    "data": {
+     "title": "Professional installation",
+     "text": "Our experienced local team gets it installed, safely and on time.",
+     "icon": "wrench",
+     "placement": "quote",
+     "position": 4
+    },
+    "slug": "quote-install"
+   }
+  ],
+  "projects": [
+   {
+    "id": "harpers-local-market",
+    "status": "published",
+    "data": {
+     "title": "Harper's Local Market",
+     "summary": "Illuminated exterior signage, window graphics, a pavement sign and in-store print for a much-loved corner store.",
+     "eyebrow": "Project case study",
+     "headline": "A fresh face for",
+     "headline_accent": "the corner store",
+     "lede": "A complete signage and print solution that transformed a much-loved local store with a modern look, improved visibility and a welcoming street presence.",
+     "brief": "Harper's Local Market wanted to refresh their tired exterior and create a stronger street presence that reflected their quality produce, local focus and friendly community spirit. The brief was a clean, modern look with clear signage, window graphics and branded print materials for in-store use.",
+     "deliverables": [
+      {
+       "title": "Illuminated exterior signage",
+       "text": "Fabricated lettering with warm lighting",
+       "icon": "sign"
+      },
+      {
+       "title": "Window graphics",
+       "text": "Custom vinyl graphics and opening hours",
+       "icon": "window"
+      },
+      {
+       "title": "A-frame pavement sign",
+       "text": "Branded and weatherproof",
+       "icon": "aframe"
+      },
+      {
+       "title": "In-store print",
+       "text": "Shelf talkers, posters and promotional materials",
+       "icon": "print"
+      }
+     ],
+     "service": "exterior-signage",
+     "position": 1,
+     "hero_photo": "/images/hero-harpers.webp",
+     "before_photo": "/images/harpers-before.webp",
+     "after_photo": "/images/harpers-after.webp",
+     "gallery": [
+      {
+       "photo": "/images/harpers-gallery-1.webp",
+       "alt": "Close-up of the illuminated Harper's lettering on the timber-clad fascia"
+      },
+      {
+       "photo": "/images/harpers-gallery-2.webp",
+       "alt": "Window graphic reading Good food, local people"
+      },
+      {
+       "photo": "/images/harpers-gallery-3.webp",
+       "alt": "Chalkboard A-frame pavement sign listing fresh produce, local goods and coffee"
+      },
+      {
+       "photo": "/images/harpers-gallery-4.webp",
+       "alt": "In-store printed card reading Local food, brighter days among fruit crates"
+      }
+     ]
+    },
+    "slug": "harpers-local-market"
+   },
+   {
+    "id": "riverside-coffee-co",
+    "status": "published",
+    "data": {
+     "title": "Riverside Coffee Co.",
+     "summary": "Built-up illuminated lettering and a side wall panel for a neighbourhood coffee shop.",
+     "eyebrow": "Project case study",
+     "headline": "Warm light for",
+     "headline_accent": "a riverside café",
+     "lede": "Built-up illuminated lettering on a timber façade, giving a neighbourhood coffee shop a sign that reads clearly from across the street, day or night.",
+     "brief": "Riverside Coffee Co. had outgrown a printed fascia board. They wanted lettering with depth that suited their new timber cladding and stayed legible after dark, plus a side panel carrying their 'Good coffee, brighter days' line.",
+     "deliverables": [
+      {
+       "title": "Illuminated 3D lettering",
+       "text": "Built-up letters with warm halo lighting",
+       "icon": "lettering"
+      },
+      {
+       "title": "Side wall panel",
+       "text": "Painted panel with cut vinyl lettering",
+       "icon": "sign"
+      },
+      {
+       "title": "Installation at height",
+       "text": "Fitted by our own installation team",
+       "icon": "wrench"
+      }
+     ],
+     "service": "exterior-signage",
+     "position": 2,
+     "hero_photo": "/images/hero-home.webp",
+     "gallery": [
+      {
+       "photo": "/images/svc-exterior.webp",
+       "alt": "Riverside Coffee Co. lettering glowing above the café windows at dusk"
+      },
+      {
+       "photo": "/images/hero-quote.webp",
+       "alt": "Close view of the Riverside lettering and wall lamps on the timber façade"
+      }
+     ]
+    },
+    "slug": "riverside-coffee-co"
+   },
+   {
+    "id": "the-parkwood",
+    "status": "published",
+    "data": {
+     "title": "The Parkwood",
+     "summary": "A wide illuminated fascia with gold-finish lettering for a kitchen, bar and social space.",
+     "eyebrow": "Project case study",
+     "headline": "A new fascia for",
+     "headline_accent": "a kitchen and bar",
+     "lede": "A wide illuminated fascia and gold-finish lettering for a neighbourhood kitchen, bar and social space.",
+     "brief": "The Parkwood wanted its new name to be the first thing people noticed on the street, with a sign that matched the warm lighting inside and worked across a long, dark fascia.",
+     "deliverables": [
+      {
+       "title": "Illuminated fascia lettering",
+       "text": "Gold-finish letters with warm LED lighting",
+       "icon": "lettering"
+      },
+      {
+       "title": "Fascia panel",
+       "text": "Dark painted panel with a gold rule detail",
+       "icon": "sign"
+      },
+      {
+       "title": "Out-of-hours installation",
+       "text": "Fitted after closing to avoid disruption",
+       "icon": "wrench"
+      }
+     ],
+     "service": "exterior-signage",
+     "position": 3,
+     "hero_photo": "/images/hero-signage.webp"
+    },
+    "slug": "the-parkwood"
+   }
+  ],
+  "business": [
+   {
+    "id": "main",
+    "status": "published",
+    "data": {
+     "title": "Brightworks",
+     "email": "quotes@brightworks.example",
+     "phone": "0412 345 678",
+     "address": "Unit 4, Foundry Lane",
+     "hours": "Mon–Fri, 8am–5pm",
+     "region": "Local businesses across the region"
+    },
+    "slug": "main"
+   }
+  ]
+ }
+}
