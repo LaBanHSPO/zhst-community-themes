@@ -1,0 +1,1019 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Modern Restaurant",
+		"description": "A dark, contemporary fine-dining theme: tasting menu, à la carte menu, our story, gallery and table requests",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "Montré",
+		"tagline": "Modern Restaurant"
+	},
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "eyebrow",
+					"label": "Small label above the title",
+					"type": "string"
+				},
+				{
+					"slug": "intro",
+					"label": "Intro line",
+					"type": "text"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "dishes",
+			"label": "Menu",
+			"labelSingular": "Dish",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Dish name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "course",
+					"label": "Course",
+					"type": "select",
+					"required": true,
+					"indexed": true,
+					"defaultValue": "mains",
+					"validation": {
+						"options": [
+							"snacks",
+							"starters",
+							"mains",
+							"sides",
+							"desserts",
+							"drinks"
+						]
+					}
+				},
+				{
+					"slug": "price",
+					"label": "Price (as displayed, e.g. $28)",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "description",
+					"label": "Description",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "dietary",
+					"label": "Dietary notes (e.g. V · GF)",
+					"type": "string"
+				},
+				{
+					"slug": "featured",
+					"label": "Feature in the homepage tasting menu",
+					"type": "boolean",
+					"indexed": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Bundled photo path",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "gallery",
+			"label": "Gallery",
+			"labelSingular": "Photo",
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Caption",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "text",
+					"label": "Short note under the caption",
+					"type": "text"
+				},
+				{
+					"slug": "alt",
+					"label": "Image description (alt text)",
+					"type": "string"
+				},
+				{
+					"slug": "wide",
+					"label": "Show wide (spans two columns)",
+					"type": "boolean"
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Bundled photo path",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "highlights",
+			"label": "Highlights",
+			"labelSingular": "Highlight",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "text",
+					"label": "Text",
+					"type": "text"
+				},
+				{
+					"slug": "placement",
+					"label": "Where it appears",
+					"type": "select",
+					"required": true,
+					"indexed": true,
+					"defaultValue": "story",
+					"validation": {
+						"options": [
+							"story",
+							"reserve"
+						]
+					}
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "hours",
+			"label": "Opening hours",
+			"labelSingular": "Opening hours row",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Days",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "hours",
+					"label": "Hours",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "venue",
+			"label": "Restaurant details",
+			"labelSingular": "Restaurant details",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "street",
+					"label": "Street address",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "locality",
+					"label": "Postcode and city",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "country",
+					"label": "Country",
+					"type": "string"
+				},
+				{
+					"slug": "phone",
+					"label": "Phone",
+					"type": "string"
+				},
+				{
+					"slug": "email",
+					"label": "Reservations email",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "directions_url",
+					"label": "Directions link (optional, defaults to Google Maps)",
+					"type": "string"
+				},
+				{
+					"slug": "getting_here",
+					"label": "Getting here (transit, parking, access)",
+					"type": "text"
+				},
+				{
+					"slug": "booking_note",
+					"label": "Booking note (party sizes, deposits)",
+					"type": "text"
+				},
+				{
+					"slug": "tasting_note",
+					"label": "Tasting menu note (price, length)",
+					"type": "string"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Home",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "Menu",
+					"url": "/menu"
+				},
+				{
+					"type": "custom",
+					"label": "Our Story",
+					"url": "/our-story"
+				},
+				{
+					"type": "custom",
+					"label": "Gallery",
+					"url": "/gallery"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "our-story",
+				"slug": "our-story",
+				"status": "published",
+				"data": {
+					"title": "Thoughtful food for meaningful moments.",
+					"eyebrow": "Our story",
+					"intro": "Montré is a forty-seat dining room built around one long kitchen counter, a short seasonal menu and the belief that a good evening is mostly about the people at the table.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b0",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Montré began as a series of supper evenings in a borrowed wine cellar. A cook, a sommelier and twelve guests a night, one menu, no choices — just whatever the growers and fishermen had brought in that morning, cooked carefully and served slowly.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b1",
+							"children": [
+								{
+									"_type": "span",
+									"text": "When the old print works on Linden Row came up for lease, we kept what we loved about those evenings: low light, unhurried service and a kitchen you can see from every seat. Dark oak, black marble and a little candlelight do the rest.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"_key": "b2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How we cook",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b3",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We work with a small circle of farms, a day-boat fisherman and one cheesemaker. The menu changes as their harvests do, so a dish may run for three weeks or three days. We cure, ferment and bake in house, and we waste as little as we can.",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"_key": "b4",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How we host",
+									"_key": "b4s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b5",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Our tasting menu runs to seven courses and about two and a half hours. If you would rather choose for yourself, the à la carte menu is served at the counter and in the lounge. Either way, tell us what you love and what you avoid — we would rather adjust a plate than have you leave anything behind.",
+									"_key": "b5s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "private-dining",
+				"slug": "private-dining",
+				"status": "published",
+				"data": {
+					"title": "Private dining",
+					"eyebrow": "Gatherings",
+					"intro": "The cellar room seats up to sixteen guests at one table, for birthdays, quiet celebrations and long business dinners.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b0",
+							"children": [
+								{
+									"_type": "span",
+									"text": "The cellar room sits below the main dining room, behind a wall of wine. It has its own entrance, its own service team and a sound system you can switch off.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b1",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We plan each private dinner with you: a tailored tasting menu, a pairing chosen by our sommelier and, if you like, a short welcome from the kitchen. Room hire is included when the minimum spend is met.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"_key": "b2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Planning your evening",
+									"_key": "b2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b3",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Send us your preferred date, the number of guests and any dietary needs. We reply within two working days with menus and availability. Dates in December fill early, so please write well ahead.",
+									"_key": "b3s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "allergies",
+				"slug": "allergies",
+				"status": "published",
+				"data": {
+					"title": "Allergies & dietary needs",
+					"eyebrow": "Good to know",
+					"intro": "Almost every dish can be adapted. Tell us when you request your table and remind your server on the night.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b0",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Our kitchen handles nuts, gluten, dairy, shellfish and other common allergens every day. We take great care to keep dishes separate, but we cannot promise that any dish is entirely free of traces.",
+									"_key": "b0s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b1",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Vegetarian and pescatarian versions of the tasting menu are always available. For vegan, gluten-free or other needs, please let us know at least two days ahead so we can plan properly.",
+									"_key": "b1s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			}
+		],
+		"dishes": [
+			{
+				"id": "oyster-cucumber-dill",
+				"slug": "oyster-cucumber-dill",
+				"status": "published",
+				"data": {
+					"title": "Oyster, cucumber & dill",
+					"course": "snacks",
+					"price": "$6 each",
+					"description": "A single West Coast oyster, pressed cucumber, dill oil.",
+					"featured": false,
+					"position": 10,
+					"dietary": "GF"
+				}
+			},
+			{
+				"id": "goug-res",
+				"slug": "goug-res",
+				"status": "published",
+				"data": {
+					"title": "Gougères",
+					"course": "snacks",
+					"price": "$9",
+					"description": "Warm cheese puffs with aged Comté.",
+					"featured": false,
+					"position": 20,
+					"dietary": "V"
+				}
+			},
+			{
+				"id": "house-bread-cultured-butter",
+				"slug": "house-bread-cultured-butter",
+				"status": "published",
+				"data": {
+					"title": "House bread & cultured butter",
+					"course": "snacks",
+					"price": "$8",
+					"description": "Rye sourdough, brown butter with sea salt.",
+					"featured": false,
+					"position": 30,
+					"dietary": "V"
+				}
+			},
+			{
+				"id": "seared-scallops",
+				"slug": "seared-scallops",
+				"status": "published",
+				"data": {
+					"title": "Seared scallops",
+					"course": "starters",
+					"price": "$28",
+					"description": "Cauliflower purée, brown butter, capers, a crisp lace tuile.",
+					"featured": true,
+					"position": 40,
+					"dietary": "GF",
+					"photo": "/images/scallops-plate.webp"
+				}
+			},
+			{
+				"id": "hand-dived-scallop-crudo",
+				"slug": "hand-dived-scallop-crudo",
+				"status": "published",
+				"data": {
+					"title": "Hand-dived scallop crudo",
+					"course": "starters",
+					"price": "$24",
+					"description": "Buttermilk, green apple, sorrel and a little horseradish.",
+					"featured": false,
+					"position": 50,
+					"dietary": "GF",
+					"photo": "/images/scallop-bowl.webp"
+				}
+			},
+			{
+				"id": "beetroot-smoked-curd-rye",
+				"slug": "beetroot-smoked-curd-rye",
+				"status": "published",
+				"data": {
+					"title": "Beetroot, smoked curd & rye",
+					"course": "starters",
+					"price": "$19",
+					"description": "Salt-baked beetroot, smoked sheep's curd, toasted rye crumb.",
+					"featured": false,
+					"position": 60,
+					"dietary": "V"
+				}
+			},
+			{
+				"id": "aged-beef-fillet",
+				"slug": "aged-beef-fillet",
+				"status": "published",
+				"data": {
+					"title": "Aged beef fillet",
+					"course": "mains",
+					"price": "$54",
+					"description": "Glazed carrots, king oyster mushroom, parsnip cream, bordelaise.",
+					"featured": true,
+					"position": 70,
+					"dietary": "GF",
+					"photo": "/images/beef-plate.webp"
+				}
+			},
+			{
+				"id": "halibut-mussels-saffron",
+				"slug": "halibut-mussels-saffron",
+				"status": "published",
+				"data": {
+					"title": "Halibut, mussels & saffron",
+					"course": "mains",
+					"price": "$46",
+					"description": "Line-caught halibut, mussel and saffron broth, sea herbs.",
+					"featured": true,
+					"position": 80
+				}
+			},
+			{
+				"id": "duck-cherry-chicory",
+				"slug": "duck-cherry-chicory",
+				"status": "published",
+				"data": {
+					"title": "Duck, cherry & chicory",
+					"course": "mains",
+					"price": "$48",
+					"description": "Dry-aged duck breast, sour cherry, charred chicory, duck jus.",
+					"featured": false,
+					"position": 90,
+					"dietary": "GF"
+				}
+			},
+			{
+				"id": "celeriac-baked-in-salt",
+				"slug": "celeriac-baked-in-salt",
+				"status": "published",
+				"data": {
+					"title": "Celeriac baked in salt",
+					"course": "mains",
+					"price": "$34",
+					"description": "Whole celeriac, black truffle, hazelnut and aged-cheese sauce.",
+					"featured": false,
+					"position": 100,
+					"dietary": "V"
+				}
+			},
+			{
+				"id": "pommes-puree",
+				"slug": "pommes-puree",
+				"status": "published",
+				"data": {
+					"title": "Pommes purée",
+					"course": "sides",
+					"price": "$9",
+					"description": "Butter, more butter, chives.",
+					"featured": false,
+					"position": 110,
+					"dietary": "V · GF"
+				}
+			},
+			{
+				"id": "charred-hispi-cabbage",
+				"slug": "charred-hispi-cabbage",
+				"status": "published",
+				"data": {
+					"title": "Charred hispi cabbage",
+					"course": "sides",
+					"price": "$10",
+					"description": "Anchovy butter, lemon, crisp shallots.",
+					"featured": false,
+					"position": 120,
+					"dietary": "GF"
+				}
+			},
+			{
+				"id": "dark-chocolate-olive-oil-sea-salt",
+				"slug": "dark-chocolate-olive-oil-sea-salt",
+				"status": "published",
+				"data": {
+					"title": "Dark chocolate, olive oil & sea salt",
+					"course": "desserts",
+					"price": "$16",
+					"description": "Bitter chocolate cream, olive oil sponge, flaked salt.",
+					"featured": true,
+					"position": 130,
+					"dietary": "V"
+				}
+			},
+			{
+				"id": "poached-pear-bay-leaf",
+				"slug": "poached-pear-bay-leaf",
+				"status": "published",
+				"data": {
+					"title": "Poached pear & bay leaf",
+					"course": "desserts",
+					"price": "$14",
+					"description": "Bay custard, brown-butter crumb, pear sorbet.",
+					"featured": false,
+					"position": 140,
+					"dietary": "V"
+				}
+			},
+			{
+				"id": "cheese-from-the-trolley",
+				"slug": "cheese-from-the-trolley",
+				"status": "published",
+				"data": {
+					"title": "Cheese from the trolley",
+					"course": "desserts",
+					"price": "$18",
+					"description": "Three cheeses, quince, oat crackers.",
+					"featured": false,
+					"position": 150,
+					"dietary": "V"
+				}
+			},
+			{
+				"id": "wine-pairing",
+				"slug": "wine-pairing",
+				"status": "published",
+				"data": {
+					"title": "Wine pairing",
+					"course": "drinks",
+					"price": "$85",
+					"description": "Five glasses chosen by our sommelier for the tasting menu.",
+					"featured": false,
+					"position": 160
+				}
+			},
+			{
+				"id": "montre-spritz",
+				"slug": "montre-spritz",
+				"status": "published",
+				"data": {
+					"title": "Montré spritz",
+					"course": "drinks",
+					"price": "$15",
+					"description": "White vermouth, elderflower, sparkling wine.",
+					"featured": false,
+					"position": 170
+				}
+			},
+			{
+				"id": "garden-tonic",
+				"slug": "garden-tonic",
+				"status": "published",
+				"data": {
+					"title": "Garden tonic",
+					"course": "drinks",
+					"price": "$9",
+					"description": "Alcohol-free: cucumber, verjus, tonic.",
+					"featured": false,
+					"position": 180,
+					"dietary": "VG"
+				}
+			}
+		],
+		"gallery": [
+			{
+				"id": "the-scallop-course",
+				"slug": "the-scallop-course",
+				"status": "published",
+				"data": {
+					"title": "The scallop course",
+					"text": "Seared scallops, cauliflower and a crisp lace tuile — our most requested starter.",
+					"alt": "Three seared scallops with a lace tuile on a stoneware plate, with a glass of white wine and a candle",
+					"photo": "/images/scallops-plate.webp",
+					"wide": true,
+					"position": 10
+				}
+			},
+			{
+				"id": "the-dining-room",
+				"slug": "the-dining-room",
+				"status": "published",
+				"data": {
+					"title": "The dining room",
+					"text": "Dark oak, black marble and pendant lights over every table.",
+					"alt": "The dining room at night with an olive tree, round tables and pendant lights",
+					"photo": "/images/dining-room.webp",
+					"wide": false,
+					"position": 20
+				}
+			},
+			{
+				"id": "a-glass-of-something-cold",
+				"slug": "a-glass-of-something-cold",
+				"status": "published",
+				"data": {
+					"title": "A glass of something cold",
+					"text": "White wine poured for the first course.",
+					"alt": "A glass of white wine beside a ribbed candle holder",
+					"photo": "/images/wine-and-candle.webp",
+					"wide": false,
+					"position": 30
+				}
+			},
+			{
+				"id": "aged-beef-fillet",
+				"slug": "aged-beef-fillet",
+				"status": "published",
+				"data": {
+					"title": "Aged beef fillet",
+					"text": "Glazed carrots, king oyster mushroom and parsnip cream.",
+					"alt": "Beef fillet with carrots, mushroom and herbs on a dark textured plate",
+					"photo": "/images/beef-plate.webp",
+					"wide": true,
+					"position": 40
+				}
+			},
+			{
+				"id": "scallop-crudo",
+				"slug": "scallop-crudo",
+				"status": "published",
+				"data": {
+					"title": "Scallop crudo",
+					"text": "Buttermilk, green apple and sorrel.",
+					"alt": "A single scallop with herbs and green oil in a wide stone bowl",
+					"photo": "/images/scallop-bowl.webp",
+					"wide": true,
+					"position": 50
+				}
+			},
+			{
+				"id": "the-lounge",
+				"slug": "the-lounge",
+				"status": "published",
+				"data": {
+					"title": "The lounge",
+					"text": "Green velvet banquettes for a drink before or after dinner.",
+					"alt": "The lounge with green velvet banquettes, copper chairs and candlelit tables",
+					"photo": "/images/lounge.webp",
+					"wide": false,
+					"position": 60
+				}
+			},
+			{
+				"id": "red-wine-by-candlelight",
+				"slug": "red-wine-by-candlelight",
+				"status": "published",
+				"data": {
+					"title": "Red wine by candlelight",
+					"text": "Our cellar leans toward small growers.",
+					"alt": "A glass of red wine, a vase of wild flowers and a candle on black marble",
+					"photo": "/images/red-wine-candle.webp",
+					"wide": false,
+					"position": 70
+				}
+			},
+			{
+				"id": "dinner-for-two",
+				"slug": "dinner-for-two",
+				"status": "published",
+				"data": {
+					"title": "Dinner for two",
+					"text": "The full evening: a candle, a pairing and no rush.",
+					"alt": "A plated beef course with red wine and candles at a marble table",
+					"photo": "/images/beef-dinner.webp",
+					"wide": true,
+					"position": 80
+				}
+			}
+		],
+		"highlights": [
+			{
+				"id": "story-0",
+				"slug": "story-0",
+				"status": "published",
+				"data": {
+					"title": "Seasonal, always",
+					"text": "The menu follows our growers. When a harvest ends, the dish does too.",
+					"placement": "story",
+					"position": 10
+				}
+			},
+			{
+				"id": "story-1",
+				"slug": "story-1",
+				"status": "published",
+				"data": {
+					"title": "Cooked in plain sight",
+					"text": "Every seat looks onto the kitchen counter. Nothing is hidden, nothing is rushed.",
+					"placement": "story",
+					"position": 20
+				}
+			},
+			{
+				"id": "story-2",
+				"slug": "story-2",
+				"status": "published",
+				"data": {
+					"title": "Wine from small growers",
+					"text": "A short, changing list from family estates, with plenty by the glass.",
+					"placement": "story",
+					"position": 30
+				}
+			},
+			{
+				"id": "reserve-3",
+				"slug": "reserve-3",
+				"status": "published",
+				"data": {
+					"title": "Tables are held for 15 minutes",
+					"text": "If you are running late, call us and we will do our best to keep your table.",
+					"placement": "reserve",
+					"position": 40
+				}
+			},
+			{
+				"id": "reserve-4",
+				"slug": "reserve-4",
+				"status": "published",
+				"data": {
+					"title": "Groups of seven or more",
+					"text": "Please write to us. Larger parties dine from the tasting menu or in the cellar room.",
+					"placement": "reserve",
+					"position": 50
+				}
+			},
+			{
+				"id": "reserve-5",
+				"slug": "reserve-5",
+				"status": "published",
+				"data": {
+					"title": "Dietary needs",
+					"text": "Tell us in your request. Almost every dish can be adapted with a little notice.",
+					"placement": "reserve",
+					"position": 60
+				}
+			}
+		],
+		"hours": [
+			{
+				"id": "h1",
+				"slug": "h1",
+				"status": "published",
+				"data": {
+					"title": "Monday – Tuesday",
+					"hours": "Closed",
+					"position": 10
+				}
+			},
+			{
+				"id": "h2",
+				"slug": "h2",
+				"status": "published",
+				"data": {
+					"title": "Wednesday – Thursday",
+					"hours": "5:30 – 10:00 pm",
+					"position": 20
+				}
+			},
+			{
+				"id": "h3",
+				"slug": "h3",
+				"status": "published",
+				"data": {
+					"title": "Friday – Saturday",
+					"hours": "5:30 – 11:00 pm",
+					"position": 30
+				}
+			},
+			{
+				"id": "h4",
+				"slug": "h4",
+				"status": "published",
+				"data": {
+					"title": "Sunday",
+					"hours": "12:00 – 3:00 pm · 5:30 – 9:30 pm",
+					"position": 40
+				}
+			}
+		],
+		"venue": [
+			{
+				"id": "venue",
+				"slug": "venue",
+				"status": "published",
+				"data": {
+					"title": "Montré",
+					"street": "112 Linden Row",
+					"locality": "Seattle, WA 98101",
+					"country": "United States",
+					"phone": "(555) 018-4470",
+					"email": "reservations@montre.example",
+					"getting_here": "We are a five-minute walk from Westlake station. Valet parking is available from 6 pm on Fridays and Saturdays, and the public garage on 4th Avenue is open late. The dining room, lounge and restrooms are step-free.",
+					"booking_note": "We take requests for up to six guests online. For larger groups or the cellar room, write to us and we will plan it together.",
+					"tasting_note": "Seven courses · $145 per guest · wine pairing $85"
+				}
+			}
+		]
+	}
+}

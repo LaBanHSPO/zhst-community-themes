@@ -1,0 +1,19 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+---
+
+<Base title="Page not found">
+	<section class="notfound" aria-labelledby="nf-title">
+		<img class="notfound-bg" src="/images/wine-and-candle.webp" alt="" width="328" height="540" />
+		<div class="notfound-copy">
+			<span class="eyebrow">404 · Page not found</span>
+			<h1 id="nf-title">This table<br />isn't set.</h1>
+			<p>The page you are looking for has moved or never existed. The kitchen, however, is open.</p>
+			<div class="actions">
+				<a class="btn" href="/">Back to home <Arrow /></a>
+				<a class="text-link text-link-light" href="/menu">See the menu <Arrow /></a>
+			</div>
+		</div>
+	</section>
+</Base>
