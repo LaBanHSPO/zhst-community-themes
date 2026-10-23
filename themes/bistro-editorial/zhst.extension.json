@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "bistro-editorial",
+	"kind": "theme",
+	"name": "Bistro",
+	"type": "restaurant",
+	"emdash": "1.2.0",
+	"entry": "themes/bistro-editorial",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": false,
+		"booking": true,
+		"checkout": false,
+		"map": true,
+		"whatsapp": false
+	}
+}
