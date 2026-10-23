@@ -1,0 +1,31 @@
+---
+import { initials, photoAlt, photoSrc } from "../lib/press";
+import type { Book } from "../lib/press";
+
+interface Props {
+	book: Book;
+	authorName?: string;
+	eager?: boolean;
+	width?: number;
+}
+const { book, authorName = "", eager = false, width = 336 } = Astro.props;
+const src = photoSrc(book.image, book.photo);
+const tone = book.cover_tone ?? "forest";
+---
+
+{
+	src ? (
+		<span class="cover cover-img">
+			<img src={src} alt={photoAlt(book.image, book.photo, `Cover of ${book.title}`)} width={width} height={Math.round(width * 1.5)} loading={eager ? "eager" : "lazy"} />
+		</span>
+	) : (
+		<span class={`cover cover-type tone-${tone}`} role="img" aria-label={`Cover of ${book.title}${authorName ? ` by ${authorName}` : ""}`}>
+			<span class="ct-title">{book.title}</span>
+			{book.subtitle && <span class="ct-sub">{book.subtitle}</span>}
+			<svg class="ct-sprig" width="40" height="60" viewBox="0 0 32 52" aria-hidden="true" focusable="false">
+				<path d="M15.6 50.5V8M15.6 38c-3-3-6.4-5-10-6M15.6 30c2.4-2.8 5-4.6 8.2-5.6M15.6 21c-2.4-2.8-5.2-4.4-8.6-5M15.6 14c2.2-2.4 4.4-3.8 7.4-4.6" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" />
+			</svg>
+			<span class="ct-author" aria-hidden="true">{authorName || initials(book.title)}</span>
+		</span>
+	)
+}

@@ -1,0 +1,26 @@
+---
+import Arrow from "./Arrow.astro";
+import type { PressData } from "../lib/press";
+
+interface Props {
+	press: PressData;
+}
+const { press } = Astro.props;
+---
+
+<section class="band" aria-labelledby="band-title">
+	<div class="wrap band-inner">
+		<div class="band-media">
+			<img src="/images/shelf.webp" alt="Cloth-bound books, a stone bowl, a vase of olive leaves and a pen on an open manuscript" width="1200" height="900" loading="lazy" />
+		</div>
+		<div class="band-copy">
+			<p class="label">Submissions</p>
+			<h2 id="band-title" class="display display-md">Have a manuscript in mind?</h2>
+			<p class="lede">{press.submissions_note || "Send a short note about your book and a sample chapter. We read every message and reply personally."}</p>
+			<p class="band-actions">
+				<a class="btn" href="/contact?topic=submissions"><span>Write to the editors</span><Arrow /></a>
+				{press.email && <a class="text-link" href={`mailto:${press.email}`}>{press.email}</a>}
+			</p>
+		</div>
+	</div>
+</section>

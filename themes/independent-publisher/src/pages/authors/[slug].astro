@@ -1,0 +1,72 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import BookCard from "../../components/BookCard.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getBooks, initials } from "../../lib/press";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: author, cacheHint } = await getEmDashEntry("authors", slug);
+if (!author) return Astro.rewrite("/404");
+
+const [booksResult, settings] = await Promise.all([getBooks(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(booksResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(author, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const d = author.data;
+const books = booksResult.entries.filter((b) => b.data.author === (d.slug ?? d.id));
+const hasBio = Boolean(d.content && d.content.length > 0);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.intro}
+	canonical={seo.canonical}
+	content={{ collection: "authors", id: d.id, slug }}
+	current="/authors"
+>
+	<div class="wrap author-page">
+		<span class="monogram monogram-lg" aria-hidden="true">{initials(d.title)}</span>
+		<div>
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/authors">Authors</a>
+			</nav>
+			<h1 class="display" {...author.edit.title}>{d.title}</h1>
+			{d.intro && <p class="lede">{d.intro}</p>}
+			{
+				hasBio && (
+					<div class="prose author-prose">
+						<PortableText value={d.content} />
+					</div>
+				)
+			}
+			<p class="book-back"><a class="text-link" href="/authors"><span>All authors</span><Arrow /></a></p>
+		</div>
+	</div>
+
+	{
+		books.length > 0 && (
+			<section class="more" aria-labelledby="by-title">
+				<div class="wrap">
+					<p class="label">Books</p>
+					<h2 id="by-title" class="display display-md">By {d.title}.</h2>
+					<ul class="book-grid">
+						{books.map((b) => <li><BookCard book={b} authorName={d.title} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+</Base>
