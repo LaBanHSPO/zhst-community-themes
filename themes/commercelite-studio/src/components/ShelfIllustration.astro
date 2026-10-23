@@ -1,0 +1,93 @@
+---
+/** Original flat still life (vase with stems, bowl, books on a shelf). Decorative only. */
+interface Props {
+	class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<svg
+	class:list={["shelf-illustration", className]}
+	viewBox="0 0 340 300"
+	width="100%"
+	aria-hidden="true"
+	focusable="false"
+>
+	<defs>
+		<linearGradient id="shelf-wood" x1="0" x2="0" y1="0" y2="1">
+			<stop offset="0" style="stop-color: var(--ill-wood-top)"></stop>
+			<stop offset="1" style="stop-color: var(--ill-wood)"></stop>
+		</linearGradient>
+		<linearGradient id="shelf-vase" x1="0" x2="1" y1="0" y2="0">
+			<stop offset="0" style="stop-color: var(--ill-vase-light)"></stop>
+			<stop offset="1" style="stop-color: var(--ill-vase)"></stop>
+		</linearGradient>
+	</defs>
+
+	<!-- stems and leaves -->
+	<g style="stroke: var(--ill-stem)" stroke-width="2" fill="none" stroke-linecap="round">
+		<path d="M236 168 C232 120 222 86 196 52"></path>
+		<path d="M240 168 C246 124 262 94 292 70"></path>
+		<path d="M238 168 C240 130 238 100 244 28"></path>
+	</g>
+	<g style="fill: var(--ill-leaf)">
+		<ellipse cx="200" cy="62" rx="15" ry="8" transform="rotate(-35 200 62)"></ellipse>
+		<ellipse cx="214" cy="84" rx="14" ry="7.5" transform="rotate(20 214 84)"></ellipse>
+		<ellipse cx="222" cy="112" rx="13" ry="7" transform="rotate(-25 222 112)"></ellipse>
+		<ellipse cx="286" cy="76" rx="15" ry="8" transform="rotate(35 286 76)"></ellipse>
+		<ellipse cx="266" cy="96" rx="14" ry="7.5" transform="rotate(-20 266 96)"></ellipse>
+		<ellipse cx="254" cy="124" rx="13" ry="7" transform="rotate(30 254 124)"></ellipse>
+		<ellipse cx="244" cy="34" rx="13" ry="7" transform="rotate(80 244 34)"></ellipse>
+		<ellipse cx="236" cy="62" rx="12" ry="6.5" transform="rotate(-60 236 62)"></ellipse>
+		<ellipse cx="250" cy="70" rx="12" ry="6.5" transform="rotate(60 250 70)"></ellipse>
+	</g>
+	<g style="fill: var(--ill-leaf-dark)">
+		<ellipse cx="208" cy="138" rx="12" ry="6" transform="rotate(25 208 138)"></ellipse>
+		<ellipse cx="272" cy="134" rx="12" ry="6" transform="rotate(-25 272 134)"></ellipse>
+	</g>
+
+	<!-- vase -->
+	<path
+		d="M226 166 h26 c0 10 4 14 10 22 c10 14 12 30 10 48 c-2 18 -10 30 -20 34 h-26 c-10 -4 -18 -16 -20 -34 c-2 -18 0 -34 10 -48 c6 -8 10 -12 10 -22 z"
+		fill="url(#shelf-vase)"></path>
+	<g style="fill: var(--ill-speckle)">
+		<circle cx="232" cy="210" r="1.2"></circle>
+		<circle cx="246" cy="226" r="1.2"></circle>
+		<circle cx="258" cy="204" r="1"></circle>
+		<circle cx="238" cy="244" r="1.1"></circle>
+		<circle cx="252" cy="250" r="1"></circle>
+	</g>
+
+	<!-- books -->
+	<rect x="34" y="248" width="150" height="14" rx="2" style="fill: var(--ill-book-a)"></rect>
+	<rect x="42" y="234" width="138" height="14" rx="2" style="fill: var(--ill-book-b)"></rect>
+	<rect x="42" y="244" width="138" height="1.5" style="fill: var(--ill-book-line)"></rect>
+
+	<!-- bowl -->
+	<path d="M64 206 h92 c-2 18 -18 28 -46 28 c-28 0 -44 -10 -46 -28 z" style="fill: var(--ill-bowl)"></path>
+	<ellipse cx="110" cy="206" rx="46" ry="5" style="fill: var(--ill-bowl-inner)"></ellipse>
+
+	<!-- shelf -->
+	<rect x="0" y="262" width="340" height="38" fill="url(#shelf-wood)"></rect>
+	<rect x="0" y="262" width="340" height="3" style="fill: var(--ill-wood-edge)"></rect>
+</svg>
+
+<style>
+	.shelf-illustration {
+		display: block;
+		--ill-stem: light-dark(#5d7558, #8fa98a);
+		--ill-leaf: light-dark(#5f7d58, #6f8f6a);
+		--ill-leaf-dark: light-dark(#3f5a3f, #4f6c4d);
+		--ill-vase: light-dark(#d9cfbd, #8f8676);
+		--ill-vase-light: light-dark(#f2ece0, #b4ab9a);
+		--ill-speckle: light-dark(#a39883, #6a6153);
+		--ill-book-a: light-dark(#d4c8b2, #5b5446);
+		--ill-book-b: light-dark(#e8e0d0, #706757);
+		--ill-book-line: light-dark(#c2b49a, #4a4438);
+		--ill-bowl: light-dark(#e7dfd0, #8a8272);
+		--ill-bowl-inner: light-dark(#cdbfa6, #5f584b);
+		--ill-wood: light-dark(#a87c50, #6b4e33);
+		--ill-wood-top: light-dark(#c39a6c, #84603f);
+		--ill-wood-edge: light-dark(#d9b88d, #9a7550);
+	}
+</style>

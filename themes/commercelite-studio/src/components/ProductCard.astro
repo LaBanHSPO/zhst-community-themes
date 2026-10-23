@@ -1,0 +1,304 @@
+---
+import { Icon } from "astro-iconset/components";
+import type { CatalogProduct } from "../lib/catalog";
+import LeafMark from "./LeafMark.astro";
+
+interface Props {
+	product: CatalogProduct;
+	index: number;
+	headingLevel?: "h2" | "h3";
+}
+
+const { product, index, headingLevel = "h3" } = Astro.props;
+const Heading = headingLevel;
+const titleId = `product-${product.key}`;
+const tone = product.order % 4;
+const initial = product.name.trim().charAt(0).toUpperCase() || "•";
+const askHref = `/contact?product=${encodeURIComponent(product.name)}#ask`;
+---
+
+<article class="product-card" aria-labelledby={titleId} data-index={index}>
+	<div class:list={["product-visual", `tone-${tone}`]} aria-hidden="true">
+		<span class="visual-initial">{initial}</span>
+		<span class="visual-leaf"><LeafMark /></span>
+		<span class="visual-category">{product.category.label}</span>
+	</div>
+	{product.featured && <p class="product-badge">Featured</p>}
+	<div class="product-body">
+		<Heading class="product-name" id={titleId}>{product.name}</Heading>
+		<p class="product-price">
+			<span class="visually-hidden">Price: </span>{product.price}
+			{product.period && <span class="product-period">{product.period}</span>}
+		</p>
+		{product.description && <p class="product-description">{product.description}</p>}
+		{
+			product.details.length > 0 && (
+				<ul class="product-details">
+					{product.details.map((detail) => (
+						<li data-tone={detail.tone}>
+							<span class="dot" aria-hidden="true" />
+							{detail.text}
+						</li>
+					))}
+				</ul>
+			)
+		}
+		<div class="product-actions">
+			<a class="btn btn-secondary product-ask" href={askHref}>
+				<Icon name="ph:envelope-simple" aria-hidden="true" />
+				<span>Ask a question<span class="visually-hidden"> about {product.name}</span></span>
+			</a>
+			<a
+				class="btn btn-primary product-buy"
+				href={product.ctaUrl}
+				target={product.external ? "_blank" : undefined}
+				rel={product.external ? "noopener noreferrer" : undefined}
+			>
+				<span
+					>{product.ctaLabel}<span class="visually-hidden">
+						: {product.name}{product.external ? " (opens in a new tab)" : ""}</span
+					></span
+				>
+				{product.external && <Icon name="ph:arrow-square-out" aria-hidden="true" />}
+			</a>
+		</div>
+	</div>
+</article>
+
+<style>
+	.product-card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		background: var(--color-surface);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		transition:
+			box-shadow var(--transition-base),
+			border-color var(--transition-base);
+	}
+
+	.product-card:hover,
+	.product-card:focus-within {
+		border-color: var(--color-border-strong);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.product-visual {
+		position: relative;
+		aspect-ratio: 10 / 7;
+		display: grid;
+		place-items: center;
+		overflow: hidden;
+		--tile-a: #e9dfcc;
+		--tile-b: #d8c9ad;
+		--tile-ink: #7d6a4c;
+		background:
+			radial-gradient(120% 90% at 30% 20%, var(--tile-a) 0 45%, transparent 70%),
+			linear-gradient(170deg, var(--tile-a), var(--tile-b));
+	}
+
+	.product-visual::after {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 28%;
+		background: linear-gradient(to top, rgba(60, 45, 25, 0.12), transparent);
+	}
+
+	.tone-1 {
+		--tile-a: #dfe5d8;
+		--tile-b: #b9c8b2;
+		--tile-ink: #3f5a45;
+	}
+
+	.tone-2 {
+		--tile-a: #f1ebe0;
+		--tile-b: #e1d4bf;
+		--tile-ink: #8a7352;
+	}
+
+	.tone-3 {
+		--tile-a: #e4e2d6;
+		--tile-b: #c7c4ae;
+		--tile-ink: #5b5a44;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:global(:root:not(.light)) .product-visual {
+			filter: brightness(0.82) saturate(0.9);
+		}
+	}
+
+	:global(:root.dark) .product-visual {
+		filter: brightness(0.82) saturate(0.9);
+	}
+
+	.visual-initial {
+		font-family: var(--font-serif);
+		font-style: italic;
+		font-size: clamp(3.5rem, 7vw, 5.5rem);
+		line-height: 1;
+		color: var(--tile-ink);
+		opacity: 0.85;
+	}
+
+	.visual-leaf {
+		position: absolute;
+		right: 14px;
+		top: 14px;
+		width: 15%;
+		max-width: 40px;
+		color: var(--tile-ink);
+		opacity: 0.28;
+		--color-bg: transparent;
+	}
+
+	.visual-category {
+		position: absolute;
+		left: 14px;
+		bottom: 12px;
+		z-index: 1;
+		font-size: var(--font-size-xs);
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--tile-ink);
+	}
+
+	.product-badge {
+		position: absolute;
+		top: 12px;
+		left: 12px;
+		padding: 2px 10px;
+		font-size: var(--font-size-xs);
+		font-weight: 600;
+		color: var(--color-on-brand);
+		background: var(--color-brand);
+		border-radius: 999px;
+	}
+
+	.product-body {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		padding: var(--spacing-md) var(--spacing-md) var(--spacing-md);
+	}
+
+	.product-name {
+		font-family: var(--font-body);
+		font-size: 1.0625rem;
+		font-weight: 500;
+		line-height: 1.35;
+		letter-spacing: 0;
+		color: var(--color-text);
+	}
+
+	.product-price {
+		font-size: 1.0625rem;
+		font-variant-numeric: tabular-nums;
+		color: var(--color-text);
+	}
+
+	.product-period {
+		margin-left: 4px;
+		font-size: var(--font-size-sm);
+		color: var(--color-muted);
+	}
+
+	.product-description {
+		margin-top: 2px;
+		font-size: var(--font-size-sm);
+		color: var(--color-muted);
+		line-height: 1.45;
+	}
+
+	.product-details {
+		list-style: none;
+		display: grid;
+		gap: 2px;
+		margin-top: 2px;
+	}
+
+	.product-details li {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font-size: var(--font-size-sm);
+		color: var(--color-success);
+	}
+
+	.product-details li[data-tone="limited"] {
+		color: var(--color-warning);
+	}
+
+	.product-details li[data-tone="unavailable"],
+	.product-details li[data-tone="note"] {
+		color: var(--color-muted);
+	}
+
+	.dot {
+		width: 9px;
+		height: 9px;
+		flex-shrink: 0;
+		border-radius: 50%;
+		background: currentColor;
+	}
+
+	.product-details li[data-tone="note"] .dot {
+		background: var(--color-neutral-dot);
+	}
+
+	.product-actions {
+		display: grid;
+		gap: 10px;
+		margin-top: auto;
+		padding-top: var(--spacing-md);
+	}
+
+	.product-actions .btn {
+		width: 100%;
+		min-height: 38px;
+		padding: 8px 12px;
+		font-size: var(--font-size-sm);
+	}
+
+	.product-actions :global(svg) {
+		width: 1.1em;
+		height: 1.1em;
+		flex-shrink: 0;
+	}
+
+	.product-buy {
+		min-height: 42px !important;
+	}
+
+	@media (max-width: 640px) {
+		.product-body {
+			padding: 12px;
+		}
+
+		.product-name,
+		.product-price {
+			font-size: var(--font-size-base);
+		}
+
+		.product-details li {
+			font-size: 0.8125rem;
+		}
+
+		.product-actions {
+			gap: 8px;
+		}
+
+		.product-actions .btn {
+			padding: 6px 8px;
+			font-size: 0.8125rem;
+		}
+	}
+</style>

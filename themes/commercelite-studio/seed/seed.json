@@ -1,0 +1,742 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "CommerceLite Studio",
+		"description": "A calm product catalog with prices, availability notes, purchase links and inquiries",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "CommerceLite",
+		"tagline": "A small catalog, done well"
+	},
+	"blockTypes": [
+		{
+			"slug": "marketing_hero",
+			"label": "Hero",
+			"description": "A prominent page introduction with optional calls to action and media",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{
+							"slug": "anchor_id",
+							"label": "Anchor ID",
+							"type": "string",
+							"validation": {
+								"pattern": "^(?:$|[a-z][a-z0-9_-]*)$"
+							}
+						},
+						{
+							"slug": "headline",
+							"label": "Headline",
+							"type": "string",
+							"required": true
+						},
+						{
+							"slug": "subheadline",
+							"label": "Subheadline",
+							"type": "text"
+						},
+						{
+							"slug": "primary_cta_label",
+							"label": "Primary CTA label",
+							"type": "string"
+						},
+						{
+							"slug": "primary_cta_url",
+							"label": "Primary CTA URL",
+							"type": "string",
+							"validation": {
+								"pattern": "^(?:$|(?:https?://|mailto:|tel:|/(?!/)|#).+)$"
+							}
+						},
+						{
+							"slug": "secondary_cta_label",
+							"label": "Secondary CTA label",
+							"type": "string"
+						},
+						{
+							"slug": "secondary_cta_url",
+							"label": "Secondary CTA URL",
+							"type": "string",
+							"validation": {
+								"pattern": "^(?:$|(?:https?://|mailto:|tel:|/(?!/)|#).+)$"
+							}
+						},
+						{
+							"slug": "image",
+							"label": "Image",
+							"type": "image"
+						},
+						{
+							"slug": "centered",
+							"label": "Center the layout",
+							"type": "boolean",
+							"defaultValue": false
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_features",
+			"label": "Features",
+			"description": "A grid of product or service features",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{
+							"slug": "anchor_id",
+							"label": "Anchor ID",
+							"type": "string",
+							"validation": {
+								"pattern": "^(?:$|[a-z][a-z0-9_-]*)$"
+							}
+						},
+						{
+							"slug": "headline",
+							"label": "Headline",
+							"type": "string",
+							"required": true
+						},
+						{
+							"slug": "subheadline",
+							"label": "Subheadline",
+							"type": "text"
+						},
+						{
+							"slug": "features",
+							"label": "Features",
+							"type": "repeater",
+							"required": true,
+							"validation": {
+								"minItems": 1,
+								"maxItems": 12,
+								"subFields": [
+									{
+										"slug": "icon",
+										"label": "Icon",
+										"type": "select",
+										"required": true,
+										"options": [
+											"zap",
+											"shield",
+											"users",
+											"chart",
+											"code",
+											"globe",
+											"heart",
+											"star",
+											"check",
+											"lock",
+											"clock",
+											"cloud"
+										]
+									},
+									{
+										"slug": "title",
+										"label": "Title",
+										"type": "string",
+										"required": true
+									},
+									{
+										"slug": "description",
+										"label": "Description",
+										"type": "text",
+										"required": true
+									}
+								]
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_testimonials",
+			"label": "Testimonials",
+			"description": "Customer quotes and attribution",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{
+							"slug": "anchor_id",
+							"label": "Anchor ID",
+							"type": "string",
+							"validation": {
+								"pattern": "^(?:$|[a-z][a-z0-9_-]*)$"
+							}
+						},
+						{
+							"slug": "headline",
+							"label": "Headline",
+							"type": "string"
+						},
+						{
+							"slug": "testimonials",
+							"label": "Testimonials",
+							"type": "repeater",
+							"required": true,
+							"validation": {
+								"minItems": 1,
+								"maxItems": 12,
+								"subFields": [
+									{
+										"slug": "quote",
+										"label": "Quote",
+										"type": "text",
+										"required": true
+									},
+									{
+										"slug": "author",
+										"label": "Author name",
+										"type": "string",
+										"required": true
+									},
+									{
+										"slug": "role",
+										"label": "Role or title",
+										"type": "string"
+									},
+									{
+										"slug": "company",
+										"label": "Company",
+										"type": "string"
+									},
+									{
+										"slug": "avatar",
+										"label": "Avatar",
+										"type": "image"
+									}
+								]
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_pricing",
+			"label": "Pricing",
+			"description": "A comparison of up to three pricing plans",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{
+							"slug": "anchor_id",
+							"label": "Anchor ID",
+							"type": "string",
+							"validation": {
+								"pattern": "^(?:$|[a-z][a-z0-9_-]*)$"
+							}
+						},
+						{
+							"slug": "headline",
+							"label": "Headline",
+							"type": "string"
+						},
+						{
+							"slug": "plans",
+							"label": "Plans",
+							"type": "repeater",
+							"required": true,
+							"validation": {
+								"minItems": 1,
+								"maxItems": 3,
+								"subFields": [
+									{
+										"slug": "name",
+										"label": "Plan name",
+										"type": "string",
+										"required": true
+									},
+									{
+										"slug": "price",
+										"label": "Price",
+										"type": "string",
+										"required": true
+									},
+									{
+										"slug": "period",
+										"label": "Period",
+										"type": "string"
+									},
+									{
+										"slug": "description",
+										"label": "Description",
+										"type": "text"
+									},
+									{
+										"slug": "features",
+										"label": "Features, one per line",
+										"type": "text"
+									},
+									{
+										"slug": "cta_label",
+										"label": "CTA label",
+										"type": "string",
+										"required": true
+									},
+									{
+										"slug": "cta_url",
+										"label": "CTA URL",
+										"type": "string",
+										"required": true
+									},
+									{
+										"slug": "highlighted",
+										"label": "Highlight this plan",
+										"type": "boolean"
+									}
+								]
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "marketing_faq",
+			"label": "FAQ",
+			"description": "A list of frequently asked questions",
+			"category": "Marketing",
+			"currentVersion": 1,
+			"versions": [
+				{
+					"version": 1,
+					"fields": [
+						{
+							"slug": "anchor_id",
+							"label": "Anchor ID",
+							"type": "string",
+							"validation": {
+								"pattern": "^(?:$|[a-z][a-z0-9_-]*)$"
+							}
+						},
+						{
+							"slug": "headline",
+							"label": "Headline",
+							"type": "string"
+						},
+						{
+							"slug": "items",
+							"label": "Questions",
+							"type": "repeater",
+							"required": true,
+							"validation": {
+								"minItems": 1,
+								"maxItems": 12,
+								"subFields": [
+									{
+										"slug": "question",
+										"label": "Question",
+										"type": "string",
+										"required": true
+									},
+									{
+										"slug": "answer",
+										"label": "Answer",
+										"type": "text",
+										"required": true
+									}
+								]
+							}
+						}
+					]
+				}
+			]
+		}
+	],
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"supports": [
+				"drafts",
+				"revisions",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "blocks",
+					"validation": {
+						"allowedTypes": [
+							"marketing_hero",
+							"marketing_features",
+							"marketing_testimonials",
+							"marketing_pricing",
+							"marketing_faq"
+						],
+						"maxItems": 20
+					}
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Home",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "Products",
+					"url": "/#catalog"
+				},
+				{
+					"type": "custom",
+					"label": "Gift sets",
+					"url": "/pricing"
+				},
+				{
+					"type": "custom",
+					"label": "About",
+					"url": "/#about"
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
+				}
+			]
+		},
+		{
+			"name": "footer_product",
+			"label": "Footer: Shop",
+			"items": [
+				{
+					"type": "custom",
+					"label": "All products",
+					"url": "/#catalog"
+				},
+				{
+					"type": "custom",
+					"label": "Gift sets",
+					"url": "/pricing"
+				},
+				{
+					"type": "custom",
+					"label": "Ask a question",
+					"url": "/contact#ask"
+				}
+			]
+		},
+		{
+			"name": "footer_company",
+			"label": "Footer: Company",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Home",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "How it works",
+					"url": "/#about"
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
+				}
+			]
+		},
+		{
+			"name": "footer_support",
+			"label": "Footer: Support",
+			"items": [
+				{
+					"type": "custom",
+					"label": "FAQ",
+					"url": "/#faq"
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
+				},
+				{
+					"type": "custom",
+					"label": "Email",
+					"url": "mailto:hello@acme.example"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "home",
+				"slug": "home",
+				"status": "published",
+				"data": {
+					"title": "Home",
+					"content": [
+						{
+							"_type": "marketing_hero",
+							"_version": 1,
+							"_key": "hero",
+							"anchor_id": "intro",
+							"headline": "Thoughtful things for a brighter home"
+						},
+						{
+							"_type": "marketing_pricing",
+							"_version": 1,
+							"_key": "shelf-kitchen",
+							"anchor_id": "kitchen",
+							"headline": "Kitchen",
+							"plans": [
+								{
+									"name": "Ceramic Mug",
+									"price": "$18.00",
+									"features": "In stock",
+									"cta_label": "View in shop",
+									"cta_url": "https://shop.example.com/products/ceramic-mug"
+								},
+								{
+									"name": "Reusable Water Bottle",
+									"price": "$26.00",
+									"features": "Low stock",
+									"cta_label": "View in shop",
+									"cta_url": "https://shop.example.com/products/reusable-water-bottle"
+								}
+							]
+						},
+						{
+							"_type": "marketing_pricing",
+							"_version": 1,
+							"_key": "shelf-living",
+							"anchor_id": "living",
+							"headline": "Living",
+							"plans": [
+								{
+									"name": "Linen Throw Pillow",
+									"price": "$28.00",
+									"features": "In stock",
+									"cta_label": "View in shop",
+									"cta_url": "https://shop.example.com/products/linen-throw-pillow"
+								},
+								{
+									"name": "Wood Table Lamp",
+									"price": "$56.00",
+									"features": "Low stock",
+									"cta_label": "View in shop",
+									"cta_url": "https://shop.example.com/products/wood-table-lamp"
+								}
+							]
+						},
+						{
+							"_type": "marketing_pricing",
+							"_version": 1,
+							"_key": "shelf-home-decor",
+							"anchor_id": "home-decor",
+							"headline": "Home Decor",
+							"plans": [
+								{
+									"name": "Indoor Plant Pot",
+									"price": "$24.00",
+									"features": "In stock",
+									"cta_label": "View in shop",
+									"cta_url": "https://shop.example.com/products/indoor-plant-pot"
+								},
+								{
+									"name": "Scented Candle",
+									"price": "$22.00",
+									"features": "In stock",
+									"cta_label": "View in shop",
+									"cta_url": "https://shop.example.com/products/scented-candle"
+								}
+							]
+						},
+						{
+							"_type": "marketing_pricing",
+							"_version": 1,
+							"_key": "shelf-accessories",
+							"anchor_id": "accessories",
+							"headline": "Accessories",
+							"plans": [
+								{
+									"name": "Woven Storage Basket",
+									"price": "$32.00",
+									"features": "In stock",
+									"cta_label": "View in shop",
+									"cta_url": "https://shop.example.com/products/woven-storage-basket"
+								},
+								{
+									"name": "Organic Cotton Towels",
+									"price": "$38.00",
+									"features": "In stock",
+									"cta_label": "View in shop",
+									"cta_url": "https://shop.example.com/products/organic-cotton-towels"
+								}
+							]
+						},
+						{
+							"_type": "marketing_features",
+							"_version": 1,
+							"_key": "features",
+							"anchor_id": "about",
+							"headline": "How shopping here works",
+							"subheadline": "This site is a catalog. Purchases are completed in the shop each product links to.",
+							"features": [
+								{
+									"icon": "check",
+									"title": "Clear prices",
+									"description": "Every product shows its price and an availability note, kept up to date by the shop team."
+								},
+								{
+									"icon": "globe",
+									"title": "Buy where it is sold",
+									"description": "The purchase button opens the shop that sells the product. Payment happens there, not on this site."
+								},
+								{
+									"icon": "heart",
+									"title": "Ask before you buy",
+									"description": "Send a question about any product by email. The product name is added to the subject for you."
+								}
+							]
+						},
+						{
+							"_type": "marketing_faq",
+							"_version": 1,
+							"_key": "faq",
+							"anchor_id": "faq",
+							"headline": "Questions about the catalog",
+							"items": [
+								{
+									"question": "Can I pay on this site?",
+									"answer": "No. This site lists products, prices and availability. Each View in shop button opens the shop that sells the item, and you complete the purchase there."
+								},
+								{
+									"question": "How current is the availability note?",
+									"answer": "The team updates availability by hand. If an item matters to you, use Ask a question on its card and we will confirm by email."
+								},
+								{
+									"question": "How do I ask about a product?",
+									"answer": "Choose Ask a question on the product card. It opens the contact page with the product name filled in as the email subject."
+								},
+								{
+									"question": "Can I order several items together?",
+									"answer": "Our gift sets combine popular items. For other combinations, email the sales address on the contact page."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "pricing",
+				"slug": "pricing",
+				"status": "published",
+				"data": {
+					"title": "Gift sets",
+					"content": [
+						{
+							"_type": "marketing_hero",
+							"_version": 1,
+							"_key": "pricing-hero",
+							"anchor_id": "intro",
+							"headline": "Gift sets, ready to send",
+							"subheadline": "Small bundles of our most-loved pieces, each with one clear price."
+						},
+						{
+							"_type": "marketing_pricing",
+							"_version": 1,
+							"_key": "shelf-gift-sets",
+							"anchor_id": "gift-sets",
+							"headline": "Gift sets",
+							"plans": [
+								{
+									"name": "The Morning Set",
+									"price": "$40.00",
+									"features": "In stock",
+									"cta_label": "View in shop",
+									"cta_url": "https://shop.example.com/products/morning-set",
+									"description": "Ceramic Mug and Scented Candle, wrapped together."
+								},
+								{
+									"name": "The Calm Corner",
+									"price": "$78.00",
+									"features": "Low stock",
+									"cta_label": "View in shop",
+									"cta_url": "https://shop.example.com/products/calm-corner",
+									"description": "Linen Throw Pillow, Indoor Plant Pot and Scented Candle.",
+									"highlighted": true
+								},
+								{
+									"name": "The Bath Bundle",
+									"price": "$64.00",
+									"features": "Made to order",
+									"cta_label": "View in shop",
+									"cta_url": "https://shop.example.com/products/bath-bundle",
+									"description": "Organic Cotton Towels and Woven Storage Basket."
+								}
+							]
+						},
+						{
+							"_type": "marketing_faq",
+							"_version": 1,
+							"_key": "pricing-faq",
+							"headline": "Gift set questions",
+							"items": [
+								{
+									"question": "Can I add a note to a gift set?",
+									"answer": "Gift notes are handled by the shop that sells the set. Add your note during checkout there."
+								},
+								{
+									"question": "Can I swap an item in a set?",
+									"answer": "Email the sales address on the contact page with the set name and the change you would like."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "contact",
+				"slug": "contact",
+				"status": "published",
+				"data": {
+					"title": "Contact",
+					"content": [
+						{
+							"_type": "marketing_hero",
+							"_version": 1,
+							"_key": "contact-hero",
+							"headline": "Get in touch",
+							"subheadline": "Questions about a product, availability or a larger order? We'd love to hear from you.",
+							"centered": true
+						}
+					]
+				}
+			}
+		]
+	}
+}
