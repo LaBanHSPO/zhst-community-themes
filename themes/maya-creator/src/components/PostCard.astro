@@ -1,0 +1,59 @@
+---
+import Icon from "./Icon.astro";
+import { kindLabel, photoAlt, photoSrc, postUrl, type Post } from "../lib/maya";
+
+interface Props {
+	post: Post;
+	/** Eyebrow text; defaults to the library label (Recipes / Stories / Video). */
+	eyebrow?: string;
+	/** Show the cook/read time and format row plus a save button (library grid). */
+	meta?: boolean;
+	headingLevel?: 2 | 3;
+}
+const { post, eyebrow, meta = true, headingLevel = 3 } = Astro.props;
+const Heading = `h${headingLevel}` as "h2" | "h3";
+const src = photoSrc(post.featured_image, post.photo);
+const isRecipe = post.kind === "recipe";
+const formatLabel = post.format === "video" ? "Video" : "Article";
+---
+
+<article class="post-card">
+	<div class="post-card-media">
+		{src && <img src={src} alt={photoAlt(post.featured_image, post.photo_alt, post.title)} width="342" height="163" loading="lazy" decoding="async" />}
+	</div>
+	<p class="eyebrow">{eyebrow ?? kindLabel(post)}</p>
+	<Heading class="post-card-title"><a href={postUrl(post)}>{post.title}</a></Heading>
+	{
+		meta && (
+			<div class="post-card-meta">
+				<ul role="list">
+					{isRecipe && post.minutes && (
+						<li>
+							<Icon name="fork" size={16} />
+							{post.minutes} min
+						</li>
+					)}
+					<li>
+						<Icon name={post.format === "video" ? "video" : "article"} size={16} />
+						{formatLabel}
+					</li>
+					{!isRecipe && post.minutes && (
+						<li>
+							<Icon name="clock" size={16} />
+							{post.minutes} min
+						</li>
+					)}
+				</ul>
+				<button
+					class="save-btn"
+					type="button"
+					data-save={post.slug ?? post.id}
+					aria-pressed="false"
+					aria-label={`Save ${post.title}`}
+				>
+					<Icon name="bookmark" size={18} />
+				</button>
+			</div>
+		)
+	}
+</article>

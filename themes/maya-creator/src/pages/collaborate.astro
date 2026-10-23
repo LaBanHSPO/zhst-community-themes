@@ -1,0 +1,187 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import Icon from "../components/Icon.astro";
+import { getProfile, photoAlt, photoSrc, sortByPosition } from "../lib/maya";
+
+const [servicesResult, examplesResult, profileResult] = await Promise.all([
+	getEmDashCollection("services", { limit: 6 }),
+	getEmDashCollection("examples", { limit: 8 }),
+	getProfile(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(examplesResult.cacheHint);
+	Astro.cache.set(profileResult.cacheHint);
+}
+const services = sortByPosition(servicesResult.entries);
+const examples = sortByPosition(examplesResult.entries);
+const { profile } = profileResult;
+
+const campaignTypes = ["Brand campaign", "Recipe development", "Social media content", "Events & experiences", "Product feature", "Something else"];
+const timelines = ["As soon as possible", "Within 1 to 2 months", "In 3 to 6 months", "Flexible"];
+const budgets = ["Under $2,500", "$2,500 – $5,000", "$5,000 – $10,000", "$10,000 and above", "Not sure yet"];
+---
+
+<Base title="Work with me" description="Send Maya a partnership inquiry: campaign type, brand, timeline, brief and budget range.">
+	<Hero variant="collab" image="/images/hero-maya.webp" alt="Maya resting her chin on her hand in a sunlit kitchen, a bowl of oranges and a speckled mug on the counter">
+		<p class="eyebrow">Work with me</p>
+		<h1>Let’s create <em>something good</em> together.</h1>
+		<p class="lede">I partner with brands that share my love for great food, intentional living and a more beautiful everyday.</p>
+		<a class="btn" href="/media-kit">Partnerships / media kit <Icon name="arrow" size={16} /></a>
+	</Hero>
+
+	<div class="container collab-grid">
+		<div class="collab-main">
+			<section class="section-tight" aria-labelledby="together-title">
+				<h2 id="together-title" class="h-section">How we can work together</h2>
+				<p class="eyebrow eyebrow-wide">Creative, authentic, and purposeful partnerships</p>
+				<ul class="service-list" role="list">
+					{
+						services.map((e) => (
+							<li>
+								<span class="service-icon"><Icon name={e.data.icon} size={26} /></span>
+								<div>
+									<h3>{e.data.title}</h3>
+									<p>{e.data.blurb}</p>
+								</div>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<section class="section-tight examples" aria-labelledby="examples-title">
+				<div class="section-head">
+					<h2 id="examples-title" class="h-section">Partnership examples</h2>
+					<a class="text-link" href="/media-kit">View full media kit <Icon name="arrow" size={14} /></a>
+				</div>
+				<ul class="example-grid" role="list">
+					{
+						examples.map((e) => (
+							<li>
+								<img
+									src={photoSrc(e.data.image, e.data.photo)}
+									alt={photoAlt(e.data.image, e.data.photo_alt, e.data.title)}
+									width="190"
+									height="101"
+									loading="lazy"
+								/>
+								<h3>{e.data.title}</h3>
+								<p>{e.data.blurb}</p>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+		</div>
+
+		<aside class="inquiry" aria-labelledby="inquiry-title">
+			<div class="inquiry-form">
+				<h2 id="inquiry-title">Send an inquiry</h2>
+				<p class="eyebrow eyebrow-wide">I’d love to hear from you</p>
+				<form data-inquiry-form data-email={profile.email} action={`mailto:${profile.email}`} method="post" enctype="text/plain">
+					<div class="field">
+						<label for="q-type">Campaign type <span aria-hidden="true">*</span></label>
+						<div class="select-wrap">
+							<select id="q-type" name="type" required>
+								<option value="" selected disabled>Select an option</option>
+								{campaignTypes.map((t) => <option>{t}</option>)}
+							</select>
+							<Icon name="chevron" size={16} />
+						</div>
+					</div>
+					<div class="field">
+						<label for="q-brand">Brand name <span aria-hidden="true">*</span></label>
+						<input id="q-brand" name="brand" type="text" autocomplete="organization" placeholder="Your brand name" required />
+					</div>
+					<div class="field-row">
+						<div class="field">
+							<label for="q-email">Email <span aria-hidden="true">*</span></label>
+							<input id="q-email" name="email" type="email" autocomplete="email" placeholder="you@brand.com" required />
+						</div>
+						<div class="field">
+							<label for="q-timeline">Timeline <span aria-hidden="true">*</span></label>
+							<div class="select-wrap">
+								<select id="q-timeline" name="timeline" required>
+									<option value="" selected disabled>Select a timeline</option>
+									{timelines.map((t) => <option>{t}</option>)}
+								</select>
+								<Icon name="chevron" size={16} />
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<label for="q-brief">Brief / project details <span aria-hidden="true">*</span></label>
+						<textarea id="q-brief" name="brief" rows="3" placeholder="Tell me about your idea, goals and what you have in mind…" required></textarea>
+					</div>
+					<div class="field">
+						<label for="q-budget">Budget range <span aria-hidden="true">*</span></label>
+						<div class="select-wrap">
+							<select id="q-budget" name="budget" required>
+								<option value="" selected disabled>Select a range</option>
+								{budgets.map((t) => <option>{t}</option>)}
+							</select>
+							<Icon name="chevron" size={16} />
+						</div>
+					</div>
+					<div class="form-foot">
+						<button class="btn btn-sm" type="submit">Send inquiry <Icon name="arrow" size={14} /></button>
+					</div>
+					<p class="form-status" role="status" aria-live="polite" data-status>
+						<noscript>
+							This form needs JavaScript to prepare your email. You can also write to
+							<a href={`mailto:${profile.email}`}>{profile.email}</a> with your campaign type, timeline and budget range.
+						</noscript>
+					</p>
+				</form>
+			</div>
+			<figure class="polaroid">
+				<img src="/images/maya-portrait.webp" alt="Maya smiling, holding a speckled mug" width="190" height="240" loading="lazy" />
+				<figcaption>Real food. Brighter days. Good company. <span>x Maya</span></figcaption>
+			</figure>
+		</aside>
+	</div>
+</Base>
+
+<script>
+	// Compose a partnership inquiry email; nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-inquiry-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!form.reportValidity()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online inquiries are not available right now.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const subject = `Partnership inquiry: ${get("type")} from ${get("brand")}`;
+			const body = [
+				"Hello Maya,",
+				"",
+				`Campaign type: ${get("type")}`,
+				`Brand: ${get("brand")}`,
+				`Email: ${get("email")}`,
+				`Timeline: ${get("timeline")}`,
+				`Budget range: ${get("budget")}`,
+				"",
+				"Brief:",
+				get("brief"),
+			].join("\n");
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+			status.textContent = "";
+			status.append(
+				"Your email app should open with this inquiry ready to send. It is only sent once you send that email. If nothing opened, write to ",
+			);
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>
