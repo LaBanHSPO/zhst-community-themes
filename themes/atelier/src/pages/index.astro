@@ -1,0 +1,358 @@
+---
+import { getEmDashCollection, getEmDashEntry, getTaxonomyTerms } from "emdash";
+import { Image } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import ProductCard from "../components/ProductCard.astro";
+import { bySortOrder, getStudio } from "../lib/catalog";
+
+const [{ entries: products, cacheHint }, { studio }, collections, storyResult] = await Promise.all([
+	getEmDashCollection("products", { limit: 50 }),
+	getStudio(),
+	getTaxonomyTerms("collection"),
+	getEmDashEntry("pages", "our-story"),
+]);
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const sorted = [...products].sort(bySortOrder);
+const featuredFlagged = sorted.filter((p) => p.data.featured);
+const featured = (featuredFlagged.length > 0 ? featuredFlagged : sorted).slice(0, 3);
+const story = storyResult.entry;
+const visibleCollections = collections.filter((term) => (term.count ?? 1) > 0);
+---
+
+<Base title={studio.name} description={studio.heroSubtitle} overlay>
+	<section class="hero" aria-labelledby="hero-title">
+		<div class="hero__media">
+			{studio.heroImage && <Image image={studio.heroImage} priority />}
+		</div>
+		<div class="hero__content wrap">
+			<div class="hero__text">
+				<h1 id="hero-title" class="hero__title">{studio.heroTitle}</h1>
+				<p class="hero__subtitle label">{studio.heroSubtitle}</p>
+				<a class="button" href="/collection">
+					{studio.heroCta}
+					<span aria-hidden="true">&rarr;</span>
+				</a>
+			</div>
+			{
+				studio.heroValues.length > 0 && (
+					<ul class="hero__values label" aria-label="Studio values">
+						{studio.heroValues.map((value) => <li>{value}</li>)}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+
+	<section class="featured wrap" aria-labelledby="featured-title">
+		<div class="section-head">
+			<h2 id="featured-title">Featured pieces</h2>
+			{studio.featuredNote && <p class="label label-rule">{studio.featuredNote}</p>}
+		</div>
+		{
+			featured.length === 0 ? (
+				<p class="empty">The collection is being prepared. Please check back soon.</p>
+			) : (
+				<ul class="product-grid">
+					{featured.map((product) => (
+						<li>
+							<ProductCard
+								slug={product.id}
+								title={product.data.title}
+								price={product.data.price}
+								images={product.data.images}
+							/>
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</section>
+
+	{
+		(studio.intro || visibleCollections.length > 0) && (
+			<section class="intro wrap" aria-labelledby="collections-title">
+				<div class="intro__text">
+					<p class="label label-rule">The collection</p>
+					<h2 id="collections-title">Made in small batches, by hand</h2>
+					{studio.intro && <p>{studio.intro}</p>}
+					<a class="button button--ghost" href="/collection">View all pieces</a>
+				</div>
+				{visibleCollections.length > 0 && (
+					<ul class="collections-list">
+						{visibleCollections.map((term) => (
+							<li>
+								<a href={`/collection/${term.slug}`}>
+									<span class="collections-list__name">{term.label}</span>
+									{term.description && <span class="collections-list__desc">{term.description}</span>}
+									<span class="label">Browse <span aria-hidden="true">&rarr;</span></span>
+								</a>
+							</li>
+						))}
+					</ul>
+				)}
+			</section>
+		)
+	}
+
+	{
+		story && (
+			<section class="story-teaser" aria-labelledby="story-title">
+				<div class="wrap story-teaser__inner">
+					{story.data.image && (story.data.image.src || story.data.image.id) && (
+						<div class="story-teaser__media">
+							<Image image={story.data.image} />
+						</div>
+					)}
+					<div class="story-teaser__text">
+						<p class="label label-rule">Our story</p>
+						<h2 id="story-title">{story.data.title}</h2>
+						{story.data.lede && <p>{story.data.lede}</p>}
+						<a class="button button--ghost" href="/our-story">Meet the makers</a>
+					</div>
+				</div>
+			</section>
+		)
+	}
+</Base>
+
+<style>
+	.hero {
+		position: relative;
+		min-height: min(46rem, 100svh);
+		display: flex;
+		align-items: center;
+		background: #ebe2d3;
+		overflow: hidden;
+	}
+
+	.hero__media {
+		position: absolute;
+		inset: 0 0 0 34%;
+		-webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 30%);
+		mask-image: linear-gradient(90deg, transparent 0%, #000 30%);
+	}
+
+	.hero__media :global(figure),
+	.hero__media :global(img) {
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		margin: 0;
+		object-fit: cover;
+		object-position: 40% 60%;
+	}
+
+
+	.hero__content {
+		position: relative;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: var(--space-4);
+		padding-top: 8rem;
+		padding-bottom: 5rem;
+	}
+
+	.hero__text {
+		max-width: 38rem;
+	}
+
+	.hero__title {
+		font-size: clamp(3rem, 7vw, 5.75rem);
+		line-height: 0.98;
+		color: var(--color-ink);
+	}
+
+	.hero__subtitle {
+		max-width: 22rem;
+		margin: 1.5rem 0 2.25rem;
+		font-size: 0.75rem;
+		color: var(--color-ink);
+	}
+
+	.hero__values {
+		list-style: none;
+		margin: 0;
+		padding: 0 0 1.25rem;
+		position: relative;
+		color: var(--color-ink);
+		background: rgba(246, 242, 235, 0.72);
+		padding: 0.9rem 1.1rem 1.4rem;
+		align-self: flex-start;
+		margin-top: 2rem;
+	}
+
+	.hero__values::after {
+		content: "";
+		position: absolute;
+		left: 1.1rem;
+		bottom: 0.9rem;
+		width: 2rem;
+		height: 1px;
+		background: currentColor;
+	}
+
+	.section-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: var(--space-2);
+		flex-wrap: wrap;
+		margin-bottom: 1.5rem;
+	}
+
+	.section-head h2 {
+		font-size: clamp(2rem, 3.5vw, 2.6rem);
+	}
+
+	.section-head .label {
+		margin: 0;
+		font-size: 0.625rem;
+	}
+
+	.featured {
+		padding-top: var(--space-4);
+	}
+
+	.product-grid {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: clamp(1rem, 2.5vw, 2.25rem);
+	}
+
+	.empty {
+		color: var(--color-muted);
+	}
+
+	.intro {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+		gap: clamp(2rem, 6vw, 6rem);
+		padding-top: var(--space-6);
+	}
+
+	.intro h2,
+	.story-teaser h2 {
+		font-size: clamp(2.25rem, 4vw, 3.25rem);
+		margin: 1rem 0 1.25rem;
+	}
+
+	.intro__text p:not(.label) {
+		color: var(--color-muted);
+		margin-bottom: 2rem;
+	}
+
+	.collections-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		border-top: 1px solid var(--color-line);
+	}
+
+	.collections-list a {
+		display: grid;
+		grid-template-columns: 12rem 1fr auto;
+		gap: 1.5rem;
+		align-items: baseline;
+		padding: 1.5rem 0;
+		border-bottom: 1px solid var(--color-line);
+		text-decoration: none;
+	}
+
+	.collections-list__name {
+		font-family: var(--font-display);
+		font-size: 1.75rem;
+	}
+
+	.collections-list__desc {
+		color: var(--color-muted);
+		font-size: 1rem;
+	}
+
+	.collections-list a:hover .collections-list__name {
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.18em;
+	}
+
+	.story-teaser {
+		margin-top: var(--space-6);
+		background: var(--color-surface);
+	}
+
+	.story-teaser__inner {
+		display: grid;
+		grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+		gap: clamp(2rem, 6vw, 6rem);
+		align-items: center;
+		padding-block: var(--space-5);
+	}
+
+	.story-teaser__media :global(figure),
+	.story-teaser__media :global(img) {
+		width: 100%;
+		margin: 0;
+		aspect-ratio: 16 / 9;
+		object-fit: cover;
+	}
+
+	.story-teaser__text p:not(.label) {
+		color: var(--color-muted);
+		margin-bottom: 2rem;
+	}
+
+	@media (max-width: 56rem) {
+		.hero {
+			flex-direction: column;
+			align-items: stretch;
+			min-height: 0;
+		}
+
+		.hero__media {
+			position: relative;
+			inset: auto;
+			order: 2;
+			aspect-ratio: 4 / 3;
+		}
+
+		.hero__media {
+			-webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%);
+			mask-image: linear-gradient(180deg, transparent 0%, #000 22%);
+		}
+
+		.hero__content {
+			flex-direction: column;
+			align-items: flex-start;
+			padding-top: 6.5rem;
+			padding-bottom: 2.5rem;
+		}
+
+		.hero__values {
+			display: none;
+		}
+
+		.product-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.intro,
+		.story-teaser__inner {
+			grid-template-columns: 1fr;
+		}
+
+		.collections-list a {
+			grid-template-columns: 1fr;
+			gap: 0.35rem;
+		}
+	}
+
+	@media (min-width: 40rem) and (max-width: 56rem) {
+		.product-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+</style>

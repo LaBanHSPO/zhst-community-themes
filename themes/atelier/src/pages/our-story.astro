@@ -1,0 +1,227 @@
+---
+import { getEmDashCollection, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { Image, PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import { bySortOrder } from "../lib/catalog";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+
+const [{ entry: page, cacheHint }, { entries: makers, cacheHint: makersHint }, settings] =
+	await Promise.all([
+		getEmDashEntry("pages", "our-story"),
+		getEmDashCollection("makers", { limit: 24 }),
+		getSiteSettings(),
+	]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(makersHint);
+}
+
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const sortedMakers = [...makers].sort(bySortOrder);
+const seo = page
+	? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/our-story" })
+	: null;
+const title = page?.data.title ?? "Our story";
+const hasImage = Boolean(page?.data.image && (page.data.image.src || page.data.image.id));
+const initials = (name: string) =>
+	name
+		.split(/\s+/)
+		.map((part) => part.charAt(0))
+		.join("")
+		.slice(0, 2);
+---
+
+<Base
+	title={seo?.title ?? title}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? page?.data.lede}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "our-story" } : undefined}
+>
+	<header class="story-head wrap">
+		<p class="label label-rule">The studio</p>
+		<h1 {...page?.edit.title}>{title}</h1>
+		{page?.data.lede && <p class="story-head__lede" {...page.edit.lede}>{page.data.lede}</p>}
+	</header>
+
+	{
+		hasImage && page?.data.image && (
+			<div class="story-banner">
+				<Image image={page.data.image} priority />
+			</div>
+		)
+	}
+
+	{
+		page?.data.content && page.data.content.length > 0 && (
+			<section class="wrap story-body prose" {...page.edit.content}>
+				<PortableText value={page.data.content} />
+			</section>
+		)
+	}
+
+	<section class="makers wrap" aria-labelledby="makers-title">
+		<div class="makers__head">
+			<p class="label label-rule">Maker stories</p>
+			<h2 id="makers-title">The people behind the pieces</h2>
+		</div>
+		{
+			sortedMakers.length === 0 ? (
+				<p class="makers__empty">Maker profiles will appear here soon.</p>
+			) : (
+				<ul class="makers__list">
+					{sortedMakers.map((maker) => (
+						<li id={maker.id} class="maker">
+							<div class="maker__portrait">
+								{maker.data.portrait && (maker.data.portrait.src || maker.data.portrait.id) ? (
+									<Image image={maker.data.portrait} />
+								) : (
+									<span aria-hidden="true">{initials(maker.data.name)}</span>
+								)}
+							</div>
+							<div class="maker__text">
+								<h3 {...maker.edit.name}>{maker.data.name}</h3>
+								{maker.data.role && <p class="label">{maker.data.role}</p>}
+								{maker.data.story && maker.data.story.length > 0 && (
+									<div class="prose" {...maker.edit.story}>
+										<PortableText value={maker.data.story} />
+									</div>
+								)}
+							</div>
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</section>
+
+	<section class="story-cta wrap" aria-label="Next steps">
+		<a class="button" href="/collection">Explore the collection <span aria-hidden="true">&rarr;</span></a>
+		<a class="button button--ghost" href="/contact">Get in touch</a>
+	</section>
+</Base>
+
+<style>
+	.story-head {
+		padding-top: var(--space-5);
+	}
+
+	.story-head > * {
+		max-width: 52rem;
+	}
+
+	.story-head h1 {
+		font-size: clamp(3rem, 7vw, 5rem);
+		margin: 1rem 0;
+	}
+
+	.story-head__lede {
+		font-family: var(--font-display);
+		font-size: clamp(1.5rem, 2.5vw, 2rem);
+		line-height: 1.3;
+		color: var(--color-muted);
+	}
+
+	.story-banner {
+		margin-top: var(--space-4);
+		max-height: 28rem;
+		overflow: hidden;
+		background: var(--color-sand);
+	}
+
+	.story-banner :global(figure),
+	.story-banner :global(img) {
+		width: 100%;
+		max-width: none;
+		height: 28rem;
+		max-height: 60vw;
+		margin: 0;
+		object-fit: cover;
+	}
+
+	.story-body {
+		padding-top: var(--space-5);
+	}
+
+	.story-body.prose {
+		max-width: calc(40rem + 2 * var(--gutter));
+	}
+
+	.makers {
+		padding-top: var(--space-6);
+	}
+
+	.makers__head h2 {
+		font-size: clamp(2.25rem, 4vw, 3.25rem);
+		margin: 1rem 0 var(--space-4);
+	}
+
+	.makers__list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--space-5) clamp(2rem, 5vw, 5rem);
+	}
+
+	.maker {
+		display: grid;
+		grid-template-columns: 7rem 1fr;
+		gap: 1.75rem;
+		scroll-margin-top: 2rem;
+	}
+
+	.maker__portrait {
+		width: 7rem;
+		height: 7rem;
+		border-radius: 50%;
+		overflow: hidden;
+		background: var(--color-sand);
+		display: grid;
+		place-items: center;
+		font-family: var(--font-display);
+		font-size: 2.25rem;
+		color: var(--color-muted);
+	}
+
+	.maker__portrait :global(figure),
+	.maker__portrait :global(img) {
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		object-fit: cover;
+	}
+
+	.maker h3 {
+		font-size: 2rem;
+	}
+
+	.maker .label {
+		margin: 0.25rem 0 1rem;
+	}
+
+	.makers__empty {
+		color: var(--color-muted);
+	}
+
+	.story-cta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		padding-top: var(--space-5);
+	}
+
+	@media (max-width: 56rem) {
+		.makers__list {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 36rem) {
+		.maker {
+			grid-template-columns: 1fr;
+			gap: 1rem;
+		}
+	}
+</style>

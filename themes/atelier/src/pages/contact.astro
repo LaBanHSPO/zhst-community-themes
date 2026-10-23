@@ -1,0 +1,80 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import InquiryPanel from "../components/InquiryPanel.astro";
+import { getStudio } from "../lib/catalog";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+
+const [{ entry: page, cacheHint }, { studio }, settings] = await Promise.all([
+	getEmDashEntry("pages", "contact"),
+	getStudio(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page
+	? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/contact" })
+	: null;
+const title = page?.data.title ?? "Contact";
+const lede =
+	page?.data.lede ??
+	"Questions about a piece, a custom set or a visit to the studio? Send us a note.";
+---
+
+<Base
+	title={seo?.title ?? title}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? lede}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "contact" } : undefined}
+>
+	<header class="contact-head wrap">
+		<p class="label label-rule">Get in touch</p>
+		<h1 {...page?.edit.title}>{title}</h1>
+		<p class="contact-head__lede">{lede}</p>
+		{
+			page?.data.content && page.data.content.length > 0 && (
+				<div class="prose contact-head__body" {...page.edit.content}>
+					<PortableText value={page.data.content} />
+				</div>
+			)
+		}
+	</header>
+
+	<div class="wrap contact-panel">
+		<InquiryPanel
+			studio={studio}
+			heading="Write to the studio"
+			intro={studio.purchaseNote || null}
+		/>
+	</div>
+</Base>
+
+<style>
+	.contact-head {
+		padding-top: var(--space-5);
+	}
+
+	.contact-head h1 {
+		font-size: clamp(3rem, 7vw, 5rem);
+		margin: 1rem 0;
+	}
+
+	.contact-head__lede {
+		font-family: var(--font-display);
+		font-size: clamp(1.5rem, 2.5vw, 2rem);
+		line-height: 1.3;
+		color: var(--color-muted);
+		max-width: 44rem;
+	}
+
+	.contact-head__body {
+		color: var(--color-muted);
+	}
+
+	.contact-panel {
+		padding-top: var(--space-4);
+	}
+</style>
