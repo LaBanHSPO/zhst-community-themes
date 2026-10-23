@@ -1,0 +1,155 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import WorkCard from "../components/WorkCard.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { entryHref, getOffice, getPeople, getProjects, getServices, getSteps, initials, photoSrc } from "../lib/agency";
+
+const [projectsResult, peopleResult, servicesResult, stepsResult, officeResult] = await Promise.all([
+	getProjects(),
+	getPeople(),
+	getServices(),
+	getSteps(),
+	getOffice(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(projectsResult.cacheHint);
+	Astro.cache.set(peopleResult.cacheHint);
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(stepsResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const featured = projectsResult.entries.filter((p) => p.data.featured).slice(0, 3);
+const people = peopleResult.entries.slice(0, 3);
+const services = servicesResult.entries.slice(0, 4);
+const steps = stepsResult.entries;
+const { office } = officeResult;
+---
+
+<Base
+	title="Small team. Big ideas."
+	description="LOCAL is a small creative agency helping purposeful brands make a bigger impact: brand, packaging, websites and campaigns."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<div class="hero-stage" aria-hidden="true">
+			<img src="/images/hero-home.webp" alt="" width="1448" height="630" fetchpriority="high" decoding="async" />
+			<p class="hero-note">
+				<span>Good</span><span>ideas</span><span>belong</span><span>here</span>
+				<svg viewBox="0 0 130 22" preserveAspectRatio="none" focusable="false">
+					<path d="M3 17c18-4 42-8 66-10 20-2 41-3 58-4" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" />
+				</svg>
+			</p>
+			<p class="hero-card">People<br />Places<br />Brands<br />A brighter<br />Tomorrow</p>
+		</div>
+		<div class="container hero-inner">
+			<div class="hero-copy">
+				<p class="eyebrow">Ideas for brighter places</p>
+				<h1 id="hero-title">Small team.<br />Big ideas.</h1>
+				<p class="hero-lede">A local creative agency helping purposeful brands make a bigger impact.</p>
+				<a class="btn-terra" href="/work">See our work <Arrow /></a>
+			</div>
+		</div>
+	</section>
+
+	<section class="featured" aria-labelledby="featured-title">
+		<div class="container featured-grid">
+			<div class="featured-work">
+				<p class="eyebrow">Featured work</p>
+				<div class="featured-head">
+					<h2 id="featured-title">Real brands. Brighter stories.</h2>
+					<a class="text-link" href="/work">View all work <Arrow size={16} /></a>
+				</div>
+				{
+					featured.length > 0 ? (
+						<div class="work-grid is-three">
+							{featured.map((p) => <WorkCard project={p} />)}
+						</div>
+					) : (
+						<p class="empty">Case studies will appear here once they are added in the admin.</p>
+					)
+				}
+			</div>
+			<div class="featured-rule" aria-hidden="true"></div>
+			<div class="featured-team">
+				<p class="eyebrow">Our team</p>
+				<h2>Good people.<br />Great work.</h2>
+				<p class="featured-lede">Designers, thinkers and doers based here, creating what's next for forward-looking brands.</p>
+				<div class="avatars">
+					<ul class="avatar-row">
+						{
+							people.map((p) => {
+								const src = photoSrc(p.data.image, p.data.photo);
+								return (
+									<li>
+										{src ? (
+											<img src={src} alt={`${p.data.title}, ${p.data.role}`} width="100" height="100" loading="lazy" decoding="async" />
+										) : (
+											<span class="avatar-initials" role="img" aria-label={p.data.title}>{initials(p.data.title)}</span>
+										)}
+									</li>
+								);
+							})
+						}
+					</ul>
+					<p class="team-note" aria-hidden="true">
+						<span>A small</span><span>team for</span><span>brighter</span><span>places</span>
+						<svg viewBox="0 0 90 10" preserveAspectRatio="none" focusable="false">
+							<path d="M2 7c20-2 46-4 86-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+						</svg>
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{
+		services.length > 0 && (
+			<section class="section services-band" aria-labelledby="services-title">
+				<div class="container">
+					<div class="section-head">
+						<p class="eyebrow">What we do</p>
+						<h2 id="services-title" class="section-title">Ideas, made useful.</h2>
+						<a class="text-link" href="/services">All services <Arrow size={16} /></a>
+					</div>
+					<ol class="service-list">
+						{services.map((s, i) => (
+							<li>
+								<a href={entryHref("/services", s.data)}>
+									<span class="service-num">{String(i + 1).padStart(2, "0")}</span>
+									<span class="service-name" {...s.edit.title}>{s.data.title}</span>
+									<span class="service-sum">{s.data.summary}</span>
+									<span class="service-go">Learn more <Arrow size={16} /></span>
+								</a>
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		steps.length > 0 && (
+			<section class="section process-band" aria-labelledby="process-title">
+				<div class="container">
+					<div class="section-head">
+						<p class="eyebrow">How we work</p>
+						<h2 id="process-title" class="section-title">Four steps, no mystery.</h2>
+					</div>
+					<ol class="steps">
+						{steps.map((s, i) => (
+							<li>
+								<span class="step-num">{String(i + 1).padStart(2, "0")}</span>
+								<h3 {...s.edit.title}>{s.data.title}</h3>
+								<p>{s.data.text}</p>
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} />
+</Base>

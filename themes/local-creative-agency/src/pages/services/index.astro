@@ -1,0 +1,79 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { entryHref, getOffice, getServices, getSteps, photoSrc } from "../../lib/agency";
+
+const [servicesResult, stepsResult, officeResult] = await Promise.all([getServices(), getSteps(), getOffice()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(stepsResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const services = servicesResult.entries;
+const steps = stepsResult.entries;
+const { office } = officeResult;
+---
+
+<Base title="Services" description="Brand identity, packaging and print, websites, and campaigns from a small local creative team.">
+	<section class="page-head">
+		<div class="container page-head-inner">
+			<p class="eyebrow">Services</p>
+			<h1>Ideas, made useful.</h1>
+			<p class="lede">Everything a purposeful brand needs to be seen and remembered, from one small team that stays with you from first sketch to launch.</p>
+		</div>
+	</section>
+
+	<section class="section list-section">
+		<div class="container">
+			{
+				services.length > 0 ? (
+					<ul class="service-rows">
+						{services.map((s, i) => {
+							const src = photoSrc(s.data.image, s.data.photo);
+							return (
+								<li>
+									<a href={entryHref("/services", s.data)}>
+										<span class="service-num">{String(i + 1).padStart(2, "0")}</span>
+										<span class="service-body">
+											<span class="service-name" {...s.edit.title}>{s.data.title}</span>
+											<span class="service-sum">{s.data.summary}</span>
+											<span class="service-go">Learn more <Arrow size={16} /></span>
+										</span>
+										{src && <img src={src} alt="" width="320" height="220" loading="lazy" decoding="async" />}
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				) : (
+					<p class="empty">Services will appear here once they are added in the admin.</p>
+				)
+			}
+		</div>
+	</section>
+
+	{
+		steps.length > 0 && (
+			<section class="section process-band" aria-labelledby="steps-title">
+				<div class="container">
+					<div class="section-head">
+						<p class="eyebrow">How we work</p>
+						<h2 id="steps-title" class="section-title">Four steps, no mystery.</h2>
+					</div>
+					<ol class="steps">
+						{steps.map((s, i) => (
+							<li>
+								<span class="step-num">{String(i + 1).padStart(2, "0")}</span>
+								<h3 {...s.edit.title}>{s.data.title}</h3>
+								<p>{s.data.text}</p>
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} />
+</Base>

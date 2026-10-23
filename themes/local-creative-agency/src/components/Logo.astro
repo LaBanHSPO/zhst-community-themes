@@ -1,0 +1,24 @@
+---
+/** Wordmark: widely tracked bold caps title with the tagline in small tracked caps. */
+interface Props {
+	title: string;
+	tagline?: string;
+	logo?: { url?: string; alt?: string } | null;
+	class?: string;
+	light?: boolean;
+}
+const { title, tagline, logo, class: className, light = false } = Astro.props;
+---
+
+<a class:list={["wordmark", { "is-light": light }, className]} href="/" aria-label={`${title} — home`}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt || title} />
+		) : (
+			<>
+				<span class="wordmark-title">{title}</span>
+				{tagline && <span class="wordmark-tagline">{tagline}</span>}
+			</>
+		)
+	}
+</a>
