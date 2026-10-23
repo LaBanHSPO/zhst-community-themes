@@ -1,0 +1,38 @@
+---
+import { decodeSlug, getEmDashCollection, getTaxonomyTermsWithCacheHint } from "emdash";
+import Base from "../../layouts/Base.astro";
+import NewsHeader from "../../components/NewsHeader.astro";
+import NewsList from "../../components/NewsList.astro";
+
+const slug = decodeSlug(Astro.params.slug);
+const [termsResult, categoriesResult] = await Promise.all([
+	getTaxonomyTermsWithCacheHint("category", { includeCounts: false }),
+	getTaxonomyTermsWithCacheHint("category", { includeCounts: false }),
+]);
+const term = slug ? termsResult.data.find((item) => item.slug === slug) : null;
+if (!term) return Astro.redirect("/404");
+
+const cursor = Astro.url.searchParams.get("cursor") || undefined;
+const { entries, cacheHint, nextCursor } = await getEmDashCollection("posts", {
+	where: { category: term.slug },
+	orderBy: { date: "desc" },
+	limit: 12,
+	cursor,
+});
+if (Astro.cache?.enabled) {
+	Astro.cache.set(termsResult.cacheHint);
+	Astro.cache.set(categoriesResult.cacheHint);
+	Astro.cache.set(cacheHint);
+}
+---
+
+<Base title={`${term.label} stories`} description={`News stories about ${term.label.toLowerCase()} in our neighborhood.`} current="/posts">
+	<section class="container news-page">
+		<NewsHeader eyebrow="News" title={term.label} terms={categoriesResult.data} activeCategory={term.slug} />
+		<NewsList posts={entries.map((p) => p.data)} emptyText={`No ${term.label.toLowerCase()} stories yet.`} />
+		<nav class="pager" aria-label="Pagination">
+			{cursor && <a class="text-link" href={`/category/${term.slug}`}>Newest stories</a>}
+			{nextCursor && <a class="btn btn-sm" href={`/category/${term.slug}?cursor=${encodeURIComponent(nextCursor)}`}>Older stories</a>}
+		</nav>
+	</section>
+</Base>

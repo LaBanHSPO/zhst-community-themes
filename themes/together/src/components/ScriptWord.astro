@@ -1,0 +1,16 @@
+---
+/** The hand-lettered "together." accent with its brush underline. */
+interface Props {
+	text?: string;
+	class?: string;
+}
+const { text = "together.", class: cls } = Astro.props;
+---
+
+<span class:list={["script", cls]}>
+	<span class="script-text">{text}</span>
+	<svg class="script-swash" viewBox="0 0 300 20" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+		<path d="M4 15c8-1.6 15-2.7 24-3.6" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"></path>
+		<path d="M40 11.5C110 4.5 205 3 296 7.5" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round"></path>
+	</svg>
+</span>
