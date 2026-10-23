@@ -1,0 +1,192 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import InquiryBand from "../components/InquiryBand.astro";
+import {
+	formatPrice,
+	getApproach,
+	getPackages,
+	getStories,
+	getStudio,
+	photoAlt,
+	photoSrc,
+	storyHref,
+} from "../lib/studio";
+
+const [storiesResult, packagesResult, approachResult, studioResult] = await Promise.all([
+	getStories(),
+	getPackages(),
+	getApproach(),
+	getStudio(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(storiesResult.cacheHint);
+	Astro.cache.set(packagesResult.cacheHint);
+	Astro.cache.set(approachResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const all = storiesResult.entries;
+const featured = all.filter((s) => s.data.featured);
+const stories = (featured.length > 0 ? featured : all).slice(0, 3);
+const packages = packagesResult.entries.slice(0, 3);
+const approach = approachResult.entries;
+---
+
+<Base
+	title="Wedding photographer"
+	description="Candid, timeless wedding photography for couples who value real connection. Browse real wedding stories, packages and send an inquiry."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A bride and groom embracing on a Tuscan hillside at golden hour, her long veil blowing in the wind"
+			width="1448"
+			height="693"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<p class="eyebrow">Real moments. Lasting forever.</p>
+			<h1 id="hero-title" class="hero-title">Your story,<br />beautifully kept.</h1>
+			<a class="btn btn-olive" href="/stories"><span>View stories</span><Arrow /></a>
+		</div>
+		<div class="hero-rail" aria-hidden="true">
+			<ul>
+				<li>People</li>
+				<li>Places</li>
+				<li>Love</li>
+				<li>Always</li>
+			</ul>
+			<span class="hero-rail-line"></span>
+		</div>
+	</section>
+
+	<section class="intro" aria-labelledby="intro-title">
+		<div class="intro-copy">
+			<p class="eyebrow">More than photos</p>
+			<h2 id="intro-title" class="display">Honest moments.<br />Extraordinary stories.</h2>
+			<p class="intro-text">
+				Candid photographs for couples who value<br class="br-lg" /> real connection, timeless beauty and everything in between.
+			</p>
+			<span class="rule" aria-hidden="true"></span>
+		</div>
+		<div class="intro-photos">
+			<ul class="intro-grid">
+				<li>
+					<a href="/stories" tabindex="-1" aria-hidden="true">
+						<img src="/images/table-setting.webp" alt="" width="522" height="562" loading="lazy" />
+					</a>
+				</li>
+				<li>
+					<a href="/stories" tabindex="-1" aria-hidden="true">
+						<img src="/images/walking-bw.webp" alt="" width="580" height="562" loading="lazy" />
+					</a>
+				</li>
+				<li>
+					<a href="/stories" tabindex="-1" aria-hidden="true">
+						<img src="/images/rings-card.webp" alt="" width="520" height="562" loading="lazy" />
+					</a>
+				</li>
+			</ul>
+			<p class="intro-photos-alt sr-only">
+				A wedding table set with flowers and candles, a couple walking away along a stone path in black and
+				white, and two gold rings resting on a handwritten card.
+			</p>
+			<a class="text-link" href="/stories"><span>View stories</span><Arrow /></a>
+		</div>
+	</section>
+
+	{
+		stories.length > 0 && (
+			<section class="band" aria-labelledby="featured-title">
+				<div class="band-inner">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Recent weddings</p>
+							<h2 id="featured-title" class="display">Stories we love to tell.</h2>
+						</div>
+						<a class="text-link" href="/stories"><span>All stories</span><Arrow /></a>
+					</div>
+					<ul class="story-cards">
+						{stories.map((s) => {
+							const src = photoSrc(s.data.image, s.data.photo);
+							return (
+								<li>
+									<a class="story-card" href={storyHref(s.data)}>
+										{src && (
+											<img
+												src={src}
+												alt={photoAlt(s.data.image, s.data.photo, s.data.title)}
+												width="600"
+												height="720"
+												loading="lazy"
+											/>
+										)}
+										<span class="story-card-meta">
+											<span class="story-card-name" {...s.edit.title}>{s.data.title}</span>
+											<span class="story-card-place">{[s.data.place, s.data.date_label].filter(Boolean).join(" · ")}</span>
+										</span>
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		approach.length > 0 && (
+			<section class="approach" aria-labelledby="approach-title">
+				<div class="band-inner">
+					<p class="eyebrow eyebrow-light">Our approach</p>
+					<h2 id="approach-title" class="display display-light">
+						We photograph what happens,<br class="br-lg" />not what is arranged.
+					</h2>
+					<ul class="approach-list">
+						{approach.map((a) => (
+							<li>
+								<h3 {...a.edit.title}>{a.data.title}</h3>
+								{a.data.text && <p>{a.data.text}</p>}
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		packages.length > 0 && (
+			<section class="band" aria-labelledby="packages-title">
+				<div class="band-inner">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Packages</p>
+							<h2 id="packages-title" class="display">Simple ways to book.</h2>
+						</div>
+						<a class="text-link" href="/packages"><span>All packages</span><Arrow /></a>
+					</div>
+					<ul class="teaser-list">
+						{packages.map((p) => (
+							<li>
+								<a class="teaser" href={`/packages#${p.data.slug ?? p.data.id}`}>
+									<span class="teaser-name" {...p.edit.title}>{p.data.title}</span>
+									<span class="teaser-text">{p.data.summary}</span>
+									<span class="teaser-price">
+										{p.data.coverage && <span>{p.data.coverage}</span>}
+										<strong>From {formatPrice(p.data.price)}</strong>
+									</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<InquiryBand studio={studioResult.studio} />
+</Base>
