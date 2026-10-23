@@ -1,0 +1,335 @@
+---
+/**
+ * Public landing in the studio layout. It describes the frozen client contract
+ * and links to the plugin workspace; it never reads or invents release data.
+ * The two limits shown come from this host's own deployment variables.
+ */
+export const prerender = false;
+
+import { resolveMaxBundleBytes } from "@zerohost/plugin-ota-server/server";
+import Icon from "../components/Icon.astro";
+import { otaRuntime } from "../server/resources.js";
+import "../styles/studio.css";
+
+const WORKSPACE = "/_emdash/admin/plugins/ota-server/workspace";
+// The plugin's documented retention default when OTA_RETENTION_DAYS is unset.
+const DEFAULT_RETENTION_DAYS = 14;
+
+let maxBundleMiB = 100;
+let retentionDays = DEFAULT_RETENTION_DAYS;
+try {
+	const runtime = otaRuntime(Astro.locals);
+	maxBundleMiB = Math.floor(resolveMaxBundleBytes(runtime.maxBundleBytes) / (1024 * 1024));
+	retentionDays = runtime.retentionDays ?? DEFAULT_RETENTION_DAYS;
+} catch {
+	// A misconfigured host still gets the landing page with documented defaults.
+}
+
+const host = Astro.url.host;
+
+type Endpoint = { method: "GET" | "POST" | "DELETE"; tail: string; auth: string; note: string };
+const endpoints: Endpoint[] = [
+	{ method: "GET", tail: "manifest.json", auth: "Public", note: "Current build per channel and binary, no-cache." },
+	{ method: "GET", tail: "{file}", auth: "Public", note: "Bundle bytes with exact Content-Length, Range resume and immutable caching." },
+	{ method: "POST", tail: "releases", auth: "Bearer", note: "Publish a build as multipart/form-data. Adds X-OTA-Upload-Key when the app enables it." },
+	{ method: "DELETE", tail: "releases?channel=&binary=", auth: "Bearer", note: "Remove one channel and binary." },
+	{ method: "GET", tail: "releases", auth: "Bearer", note: "Same body as the manifest." },
+];
+
+const nav = [
+	{ href: "#contract", label: "Releases", icon: "layers" },
+	{ href: "#upload", label: "Upload", icon: "upload" },
+	{ href: "#tokens", label: "Tokens", icon: "key" },
+	{ href: "#rollback", label: "Rollback", icon: "history" },
+	{ href: "#storage", label: "Storage", icon: "database" },
+] as const;
+
+const rollbackRules = [
+	{ title: "Current build is served", tag: "Current" },
+	{ title: "The build before it is kept", tag: "Previous" },
+	{ title: "Rollback moves the manifest pointer", tag: "Pointer" },
+	{ title: `Builds expire after ${retentionDays} days`, tag: "Retention" },
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex" />
+		<meta name="color-scheme" content="light dark" />
+		<title>OTA Server</title>
+		<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23141b3d'/%3E%3Cpath d='M16 7 7 12l9 5 9-5-9-5Z' fill='%238f9bff'/%3E%3Cpath d='m7 16.5 9 5 9-5' fill='none' stroke='%23c7d3ff' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E" />
+	</head>
+	<body>
+		<a class="skip" href="#main">Skip to content</a>
+		<div class="shell">
+			<header class="rail" aria-label="OTA Server">
+				<div class="rail-top">
+					<a class="brand" href="/" aria-label="OTA Server home">
+						<svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+							<defs>
+								<linearGradient id="bm-top" x1="0" y1="0" x2="1" y2="1">
+									<stop offset="0" stop-color="#a9b6ff" />
+									<stop offset="1" stop-color="#6d6af2" />
+								</linearGradient>
+							</defs>
+							<path d="M24 6 6 16l18 10 18-10L24 6Z" fill="url(#bm-top)" />
+							<path d="m6 24 18 10 18-10" fill="none" stroke="#8f9bff" stroke-width="3.5" stroke-linejoin="round" />
+							<path d="m6 31.5 18 10 18-10" fill="none" stroke="#5b5fe0" stroke-width="3.5" stroke-linejoin="round" />
+						</svg>
+						<span>OTA Server</span>
+					</a>
+					<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="rail-nav" hidden>
+						<Icon name="menu" />
+						<span>Menu</span>
+					</button>
+				</div>
+				<nav id="rail-nav" class="rail-nav" aria-label="Sections">
+					<ul>
+						{nav.map((item, index) => (
+							<li>
+								<a href={item.href} aria-current={index === 0 ? "true" : undefined}>
+									<Icon name={item.icon} size={22} />
+									<span>{item.label}</span>
+								</a>
+							</li>
+						))}
+					</ul>
+					<a class="rail-workspace" href={WORKSPACE}>
+						<Icon name="lock" />
+						<span>Open workspace</span>
+					</a>
+				</nav>
+				<svg class="rail-art" viewBox="0 0 280 300" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMax slice">
+					<defs>
+						<linearGradient id="ra-sky" x1="0" y1="0" x2="0" y2="1">
+							<stop offset="0" stop-color="#1b2352" stop-opacity="0" />
+							<stop offset="1" stop-color="#2a3274" />
+						</linearGradient>
+						<linearGradient id="ra-moon" x1="0" y1="0" x2="1" y2="1">
+							<stop offset="0" stop-color="#c9d0ff" />
+							<stop offset="1" stop-color="#7f86e8" />
+						</linearGradient>
+						<linearGradient id="ra-screen" x1="0" y1="0" x2="0" y2="1">
+							<stop offset="0" stop-color="#5a63d6" />
+							<stop offset="1" stop-color="#1a2050" />
+						</linearGradient>
+					</defs>
+					<rect width="280" height="300" fill="url(#ra-sky)" />
+					<circle cx="168" cy="96" r="44" fill="url(#ra-moon)" />
+					<path d="M0 170 60 112l44 40 52-46 54 52 70-56v198H0Z" fill="#283070" />
+					<path d="M0 214 70 160l58 44 48-30 104 62v64H0Z" fill="#1f2660" />
+					<path d="M182 232c-30 18-64 22-64 44s28 24 28 24h-60s-6-30 34-48 62-20 62-20Z" fill="#4a52b8" opacity=".55" />
+					<path d="m214 200 8-26 8 26ZM232 206l7-22 7 22Z" fill="#161c4c" />
+					<rect x="56" y="148" width="70" height="132" rx="12" fill="#11163d" stroke="#8f9bff" stroke-width="2.5" />
+					<rect x="62" y="158" width="58" height="112" rx="7" fill="url(#ra-screen)" />
+					<rect x="80" y="152" width="22" height="3" rx="1.5" fill="#8f9bff" opacity=".7" />
+				</svg>
+			</header>
+
+			<main id="main" class="main" tabindex="-1">
+				<div class="topbar">
+					<p class="host"><Icon name="lock" size={16} /><span>{host}</span></p>
+					<a class="button button-primary" href={WORKSPACE}>Sign in to workspace</a>
+				</div>
+
+				<div class="page-head">
+					<div>
+						<h1>Releases</h1>
+						<p class="lead">Manifests and bundles for Android and iOS apps, served from this host.</p>
+					</div>
+					<div class="platforms" role="group" aria-label="Example platform" hidden>
+						<button type="button" data-platform="ios" aria-pressed="true"><Icon name="apple" /><span>iOS</span></button>
+						<button type="button" data-platform="android" aria-pressed="false"><Icon name="android" /><span>Android</span></button>
+					</div>
+				</div>
+
+				<div class="grid">
+					<section id="contract" class="card card-contract" aria-labelledby="contract-title">
+						<div class="card-head">
+							<h2 id="contract-title">Client contract</h2>
+							<span class="chip chip-quiet">Frozen paths</span>
+						</div>
+						<ul class="endpoints">
+							{endpoints.map((endpoint) => (
+								<li class="endpoint">
+									<span class:list={["dot", `dot-${endpoint.method.toLowerCase()}`]} aria-hidden="true" />
+									<span class:list={["method", `method-${endpoint.method.toLowerCase()}`]}>{endpoint.method}</span>
+									<code class="path">/ota/&#123;app&#125;/<span class="platform-slot">ios</span>/{endpoint.tail}</code>
+									<span class:list={["auth", endpoint.auth === "Public" ? "auth-public" : "auth-bearer"]}>{endpoint.auth}</span>
+									<p class="endpoint-note">{endpoint.note}</p>
+								</li>
+							))}
+						</ul>
+					</section>
+
+					<section id="upload" class="card card-upload" aria-labelledby="upload-title">
+						<h2 id="upload-title">Upload bundle</h2>
+						<div class="drop">
+							<svg class="drop-art" viewBox="0 0 96 72" aria-hidden="true" focusable="false">
+								<defs>
+									<linearGradient id="cloud" x1="0" y1="0" x2="1" y2="1">
+										<stop offset="0" stop-color="#9aa6ff" />
+										<stop offset="1" stop-color="#5b5fe0" />
+									</linearGradient>
+								</defs>
+								<path d="M26 64a20 20 0 0 1-3-39.8A26 26 0 0 1 72 22a18 18 0 0 1-2 42Z" fill="url(#cloud)" />
+								<path d="M48 54V30m-11 11 11-11 11 11" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+							</svg>
+							<p class="drop-title">Publish a <code>.bundle</code> file</p>
+							<p class="drop-meta">multipart/form-data · up to {maxBundleMiB} MiB · SHA-256 checked</p>
+							<a class="button button-primary" href={WORKSPACE}>Upload in workspace</a>
+						</div>
+						<p class="card-foot">CI publishes with <code>POST …/releases</code>; a hash mismatch stores nothing.</p>
+					</section>
+
+					<section id="tokens" class="card card-tokens" aria-labelledby="tokens-title">
+						<div class="card-head card-head-icon">
+							<Icon name="key" size={28} class="head-icon" />
+							<div>
+								<h2 id="tokens-title">Scoped tokens</h2>
+								<p class="card-sub">Bearer tokens scoped to one app</p>
+							</div>
+							<a class="button button-primary" href={WORKSPACE}>Manage tokens</a>
+						</div>
+						<div class="token">
+							<code class="token-value" aria-label="Authorization header shape">Authorization: Bearer ••••••••••••</code>
+							<ul class="chips" aria-label="Token rules">
+								<li class="chip">One app</li>
+								<li class="chip">Shown once</li>
+								<li class="chip">Stored as a hash</li>
+								<li class="chip">Revocable</li>
+							</ul>
+						</div>
+						<div class="token">
+							<code class="token-value" aria-label="Upload key header shape">X-OTA-Upload-Key: ••••••••••••</code>
+							<ul class="chips" aria-label="Upload key rules">
+								<li class="chip chip-lavender">Optional</li>
+								<li class="chip chip-lavender">Per app</li>
+								<li class="chip chip-lavender">Rotatable</li>
+							</ul>
+						</div>
+						<p class="card-foot">The upload key adds a second check to public pushes once an app enables it.</p>
+					</section>
+
+					<section id="rollback" class="card card-rollback" aria-labelledby="rollback-title">
+						<div class="card-head card-head-icon">
+							<Icon name="history" size={28} class="head-icon" />
+							<h2 id="rollback-title">Rollback</h2>
+						</div>
+						<ol class="timeline">
+							{rollbackRules.map((rule) => (
+								<li>
+									<span class="timeline-dot" aria-hidden="true" />
+									<span class="timeline-title">{rule.title}</span>
+									<span class="timeline-tag">{rule.tag}</span>
+								</li>
+							))}
+						</ol>
+						<p class="card-foot">Rollback cannot change a bundle already running on a device.</p>
+					</section>
+
+					<section id="storage" class="card card-storage" aria-labelledby="storage-title">
+						<div class="card-head card-head-icon">
+							<Icon name="database" size={28} class="head-icon" />
+							<h2 id="storage-title">Storage</h2>
+						</div>
+						<ul class="modes">
+							<li class="mode">
+								<Icon name="box" size={22} />
+								<div>
+									<h3>ZeroHostCMS storage plan</h3>
+									<p>The storage adapter this site already has. Nothing extra to configure.</p>
+								</div>
+							</li>
+							<li class="mode">
+								<Icon name="lock" size={22} />
+								<div>
+									<h3>Private R2 bucket</h3>
+									<p>Your own bucket over its S3 endpoint; the secret is encrypted at rest.</p>
+								</div>
+							</li>
+						</ul>
+					</section>
+				</div>
+
+				<footer class="footer">
+					<p>OTA Server Studio theme. Release lists, uploads and tokens live in the signed-in workspace.</p>
+				</footer>
+			</main>
+		</div>
+
+		<script>
+			const buttons = document.querySelectorAll<HTMLButtonElement>(".platforms [data-platform]");
+			const group = document.querySelector<HTMLElement>(".platforms");
+			if (group && buttons.length) {
+				group.hidden = false;
+				const select = (platform: string) => {
+					for (const button of buttons) button.setAttribute("aria-pressed", String(button.dataset.platform === platform));
+					for (const slot of document.querySelectorAll(".platform-slot")) slot.textContent = platform;
+				};
+				for (const button of buttons) button.addEventListener("click", () => select(button.dataset.platform ?? "ios"));
+			}
+
+			const toggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
+			const nav = document.getElementById("rail-nav");
+			const compact = window.matchMedia("(max-width: 900px)");
+			if (toggle && nav) {
+				const sync = () => {
+					toggle.hidden = !compact.matches;
+					const open = !compact.matches || toggle.getAttribute("aria-expanded") === "true";
+					nav.dataset.open = String(open);
+				};
+				toggle.addEventListener("click", () => {
+					toggle.setAttribute("aria-expanded", String(toggle.getAttribute("aria-expanded") !== "true"));
+					sync();
+				});
+				nav.addEventListener("click", (event) => {
+					if (compact.matches && (event.target as Element).closest("a[href^='#']")) {
+						toggle.setAttribute("aria-expanded", "false");
+						sync();
+					}
+				});
+				document.addEventListener("keydown", (event) => {
+					if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+						toggle.setAttribute("aria-expanded", "false");
+						sync();
+						toggle.focus();
+					}
+				});
+				compact.addEventListener("change", sync);
+				sync();
+			}
+
+			// Highlight the section whose row has reached the upper third of the
+			// viewport; cards that share a row resolve to the first one.
+			const links = [...document.querySelectorAll<HTMLAnchorElement>(".rail-nav a[href^='#']")];
+			const targets = links.map((link) => document.querySelector<HTMLElement>(link.hash));
+			let frame = 0;
+			const mark = () => {
+				frame = 0;
+				const line = window.innerHeight / 3;
+				let active = 0;
+				let activeTop = Number.NEGATIVE_INFINITY;
+				targets.forEach((target, index) => {
+					const top = target ? Math.round(target.getBoundingClientRect().top) : Number.POSITIVE_INFINITY;
+					if (top <= line && top > activeTop) {
+						active = index;
+						activeTop = top;
+					}
+				});
+				if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) active = links.length - 1;
+				links.forEach((link, index) => {
+					if (index === active) link.setAttribute("aria-current", "true");
+					else link.removeAttribute("aria-current");
+				});
+			};
+			window.addEventListener("scroll", () => {
+				if (!frame) frame = requestAnimationFrame(mark);
+			}, { passive: true });
+			mark();
+		</script>
+	</body>
+</html>
