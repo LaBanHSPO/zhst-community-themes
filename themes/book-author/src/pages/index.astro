@@ -1,0 +1,134 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import BookCard from "../components/BookCard.astro";
+import ContactBand from "../components/ContactBand.astro";
+import PostCard from "../components/PostCard.astro";
+import { bookHref, getAuthor, getBooks, getPosts, pickFeatured } from "../lib/author";
+
+const [booksResult, postsResult, authorResult] = await Promise.all([getBooks(), getPosts(), getAuthor()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(booksResult.cacheHint);
+	Astro.cache.set(postsResult.cacheHint);
+	Astro.cache.set(authorResult.cacheHint);
+}
+const books = booksResult.entries;
+const featured = pickFeatured(books);
+const bookLink = featured ? bookHref(featured.data) : "/books";
+const others = books.filter((b) => b.data.id !== featured?.data.id).slice(0, 3);
+const allPosts = postsResult.entries;
+const picked = allPosts.filter((p) => p.data.featured);
+const posts = (picked.length > 0 ? picked : allPosts).slice(0, 3);
+---
+
+<Base
+	title="Thoughtful fiction for a more human tomorrow"
+	description="Elise Rowan writes warm, thoughtful fiction about people, places and second chances. Discover her new novel The Farther Shore, her earlier books and her journal."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="The author at a wooden table in a bookshelf-lined study, her chin resting on her hand, with stacked books beside her"
+			width="1448"
+			height="651"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<h1 id="hero-title" class="hero-title">Stories that<br />stay with you.</h1>
+			<p class="hero-lede">Thoughtful fiction for a more human tomorrow.</p>
+			<p class="hero-sub">People. Places. Second chances.</p>
+			<a class="btn btn-solid" href={bookLink}><span>Discover the book</span><Arrow /></a>
+			<p class="hero-motto">
+				<span class="hero-motto-rule" aria-hidden="true"></span>
+				<span class="hero-motto-text">A kinder<br />brighter world<br />through stories</span>
+			</p>
+		</div>
+		<p class="hand hero-note">Good<br />stories<br />make a<br />kinder<br />world.<span class="hand-stroke" aria-hidden="true"></span></p>
+	</section>
+
+	{
+		featured && (
+			<section class="feature" aria-labelledby="feature-title">
+				<img
+					class="feature-scene"
+					src="/images/book-scene.webp"
+					alt={`The hardcover of ${featured.data.title} standing on a stone ledge beside green foliage`}
+					width="540"
+					height="432"
+					loading="lazy"
+				/>
+				<img class="feature-cliff" src="/images/coast-cliff.webp" alt="" width="688" height="432" loading="lazy" />
+				<div class="feature-copy">
+					<p class="eyebrow eyebrow-ruled">A new novel<span class="eyebrow-line" aria-hidden="true"></span></p>
+					<h2 id="feature-title" class="feature-title" {...featured.edit.title}>{featured.data.title}</h2>
+					<p class="feature-tagline">{featured.data.tagline}</p>
+					<p class="feature-summary">{featured.data.summary}</p>
+					<a class="btn btn-outline" href={bookLink}><span>Discover the book</span><Arrow /></a>
+				</div>
+				<p class="hand feature-note">Same<br />places.<br />Brighter<br />people.<span class="hand-stroke" aria-hidden="true"></span></p>
+			</section>
+		)
+	}
+
+	{
+		featured?.data.pull_quote && (
+			<section class="quote-band" aria-labelledby="quote-title">
+				<div class="wrap quote-inner">
+					<p id="quote-title" class="eyebrow eyebrow-light">From the book</p>
+					<blockquote>
+						<p>“{featured.data.pull_quote}”</p>
+						<footer>{featured.data.title}, chapter one</footer>
+					</blockquote>
+					<a class="text-link text-link-light" href={`${bookLink}#excerpt`}><span>Read the opening pages</span><Arrow /></a>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		others.length > 0 && (
+			<section class="band" aria-labelledby="shelf-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">On the shelf</p>
+							<h2 id="shelf-title" class="display">Earlier books.</h2>
+						</div>
+						<a class="text-link" href="/books"><span>All books</span><Arrow /></a>
+					</div>
+					<ul class="book-grid">
+						{others.map((b) => <li><BookCard book={b.data} edit={{ ...b.edit.title }} /></li>)}
+						<li class="book-note">
+							<p class="eyebrow">Reading groups</p>
+							<p class="book-note-text">Choosing a book for your group? There are conversation starters, and I join in when I can.</p>
+							<a class="text-link" href="/contact?topic=book-clubs"><span>Invite me</span><Arrow /></a>
+						</li>
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		posts.length > 0 && (
+			<section class="band band-tint" aria-labelledby="journal-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">From the journal</p>
+							<h2 id="journal-title" class="display">Notes from the writing desk.</h2>
+						</div>
+						<a class="text-link" href="/journal"><span>All entries</span><Arrow /></a>
+					</div>
+					<ul class="post-grid">
+						{posts.map((p) => <li><PostCard post={p.data} edit={{ ...p.edit.title }} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<ContactBand author={authorResult.author} />
+</Base>

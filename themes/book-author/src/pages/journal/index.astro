@@ -1,0 +1,43 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import PostCard from "../../components/PostCard.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import { getAuthor, getPosts } from "../../lib/author";
+
+const [postsResult, authorResult] = await Promise.all([getPosts(), getAuthor()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(postsResult.cacheHint);
+	Astro.cache.set(authorResult.cacheHint);
+}
+const posts = postsResult.entries;
+---
+
+<Base title="Journal" description="Notes from the writing desk: how The Farther Shore began, what Elise Rowan is reading and what readers have taught her.">
+	<PageHead
+		id="journal-title"
+		eyebrow="Journal"
+		title="Notes from the writing desk."
+		intro="Short essays on writing, reading and the places that find their way into the books."
+	/>
+
+	<section class="journal-list" aria-labelledby="journal-title">
+		<div class="wrap">
+			{
+				posts.length === 0 ? (
+					<p class="empty-note">The first entries are on their way. Come back soon.</p>
+				) : (
+					<ul class="post-grid post-grid-wide">
+						{posts.map((p) => (
+							<li>
+								<PostCard post={p.data} edit={{ ...p.edit.title }} />
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+
+	<ContactBand author={authorResult.author} />
+</Base>

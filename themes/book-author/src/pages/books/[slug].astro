@@ -1,0 +1,159 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import BookCard from "../../components/BookCard.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import Cover from "../../components/Cover.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getAuthor, getBooks, lines, photoSrc } from "../../lib/author";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: book, cacheHint } = await getEmDashEntry("books", slug);
+if (!book) return Astro.rewrite("/404");
+
+const [allResult, authorResult, settings] = await Promise.all([getBooks(), getAuthor(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(authorResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(book, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const d = book.data;
+const cover = photoSrc(d.cover, d.cover_photo);
+const details = [
+	{ label: "Kind", value: d.kind },
+	{ label: "Published", value: d.year },
+	{ label: "Length", value: d.pages ? `${d.pages} pages` : undefined },
+	{ label: "Publisher", value: d.publisher },
+	{ label: "Formats", value: d.formats },
+].filter((x): x is { label: string; value: string } => Boolean(x.value));
+const buy = lines(d.where_to_buy);
+const hasBody = Boolean(d.content && d.content.length > 0);
+const hasExcerpt = Boolean(d.excerpt && d.excerpt.length > 0);
+const others = allResult.entries.filter((b) => b.data.id !== d.id).slice(0, 3);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "books", id: d.id, slug }}
+	current="/books"
+>
+	<header class="book-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/books">Books</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class="book-head-grid">
+				<Cover book={d} class="book-head-cover" eager />
+				<div class="book-head-copy">
+					<p class="eyebrow">{[d.kind, d.year].filter(Boolean).join(" · ")}</p>
+					<h1 class="display display-xl" {...book.edit.title}>{d.title}</h1>
+					<p class="book-tagline">{d.tagline}</p>
+					<p class="book-summary">{d.summary}</p>
+					<dl class="book-details">
+						{details.map((x) => (
+							<div>
+								<dt>{x.label}</dt>
+								<dd>{x.value}</dd>
+							</div>
+						))}
+					</dl>
+					<div class="book-actions">
+						<a class="btn btn-solid" href="#where"><span>Where to find it</span><Arrow /></a>
+						{hasExcerpt && <a class="text-link" href="#excerpt"><span>Read an excerpt</span><Arrow /></a>}
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	{
+		hasBody && (
+			<section class="book-section" aria-labelledby="synopsis-title">
+				<div class="wrap book-section-grid">
+					<h2 id="synopsis-title" class="book-section-label eyebrow">The story</h2>
+					<div class="prose">
+						<PortableText value={d.content} />
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		hasExcerpt && (
+			<section class="book-section book-excerpt" id="excerpt" aria-labelledby="excerpt-title">
+				<div class="wrap book-section-grid">
+					<h2 id="excerpt-title" class="book-section-label eyebrow">Excerpt</h2>
+					<div class="prose prose-excerpt">
+						<PortableText value={d.excerpt} />
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="book-section book-where" id="where" aria-labelledby="where-title">
+		<div class="wrap book-section-grid">
+			<h2 id="where-title" class="book-section-label eyebrow">Where to find it</h2>
+			<div>
+				{
+					buy.length > 0 ? (
+						<ul class="where-list">
+							{buy.map((line) => {
+								const [place, note] = line.split(/:\s+/, 2);
+								return (
+									<li>
+										<span class="where-place">{place}</span>
+										{note && <span class="where-note">{note}</span>}
+									</li>
+								);
+							})}
+						</ul>
+					) : (
+						<p class="where-note">Details of where to find this book will be added soon.</p>
+					)
+				}
+				<p class="small where-foot">
+					Questions about signed copies or bulk orders for your group? <a href="/contact?topic=events">Write to the author's office</a>.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="band band-tint" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">More books</p>
+							<h2 id="more-title" class="display">Keep reading.</h2>
+						</div>
+						<a class="text-link" href="/books"><span>All books</span><Arrow /></a>
+					</div>
+					<ul class="book-grid">
+						{others.map((b) => <li><BookCard book={b.data} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<ContactBand author={authorResult.author} />
+</Base>

@@ -1,0 +1,43 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import BookCard from "../../components/BookCard.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import { getAuthor, getBooks } from "../../lib/author";
+
+const [booksResult, authorResult] = await Promise.all([getBooks(), getAuthor()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(booksResult.cacheHint);
+	Astro.cache.set(authorResult.cacheHint);
+}
+const books = booksResult.entries;
+---
+
+<Base title="Books" description="Every book by Elise Rowan: the new novel The Farther Shore, Lanterns on the Low Water and the short stories of Small Weather.">
+	<PageHead
+		id="books-title"
+		eyebrow="Books"
+		title="Stories to keep close."
+		intro="Novels and short stories about ordinary people, particular places and second chances, newest first."
+	/>
+
+	<section class="books-list" aria-labelledby="books-title">
+		<div class="wrap">
+			{
+				books.length === 0 ? (
+					<p class="empty-note">New books are on their way. In the meantime, send a note and say hello.</p>
+				) : (
+					<ul class="book-grid book-grid-wide">
+						{books.map((b) => (
+							<li>
+								<BookCard book={b.data} edit={{ ...b.edit.title }} />
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+
+	<ContactBand author={authorResult.author} />
+</Base>
