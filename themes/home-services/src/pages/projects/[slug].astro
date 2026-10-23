@@ -1,0 +1,109 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { formatDate, getOffice, getProjects, photoSrc } from "../../lib/home";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: project, cacheHint } = await getEmDashEntry("projects", slug);
+if (!project) return Astro.rewrite("/404");
+
+const [allResult, officeResult, settings] = await Promise.all([getProjects(), getOffice(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(project, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const others = allResult.entries.filter((p) => p.data.id !== project.data.id).slice(0, 3);
+const src = photoSrc(project.data.featured_image, project.data.photo);
+const { office } = officeResult;
+const facts = [
+	["Service", project.data.service],
+	["Neighbourhood", project.data.location],
+	["Time on site", project.data.duration],
+	["Completed", formatDate(project.data.date)],
+].filter(([, v]) => v);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? project.data.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "projects", id: project.data.id, slug }}
+	current="/projects"
+>
+	<section class="detail-head">
+		<div class="container">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/projects">Projects</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{project.data.title}</span>
+			</nav>
+			<div class:list={["detail-head-inner", { "is-text-only": !src }]}>
+				<div class="detail-copy">
+					<h1 {...project.edit.title}>{project.data.title}</h1>
+					<p class="summary" {...project.edit.summary}>{project.data.summary}</p>
+					<dl class="facts">
+						{facts.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+					</dl>
+				</div>
+				{
+					src && (
+						<figure class="detail-photo">
+							<img src={src} alt={project.data.featured_image?.alt ?? ""} />
+						</figure>
+					)
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="container">
+			{
+				(project.data.before || project.data.after) && (
+					<div class="before-after">
+						{project.data.before && <div class="ba-card"><h2>Before</h2><p>{project.data.before}</p></div>}
+						{project.data.after && <div class="ba-card is-after"><h2>After</h2><p>{project.data.after}</p></div>}
+					</div>
+				)
+			}
+			<div class="prose prose-wide">
+				{project.data.content && project.data.content.length > 0 && <PortableText value={project.data.content} />}
+			</div>
+			<p class="page-cta"><a class="btn" href="/contact">Request a quote <Arrow /></a></p>
+		</div>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="section section-white" aria-labelledby="more-title">
+				<div class="container">
+					<div class="section-head">
+						<p class="eyebrow">More projects</p>
+						<h2 id="more-title" class="section-title">Other recent work.</h2>
+					</div>
+					<div class="project-grid">
+						{others.map((p) => <ProjectCard project={p} />)}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} />
+</Base>

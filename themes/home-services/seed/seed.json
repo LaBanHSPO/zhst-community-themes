@@ -1,0 +1,1139 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Home Services",
+  "description": "A bright home maintenance theme: services, projects, about and a request-a-quote page",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "HearthFix",
+  "tagline": "Home Services"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Small label above the title (also used in the footer)",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "services",
+   "label": "Services",
+   "labelSingular": "Service",
+   "urlPattern": "/services/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Service name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "One-line summary",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "featured",
+     "label": "Show on the homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "icon",
+     "label": "Icon",
+     "type": "select",
+     "required": true,
+     "defaultValue": "wrench",
+     "validation": {
+      "options": [
+       "drop",
+       "bolt",
+       "roller",
+       "wrench",
+       "house"
+      ]
+     }
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Service page content",
+     "type": "portableText",
+     "searchable": true
+    },
+    {
+     "slug": "includes",
+     "label": "What is included (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "typical_visit",
+     "label": "Typical visit (e.g. Most repairs take half a day)",
+     "type": "string"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "projects",
+   "label": "Projects",
+   "labelSingular": "Project",
+   "urlPattern": "/projects/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Project name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "Short description",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "service",
+     "label": "Service label (e.g. Painting)",
+     "type": "string",
+     "searchable": true
+    },
+    {
+     "slug": "location",
+     "label": "Neighbourhood",
+     "type": "string"
+    },
+    {
+     "slug": "duration",
+     "label": "How long it took",
+     "type": "string"
+    },
+    {
+     "slug": "before",
+     "label": "Before",
+     "type": "text"
+    },
+    {
+     "slug": "after",
+     "label": "After",
+     "type": "text"
+    },
+    {
+     "slug": "date",
+     "label": "Completed",
+     "type": "datetime"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "content",
+     "label": "Project write-up",
+     "type": "portableText",
+     "searchable": true
+    },
+    {
+     "slug": "featured_image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "people",
+   "label": "Team",
+   "labelSingular": "Team member",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "role",
+     "label": "Role",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "summary",
+     "label": "Short bio",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "principles",
+   "label": "Values",
+   "labelSingular": "Value",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "Text",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "steps",
+   "label": "How it works",
+   "labelSingular": "Step",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "Text",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "office",
+   "label": "Contact details",
+   "labelSingular": "Contact details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Company name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "street",
+     "label": "Street",
+     "type": "string"
+    },
+    {
+     "slug": "locality",
+     "label": "City, state, ZIP",
+     "type": "string"
+    },
+    {
+     "slug": "country",
+     "label": "Country",
+     "type": "string"
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Enquiries email",
+     "type": "string"
+    },
+    {
+     "slug": "hours",
+     "label": "Opening hours",
+     "type": "string"
+    },
+    {
+     "slug": "service_area",
+     "label": "Service area",
+     "type": "text"
+    },
+    {
+     "slug": "response_note",
+     "label": "Response note",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Services",
+     "url": "/services"
+    },
+    {
+     "type": "custom",
+     "label": "About",
+     "url": "/about"
+    },
+    {
+     "type": "custom",
+     "label": "Projects",
+     "url": "/projects"
+    },
+    {
+     "type": "custom",
+     "label": "Contact",
+     "url": "/contact"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "Care for the home, one job at a time.",
+     "eyebrow": "About",
+     "intro": "HearthFix is a small home maintenance team. We repair, maintain and improve homes, and we try to leave every one a little better than we found it.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b0",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We started HearthFix because small home jobs are hard to get done well. They are too small for a big contractor and too fiddly to fit between other work.",
+         "_key": "b0s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "So we built a team around them: a plumber, an electrician, a painter and a project lead who visits every quote himself and stays in touch until the job is finished.",
+         "_key": "b1s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b2",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How we like to work",
+         "_key": "b2s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We keep jobs proportionate, quote in writing and explain things plainly. When something is beyond us, we tell you and help you find the right person.",
+         "_key": "b3s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "privacy",
+    "slug": "privacy",
+    "status": "published",
+    "data": {
+     "title": "Privacy",
+     "eyebrow": "Privacy",
+     "intro": "How this site handles your details.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b0",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "This website does not store anything you type into the request form. The form prepares an email in your own email app, and it is only sent when you send it.",
+         "_key": "b0s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "This sample site sets no tracking cookies and uses no analytics.",
+         "_key": "b1s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "services": [
+   {
+    "id": "plumbing",
+    "slug": "plumbing",
+    "status": "published",
+    "data": {
+     "title": "Plumbing",
+     "summary": "Fixes, upgrades and more.",
+     "featured": true,
+     "position": 10,
+     "icon": "drop",
+     "photo": "/images/svc-plumbing.webp",
+     "intro": "Dripping taps, slow drains, a toilet that keeps running: we sort the small plumbing jobs that wear on a household, and plan the bigger ones with you.",
+     "includes": "Tap, shower and toilet repairs and replacements\nBlocked or slow drains\nUnder-sink and appliance connections\nLeak tracing and a written fix plan",
+     "typical_visit": "Most repairs take half a day",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b0",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We start by finding the cause, not just the symptom. A dripping tap may need a washer or a new cartridge; a damp patch may be a loose joint or a bigger issue. We tell you which, and what each option costs, before we pick up a tool.",
+         "_key": "b0s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b1",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How a plumbing visit works",
+         "_key": "b1s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b2",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "One of our team looks at the problem, turns off what needs turning off and explains the options in plain words. You get a written quote. When you agree, we do the work, test it and clean up.",
+         "_key": "b2s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If a job needs a specialist trade or a permit, we say so and help you arrange it rather than guess.",
+         "_key": "b3s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "electrical",
+    "slug": "electrical",
+    "status": "published",
+    "data": {
+     "title": "Electrical",
+     "summary": "Safe solutions for your home.",
+     "featured": true,
+     "position": 20,
+     "icon": "bolt",
+     "photo": "/images/svc-electrical.webp",
+     "intro": "Light fittings, sockets, switches and small upgrades, done carefully and tested before we leave.",
+     "includes": "Light fitting and ceiling fan replacement\nSocket and switch repairs and upgrades\nOutdoor and porch lighting\nSmoke alarm checks and replacement",
+     "typical_visit": "Most jobs take two to four hours",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b0",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Electrical work is about care more than speed. We switch off at the board, check before we touch anything and test every circuit we have worked on.",
+         "_key": "b0s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b1",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we take on",
+         "_key": "b1s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b2",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Everyday household jobs: new fittings, tired switches, extra sockets, outdoor lights. For larger rewiring or consumer unit work we will explain what is involved and how to arrange it.",
+         "_key": "b2s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You always get a written quote first, and we tidy up after ourselves.",
+         "_key": "b3s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "painting",
+    "slug": "painting",
+    "status": "published",
+    "data": {
+     "title": "Painting",
+     "summary": "A fresher, brighter space.",
+     "featured": true,
+     "position": 30,
+     "icon": "roller",
+     "photo": "/images/svc-painting.webp",
+     "intro": "Walls, ceilings, trim and doors, prepared properly so the finish lasts.",
+     "includes": "Filling, sanding and priming\nWalls, ceilings, trim and doors\nColour advice and sample patches\nFurniture covered and floors protected",
+     "typical_visit": "A single room usually takes one to two days",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b0",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Most of a good paint job is preparation. We repair cracks and marks, sand, prime where needed and protect your floors and furniture before the first coat goes on.",
+         "_key": "b0s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b1",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Colour and finish",
+         "_key": "b1s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b2",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Not sure which white or which finish? We bring sample patches so you can see them in your own light, then agree the plan and the price in writing.",
+         "_key": "b2s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We work room by room, so you can keep using the rest of your home.",
+         "_key": "b3s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "repairs-carpentry",
+    "slug": "repairs-carpentry",
+    "status": "published",
+    "data": {
+     "title": "Repairs and carpentry",
+     "summary": "Doors, cabinets, shelves and the odd jobs that pile up.",
+     "featured": false,
+     "position": 40,
+     "icon": "wrench",
+     "photo": "/images/kitchen-repair.webp",
+     "intro": "Sticking doors, loose hinges, wobbly shelves and worn cabinet fittings: the jobs that never make it to the top of the list.",
+     "includes": "Door and hinge adjustment\nCabinet and drawer repairs\nShelving and fixings\nSmall carpentry fixes and finishing",
+     "typical_visit": "A list of small jobs is often done in one day",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b0",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Keep a list of small jobs and we will work through it in a single visit. We bring the usual fixings and fittings and tell you early if something needs ordering.",
+         "_key": "b0s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Larger carpentry, such as built-in storage, starts with a visit to measure and a written quote.",
+         "_key": "b1s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "maintenance-visits",
+    "slug": "maintenance-visits",
+    "status": "published",
+    "data": {
+     "title": "Maintenance visits",
+     "summary": "A regular check-up to catch small problems early.",
+     "featured": false,
+     "position": 50,
+     "icon": "house",
+     "photo": "/images/tool-bag.webp",
+     "intro": "A scheduled visit once or twice a year to look over the house and fix the small things before they grow.",
+     "includes": "A walk-through checklist of your home\nSmall repairs done on the day\nA short written note of anything bigger\nSeasonal reminders by email",
+     "typical_visit": "About half a day per visit",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b0",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Tell us how often you would like us to visit. We follow a simple checklist, fix what we can on the spot and send you a short note on anything that needs a decision.",
+         "_key": "b0s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "There is no contract to sign: you can pause or stop at any time.",
+         "_key": "b1s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "projects": [
+   {
+    "id": "porch-lights-and-repaint",
+    "slug": "porch-lights-and-repaint",
+    "status": "published",
+    "data": {
+     "title": "Porch lights and a fresh exterior coat",
+     "summary": "New porch lighting and a repaint of the front trim for a family home.",
+     "service": "Electrical and painting",
+     "location": "Sellwood",
+     "duration": "Four days",
+     "date": "2026-09-18T08:00:00.000Z",
+     "position": 10,
+     "photo": "/images/house-exterior.webp",
+     "before": "Dim, mismatched porch lights and flaking trim around the front door.",
+     "after": "Warm, matching wall lights on a dusk sensor and clean, freshly painted trim.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b0",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The owners wanted the front of the house to feel welcoming when they came home after dark. We replaced the old fittings with matching wall lights, tested the new wiring and added a dusk sensor.",
+         "_key": "b0s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "While the ladders were up we scraped, primed and repainted the trim and door surround.",
+         "_key": "b1s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b2",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we agreed up front",
+         "_key": "b2s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A written quote covering both jobs, four working days and a tidy site each evening.",
+         "_key": "b3s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "kitchen-tap-swap",
+    "slug": "kitchen-tap-swap",
+    "status": "published",
+    "data": {
+     "title": "Kitchen tap swap",
+     "summary": "A worn mixer tap replaced and the under-sink pipes tidied.",
+     "service": "Plumbing",
+     "location": "Alberta Arts",
+     "duration": "Half a day",
+     "date": "2026-08-27T08:00:00.000Z",
+     "position": 20,
+     "photo": "/images/svc-plumbing.webp",
+     "before": "A dripping mixer tap and corroded under-sink fittings.",
+     "after": "A new tap, fresh connections and a dry cupboard.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b0",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The old tap had been dripping for months. We replaced it, renewed the flexible hoses and isolation valves underneath and tested for leaks before leaving.",
+         "_key": "b0s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The owners kept the cupboard contents in the dining room for the morning; by lunchtime everything was back.",
+         "_key": "b1s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "hallway-repaint",
+    "slug": "hallway-repaint",
+    "status": "published",
+    "data": {
+     "title": "Hallway repaint",
+     "summary": "Scuffed hallway walls filled, primed and painted in a soft warm white.",
+     "service": "Painting",
+     "location": "Laurelhurst",
+     "duration": "Two days",
+     "date": "2026-08-05T08:00:00.000Z",
+     "position": 30,
+     "photo": "/images/svc-painting.webp",
+     "before": "Scuffed walls, nail holes and a patchy earlier touch-up.",
+     "after": "Smooth, even walls and crisp trim.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b0",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We covered the floors, filled every mark, sanded and primed, then painted two coats. Sample patches helped the owners choose between two whites.",
+         "_key": "b0s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The front door stayed usable throughout.",
+         "_key": "b1s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "cabinet-repairs",
+    "slug": "cabinet-repairs",
+    "status": "published",
+    "data": {
+     "title": "Kitchen cabinet repairs",
+     "summary": "Loose hinges and sagging doors set right across a whole kitchen.",
+     "service": "Repairs and carpentry",
+     "location": "Irvington",
+     "duration": "One day",
+     "date": "2026-07-14T08:00:00.000Z",
+     "position": 40,
+     "photo": "/images/kitchen-repair.webp",
+     "before": "Doors that would not close and drawers that stuck.",
+     "after": "Doors aligned, hinges replaced where needed and drawers running smoothly.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b0",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A list of small kitchen jobs, all done in one visit. We adjusted or replaced hinges, re-hung doors and fixed two drawer runners.",
+         "_key": "b0s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "people": [
+   {
+    "id": "daniel-ortiz",
+    "slug": "daniel-ortiz",
+    "status": "published",
+    "data": {
+     "title": "Daniel Ortiz",
+     "role": "Owner and project lead",
+     "summary": "Started HearthFix after years as a site carpenter. Visits every quote himself.",
+     "position": 10
+    }
+   },
+   {
+    "id": "priya-raman",
+    "slug": "priya-raman",
+    "status": "published",
+    "data": {
+     "title": "Priya Raman",
+     "role": "Plumbing lead",
+     "summary": "Handles repairs and upgrades, and explains the options before any work begins.",
+     "position": 20
+    }
+   },
+   {
+    "id": "marcus-lee",
+    "slug": "marcus-lee",
+    "status": "published",
+    "data": {
+     "title": "Marcus Lee",
+     "role": "Electrical lead",
+     "summary": "Lighting, sockets and safety checks, tested every time.",
+     "position": 30
+    }
+   },
+   {
+    "id": "hannah-brooks",
+    "slug": "hannah-brooks",
+    "status": "published",
+    "data": {
+     "title": "Hannah Brooks",
+     "role": "Painting and finishing",
+     "summary": "Careful preparation and clean lines, room by room.",
+     "position": 40
+    }
+   }
+  ],
+  "principles": [
+   {
+    "id": "clear-quotes",
+    "slug": "clear-quotes",
+    "status": "published",
+    "data": {
+     "title": "Clear quotes first",
+     "text": "You get the price in writing before any work starts, and we tell you if anything changes.",
+     "position": 10
+    }
+   },
+   {
+    "id": "tidy",
+    "slug": "tidy",
+    "status": "published",
+    "data": {
+     "title": "Tidy every day",
+     "text": "Floors protected, tools packed away and the mess gone before we leave.",
+     "position": 20
+    }
+   },
+   {
+    "id": "proper-fix",
+    "slug": "proper-fix",
+    "status": "published",
+    "data": {
+     "title": "Fix it properly",
+     "text": "If a quick patch will not last, we say so and explain the better option.",
+     "position": 30
+    }
+   },
+   {
+    "id": "plain-words",
+    "slug": "plain-words",
+    "status": "published",
+    "data": {
+     "title": "Plain words",
+     "text": "No jargon. We explain what we found and what each choice means.",
+     "position": 40
+    }
+   }
+  ],
+  "steps": [
+   {
+    "id": "tell-us",
+    "slug": "tell-us",
+    "status": "published",
+    "data": {
+     "title": "Tell us what you need",
+     "text": "Send a short request with a few details and a photo if you can.",
+     "position": 10
+    }
+   },
+   {
+    "id": "we-visit",
+    "slug": "we-visit",
+    "status": "published",
+    "data": {
+     "title": "We visit and quote",
+     "text": "We come to look, then send a written quote with a date.",
+     "position": 20
+    }
+   },
+   {
+    "id": "we-do-it",
+    "slug": "we-do-it",
+    "status": "published",
+    "data": {
+     "title": "We do the work",
+     "text": "A tidy, careful team, with you kept informed along the way.",
+     "position": 30
+    }
+   },
+   {
+    "id": "we-check",
+    "slug": "we-check",
+    "status": "published",
+    "data": {
+     "title": "We check in",
+     "text": "A follow-up message to make sure everything is working as it should.",
+     "position": 40
+    }
+   }
+  ],
+  "office": [
+   {
+    "id": "office",
+    "slug": "office",
+    "status": "published",
+    "data": {
+     "title": "HearthFix Home Services",
+     "street": "48 Alder Street",
+     "locality": "Portland, OR 97214",
+     "country": "United States",
+     "phone": "+1 503 555 0168",
+     "email": "hello@hearthfix.example",
+     "hours": "Monday to Friday 7:30 to 17:30, Saturday 8:00 to 13:00",
+     "service_area": "Portland and nearby neighbourhoods, including Sellwood, Alberta Arts, Laurelhurst and Irvington. Not sure if we cover you? Ask.",
+     "response_note": "We reply to every request within one working day with a time for a visit and a written quote."
+    }
+   }
+  ]
+ }
+}

@@ -1,0 +1,102 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { getOffice, getPeople, getValues, initials } from "../lib/home";
+
+const [{ entry: page, cacheHint }, valuesResult, peopleResult, officeResult] = await Promise.all([
+	getEmDashEntry("pages", "about"),
+	getValues(),
+	getPeople(),
+	getOffice(),
+]);
+if (Astro.cache?.enabled) {
+	if (cacheHint) Astro.cache.set(cacheHint);
+	Astro.cache.set(valuesResult.cacheHint);
+	Astro.cache.set(peopleResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const values = valuesResult.entries;
+const people = peopleResult.entries;
+const { office } = officeResult;
+const title = page?.data.title ?? "About HearthFix";
+---
+
+<Base
+	title="About"
+	description={page?.data.intro ?? "HearthFix is a small home maintenance team that repairs, maintains and improves homes."}
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<section class="page-head">
+		<div class="container page-head-inner">
+			<p class="eyebrow">{page?.data.eyebrow ?? "About"}</p>
+			<h1 {...page?.edit.title}>{title}</h1>
+			{page?.data.intro && <p class="lede">{page.data.intro}</p>}
+		</div>
+	</section>
+
+	<section class="section about-story">
+		<div class="container about-grid">
+			<div class="prose">
+				{page?.data.content && <PortableText value={page.data.content} />}
+			</div>
+			<figure class="about-photo">
+				<img
+					src="/images/tech-house.webp"
+					alt="A HearthFix technician with a tool bag in front of a renovated home at golden hour"
+					width="1448"
+					height="1086"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+		</div>
+	</section>
+
+	{
+		values.length > 0 && (
+			<section class="section section-white" aria-labelledby="values-title">
+				<div class="container">
+					<div class="section-head">
+						<p class="eyebrow">What we value</p>
+						<h2 id="values-title" class="section-title">The way we work on your home.</h2>
+					</div>
+					<ul class="values">
+						{values.map((v) => (
+							<li>
+								<h3 {...v.edit.title}>{v.data.title}</h3>
+								<p>{v.data.text}</p>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		people.length > 0 && (
+			<section class="section" aria-labelledby="team-title">
+				<div class="container">
+					<div class="section-head">
+						<p class="eyebrow">The team</p>
+						<h2 id="team-title" class="section-title">Who you will meet.</h2>
+					</div>
+					<ul class="team">
+						{people.map((p) => (
+							<li>
+								<span class="monogram" aria-hidden="true">{initials(p.data.title)}</span>
+								<h3 {...p.edit.title}>{p.data.title}</h3>
+								<p class="team-role">{p.data.role}</p>
+								{p.data.summary && <p>{p.data.summary}</p>}
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} />
+</Base>

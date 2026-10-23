@@ -1,0 +1,146 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { getOffice, getProjects, getServices, getSteps, lines, mapHref, telHref } from "../lib/home";
+
+const [servicesResult, projectsResult, stepsResult, officeResult] = await Promise.all([
+	getServices(),
+	getProjects(3),
+	getSteps(),
+	getOffice(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(projectsResult.cacheHint);
+	Astro.cache.set(stepsResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const featured = servicesResult.entries.filter((s) => s.data.featured);
+const services = (featured.length ? featured : servicesResult.entries).slice(0, 3);
+const projects = projectsResult.entries;
+const steps = stepsResult.entries;
+const { office } = officeResult;
+---
+
+<Base
+	title="HearthFix — Home Services"
+	description="Reliable home maintenance and improvement services to keep your home comfortable, beautiful and ready for what's next."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A smiling HearthFix technician with a tool belt, arms crossed, in front of a modern white house"
+			width="1448"
+			height="685"
+			fetchpriority="high"
+		/>
+		<div class="container hero-inner">
+			<div class="hero-copy">
+				<p class="eyebrow hero-eyebrow"><span>Repair</span> <span>Maintain</span> <span>Improve</span></p>
+				<h1 id="hero-title"><span>A better home</span> <span>starts here.</span></h1>
+				<p class="hero-lede">
+					Reliable home maintenance and improvement services to keep your home comfortable, beautiful and ready for what's next.
+				</p>
+				<a class="btn btn-lg hero-cta" href="/contact">Request a quote <Arrow /></a>
+				<ul class="trust">
+					<li><Icon name="house" size={34} /><span>Trusted Professionals</span></li>
+					<li><Icon name="tools" size={34} /><span>Quality Workmanship</span></li>
+					<li class="is-green"><Icon name="leaf" size={34} /><span>A Healthier Happier Home</span></li>
+				</ul>
+			</div>
+			<p class="hero-note" aria-hidden="true"><span>Safer</span> <span>Cleaner</span> <span>Brighter</span> <span>Together</span></p>
+		</div>
+	</section>
+
+	<section class="section services-intro" aria-labelledby="services-title">
+		<div class="container services-grid">
+			<div class="services-copy">
+				<p class="eyebrow">Our services</p>
+				<h2 id="services-title"><span>Care for</span> <span>every corner.</span></h2>
+				<p>From everyday repairs to bigger improvements, we help you maintain a home you love.</p>
+				<a class="link-arrow" href="/services">Explore our services <Arrow /></a>
+			</div>
+			{
+				services.length > 0 ? (
+					<div class="service-cards">
+						{services.map((s) => <ServiceCard service={s} />)}
+					</div>
+				) : (
+					<p class="empty">Services will appear here once they are added in the admin.</p>
+				)
+			}
+		</div>
+	</section>
+
+	{
+		steps.length > 0 && (
+			<section class="section section-white" aria-labelledby="steps-title">
+				<div class="container">
+					<div class="section-head">
+						<p class="eyebrow">How it works</p>
+						<h2 id="steps-title" class="section-title">Simple from the first message.</h2>
+					</div>
+					<ol class="steps">
+						{steps.map((s, i) => (
+							<li>
+								<span class="step-num">{String(i + 1).padStart(2, "0")}</span>
+								<h3 {...s.edit.title}>{s.data.title}</h3>
+								<p>{s.data.text}</p>
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		projects.length > 0 && (
+			<section class="section" aria-labelledby="projects-title">
+				<div class="container">
+					<div class="section-head section-head-split">
+						<div>
+							<p class="eyebrow">Recent projects</p>
+							<h2 id="projects-title" class="section-title">Small jobs, done properly.</h2>
+						</div>
+						<a class="link-arrow" href="/projects">See all projects <Arrow /></a>
+					</div>
+					<div class="project-grid">
+						{projects.map((p) => <ProjectCard project={p} />)}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="area-band" aria-labelledby="area-title">
+		<div class="container area-inner">
+			<div>
+				<p class="eyebrow eyebrow-light">Service area and hours</p>
+				<h2 id="area-title">Local, and easy to reach.</h2>
+				{office.service_area && <p>{office.service_area}</p>}
+			</div>
+			<dl class="area-list">
+				{office.hours && <div><dt>Hours</dt><dd>{lines(office.hours).join(" ")}</dd></div>}
+				{office.phone && <div><dt>Phone</dt><dd><a href={telHref(office.phone)}>{office.phone}</a></dd></div>}
+				{office.email && <div><dt>Email</dt><dd><a href={`mailto:${office.email}`}>{office.email}</a></dd></div>}
+				{
+					office.street && (
+						<div>
+							<dt>Workshop</dt>
+							<dd><a href={mapHref(office)} target="_blank" rel="noopener noreferrer">{office.street}, {office.locality}</a></dd>
+						</div>
+					)
+				}
+			</dl>
+		</div>
+	</section>
+
+	<CtaBand office={office} />
+</Base>

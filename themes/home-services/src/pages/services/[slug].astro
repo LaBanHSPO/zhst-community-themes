@@ -1,0 +1,123 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import Icon from "../../components/Icon.astro";
+import ServiceCard from "../../components/ServiceCard.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { getOffice, getServices, lines, photoSrc } from "../../lib/home";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: service, cacheHint } = await getEmDashEntry("services", slug);
+if (!service) return Astro.rewrite("/404");
+
+const [allResult, officeResult, settings] = await Promise.all([getServices(), getOffice(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(service, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const others = allResult.entries.filter((s) => s.data.id !== service.data.id).slice(0, 3);
+const includes = lines(service.data.includes);
+const src = photoSrc(service.data.image, service.data.photo);
+const { office } = officeResult;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? service.data.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "services", id: service.data.id, slug }}
+	current="/services"
+>
+	<section class="detail-head">
+		<div class="container">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/services">Services</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{service.data.title}</span>
+			</nav>
+			<div class:list={["detail-head-inner", { "is-text-only": !src }]}>
+				<div class="detail-copy">
+					<span class="detail-icon"><Icon name={service.data.icon ?? "wrench"} size={36} /></span>
+					<h1 {...service.edit.title}>{service.data.title}</h1>
+					<p class="summary" {...service.edit.summary}>{service.data.summary}</p>
+					{service.data.intro && <p class="lede">{service.data.intro}</p>}
+					<a class="btn btn-lg" href={`/contact?service=${encodeURIComponent(service.data.title)}`}>Request a quote <Arrow /></a>
+				</div>
+				{
+					src && (
+						<figure class="detail-photo">
+							<img src={src} alt={service.data.image?.alt ?? ""} />
+						</figure>
+					)
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="container detail-grid">
+			<div class="prose">
+				{
+					service.data.content && service.data.content.length > 0 ? (
+						<PortableText value={service.data.content} />
+					) : (
+						<p>{service.data.summary}</p>
+					)
+				}
+			</div>
+			<aside class="detail-aside" aria-label="At a glance">
+				<h2>What is included</h2>
+				{
+					includes.length > 0 && (
+						<ul class="checks">
+							{includes.map((o) => (
+								<li>{o}</li>
+							))}
+						</ul>
+					)
+				}
+				{
+					service.data.typical_visit && (
+						<p class="aside-note">
+							<strong>Typical visit</strong>
+							{service.data.typical_visit}
+						</p>
+					)
+				}
+				<a class="btn btn-block" href={`/contact?service=${encodeURIComponent(service.data.title)}`}>Request a quote <Arrow /></a>
+			</aside>
+		</div>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="section section-white" aria-labelledby="more-title">
+				<div class="container">
+					<div class="section-head">
+						<p class="eyebrow">More services</p>
+						<h2 id="more-title" class="section-title">Other ways we can help.</h2>
+					</div>
+					<div class="service-cards">
+						{others.map((s) => <ServiceCard service={s} />)}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} />
+</Base>
