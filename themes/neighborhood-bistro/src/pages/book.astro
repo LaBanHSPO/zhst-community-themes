@@ -1,0 +1,184 @@
+---
+import Base from "../layouts/Base.astro";
+import { getHighlights, getVenue, telHref } from "../lib/bistro";
+
+const [{ venue, cacheHint }, notesResult] = await Promise.all([getVenue(), getHighlights("booking")]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(notesResult.cacheHint);
+}
+const notes = notesResult.entries;
+
+// Earliest selectable date is today in the site's timezone.
+const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Saigon" }).format(new Date());
+
+const times: string[] = [];
+for (let h = 17; h <= 21; h++) {
+	for (const m of [0, 30]) {
+		times.push(`${h - 12}:${m === 0 ? "00" : "30"} pm`);
+	}
+}
+const sizes = ["1", "2", "3", "4", "5", "6"];
+---
+
+<Base title="Book a table" description="Request a table. We confirm every request by email or phone.">
+	<div class="book">
+		<div class="book-photo">
+			<img src="/images/dinner-table.webp" alt="Crispy-skin salmon, a glass of white wine and candles on a wooden table" width="1448" height="1086" />
+		</div>
+		<section class="book-panel" aria-labelledby="book-title">
+			<span class="eyebrow">Book a table</span>
+			<h1 id="book-title">Save us a seat.</h1>
+			<p class="lede">
+				Tell us when you'd like to come and we'll confirm by email or phone. A request isn't a booking until we reply.
+			</p>
+
+			<form
+				class="book-form"
+				data-book-form
+				data-email={venue.email}
+				action={venue.email ? `mailto:${venue.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field">
+						<label for="b-date">Date</label>
+						<input id="b-date" name="date" type="date" min={today} required aria-describedby="b-date-err" />
+						<span class="field-error" id="b-date-err" data-error-for="b-date"></span>
+					</div>
+					<div class="field">
+						<label for="b-time">Time</label>
+						<select id="b-time" name="time" required>
+							{times.map((t) => <option selected={t === "7:00 pm"}>{t}</option>)}
+						</select>
+					</div>
+					<div class="field">
+						<label for="b-party">Guests</label>
+						<select id="b-party" name="party" required>
+							{sizes.map((s) => <option selected={s === "2"}>{s}</option>)}
+						</select>
+					</div>
+					<div class="field">
+						<label for="b-name">Name</label>
+						<input id="b-name" name="name" type="text" autocomplete="name" required aria-describedby="b-name-err" />
+						<span class="field-error" id="b-name-err" data-error-for="b-name"></span>
+					</div>
+					<div class="field">
+						<label for="b-email">Email</label>
+						<input id="b-email" name="email" type="email" autocomplete="email" required aria-describedby="b-email-err" />
+						<span class="field-error" id="b-email-err" data-error-for="b-email"></span>
+					</div>
+					<div class="field">
+						<label for="b-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="b-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field full">
+						<label for="b-notes">Anything we should know? <span class="optional">(optional)</span></label>
+						<textarea id="b-notes" name="notes" rows="3" placeholder="Allergies, a birthday, a high chair…"></textarea>
+					</div>
+				</div>
+				<button class="btn btn-lg btn-block" type="submit">Request a table</button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{venue.email && <>Write to <a href={`mailto:${venue.email}`}>{venue.email}</a> with your date, time and number of guests.</>}
+					</noscript>
+				</p>
+			</form>
+
+			<div class="book-contact">
+				<h2>Prefer to talk to us?</h2>
+				<p>
+					{venue.phone && <>Call <a href={telHref(venue.phone)}>{venue.phone}</a></>}
+					{venue.phone && venue.email && " or email "}
+					{!venue.phone && venue.email && "Email "}
+					{venue.email && <a href={`mailto:${venue.email}`}>{venue.email}</a>}.
+				</p>
+				{venue.booking_note && <p class="small">{venue.booking_note}</p>}
+			</div>
+		</section>
+	</div>
+
+	{
+		notes.length > 0 && (
+			<section class="book-notes" aria-labelledby="notes-title">
+				<div class="container">
+					<h2 id="notes-title" class="sr-only">Good to know</h2>
+					<ul>
+						{notes.map((n) => (
+							<li>
+								<h3 {...n.edit.title}>{n.data.title}</h3>
+								{n.data.text && <p>{n.data.text}</p>}
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+</Base>
+
+<script>
+	// Compose a table-request email; the restaurant confirms it by reply. Nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-book-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | null = null;
+			form.querySelectorAll<HTMLInputElement>("input[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? "Please fill this in."
+						: input.type === "email"
+							? "Please enter a valid email address."
+							: input.type === "date"
+								? "Please choose today or a later date."
+								: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLInputElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online requests are not available right now. Please call the restaurant.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const subject = `Table request: ${get("party")} guests on ${get("date")} at ${get("time")}`;
+			const lines = [
+				"Hello,",
+				"",
+				"I would like to request a table:",
+				`Date: ${get("date")}`,
+				`Time: ${get("time")}`,
+				`Guests: ${get("party")}`,
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				get("notes") ? `Notes: ${get("notes")}` : "",
+				"",
+				"I understand the table is confirmed only once you reply.",
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this request ready to send. It's only sent when you send that email, and we confirm by reply. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

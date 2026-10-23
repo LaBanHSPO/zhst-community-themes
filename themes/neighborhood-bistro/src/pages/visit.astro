@@ -1,0 +1,112 @@
+---
+import Base from "../layouts/Base.astro";
+import { getHours, getVenue, mapLinks, telHref } from "../lib/bistro";
+
+const [{ venue, cacheHint }, hoursResult] = await Promise.all([getVenue(), getHours()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(hoursResult.cacheHint);
+}
+const hours = hoursResult.entries;
+const links = mapLinks(venue);
+---
+
+<Base title="Visit" description="Opening hours, address, directions and how to reach us." overlay>
+	<section class="hero hero-sub" aria-labelledby="visit-title">
+		<img class="hero-bg" src="/images/dinner-table.webp" alt="" width="1448" height="1086" fetchpriority="high" />
+		<div class="hero-copy">
+			<span class="eyebrow eyebrow-light">Visit</span>
+			<h1 id="visit-title">Find your way<br />to our table.</h1>
+			<p class="hero-lede">Right in the neighborhood: an easy walk, a short bus ride, and a table waiting for you.</p>
+		</div>
+	</section>
+
+	<section class="visit" aria-label="Visiting details">
+		<div class="container visit-grid">
+			<section class="visit-card" aria-labelledby="hours-title">
+				<span class="eyebrow">Opening hours</span>
+				<h2 id="hours-title">When we're open</h2>
+				{
+					hours.length > 0 ? (
+						<table class="hours-table">
+							<caption class="sr-only">Opening hours</caption>
+							<tbody>
+								{hours.map((h) => (
+									<tr>
+										<th scope="row">{h.data.title}</th>
+										<td>{h.data.hours}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					) : (
+						<p>Please call us for today's hours.</p>
+					)
+				}
+				<p class="small">Kitchen closes 30 minutes before the dining room.</p>
+			</section>
+
+			<section class="visit-card" aria-labelledby="address-title">
+				<span class="eyebrow">Address</span>
+				<h2 id="address-title">Where to find us</h2>
+				<address>
+					<strong>{venue.title}</strong><br />
+					{venue.street && <>{venue.street}<br /></>}
+					{venue.locality && <>{venue.locality}<br /></>}
+					{venue.country}
+				</address>
+				<div class="actions">
+					<a class="btn" href={links.directions} target="_blank" rel="noopener noreferrer">
+						Get directions<span class="sr-only"> (opens Google Maps in a new tab)</span>
+					</a>
+					<a class="text-link" href={links.map} target="_blank" rel="noopener noreferrer">
+						View on map<span class="sr-only"> (opens Google Maps in a new tab)</span>
+					</a>
+				</div>
+			</section>
+
+			<section class="visit-card" aria-labelledby="contact-title">
+				<span class="eyebrow">Contact</span>
+				<h2 id="contact-title">Say hello</h2>
+				<ul class="contact-list">
+					{venue.phone && <li><span>Phone</span><a href={telHref(venue.phone)}>{venue.phone}</a></li>}
+					{venue.email && <li><span>Email</span><a href={`mailto:${venue.email}`}>{venue.email}</a></li>}
+				</ul>
+				<a class="btn btn-outline" href="/book">Book a table</a>
+			</section>
+		</div>
+
+		<div class="container visit-lower">
+			<a class="map-card" href={links.map} target="_blank" rel="noopener noreferrer">
+				<svg viewBox="0 0 640 300" aria-hidden="true" focusable="false">
+					<rect width="640" height="300" fill="#ece5d6" />
+					<path d="M0 230 C120 210 220 260 340 240 S560 200 640 214 V300 H0Z" fill="#c9d3b8" opacity=".7" />
+					<path d="M470 0 C500 60 560 90 640 96 V0Z" fill="#cbd7c0" />
+					<g stroke="#fbf8f1" stroke-width="12" fill="none" stroke-linecap="round">
+						<path d="M-10 70 L650 40" />
+						<path d="M-10 170 L650 150" />
+						<path d="M140 -10 L110 310" />
+						<path d="M330 -10 L320 310" />
+						<path d="M520 -10 L540 310" />
+					</g>
+					<g stroke="#ddd3c0" stroke-width="2" fill="none">
+						<path d="M-10 120 L650 95 M235 -10 L215 310 M430 -10 L430 310" />
+					</g>
+					<text x="372" y="140" font-family="Source Serif 4 Variable, Georgia, serif" font-size="20" fill="#1c1b16">{venue.title}</text>
+					<text x="372" y="160" font-family="Jost Variable, sans-serif" font-size="10" letter-spacing="2" fill="#6b6553">{(venue.street ?? "").toUpperCase()}</text>
+					<g transform="translate(332 150)">
+						<circle r="26" fill="#636a3a" opacity=".16" />
+						<path d="M0 -30 C-12 -30 -18 -21 -18 -13 C-18 -1 0 16 0 16 C0 16 18 -1 18 -13 C18 -21 12 -30 0 -30Z" fill="#636a3a" />
+						<circle cx="0" cy="-14" r="5.5" fill="#f8f4eb" />
+					</g>
+				</svg>
+				<span class="map-card-label">Open in Google Maps<span class="sr-only"> (new tab)</span></span>
+			</a>
+			<section class="getting-here" aria-labelledby="getting-title">
+				<span class="eyebrow">Getting here</span>
+				<h2 id="getting-title">By bus, bike or on foot</h2>
+				<p>{venue.getting_here ?? "Ask us for directions — we're happy to help."}</p>
+			</section>
+		</div>
+	</section>
+</Base>

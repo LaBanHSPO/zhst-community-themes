@@ -1,0 +1,89 @@
+---
+import { getEmDashEntry } from "emdash";
+import Base from "../layouts/Base.astro";
+import Sprig from "../components/Sprig.astro";
+import { COURSES, getDishes, photoSrc } from "../lib/bistro";
+
+const [{ entries: dishes, cacheHint }, allergyPage] = await Promise.all([getDishes(), getEmDashEntry("pages", "allergies")]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allergyPage.cacheHint);
+}
+
+const courses = COURSES.map((c) => ({ ...c, dishes: dishes.filter((d) => d.data.course === c.slug) })).filter(
+	(c) => c.dishes.length > 0,
+);
+---
+
+<Base title="Menu" description="Our seasonal menu: small plates, starters, mains, desserts and drinks, with prices.">
+	<section class="page-head" aria-labelledby="menu-title">
+		<div class="container page-head-inner">
+			<span class="eyebrow">The menu</span>
+			<h1 id="menu-title">Seasonal, simple,<br />made to share.</h1>
+			<p class="lede">
+				Our menu changes with the market, so a few dishes may differ when you visit. Ask us about today's specials.
+			</p>
+			{
+				courses.length > 0 && (
+					<nav class="course-nav" aria-label="Courses">
+						{courses.map((c) => (
+							<a href={`#${c.slug}`}>{c.label}</a>
+						))}
+					</nav>
+				)
+			}
+		</div>
+	</section>
+
+	<div class="container menu-body">
+		{
+			courses.length === 0 ? (
+				<p class="empty-note">The menu is being written. Please check back soon, or call us for tonight's dishes.</p>
+			) : (
+				courses.map((c) => (
+					<section class="course" id={c.slug} aria-labelledby={`${c.slug}-title`}>
+						<header class="course-head">
+							<h2 id={`${c.slug}-title`}>{c.label}</h2>
+							<p>{c.note}</p>
+						</header>
+						<ul class="menu-list">
+							{c.dishes.map((d) => {
+								const src = photoSrc(d.data.image, d.data.photo);
+								return (
+									<li class:list={["menu-item", { "has-photo": src }]}>
+										{src && <img src={src} alt={d.data.image?.alt || d.data.title} width="96" height="96" loading="lazy" />}
+										<div class="menu-item-text">
+											<div class="menu-item-top">
+												<h3 {...d.edit.title}>{d.data.title}</h3>
+												<span class="leader" aria-hidden="true" />
+												<span class="price">{d.data.price}</span>
+											</div>
+											{d.data.description && <p>{d.data.description}</p>}
+											{d.data.dietary && <span class="dietary">{d.data.dietary}</span>}
+										</div>
+									</li>
+								);
+							})}
+						</ul>
+					</section>
+				))
+			)
+		}
+		<aside class="menu-note">
+			<Sprig class="note-sprig" />
+			<p>
+				V vegetarian · VG vegan · GF gluten-free. Please tell us about allergies before you order{
+					allergyPage.entry ? (
+						<>
+							{" — "}
+							<a href="/allergies">read how we handle them</a>.
+						</>
+					) : (
+						"."
+					)
+				}
+			</p>
+			<a class="btn" href="/book">Book a table</a>
+		</aside>
+	</div>
+</Base>

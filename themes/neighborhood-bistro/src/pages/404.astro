@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+import Sprig from "../components/Sprig.astro";
+---
+
+<Base title="Page not found">
+	<section class="notfound">
+		<Sprig class="notfound-sprig" />
+		<span class="eyebrow">404 · Page not found</span>
+		<h1>This table isn't set.</h1>
+		<p>The page you're looking for has moved or never existed. There's still plenty on the menu.</p>
+		<div class="actions">
+			<a class="btn" href="/">Back to home</a>
+			<a class="btn btn-outline" href="/menu">See the menu</a>
+		</div>
+	</section>
+</Base>

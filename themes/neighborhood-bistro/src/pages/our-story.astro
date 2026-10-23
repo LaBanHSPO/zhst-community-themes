@@ -1,0 +1,77 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Sprig from "../components/Sprig.astro";
+import { getHighlights } from "../lib/bistro";
+
+// The story text lives in the CMS page with slug "our-story"; this route gives it the photographic layout.
+const [{ entry: page, cacheHint }, highlightsResult] = await Promise.all([
+	getEmDashEntry("pages", "our-story"),
+	getHighlights("story"),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(highlightsResult.cacheHint);
+}
+const values = highlightsResult.entries;
+const heading = page?.data.title ?? "A table for the whole street.";
+const intro =
+	page?.data.intro ?? "Honest, seasonal food for the people who live around us — and everyone they bring along.";
+---
+
+<Base
+	title="Our Story"
+	description={intro}
+	overlay
+	content={page ? { collection: "pages", id: page.data.id, slug: "our-story" } : undefined}
+>
+	<section class="hero hero-sub" aria-labelledby="story-title">
+		<img class="hero-bg" src="/images/dining-room-evening.webp" alt="" width="808" height="640" fetchpriority="high" />
+		<div class="hero-copy">
+			<span class="eyebrow eyebrow-light">{page?.data.eyebrow ?? "Our story"}</span>
+			<h1 id="story-title" {...page?.edit.title}>{heading}</h1>
+			<p class="hero-lede">{intro}</p>
+		</div>
+	</section>
+
+	<section class="story" aria-label="How we started">
+		<div class="story-text prose">
+			{page?.data.content ? <PortableText value={page.data.content} /> : <p>Our story is being written.</p>}
+		</div>
+		<figure class="story-photos">
+			<img src="/images/kitchen-room.webp" alt="The bistro dining room by the window" width="294" height="365" loading="lazy" />
+			<img src="/images/bread-and-oil.webp" alt="Sourdough bread with a bowl of olive oil" width="268" height="340" loading="lazy" />
+		</figure>
+	</section>
+
+	{
+		values.length > 0 && (
+			<section class="values" aria-labelledby="values-title">
+				<div class="container">
+					<span class="eyebrow">What we care about</span>
+					<h2 id="values-title">Three things we never change.</h2>
+					<ul class="values-list">
+						{values.map((v) => (
+							<li>
+								<Sprig class="value-sprig" />
+								<h3 {...v.edit.title}>{v.data.title}</h3>
+								{v.data.text && <p>{v.data.text}</p>}
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="cta-band" aria-labelledby="story-cta">
+		<div class="container cta-band-inner">
+			<h2 id="story-cta">Come and taste the season.</h2>
+			<div class="actions">
+				<a class="btn" href="/book">Book a table</a>
+				<a class="btn btn-ghost" href="/menu">See the menu</a>
+			</div>
+		</div>
+	</section>
+</Base>
