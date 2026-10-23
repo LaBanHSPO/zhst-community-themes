@@ -1,0 +1,1085 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Luma Dental",
+		"description": "A calm premium dental clinic theme: homepage with service previews, care groups, treatment detail with stages, indicative fee, preparation and FAQ, dentist profile with weekly appointment-request times, and an appointment request form with clinic address and map",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "Luma Dental",
+		"tagline": "Dental clinic"
+	},
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "services",
+			"label": "Services",
+			"labelSingular": "Service",
+			"urlPattern": "/services/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Service group (Services page card title)",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "home_title",
+					"label": "Homepage card title (defaults to the service group)",
+					"type": "string"
+				},
+				{
+					"slug": "summary",
+					"label": "Services page description",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "home_summary",
+					"label": "Homepage card description",
+					"type": "text"
+				},
+				{
+					"slug": "cta_label",
+					"label": "Card button label (e.g. Explore preventive care)",
+					"type": "string"
+				},
+				{
+					"slug": "icon",
+					"label": "Icon (tooth, sparkle, implant, heart, clipboard, xray, notes, toothbrush, calendar, user, users, chat, cap, clock, phone)",
+					"type": "string",
+					"defaultValue": "tooth"
+				},
+				{
+					"slug": "show_on_services",
+					"label": "Show on the Services page",
+					"type": "boolean",
+					"indexed": true,
+					"defaultValue": true
+				},
+				{
+					"slug": "position",
+					"label": "Services page order",
+					"type": "integer"
+				},
+				{
+					"slug": "show_on_home",
+					"label": "Show on the homepage",
+					"type": "boolean",
+					"indexed": true,
+					"defaultValue": true
+				},
+				{
+					"slug": "home_position",
+					"label": "Homepage order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Services page card photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Services page card photo: bundled path",
+					"type": "string"
+				},
+				{
+					"slug": "photo_alt",
+					"label": "Services page card photo description",
+					"type": "string"
+				},
+				{
+					"slug": "home_image",
+					"label": "Homepage card photo (defaults to the card photo) (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "home_photo",
+					"label": "Homepage card photo (defaults to the card photo): bundled path",
+					"type": "string"
+				},
+				{
+					"slug": "home_alt",
+					"label": "Homepage card photo (defaults to the card photo) description",
+					"type": "string"
+				},
+				{
+					"slug": "eyebrow",
+					"label": "Detail eyebrow (e.g. Preventive dental care)",
+					"type": "string"
+				},
+				{
+					"slug": "headline",
+					"label": "Detail headline (e.g. Your first check-up)",
+					"type": "string",
+					"searchable": true
+				},
+				{
+					"slug": "intro",
+					"label": "Detail introduction",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "hero_image",
+					"label": "Detail hero photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "hero_photo",
+					"label": "Detail hero photo: bundled path",
+					"type": "string"
+				},
+				{
+					"slug": "hero_alt",
+					"label": "Detail hero photo description",
+					"type": "string"
+				},
+				{
+					"slug": "fee",
+					"label": "Indicative fee (whole dollars)",
+					"type": "integer"
+				},
+				{
+					"slug": "fee_label",
+					"label": "Fee label (e.g. Check-up fee)",
+					"type": "string"
+				},
+				{
+					"slug": "fee_note",
+					"label": "Fee note",
+					"type": "text"
+				},
+				{
+					"slug": "steps_title",
+					"label": "Steps heading",
+					"type": "string"
+				},
+				{
+					"slug": "steps",
+					"label": "Appointment stages",
+					"type": "repeater",
+					"validation": {
+						"maxItems": 6,
+						"subFields": [
+							{
+								"slug": "title",
+								"label": "Stage",
+								"type": "string",
+								"required": true
+							},
+							{
+								"slug": "text",
+								"label": "Description",
+								"type": "text"
+							},
+							{
+								"slug": "icon",
+								"label": "Icon (tooth, sparkle, implant, heart, clipboard, xray, notes, toothbrush, calendar, user, users, chat, cap, clock, phone)",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"slug": "prepare_title",
+					"label": "Preparation heading",
+					"type": "string"
+				},
+				{
+					"slug": "prepare",
+					"label": "How to prepare",
+					"type": "repeater",
+					"validation": {
+						"maxItems": 4,
+						"subFields": [
+							{
+								"slug": "title",
+								"label": "Tip",
+								"type": "string",
+								"required": true
+							},
+							{
+								"slug": "text",
+								"label": "Description",
+								"type": "text"
+							},
+							{
+								"slug": "icon",
+								"label": "Icon (tooth, sparkle, implant, heart, clipboard, xray, notes, toothbrush, calendar, user, users, chat, cap, clock, phone)",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"slug": "faqs",
+					"label": "Frequently asked questions",
+					"type": "repeater",
+					"validation": {
+						"maxItems": 12,
+						"subFields": [
+							{
+								"slug": "question",
+								"label": "Question",
+								"type": "string",
+								"required": true
+							},
+							{
+								"slug": "answer",
+								"label": "Answer",
+								"type": "text",
+								"required": true
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			"slug": "dentists",
+			"label": "Dentists",
+			"labelSingular": "Dentist",
+			"urlPattern": "/dentists/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "short_name",
+					"label": "Short name (e.g. Dr. Carter)",
+					"type": "string"
+				},
+				{
+					"slug": "eyebrow",
+					"label": "Eyebrow (e.g. Your dentist at Luma Dental)",
+					"type": "string"
+				},
+				{
+					"slug": "credentials",
+					"label": "Qualifications and role line",
+					"type": "string"
+				},
+				{
+					"slug": "bio",
+					"label": "Introduction",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "highlights",
+					"label": "Highlights",
+					"type": "repeater",
+					"validation": {
+						"maxItems": 3,
+						"subFields": [
+							{
+								"slug": "text",
+								"label": "Highlight",
+								"type": "string",
+								"required": true
+							},
+							{
+								"slug": "icon",
+								"label": "Icon (tooth, sparkle, implant, heart, clipboard, xray, notes, toothbrush, calendar, user, users, chat, cap, clock, phone)",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"slug": "qualifications",
+					"label": "Qualifications & experience",
+					"type": "repeater",
+					"validation": {
+						"maxItems": 8,
+						"subFields": [
+							{
+								"slug": "title",
+								"label": "Qualification",
+								"type": "string",
+								"required": true
+							},
+							{
+								"slug": "detail",
+								"label": "Detail",
+								"type": "string"
+							}
+						]
+					}
+				},
+				{
+					"slug": "areas",
+					"label": "Areas of practice",
+					"type": "repeater",
+					"validation": {
+						"maxItems": 10,
+						"subFields": [
+							{
+								"slug": "name",
+								"label": "Area",
+								"type": "string",
+								"required": true
+							}
+						]
+					}
+				},
+				{
+					"slug": "approach",
+					"label": "Approach (first person)",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "signature",
+					"label": "Signature name",
+					"type": "string"
+				},
+				{
+					"slug": "slots",
+					"label": "Weekly appointment-request times",
+					"type": "repeater",
+					"validation": {
+						"maxItems": 14,
+						"subFields": [
+							{
+								"slug": "weekday",
+								"label": "Weekday (Monday … Sunday)",
+								"type": "string",
+								"required": true
+							},
+							{
+								"slug": "time",
+								"label": "Time (e.g. 9:00 AM)",
+								"type": "string",
+								"required": true
+							}
+						]
+					}
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Portrait (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Portrait: bundled path",
+					"type": "string"
+				},
+				{
+					"slug": "photo_alt",
+					"label": "Portrait description",
+					"type": "string"
+				},
+				{
+					"slug": "approach_image",
+					"label": "Approach photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "approach_photo",
+					"label": "Approach photo: bundled path",
+					"type": "string"
+				},
+				{
+					"slug": "approach_alt",
+					"label": "Approach photo description",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "clinic",
+			"label": "Clinic details",
+			"labelSingular": "Clinic details",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Clinic name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "email",
+					"label": "Appointment request email",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "phone",
+					"label": "Phone",
+					"type": "string"
+				},
+				{
+					"slug": "phone_note",
+					"label": "Phone note",
+					"type": "string"
+				},
+				{
+					"slug": "address_line1",
+					"label": "Street address",
+					"type": "string"
+				},
+				{
+					"slug": "address_line2",
+					"label": "Suburb, city, state, postcode",
+					"type": "string"
+				},
+				{
+					"slug": "directions_url",
+					"label": "Directions link",
+					"type": "url"
+				},
+				{
+					"slug": "hours",
+					"label": "Opening hours",
+					"type": "repeater",
+					"validation": {
+						"maxItems": 7,
+						"subFields": [
+							{
+								"slug": "days",
+								"label": "Days",
+								"type": "string",
+								"required": true
+							},
+							{
+								"slug": "time",
+								"label": "Hours",
+								"type": "string",
+								"required": true
+							}
+						]
+					}
+				},
+				{
+					"slug": "footer_blurb",
+					"label": "Footer description",
+					"type": "text"
+				},
+				{
+					"slug": "request_note",
+					"label": "Appointment form note",
+					"type": "text"
+				},
+				{
+					"slug": "image",
+					"label": "Clinic photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Clinic photo: bundled path",
+					"type": "string"
+				},
+				{
+					"slug": "photo_alt",
+					"label": "Clinic photo description",
+					"type": "string"
+				},
+				{
+					"slug": "map_image",
+					"label": "Map image (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "map_photo",
+					"label": "Map image: bundled path",
+					"type": "string"
+				},
+				{
+					"slug": "map_alt",
+					"label": "Map image description",
+					"type": "string"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Homepage",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "Services",
+					"url": "/services"
+				},
+				{
+					"type": "custom",
+					"label": "Check-up detail",
+					"url": "/services/check-up"
+				},
+				{
+					"type": "custom",
+					"label": "Dentist profile",
+					"url": "/dentists/emily-carter"
+				},
+				{
+					"type": "custom",
+					"label": "Request appointment",
+					"url": "/request-appointment"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About Luma Dental",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b1",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"text": "Luma Dental is a calm, modern dental clinic in Riverside. We look after children, adults and families, from routine check-ups to cosmetic and restorative care.",
+									"_key": "b1s",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"text": "We take time to listen, explain every step and agree a plan with you before any treatment starts. Request an appointment online or call us and we’ll find a time that suits you.",
+									"_key": "b2s",
+									"marks": []
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"services": [
+			{
+				"id": "check-up",
+				"slug": "check-up",
+				"status": "published",
+				"data": {
+					"title": "Preventive Dentistry",
+					"home_title": "General Dentistry",
+					"summary": "Keep your smile healthy with regular check-ups, professional cleanings and personalized care that helps prevent problems before they start.",
+					"home_summary": "Keep your smile healthy with preventive care and regular check-ups.",
+					"cta_label": "Explore preventive care",
+					"icon": "tooth",
+					"show_on_services": true,
+					"position": 1,
+					"show_on_home": true,
+					"home_position": 1,
+					"photo": "/images/care-child.webp",
+					"photo_alt": "A smiling boy relaxing in a blue dental chair",
+					"home_photo": "/images/care-smile-mirror.webp",
+					"home_alt": "A bright smile beside a dental mirror",
+					"eyebrow": "Preventive dental care",
+					"headline": "Your first check-up",
+					"intro": "A thorough, comfortable check-up to keep your smile healthy and identify any issues early. Gentle care, clear explanations, and a personalised plan for your dental health.",
+					"hero_photo": "/images/hero-check-up.webp",
+					"hero_alt": "A smiling dentist talking with a relaxed patient in the dental chair",
+					"fee": 120,
+					"fee_label": "Check-up fee",
+					"fee_note": "Our standard adult check-up fee is $120, which includes a comprehensive examination and a discussion of your oral health.",
+					"steps_title": "A simple, step-by-step experience",
+					"steps": [
+						{
+							"title": "Welcome and chat",
+							"text": "We’ll talk about your medical history, lifestyle and any concerns.",
+							"icon": "clipboard"
+						},
+						{
+							"title": "Gentle examination",
+							"text": "A thorough check of your teeth, gums and oral health using modern equipment.",
+							"icon": "tooth"
+						},
+						{
+							"title": "X-rays where needed",
+							"text": "We may take digital X-rays to get a complete picture of your oral health.",
+							"icon": "xray"
+						},
+						{
+							"title": "Personalised advice",
+							"text": "We’ll discuss our findings and create a tailored plan for your ongoing care.",
+							"icon": "notes"
+						}
+					],
+					"prepare_title": "A few simple steps",
+					"prepare": [
+						{
+							"title": "Bring your information",
+							"text": "If you have a medical history or a list of current medications, please bring it with you.",
+							"icon": "notes"
+						},
+						{
+							"title": "Share your concerns",
+							"text": "Let us know about any symptoms, concerns or goals for your oral health.",
+							"icon": "tooth"
+						},
+						{
+							"title": "Keep it as usual",
+							"text": "You can eat, drink and brush your teeth as normal before your appointment.",
+							"icon": "toothbrush"
+						}
+					],
+					"faqs": [
+						{
+							"question": "How long does a check-up take?",
+							"answer": "Most check-ups take 30 to 45 minutes, including time to talk through your questions. Your first visit may run a little longer while we get to know you."
+						},
+						{
+							"question": "Does the check-up include X-rays?",
+							"answer": "Only when your dentist thinks they are needed. We explain why before taking any X-rays and confirm any additional cost with you first."
+						},
+						{
+							"question": "Will it be uncomfortable?",
+							"answer": "A check-up is usually gentle. We go at your pace, explain each step and you can ask for a break at any time."
+						},
+						{
+							"question": "How often should I have a check-up?",
+							"answer": "Many adults visit every six to twelve months. Your dentist will suggest an interval that suits your own oral health."
+						}
+					]
+				}
+			},
+			{
+				"id": "cosmetic-consultation",
+				"slug": "cosmetic-consultation",
+				"status": "published",
+				"data": {
+					"title": "Cosmetic Dentistry",
+					"summary": "Enhance your smile with natural, beautiful results. From teeth whitening to veneers, we offer cosmetic treatments tailored to your goals.",
+					"home_summary": "Enhance your smile with natural, beautiful results.",
+					"cta_label": "Explore cosmetic care",
+					"icon": "sparkle",
+					"show_on_services": true,
+					"position": 3,
+					"show_on_home": true,
+					"home_position": 2,
+					"photo": "/images/care-smile-mirror.webp",
+					"photo_alt": "A bright smile beside a dental mirror",
+					"home_photo": "/images/care-smile.webp",
+					"home_alt": "A close-up of a natural, even smile",
+					"eyebrow": "Cosmetic dentistry",
+					"headline": "Your cosmetic consultation",
+					"intro": "A relaxed conversation about how you would like your smile to look and feel. We check that your teeth and gums are healthy first, then talk through options such as whitening and veneers.",
+					"hero_photo": "/images/hero-services.webp",
+					"hero_alt": "A dentist examining a smiling patient with a dental mirror",
+					"fee": 95,
+					"fee_label": "Consultation fee",
+					"fee_note": "Our cosmetic consultation fee is $95, which includes a smile assessment and a written summary of the options we discuss.",
+					"steps_title": "What happens at your consultation",
+					"steps": [
+						{
+							"title": "Your goals",
+							"text": "Tell us what you would like to change and what matters most to you.",
+							"icon": "chat"
+						},
+						{
+							"title": "Smile assessment",
+							"text": "We check the health of your teeth and gums before any cosmetic treatment.",
+							"icon": "tooth"
+						},
+						{
+							"title": "Shade and photos",
+							"text": "With your consent, we take photos and note your current tooth shade.",
+							"icon": "sparkle"
+						},
+						{
+							"title": "Options and costs",
+							"text": "We explain suitable options, timings and fees so you can decide in your own time.",
+							"icon": "notes"
+						}
+					],
+					"prepare_title": "A few simple steps",
+					"prepare": [
+						{
+							"title": "Bring examples",
+							"text": "Photos of smiles you like can help us understand your goals.",
+							"icon": "notes"
+						},
+						{
+							"title": "Share your history",
+							"text": "Let us know about previous treatment such as crowns, fillings or braces.",
+							"icon": "tooth"
+						},
+						{
+							"title": "Keep it as usual",
+							"text": "There is nothing special to do beforehand. Brush and floss as normal.",
+							"icon": "toothbrush"
+						}
+					],
+					"faqs": [
+						{
+							"question": "Do I need a check-up first?",
+							"answer": "If you have not had a check-up with us in the last twelve months, we usually suggest one first so any cosmetic plan starts from healthy teeth and gums."
+						},
+						{
+							"question": "Is whitening suitable for everyone?",
+							"answer": "Not always. Crowns and fillings do not change colour and some people have sensitive teeth. Your dentist will talk you through what is suitable for you."
+						},
+						{
+							"question": "Will I be asked to commit on the day?",
+							"answer": "No. You leave with a summary of options and fees, and you can decide whenever you are ready."
+						}
+					]
+				}
+			},
+			{
+				"id": "restorative-consultation",
+				"slug": "restorative-consultation",
+				"status": "published",
+				"data": {
+					"title": "Restorative Dentistry",
+					"summary": "Restore the function, strength and appearance of your smile with modern solutions such as fillings, crowns, bridges and dental implants.",
+					"home_summary": "Restore function and confidence with modern solutions.",
+					"cta_label": "Explore restorative care",
+					"icon": "implant",
+					"show_on_services": true,
+					"position": 2,
+					"show_on_home": true,
+					"home_position": 3,
+					"photo": "/images/care-implant.webp",
+					"photo_alt": "A model of a dental implant with a crown between natural teeth",
+					"eyebrow": "Restorative dentistry",
+					"headline": "Your restorative consultation",
+					"intro": "If a tooth is broken, worn or missing, we take the time to understand what is going on and explain your options clearly, from fillings and crowns to bridges and implants.",
+					"hero_photo": "/images/hero-home.webp",
+					"hero_alt": "A smiling dentist with a patient in a bright treatment room, an X-ray on screen behind them",
+					"fee": 110,
+					"fee_label": "Consultation fee",
+					"fee_note": "Our restorative consultation fee is $110, which includes an examination of the area of concern and a discussion of your treatment options.",
+					"steps_title": "A clear plan, one step at a time",
+					"steps": [
+						{
+							"title": "Listen first",
+							"text": "We ask about any pain, sensitivity or changes you have noticed.",
+							"icon": "chat"
+						},
+						{
+							"title": "Careful examination",
+							"text": "We examine the tooth or area of concern and check your bite.",
+							"icon": "tooth"
+						},
+						{
+							"title": "X-rays where needed",
+							"text": "Digital X-rays help us see below the surface when they are needed.",
+							"icon": "xray"
+						},
+						{
+							"title": "Options explained",
+							"text": "We explain each suitable option, how long it takes and what it costs.",
+							"icon": "notes"
+						}
+					],
+					"prepare_title": "A few simple steps",
+					"prepare": [
+						{
+							"title": "Note your symptoms",
+							"text": "When did it start, and does anything make it better or worse?",
+							"icon": "notes"
+						},
+						{
+							"title": "Bring previous records",
+							"text": "If another clinic has treated the tooth, any notes or X-rays are helpful.",
+							"icon": "clipboard"
+						},
+						{
+							"title": "Keep it as usual",
+							"text": "You can eat, drink and brush as normal unless we have told you otherwise.",
+							"icon": "toothbrush"
+						}
+					],
+					"faqs": [
+						{
+							"question": "What if I am in pain now?",
+							"answer": "Please call us. We keep time aside each day for people who need to be seen sooner."
+						},
+						{
+							"question": "Will treatment happen on the same day?",
+							"answer": "Sometimes a simple filling can be done straight away. For larger work we usually plan a separate appointment once you have chosen an option."
+						},
+						{
+							"question": "Are implants right for me?",
+							"answer": "That depends on your general health, bone and gums. Your dentist will explain whether an implant is suitable and what the alternatives are."
+						}
+					]
+				}
+			},
+			{
+				"id": "childrens-first-visit",
+				"slug": "childrens-first-visit",
+				"status": "published",
+				"data": {
+					"title": "Children’s Dentistry",
+					"summary": "Gentle, friendly care for growing smiles, with plenty of time for questions and a calm first visit.",
+					"home_summary": "Gentle, friendly care for growing smiles.",
+					"cta_label": "Explore children’s care",
+					"icon": "tooth",
+					"show_on_services": false,
+					"position": 4,
+					"show_on_home": true,
+					"home_position": 4,
+					"photo": "/images/care-child.webp",
+					"photo_alt": "A smiling boy relaxing in a blue dental chair",
+					"eyebrow": "Children’s dentistry",
+					"headline": "Your child’s first visit",
+					"intro": "A short, friendly visit that helps your child feel at home in the dental chair. We count teeth, show them our tools and share simple tips for brushing at home.",
+					"hero_photo": "/images/hero-appointment.webp",
+					"hero_alt": "A smiling dentist chatting with a patient in the dental chair",
+					"fee": 70,
+					"fee_label": "Children’s check-up fee",
+					"fee_note": "Our standard children’s check-up fee is $70, which includes a gentle examination and advice for parents.",
+					"steps_title": "A calm, playful visit",
+					"steps": [
+						{
+							"title": "Say hello",
+							"text": "Your child can sit on your lap or in the chair, whichever feels best.",
+							"icon": "users"
+						},
+						{
+							"title": "Count the teeth",
+							"text": "A gentle look at teeth and gums, explained in words children understand.",
+							"icon": "tooth"
+						},
+						{
+							"title": "Brushing tips",
+							"text": "We show simple brushing habits and answer your questions.",
+							"icon": "toothbrush"
+						},
+						{
+							"title": "Next visit",
+							"text": "We suggest when to come back based on your child’s needs.",
+							"icon": "calendar"
+						}
+					],
+					"prepare_title": "A few simple steps",
+					"prepare": [
+						{
+							"title": "Talk about it",
+							"text": "Keep it positive and simple. Tell your child someone will count their teeth.",
+							"icon": "chat"
+						},
+						{
+							"title": "Choose a good time",
+							"text": "Morning visits often suit young children best.",
+							"icon": "clock"
+						},
+						{
+							"title": "Bring a comforter",
+							"text": "A favourite toy is always welcome in the chair.",
+							"icon": "heart"
+						}
+					],
+					"faqs": [
+						{
+							"question": "When should my child first visit?",
+							"answer": "Many families come once the first teeth appear or around the first birthday. It is never too late to start."
+						},
+						{
+							"question": "Can I stay with my child?",
+							"answer": "Yes. Parents and carers are welcome to stay for the whole visit."
+						},
+						{
+							"question": "What if my child is nervous?",
+							"answer": "We go slowly and never rush. If your child is not ready, we simply try again another day."
+						}
+					]
+				}
+			}
+		],
+		"dentists": [
+			{
+				"id": "emily-carter",
+				"slug": "emily-carter",
+				"status": "published",
+				"data": {
+					"title": "Dr. Emily Carter",
+					"short_name": "Dr. Carter",
+					"eyebrow": "Your dentist at Luma Dental",
+					"credentials": "BDS (Hons), General & Cosmetic Dentist",
+					"bio": "Dr. Emily Carter is passionate about helping patients feel confident in their smiles. With a gentle approach and modern techniques, she provides personalized care for every stage of life.",
+					"highlights": [
+						{
+							"text": "Gentle, patient-focused care",
+							"icon": "tooth"
+						},
+						{
+							"text": "Personalized treatment plans",
+							"icon": "users"
+						},
+						{
+							"text": "Modern, minimally invasive techniques",
+							"icon": "heart"
+						}
+					],
+					"qualifications": [
+						{
+							"title": "Bachelor of Dental Surgery (Hons)",
+							"detail": "University of Melbourne"
+						},
+						{
+							"title": "Over 10 years of clinical experience",
+							"detail": "General and cosmetic dentistry"
+						},
+						{
+							"title": "Ongoing professional development",
+							"detail": "Latest techniques and technologies"
+						}
+					],
+					"areas": [
+						{
+							"name": "General Dentistry"
+						},
+						{
+							"name": "Cosmetic Dentistry"
+						},
+						{
+							"name": "Restorative Dentistry"
+						},
+						{
+							"name": "Preventive Care"
+						},
+						{
+							"name": "Children’s Dentistry"
+						}
+					],
+					"approach": "I believe great dental care starts with listening. My goal is to make every visit comfortable, informative and positive, so you can feel at ease and confident about your oral health. I take the time to understand your needs and work with you to achieve a healthy, beautiful smile that lasts a lifetime.",
+					"signature": "Dr. Emily Carter",
+					"slots": [
+						{
+							"weekday": "Monday",
+							"time": "9:00 AM"
+						},
+						{
+							"weekday": "Tuesday",
+							"time": "11:30 AM"
+						},
+						{
+							"weekday": "Wednesday",
+							"time": "2:00 PM"
+						},
+						{
+							"weekday": "Thursday",
+							"time": "9:00 AM"
+						},
+						{
+							"weekday": "Friday",
+							"time": "1:30 PM"
+						}
+					],
+					"position": 1,
+					"photo": "/images/dentist-emily-carter.webp",
+					"photo_alt": "Portrait of Dr. Emily Carter smiling in a white coat in the treatment room",
+					"approach_photo": "/images/dentist-consultation.webp",
+					"approach_alt": "Dr. Emily Carter talking with a patient during a consultation"
+				}
+			}
+		],
+		"clinic": [
+			{
+				"id": "luma-dental",
+				"slug": "luma-dental",
+				"status": "published",
+				"data": {
+					"title": "Luma Dental",
+					"email": "hello@lumadental.example",
+					"phone": "(03) 9123 4567",
+					"phone_note": "We’re here to help.",
+					"address_line1": "123 Health Avenue",
+					"address_line2": "Riverside, Melbourne VIC 3000",
+					"directions_url": "https://www.google.com/maps/search/?api=1&query=123%20Health%20Avenue%20Riverside%20Melbourne%20VIC%203000",
+					"hours": [
+						{
+							"days": "Mon – Fri",
+							"time": "8:00am – 6:00pm"
+						},
+						{
+							"days": "Sat",
+							"time": "8:00am – 1:00pm"
+						}
+					],
+					"footer_blurb": "Gentle, modern and personalized dental care for every stage of life.",
+					"request_note": "This is an appointment request, not a confirmed booking. We’ll contact you to confirm a time. Please don’t include medical records or health details here.",
+					"photo": "/images/clinic-reception.webp",
+					"photo_alt": "The Luma Dental reception desk and waiting area with large windows",
+					"map_photo": "/images/clinic-map.webp",
+					"map_alt": "Street map showing Luma Dental near Kings Way, Alexandra Gardens and the Yarra River"
+				}
+			}
+		]
+	}
+}
