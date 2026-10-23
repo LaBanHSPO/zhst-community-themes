@@ -1,0 +1,105 @@
+---
+interface Props {
+	title: string;
+	message: string;
+}
+const { title, message } = Astro.props;
+---
+<main class="nf">
+	<div class="nf-card">
+		<a class="nf-logo" href="/" aria-label="Restaurant Chain — trang chủ">
+			<svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+				<circle cx="10.5" cy="12.5" r="5"></circle>
+				<circle cx="16" cy="10" r="6"></circle>
+				<circle cx="21.5" cy="12.5" r="5"></circle>
+				<rect x="9" y="15.5" width="14" height="6.5" rx="2.6"></rect>
+			</svg>
+			<span>Restaurant <em>Chain</em></span>
+		</a>
+		<p class="nf-code">404</p>
+		<h1>{title}</h1>
+		<p class="nf-message">{message}</p>
+		<a class="nf-home" href="/">Về trang chủ</a>
+	</div>
+</main>
+<style>
+	:global(body) {
+		margin: 0;
+		background: #1f1f22;
+		color: #1d1c1f;
+		font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+		line-height: 1.5;
+	}
+	.nf {
+		display: grid;
+		place-items: center;
+		min-block-size: 100svh;
+		padding: 24px 16px;
+		box-sizing: border-box;
+	}
+	.nf-card {
+		inline-size: min(100%, 440px);
+		padding: 32px 24px;
+		border-radius: 20px;
+		border-block-start: 6px solid #e5322d;
+		background: #fff;
+		box-sizing: border-box;
+	}
+	.nf-logo {
+		display: inline-flex;
+		align-items: center;
+		min-block-size: 44px;
+		min-inline-size: 44px;
+		gap: 10px;
+		color: #1d1c1f;
+		font-size: 18px;
+		font-weight: 800;
+		text-decoration: none;
+	}
+	.nf-logo svg {
+		inline-size: 30px;
+		block-size: 30px;
+		fill: #e5322d;
+	}
+	.nf-logo em {
+		color: #c4231f;
+		font-style: normal;
+	}
+	.nf-code {
+		margin: 28px 0 0;
+		color: #c4231f;
+		font-size: 14px;
+		font-weight: 800;
+		letter-spacing: 0.2em;
+	}
+	h1 {
+		margin: 4px 0 0;
+		font-size: 28px;
+		font-weight: 800;
+		letter-spacing: -0.02em;
+		line-height: 1.15;
+	}
+	.nf-message {
+		margin: 12px 0 24px;
+		color: #64616a;
+	}
+	.nf-home {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-block-size: 48px;
+		border-radius: 12px;
+		background: #e5322d;
+		color: #fff;
+		font-weight: 700;
+		text-decoration: none;
+	}
+	.nf-home:hover {
+		background: #c4231f;
+	}
+	a:focus-visible {
+		outline: 3px solid #e5322d;
+		outline-offset: 3px;
+		border-radius: 8px;
+	}
+</style>

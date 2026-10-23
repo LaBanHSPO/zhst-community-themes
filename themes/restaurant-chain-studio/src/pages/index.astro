@@ -1,0 +1,940 @@
+---
+export const prerender = false;
+const workspace = "/_emdash/admin/plugins/restaurant-chain/workspace";
+const nav = [
+	{ href: "#chi-nhanh", label: "Chi nhánh", icon: "home" },
+	{ href: "#so-do-ban", label: "Bàn", icon: "table" },
+	{ href: "#thuc-don", label: "Thực đơn", icon: "menu" },
+	{ href: "#luong-goi-mon", label: "Đơn gọi món", icon: "orders" },
+	{ href: "#nhan-vien", label: "Nhân viên", icon: "staff" },
+];
+type TableState = "free" | "busy" | "clean";
+const tables: { id: string; seats: number; shape: "round" | "square"; x: number; y: number; state: TableState }[] = [
+	{ id: "1", seats: 2, shape: "round", x: 70, y: 70, state: "free" },
+	{ id: "2", seats: 4, shape: "square", x: 190, y: 70, state: "busy" },
+	{ id: "3", seats: 2, shape: "round", x: 310, y: 70, state: "free" },
+	{ id: "4", seats: 4, shape: "square", x: 70, y: 190, state: "free" },
+	{ id: "5", seats: 4, shape: "square", x: 190, y: 190, state: "clean" },
+	{ id: "6", seats: 4, shape: "square", x: 310, y: 190, state: "free" },
+	{ id: "7", seats: 6, shape: "square", x: 70, y: 310, state: "busy" },
+	{ id: "8", seats: 4, shape: "square", x: 190, y: 310, state: "free" },
+	{ id: "9", seats: 4, shape: "square", x: 310, y: 310, state: "free" },
+];
+const legend: { state: TableState; label: string }[] = [
+	{ state: "free", label: "Bàn trống" },
+	{ state: "busy", label: "Đang phục vụ" },
+	{ state: "clean", label: "Cần dọn bàn" },
+];
+const flow = [
+	{
+		step: "1",
+		title: "Khách gửi món",
+		body: "Quét QR hoặc chạm NFC tại bàn, chọn món, tùy chọn và ghi chú.",
+		status: "Chờ xác nhận",
+		tone: "soft",
+	},
+	{
+		step: "2",
+		title: "Nhân viên xác nhận",
+		body: "Món chỉ được chuyển tới bếp sau khi nhân viên phục vụ xác nhận.",
+		status: "Đã xác nhận",
+		tone: "solid",
+	},
+	{
+		step: "3",
+		title: "Bếp chế biến",
+		body: "Bếp theo dõi từng món: đang làm, sẵn sàng, đã phục vụ.",
+		status: "Đang chế biến",
+		tone: "soft",
+	},
+	{
+		step: "4",
+		title: "Thu ngân",
+		body: "Thu tiền tại quầy. Chuyển khoản và hóa đơn điện tử qua SePay khi đã cấu hình.",
+		status: "Thanh toán",
+		tone: "plain",
+	},
+];
+const menuFeatures = [
+	{ title: "Size và topping", body: "Mỗi món có tùy chọn riêng, giá cộng thêm hiển thị rõ." },
+	{ title: "Báo hết món", body: "Món hết được làm mờ và không thể thêm vào giỏ." },
+	{ title: "Giá luôn đúng", body: "Giá đổi giữa chừng thì khách được xem lại trước khi gửi." },
+	{ title: "Gọi nhân viên", body: "Khách gọi phục vụ hoặc yêu cầu tính tiền ngay tại bàn." },
+];
+---
+<!doctype html>
+<html lang="vi">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex" />
+		<meta name="theme-color" content="#1f1f22" />
+		<title>Restaurant Chain Studio · Điều hành chuỗi nhà hàng</title>
+	</head>
+	<body>
+		<a class="skip" href="#main">Bỏ qua tới nội dung</a>
+		<div class="app">
+			<aside class="rail" aria-label="Restaurant Chain">
+				<a class="logo" href="/" aria-label="Restaurant Chain — trang chủ">
+					<svg class="hat" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+						<path
+							d="M14 34v-6.5a8.5 8.5 0 0 1 3.4-16.3A9.5 9.5 0 0 1 30.6 11.2 8.5 8.5 0 0 1 34 27.5V34z"
+							fill="currentColor"></path>
+						<rect x="14" y="36" width="20" height="5" rx="1.6" fill="currentColor"></rect>
+						<path d="M19 27v5M24 26v6M29 27v5" stroke="#1f1f22" stroke-width="2" stroke-linecap="round"
+						></path>
+					</svg>
+					<span class="logo-text"><span>Restaurant</span> <em>Chain</em></span>
+				</a>
+				<nav class="rail-nav" aria-label="Các phần chính">
+					<ul>
+						{
+							nav.map((item, index) => (
+								<li>
+									<a href={item.href} data-active={index === 0 ? "" : undefined}>
+										<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+											{item.icon === "home" && <path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" />}
+											{item.icon === "table" && <path d="M3 7h18v3H3zM5 10v9M19 10v9M3 4h18" />}
+											{item.icon === "menu" && <path d="M6 3v7a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V3M8 12v9M16 3c-2 1.5-2.5 4-2.5 6.5V13H17V21M17 3v18" />}
+											{item.icon === "orders" && <path d="M7 3h10l2 2v16H5V5zM9 9h6M9 13h6M9 17h4" />}
+											{item.icon === "staff" && <path d="M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2.5 20a6.5 6.5 0 0 1 13 0M16 4.3a3.5 3.5 0 0 1 0 6.4M18 14a6.5 6.5 0 0 1 3.5 6" />}
+										</svg>
+										<span>{item.label}</span>
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</nav>
+				<div class="rail-foot" aria-hidden="true">
+					<svg viewBox="0 0 80 150">
+						<ellipse cx="22" cy="30" rx="12" ry="22"></ellipse>
+						<path d="M22 52v90M50 10v50a8 8 0 0 0 8 8M58 68v74M66 10v50a8 8 0 0 1-8 8M58 10v40"></path>
+					</svg>
+				</div>
+			</aside>
+
+			<div class="stage">
+				<header class="topbar">
+					<div class="topbar-title">
+						<p class="eyebrow">
+							<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+								<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path>
+								<circle cx="12" cy="9.5" r="2.5"></circle>
+							</svg>
+							Chuỗi nhà hàng nhiều chi nhánh
+						</p>
+						<h1>Điều hành từ bàn ăn tới bếp</h1>
+					</div>
+					<div class="topbar-actions">
+						<a class="btn ghost" href="#luong-goi-mon">Cách hoạt động</a>
+						<a class="btn primary" href={workspace}>Dành cho nhân viên</a>
+					</div>
+				</header>
+
+				<main id="main" class="board">
+					<section id="so-do-ban" class="panel floor" aria-labelledby="floor-title">
+						<div class="panel-head">
+							<h2 id="floor-title">Sơ đồ bàn</h2>
+							<div class="segmented" aria-hidden="true">
+								<span data-active>Sơ đồ</span><span>Danh sách</span>
+							</div>
+						</div>
+						<figure class="floor-figure">
+							<svg
+								class="floor-plan"
+								viewBox="0 0 380 380"
+								role="img"
+								aria-label="Hình minh họa sơ đồ bàn với 9 bàn và ba trạng thái"
+							>
+								<rect class="room" x="6" y="6" width="368" height="368" rx="10"></rect>
+								<path class="wall" d="M6 6h120M170 6h204M6 6v368M374 6v368M6 374h368"></path>
+								<rect class="counter" x="22" y="352" width="120" height="14" rx="3"></rect>
+								<g class="plant">
+									<circle cx="24" cy="24" r="10"></circle><circle cx="356" cy="24" r="10"></circle>
+									<circle cx="356" cy="356" r="9"></circle>
+								</g>
+								{
+									tables.map((table) => {
+										const size = table.seats === 6 ? 62 : table.shape === "round" ? 0 : 50;
+										return (
+											<g class="table" data-state={table.state}>
+												<g class="chairs">
+													<rect x={table.x - 12} y={table.y - 40} width="24" height="10" rx="4" />
+													<rect x={table.x - 12} y={table.y + 30} width="24" height="10" rx="4" />
+													{table.seats > 2 && (
+														<>
+															<rect x={table.x - 40} y={table.y - 12} width="10" height="24" rx="4" />
+															<rect x={table.x + 30} y={table.y - 12} width="10" height="24" rx="4" />
+														</>
+													)}
+												</g>
+												{table.shape === "round" ? (
+													<circle class="top" cx={table.x} cy={table.y} r="26" />
+												) : (
+													<rect
+														class="top"
+														x={table.x - size / 2}
+														y={table.y - size / 2}
+														width={size}
+														height={size}
+														rx="8"
+													/>
+												)}
+												<text class="label" x={table.x} y={table.y - 2}>
+													T{table.id}
+												</text>
+												<text class="seats" x={table.x} y={table.y + 13}>
+													{table.seats}
+												</text>
+											</g>
+										);
+									})
+								}
+							</svg>
+							<figcaption>
+								<ul class="legend">
+									{
+										legend.map((entry) => (
+											<li>
+												<span class="dot" data-state={entry.state} aria-hidden="true" />
+												{entry.label}
+											</li>
+										))
+									}
+								</ul>
+								<p class="caption">
+									Hình minh họa. Trong khu điều hành, nhân viên xem bàn thật của chi nhánh theo dạng
+									sơ đồ hoặc danh sách.
+								</p>
+							</figcaption>
+						</figure>
+					</section>
+
+					<section id="luong-goi-mon" class="panel orders" aria-labelledby="orders-title">
+						<div class="panel-head">
+							<h2 id="orders-title">Luồng gọi món</h2>
+						</div>
+						<ol class="order-list">
+							{
+								flow.map((item) => (
+									<li class="order-card">
+										<div class="order-top">
+											<span class="order-dot" data-tone={item.tone} aria-hidden="true" />
+											<span class="order-step">Bước {item.step}</span>
+											<h3>{item.title}</h3>
+										</div>
+										<p>{item.body}</p>
+										<span class="order-status" data-tone={item.tone}>
+											{item.status}
+										</span>
+									</li>
+								))
+							}
+						</ol>
+					</section>
+
+					<section id="thuc-don" class="panel menu" aria-labelledby="menu-title">
+						<div class="panel-head">
+							<h2 id="menu-title">Thực đơn</h2>
+						</div>
+						<ul class="menu-grid">
+							{
+								menuFeatures.map((feature) => (
+									<li class="menu-card">
+										<span class="menu-art" aria-hidden="true">
+											<svg viewBox="0 0 48 48">
+												<circle cx="24" cy="26" r="15" />
+												<circle cx="24" cy="26" r="9" />
+												<path d="M6 10v10a3 3 0 0 0 3 3v14M42 10c-3 2-3.5 6-3.5 10h3.5v17" />
+											</svg>
+										</span>
+										<h3>{feature.title}</h3>
+										<p>{feature.body}</p>
+									</li>
+								))
+							}
+						</ul>
+						<div class="guest-card">
+							<div>
+								<h3>Gọi món tại bàn</h3>
+								<p>Khách quét mã QR hoặc chạm thẻ NFC để xem thực đơn của đúng chi nhánh và bàn.</p>
+							</div>
+							<svg class="guest-art" viewBox="0 0 120 96" aria-hidden="true" focusable="false">
+								<g class="qr">
+									<rect x="62" y="4" width="54" height="54" rx="8" class="qr-bg"></rect>
+									<rect x="70" y="12" width="14" height="14" rx="2"></rect>
+									<rect x="94" y="12" width="14" height="14" rx="2"></rect>
+									<rect x="70" y="36" width="14" height="14" rx="2"></rect>
+									<rect x="74" y="16" width="6" height="6" class="qr-in"></rect>
+									<rect x="98" y="16" width="6" height="6" class="qr-in"></rect>
+									<rect x="74" y="40" width="6" height="6" class="qr-in"></rect>
+									<rect x="94" y="36" width="6" height="6"></rect><rect x="102" y="44" width="6" height="6"></rect>
+								</g>
+								<rect x="22" y="34" width="28" height="52" rx="6" class="phone"></rect>
+								<path class="waves" d="M14 52a14 14 0 0 0 0 18M8 47a21 21 0 0 0 0 28M56 52a14 14 0 0 1 0 18"></path>
+							</svg>
+						</div>
+					</section>
+
+					<section id="chi-nhanh" class="panel strip" aria-labelledby="branch-title">
+						<div>
+							<h2 id="branch-title">Chi nhánh</h2>
+							<p>
+								Mỗi chi nhánh có bàn, thực đơn, nhân viên, ca làm và cấu hình thanh toán riêng. Mã QR
+								của bàn gắn với đúng chi nhánh.
+							</p>
+						</div>
+						<div id="nhan-vien">
+							<h2>Nhân viên</h2>
+							<p>
+								Quản lý, phục vụ, bếp, thu ngân và kế toán làm việc trong một khu điều hành, mỗi vai
+								trò thấy đúng phần việc của mình.
+							</p>
+						</div>
+						<div>
+							<h2>Thanh toán</h2>
+							<p>
+								Chuyển khoản và hóa đơn điện tử cần cấu hình SePay riêng cho từng chi nhánh. Không có
+								giao dịch thật trong bản mẫu này.
+							</p>
+						</div>
+					</section>
+				</main>
+			</div>
+		</div>
+	</body>
+</html>
+<style>
+	:global(:root) {
+		--ink: #1d1c1f;
+		--muted: #64616a;
+		--line: #e7e3df;
+		--paper: #f6f4f1;
+		--surface: #ffffff;
+		--charcoal: #1f1f22;
+		--charcoal-2: #2a2a2e;
+		--red: #e5322d;
+		--red-strong: #c4231f;
+		--red-tint: #fde8e6;
+		--red-soft: #f9b6b0;
+		color-scheme: light;
+	}
+	:global(*),
+	:global(*::before),
+	:global(*::after) {
+		box-sizing: border-box;
+	}
+	:global(body) {
+		margin: 0;
+		background: var(--paper);
+		color: var(--ink);
+		font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+		line-height: 1.5;
+	}
+	:global(:focus-visible) {
+		outline: 3px solid var(--red);
+		outline-offset: 3px;
+		border-radius: 6px;
+	}
+	.skip {
+		position: absolute;
+		inset-inline-start: 12px;
+		inset-block-start: -60px;
+		z-index: 10;
+		padding: 10px 16px;
+		border-radius: 10px;
+		background: var(--surface);
+		color: var(--ink);
+		font-weight: 700;
+	}
+	.skip:focus {
+		inset-block-start: 12px;
+	}
+	h1,
+	h2,
+	h3,
+	p {
+		margin: 0;
+	}
+	ul,
+	ol {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.app {
+		display: grid;
+		grid-template-columns: 248px minmax(0, 1fr);
+		min-block-size: 100svh;
+	}
+
+	/* ------------------------------------------------------------- Dark rail */
+	.rail {
+		position: sticky;
+		inset-block-start: 0;
+		block-size: 100svh;
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+		padding: 28px 18px 24px;
+		background: var(--charcoal);
+		color: #d9d7dc;
+	}
+	.logo {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		min-block-size: 44px;
+		padding-inline: 8px;
+		color: #fff;
+		text-decoration: none;
+	}
+	.hat {
+		inline-size: 46px;
+		block-size: 46px;
+		color: var(--red);
+		flex-shrink: 0;
+	}
+	.logo-text {
+		display: flex;
+		flex-direction: column;
+		font-size: 22px;
+		font-weight: 800;
+		line-height: 1.05;
+		letter-spacing: -0.02em;
+	}
+	.logo-text em {
+		color: var(--red);
+		font-style: normal;
+	}
+	.rail-nav ul {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+	.rail-nav a {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		min-block-size: 48px;
+		padding: 10px 16px;
+		border-radius: 10px;
+		color: #d9d7dc;
+		font-size: 16px;
+		font-weight: 550;
+		text-decoration: none;
+		transition: background-color 160ms ease;
+	}
+	.rail-nav a:hover {
+		background: var(--charcoal-2);
+		color: #fff;
+	}
+	.rail-nav a[data-active] {
+		background: var(--red);
+		color: #fff;
+		font-weight: 700;
+	}
+	.rail-nav svg {
+		inline-size: 22px;
+		block-size: 22px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.8;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		flex-shrink: 0;
+	}
+	.rail-foot {
+		margin-block-start: auto;
+		display: flex;
+		justify-content: flex-end;
+	}
+	.rail-foot svg {
+		inline-size: 64px;
+		block-size: 120px;
+		fill: none;
+		stroke: #4a494f;
+		stroke-width: 2;
+		stroke-linecap: round;
+	}
+
+	/* ------------------------------------------------------------- Stage */
+	.stage {
+		min-inline-size: 0;
+		display: flex;
+		flex-direction: column;
+	}
+	.topbar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		padding: 22px 32px;
+		background: var(--surface);
+		border-block-end: 1px solid var(--line);
+	}
+	.eyebrow {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		color: var(--muted);
+		font-size: 14px;
+		font-weight: 600;
+	}
+	.eyebrow svg {
+		inline-size: 18px;
+		block-size: 18px;
+		fill: none;
+		stroke: var(--red);
+		stroke-width: 2.2;
+	}
+	h1 {
+		margin-block-start: 4px;
+		font-size: clamp(24px, 2.6vw, 32px);
+		font-weight: 800;
+		letter-spacing: -0.025em;
+		line-height: 1.15;
+	}
+	.topbar-actions {
+		display: flex;
+		gap: 10px;
+		flex-shrink: 0;
+	}
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-block-size: 44px;
+		padding: 10px 20px;
+		border-radius: 10px;
+		font-weight: 700;
+		text-decoration: none;
+		transition: background-color 160ms ease;
+	}
+	.btn.primary {
+		background: var(--red);
+		color: #fff;
+	}
+	.btn.primary:hover {
+		background: var(--red-strong);
+	}
+	.btn.ghost {
+		background: #efedeb;
+		color: var(--ink);
+	}
+	.btn.ghost:hover {
+		background: #e5e2df;
+	}
+
+	.board {
+		display: grid;
+		grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.85fr) minmax(0, 1fr);
+		gap: 0;
+		flex: 1;
+		background: var(--surface);
+	}
+	.panel {
+		padding: 24px;
+		min-inline-size: 0;
+		scroll-margin-block-start: 16px;
+	}
+	.panel + .panel {
+		border-inline-start: 1px solid var(--line);
+	}
+	.panel-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+		margin-block-end: 18px;
+	}
+	h2 {
+		font-size: 22px;
+		font-weight: 800;
+		letter-spacing: -0.02em;
+	}
+	h3 {
+		font-size: 16px;
+		font-weight: 750;
+		line-height: 1.3;
+	}
+
+	/* Floor */
+	.segmented {
+		display: inline-flex;
+		padding: 3px;
+		border-radius: 10px;
+		background: #efedeb;
+		font-size: 14px;
+		font-weight: 600;
+		color: var(--muted);
+	}
+	.segmented span {
+		padding: 6px 16px;
+		border-radius: 8px;
+	}
+	.segmented [data-active] {
+		background: var(--red);
+		color: #fff;
+	}
+	.floor-figure {
+		margin: 0;
+	}
+	.floor-plan {
+		display: block;
+		inline-size: 100%;
+		block-size: auto;
+		max-inline-size: 560px;
+		margin-inline: auto;
+	}
+	.room {
+		fill: #f3efe9;
+	}
+	.wall {
+		fill: none;
+		stroke: #5b5a60;
+		stroke-width: 6;
+		stroke-linecap: square;
+	}
+	.counter {
+		fill: #c9a97a;
+	}
+	.plant circle {
+		fill: #6aa457;
+	}
+	.table .chairs rect {
+		fill: #77767c;
+	}
+	.table .top {
+		fill: #fff;
+		stroke: #c9c6c2;
+		stroke-width: 1.5;
+	}
+	.table[data-state="busy"] .top,
+	.table[data-state="busy"] .chairs rect {
+		fill: var(--red);
+		stroke: var(--red-strong);
+	}
+	.table[data-state="clean"] .top {
+		fill: var(--red-soft);
+		stroke: #ee938a;
+	}
+	.table[data-state="clean"] .chairs rect {
+		fill: #e98880;
+	}
+	.label,
+	.seats {
+		text-anchor: middle;
+		font-family: inherit;
+		fill: var(--ink);
+	}
+	.label {
+		font-size: 13px;
+		font-weight: 800;
+	}
+	.seats {
+		font-size: 10px;
+		fill: var(--muted);
+	}
+	.table[data-state="busy"] .label,
+	.table[data-state="busy"] .seats {
+		fill: #fff;
+	}
+	.legend {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px 22px;
+		margin-block-start: 18px;
+		font-size: 14px;
+		color: var(--ink);
+	}
+	.legend li {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+	.dot {
+		inline-size: 18px;
+		block-size: 18px;
+		border-radius: 50%;
+		background: #fff;
+		border: 1.5px solid #c9c6c2;
+	}
+	.dot[data-state="busy"] {
+		background: var(--red);
+		border-color: var(--red);
+	}
+	.dot[data-state="clean"] {
+		background: var(--red-soft);
+		border-color: var(--red-soft);
+	}
+	.caption {
+		margin-block-start: 10px;
+		font-size: 13px;
+		color: var(--muted);
+	}
+
+	/* Orders */
+	.order-list {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+	}
+	.order-card {
+		padding: 16px;
+		border: 1px solid var(--line);
+		border-radius: 12px;
+		background: var(--surface);
+		box-shadow: 0 1px 2px #1d1c1f0d;
+	}
+	.order-top {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		flex-wrap: wrap;
+	}
+	.order-dot {
+		inline-size: 14px;
+		block-size: 14px;
+		border-radius: 50%;
+		background: var(--red);
+	}
+	.order-dot[data-tone="soft"] {
+		background: #f07b74;
+	}
+	.order-dot[data-tone="plain"] {
+		background: #b9b6b3;
+	}
+	.order-step {
+		padding: 2px 10px;
+		border-radius: 6px;
+		background: #f1efed;
+		font-size: 13px;
+		font-weight: 600;
+		color: var(--muted);
+	}
+	.order-top h3 {
+		flex-basis: 100%;
+	}
+	.order-card p {
+		margin-block: 6px 14px;
+		font-size: 14px;
+		color: var(--muted);
+	}
+	.order-status {
+		display: block;
+		padding: 9px 12px;
+		border-radius: 8px;
+		text-align: center;
+		font-size: 14px;
+		font-weight: 650;
+		background: var(--red);
+		color: #fff;
+	}
+	.order-status[data-tone="soft"] {
+		background: var(--red-tint);
+		color: var(--red-strong);
+	}
+	.order-status[data-tone="plain"] {
+		background: #f1efed;
+		color: var(--ink);
+	}
+
+	/* Menu */
+	.menu-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 12px;
+	}
+	.menu-card {
+		overflow: hidden;
+		border: 1px solid var(--line);
+		border-radius: 12px;
+		background: var(--surface);
+	}
+	.menu-art {
+		display: grid;
+		place-items: center;
+		aspect-ratio: 16 / 10;
+		background: linear-gradient(135deg, #fbe4df, #f6efe7);
+	}
+	.menu-art svg {
+		inline-size: 56px;
+		block-size: 56px;
+		fill: none;
+		stroke: var(--red);
+		stroke-width: 2;
+		stroke-linecap: round;
+	}
+	.menu-card h3 {
+		padding: 12px 12px 2px;
+		font-size: 15px;
+	}
+	.menu-card p {
+		padding: 0 12px 12px;
+		font-size: 13px;
+		color: var(--muted);
+	}
+	.guest-card {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+		margin-block-start: 18px;
+		padding: 20px;
+		border-radius: 14px;
+		background: var(--red-tint);
+	}
+	.guest-card h3 {
+		font-size: 20px;
+		font-weight: 800;
+	}
+	.guest-card p {
+		margin-block-start: 6px;
+		font-size: 14px;
+		color: #5a4644;
+	}
+	.guest-art {
+		inline-size: 128px;
+		flex-shrink: 0;
+	}
+	.qr rect {
+		fill: var(--ink);
+	}
+	.qr .qr-bg {
+		fill: #fff;
+	}
+	.qr .qr-in {
+		fill: #fff;
+	}
+	.phone {
+		fill: #fff;
+		stroke: var(--ink);
+		stroke-width: 2.4;
+	}
+	.waves {
+		fill: none;
+		stroke: var(--ink);
+		stroke-width: 2;
+		stroke-linecap: round;
+		opacity: 0.6;
+	}
+
+	/* Strip */
+	.strip {
+		grid-column: 1 / -1;
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 24px;
+		border-block-start: 1px solid var(--line);
+		background: var(--paper);
+	}
+	.panel.strip {
+		border-inline-start: 0;
+	}
+	.strip h2 {
+		font-size: 18px;
+	}
+	.strip p {
+		margin-block-start: 6px;
+		font-size: 14px;
+		color: var(--muted);
+		max-inline-size: 46ch;
+	}
+
+	@media (max-width: 1280px) {
+		.board {
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		}
+		.menu {
+			grid-column: 1 / -1;
+			border-block-start: 1px solid var(--line);
+		}
+		.panel.menu {
+			border-inline-start: 0;
+		}
+		.menu-grid {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+	}
+	@media (max-width: 960px) {
+		.app {
+			grid-template-columns: minmax(0, 1fr);
+		}
+		.rail {
+			position: static;
+			block-size: auto;
+			gap: 16px;
+			padding: 16px;
+		}
+		.logo {
+			padding-inline: 0;
+		}
+		.hat {
+			inline-size: 38px;
+			block-size: 38px;
+		}
+		.logo-text {
+			flex-direction: row;
+			gap: 6px;
+			font-size: 20px;
+		}
+		.rail-nav ul {
+			flex-direction: row;
+			overflow-x: auto;
+			scrollbar-width: none;
+			margin-inline: -16px;
+			padding-inline: 16px;
+		}
+		.rail-nav a {
+			white-space: nowrap;
+			padding: 8px 14px;
+			min-block-size: 44px;
+			font-size: 15px;
+		}
+		.rail-foot {
+			display: none;
+		}
+		.topbar {
+			flex-direction: column;
+			align-items: stretch;
+			padding: 20px 16px;
+		}
+		.topbar-actions .btn {
+			flex: 1;
+		}
+		.board {
+			grid-template-columns: minmax(0, 1fr);
+		}
+		.panel {
+			padding: 20px 16px;
+		}
+		.panel + .panel {
+			border-inline-start: 0;
+			border-block-start: 1px solid var(--line);
+		}
+		.menu-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+		.strip {
+			grid-template-columns: minmax(0, 1fr);
+			gap: 18px;
+		}
+	}
+	@media (max-width: 420px) {
+		.topbar-actions {
+			flex-direction: column;
+		}
+		.guest-art {
+			inline-size: 96px;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.rail-nav a,
+		.btn {
+			transition: none;
+		}
+	}
+</style>

@@ -1,0 +1,40 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "restaurant-chain-studio-local",
+	"main": "src/worker.ts",
+	"compatibility_date": "2026-10-10",
+	"compatibility_flags": ["nodejs_compat"],
+	"workers_dev": false,
+	"observability": { "enabled": true },
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "restaurant-cms-local",
+			"database_id": "00000000-0000-0000-0000-000000000001",
+		},
+		{
+			"binding": "RESTAURANT_DB",
+			"database_name": "restaurant-domain-local",
+			"database_id": "00000000-0000-0000-0000-000000000002",
+			"migrations_dir": "node_modules/@zerohost/plugin-restaurant-chain/migrations",
+		},
+	],
+	"r2_buckets": [{ "binding": "MEDIA", "bucket_name": "restaurant-media-local" }],
+	"queues": {
+		"producers": [{ "binding": "RESTAURANT_JOBS", "queue": "restaurant-jobs-local" }],
+		"consumers": [
+			{
+				"queue": "restaurant-jobs-local",
+				"max_batch_size": 10,
+				"max_batch_timeout": 5,
+				"max_retries": 3,
+				"dead_letter_queue": "restaurant-jobs-dlq-local",
+			},
+		],
+	},
+	"triggers": { "crons": ["* * * * *"] },
+	"vars": {
+		"EMDASH_SITE_URL": "http://localhost:4366",
+		"RESTAURANT_ENVIRONMENT": "local",
+	},
+}

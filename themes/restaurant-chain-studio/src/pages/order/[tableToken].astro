@@ -1,0 +1,31 @@
+---
+export const prerender = false;
+import GuestMenu from '../../components/GuestMenu.js';
+import NotFound from '../../components/NotFound.astro';
+const { tableToken } = Astro.params;
+const validToken = tableToken && /^[A-Za-z0-9_-]{16,160}$/.test(tableToken) ? tableToken : undefined;
+if (!validToken) Astro.response.status = 404;
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+Astro.response.headers.set('Referrer-Policy', 'no-referrer');
+---
+<!doctype html>
+<html lang="vi">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex,nofollow" />
+		<title>{validToken ? 'Thực đơn tại bàn' : 'Không tìm thấy bàn'}</title>
+	</head>
+	<body>
+		{
+			validToken ? (
+				<GuestMenu tableToken={validToken} client:load />
+			) : (
+				<NotFound
+					title="Không tìm thấy bàn"
+					message="Liên kết bàn không hợp lệ. Hãy quét lại mã QR hoặc chạm lại thẻ NFC trên bàn, hoặc nhờ nhân viên hỗ trợ."
+				/>
+			)
+		}
+	</body>
+</html>

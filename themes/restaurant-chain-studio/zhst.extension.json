@@ -1,0 +1,19 @@
+{
+	"schema": 1,
+	"id": "restaurant-chain-studio",
+	"kind": "theme",
+	"name": "Restaurant Chain Studio",
+	"type": "restaurant",
+	"emdash": "1.2.0",
+	"entry": "themes/restaurant-chain-studio",
+	"plugin": "restaurant-chain",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": false,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}
