@@ -1,0 +1,157 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import Badges from "../../components/Badges.astro";
+import Hero from "../../components/Hero.astro";
+import Icon from "../../components/Icon.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getGuarantees, getJobs, getPrices, photoSrc, quoteUrl } from "../../lib/fixwell";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.redirect("/404");
+
+const { entry: service, cacheHint } = await getEmDashEntry("services", slug);
+if (!service) return Astro.redirect("/404");
+const key = service.data.slug ?? slug;
+const [jobs, prices, badges, included, settings] = await Promise.all([
+	getJobs(key),
+	getPrices(key),
+	getGuarantees("badges"),
+	getGuarantees("included"),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	for (const hint of [cacheHint, jobs.cacheHint, prices.cacheHint, badges.cacheHint, included.cacheHint]) {
+		Astro.cache.set(hint);
+	}
+}
+
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(service, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+
+const d = service.data;
+const heroSrc = photoSrc(d.hero_image, d.hero_photo) ?? photoSrc(d.image, d.photo);
+const heroAlt = d.hero_image?.alt || `A Fixwell tradesperson at work: ${d.title.toLowerCase()}`;
+const lower = d.title.toLowerCase();
+const checklist = (d.checklist ?? []).map((c) => c.item).filter(Boolean);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.lede ?? d.intro ?? null}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? heroSrc ?? null}
+	content={{ collection: "services", id: d.id, slug }}
+>
+	<Hero photo={heroSrc} alt={heroAlt} labelledby="svc-title" class="hero-detail">
+		<span class="eyebrow">{d.eyebrow || d.title}</span>
+		<h1 id="svc-title" class="display display-detail" {...service.edit.headline}>
+			{d.headline || d.title}
+			{d.headline_accent && <><br /><span class="accent">{d.headline_accent}</span></>}
+		</h1>
+		{(d.lede || d.intro) && <p class="hero-lede">{d.lede || d.intro}</p>}
+		<a class="btn btn-lg" href={quoteUrl(d.issue)}>Request a quote <Arrow /></a>
+		<Badges items={badges.entries} />
+	</Hero>
+
+	<div class="detail-grid container">
+		<section aria-labelledby="jobs-title">
+			<h2 id="jobs-title" class="title-rule title-md">Common {lower} jobs</h2>
+			{
+				jobs.entries.length > 0 ? (
+					<ul class="job-grid">
+						{jobs.entries.map((j) => {
+							const src = photoSrc(j.data.image, j.data.photo);
+							return (
+								<li class="job-card">
+									<a href={quoteUrl(d.issue, j.data.title)}>
+										{src && <img src={src} alt={j.data.image?.alt || j.data.title} width="196" height="74" loading="lazy" />}
+										<div class="job-body">
+											<div>
+												<h3>{j.data.title}</h3>
+												{j.data.text && <p>{j.data.text}</p>}
+											</div>
+											<Arrow />
+										</div>
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				) : (
+					checklist.length > 0 && (
+						<ul class="checklist">
+							{checklist.map((c) => <li>{c}</li>)}
+						</ul>
+					)
+				)
+			}
+		</section>
+
+		{
+			prices.entries.length > 0 && (
+				<section aria-labelledby="pricing-title">
+					<h2 id="pricing-title" class="title-rule title-md">Our pricing</h2>
+					<dl class="price-list">
+						{prices.entries.map((p) => (
+							<div>
+								<dt>
+									<span class="price-name">{p.data.title}</span>
+									{p.data.text && <span class="price-note">{p.data.text}</span>}
+								</dt>
+								<dd>
+									{/^from\s/i.test(p.data.price) ? (
+										<>
+											<small>from</small>
+											{p.data.price.replace(/^from\s+/i, "")}
+										</>
+									) : (
+										p.data.price
+									)}
+								</dd>
+							</div>
+						))}
+					</dl>
+					<p class="fine">
+						Prices are starting from and may vary based on the job and parts required. We'll always confirm the total cost before any work begins.
+					</p>
+				</section>
+			)
+		}
+
+		{
+			included.entries.length > 0 && (
+				<section aria-labelledby="included-title">
+					<h2 id="included-title" class="title-rule title-md">What’s included</h2>
+					<ul class="included">
+						{included.entries.map((g) => (
+							<li>
+								<Icon name={g.data.icon ?? "shield"} />
+								<div>
+									<h3>{g.data.title}</h3>
+									{g.data.text && <p>{g.data.text}</p>}
+								</div>
+							</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+	</div>
+
+	<section class="cta-band" aria-labelledby="cta-title">
+		<div class="container cta-inner">
+			<div>
+				<h2 id="cta-title">{d.cta_title || `Need help with ${lower}?`}</h2>
+				<p>{d.cta_text || "Get a fast, no-obligation quote today."}</p>
+			</div>
+			<a class="btn btn-lg" href={quoteUrl(d.issue)}>Request a quote <Arrow /></a>
+		</div>
+	</section>
+</Base>

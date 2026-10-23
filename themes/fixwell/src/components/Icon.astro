@@ -1,0 +1,44 @@
+---
+/** Line icons drawn inline (no icon font). Decorative unless a label is passed. */
+interface Props {
+	name: string;
+	class?: string;
+	label?: string;
+}
+const { name, class: className, label } = Astro.props;
+const paths: Record<string, string> = {
+	calendar:
+		'<rect x="5" y="7" width="26" height="24" rx="2.5"/><path d="M5 13.5h26M11.5 4v6M24.5 4v6"/><path d="M11 19h2M17 19h2M23 19h2M11 25h2M17 25h2M23 25h2" stroke-width="2.4"/>',
+	shield: '<path d="M18 4l12 4.5v8.5c0 7.5-5.2 12.6-12 15-6.8-2.4-12-7.5-12-15V8.5z"/><path d="M12.5 17.5l4 4 7.5-8"/>',
+	house: '<path d="M4.5 17L18 5l13.5 12"/><path d="M8.5 14v17h19V14"/><path d="M15 31v-9h6v9"/>',
+	pin: '<path d="M18 33s-10-9.6-10-17.2a10 10 0 0 1 20 0C28 23.4 18 33 18 33z"/><circle cx="18" cy="15.5" r="3.8"/>',
+	clock: '<circle cx="18" cy="18" r="13.5"/><path d="M18 9.5V18h7"/>',
+	people:
+		'<circle cx="13" cy="10.5" r="4.5"/><circle cx="25.5" cy="13" r="3.8"/><path d="M4 30v-2.5A8 8 0 0 1 12 19.5h2a8 8 0 0 1 8 8V30z"/><path d="M24.5 30h7.5v-2a6.5 6.5 0 0 0-6.5-6.5h-1.5"/>',
+	wrench:
+		'<path d="M22.5 4.5a7.5 7.5 0 0 0-7 10.2L5.2 25a3 3 0 0 0 4.3 4.3L19.8 19a7.5 7.5 0 0 0 10.2-7l-4.4 2.4-4-1.4-1.4-4z"/>',
+	tag: '<path d="M18.5 4.5H31v12.5L17 31 5 19z"/><circle cx="25" cy="10.5" r="2"/>',
+	drop: '<path d="M18 4.5S8.5 15 8.5 21.5a9.5 9.5 0 0 0 19 0C27.5 15 18 4.5 18 4.5z"/>',
+	bolt: '<path d="M20.5 3.5L8.5 20h9l-2 12.5L27.5 16h-9z"/>',
+	phone:
+		'<path d="M9.5 4.5l5 7-3.2 3.3c1.6 3.7 5.2 7.3 9 9l3.2-3.3 7 5-3.3 5c-11.5 0-22.3-10.8-22.3-22.3z"/>',
+	camera:
+		'<path d="M5 12.5h6l2.5-4h9l2.5 4h6v17H5z"/><circle cx="18" cy="20.5" r="5"/>',
+};
+const body = paths[name] ?? "";
+---
+
+<svg
+	class:list={["icon", className]}
+	viewBox="0 0 36 36"
+	fill="none"
+	stroke="currentColor"
+	stroke-width="2"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	role={label ? "img" : undefined}
+	aria-label={label}
+	aria-hidden={label ? undefined : "true"}
+	focusable="false"
+	set:html={body}
+/>

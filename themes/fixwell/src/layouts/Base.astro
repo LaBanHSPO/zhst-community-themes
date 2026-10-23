@@ -1,0 +1,180 @@
+---
+import { getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getBusiness, quoteUrl, telHref } from "../lib/fixwell";
+import "../styles/theme.css";
+
+interface Props {
+	title: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	/** Pass content reference for plugin page contributions on content pages */
+	content?: { collection: string; id: string; slug?: string | null };
+	/** Force which primary-menu URL is marked current. */
+	current?: string;
+}
+
+const { title, pageTitle, description, image, canonical, content, current } = Astro.props;
+const [settingsResult, menuResult, businessResult] = await Promise.all([
+	getSiteSettingsWithCacheHint(),
+	getMenuWithCacheHint("primary"),
+	getBusiness(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(settingsResult.cacheHint);
+	Astro.cache.set(menuResult.cacheHint);
+	Astro.cache.set(businessResult.cacheHint);
+}
+
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(settingsResult.data);
+const titleIncludesSiteName =
+	title === siteTitle || title.endsWith(` | ${siteTitle}`) || title.endsWith(` — ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
+const pageDescription = description ?? siteTagline;
+const navItems = menuResult.data?.items ?? [];
+const { business } = businessResult;
+
+// Two-tone wordmark: a single word splits after its first three letters ("Fix" + "well").
+const wordParts = /^\S{4,}$/.test(siteTitle) ? [siteTitle.slice(0, 3), siteTitle.slice(3)] : [siteTitle, ""];
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const norm = (url: string) => url.replace(/\/$/, "") || "/";
+const currentUrl =
+	current ??
+	navItems.find((i) => norm(i.url) === path)?.url ??
+	navItems
+		.filter((i) => norm(i.url) !== "/" && path.startsWith(`${norm(i.url)}/`))
+		.sort((a, b) => b.url.length - a.url.length)[0]?.url;
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description: pageDescription,
+	canonical,
+	image,
+	content,
+	siteName: siteTitle,
+});
+const year = new Intl.DateTimeFormat("en-GB", { year: "numeric", timeZone: "Asia/Saigon" }).format(new Date());
+---
+
+<!doctype html>
+<html lang="en-GB">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{fullTitle}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap"
+			rel="stylesheet"
+		/>
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<header class="site-head">
+			<div class="head-inner">
+				<a class="wordmark" href="/" aria-label={`${siteTitle} — homepage`}>
+					{
+						siteLogo ? (
+							<img src={siteLogo.url} alt={siteLogo.alt || siteTitle} />
+						) : (
+							<>
+								<span class="wordmark-name">
+									{wordParts[0]}<span class="accent">{wordParts[1]}</span>
+								</span>
+								<span class="wordmark-tag">{siteTagline}</span>
+							</>
+						)
+					}
+				</a>
+				<nav class="nav" aria-label="Primary">
+					{
+						navItems.map((item) => (
+							<a
+								href={item.url}
+								target={item.target}
+								rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+								aria-current={item.url === currentUrl ? "page" : undefined}
+							>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+				<a class="btn btn-sm head-cta" href={quoteUrl()}>Request a quote <Arrow /></a>
+				<details class="mobile-nav">
+					<summary>
+						<svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true" focusable="false">
+							<path d="M0 1h20M0 7h20M0 13h20" stroke="currentColor" stroke-width="2" />
+						</svg>
+						<span>Menu</span>
+					</summary>
+					<nav class="mobile-panel" aria-label="Primary (mobile)">
+						{
+							navItems.map((item) => (
+								<a href={item.url} aria-current={item.url === currentUrl ? "page" : undefined}>
+									{item.label}
+								</a>
+							))
+						}
+						{
+							business.phone && (
+								<a class="mobile-call" href={telHref(business.phone)}>
+									<Icon name="phone" /> Call {business.phone}
+								</a>
+							)
+						}
+					</nav>
+				</details>
+			</div>
+		</header>
+
+		<main id="main">
+			<slot />
+		</main>
+
+		<footer class="site-foot">
+			<div class="container foot-inner">
+				<div class="foot-brand">
+					<a class="wordmark" href="/">
+						<span class="wordmark-name">
+							{wordParts[0]}<span class="accent">{wordParts[1]}</span>
+						</span>
+						<span class="wordmark-tag">{siteTagline}</span>
+					</a>
+					<p>Local plumbing and home repairs{business.region ? ` across ${business.region}` : ""}.</p>
+				</div>
+				<div>
+					<h2>Contact</h2>
+					{business.phone && <a href={telHref(business.phone)}>{business.phone}</a>}
+					{business.email && <a href={`mailto:${business.email}`}>{business.email}</a>}
+					{business.hours && <p>{business.hours}</p>}
+				</div>
+				<div>
+					<h2>Explore</h2>
+					{navItems.map((item) => <a href={item.url}>{item.label}</a>)}
+				</div>
+			</div>
+			<div class="container foot-bottom">
+				<span>© {year} {siteTitle}. All rights reserved.</span>
+				<span>Built with EmDash</span>
+			</div>
+		</footer>
+
+		<EmDashBodyEnd page={pageCtx} />
+	</body>
+</html>

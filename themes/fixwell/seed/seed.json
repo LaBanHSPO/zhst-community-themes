@@ -1,0 +1,1223 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Fixwell",
+		"description": "A home repair trades theme: services, a plumbing service page with prices, service areas with a postcode check and a quote request form",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "Fixwell",
+		"tagline": "Home repair"
+	},
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "services",
+			"label": "Services",
+			"labelSingular": "Service",
+			"urlPattern": "/services/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Name (Services page heading)",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "card_title",
+					"label": "Homepage card title",
+					"type": "string"
+				},
+				{
+					"slug": "card_text",
+					"label": "Homepage card text",
+					"type": "text"
+				},
+				{
+					"slug": "intro",
+					"label": "Services page intro",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "checklist",
+					"label": "Checklist (Services page)",
+					"type": "repeater",
+					"validation": {
+						"maxItems": 8,
+						"subFields": [
+							{
+								"slug": "item",
+								"label": "Item",
+								"type": "string",
+								"required": true
+							}
+						]
+					}
+				},
+				{
+					"slug": "request_label",
+					"label": "Request button label",
+					"type": "string"
+				},
+				{
+					"slug": "issue",
+					"label": "Quote form issue type",
+					"type": "select",
+					"defaultValue": "other",
+					"validation": {
+						"options": [
+							"plumbing",
+							"electrical",
+							"other"
+						]
+					}
+				},
+				{
+					"slug": "eyebrow",
+					"label": "Detail page label",
+					"type": "string"
+				},
+				{
+					"slug": "headline",
+					"label": "Detail headline (first line)",
+					"type": "string"
+				},
+				{
+					"slug": "headline_accent",
+					"label": "Detail headline (orange line)",
+					"type": "string"
+				},
+				{
+					"slug": "lede",
+					"label": "Detail intro paragraph",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "cta_title",
+					"label": "Detail closing band title",
+					"type": "string"
+				},
+				{
+					"slug": "cta_text",
+					"label": "Detail closing band text",
+					"type": "string"
+				},
+				{
+					"slug": "on_home",
+					"label": "Show on homepage",
+					"type": "boolean",
+					"indexed": true
+				},
+				{
+					"slug": "on_services",
+					"label": "Show on Services page",
+					"type": "boolean",
+					"indexed": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Services page photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Services page photo: bundled path",
+					"type": "string"
+				},
+				{
+					"slug": "hero_image",
+					"label": "Detail hero photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "hero_photo",
+					"label": "Detail hero photo: bundled path",
+					"type": "string"
+				},
+				{
+					"slug": "card_image",
+					"label": "Homepage card photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "card_photo",
+					"label": "Homepage card photo: bundled path",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "jobs",
+			"label": "Common jobs",
+			"labelSingular": "Common job",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Job",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "text",
+					"label": "Short description",
+					"type": "text"
+				},
+				{
+					"slug": "service",
+					"label": "Service (slug)",
+					"type": "string",
+					"required": true,
+					"indexed": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Photo: bundled path",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "prices",
+			"label": "Prices",
+			"labelSingular": "Price",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Job",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "text",
+					"label": "Detail",
+					"type": "string"
+				},
+				{
+					"slug": "price",
+					"label": "Price (as displayed, e.g. from £65)",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "service",
+					"label": "Service (slug)",
+					"type": "string",
+					"required": true,
+					"indexed": true
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "guarantees",
+			"label": "Guarantees",
+			"labelSingular": "Guarantee",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "text",
+					"label": "Text",
+					"type": "text"
+				},
+				{
+					"slug": "icon",
+					"label": "Icon",
+					"type": "select",
+					"defaultValue": "house",
+					"validation": {
+						"options": [
+							"calendar",
+							"shield",
+							"house",
+							"pin",
+							"clock",
+							"people",
+							"wrench",
+							"tag",
+							"drop",
+							"bolt",
+							"phone"
+						]
+					}
+				},
+				{
+					"slug": "placement",
+					"label": "Where it appears",
+					"type": "select",
+					"required": true,
+					"indexed": true,
+					"defaultValue": "strip",
+					"validation": {
+						"options": [
+							"badges",
+							"badges-areas",
+							"badges-quote",
+							"strip",
+							"strip-areas",
+							"included"
+						]
+					}
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "areas",
+			"label": "Service areas",
+			"labelSingular": "Service area",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Area",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "postcodes",
+					"label": "Postcode districts covered (comma separated, e.g. BS3, BS4)",
+					"type": "string"
+				},
+				{
+					"slug": "map_slot",
+					"label": "Map position (1–6, 0 = list only)",
+					"type": "integer"
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "business",
+			"label": "Business details",
+			"labelSingular": "Business details",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Business name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "phone",
+					"label": "Phone",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "email",
+					"label": "Quote requests email",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "region",
+					"label": "Region served",
+					"type": "string"
+				},
+				{
+					"slug": "hours",
+					"label": "Opening hours",
+					"type": "string"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Homepage",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "Services",
+					"url": "/services"
+				},
+				{
+					"type": "custom",
+					"label": "Plumbing service",
+					"url": "/services/plumbing"
+				},
+				{
+					"type": "custom",
+					"label": "Service areas",
+					"url": "/service-areas"
+				},
+				{
+					"type": "custom",
+					"label": "Request a quote",
+					"url": "/quote"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About Fixwell",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b1",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Fixwell is a small team of local plumbers and handypeople. We take on the everyday jobs that bigger firms turn down: a dripping tap, a sticking door, a light that needs moving.",
+									"_key": "b1s"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"_key": "b2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "We turn up when we say we will, explain the work and the price before we start, and leave your home as tidy as we found it.",
+									"_key": "b2s"
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"services": [
+			{
+				"id": "plumbing",
+				"slug": "plumbing",
+				"status": "published",
+				"data": {
+					"title": "Plumbing",
+					"card_title": "Plumbing service",
+					"card_text": "From leaking taps to blocked drains, we keep your water flowing.",
+					"intro": "Fast, reliable plumbing solutions for everyday problems and unexpected issues.",
+					"checklist": [
+						{
+							"item": "Leaking taps and pipes"
+						},
+						{
+							"item": "Blocked drains"
+						},
+						{
+							"item": "Toilet repairs and installations"
+						},
+						{
+							"item": "Hot water system fixes"
+						},
+						{
+							"item": "General plumbing maintenance"
+						}
+					],
+					"request_label": "Request plumbing service",
+					"issue": "plumbing",
+					"eyebrow": "Plumbing service",
+					"headline": "Reliable plumbing",
+					"headline_accent": "for a worry-free home.",
+					"lede": "From leaking taps to blocked drains, we provide professional plumbing services to keep your home safe, comfortable and running smoothly.",
+					"cta_title": "Need a plumber?",
+					"cta_text": "Get a fast, no-obligation quote today.",
+					"on_home": true,
+					"on_services": true,
+					"position": 10,
+					"photo": "/images/service-plumbing.webp",
+					"hero_photo": "/images/hero-plumbing.webp",
+					"card_photo": "/images/card-plumbing.webp"
+				}
+			},
+			{
+				"id": "electrical",
+				"slug": "electrical",
+				"status": "published",
+				"data": {
+					"title": "Electrical",
+					"card_title": "Electrical service",
+					"card_text": "Lighting, power points and safety switches, fitted safely.",
+					"intro": "Safe, professional electrical work for a brighter, safer home.",
+					"checklist": [
+						{
+							"item": "Lighting installation and repairs"
+						},
+						{
+							"item": "Power points and switches"
+						},
+						{
+							"item": "Ceiling fans and exhaust fans"
+						},
+						{
+							"item": "Safety switch and circuit upgrades"
+						},
+						{
+							"item": "General electrical maintenance"
+						}
+					],
+					"request_label": "Request electrical service",
+					"issue": "electrical",
+					"eyebrow": "Electrical service",
+					"headline": "Safe electrical work",
+					"headline_accent": "for a brighter home.",
+					"lede": "Safe, professional electrical work for a brighter, safer home, from a new light fitting to a safety switch upgrade.",
+					"cta_title": "Need an electrician?",
+					"cta_text": "Get a fast, no-obligation quote today.",
+					"on_home": false,
+					"on_services": true,
+					"position": 20,
+					"photo": "/images/service-electrical.webp",
+					"hero_photo": "/images/service-electrical.webp"
+				}
+			},
+			{
+				"id": "home-repairs",
+				"slug": "home-repairs",
+				"status": "published",
+				"data": {
+					"title": "Home repairs",
+					"card_title": "Home repairs",
+					"card_text": "Practical fixes around the home, handled with care.",
+					"intro": "Practical fixes around the home, handled with care and attention to detail.",
+					"checklist": [
+						{
+							"item": "Doors, locks and hinges"
+						},
+						{
+							"item": "Shelving and wall fixtures"
+						},
+						{
+							"item": "Cabinet and furniture repairs"
+						},
+						{
+							"item": "Minor carpentry and fittings"
+						},
+						{
+							"item": "General maintenance and odd jobs"
+						}
+					],
+					"request_label": "Request home repair service",
+					"issue": "other",
+					"eyebrow": "Home repairs",
+					"headline": "Practical home repairs",
+					"headline_accent": "done properly.",
+					"lede": "Practical fixes around the home, handled with care and attention to detail, from sticking doors to wobbly shelves.",
+					"cta_title": "Got a job that needs doing?",
+					"cta_text": "Get a fast, no-obligation quote today.",
+					"on_home": true,
+					"on_services": true,
+					"position": 30,
+					"photo": "/images/service-home-repairs.webp",
+					"hero_photo": "/images/service-home-repairs.webp",
+					"card_photo": "/images/card-home-repairs.webp"
+				}
+			},
+			{
+				"id": "general-maintenance",
+				"slug": "general-maintenance",
+				"status": "published",
+				"data": {
+					"title": "General maintenance",
+					"card_title": "General maintenance",
+					"card_text": "Keep your home in top shape with reliable maintenance.",
+					"intro": "Regular checks and small fixes that keep your home in top shape.",
+					"checklist": [
+						{
+							"item": "Tap and seal checks"
+						},
+						{
+							"item": "Radiator bleeding"
+						},
+						{
+							"item": "Sealant and grout renewal"
+						},
+						{
+							"item": "Gutter and drain clearing"
+						},
+						{
+							"item": "Seasonal home check-ups"
+						}
+					],
+					"request_label": "Request maintenance",
+					"issue": "other",
+					"eyebrow": "General maintenance",
+					"headline": "Keep your home",
+					"headline_accent": "in top shape.",
+					"lede": "Keep your home in top shape with reliable maintenance: the small jobs that stop bigger problems later.",
+					"cta_title": "Book a maintenance visit",
+					"cta_text": "Get a fast, no-obligation quote today.",
+					"on_home": true,
+					"on_services": false,
+					"position": 40,
+					"photo": "/images/card-maintenance.webp",
+					"hero_photo": "/images/card-maintenance.webp",
+					"card_photo": "/images/card-maintenance.webp"
+				}
+			}
+		],
+		"jobs": [
+			{
+				"id": "leaking-taps",
+				"slug": "leaking-taps",
+				"status": "published",
+				"data": {
+					"title": "Leaking taps",
+					"text": "Stop wasted water and higher bills.",
+					"service": "plumbing",
+					"position": 10,
+					"photo": "/images/job-leaking-taps.webp"
+				}
+			},
+			{
+				"id": "blocked-drains",
+				"slug": "blocked-drains",
+				"status": "published",
+				"data": {
+					"title": "Blocked drains",
+					"text": "Get things flowing again quickly.",
+					"service": "plumbing",
+					"position": 20,
+					"photo": "/images/job-blocked-drains.webp"
+				}
+			},
+			{
+				"id": "toilet-repairs",
+				"slug": "toilet-repairs",
+				"status": "published",
+				"data": {
+					"title": "Toilet repairs",
+					"text": "Fix flushing issues and leaks.",
+					"service": "plumbing",
+					"position": 30,
+					"photo": "/images/job-toilet-repairs.webp"
+				}
+			},
+			{
+				"id": "pipe-repairs",
+				"slug": "pipe-repairs",
+				"status": "published",
+				"data": {
+					"title": "Pipe repairs",
+					"text": "Solve leaks and pipework problems.",
+					"service": "plumbing",
+					"position": 40,
+					"photo": "/images/job-pipe-repairs.webp"
+				}
+			},
+			{
+				"id": "hot-water-issues",
+				"slug": "hot-water-issues",
+				"status": "published",
+				"data": {
+					"title": "Hot water issues",
+					"text": "Restore reliable hot water.",
+					"service": "plumbing",
+					"position": 50,
+					"photo": "/images/job-hot-water.webp"
+				}
+			},
+			{
+				"id": "new-installations",
+				"slug": "new-installations",
+				"status": "published",
+				"data": {
+					"title": "New installations",
+					"text": "Sinks, dishwashers and more.",
+					"service": "plumbing",
+					"position": 60,
+					"photo": "/images/job-new-installations.webp"
+				}
+			}
+		],
+		"prices": [
+			{
+				"id": "callout-diagnosis",
+				"slug": "callout-diagnosis",
+				"status": "published",
+				"data": {
+					"title": "Call-out & diagnosis",
+					"text": "Initial assessment and clear advice",
+					"price": "from £65",
+					"service": "plumbing",
+					"position": 10
+				}
+			},
+			{
+				"id": "leaking-tap-repair",
+				"slug": "leaking-tap-repair",
+				"status": "published",
+				"data": {
+					"title": "Leaking tap repair",
+					"text": "Parts and labour",
+					"price": "from £85",
+					"service": "plumbing",
+					"position": 20
+				}
+			},
+			{
+				"id": "blocked-drain-clearing",
+				"slug": "blocked-drain-clearing",
+				"status": "published",
+				"data": {
+					"title": "Blocked drain clearing",
+					"text": "Internal drains, sinks, baths, showers",
+					"price": "from £95",
+					"service": "plumbing",
+					"position": 30
+				}
+			},
+			{
+				"id": "toilet-repair",
+				"slug": "toilet-repair",
+				"status": "published",
+				"data": {
+					"title": "Toilet repair",
+					"text": "Flush, fill valve or leak fixes",
+					"price": "from £85",
+					"service": "plumbing",
+					"position": 40
+				}
+			},
+			{
+				"id": "pipe-repair",
+				"slug": "pipe-repair",
+				"status": "published",
+				"data": {
+					"title": "Pipe repair",
+					"text": "Leaking or damaged pipework",
+					"price": "from £120",
+					"service": "plumbing",
+					"position": 50
+				}
+			},
+			{
+				"id": "hot-water-system-repair",
+				"slug": "hot-water-system-repair",
+				"status": "published",
+				"data": {
+					"title": "Hot water system repair",
+					"text": "Immersion, cylinder or thermostat issues",
+					"price": "from £120",
+					"service": "plumbing",
+					"position": 60
+				}
+			},
+			{
+				"id": "new-sink-installation",
+				"slug": "new-sink-installation",
+				"status": "published",
+				"data": {
+					"title": "New sink installation",
+					"text": "Supply and install",
+					"price": "from £160",
+					"service": "plumbing",
+					"position": 70
+				}
+			}
+		],
+		"guarantees": [
+			{
+				"id": "badges-1",
+				"slug": "badges-1",
+				"status": "published",
+				"data": {
+					"title": "Flexible appointments",
+					"icon": "calendar",
+					"placement": "badges",
+					"position": 10
+				}
+			},
+			{
+				"id": "badges-2",
+				"slug": "badges-2",
+				"status": "published",
+				"data": {
+					"title": "Tidy, respectful and professional",
+					"icon": "shield",
+					"placement": "badges",
+					"position": 20
+				}
+			},
+			{
+				"id": "badges-3",
+				"slug": "badges-3",
+				"status": "published",
+				"data": {
+					"title": "Local experts in your area",
+					"icon": "house",
+					"placement": "badges",
+					"position": 30
+				}
+			},
+			{
+				"id": "badges-areas-1",
+				"slug": "badges-areas-1",
+				"status": "published",
+				"data": {
+					"title": "Local experts",
+					"icon": "pin",
+					"placement": "badges-areas",
+					"position": 10
+				}
+			},
+			{
+				"id": "badges-areas-2",
+				"slug": "badges-areas-2",
+				"status": "published",
+				"data": {
+					"title": "Flexible appointments",
+					"icon": "calendar",
+					"placement": "badges-areas",
+					"position": 20
+				}
+			},
+			{
+				"id": "badges-areas-3",
+				"slug": "badges-areas-3",
+				"status": "published",
+				"data": {
+					"title": "Serving homes in your area",
+					"icon": "house",
+					"placement": "badges-areas",
+					"position": 30
+				}
+			},
+			{
+				"id": "badges-quote-1",
+				"slug": "badges-quote-1",
+				"status": "published",
+				"data": {
+					"title": "Quick response",
+					"icon": "calendar",
+					"placement": "badges-quote",
+					"position": 10
+				}
+			},
+			{
+				"id": "badges-quote-2",
+				"slug": "badges-quote-2",
+				"status": "published",
+				"data": {
+					"title": "No obligation",
+					"icon": "shield",
+					"placement": "badges-quote",
+					"position": 20
+				}
+			},
+			{
+				"id": "badges-quote-3",
+				"slug": "badges-quote-3",
+				"status": "published",
+				"data": {
+					"title": "Local experts in your area",
+					"icon": "house",
+					"placement": "badges-quote",
+					"position": 30
+				}
+			},
+			{
+				"id": "strip-1",
+				"slug": "strip-1",
+				"status": "published",
+				"data": {
+					"title": "Reliable and on time",
+					"text": "We show up when we say we will.",
+					"icon": "clock",
+					"placement": "strip",
+					"position": 10
+				}
+			},
+			{
+				"id": "strip-2",
+				"slug": "strip-2",
+				"status": "published",
+				"data": {
+					"title": "Quality workmanship",
+					"text": "Repairs that last, done properly.",
+					"icon": "house",
+					"placement": "strip",
+					"position": 20
+				}
+			},
+			{
+				"id": "strip-3",
+				"slug": "strip-3",
+				"status": "published",
+				"data": {
+					"title": "A tidy and respectful service",
+					"text": "We treat your home like our own.",
+					"icon": "people",
+					"placement": "strip",
+					"position": 30
+				}
+			},
+			{
+				"id": "strip-areas-1",
+				"slug": "strip-areas-1",
+				"status": "published",
+				"data": {
+					"title": "Local and responsive",
+					"text": "We're based in your community.",
+					"icon": "pin",
+					"placement": "strip-areas",
+					"position": 10
+				}
+			},
+			{
+				"id": "strip-areas-2",
+				"slug": "strip-areas-2",
+				"status": "published",
+				"data": {
+					"title": "Appointments that suit you",
+					"text": "Morning, afternoon or evening.",
+					"icon": "calendar",
+					"placement": "strip-areas",
+					"position": 20
+				}
+			},
+			{
+				"id": "strip-areas-3",
+				"slug": "strip-areas-3",
+				"status": "published",
+				"data": {
+					"title": "Reliable service, local areas",
+					"text": "Trusted by homeowners across the region.",
+					"icon": "house",
+					"placement": "strip-areas",
+					"position": 30
+				}
+			},
+			{
+				"id": "included-1",
+				"slug": "included-1",
+				"status": "published",
+				"data": {
+					"title": "Expert diagnosis",
+					"text": "We find the cause and explain the options clearly.",
+					"icon": "wrench",
+					"placement": "included",
+					"position": 10
+				}
+			},
+			{
+				"id": "included-2",
+				"slug": "included-2",
+				"status": "published",
+				"data": {
+					"title": "Upfront pricing",
+					"text": "No hidden costs. You'll know the price before we start.",
+					"icon": "tag",
+					"placement": "included",
+					"position": 20
+				}
+			},
+			{
+				"id": "included-3",
+				"slug": "included-3",
+				"status": "published",
+				"data": {
+					"title": "Quality workmanship",
+					"text": "Repairs done properly, using reliable parts.",
+					"icon": "shield",
+					"placement": "included",
+					"position": 30
+				}
+			},
+			{
+				"id": "included-4",
+				"slug": "included-4",
+				"status": "published",
+				"data": {
+					"title": "Clean and tidy",
+					"text": "We respect your home and leave the area as we found it.",
+					"icon": "house",
+					"placement": "included",
+					"position": 40
+				}
+			},
+			{
+				"id": "included-5",
+				"slug": "included-5",
+				"status": "published",
+				"data": {
+					"title": "Ongoing support",
+					"text": "If you have any issues after the work, just get in touch.",
+					"icon": "clock",
+					"placement": "included",
+					"position": 50
+				}
+			}
+		],
+		"areas": [
+			{
+				"id": "riverside",
+				"slug": "riverside",
+				"status": "published",
+				"data": {
+					"title": "Riverside",
+					"postcodes": "BS1",
+					"map_slot": 2,
+					"position": 10
+				}
+			},
+			{
+				"id": "maplewood",
+				"slug": "maplewood",
+				"status": "published",
+				"data": {
+					"title": "Maplewood",
+					"postcodes": "BS6",
+					"map_slot": 1,
+					"position": 20
+				}
+			},
+			{
+				"id": "brookfield",
+				"slug": "brookfield",
+				"status": "published",
+				"data": {
+					"title": "Brookfield",
+					"postcodes": "BS7",
+					"map_slot": 0,
+					"position": 30
+				}
+			},
+			{
+				"id": "lakeside",
+				"slug": "lakeside",
+				"status": "published",
+				"data": {
+					"title": "Lakeside",
+					"postcodes": "BS8",
+					"map_slot": 0,
+					"position": 40
+				}
+			},
+			{
+				"id": "greenford",
+				"slug": "greenford",
+				"status": "published",
+				"data": {
+					"title": "Greenford",
+					"postcodes": "BS9",
+					"map_slot": 0,
+					"position": 50
+				}
+			},
+			{
+				"id": "oakridge",
+				"slug": "oakridge",
+				"status": "published",
+				"data": {
+					"title": "Oakridge",
+					"postcodes": "BS5",
+					"map_slot": 3,
+					"position": 60
+				}
+			},
+			{
+				"id": "fairview",
+				"slug": "fairview",
+				"status": "published",
+				"data": {
+					"title": "Fairview",
+					"postcodes": "BS10",
+					"map_slot": 0,
+					"position": 70
+				}
+			},
+			{
+				"id": "westfield",
+				"slug": "westfield",
+				"status": "published",
+				"data": {
+					"title": "Westfield",
+					"postcodes": "BS2",
+					"map_slot": 4,
+					"position": 80
+				}
+			},
+			{
+				"id": "cedar-grove",
+				"slug": "cedar-grove",
+				"status": "published",
+				"data": {
+					"title": "Cedar Grove",
+					"postcodes": "BS11",
+					"map_slot": 0,
+					"position": 90
+				}
+			},
+			{
+				"id": "elmstead",
+				"slug": "elmstead",
+				"status": "published",
+				"data": {
+					"title": "Elmstead",
+					"postcodes": "BS4",
+					"map_slot": 6,
+					"position": 100
+				}
+			},
+			{
+				"id": "hillside",
+				"slug": "hillside",
+				"status": "published",
+				"data": {
+					"title": "Hillside",
+					"postcodes": "BS13",
+					"map_slot": 0,
+					"position": 110
+				}
+			},
+			{
+				"id": "southbank",
+				"slug": "southbank",
+				"status": "published",
+				"data": {
+					"title": "Southbank",
+					"postcodes": "BS3",
+					"map_slot": 5,
+					"position": 120
+				}
+			},
+			{
+				"id": "northbridge",
+				"slug": "northbridge",
+				"status": "published",
+				"data": {
+					"title": "Northbridge",
+					"postcodes": "BS14",
+					"map_slot": 0,
+					"position": 130
+				}
+			},
+			{
+				"id": "meadow-park",
+				"slug": "meadow-park",
+				"status": "published",
+				"data": {
+					"title": "Meadow Park",
+					"postcodes": "BS15",
+					"map_slot": 0,
+					"position": 140
+				}
+			},
+			{
+				"id": "kingston-vale",
+				"slug": "kingston-vale",
+				"status": "published",
+				"data": {
+					"title": "Kingston Vale",
+					"postcodes": "BS16",
+					"map_slot": 0,
+					"position": 150
+				}
+			}
+		],
+		"business": [
+			{
+				"id": "main",
+				"slug": "main",
+				"status": "published",
+				"data": {
+					"title": "Fixwell",
+					"phone": "01234 567890",
+					"email": "quotes@fixwell.example",
+					"region": "Bristol and surrounding areas",
+					"hours": "Mon–Sat, 8am–6pm"
+				}
+			}
+		]
+	}
+}

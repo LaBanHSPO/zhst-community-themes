@@ -1,0 +1,23 @@
+---
+/** Split hero: navy copy panel on the left, photograph bleeding to the right edge. */
+interface Props {
+	photo?: string;
+	alt: string;
+	labelledby: string;
+	class?: string;
+}
+const { photo, alt, labelledby, class: className } = Astro.props;
+---
+
+<section class:list={["hero", className]} aria-labelledby={labelledby}>
+	<div class="hero-copy">
+		<slot />
+	</div>
+	{
+		photo && (
+			<div class="hero-media">
+				<img src={photo} alt={alt} width="907" height="423" fetchpriority="high" />
+			</div>
+		)
+	}
+</section>
