@@ -1,0 +1,119 @@
+---
+import { Form } from "@emdash-cms/plugin-forms/ui";
+import ContactDetails from "./ContactDetails.astro";
+import { externalCourseUrl } from "../utils/courses";
+
+interface Props {
+	courseTitle: string;
+	externalUrl?: string | null;
+}
+
+const { courseTitle, externalUrl } = Astro.props;
+const href = externalCourseUrl(externalUrl);
+let host = "";
+if (href) host = new URL(href).hostname;
+---
+
+<section class="enroll" aria-labelledby="enroll-heading">
+	{
+		href ? (
+			<>
+				<h2 id="enroll-heading">Ready to start?</h2>
+				<p class="enroll-text">
+					This course runs on the instructor’s own course platform. Enrollment, pricing and lessons are handled there.
+				</p>
+				<a class="btn btn-primary btn-lg enroll-cta" href={href} rel="noopener">
+					Go to course <span class="arrow" aria-hidden="true">→</span>
+					<span class="visually-hidden">(external site: {host})</span>
+				</a>
+				<p class="enroll-host">Opens {host}</p>
+			</>
+		) : (
+			<>
+				<h2 id="enroll-heading">Enrollment inquiry</h2>
+				<p class="enroll-course">
+					<span class="enroll-course-label">Course</span>
+					<strong>{courseTitle}</strong>
+				</p>
+				<p class="enroll-text">
+					Ask about start dates, pricing or whether the course is right for you. The instructor replies directly.
+				</p>
+				<div class="enroll-form" data-course-title={courseTitle}>
+					<Form id="inquiry" />
+				</div>
+				<ContactDetails />
+			</>
+		)
+	}
+</section>
+
+<script>
+	// Prefill an optional "course" field on the inquiry form with the course being viewed.
+	document.querySelectorAll<HTMLElement>(".enroll-form[data-course-title]").forEach((wrap) => {
+		const title = wrap.dataset.courseTitle;
+		const field = wrap.querySelector<HTMLInputElement>("input[name='course']");
+		if (title && field && !field.value) field.value = title;
+	});
+</script>
+
+<style>
+	.enroll {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		padding: clamp(1.4rem, 3vw, 2rem);
+		background: var(--color-surface);
+		border: 1px solid var(--color-line);
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow-card);
+	}
+
+	.enroll h2 {
+		font-size: 1.6rem;
+		margin: 0;
+	}
+
+	.enroll-text,
+	.enroll-host {
+		margin: 0;
+		color: var(--color-ink-soft);
+		font-size: 0.98rem;
+	}
+
+	.enroll-host {
+		font-size: 0.875rem;
+	}
+
+	.enroll-cta {
+		align-self: flex-start;
+	}
+
+	.enroll-course {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		margin: 0;
+		padding: 0.85rem 1rem;
+		border-left: 4px solid var(--color-accent);
+		background: var(--color-bg);
+		border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+	}
+
+	.enroll-course-label {
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--color-muted);
+	}
+
+	.enroll-course strong {
+		font-family: var(--font-display);
+		font-size: 1.15rem;
+	}
+
+	/* The forms plugin renders nothing until a form with slug "inquiry" exists. */
+	.enroll-form:not(:has(form)) {
+		display: none;
+	}
+</style>

@@ -1,0 +1,202 @@
+---
+import type { ContentEntry } from "emdash";
+import { Image } from "emdash/ui";
+import type { Course } from "../../emdash-env";
+import { curriculumOf, levelLabel, lessonCount, plural } from "../utils/courses";
+
+interface Props {
+	course: ContentEntry<Course>;
+	/** Show the first modules of the curriculum under the title */
+	showOutline?: boolean;
+	headingLevel?: "h2" | "h3";
+}
+
+const { course, showOutline = false, headingLevel = "h3" } = Astro.props;
+const data = course.data;
+const href = `/courses/${course.id}`;
+const lessons = lessonCount(data);
+const modules = curriculumOf(data);
+const outline = modules.slice(0, 3);
+const Heading = headingLevel;
+---
+
+<article class="course-card">
+	<div class="card-media">
+		{
+			data.cover_image?.src || data.cover_image?.id ? (
+				<Image image={data.cover_image} class="card-img" />
+			) : (
+				<div class="card-placeholder" aria-hidden="true">
+					<span>{data.title.charAt(0)}</span>
+				</div>
+			)
+		}
+	</div>
+	<div class="card-body">
+		<Heading class="card-title">
+			<a href={href} {...course.edit.title}>{data.title}</a>
+		</Heading>
+		<p class="card-meta">
+			<span class="level" data-level={data.level}>{levelLabel(data.level)}</span>
+			{lessons > 0 && (
+				<>
+					<span class="sep" aria-hidden="true">|</span>
+					<span>{plural(lessons, "lesson")}</span>
+				</>
+			)}
+		</p>
+		{showOutline && data.summary && <p class="card-summary">{data.summary}</p>}
+		{
+			showOutline && outline.length > 0 && (
+				<div class="card-outline">
+					<p class="outline-label">Lesson outline</p>
+					<ol>
+						{outline.map((m) => (
+							<li>
+								{m.title}
+								<span class="outline-count"> · {plural(m.lessons.length, "lesson")}</span>
+							</li>
+						))}
+					</ol>
+					{modules.length > outline.length && (
+						<p class="outline-more">+ {plural(modules.length - outline.length, "more module")}</p>
+					)}
+				</div>
+			)
+		}
+	</div>
+</article>
+
+<style>
+	.course-card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		background: var(--color-surface);
+		border: 1px solid var(--color-line);
+		border-radius: var(--radius-sm);
+		overflow: hidden;
+		box-shadow: var(--shadow-card);
+		transition:
+			transform 180ms ease,
+			box-shadow 180ms ease;
+	}
+
+	.course-card:hover {
+		transform: translateY(-2px);
+		box-shadow:
+			0 2px 4px rgb(20 27 45 / 0.06),
+			0 14px 30px rgb(20 27 45 / 0.1);
+	}
+
+	.course-card:focus-within {
+		outline: 3px solid var(--color-focus);
+		outline-offset: 3px;
+	}
+
+	.card-media {
+		aspect-ratio: 8 / 3;
+		background: var(--color-surface-muted);
+		overflow: hidden;
+	}
+
+	.card-media :global(.card-img),
+	.card-media :global(img) {
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		object-fit: cover;
+	}
+
+	.card-placeholder {
+		display: grid;
+		place-items: center;
+		width: 100%;
+		height: 100%;
+		background:
+			radial-gradient(circle at 20% 30%, rgb(212 236 58 / 0.55), transparent 55%),
+			var(--color-surface-muted);
+		font-family: var(--font-display);
+		font-size: 3rem;
+		font-weight: 700;
+		color: var(--color-ink-soft);
+	}
+
+	.card-body {
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+		padding: 1.4rem 1.4rem 1.5rem;
+		flex: 1;
+	}
+
+	.card-title {
+		font-size: 1.45rem;
+		margin: 0;
+	}
+
+	.card-title a {
+		text-decoration: none;
+	}
+
+	/* Whole card is clickable via the title link */
+	.card-title a::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+	}
+
+	.card-title a:focus-visible {
+		outline: none;
+	}
+
+	.card-meta {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin: 0;
+		font-size: 0.95rem;
+		color: var(--color-ink-soft);
+	}
+
+	.sep {
+		color: var(--color-muted);
+	}
+
+	.card-summary {
+		margin: 0.25rem 0 0;
+		color: var(--color-ink-soft);
+		font-size: 0.98rem;
+	}
+
+	.card-outline {
+		margin-top: auto;
+		padding-top: 0.9rem;
+		border-top: 1px solid var(--color-line);
+		font-size: 0.92rem;
+	}
+
+	.outline-label {
+		margin: 0 0 0.35rem;
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--color-muted);
+	}
+
+	.card-outline ol {
+		margin: 0;
+		padding-left: 1.2rem;
+	}
+
+	.outline-count,
+	.outline-more {
+		color: var(--color-muted);
+	}
+
+	.outline-more {
+		margin: 0.35rem 0 0;
+	}
+</style>
