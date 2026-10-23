@@ -1,0 +1,105 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import InsightCard from "../../components/InsightCard.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { articleDate, formatDate, getInsights, getOffice, photoSrc } from "../../lib/consulting";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: post, cacheHint } = await getEmDashEntry("insights", slug);
+if (!post) return Astro.rewrite("/404");
+
+const [moreResult, officeResult, settings] = await Promise.all([getInsights(4), getOffice(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(moreResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(post, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const src = photoSrc(post.data.featured_image, post.data.photo);
+const date = articleDate(post.data.date, post.data.publishedAt);
+const more = moreResult.entries.filter((p) => p.data.id !== post.data.id).slice(0, 3);
+const { office } = officeResult;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? post.data.excerpt}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "insights", id: post.data.id, slug }}
+	current="/insights"
+>
+	<article>
+		<header class="detail-head">
+			<div class="container">
+				<nav class="crumbs" aria-label="Breadcrumb">
+					<a href="/insights">Insights</a>
+					{post.data.topic && <><span aria-hidden="true">/</span><span>{post.data.topic}</span></>}
+				</nav>
+				<div class:list={["detail-head-inner", { "is-text-only": !src }]}>
+					<div class="detail-copy">
+						<p class="meta">
+							{post.data.topic && <span class="topic">{post.data.topic}</span>}
+							{date && <time datetime={date.toISOString()}>{formatDate(date)}</time>}
+							{post.data.reading_time && <span>{post.data.reading_time}</span>}
+						</p>
+						<h1 class="article-title" {...post.edit.title}>{post.data.title}</h1>
+						{post.data.excerpt && <p class="lede">{post.data.excerpt}</p>}
+					</div>
+					{
+						src && (
+							<figure class="detail-photo">
+								<img src={src} alt={post.data.featured_image?.alt ?? ""} />
+							</figure>
+						)
+					}
+				</div>
+			</div>
+		</header>
+		<div class:list={["article-body", { "has-photo": !!src }]}>
+			<div class="container">
+				<div class="prose">
+					<PortableText value={post.data.content} />
+				</div>
+				<div class="article-foot">
+					<a class="link-arrow" href="/insights">All insights <Arrow /></a>
+					<a class="link-arrow" href="/contact">Talk to us about this <Arrow /></a>
+				</div>
+			</div>
+		</div>
+	</article>
+
+	{
+		more.length > 0 && (
+			<section class="insights-band" aria-labelledby="more-title">
+				<div class="container">
+					<div class="section-head">
+						<div>
+							<span class="eyebrow">Keep reading</span>
+							<h2 id="more-title">More insights.</h2>
+						</div>
+					</div>
+					<div class="insight-grid">
+						{more.map((p) => (
+							<InsightCard post={p} />
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} />
+</Base>
