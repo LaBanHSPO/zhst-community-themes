@@ -1,0 +1,120 @@
+---
+/**
+ * Decorative category artwork (CSS + inline SVG), used where the CMS has no
+ * photo: listings have no image field, and posts may have no featured image.
+ */
+import Icon from "./Icon.astro";
+import type { CategoryIcon } from "../utils/categories";
+
+interface Props {
+	icon: CategoryIcon | "book";
+	variant?: "card" | "tile" | "banner" | "thumb";
+	class?: string;
+}
+
+const { icon, variant = "card", class: className } = Astro.props;
+
+const scenes: Record<string, { a: string; b: string; ink: string }> = {
+	fork: { a: "#ffe3d8", b: "#ffc2ad", ink: "#c23a24" },
+	cup: { a: "#f6e7d8", b: "#e9c9a8", ink: "#8a4b1f" },
+	bag: { a: "#ffe1e6", b: "#ffb9c3", ink: "#b8344f" },
+	bed: { a: "#dfe9ff", b: "#b9cdfb", ink: "#1d4fc0" },
+	camera: { a: "#e1f1ff", b: "#b4d8f7", ink: "#155f9c" },
+	wrench: { a: "#e4ecf6", b: "#c3d2e6", ink: "#33507a" },
+	leaf: { a: "#e0f3e6", b: "#b5e0c2", ink: "#23704a" },
+	book: { a: "#e7edff", b: "#c9d6fb", ink: "#1d4fc0" },
+	pin: { a: "#e8f0ff", b: "#cfdcf9", ink: "#1d5fe0" },
+};
+const scene = scenes[icon] ?? scenes.pin;
+const iconSize = variant === "banner" ? 64 : variant === "thumb" ? 26 : variant === "tile" ? 40 : 44;
+---
+
+<div
+	class:list={["art", `art--${variant}`, className]}
+	style={`--art-a:${scene.a};--art-b:${scene.b};--art-ink:${scene.ink};`}
+	aria-hidden="true"
+>
+	{
+		variant !== "thumb" && (
+			<svg class="art__city" viewBox="0 0 400 120" preserveAspectRatio="none" focusable="false">
+				<path
+					d="M0 120V78h18V60h14v18h10V40h22v38h12V66h16v-30h8v-10h10v10h8v84h0V54h20v24h14V30h18v48h10V62h22v16h12V46h10l6-12 6 12h10v32h16V58h18v20h12V36h26v42h10V64h20v8h14V48h18v26h12V60h14v60z"
+					fill="currentColor"
+					opacity=".18"
+				/>
+				<path d="M0 104c40-8 80-8 120 0s80 8 120 0 80-8 120 0 40 6 40 6v10H0z" fill="#fff" opacity=".45" />
+			</svg>
+		)
+	}
+	<span class="art__badge">
+		<Icon name={icon} size={iconSize} />
+	</span>
+</div>
+
+<style>
+	.art {
+		position: relative;
+		display: grid;
+		place-items: center;
+		overflow: hidden;
+		color: var(--art-ink);
+		background:
+			radial-gradient(120% 90% at 85% 10%, rgb(255 255 255 / 0.7), transparent 55%),
+			linear-gradient(160deg, var(--art-a), var(--art-b));
+		aspect-ratio: 16 / 10;
+		width: 100%;
+	}
+	.art--tile {
+		aspect-ratio: auto;
+		height: 100%;
+		place-items: start end;
+		padding: 0.9rem;
+	}
+	.art--banner {
+		aspect-ratio: 21 / 8;
+		max-height: 260px;
+		border-radius: var(--ug-radius-lg);
+	}
+	.art--thumb {
+		aspect-ratio: 1;
+		border-radius: var(--ug-radius-sm);
+	}
+	.art__city {
+		position: absolute;
+		inset: auto 0 0 0;
+		width: 100%;
+		height: 70%;
+	}
+	.art__badge {
+		position: relative;
+		display: grid;
+		place-items: center;
+		width: 2.1em;
+		height: 2.1em;
+		font-size: 2.6rem;
+		border-radius: 50%;
+		background: rgb(255 255 255 / 0.85);
+		box-shadow: 0 10px 30px -12px rgb(15 33 71 / 0.35);
+	}
+	.art--tile .art__badge {
+		font-size: 1.9rem;
+	}
+	.art--banner .art__badge {
+		font-size: 3.4rem;
+	}
+	.art--thumb .art__badge {
+		width: auto;
+		height: auto;
+		background: none;
+		box-shadow: none;
+		font-size: 1rem;
+	}
+	@media (max-width: 640px) {
+		.art--banner .art__badge {
+			font-size: 2.2rem;
+		}
+		.art--tile .art__badge {
+			font-size: 1.35rem;
+		}
+	}
+</style>

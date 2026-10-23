@@ -1,0 +1,301 @@
+---
+import { getEmDashCollection, getSiteSettings } from "emdash";
+import Base from "../layouts/Base.astro";
+import CityHero from "../components/CityHero.astro";
+import PlaceSearch from "../components/PlaceSearch.astro";
+import PlaceCard from "../components/PlaceCard.astro";
+import CategoryArt from "../components/CategoryArt.astro";
+import Icon from "../components/Icon.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { loadDirectory } from "../utils/directory";
+
+const [{ entries: posts, cacheHint }, directory, settings] = await Promise.all([
+	getEmDashCollection("posts", { orderBy: { published_at: "desc" }, limit: 3 }),
+	loadDirectory(Astro.cache),
+	getSiteSettings(),
+]);
+const { siteTitle, siteTagline } = resolveStarterSiteIdentity(settings);
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const { terms, listings, categories } = directory;
+const popular = listings.slice(0, 4);
+const tileCategories = categories.filter((c) => c.count > 0);
+---
+
+<Base title={siteTitle} description={siteTagline}>
+	<CityHero>
+		<h1 class="home-title">{siteTagline}</h1>
+		<PlaceSearch categories={categories} id="home-search" />
+	</CityHero>
+
+	<div class="home-grid">
+		<section class="ug-section" aria-labelledby="popular-title">
+			<div class="ug-section__head">
+				<h2 class="ug-section__title" id="popular-title">Popular places</h2>
+				{
+					listings.length > 0 && (
+						<a class="ug-link-more" href="/listings">
+							View all <Icon name="arrow-right" size={16} />
+							<span class="visually-hidden"> places</span>
+						</a>
+					)
+				}
+			</div>
+			{
+				popular.length === 0 ? (
+					<p class="ug-empty">
+						No places yet. <a href="/_emdash/admin/content/listings/new">Add the first listing</a>.
+					</p>
+				) : (
+					<ul class="ug-grid ug-grid--places popular-grid">
+						{popular.map((listing) => (
+							<li>
+								<PlaceCard listing={listing as any} terms={terms} />
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</section>
+
+		<section class="ug-section guides-panel ug-card" aria-labelledby="guides-title">
+			<div class="ug-section__head guides-panel__head">
+				<h2 class="guides-panel__title" id="guides-title">
+					<Icon name="book" size={24} /> Local guides
+				</h2>
+				{
+					posts.length > 0 && (
+						<a class="ug-link-more" href="/posts">
+							View all <Icon name="arrow-right" size={16} />
+							<span class="visually-hidden"> guides</span>
+						</a>
+					)
+				}
+			</div>
+			{
+				posts.length === 0 ? (
+					<p class="guides-panel__empty">No guides yet.</p>
+				) : (
+					<ul class="guide-list">
+						{posts.map((post, i) => (
+							<li class="guide-row">
+								<span class:list={["guide-row__icon", i % 2 === 1 && "is-coral"]}>
+									<Icon name={i % 2 === 1 ? "compass" : "book"} size={22} />
+								</span>
+								<span class="guide-row__text">
+									<a href={`/posts/${post.id}`} class="guide-row__link" {...post.edit.title}>
+										{post.data.title}
+									</a>
+									{post.data.excerpt && <span class="guide-row__excerpt">{post.data.excerpt}</span>}
+								</span>
+								{post.data.publishedAt && (
+									<time class="guide-row__date" datetime={post.data.publishedAt.toISOString()}>
+										{post.data.publishedAt.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+									</time>
+								)}
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</section>
+	</div>
+
+	{
+		tileCategories.length > 0 && (
+			<section class="ug-section" aria-labelledby="cats-title">
+				<div class="ug-section__head">
+					<h2 class="ug-section__title" id="cats-title">Explore by category</h2>
+				</div>
+				<ul class="cat-tiles">
+					{tileCategories.map((cat) => (
+						<li class="cat-tile">
+							<CategoryArt icon={cat.icon} variant="tile" />
+							<a class="cat-tile__link" href={`/category/${cat.slug}`}>
+								<span class="cat-tile__label">{cat.label}</span>
+								<span class="cat-tile__count">
+									{cat.count} {cat.count === 1 ? "place" : "places"}
+								</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+</Base>
+
+<style>
+	.home-title {
+		margin: 0;
+		max-width: 8.5ch;
+		font-size: clamp(2.3rem, 1.2rem + 3.6vw, 4.2rem);
+		font-weight: 900;
+		line-height: 1.02;
+		letter-spacing: -0.03em;
+		color: var(--ug-ink);
+	}
+
+	.home-grid {
+		display: grid;
+		gap: 0 1.5rem;
+		grid-template-columns: minmax(0, 1fr);
+	}
+	@media (min-width: 1200px) {
+		.home-grid {
+			grid-template-columns: minmax(0, 1fr) 320px;
+			align-items: start;
+		}
+	}
+	@media (min-width: 900px) {
+		.popular-grid {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+	}
+	@media (min-width: 641px) and (max-width: 899px) {
+		.popular-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	.guides-panel {
+		padding: 1.1rem 1.1rem 0.6rem;
+		border-radius: var(--ug-radius-md);
+	}
+	.guides-panel__head {
+		margin-bottom: 0.25rem;
+		align-items: center;
+	}
+	.guides-panel__title {
+		display: flex;
+		align-items: center;
+		gap: 0.55rem;
+		margin: 0;
+		font-size: 1.25rem;
+		font-weight: 800;
+	}
+	.guides-panel__empty {
+		color: var(--ug-muted);
+	}
+	.guide-list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.guide-row {
+		position: relative;
+		display: grid;
+		grid-template-columns: 48px minmax(0, 1fr) auto;
+		gap: 0.8rem;
+		align-items: center;
+		padding: 0.8rem 0.25rem;
+		border-top: 1px solid var(--ug-line);
+	}
+	.guide-row:focus-within {
+		outline: 3px solid var(--ug-focus);
+		outline-offset: 2px;
+		border-radius: 10px;
+	}
+	.guide-row__icon {
+		display: grid;
+		place-items: center;
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		background: var(--ug-cobalt-soft);
+		color: var(--ug-cobalt);
+	}
+	.guide-row__icon.is-coral {
+		background: var(--ug-coral-soft);
+		color: var(--ug-coral);
+	}
+	.guide-row__text {
+		display: grid;
+		min-width: 0;
+	}
+	.guide-row__link {
+		color: var(--ug-ink);
+		font-weight: 750;
+		text-decoration: none;
+		line-height: 1.3;
+	}
+	.guide-row__link::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+	}
+	.guide-row__link:focus-visible {
+		outline: none;
+	}
+	.guide-row__excerpt {
+		color: var(--ug-muted);
+		font-size: 0.85rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.guide-row__date {
+		align-self: start;
+		color: var(--ug-muted);
+		font-size: 0.8rem;
+		white-space: nowrap;
+	}
+
+	.cat-tiles {
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 170px), 1fr));
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.cat-tile {
+		position: relative;
+		height: 140px;
+		border-radius: var(--ug-radius-md);
+		overflow: hidden;
+		box-shadow: var(--ug-shadow-sm);
+	}
+	.cat-tile:focus-within {
+		outline: 3px solid var(--ug-focus);
+		outline-offset: 2px;
+	}
+	.cat-tile :global(.art) {
+		position: absolute;
+		inset: 0;
+	}
+	.cat-tile__link {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		padding: 0.9rem 1rem;
+		text-decoration: none;
+		background: linear-gradient(180deg, transparent 35%, rgb(15 33 71 / 0.78));
+		color: #fff;
+	}
+	.cat-tile__link:focus-visible {
+		outline: none;
+	}
+	.cat-tile__label {
+		font-family: var(--ug-font-display);
+		font-weight: 850;
+		font-size: 1.15rem;
+		line-height: 1.2;
+	}
+	.cat-tile__count {
+		font-size: 0.8125rem;
+		font-weight: 650;
+		opacity: 0.95;
+	}
+	@media (max-width: 640px) {
+		.cat-tiles {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 0.7rem;
+		}
+		.cat-tile {
+			height: 110px;
+		}
+	}
+</style>

@@ -1,0 +1,145 @@
+---
+import { Image } from "emdash/ui";
+import CategoryArt from "./CategoryArt.astro";
+
+interface Props {
+	post: {
+		id: string;
+		data: {
+			title: string;
+			excerpt?: string;
+			featured_image?: any;
+			publishedAt: Date | null;
+		};
+		edit: Record<string, Record<string, unknown>>;
+	};
+	tags?: Array<{ slug: string; label: string }>;
+	headingLevel?: 2 | 3;
+}
+
+const { post, tags = [], headingLevel = 2 } = Astro.props;
+const Heading = headingLevel === 2 ? "h2" : "h3";
+---
+
+<article class="guide">
+	<div class="guide__media">
+		{
+			post.data.featured_image ? (
+				<div {...post.edit.featured_image}>
+					<Image image={post.data.featured_image} />
+				</div>
+			) : (
+				<CategoryArt icon="book" />
+			)
+		}
+	</div>
+	<div class="guide__body">
+		{
+			post.data.publishedAt && (
+				<time class="guide__date" datetime={post.data.publishedAt.toISOString()}>
+					{post.data.publishedAt.toLocaleDateString("en-US", {
+						year: "numeric",
+						month: "short",
+						day: "numeric",
+					})}
+				</time>
+			)
+		}
+		<Heading class="guide__title">
+			<a href={`/posts/${post.id}`} class="guide__link" {...post.edit.title}>
+				{post.data.title}
+			</a>
+		</Heading>
+		{post.data.excerpt && <p class="guide__excerpt" {...post.edit.excerpt}>{post.data.excerpt}</p>}
+		{
+			tags.length > 0 && (
+				<ul class="guide__tags" aria-label="Tags">
+					{tags.map((t) => (
+						<li>
+							<a href={`/tag/${t.slug}`}>#{t.label}</a>
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</div>
+</article>
+
+<style>
+	.guide {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		background: var(--ug-surface);
+		border: 1px solid var(--ug-line);
+		border-radius: var(--ug-radius-md);
+		overflow: hidden;
+		box-shadow: var(--ug-shadow-sm);
+	}
+	.guide:focus-within {
+		outline: 3px solid var(--ug-focus);
+		outline-offset: 2px;
+	}
+	.guide__media :global(img) {
+		display: block;
+		width: 100%;
+		aspect-ratio: 16 / 10;
+		object-fit: cover;
+		height: auto;
+	}
+	.guide__body {
+		display: grid;
+		gap: 0.45rem;
+		padding: 1rem 1.1rem 1.15rem;
+	}
+	.guide__date {
+		font-size: 0.8125rem;
+		color: var(--ug-muted);
+	}
+	.guide__title {
+		margin: 0;
+		font-size: 1.12rem;
+		line-height: 1.3;
+		color: var(--ug-ink);
+	}
+	.guide__link {
+		color: inherit;
+		text-decoration: none;
+	}
+	.guide__link::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+	}
+	.guide__link:focus-visible {
+		outline: none;
+	}
+	.guide__excerpt {
+		margin: 0;
+		color: var(--ug-muted);
+		font-size: 0.94rem;
+	}
+	.guide__tags {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		margin: 0.2rem 0 0;
+		padding: 0;
+		list-style: none;
+	}
+	.guide__tags a {
+		display: inline-block;
+		font-size: 0.8125rem;
+		font-weight: 650;
+		color: var(--ug-cobalt);
+		background: var(--ug-cobalt-soft);
+		padding: 0.2rem 0.6rem;
+		border-radius: 999px;
+		text-decoration: none;
+	}
+	.guide__tags a:hover {
+		text-decoration: underline;
+	}
+</style>

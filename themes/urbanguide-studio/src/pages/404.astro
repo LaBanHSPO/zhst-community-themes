@@ -1,0 +1,30 @@
+---
+import Base from "../layouts/Base.astro";
+import CityHero from "../components/CityHero.astro";
+import PlaceSearch from "../components/PlaceSearch.astro";
+import Icon from "../components/Icon.astro";
+
+Astro.response.status = 404;
+---
+
+<Base title="Not Found">
+	<CityHero>
+		<p class="ug-eyebrow"><Icon name="compass" size={16} /> Error 404</p>
+		<h1 class="ug-page-title">This street doesn’t exist</h1>
+		<p class="ug-lede">The page you’re looking for has moved or never existed. Try searching for a place instead.</p>
+		<PlaceSearch chips={false} id="notfound-search" />
+		<p class="nf-links">
+			<a class="ug-btn ug-btn--blue" href="/"><Icon name="home" size={18} /> Go home</a>
+			<a class="ug-btn ug-btn--ghost" href="/listings"><Icon name="pin" size={18} /> All places</a>
+		</p>
+	</CityHero>
+</Base>
+
+<style>
+	.nf-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		margin: 0;
+	}
+</style>

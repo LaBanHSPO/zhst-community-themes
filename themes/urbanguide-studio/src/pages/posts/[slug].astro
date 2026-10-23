@@ -1,0 +1,273 @@
+---
+import {
+	getEmDashEntry,
+	getSeoMeta,
+	decodeSlug,
+	getSiteSettings,
+} from "emdash";
+import { Image, PortableText, WidgetArea } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import CategoryArt from "../../components/CategoryArt.astro";
+import Icon from "../../components/Icon.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+
+const slug = decodeSlug(Astro.params.slug);
+
+if (!slug) {
+	return Astro.redirect("/404");
+}
+
+const { entry: post, cacheHint } = await getEmDashEntry("posts", slug);
+
+if (!post) {
+	return Astro.redirect("/404");
+}
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+
+// SEO meta from content fields
+const seo = getSeoMeta(post, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+
+// Taxonomy terms are already hydrated onto the entry by getEmDashEntry.
+const tags = post.data.terms?.tag ?? [];
+const categories = post.data.terms?.category ?? [];
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description}
+	canonical={seo.canonical}
+	image={seo.ogImage}
+	content={{ collection: "posts", id: post.data.id, slug }}
+>
+	<nav class="crumbs" aria-label="Breadcrumb">
+		<a href="/posts"><Icon name="arrow-left" size={16} /> All guides</a>
+	</nav>
+
+	<div class="post-layout">
+		<article class="post ug-card">
+			<div class="post__media">
+				{
+					post.data.featured_image ? (
+						<div {...post.edit.featured_image}>
+							<Image image={post.data.featured_image} />
+						</div>
+					) : (
+						<CategoryArt icon="book" variant="banner" />
+					)
+				}
+			</div>
+
+			<div class="post__body">
+				<div class="post__meta">
+					{
+						categories.map((c) => (
+							<a class="ug-chip" href={`/category/${c.slug}`}>
+								{c.label}
+							</a>
+						))
+					}
+					{
+						post.data.publishedAt && (
+							<time datetime={post.data.publishedAt.toISOString()}>
+								<Icon name="calendar" size={16} />
+								{post.data.publishedAt.toLocaleDateString("en-US", {
+									year: "numeric",
+									month: "long",
+									day: "numeric",
+								})}
+							</time>
+						)
+					}
+				</div>
+
+				<h1 class="ug-page-title" {...post.edit.title}>{post.data.title}</h1>
+				{post.data.excerpt && <p class="ug-lede" {...post.edit.excerpt}>{post.data.excerpt}</p>}
+
+				<div class="ug-prose post__content">
+					<PortableText value={post.data.content} />
+				</div>
+
+				{
+					tags.length > 0 && (
+						<ul class="post__tags" aria-label="Tags">
+							{tags.map((t) => (
+								<li>
+									<a href={`/tag/${t.slug}`}>
+										<Icon name="tag" size={15} />
+										{t.label}
+									</a>
+								</li>
+							))}
+						</ul>
+					)
+				}
+			</div>
+		</article>
+
+		<aside class="post-aside" aria-label="Sidebar">
+			<div class="ug-card post-aside__card">
+				<WidgetArea name="sidebar" />
+			</div>
+			<a class="ug-card post-aside__cta" href="/listings">
+				<span class="post-aside__icon"><Icon name="pin" size={24} /></span>
+				<span>
+					<strong>Browse places</strong>
+					<span>Search the local directory</span>
+				</span>
+				<Icon name="chevron-right" size={18} />
+			</a>
+		</aside>
+	</div>
+</Base>
+
+<style>
+	.crumbs {
+		margin: 0.5rem 0 1rem;
+	}
+	.crumbs a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		min-height: 44px;
+		color: var(--ug-cobalt-ink);
+		font-weight: 700;
+		text-decoration: none;
+	}
+	.crumbs a:hover {
+		text-decoration: underline;
+	}
+	.post-layout {
+		display: grid;
+		gap: 1.5rem;
+	}
+	@media (min-width: 1100px) {
+		.post-layout {
+			grid-template-columns: minmax(0, 1fr) 300px;
+			align-items: start;
+		}
+	}
+	.post {
+		overflow: hidden;
+	}
+	.post__media :global(img) {
+		display: block;
+		width: 100%;
+		max-height: 440px;
+		object-fit: cover;
+	}
+	.post__media :global(.art--banner) {
+		border-radius: 0;
+	}
+	.post__body {
+		padding: clamp(1.25rem, 3vw, 2.5rem);
+		max-width: 76ch;
+	}
+	.post__meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.6rem 1rem;
+		margin-bottom: 0.9rem;
+		color: var(--ug-muted);
+		font-size: 0.9rem;
+	}
+	.post__meta time {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+	}
+	.post__content {
+		margin-top: 1.75rem;
+	}
+	.post__tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin: 2rem 0 0;
+		padding: 1.25rem 0 0;
+		border-top: 1px solid var(--ug-line);
+		list-style: none;
+	}
+	.post__tags a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		min-height: 36px;
+		padding: 0.3rem 0.8rem;
+		border-radius: 999px;
+		background: var(--ug-cobalt-soft);
+		color: var(--ug-cobalt-ink);
+		font-weight: 700;
+		font-size: 0.875rem;
+		text-decoration: none;
+	}
+	.post-aside {
+		display: grid;
+		gap: 1rem;
+	}
+	.post-aside__card {
+		padding: 1.1rem;
+		border-radius: var(--ug-radius-md);
+	}
+	.post-aside__card :global(h2),
+	.post-aside__card :global(h3) {
+		margin: 0 0 0.6rem;
+		font-size: 1.05rem;
+	}
+	.post-aside__card :global(input) {
+		width: 100%;
+		min-height: 44px;
+		padding: 0.55rem 0.9rem;
+		border: 1px solid var(--ug-line);
+		border-radius: 12px;
+		font: inherit;
+	}
+	.post-aside__card :global(form) {
+		display: grid;
+		gap: 0.5rem;
+	}
+	.post-aside__card :global(button) {
+		min-height: 44px;
+		border: 0;
+		border-radius: 12px;
+		background: var(--ug-cobalt);
+		color: #fff;
+		font: inherit;
+		font-weight: 750;
+		cursor: pointer;
+	}
+	.post-aside__card :global(button:hover) {
+		background: var(--ug-cobalt-ink);
+	}
+	.post-aside__cta {
+		display: grid;
+		grid-template-columns: 48px minmax(0, 1fr) auto;
+		align-items: center;
+		gap: 0.8rem;
+		padding: 1rem;
+		border-radius: var(--ug-radius-md);
+		color: var(--ug-ink);
+		text-decoration: none;
+	}
+	.post-aside__cta span span {
+		display: block;
+		color: var(--ug-muted);
+		font-size: 0.875rem;
+	}
+	.post-aside__icon {
+		display: grid;
+		place-items: center;
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		background: var(--ug-coral-soft);
+		color: var(--ug-coral);
+	}
+</style>

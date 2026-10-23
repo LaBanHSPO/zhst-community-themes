@@ -1,0 +1,83 @@
+---
+/** Place search (plain GET form to /listings, works without JavaScript) + category chips. */
+import Icon from "./Icon.astro";
+import type { CategoryIcon, CategoryTone } from "../utils/categories";
+
+interface Props {
+	q?: string;
+	category?: string;
+	categories?: Array<{ slug: string; label: string; icon: CategoryIcon; tone: CategoryTone }>;
+	chips?: boolean;
+	id?: string;
+}
+
+const { q = "", category = "", categories = [], chips = true, id = "place-search" } = Astro.props;
+---
+
+<div class="place-search">
+	<form class="ug-search" action="/listings" method="get" role="search" aria-label="Places">
+		<Icon name="search" size={22} />
+		<label class="visually-hidden" for={id}>Search for places, food, services</label>
+		<input
+			id={id}
+			type="search"
+			name="q"
+			value={q}
+			placeholder="Search for places, food, services…"
+			autocomplete="off"
+			enterkeyhint="search"
+		/>
+		{category && <input type="hidden" name="category" value={category} />}
+		<button class="ug-btn" type="submit">Search</button>
+	</form>
+	{
+		chips && categories.length > 0 && (
+			<nav aria-label="Browse by category">
+				<ul class="ug-chips">
+					{categories.map((cat) => (
+						<li>
+							<a
+								class:list={["ug-chip", { "is-coral": cat.tone === "coral" }]}
+								href={`/listings?category=${encodeURIComponent(cat.slug)}`}
+								aria-current={category === cat.slug ? "page" : undefined}
+							>
+								<Icon name={cat.icon} size={20} />
+								{cat.label}
+							</a>
+						</li>
+					))}
+					<li>
+						<a class="ug-chip" href="/listings" aria-current={!category && q === "" && Astro.url.pathname.startsWith("/listings") ? "page" : undefined}>
+							<Icon name="dots" size={20} />
+							All places
+						</a>
+					</li>
+				</ul>
+			</nav>
+		)
+	}
+</div>
+
+<style>
+	.place-search {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 1.1rem;
+		max-width: 880px;
+	}
+	@media (max-width: 640px) {
+		.place-search :global(.ug-search) {
+			padding-left: 0.8rem;
+		}
+		.place-search :global(.ug-search .ug-btn) {
+			padding-inline: 1rem;
+		}
+		.place-search :global(.ug-chips) {
+			flex-wrap: nowrap;
+			overflow-x: auto;
+			margin-inline: -0.25rem;
+			padding: 0.25rem 0.25rem 0.5rem;
+			scrollbar-width: none;
+		}
+	}
+</style>

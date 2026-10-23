@@ -1,0 +1,228 @@
+---
+import { getEmDashEntry, decodeSlug } from "emdash";
+import Base from "../../layouts/Base.astro";
+import CategoryArt from "../../components/CategoryArt.astro";
+import PlaceCard from "../../components/PlaceCard.astro";
+import Icon from "../../components/Icon.astro";
+import { loadDirectory } from "../../utils/directory";
+import { displayHost, resolveCategory, safeHttpUrl, telHref } from "../../utils/categories";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) {
+	return Astro.redirect("/404");
+}
+
+const { entry: listing, cacheHint } = await getEmDashEntry("listings", slug);
+if (!listing) {
+	return Astro.redirect("/404");
+}
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const { terms, listings } = await loadDirectory(Astro.cache);
+const data = listing.data;
+const name = typeof data.name === "string" && data.name ? data.name : slug;
+const description = typeof data.description === "string" ? data.description : "";
+const address = typeof data.address === "string" ? data.address : "";
+const phone = typeof data.phone === "string" ? data.phone : "";
+const phoneHref = telHref(phone);
+const website = safeHttpUrl(data.url);
+const isOpen = data.available === true;
+const category = resolveCategory(data.category, terms);
+const related = listings
+	.filter((l) => l.id !== listing.id && category && resolveCategory(l.data.category, terms)?.slug === category.slug)
+	.slice(0, 3);
+const edit = (listing as any).edit ?? {};
+---
+
+<Base
+	title={name}
+	description={description || undefined}
+	content={{ collection: "listings", id: (listing.data as any).id, slug }}
+>
+	<nav class="crumbs" aria-label="Breadcrumb">
+		<ol>
+			<li><a href="/listings">Places</a></li>
+			{category && (
+				<li>
+					<a href={`/listings?category=${encodeURIComponent(category.slug)}`}>{category.label}</a>
+				</li>
+			)}
+			<li aria-current="page">{name}</li>
+		</ol>
+	</nav>
+
+	<article class="place-detail">
+		<CategoryArt icon={category?.icon ?? "pin"} variant="banner" />
+		<div class="place-detail__grid">
+			<div class="place-detail__main">
+				<div class="place-detail__badges">
+					{category && (
+						<a class:list={["ug-chip", { "is-coral": category.tone === "coral" }]} href={`/listings?category=${encodeURIComponent(category.slug)}`}>
+							<Icon name={category.icon} size={18} />
+							{category.label}
+						</a>
+					)}
+					{isOpen && <span class="open-pill"><Icon name="clock" size={16} /> Open now</span>}
+				</div>
+				<h1 class="ug-page-title" {...edit.name}>{name}</h1>
+				{description && <p class="place-detail__desc" {...edit.description}>{description}</p>}
+			</div>
+
+			<aside class="place-detail__card ug-card" aria-label="Contact details">
+				<h2 class="place-detail__card-title">Visit &amp; contact</h2>
+				<dl class="facts">
+					{address && (
+						<div>
+							<dt><Icon name="pin" size={20} /><span class="visually-hidden">Address</span></dt>
+							<dd>{address}</dd>
+						</div>
+					)}
+					{phone && (
+						<div>
+							<dt><Icon name="phone" size={20} /><span class="visually-hidden">Phone</span></dt>
+							<dd>{phoneHref ? <a href={phoneHref}>{phone}</a> : phone}</dd>
+						</div>
+					)}
+					{website && (
+						<div>
+							<dt><Icon name="globe" size={20} /><span class="visually-hidden">Website</span></dt>
+							<dd><a href={website} rel="noopener noreferrer" target="_blank">{displayHost(website)}<span class="visually-hidden"> (opens in a new tab)</span></a></dd>
+						</div>
+					)}
+				</dl>
+				{!address && !phone && !website && <p class="facts-empty">No contact details listed yet.</p>}
+				<div class="place-detail__actions">
+					{phoneHref && <a class="ug-btn" href={phoneHref}><Icon name="phone" size={18} /> Call</a>}
+					{website && (
+						<a class="ug-btn ug-btn--ghost" href={website} rel="noopener noreferrer" target="_blank">
+							<Icon name="globe" size={18} /> Website<span class="visually-hidden"> (opens in a new tab)</span>
+						</a>
+					)}
+				</div>
+			</aside>
+		</div>
+	</article>
+
+	{
+		related.length > 0 && category && (
+			<section class="ug-section" aria-labelledby="related-title">
+				<div class="ug-section__head">
+					<h2 class="ug-section__title" id="related-title">More in {category.label}</h2>
+					<a class="ug-link-more" href={`/category/${category.slug}`}>
+						View all <Icon name="arrow-right" size={16} />
+					</a>
+				</div>
+				<ul class="ug-grid ug-grid--places">
+					{related.map((l) => (
+						<li>
+							<PlaceCard listing={l as any} terms={terms} />
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+</Base>
+
+<style>
+	.crumbs ol {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+		margin: 0.5rem 0 1rem;
+		padding: 0;
+		list-style: none;
+		font-size: 0.9rem;
+		color: var(--ug-muted);
+	}
+	.crumbs li + li::before {
+		content: "/";
+		margin-right: 0.35rem;
+		color: #a6b0c4;
+	}
+	.crumbs a {
+		color: var(--ug-cobalt-ink);
+		font-weight: 650;
+	}
+	.place-detail__grid {
+		display: grid;
+		gap: 1.5rem;
+		margin-top: 1.5rem;
+	}
+	@media (min-width: 900px) {
+		.place-detail__grid {
+			grid-template-columns: minmax(0, 1fr) 340px;
+			align-items: start;
+		}
+	}
+	.place-detail__badges {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		margin-bottom: 0.9rem;
+	}
+	.open-pill {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.4rem 0.85rem;
+		border-radius: 999px;
+		background: var(--ug-green-soft);
+		color: var(--ug-green-ink);
+		font-weight: 750;
+		font-size: 0.875rem;
+	}
+	.place-detail__desc {
+		margin: 0.9rem 0 0;
+		max-width: 62ch;
+		font-size: 1.12rem;
+		color: var(--ug-text);
+	}
+	.place-detail__card {
+		padding: 1.25rem;
+		border-radius: var(--ug-radius-md);
+	}
+	.place-detail__card-title {
+		margin: 0 0 0.75rem;
+		font-size: 1.1rem;
+	}
+	.facts {
+		display: grid;
+		gap: 0.75rem;
+		margin: 0;
+	}
+	.facts > div {
+		display: grid;
+		grid-template-columns: 36px minmax(0, 1fr);
+		align-items: center;
+		gap: 0.6rem;
+	}
+	.facts dt {
+		display: grid;
+		place-items: center;
+		width: 36px;
+		height: 36px;
+		border-radius: 10px;
+		background: var(--ug-cobalt-soft);
+		color: var(--ug-cobalt);
+	}
+	.facts dd {
+		margin: 0;
+		overflow-wrap: anywhere;
+		color: var(--ug-ink);
+		font-weight: 600;
+	}
+	.facts-empty {
+		margin: 0;
+		color: var(--ug-muted);
+	}
+	.place-detail__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		margin-top: 1.1rem;
+	}
+	.place-detail__actions .ug-btn {
+		flex: 1 1 8rem;
+	}
+</style>

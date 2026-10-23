@@ -1,0 +1,616 @@
+---
+import {
+	getMenuWithCacheHint,
+	getSiteSettingsWithCacheHint,
+	getTaxonomyTermsWithCacheHint,
+} from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import LiveSearch from "emdash/ui/search";
+import Icon, { type IconName } from "../components/Icon.astro";
+import ThemeCredit from "../components/theme-credit.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { resolveCategory } from "../utils/categories";
+import "../styles/theme.css";
+
+interface Props {
+	title: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	/** Pass content reference for plugin page contributions on content pages */
+	content?: { collection: string; id: string; slug?: string | null };
+}
+
+const { title, pageTitle, description, image, canonical, content } =
+	Astro.props;
+const [settingsResult, menuResult, termsResult] = await Promise.all([
+	getSiteSettingsWithCacheHint(),
+	getMenuWithCacheHint("primary"),
+	getTaxonomyTermsWithCacheHint("category", { includeCounts: false }),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(settingsResult.cacheHint);
+	Astro.cache.set(menuResult.cacheHint);
+	Astro.cache.set(termsResult.cacheHint);
+}
+
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(
+	settingsResult.data,
+);
+const titleIncludesSiteName =
+	title === siteTitle ||
+	title.endsWith(` | ${siteTitle}`) ||
+	title.endsWith(` — ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
+const pageDescription = description ?? siteTagline;
+const menu = menuResult.data;
+const categories = termsResult.data
+	.map((term) => resolveCategory(term.slug, termsResult.data))
+	.filter((c): c is NonNullable<typeof c> => Boolean(c));
+
+// Two-tone wordmark for camel-case titles ("UrbanGuide" → "Urban" + "Guide").
+const titleSplit = /^([A-Z][a-z]+)([A-Z][A-Za-z]*)$/.exec(siteTitle);
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+function isCurrent(url: string) {
+	let target: string;
+	try {
+		const parsed = new URL(url, Astro.url);
+		if (parsed.origin !== Astro.url.origin) return false;
+		target = parsed.pathname.replace(/\/$/, "") || "/";
+	} catch {
+		return false;
+	}
+	return target === "/" ? path === "/" : path === target || path.startsWith(`${target}/`);
+}
+function menuIcon(url: string, label: string): IconName {
+	const key = `${url} ${label}`.toLowerCase();
+	if (url === "/" || /\bhome\b/.test(key)) return "home";
+	if (/listing|place|director/.test(key)) return "pin";
+	if (/post|guide|blog|news/.test(key)) return "book";
+	if (/explore|discover/.test(key)) return "compass";
+	if (/categor/.test(key)) return "grid";
+	if (/about|info/.test(key)) return "info";
+	return "dot";
+}
+const navItems = (menu?.items ?? []).map((item) => ({
+	...item,
+	icon: menuIcon(item.url, item.label),
+	current: isCurrent(item.url),
+}));
+const tabItems = navItems.slice(0, 4);
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description: pageDescription,
+	canonical,
+	image,
+	content,
+	siteName: siteTitle,
+});
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="theme-color" content="#f5f7fc" />
+		<title>{fullTitle}</title>
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<div class="ug-shell">
+			<header class="ug-topbar">
+				<a class="brand" href="/">
+					{
+						siteLogo ? (
+							<img src={siteLogo.url} alt={siteLogo.alt || siteTitle} class="brand__logo" />
+						) : (
+							<>
+								<span class="brand__pin"><Icon name="pin" size={26} /></span>
+								<span class="brand__name">
+									{titleSplit ? (
+										<>
+											{titleSplit[1]}
+											<span class="brand__accent">{titleSplit[2]}</span>
+										</>
+									) : (
+										siteTitle
+									)}
+								</span>
+							</>
+						)
+					}
+				</a>
+				<button
+					class="ug-menu-btn"
+					type="button"
+					aria-expanded="false"
+					aria-controls="ug-sidebar"
+					data-menu-open
+				>
+					<Icon name="menu" size={24} />
+					<span class="visually-hidden">Open menu</span>
+				</button>
+			</header>
+
+			<aside class="ug-sidebar" id="ug-sidebar" aria-label="Site" data-sidebar>
+				<div class="ug-sidebar__head">
+					<a class="brand brand--lg" href="/">
+						{
+							siteLogo ? (
+								<img src={siteLogo.url} alt={siteLogo.alt || siteTitle} class="brand__logo" />
+							) : (
+								<>
+									<span class="brand__pin"><Icon name="pin" size={30} /></span>
+									<span class="brand__name">
+										{titleSplit ? (
+											<>
+												{titleSplit[1]}
+												<span class="brand__accent">{titleSplit[2]}</span>
+											</>
+										) : (
+											siteTitle
+										)}
+									</span>
+								</>
+							)
+						}
+					</a>
+					<button class="ug-menu-btn ug-menu-btn--close" type="button" data-menu-close>
+						<Icon name="close" size={24} />
+						<span class="visually-hidden">Close menu</span>
+					</button>
+				</div>
+
+				<nav aria-label="Primary">
+					<ul class="side-nav">
+						{
+							navItems.map((item) => (
+								<li>
+									<a
+										href={item.url}
+										target={item.target}
+										rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+										aria-current={item.current ? "page" : undefined}
+									>
+										<Icon name={item.icon} size={22} />
+										<span>{item.label}</span>
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</nav>
+
+				{
+					categories.length > 0 && (
+						<nav aria-labelledby="ug-side-categories" class="side-cats">
+							<h2 id="ug-side-categories" class="side-label">Categories</h2>
+							<ul class="side-nav side-nav--small">
+								{categories.map((cat) => (
+									<li>
+										<a
+											href={`/category/${cat.slug}`}
+											aria-current={path === `/category/${cat.slug}` ? "page" : undefined}
+										>
+											<span class:list={["side-dot", `is-${cat.tone}`]}>
+												<Icon name={cat.icon} size={18} />
+											</span>
+											<span>{cat.label}</span>
+										</a>
+									</li>
+								))}
+							</ul>
+						</nav>
+					)
+				}
+
+				<div class="side-search">
+					<h2 class="side-label">Search the site</h2>
+					<LiveSearch placeholder="Search places & guides" collections={["listings", "posts", "pages"]} />
+				</div>
+
+				<div class="side-foot">
+					<svg class="side-city" viewBox="0 0 240 110" aria-hidden="true" focusable="false">
+						<path
+							d="M0 110V70h14V52h12v18h8V34h18v36h10V58h12V24h6V12h8v12h6v86V48h16v22h12V22h14v48h8V54h18v16h10V40h8l5-10 5 10h8v30h12V52h14v18h10V30h20v80z"
+							fill="currentColor"
+						/>
+						<path d="M118 92c18-24 52-24 70 0M150 70v22M134 78v14M166 78v14" stroke="currentColor" stroke-width="3" fill="none" />
+					</svg>
+					<ThemeCredit />
+				</div>
+			</aside>
+			<div class="ug-scrim" data-scrim hidden></div>
+
+			<main id="main" class="ug-main" tabindex="-1">
+				<slot />
+			</main>
+			<footer class="ug-footer">
+				<ThemeCredit />
+			</footer>
+
+			{
+				tabItems.length > 0 && (
+					<nav class="ug-tabbar" aria-label="Quick links">
+						<ul>
+							{tabItems.map((item) => (
+								<li>
+									<a
+										href={item.url}
+										target={item.target}
+										rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+										aria-current={item.current ? "page" : undefined}
+									>
+										<Icon name={item.icon} size={22} />
+										<span>{item.label}</span>
+									</a>
+								</li>
+							))}
+						</ul>
+					</nav>
+				)
+			}
+		</div>
+
+		<EmDashBodyEnd page={pageCtx} />
+
+		<script>
+			const sidebar = document.querySelector<HTMLElement>("[data-sidebar]");
+			const openBtn = document.querySelector<HTMLButtonElement>("[data-menu-open]");
+			const closeBtn = document.querySelector<HTMLButtonElement>("[data-menu-close]");
+			const scrim = document.querySelector<HTMLElement>("[data-scrim]");
+			const mobile = window.matchMedia("(max-width: 1023px)");
+
+			function setOpen(open: boolean, restoreFocus = true) {
+				if (!sidebar || !openBtn) return;
+				sidebar.toggleAttribute("data-open", open);
+				openBtn.setAttribute("aria-expanded", String(open));
+				document.documentElement.classList.toggle("ug-lock", open);
+				if (scrim) scrim.hidden = !open;
+				if (open) {
+					sidebar.querySelector<HTMLElement>("[data-menu-close]")?.focus();
+				} else if (restoreFocus) {
+					openBtn.focus();
+				}
+			}
+
+			openBtn?.addEventListener("click", () => setOpen(true));
+			closeBtn?.addEventListener("click", () => setOpen(false));
+			scrim?.addEventListener("click", () => setOpen(false));
+			document.addEventListener("keydown", (event) => {
+				if (event.key === "Escape" && sidebar?.hasAttribute("data-open")) setOpen(false);
+			});
+			// Keep Tab inside the open drawer.
+			sidebar?.addEventListener("keydown", (event) => {
+				if (event.key !== "Tab" || !sidebar.hasAttribute("data-open")) return;
+				const focusables = [...sidebar.querySelectorAll<HTMLElement>("a[href], button, input, [tabindex]:not([tabindex='-1'])")].filter(
+					(el) => el.offsetParent !== null,
+				);
+				const first = focusables[0];
+				const last = focusables[focusables.length - 1];
+				if (!first || !last) return;
+				if (event.shiftKey && document.activeElement === first) {
+					event.preventDefault();
+					last.focus();
+				} else if (!event.shiftKey && document.activeElement === last) {
+					event.preventDefault();
+					first.focus();
+				}
+			});
+			mobile.addEventListener("change", (event) => {
+				if (!event.matches) setOpen(false, false);
+			});
+		</script>
+	</body>
+</html>
+
+<style>
+	.skip-link {
+		position: absolute;
+		left: 1rem;
+		top: -4rem;
+		z-index: 100;
+		padding: 0.7rem 1rem;
+		background: var(--ug-ink);
+		color: #fff;
+		font-weight: 700;
+		border-radius: 10px;
+	}
+	.skip-link:focus {
+		top: 1rem;
+	}
+
+	.ug-shell {
+		min-height: 100vh;
+	}
+
+	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		color: var(--ug-cobalt);
+		text-decoration: none;
+		font-family: var(--ug-font-display);
+		font-weight: 850;
+		font-size: 1.35rem;
+		letter-spacing: -0.02em;
+		min-height: 44px;
+	}
+	.brand--lg {
+		font-size: 1.85rem;
+	}
+	.brand__pin {
+		display: grid;
+		color: var(--ug-cobalt);
+	}
+	.brand__pin :global(.icon) {
+		fill: var(--ug-cobalt);
+		stroke: var(--ug-cobalt);
+	}
+	.brand__pin :global(.icon circle) {
+		fill: #fff;
+		stroke: #fff;
+	}
+	.brand__accent {
+		color: var(--ug-coral-strong);
+	}
+	.brand__logo {
+		height: 44px;
+		width: auto;
+		display: block;
+	}
+
+	/* Mobile top bar */
+	.ug-topbar {
+		position: sticky;
+		top: 0;
+		z-index: 30;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.5rem 1rem;
+		background: rgb(255 255 255 / 0.94);
+		border-bottom: 1px solid var(--ug-line);
+		backdrop-filter: saturate(1.4) blur(10px);
+	}
+	.ug-menu-btn {
+		display: inline-grid;
+		place-items: center;
+		width: 44px;
+		height: 44px;
+		border: 0;
+		border-radius: 12px;
+		background: transparent;
+		color: var(--ug-ink);
+		cursor: pointer;
+	}
+	.ug-menu-btn:hover {
+		background: var(--ug-surface-2);
+	}
+
+	/* Sidebar (desktop) / drawer (mobile) */
+	.ug-sidebar {
+		position: fixed;
+		inset: 0 auto 0 0;
+		z-index: 50;
+		display: flex;
+		flex-direction: column;
+		gap: 1.1rem;
+		width: min(88vw, 320px);
+		padding: 1rem 1rem 0.75rem;
+		overflow-y: auto;
+		background: linear-gradient(180deg, #ffffff 0%, #f3f6fd 100%);
+		border-right: 1px solid var(--ug-line);
+		visibility: hidden;
+		transform: translateX(-100%);
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		.ug-sidebar {
+			/* Hide only after the slide-out; show immediately so focus can move in. */
+			transition: transform 0.24s ease, visibility 0s linear 0.24s;
+		}
+		.ug-sidebar[data-open] {
+			transition: transform 0.24s ease, visibility 0s;
+		}
+	}
+	.ug-sidebar[data-open] {
+		visibility: visible;
+		transform: none;
+		box-shadow: 0 0 60px rgb(15 33 71 / 0.25);
+	}
+	.ug-sidebar__head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0.25rem 0.25rem 0.5rem;
+	}
+	.ug-scrim {
+		position: fixed;
+		inset: 0;
+		z-index: 40;
+		background: rgb(15 33 71 / 0.4);
+	}
+	.ug-scrim[hidden] {
+		display: none;
+	}
+	:global(html.ug-lock) {
+		overflow: hidden;
+	}
+
+	.side-nav {
+		display: grid;
+		gap: 0.25rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.side-nav a {
+		display: flex;
+		align-items: center;
+		gap: 0.9rem;
+		min-height: 48px;
+		padding: 0.55rem 0.95rem;
+		border-radius: 14px;
+		color: var(--ug-ink);
+		font-weight: 650;
+		font-size: 1.04rem;
+		text-decoration: none;
+	}
+	.side-nav a :global(.icon) {
+		color: var(--ug-text);
+		flex: none;
+	}
+	.side-nav a:hover {
+		background: var(--ug-surface-2);
+	}
+	.side-nav a[aria-current="page"] {
+		background: var(--ug-cobalt-soft);
+		color: var(--ug-cobalt-ink);
+		font-weight: 800;
+	}
+	.side-nav a[aria-current="page"] :global(.icon) {
+		color: var(--ug-cobalt);
+	}
+	.side-nav--small a {
+		min-height: 44px;
+		font-size: 0.95rem;
+		gap: 0.7rem;
+		padding-block: 0.35rem;
+	}
+	.side-dot {
+		display: grid;
+		place-items: center;
+		width: 32px;
+		height: 32px;
+		border-radius: 10px;
+		background: var(--ug-cobalt-soft);
+	}
+	.side-dot :global(.icon) {
+		color: var(--ug-cobalt) !important;
+	}
+	.side-dot.is-coral {
+		background: var(--ug-coral-soft);
+	}
+	.side-dot.is-coral :global(.icon) {
+		color: var(--ug-coral) !important;
+	}
+	.side-label {
+		margin: 0 0 0.35rem;
+		padding: 0 0.95rem;
+		font-size: 0.75rem;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--ug-muted);
+	}
+	.side-search {
+		padding: 0 0.25rem;
+	}
+	.side-search :global(input) {
+		width: 100%;
+		min-height: 44px;
+		padding: 0.55rem 0.9rem;
+		border: 1px solid var(--ug-line);
+		border-radius: 12px;
+		background: var(--ug-surface);
+		font: inherit;
+		font-size: 0.95rem;
+		color: var(--ug-ink);
+	}
+	.side-search :global(input:focus-visible) {
+		outline: 3px solid var(--ug-focus);
+		outline-offset: 1px;
+	}
+	.side-foot {
+		margin-top: auto;
+		color: var(--ug-muted);
+	}
+	.side-city {
+		display: block;
+		width: 100%;
+		height: auto;
+		color: #c9d6f2;
+		margin-bottom: 0.4rem;
+	}
+
+	.ug-main {
+		display: block;
+		padding: 0.75rem var(--ug-gutter) 2rem;
+		max-width: 1440px;
+	}
+	.ug-main:focus {
+		outline: none;
+	}
+
+	.ug-footer {
+		padding: 0.5rem var(--ug-gutter) calc(4.5rem + env(safe-area-inset-bottom));
+		color: var(--ug-muted);
+		border-top: 1px solid var(--ug-line);
+	}
+
+	/* Bottom tab bar (phones / tablets) */
+	.ug-tabbar {
+		position: fixed;
+		inset: auto 0 0 0;
+		z-index: 30;
+		background: rgb(255 255 255 / 0.97);
+		border-top: 1px solid var(--ug-line);
+		padding-bottom: env(safe-area-inset-bottom);
+	}
+	.ug-tabbar ul {
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 1fr;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.ug-tabbar a {
+		display: grid;
+		justify-items: center;
+		gap: 0.1rem;
+		min-height: 58px;
+		padding: 0.45rem 0.25rem;
+		color: var(--ug-muted);
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-decoration: none;
+	}
+	.ug-tabbar a[aria-current="page"] {
+		color: var(--ug-cobalt);
+	}
+
+	@media (min-width: 1024px) {
+		.ug-topbar,
+		.ug-tabbar,
+		.ug-scrim,
+		.ug-footer,
+		.ug-menu-btn--close {
+			display: none !important;
+		}
+		.ug-sidebar {
+			visibility: visible;
+			transform: none;
+			width: var(--ug-sidebar);
+			padding: 1.6rem 1.1rem 0.75rem;
+			box-shadow: none !important;
+		}
+		.ug-main {
+			margin-left: var(--ug-sidebar);
+			padding: 1.25rem var(--ug-gutter) 3rem;
+		}
+	}
+</style>

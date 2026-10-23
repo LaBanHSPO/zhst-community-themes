@@ -1,0 +1,57 @@
+---
+import { getEmDashEntry, getSeoMeta, decodeSlug, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import CityHero from "../components/CityHero.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+
+const slug = decodeSlug(Astro.params.slug);
+
+if (!slug) {
+	return Astro.redirect("/404");
+}
+
+const { entry: page, cacheHint } = await getEmDashEntry("pages", slug);
+
+if (!page) {
+	return Astro.redirect("/404");
+}
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+
+const seo = getSeoMeta(page, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description}
+	canonical={seo.canonical}
+	content={{ collection: "pages", id: page.data.id, slug }}
+>
+	<article class="page">
+		<CityHero compact>
+			<p class="ug-eyebrow">{siteTitle}</p>
+			<h1 class="ug-page-title" {...page.edit.title}>{page.data.title}</h1>
+		</CityHero>
+		<div class="page__body ug-card">
+			<div class="ug-prose">
+				<PortableText value={page.data.content} />
+			</div>
+		</div>
+	</article>
+</Base>
+
+<style>
+	.page__body {
+		max-width: 820px;
+		margin-top: 1.5rem;
+		padding: clamp(1.25rem, 3vw, 2.5rem);
+		border-radius: var(--ug-radius-md);
+	}
+</style>

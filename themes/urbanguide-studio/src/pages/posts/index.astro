@@ -1,0 +1,63 @@
+---
+import { getEmDashCollection, getTermsForEntries } from "emdash";
+import Base from "../../layouts/Base.astro";
+import GuideCard from "../../components/GuideCard.astro";
+import Icon from "../../components/Icon.astro";
+
+const cursor = Astro.url.searchParams.get("cursor") || undefined;
+const {
+	entries: posts,
+	cacheHint,
+	nextCursor,
+} = await getEmDashCollection("posts", {
+	orderBy: { published_at: "desc" },
+	limit: 20,
+	cursor,
+});
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+// Single batched query for tags across every post, instead of calling
+// getEntryTerms() per post (which would be N round-trips).
+const tagsByEntry = await getTermsForEntries(
+	"posts",
+	posts.map((p) => p.data.id),
+	"tag",
+);
+const postsWithTags = posts.map((post) => ({
+	post,
+	tags: tagsByEntry.get(post.data.id) ?? [],
+}));
+---
+
+<Base title="Guides">
+	<header class="ug-page-head">
+		<p class="ug-eyebrow"><Icon name="book" size={16} /> Neighborhood guides</p>
+		<h1 class="ug-page-title">Guides</h1>
+	</header>
+
+	<section class="ug-section" aria-label="All guides">
+		{
+			postsWithTags.length === 0 ? (
+				<p class="ug-empty">No guides yet.</p>
+			) : (
+				<ul class="ug-grid ug-grid--guides">
+					{postsWithTags.map(({ post, tags }) => (
+						<li>
+							<GuideCard post={post} tags={tags} />
+						</li>
+					))}
+				</ul>
+			)
+		}
+		<nav class="ug-pagination" aria-label="Pagination">
+			{cursor && <a class="ug-btn ug-btn--ghost" href="/posts">First page</a>}
+			{
+				nextCursor && (
+					<a class="ug-btn ug-btn--blue" href={`/posts?cursor=${encodeURIComponent(nextCursor)}`}>
+						Next page
+					</a>
+				)
+			}
+		</nav>
+	</section>
+</Base>

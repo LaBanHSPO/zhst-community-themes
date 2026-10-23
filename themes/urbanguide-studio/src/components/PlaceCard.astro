@@ -1,0 +1,174 @@
+---
+import CategoryArt from "./CategoryArt.astro";
+import Icon from "./Icon.astro";
+import { resolveCategory, type TermLike } from "../utils/categories";
+
+interface Props {
+	listing: {
+		id: string;
+		data: Record<string, unknown>;
+		edit?: Record<string, Record<string, unknown>>;
+	};
+	terms: TermLike[];
+	headingLevel?: 2 | 3;
+}
+
+const { listing, terms, headingLevel = 3 } = Astro.props;
+const data = listing.data;
+const name = typeof data.name === "string" && data.name ? data.name : listing.id;
+const category = resolveCategory(data.category, terms);
+const address = typeof data.address === "string" ? data.address : "";
+const isOpen = data.available === true;
+const Heading = headingLevel === 2 ? "h2" : "h3";
+const editName = listing.edit?.name ?? {};
+---
+
+<article class="place">
+	<CategoryArt icon={category?.icon ?? "pin"} class="place__art" />
+	<CategoryArt icon={category?.icon ?? "pin"} variant="thumb" class="place__thumb" />
+	<div class="place__body">
+		<Heading class="place__name">
+			<a href={`/listings/${listing.id}`} class="place__link" {...editName}>{name}</a>
+		</Heading>
+		<p class="place__meta">
+			{
+				category && (
+					<span class:list={["place__cat", `is-${category.tone}`]}>
+						<Icon name={category.icon} size={16} />
+						{category.label}
+					</span>
+				)
+			}
+			{isOpen && <span class="place__open">Open now</span>}
+		</p>
+		{address && <p class="place__address">{address}</p>}
+	</div>
+	<Icon name="chevron-right" class="place__chev" size={18} />
+</article>
+
+<style>
+	.place {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		background: var(--ug-surface);
+		border: 1px solid var(--ug-line);
+		border-radius: var(--ug-radius-md);
+		overflow: hidden;
+		box-shadow: var(--ug-shadow-sm);
+		transition: transform 0.18s ease, box-shadow 0.18s ease;
+	}
+	.place:hover {
+		box-shadow: var(--ug-shadow-md);
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		.place:hover {
+			transform: translateY(-2px);
+		}
+	}
+	.place:focus-within {
+		outline: 3px solid var(--ug-focus);
+		outline-offset: 2px;
+	}
+	.place :global(.place__thumb) {
+		display: none;
+	}
+	.place__body {
+		padding: 0.85rem 2.4rem 0.95rem 1rem;
+		display: grid;
+		gap: 0.35rem;
+	}
+	.place__name {
+		margin: 0;
+		font-size: 1.06rem;
+		line-height: 1.3;
+		font-weight: 750;
+		color: var(--ug-ink);
+	}
+	.place__link {
+		color: inherit;
+		text-decoration: none;
+	}
+	.place__link::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+	}
+	.place__link:focus-visible {
+		outline: none;
+	}
+	.place__meta {
+		margin: 0;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.4rem 0.6rem;
+		font-size: 0.875rem;
+		color: var(--ug-muted);
+	}
+	.place__cat {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+	}
+	.place__cat.is-cobalt :global(.icon) {
+		color: var(--ug-cobalt);
+	}
+	.place__cat.is-coral :global(.icon) {
+		color: var(--ug-coral);
+	}
+	.place__open {
+		font-size: 0.75rem;
+		font-weight: 700;
+		color: var(--ug-green-ink);
+		background: var(--ug-green-soft);
+		padding: 0.1rem 0.5rem;
+		border-radius: 999px;
+	}
+	.place__address {
+		margin: 0;
+		font-size: 0.8125rem;
+		color: var(--ug-muted);
+	}
+	.place :global(.place__chev) {
+		position: absolute;
+		right: 0.8rem;
+		bottom: 1.05rem;
+		color: var(--ug-muted);
+	}
+
+	/* Compact list row on phones, like the mobile concept. */
+	@media (max-width: 640px) {
+		.place {
+			flex-direction: row;
+			align-items: center;
+			gap: 0.85rem;
+			padding: 0.6rem;
+			border-radius: var(--ug-radius-sm);
+			box-shadow: none;
+		}
+		.place :global(.place__art) {
+			display: none;
+		}
+		.place :global(.place__thumb) {
+			display: grid;
+			flex: 0 0 4.25rem;
+			width: 4.25rem;
+		}
+		.place__body {
+			padding: 0 1.8rem 0 0;
+			gap: 0.2rem;
+		}
+		.place__name {
+			font-size: 0.98rem;
+		}
+		.place__address {
+			display: none;
+		}
+		.place :global(.place__chev) {
+			top: 50%;
+			bottom: auto;
+			transform: translateY(-50%);
+		}
+	}
+</style>

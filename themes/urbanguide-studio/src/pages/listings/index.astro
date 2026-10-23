@@ -1,0 +1,71 @@
+---
+import Base from "../../layouts/Base.astro";
+import CityHero from "../../components/CityHero.astro";
+import PlaceSearch from "../../components/PlaceSearch.astro";
+import PlaceCard from "../../components/PlaceCard.astro";
+import { loadDirectory } from "../../utils/directory";
+import { resolveCategory } from "../../utils/categories";
+
+const q = (Astro.url.searchParams.get("q") ?? "").trim().slice(0, 120);
+const category = (Astro.url.searchParams.get("category") ?? "").trim().slice(0, 80);
+
+const { terms, listings, categories } = await loadDirectory(Astro.cache);
+const activeCategory = categories.find((c) => c.slug === category) ?? null;
+
+const needle = q.toLowerCase();
+const results = listings.filter((listing) => {
+	const data = listing.data;
+	const cat = resolveCategory(data.category, terms);
+	if (category && cat?.slug !== category) return false;
+	if (!needle) return true;
+	return [data.name, data.description, data.address, cat?.label]
+		.filter((v): v is string => typeof v === "string")
+		.some((v) => v.toLowerCase().includes(needle));
+});
+const filtered = Boolean(q || category);
+const heading = activeCategory ? activeCategory.label : "All places";
+---
+
+<Base title={q ? `Places matching “${q}”` : activeCategory ? `${activeCategory.label} places` : "Places"}>
+	<CityHero compact>
+		<p class="ug-eyebrow">Local directory</p>
+		<h1 class="ug-page-title">{heading}</h1>
+		<PlaceSearch q={q} category={category} categories={categories} id="listing-search" />
+	</CityHero>
+
+	<section class="ug-section" aria-labelledby="results-title">
+		<div class="ug-section__head">
+			<h2 class="ug-section__title" id="results-title" aria-live="polite">
+				{results.length} {results.length === 1 ? "place" : "places"}
+				{q && <span class="results-query"> for “{q}”</span>}
+			</h2>
+			{filtered && <a class="ug-link-more" href="/listings">Clear filters</a>}
+		</div>
+		{
+			listings.length === 0 ? (
+				<p class="ug-empty">
+					No listings yet. <a href="/_emdash/admin/content/listings/new">Create one</a>.
+				</p>
+			) : results.length === 0 ? (
+				<p class="ug-empty">
+					Nothing matched your search. <a href="/listings">Show all places</a>.
+				</p>
+			) : (
+				<ul class="ug-grid ug-grid--places">
+					{results.map((listing) => (
+						<li>
+							<PlaceCard listing={listing as any} terms={terms} />
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</section>
+</Base>
+
+<style>
+	.results-query {
+		font-weight: 650;
+		color: var(--ug-muted);
+	}
+</style>

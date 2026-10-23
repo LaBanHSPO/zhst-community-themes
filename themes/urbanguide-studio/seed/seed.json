@@ -1,0 +1,523 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "UrbanGuide Studio",
+		"description": "A local directory theme with listings, categories and guides, in a studio layout",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "UrbanGuide",
+		"tagline": "Discover your city"
+	},
+	"collections": [
+		{
+			"slug": "posts",
+			"label": "Guides",
+			"labelSingular": "Guide",
+			"urlPattern": "/posts/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"scheduling",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured Image",
+					"type": "image"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text"
+				}
+			]
+		},
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "listings",
+			"label": "Listings",
+			"labelSingular": "Listing",
+			"urlPattern": "/listings/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "name",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "category",
+					"label": "Category",
+					"type": "string"
+				},
+				{
+					"slug": "address",
+					"label": "Address",
+					"type": "string"
+				},
+				{
+					"slug": "phone",
+					"label": "Phone",
+					"type": "string"
+				},
+				{
+					"slug": "description",
+					"label": "Description",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "url",
+					"label": "Website",
+					"type": "string"
+				},
+				{
+					"slug": "available",
+					"label": "Open now",
+					"type": "boolean"
+				}
+			]
+		}
+	],
+	"taxonomies": [
+		{
+			"name": "category",
+			"label": "Categories",
+			"labelSingular": "Category",
+			"hierarchical": false,
+			"collections": [
+				"listings"
+			],
+			"terms": [
+				{
+					"slug": "eat",
+					"label": "Food & Drink"
+				},
+				{
+					"slug": "shop",
+					"label": "Shopping"
+				},
+				{
+					"slug": "stay",
+					"label": "Hotels"
+				},
+				{
+					"slug": "see",
+					"label": "Things to Do"
+				},
+				{
+					"slug": "coffee",
+					"label": "Coffee"
+				},
+				{
+					"slug": "services",
+					"label": "Services"
+				}
+			]
+		},
+		{
+			"name": "tag",
+			"label": "Tags",
+			"labelSingular": "Tag",
+			"hierarchical": false,
+			"collections": [
+				"posts"
+			],
+			"terms": [
+				{
+					"slug": "neighborhood",
+					"label": "Neighborhood"
+				},
+				{
+					"slug": "weekend",
+					"label": "Weekend"
+				},
+				{
+					"slug": "riverside",
+					"label": "Riverside"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Home",
+					"url": "/"
+				},
+				{
+					"type": "custom",
+					"label": "Places",
+					"url": "/listings"
+				},
+				{
+					"type": "custom",
+					"label": "Guides",
+					"url": "/posts"
+				},
+				{
+					"type": "custom",
+					"label": "About",
+					"url": "/about"
+				}
+			]
+		}
+	],
+	"widgetAreas": [
+		{
+			"name": "sidebar",
+			"label": "Sidebar",
+			"description": "Sidebar widget area",
+			"widgets": [
+				{
+					"type": "component",
+					"componentId": "core:search",
+					"title": "Search"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "UrbanGuide Studio is a synthetic local-directory theme for the ZeroHostCMS community catalog. Every place, guide and phone number on this demo is invented.",
+									"_key": "a0s"
+								}
+							],
+							"_key": "a0"
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Replace the sample listings, guides and this page with your own content in the admin panel.",
+									"_key": "a1s"
+								}
+							],
+							"_key": "a1"
+						}
+					]
+				}
+			}
+		],
+		"posts": [
+			{
+				"id": "post-1",
+				"slug": "welcome",
+				"status": "published",
+				"data": {
+					"title": "Welcome to UrbanGuide Studio",
+					"excerpt": "How this sample directory is organised, and how to make it yours.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This is a sample guide for the UrbanGuide Studio theme. Places live in the Listings collection; guides like this one live in Guides.",
+									"_key": "w0s"
+								}
+							],
+							"_key": "w0"
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Find your way around",
+									"_key": "w1s"
+								}
+							],
+							"_key": "w1"
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Use the search bar or the category chips on the home page to filter places. Each place page shows its address, phone number and website when they are filled in.",
+									"_key": "w2s"
+								}
+							],
+							"_key": "w2"
+						}
+					]
+				},
+				"taxonomies": {
+					"category": [
+						"eat"
+					],
+					"tag": [
+						"neighborhood"
+					]
+				}
+			},
+			{
+				"id": "post-2",
+				"slug": "a-slow-saturday-by-the-river",
+				"status": "published",
+				"data": {
+					"title": "A slow Saturday by the river",
+					"excerpt": "A sample walking route that strings together coffee, a museum and a bike ride.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Start with a coffee, wander to the museum before lunch, then rent a bike for the river path. All the places in this sample route are fictional.",
+									"_key": "r0s"
+								}
+							],
+							"_key": "r0"
+						}
+					]
+				},
+				"taxonomies": {
+					"tag": [
+						"weekend",
+						"riverside"
+					]
+				}
+			},
+			{
+				"id": "post-3",
+				"slug": "new-in-the-neighborhood",
+				"status": "published",
+				"data": {
+					"title": "New in the neighborhood",
+					"excerpt": "A sample checklist for your first week: groceries, repairs and a place to stay.",
+					"content": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Moving somewhere new? This sample guide shows how to point readers at useful local services listed in the directory.",
+									"_key": "n0s"
+								}
+							],
+							"_key": "n0"
+						}
+					]
+				},
+				"taxonomies": {
+					"tag": [
+						"neighborhood"
+					]
+				}
+			}
+		],
+		"listings": [
+			{
+				"id": "listing-4",
+				"slug": "maple-and-oak",
+				"status": "published",
+				"data": {
+					"name": "Maple & Oak",
+					"category": "eat",
+					"address": "3 Harbor Lane",
+					"phone": "+1 555 0133",
+					"description": "Sample neighborhood kitchen with a seasonal menu and long communal tables.",
+					"url": "https://example.invalid/maple-and-oak",
+					"available": true
+				},
+				"taxonomies": {
+					"category": [
+						"eat"
+					]
+				}
+			},
+			{
+				"id": "listing-5",
+				"slug": "the-corner-store",
+				"status": "published",
+				"data": {
+					"name": "The Corner Store",
+					"category": "shop",
+					"address": "21 Market Street",
+					"phone": "+1 555 0144",
+					"description": "Sample independent shop for clothes, gifts and homeware.",
+					"url": "https://example.invalid/the-corner-store",
+					"available": true
+				},
+				"taxonomies": {
+					"category": [
+						"shop"
+					]
+				}
+			},
+			{
+				"id": "listing-6",
+				"slug": "riverside-hotel",
+				"status": "published",
+				"data": {
+					"name": "Riverside Hotel",
+					"category": "stay",
+					"address": "1 Quay Road",
+					"phone": "+1 555 0155",
+					"description": "Sample small hotel with river-view rooms close to the old town.",
+					"url": "https://example.invalid/riverside-hotel",
+					"available": true
+				},
+				"taxonomies": {
+					"category": [
+						"stay"
+					]
+				}
+			},
+			{
+				"id": "listing-7",
+				"slug": "city-art-museum",
+				"status": "published",
+				"data": {
+					"name": "City Art Museum",
+					"category": "see",
+					"address": "5 Gallery Square",
+					"phone": "+1 555 0166",
+					"description": "Sample museum with rotating exhibitions and a sculpture garden.",
+					"url": "https://example.invalid/city-art-museum",
+					"available": false
+				},
+				"taxonomies": {
+					"category": [
+						"see"
+					]
+				}
+			},
+			{
+				"id": "listing-1",
+				"slug": "corner-bakery",
+				"status": "published",
+				"data": {
+					"name": "Corner Bakery",
+					"category": "coffee",
+					"address": "12 Maple Street",
+					"phone": "+1 555 0100",
+					"description": "Neighborhood bakery with fresh bread, pastries and coffee.",
+					"url": "https://example.invalid/corner-bakery",
+					"available": true
+				},
+				"taxonomies": {
+					"category": [
+						"coffee"
+					]
+				}
+			},
+			{
+				"id": "listing-2",
+				"slug": "river-bike-shop",
+				"status": "published",
+				"data": {
+					"name": "River Bike Shop",
+					"category": "shop",
+					"address": "8 River Road",
+					"phone": "+1 555 0111",
+					"description": "Bicycle sales, repairs and rentals near the river path.",
+					"url": "https://example.invalid/river-bike-shop",
+					"available": true
+				},
+				"taxonomies": {
+					"category": [
+						"shop"
+					]
+				}
+			},
+			{
+				"id": "listing-3",
+				"slug": "bright-plumbing",
+				"status": "published",
+				"data": {
+					"name": "Bright Plumbing",
+					"category": "services",
+					"address": "44 Oak Avenue",
+					"phone": "+1 555 0122",
+					"description": "Local plumbing and heating service, same-day callouts.",
+					"url": "https://example.invalid/bright-plumbing",
+					"available": true
+				},
+				"taxonomies": {
+					"category": [
+						"services"
+					]
+				}
+			}
+		]
+	}
+}

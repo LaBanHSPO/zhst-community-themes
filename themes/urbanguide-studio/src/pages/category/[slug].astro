@@ -1,0 +1,156 @@
+---
+import { getEmDashCollection, decodeSlug } from "emdash";
+import Base from "../../layouts/Base.astro";
+import CategoryArt from "../../components/CategoryArt.astro";
+import PlaceCard from "../../components/PlaceCard.astro";
+import GuideCard from "../../components/GuideCard.astro";
+import Icon from "../../components/Icon.astro";
+import { loadDirectory } from "../../utils/directory";
+import { resolveCategory } from "../../utils/categories";
+
+const slug = decodeSlug(Astro.params.slug);
+const { terms, listings, categories } = await loadDirectory(Astro.cache);
+const term = slug ? categories.find((item) => item.slug === slug) : null;
+
+if (!term) {
+	return Astro.redirect("/404");
+}
+
+const places = listings.filter(
+	(l) => resolveCategory(l.data.category, terms)?.slug === term.slug,
+);
+
+const cursor = Astro.url.searchParams.get("cursor") || undefined;
+const {
+	entries: posts,
+	cacheHint,
+	nextCursor,
+} = await getEmDashCollection("posts", {
+	where: { category: term.slug },
+	orderBy: { published_at: "desc" },
+	limit: 20,
+	cursor,
+});
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+---
+
+<Base title={`${term.label}`} description={`Places and guides in ${term.label}`}>
+	<header class="cat-head">
+		<CategoryArt icon={term.icon} variant="banner" />
+		<div class="cat-head__text">
+			<p class="ug-eyebrow"><Icon name="grid" size={16} /> Category</p>
+			<h1 class="ug-page-title">{term.label}</h1>
+			<p class="ug-lede">
+				{places.length} {places.length === 1 ? "place" : "places"}
+				{posts.length > 0 && <> · {posts.length} {posts.length === 1 ? "guide" : "guides"}</>}
+			</p>
+		</div>
+	</header>
+
+	<nav aria-label="Other categories" class="cat-switch">
+		<ul class="ug-chips">
+			{
+				categories.map((cat) => (
+					<li>
+						<a
+							class:list={["ug-chip", { "is-coral": cat.tone === "coral" }]}
+							href={`/category/${cat.slug}`}
+							aria-current={cat.slug === term.slug ? "page" : undefined}
+						>
+							<Icon name={cat.icon} size={18} />
+							{cat.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
+
+	<section class="ug-section" aria-labelledby="cat-places">
+		<div class="ug-section__head">
+			<h2 class="ug-section__title" id="cat-places">Places</h2>
+			{places.length > 0 && (
+				<a class="ug-link-more" href={`/listings?category=${encodeURIComponent(term.slug)}`}>
+					Search in {term.label} <Icon name="arrow-right" size={16} />
+				</a>
+			)}
+		</div>
+		{
+			places.length === 0 ? (
+				<p class="ug-empty">No places in this category yet.</p>
+			) : (
+				<ul class="ug-grid ug-grid--places">
+					{places.map((listing) => (
+						<li>
+							<PlaceCard listing={listing as any} terms={terms} />
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</section>
+
+	{
+		posts.length > 0 && (
+			<section class="ug-section" aria-labelledby="cat-guides">
+				<div class="ug-section__head">
+					<h2 class="ug-section__title" id="cat-guides">Guides</h2>
+				</div>
+				<ul class="ug-grid ug-grid--guides">
+					{posts.map((post) => (
+						<li>
+							<GuideCard post={post} headingLevel={3} />
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+	<nav class="ug-pagination" aria-label="Pagination">
+		{cursor && <a class="ug-btn ug-btn--ghost" href={`/category/${term.slug}`}>First page</a>}
+		{
+			nextCursor && (
+				<a class="ug-btn ug-btn--blue" href={`/category/${term.slug}?cursor=${encodeURIComponent(nextCursor)}`}>
+					Next page
+				</a>
+			)
+		}
+	</nav>
+</Base>
+
+<style>
+	.cat-head {
+		position: relative;
+		margin-top: 0.5rem;
+	}
+	.cat-head :global(.art--banner) {
+		aspect-ratio: auto;
+		height: clamp(180px, 22vw, 240px);
+		place-items: center end;
+		padding-right: clamp(1.5rem, 8vw, 6rem);
+	}
+	.cat-head__text {
+		position: absolute;
+		inset: 0 auto 0 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: 0 clamp(1.25rem, 4vw, 3rem);
+	}
+	.cat-switch {
+		margin-top: 1.25rem;
+	}
+	@media (max-width: 640px) {
+		.cat-head :global(.art--banner) {
+			place-items: start end;
+			padding: 1rem;
+		}
+	}
+	@media (max-width: 640px) {
+		.cat-switch .ug-chips {
+			flex-wrap: nowrap;
+			overflow-x: auto;
+			padding-bottom: 0.4rem;
+		}
+	}
+</style>
