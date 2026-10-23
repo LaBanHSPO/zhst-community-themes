@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "slowmorning",
+	"kind": "theme",
+	"name": "Slowmorning",
+	"type": "restaurant",
+	"emdash": "1.2.0",
+	"entry": "themes/slowmorning",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": false,
+		"booking": true,
+		"checkout": false,
+		"map": true,
+		"whatsapp": false
+	}
+}
