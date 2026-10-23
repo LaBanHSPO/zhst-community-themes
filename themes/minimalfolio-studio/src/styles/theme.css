@@ -1,0 +1,132 @@
+/*
+  theme.css -- MinimalFolio Studio overrides.
+
+  Swiss editorial palette: paper white, ink black and one vivid orange.
+  Declarations here are unlayered, so they beat the @layer base defaults in
+  tokens.css. Colours use light-dark(<light>, <dark>).
+
+  Accent roles:
+  --color-brand        vivid orange for large type, rules, shapes and button fills
+  --color-on-brand     ink text on orange fills (6:1; white on this orange is only 3:1)
+  --color-accent-text  orange that passes 4.5:1 as small text on the page background
+*/
+
+:root {
+	--color-bg: light-dark(#faf8f4, #0e0e0d);
+	--color-surface: light-dark(#ffffff, #171716);
+	--color-panel: light-dark(#efede8, #1d1d1b);
+	--color-text: light-dark(#111111, #f4f2ee);
+	--color-muted: light-dark(#5f5d58, #a8a59e);
+	--color-border: light-dark(#e3e0d9, #2b2a27);
+	--color-brand: light-dark(#ff5a1f, #ff6a2e);
+	--color-on-brand: #111111;
+	--color-accent-text: light-dark(#c2410c, #ff8a4c);
+	--color-brand-ring: light-dark(#c2410c, #ff8a4c);
+
+	--font-body: var(--font-heading), "Helvetica Neue", Arial, system-ui, sans-serif;
+	--font-weight-heading: 700;
+	--font-weight-display: 800;
+
+	--font-size-4xl: 4rem;
+	--font-size-hero: clamp(3.25rem, 6.2vw, 6.75rem);
+
+	--tracking-tight: -0.035em;
+	--tracking-display: -0.05em;
+	--tracking-caps: 0.32em;
+
+	--max-width: 720px;
+	--wide-width: 1240px;
+	--sidebar-width: 15rem;
+	--radius: 2px;
+	--radius-pill: 999px;
+}
+
+@supports not (color: light-dark(#000, #fff)) {
+	:root {
+		--color-bg: #faf8f4;
+		--color-surface: #ffffff;
+		--color-panel: #efede8;
+		--color-text: #111111;
+		--color-muted: #5f5d58;
+		--color-border: #e3e0d9;
+		--color-brand: #ff5a1f;
+		--color-accent-text: #c2410c;
+		--color-brand-ring: #c2410c;
+	}
+}
+
+/* Shared editorial primitives used by several pages. */
+.rule {
+	display: block;
+	width: 2.5rem;
+	height: 2px;
+	background: currentColor;
+}
+
+.rule-accent {
+	background: var(--color-brand);
+}
+
+.caps {
+	font-size: var(--font-size-xs);
+	font-weight: 500;
+	letter-spacing: var(--tracking-caps);
+	text-transform: uppercase;
+}
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.75rem;
+	min-height: 2.75rem;
+	padding: 0.7rem 1.4rem;
+	font-family: var(--font-body);
+	font-size: var(--font-size-sm);
+	font-weight: 600;
+	text-decoration: none;
+	border: 1.5px solid transparent;
+	border-radius: var(--radius-pill);
+	transition:
+		background var(--transition-fast),
+		border-color var(--transition-fast),
+		color var(--transition-fast),
+		transform var(--transition-fast);
+}
+
+.btn-primary {
+	color: var(--color-on-brand);
+	background: var(--color-brand);
+}
+
+.btn-primary:hover {
+	background: color-mix(in srgb, var(--color-brand) 88%, var(--color-text));
+	transform: translateY(-1px);
+}
+
+.btn-outline {
+	color: var(--color-text);
+	background: transparent;
+	border-color: var(--color-border);
+}
+
+.btn-outline:hover {
+	border-color: var(--color-text);
+}
+
+:focus-visible {
+	outline: 2px solid var(--color-brand-ring);
+	outline-offset: 3px;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}

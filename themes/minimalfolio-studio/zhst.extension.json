@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "minimalfolio-studio",
+	"kind": "theme",
+	"name": "MinimalFolio Studio",
+	"type": "bio",
+	"emdash": "1.2.0",
+	"entry": "themes/minimalfolio-studio",
+	"capabilities": {
+		"pwa": true,
+		"publicItems": true,
+		"inquiry": false,
+		"booking": false,
+		"checkout": false,
+		"map": true,
+		"whatsapp": true
+	}
+}

@@ -1,0 +1,252 @@
+---
+export const prerender = false;
+
+import {
+	getEmDashCollection,
+	getTaxonomyTermsWithCacheHint,
+	getTermsForEntries,
+} from "emdash";
+import Base from "../../layouts/Base.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+
+// Get filter from query param. When set, push the filter down to the
+// database via `where` instead of loading every project and filtering
+// in JS — that pattern scales O(projects × terms-per-project) and
+// blows up the moment you have more than a couple of dozen entries.
+const activeTag = Astro.url.searchParams.get("tag");
+const cursor = Astro.url.searchParams.get("cursor") ?? undefined;
+
+const [projectsResult, tagsResult] = await Promise.all([
+	getEmDashCollection("projects", {
+		orderBy: { published_at: "desc" },
+		limit: 12,
+		cursor,
+		...(activeTag ? { where: { tag: activeTag } } : {}),
+	}),
+	getTaxonomyTermsWithCacheHint("tag", { includeCounts: false }),
+]);
+if (projectsResult.error) {
+	return new Response("Could not load the portfolio", { status: 500 });
+}
+
+const { entries: sortedProjects, nextCursor } = projectsResult;
+const tags = tagsResult.data;
+if (Astro.cache?.enabled) {
+	Astro.cache.set(projectsResult.cacheHint);
+	Astro.cache.set(tagsResult.cacheHint);
+}
+
+// Single batched JOIN for the tag pills shown on each card, instead of
+// one getEntryTerms() round-trip per card.
+const tagsByEntry = await getTermsForEntries(
+	"projects",
+	sortedProjects.map((p) => p.data.id),
+	"tag",
+);
+const projectsWithTags = sortedProjects.map((project) => ({
+	project,
+	projectTags: tagsByEntry.get(project.data.id) ?? [],
+}));
+
+function workUrl(next: string): string {
+	const params = new URLSearchParams({ cursor: next });
+	if (activeTag) params.set("tag", activeTag);
+	return `/work?${params.toString()}`;
+}
+---
+
+<Base
+	title={activeTag
+		? `${tags.find((t) => t.slug === activeTag)?.label || activeTag} — Work`
+		: "Work"}
+>
+	<div class="work">
+		<header class="work-header">
+			<span class="rule" />
+			<h1>Work<span class="dot" aria-hidden="true">.</span></h1>
+			<p class="work-intro">
+				A selection of projects spanning identity, interface design, development,
+				and art direction.
+			</p>
+
+			{
+				tags.length > 0 && (
+					<nav class="tag-filters" aria-label="Filter by tag">
+						<a
+							href="/work"
+							class:list={["tag-filter", { active: !activeTag }]}
+							aria-current={!activeTag ? "page" : undefined}
+						>
+							All
+						</a>
+						{tags.map((tag) => (
+							<a
+								href={`/work?tag=${tag.slug}`}
+								class:list={["tag-filter", { active: activeTag === tag.slug }]}
+								aria-current={activeTag === tag.slug ? "page" : undefined}
+							>
+								{tag.label}
+							</a>
+						))}
+					</nav>
+				)
+			}
+		</header>
+
+		{
+			projectsWithTags.length > 0 ? (
+				<section class="projects" aria-label="Projects">
+					<div class="projects-grid">
+						{projectsWithTags.map(({ project, projectTags }) => (
+							<ProjectCard
+								title={project.data.title}
+								summary={project.data.summary}
+								featuredImage={project.data.featured_image}
+								href={`/work/${project.id}`}
+								client={project.data.client}
+								year={project.data.year}
+								subtitle={projectTags[0]?.label || project.data.client}
+								tags={projectTags.slice(1).map((t) => t.label)}
+								edit={project.edit}
+							/>
+						))}
+					</div>
+				</section>
+			) : (
+				<section class="empty-state">
+					{activeTag ? (
+						<>
+							<p>No projects found with this tag.</p>
+							<a href="/work" class="btn btn-outline">
+								View all projects
+							</a>
+						</>
+					) : (
+						<>
+							<p>No projects yet. Add your first project in the admin panel.</p>
+							<a href="/_emdash/admin/content/projects/new" class="btn btn-primary">
+								Add a project
+							</a>
+						</>
+					)}
+				</section>
+			)
+		}
+
+		{
+			nextCursor && (
+				<nav class="pagination" aria-label="Portfolio pagination">
+					<a href={workUrl(nextCursor)} rel="next" class="btn btn-outline">
+						More projects
+					</a>
+				</nav>
+			)
+		}
+	</div>
+</Base>
+
+<style>
+	.work {
+		padding: 1.5rem 1.25rem 4rem;
+	}
+
+	.work-header {
+		max-width: 52rem;
+		margin-bottom: 2.75rem;
+	}
+
+	.work-header .rule {
+		margin-bottom: 1.5rem;
+	}
+
+	.work-header h1 {
+		font-size: clamp(3rem, 8vw, 5.5rem);
+		font-weight: var(--font-weight-display);
+		line-height: 0.95;
+		letter-spacing: var(--tracking-display);
+	}
+
+	.dot {
+		color: var(--color-brand);
+	}
+
+	.work-intro {
+		max-width: 36rem;
+		margin-top: 1.25rem;
+		font-size: var(--font-size-lg);
+		color: var(--color-muted);
+	}
+
+	.tag-filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-top: 2rem;
+	}
+
+	.tag-filter {
+		display: inline-flex;
+		align-items: center;
+		min-height: 2.5rem;
+		padding: 0 1.05rem;
+		font-size: var(--font-size-sm);
+		color: var(--color-text);
+		text-decoration: none;
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-pill);
+		transition:
+			border-color var(--transition-fast),
+			background var(--transition-fast),
+			color var(--transition-fast);
+	}
+
+	.tag-filter:hover {
+		border-color: var(--color-text);
+	}
+
+	.tag-filter.active {
+		color: var(--color-on-brand);
+		background: var(--color-brand);
+		border-color: var(--color-brand);
+	}
+
+	.projects-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 2.75rem 1.5rem;
+	}
+
+	.empty-state {
+		padding: var(--spacing-3xl) 0;
+		color: var(--color-muted);
+	}
+
+	.empty-state p {
+		margin-bottom: var(--spacing-lg);
+	}
+
+	.pagination {
+		margin-top: 3rem;
+		text-align: center;
+	}
+
+	@media (min-width: 640px) {
+		.work {
+			padding-inline: 2rem;
+		}
+
+		.projects-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.work {
+			padding: 0 3rem 5rem 0;
+		}
+
+		.projects-grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+	}
+</style>

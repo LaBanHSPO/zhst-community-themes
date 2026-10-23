@@ -1,0 +1,540 @@
+---
+import {
+	getEmDashCollection,
+	getSiteSettings,
+	getTaxonomyTermsWithCacheHint,
+	getTermsForEntries,
+} from "emdash";
+import { Image } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import Icon from "../components/Icon.astro";
+import { CONTACT_EMAIL, accentSegments } from "../lib/site";
+
+// Settings, the 4 newest projects (1 featured + 3 selected) and tag labels in
+// parallel. Limiting and sorting in the database avoids full-table reads.
+const [settings, projectsResult, tagsResult] = await Promise.all([
+	getSiteSettings(),
+	getEmDashCollection("projects", {
+		orderBy: { published_at: "desc" },
+		limit: 4,
+	}),
+	getTaxonomyTermsWithCacheHint("tag", { includeCounts: false }),
+]);
+if (projectsResult.error) {
+	return new Response("Could not load the portfolio", { status: 500 });
+}
+const { entries: projects, cacheHint } = projectsResult;
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(tagsResult.cacheHint);
+}
+
+const tagsByEntry = await getTermsForEntries(
+	"projects",
+	projects.map((p) => p.data.id),
+	"tag",
+);
+
+const siteTitle = settings?.title || "Studio";
+const headline = accentSegments(settings?.tagline || siteTitle);
+const topics = tagsResult.data.slice(0, 4);
+const [featured, ...selected] = projects;
+const featuredCaption = featured
+	? [featured.data.client, featured.data.year].filter(Boolean)
+	: [];
+
+function firstTag(id: string): string | undefined {
+	return tagsByEntry.get(id)?.[0]?.label;
+}
+---
+
+<Base>
+	{
+		featured ? (
+			<div class="home">
+				<section class="hero" aria-labelledby="hero-title">
+					<span class="rule hero-rule" />
+					<div class="hero-head">
+						{topics.length > 0 && (
+							<nav class="hero-topics" aria-label="Disciplines">
+								<ul class="caps">
+									{topics.map((tag) => (
+										<li>
+											<a href={`/work?tag=${tag.slug}`}>{tag.label}</a>
+										</li>
+									))}
+								</ul>
+								<span class="rule rule-accent" />
+							</nav>
+						)}
+						<h1 id="hero-title" class="hero-title">
+							{headline.map((part) =>
+								part.accent ? <span class="accent">{part.text}</span> : part.text,
+							)}
+						</h1>
+					</div>
+					<span class="rule rule-accent hero-mobile-rule" />
+					<div class="hero-actions">
+						<a href="/work" class="btn btn-primary">
+							View work
+						</a>
+						<a href="/contact" class="btn btn-outline">
+							Contact
+						</a>
+					</div>
+				</section>
+
+				<figure class="feature">
+					<div class="feature-media" {...featured.edit.featured_image}>
+						<span class="feature-circle" aria-hidden="true" />
+						<Image image={featured.data.featured_image} />
+						{featuredCaption.length > 0 && (
+							<span class="feature-caption caps" aria-hidden="true">
+								{featuredCaption.map((line) => (
+									<span>{line}</span>
+								))}
+								<span class="rule rule-accent" />
+							</span>
+						)}
+					</div>
+					<figcaption class="feature-meta">
+						<span class="caps">Featured</span>
+						<a href={`/work/${featured.id}`} class="feature-link">
+							<span {...featured.edit.title}>{featured.data.title}</span>
+							<Icon name="arrow-right" size={18} />
+						</a>
+					</figcaption>
+				</figure>
+
+				<section class="connect" aria-labelledby="connect-title">
+					<span class="rule connect-rule" />
+					<h2 id="connect-title" class="connect-title">
+						Connect
+					</h2>
+					<ul class="connect-list">
+						<li>
+							<a href={`mailto:${CONTACT_EMAIL}`}>
+								<Icon name="mail" size={30} />
+								<span>Email</span>
+							</a>
+						</li>
+						<li>
+							<a href="/contact">
+								<Icon name="chat" size={30} />
+								<span>Contact</span>
+							</a>
+						</li>
+						<li>
+							<a href="/rss.xml">
+								<Icon name="rss" size={30} />
+								<span>RSS feed</span>
+							</a>
+						</li>
+					</ul>
+				</section>
+
+				{selected.length > 0 && (
+					<section class="selected" aria-labelledby="selected-title">
+						<header class="selected-header">
+							<h2 id="selected-title" class="selected-title">
+								Selected work
+							</h2>
+							<a href="/work" class="selected-link">
+								View all
+								<Icon name="arrow-right" size={16} />
+							</a>
+						</header>
+						<div class="selected-grid">
+							{selected.map((project) => (
+								<ProjectCard
+									title={project.data.title}
+									featuredImage={project.data.featured_image}
+									href={`/work/${project.id}`}
+									client={project.data.client}
+									year={project.data.year}
+									subtitle={firstTag(project.data.id) || project.data.client}
+									edit={project.edit}
+									headingLevel="h3"
+								/>
+							))}
+						</div>
+					</section>
+				)}
+			</div>
+		) : (
+			<section class="empty-state">
+				<h1>No projects yet</h1>
+				<p>Add your first project in the admin panel.</p>
+				<a href="/_emdash/admin/content/projects/new" class="btn btn-primary">
+					Add a project
+				</a>
+			</section>
+		)
+	}
+</Base>
+
+<style>
+	.home {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas:
+			"feature"
+			"hero"
+			"connect"
+			"selected";
+		gap: 2.25rem;
+		padding: 1.5rem 1.25rem 4rem;
+	}
+
+	.hero {
+		grid-area: hero;
+		container-type: inline-size;
+	}
+
+	.feature {
+		grid-area: feature;
+	}
+
+	.connect {
+		grid-area: connect;
+	}
+
+	.selected {
+		grid-area: selected;
+	}
+
+	/* ---------- Hero ---------- */
+	.hero-rule {
+		display: none;
+	}
+
+	.hero-topics {
+		display: none;
+	}
+
+	.hero-title {
+		font-family: var(--font-heading);
+		font-size: clamp(2.5rem, 13.5cqi, 6.25rem);
+		font-weight: var(--font-weight-display);
+		line-height: 0.95;
+		letter-spacing: var(--tracking-display);
+		text-wrap: balance;
+	}
+
+	.accent {
+		color: var(--color-brand);
+	}
+
+	.hero-mobile-rule {
+		margin-top: 1.25rem;
+	}
+
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: 1.75rem;
+	}
+
+	/* ---------- Featured project panel ---------- */
+	.feature-media {
+		position: relative;
+		isolation: isolate;
+		overflow: hidden;
+		aspect-ratio: 1 / 0.86;
+		/* A fixed paper ground in both modes, so the multiply blend keeps the circle visible. */
+		background: #ecebe6;
+	}
+
+	.feature-circle {
+		position: absolute;
+		top: 12%;
+		left: -12%;
+		z-index: 0;
+		width: 64%;
+		aspect-ratio: 1;
+		background: var(--color-brand);
+		border-radius: 50%;
+	}
+
+	.feature-media :global(img) {
+		position: relative;
+		z-index: 1;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		filter: grayscale(1) contrast(1.08);
+		mix-blend-mode: multiply;
+	}
+
+	.feature-caption {
+		position: absolute;
+		right: 1.25rem;
+		bottom: 1.5rem;
+		z-index: 2;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.5rem;
+		padding: 0.75rem 0.8rem;
+		font-size: 0.6875rem;
+		line-height: 1;
+		color: #111111;
+		background: color-mix(in srgb, #ecebe6 82%, transparent);
+	}
+
+	.feature-caption .rule {
+		width: 1.1rem;
+		margin-top: 0.3rem;
+	}
+
+	.feature-meta {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--spacing-md);
+		margin-top: 0.85rem;
+		color: var(--color-muted);
+	}
+
+	.feature-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-weight: 600;
+		color: var(--color-text);
+		text-decoration: none;
+	}
+
+	.feature-link:hover {
+		color: var(--color-accent-text);
+	}
+
+	/* ---------- Connect ---------- */
+	.connect-rule {
+		display: none;
+	}
+
+	.connect-title {
+		font-family: var(--font-heading);
+		font-size: 1.25rem;
+		font-weight: 500;
+		letter-spacing: -0.01em;
+	}
+
+	.connect-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 2rem;
+		margin-top: 0.9rem;
+		list-style: none;
+	}
+
+	.connect-list a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.6rem;
+		min-height: 2.75rem;
+		color: var(--color-text);
+		text-decoration: none;
+	}
+
+	.connect-list a :global(svg) {
+		width: 24px;
+		height: 24px;
+	}
+
+	.connect-list a:hover {
+		color: var(--color-accent-text);
+	}
+
+	/* ---------- Selected work ---------- */
+	.selected-header {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		margin-bottom: 1.25rem;
+	}
+
+	.selected-title {
+		font-family: var(--font-heading);
+		font-size: 1.125rem;
+		font-weight: 600;
+		letter-spacing: -0.01em;
+	}
+
+	.selected-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		font-size: var(--font-size-sm);
+		color: var(--color-text);
+		text-decoration: none;
+	}
+
+	.selected-link:hover {
+		color: var(--color-accent-text);
+	}
+
+	.selected-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 2rem;
+	}
+
+	@media (min-width: 640px) {
+		.home {
+			padding-inline: 2rem;
+		}
+
+		.selected-grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 1.5rem;
+		}
+	}
+
+	/* ---------- Desktop: two-column editorial grid ---------- */
+	@media (min-width: 1024px) {
+		.home {
+			grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.62fr);
+			/*
+			 * The right column (feature, connect) stacks independently of the
+			 * left (headline, selected work), as in the concept: selected work
+			 * sits right under the headline, not under the tall feature image.
+			 */
+			grid-template-rows: auto auto minmax(0, 1fr);
+			grid-template-areas:
+				"hero feature"
+				"selected feature"
+				"selected connect";
+			column-gap: 1.75rem;
+			row-gap: 0;
+			padding: 0 3rem 5rem 0;
+		}
+
+		.selected {
+			margin-top: 2.5rem;
+		}
+
+		.connect {
+			margin-top: 2.25rem;
+		}
+
+		.hero {
+			align-self: start;
+			padding-top: 0.25rem;
+		}
+
+		.hero-title {
+			font-size: clamp(4rem, 15.5cqi, 7.5rem);
+			line-height: 0.92;
+		}
+
+		.hero-rule {
+			display: block;
+			margin-bottom: 1.75rem;
+		}
+
+		.hero-topics {
+			display: block;
+			float: right;
+			margin: 1.75rem 0 1rem 1.5rem;
+			shape-outside: margin-box;
+		}
+
+		.hero-topics ul {
+			display: flex;
+			flex-direction: column;
+			gap: 0.6rem;
+			list-style: none;
+			font-size: 0.6875rem;
+			line-height: 1;
+		}
+
+		.hero-topics a {
+			color: var(--color-text);
+			text-decoration: none;
+		}
+
+		.hero-topics a:hover {
+			color: var(--color-accent-text);
+		}
+
+		.hero-topics .rule {
+			width: 1.25rem;
+			margin-top: 1rem;
+		}
+
+		.hero-mobile-rule,
+		.hero-actions {
+			display: none;
+		}
+
+		.feature {
+			margin-top: 1.5rem;
+		}
+
+		.feature-media {
+			aspect-ratio: 1 / 1.06;
+		}
+
+		.connect {
+			padding: 0 1.75rem;
+		}
+
+		.connect-rule {
+			display: block;
+			width: 2.5rem;
+			height: 1px;
+			margin-bottom: 1.75rem;
+			background: var(--color-border);
+		}
+
+		.connect-list {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 1rem;
+			margin-top: 1.5rem;
+		}
+
+		.connect-list a {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.6rem;
+		}
+
+		.connect-list a :global(svg) {
+			width: 30px;
+			height: 30px;
+		}
+
+		.selected-header {
+			margin-bottom: 1.5rem;
+		}
+
+		.selected-title {
+			font-size: 1.125rem;
+			font-weight: 400;
+			color: var(--color-muted);
+		}
+	}
+
+	/* ---------- Empty state ---------- */
+	.empty-state {
+		max-width: 420px;
+		margin: 0 auto;
+		padding: var(--spacing-4xl) var(--spacing-lg);
+		text-align: center;
+	}
+
+	.empty-state h1 {
+		font-size: var(--font-size-2xl);
+		margin-bottom: var(--spacing-sm);
+	}
+
+	.empty-state p {
+		margin-bottom: var(--spacing-lg);
+		color: var(--color-muted);
+	}
+</style>

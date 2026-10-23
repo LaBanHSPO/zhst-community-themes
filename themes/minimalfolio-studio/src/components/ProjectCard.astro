@@ -1,0 +1,181 @@
+---
+import type { EditProxy, MediaValue } from "emdash";
+import { Image } from "emdash/ui";
+import Icon from "./Icon.astro";
+
+interface Props {
+	title: string;
+	summary?: string;
+	featuredImage: MediaValue;
+	href: string;
+	client?: string;
+	year?: string;
+	/** Short label under the title, e.g. the first tag. Falls back to client · year. */
+	subtitle?: string;
+	tags?: string[];
+	edit?: EditProxy;
+	headingLevel?: "h2" | "h3";
+}
+
+const {
+	title,
+	summary,
+	featuredImage,
+	href,
+	client,
+	year,
+	subtitle,
+	tags,
+	edit,
+	headingLevel = "h2",
+} = Astro.props;
+const allTags = tags || [];
+const meta = [client, year].filter(Boolean).join(" · ");
+const label = subtitle || meta;
+const Heading = headingLevel;
+---
+
+<article class="project-card">
+	<a href={href} class="card-link">
+		<div class="card-image" {...edit?.featured_image}>
+			<Image image={featuredImage} />
+		</div>
+		<div class="card-body">
+			<div class="card-text">
+				<Heading class="card-title" {...edit?.title}>{title}</Heading>
+				{label && <p class="card-label">{label}</p>}
+			</div>
+			<span class="card-arrow"><Icon name="arrow-right" size={22} /></span>
+		</div>
+	</a>
+	{
+		summary && (
+			<p class="card-summary" {...edit?.summary}>
+				{summary}
+			</p>
+		)
+	}
+	{
+		(allTags.length > 0 || (subtitle && meta)) && (
+			<div class="card-foot">
+				{subtitle && meta && <span class="card-meta">{meta}</span>}
+				{allTags.length > 0 && (
+					<ul class="card-tags" aria-label="Tags">
+						{allTags.map((tag) => (
+							<li>{tag}</li>
+						))}
+					</ul>
+				)}
+			</div>
+		)
+	}
+</article>
+
+<style>
+	.project-card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+		min-width: 0;
+	}
+
+	.card-link {
+		display: flex;
+		flex-direction: column;
+		gap: 1.1rem;
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.card-image {
+		overflow: hidden;
+		background: var(--color-panel);
+	}
+
+	.card-image :global(img) {
+		width: 100%;
+		height: auto;
+		aspect-ratio: 1 / 1.04;
+		object-fit: cover;
+		transition: transform var(--transition-slow);
+	}
+
+	.card-link:hover .card-image :global(img),
+	.card-link:focus-visible .card-image :global(img) {
+		transform: scale(1.03);
+	}
+
+	.card-body {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: var(--spacing-md);
+	}
+
+	.card-title {
+		font-family: var(--font-heading);
+		font-size: 1.1875rem;
+		font-weight: 600;
+		line-height: 1.25;
+		letter-spacing: -0.02em;
+	}
+
+	.card-label {
+		margin-top: 0.2rem;
+		font-size: 0.9375rem;
+		color: var(--color-muted);
+	}
+
+	.card-arrow {
+		flex: none;
+		margin-top: 0.1rem;
+		transition:
+			transform var(--transition-base),
+			color var(--transition-base);
+	}
+
+	.card-link:hover .card-arrow,
+	.card-link:focus-visible .card-arrow {
+		color: var(--color-accent-text);
+		transform: translateX(4px);
+	}
+
+	.card-summary {
+		font-size: var(--font-size-sm);
+		line-height: var(--leading-normal);
+		color: var(--color-muted);
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.card-foot {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem 0.75rem;
+	}
+
+	.card-meta {
+		font-size: var(--font-size-xs);
+		letter-spacing: var(--tracking-wide);
+		text-transform: uppercase;
+		color: var(--color-muted);
+	}
+
+	.card-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+		list-style: none;
+	}
+
+	.card-tags li {
+		padding: 0.15rem 0.6rem;
+		font-size: var(--font-size-xs);
+		color: var(--color-muted);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-pill);
+	}
+</style>

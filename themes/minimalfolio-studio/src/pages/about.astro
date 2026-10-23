@@ -1,0 +1,200 @@
+---
+import {
+	getEmDashEntry,
+	getSeoMeta,
+	getTaxonomyTermsWithCacheHint,
+} from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import { CONTACT_EMAIL } from "../lib/site";
+
+const [{ entry: page, error, cacheHint }, tagsResult] = await Promise.all([
+	getEmDashEntry("pages", "about"),
+	getTaxonomyTermsWithCacheHint("tag", { includeCounts: false }),
+]);
+if (error) return new Response("Could not load the page", { status: 500 });
+if (!page) return Astro.redirect("/404");
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(tagsResult.cacheHint);
+}
+const disciplines = tagsResult.data;
+
+const seo = getSeoMeta(page, {
+	siteUrl: Astro.url.origin,
+	path: "/about",
+	defaultDescription: "Learn more about who we are and what we do.",
+});
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description}
+	image={seo.ogImage}
+	canonical={seo.canonical}
+	robots={seo.robots}
+	content={{ collection: "pages", id: page.data.id, slug: "about" }}
+>
+	<div class="about-page">
+		<header class="about-header">
+			<span class="rule" />
+			<h1 class="about-title" {...page.edit.title}>
+				{page.data.title}<span class="dot" aria-hidden="true">.</span>
+			</h1>
+		</header>
+
+		<div class="about-content" {...page.edit.content}>
+			{
+				page.data.content ? (
+					<PortableText value={page.data.content} />
+				) : (
+					<p>Content coming soon.</p>
+				)
+			}
+		</div>
+
+		<aside class="about-sidebar" aria-label="Studio details">
+			{
+				disciplines.length > 0 && (
+					<section class="sidebar-section">
+						<h2 class="caps">Disciplines</h2>
+						<ul>
+							{disciplines.map((tag) => (
+								<li>
+									<a href={`/work?tag=${tag.slug}`}>{tag.label}</a>
+								</li>
+							))}
+						</ul>
+					</section>
+				)
+			}
+
+			<section class="sidebar-section">
+				<h2 class="caps">Contact</h2>
+				<p>
+					<a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+				</p>
+				<a href="/contact" class="btn btn-primary">
+					Get in touch
+					<Icon name="arrow-right" size={18} />
+				</a>
+			</section>
+		</aside>
+	</div>
+</Base>
+
+<style>
+	.about-page {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 2.5rem;
+		padding: 1.5rem 1.25rem 4rem;
+	}
+
+	.about-header .rule {
+		margin-bottom: 1.5rem;
+	}
+
+	.about-title {
+		font-size: clamp(3rem, 8vw, 5.5rem);
+		font-weight: var(--font-weight-display);
+		line-height: 0.95;
+		letter-spacing: var(--tracking-display);
+	}
+
+	.dot {
+		color: var(--color-brand);
+	}
+
+	.about-content {
+		max-width: var(--max-width);
+		font-size: var(--font-size-lg);
+		line-height: var(--leading-relaxed);
+	}
+
+	.about-content :global(p) {
+		margin-bottom: 1.25em;
+	}
+
+	.about-content :global(h2) {
+		font-size: var(--font-size-2xl);
+		margin-top: 2em;
+		margin-bottom: 0.6em;
+	}
+
+	.about-content :global(h3) {
+		font-size: var(--font-size-xl);
+		margin-top: 1.75em;
+		margin-bottom: 0.5em;
+	}
+
+	.about-content :global(a) {
+		color: var(--color-accent-text);
+	}
+
+	.about-sidebar {
+		display: grid;
+		gap: 2.5rem;
+		align-content: start;
+	}
+
+	.sidebar-section h2 {
+		margin-bottom: 1rem;
+		padding-bottom: 0.75rem;
+		font-family: var(--font-body);
+		font-size: 0.6875rem;
+		color: var(--color-muted);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.sidebar-section ul {
+		list-style: none;
+	}
+
+	.sidebar-section li a {
+		display: block;
+		padding: 0.45rem 0;
+		font-size: var(--font-size-lg);
+		font-weight: 500;
+		color: var(--color-text);
+		text-decoration: none;
+	}
+
+	.sidebar-section li a:hover,
+	.sidebar-section p a:hover {
+		color: var(--color-accent-text);
+	}
+
+	.sidebar-section p {
+		margin-bottom: 1.25rem;
+	}
+
+	.sidebar-section p a {
+		color: var(--color-text);
+	}
+
+	@media (min-width: 640px) {
+		.about-page {
+			padding-inline: 2rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.about-page {
+			grid-template-columns: minmax(0, 1.6fr) minmax(16rem, 1fr);
+			column-gap: 4rem;
+			padding: 0 3rem 5rem 0;
+		}
+
+		.about-header {
+			grid-column: 1 / -1;
+		}
+
+		.about-sidebar {
+			position: sticky;
+			top: 2rem;
+		}
+	}
+</style>

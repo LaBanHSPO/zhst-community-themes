@@ -1,0 +1,128 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import { CONTACT_EMAIL } from "../lib/site";
+---
+
+<Base title="Contact" description="Get in touch about your next project.">
+	<div class="contact-page">
+		<header class="contact-header">
+			<span class="rule" />
+			<p class="contact-eyebrow caps">Start a conversation</p>
+			<h1 class="contact-title">
+				Tell us about your <span class="accent">project</span>.
+			</h1>
+			<p class="contact-intro">
+				Share what you are making, the problem you need to solve, and any timing
+				you have in mind. We will reply by email.
+			</p>
+		</header>
+
+		<section class="contact-card" aria-labelledby="contact-email-heading">
+			<div class="contact-card-text">
+				<Icon name="mail" size={32} />
+				<div>
+					<h2 id="contact-email-heading">Email the studio</h2>
+					<p>Use your email app to send the project details directly.</p>
+				</div>
+			</div>
+			<a class="btn btn-primary contact-link" href={`mailto:${CONTACT_EMAIL}`}>
+				{CONTACT_EMAIL}
+				<Icon name="arrow-right" size={18} />
+			</a>
+		</section>
+	</div>
+</Base>
+
+<style>
+	.contact-page {
+		padding: 1.5rem 1.25rem 4rem;
+	}
+
+	.contact-header {
+		max-width: 52rem;
+		margin-bottom: 3rem;
+	}
+
+	.contact-header .rule {
+		margin-bottom: 1.5rem;
+	}
+
+	.contact-eyebrow {
+		margin-bottom: 1rem;
+		font-size: 0.6875rem;
+		color: var(--color-muted);
+	}
+
+	.contact-title {
+		margin-bottom: 1.5rem;
+		font-size: clamp(2.75rem, 7vw, 5.5rem);
+		font-weight: var(--font-weight-display);
+		line-height: 0.95;
+		letter-spacing: var(--tracking-display);
+	}
+
+	.accent {
+		color: var(--color-brand);
+	}
+
+	.contact-intro {
+		max-width: 36rem;
+		font-size: var(--font-size-lg);
+		color: var(--color-muted);
+	}
+
+	.contact-card {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1.75rem;
+		max-width: 60rem;
+		padding: 2rem 0;
+		border-top: 1px solid var(--color-border);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	.contact-card-text {
+		display: flex;
+		gap: 1.25rem;
+	}
+
+	.contact-card-text :global(svg) {
+		flex: none;
+	}
+
+	.contact-card h2 {
+		margin-bottom: 0.35rem;
+		font-size: var(--font-size-xl);
+	}
+
+	.contact-card p {
+		color: var(--color-muted);
+	}
+
+	.contact-link {
+		max-width: 100%;
+		overflow-wrap: anywhere;
+	}
+
+	@media (min-width: 640px) {
+		.contact-page {
+			padding-inline: 2rem;
+		}
+	}
+
+	@media (min-width: 768px) {
+		.contact-card {
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.contact-page {
+			padding: 0 3rem 5rem 0;
+		}
+	}
+</style>
