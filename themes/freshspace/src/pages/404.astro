@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import { requestUrl } from "../lib/freshspace";
+---
+
+<Base title="Page not found">
+	<section class="notfound container" aria-labelledby="nf-title">
+		<p class="eyebrow">Error 404</p>
+		<h1 id="nf-title" class="display display-md">This page has been<br /><span class="accent">swept away.</span></h1>
+		<p class="hero-lede">The page you’re looking for doesn’t exist or has moved. Browse our packages, or book a cleaning and we’ll take care of the rest.</p>
+		<div class="actions">
+			<a class="btn btn-lg" href="/packages">See our packages <Arrow /></a>
+			<a class="btn btn-lg btn-outline" href={requestUrl()}>Book your cleaning</a>
+		</div>
+	</section>
+</Base>
