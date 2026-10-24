@@ -1,0 +1,27 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref } from "../lib/coach";
+import type { CoachData } from "../lib/coach";
+
+interface Props {
+	coach: CoachData;
+}
+const { coach } = Astro.props;
+---
+
+<section class="discovery" aria-labelledby="discovery-title">
+	<div class="wrap discovery-inner">
+		<div class="discovery-copy">
+			<p class="eyebrow">Discovery call</p>
+			<h2 id="discovery-title" class="display">Start with a free, friendly hello.</h2>
+			<p class="discovery-text">A twenty-minute call to talk about what you would like to feel differently. No pitch, no pressure, and no obligation to book.</p>
+			<div class="discovery-actions">
+				<a class="btn btn-cream" href="/contact"><span>Book a discovery call</span><Arrow /></a>
+				<p class="discovery-contact">
+					{coach.email && <a href={`mailto:${coach.email}`}>{coach.email}</a>}
+					{coach.phone && <a href={telHref(coach.phone)}>{coach.phone}</a>}
+				</p>
+			</div>
+		</div>
+	</div>
+</section>

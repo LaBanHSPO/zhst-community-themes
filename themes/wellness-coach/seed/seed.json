@@ -1,0 +1,1432 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Wellness Coach",
+    "description": "A calm, bright wellness-coach theme: a full-bleed photo hero with a handwritten note, a whole-you approach with three pillars, how coaching works, services, a journal, a Meet your coach page and a discovery-call request page, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "Willow & Well",
+    "tagline": "Wellness Coach"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "services",
+      "label": "Services",
+      "labelSingular": "Service",
+      "urlPattern": "/services/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Service name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "best_for",
+          "label": "Best for (short phrase)",
+          "type": "string"
+        },
+        {
+          "slug": "format",
+          "label": "Format (e.g. Video call or in person)",
+          "type": "string"
+        },
+        {
+          "slug": "length",
+          "label": "Length (e.g. 50-minute sessions)",
+          "type": "string"
+        },
+        {
+          "slug": "price_label",
+          "label": "Price shown (e.g. From $120 per session, or On request)",
+          "type": "string"
+        },
+        {
+          "slug": "includes",
+          "label": "What is included (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Description",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "posts",
+      "label": "Journal",
+      "labelSingular": "Journal post",
+      "urlPattern": "/journal/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "Short summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "category",
+          "label": "Topic (e.g. Habits)",
+          "type": "string"
+        },
+        {
+          "slug": "date_label",
+          "label": "Date shown (e.g. 14 October 2026)",
+          "type": "string"
+        },
+        {
+          "slug": "read_minutes",
+          "label": "Reading time in minutes",
+          "type": "integer"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order (newest first)",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Post",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "principles",
+      "label": "Approach",
+      "labelSingular": "Approach point",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Text (a line break splits it into two lines)",
+          "type": "text"
+        },
+        {
+          "slug": "icon",
+          "label": "Icon (leaf, sun or heart)",
+          "type": "string"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "steps",
+      "label": "How it works",
+      "labelSingular": "Step",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Text",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "coach",
+      "label": "Coach details",
+      "labelSingular": "Coach details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Coach name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "base",
+          "label": "Based in",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Email for requests",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "response",
+          "label": "Reply time (shown beside the form)",
+          "type": "text"
+        },
+        {
+          "slug": "contact_note",
+          "label": "Note shown beside the form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        },
+        {
+          "type": "custom",
+          "label": "Services",
+          "url": "/services"
+        },
+        {
+          "type": "custom",
+          "label": "Journal",
+          "url": "/journal"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "Meet your coach",
+          "eyebrow": "About",
+          "intro": "Hello, I'm Iris. I coach people who want a daily rhythm that fits their real life, not an ideal one.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I spent eleven years in operations at a design studio, the kind of job where being useful meant being available. I was good at it, and I was tired in a way that a weekend never quite fixed. What helped was not a big reset. It was a handful of small, ordinary changes that I made on purpose and kept.",
+                  "_key": "k1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "That is what I coach now. I am not here to hand you a plan that worked for someone else. I ask questions, notice patterns, and help you test small shifts in your mornings, your evenings and the gaps between, until you have a rhythm that feels like yours.",
+                  "_key": "k2s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How I work",
+                  "_key": "k3s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k4",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sessions are calm, practical and unhurried. We start with what is already working, because there is almost always something. Then we pick one or two things to try before we meet again, and we look honestly at what happened.",
+                  "_key": "k4s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I will not diagnose, prescribe or promise results. Coaching is about your choices and routines, and it is not a substitute for medical, psychological or other professional care. If you need that, I will say so and help you work out where to start.",
+                  "_key": "k5s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k6",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A little more about me",
+                  "_key": "k6s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I live in Port Alder, near the water, and most of my thinking happens on walks. I take sessions online with people in different time zones, and in person at a small room near the harbour. Outside work I garden badly, cook slowly and read the last page of a book first.",
+                  "_key": "k7s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k8",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If this sounds like a fit, the easiest next step is a free twenty-minute discovery call. There is no pitch, only a conversation about what you would like to feel differently and whether I am the right person to help.",
+                  "_key": "k8s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "coaching-and-wellbeing",
+        "slug": "coaching-and-wellbeing",
+        "status": "published",
+        "data": {
+          "title": "What coaching is, and isn't",
+          "eyebrow": "Good to know",
+          "intro": "A short, plain-language note on what to expect from working with a coach.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Coaching is a structured conversation partnership. Your coach asks questions, reflects back what they hear, and helps you decide on small actions that suit your life. You stay in charge of every decision.",
+                  "_key": "k9s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k10",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What coaching is not",
+                  "_key": "k10s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Coaching is not therapy, counselling, medical care or nutrition advice, and it does not diagnose or treat any condition. Willow & Well does not make health claims or promise particular outcomes.",
+                  "_key": "k11s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you are struggling with your health or your mood, please speak with a doctor or a qualified professional. Coaching can sit alongside that support, but it should never replace it.",
+                  "_key": "k12s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Your privacy",
+                  "_key": "k13s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What you share in sessions stays between us. Requests sent from this site open in your own email app, so nothing is stored by the website itself.",
+                  "_key": "k14s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Cancelling and changing",
+                  "_key": "k15s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sessions can be moved with 24 hours' notice. Programmes can be paused once if life gets in the way. We will agree the details in writing before you begin.",
+                  "_key": "k16s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "services": [
+      {
+        "id": "one-to-one-coaching",
+        "slug": "one-to-one-coaching",
+        "status": "published",
+        "data": {
+          "title": "1:1 Coaching",
+          "summary": "Private sessions to build habits and routines around the life you actually have.",
+          "best_for": "Anyone who wants steady, personal support",
+          "format": "Video call, or in person in Port Alder",
+          "length": "50-minute sessions, usually every two weeks, for a first three months",
+          "price_label": "From $120 per session",
+          "includes": "A free 20-minute discovery call before you commit\nFifty-minute sessions, online or in person\nA short written recap after every session\nLight check-ins by message between sessions\nA simple personal rhythm plan that we review together each month",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/service-one-to-one.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "One-to-one coaching is the heart of what I do. Each session is yours: you bring what is on your mind, and we turn it into one or two small things to try before we meet again.",
+                  "_key": "k17s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How it works",
+                  "_key": "k18s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We begin with a free discovery call. If we both feel it is a good fit, we book a first session and map what is already working in your days. After that, sessions run roughly every two weeks, with a short recap from me so nothing gets lost.",
+                  "_key": "k19s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k20",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What it is for",
+                  "_key": "k20s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "People usually come to me when something feels slightly off: busy but not fulfilled, tired of starting over, or unsure how to make room for what matters. Coaching gives that a shape, a pace and someone alongside you.",
+                  "_key": "k21s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k22",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Coaching is not therapy or medical care. If something you share suggests you would be better supported elsewhere, I will tell you honestly.",
+                  "_key": "k22s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "whole-you-programme",
+        "slug": "whole-you-programme",
+        "status": "published",
+        "data": {
+          "title": "The Whole You Programme",
+          "summary": "Twelve weeks of guided shifts in presence, energy and self-trust, with a small circle alongside.",
+          "best_for": "Anyone ready for a structured, longer stretch",
+          "format": "One-to-one sessions plus a small online circle once a month",
+          "length": "12 weeks, with six sessions and three circles",
+          "price_label": "From $1,150",
+          "includes": "Six 50-minute one-to-one sessions\nThree small online circles of up to eight people\nA workbook of weekly prompts and short practices\nMessage support between sessions on weekdays\nA closing review and a plan for the next season",
+          "featured": true,
+          "position": 20,
+          "photo": "/images/service-programme.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The Whole You Programme follows our approach in three parts: more presence, more energy and more you. Each part runs for four weeks and ends with a short review, so you can see what you have built.",
+                  "_key": "k23s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k24",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The shape of the twelve weeks",
+                  "_key": "k24s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "In the first four weeks we slow down and notice. In the next four we look at the habits that support your days, and in the last four we shape a life that feels aligned and real. The workbook gives you one small prompt a week, and the circles give you company.",
+                  "_key": "k25s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k26",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Who it suits",
+                  "_key": "k26s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "It suits people who like a clear structure and a start and end date. If you would rather go at your own pace, 1:1 coaching may be a better fit. Either way, a discovery call is a good first step.",
+                  "_key": "k27s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k28",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The programme is a coaching programme only. It does not diagnose, treat or promise any health outcome.",
+                  "_key": "k28s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "workshops",
+        "slug": "workshops",
+        "status": "published",
+        "data": {
+          "title": "Workshops",
+          "summary": "Half-day and evening sessions for teams, studios and community groups.",
+          "best_for": "Teams, studios and groups of 8 to 14 people",
+          "format": "In person at your venue, or online",
+          "length": "Two to three hours, or a relaxed half day",
+          "price_label": "On request",
+          "includes": "A planning call to shape the session around your group\nFacilitation by Iris, with a clear and gentle structure\nPrinted prompts and a short take-home sheet\nSpace for questions and for quiet reflection\nA follow-up note a week later",
+          "featured": true,
+          "position": 30,
+          "photo": "/images/service-workshop.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Workshops bring a little of what we do in coaching to a room of people. Most are built around a single theme such as starting the day well, protecting your time, or finding a pace that lasts.",
+                  "_key": "k29s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k30",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What a session feels like",
+                  "_key": "k30s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We mix short talks, quiet writing and conversation in pairs. Nobody is asked to share more than they want to. People leave with one or two small things to try, written in their own words.",
+                  "_key": "k31s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k32",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Planning one",
+                  "_key": "k32s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k33",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Every group is different, so workshops are priced after a short planning call. Tell me about your group on the contact page and I will reply with ideas and a quote.",
+                  "_key": "k33s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k34",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Workshops are for personal and professional development. They are not therapy or medical advice.",
+                  "_key": "k34s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "posts": [
+      {
+        "id": "start-with-a-smaller-morning",
+        "slug": "start-with-a-smaller-morning",
+        "status": "published",
+        "data": {
+          "title": "Start with a smaller morning",
+          "summary": "Most morning routines fail because they are too ambitious. Here is how to shrink yours until it sticks.",
+          "category": "Habits",
+          "date_label": "16 October 2026",
+          "read_minutes": 4,
+          "featured": true,
+          "position": 10,
+          "photo": "/images/journal-sunset-sea.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k35",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Every January I see the same plan: up at five, journal, stretch, cook breakfast, meditate. By February it is gone. The plan was not wrong, it was simply too big for an ordinary Tuesday.",
+                  "_key": "k35s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k36",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Shrink it until it is almost silly",
+                  "_key": "k36s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k37",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Pick one thing you already do every morning, like filling the kettle. Add something tiny right after it: three slow breaths, one glass of water, opening a window. It should take under a minute.",
+                  "_key": "k37s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k38",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Let it grow on its own",
+                  "_key": "k38s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k39",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Once the tiny thing feels automatic, you may want to add a second. You may not, and that is fine. A small morning you keep is better than a perfect one you drop.",
+                  "_key": "k39s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k40",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A note on scope: this is about habits and routines, not health advice. If you have concerns about your wellbeing, please speak with a professional.",
+                  "_key": "k40s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "what-a-rhythm-is-and-isnt",
+        "slug": "what-a-rhythm-is-and-isnt",
+        "status": "published",
+        "data": {
+          "title": "What a rhythm is, and what it isn't",
+          "summary": "A rhythm is not a rigid schedule. It is a pattern you can return to, even after a messy week.",
+          "category": "Mindset",
+          "date_label": "2 October 2026",
+          "read_minutes": 5,
+          "featured": true,
+          "position": 20,
+          "photo": "/images/journal-ridge.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k41",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When people hear 'rhythm' they often picture a timetable, colour-coded and unforgiving. The rhythm I mean is closer to a tune you can pick up again.",
+                  "_key": "k41s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k42",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Rigid plans break, rhythms bend",
+                  "_key": "k42s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k43",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A schedule tells you where you should be at four o'clock. A rhythm asks what usually helps your afternoon and lets you adjust when the day does not go to plan.",
+                  "_key": "k43s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k44",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Three signs you have one",
+                  "_key": "k44s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k45",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "You know what to do when you fall off. You can describe your week without apologising for it. And the small things you do feel like yours, not like homework.",
+                  "_key": "k45s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k46",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you would like help finding yours, a discovery call is a gentle place to start.",
+                  "_key": "k46s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "five-questions-for-a-sunday-evening",
+        "slug": "five-questions-for-a-sunday-evening",
+        "status": "published",
+        "data": {
+          "title": "Five questions for a Sunday evening",
+          "summary": "A quiet ten-minute check-in to carry into the week, with a pen and no pressure.",
+          "category": "Reflection",
+          "date_label": "18 September 2026",
+          "read_minutes": 3,
+          "featured": true,
+          "position": 30,
+          "photo": "/images/journal-olive.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k47",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sunday evenings can feel heavy. A short, kind check-in sometimes helps the week begin with a little more room in it.",
+                  "_key": "k47s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k48",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The questions",
+                  "_key": "k48s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k49",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What gave me energy this week? What took it away? What is one thing I would like to do more of? What is one thing I could do less of? What is one small kindness I can offer myself on Monday?",
+                  "_key": "k49s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k50",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How to use them",
+                  "_key": "k50s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k51",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Write a line or two for each, no more. Do not fix anything. Just notice, and carry one answer into the week as a small intention.",
+                  "_key": "k51s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "a-walk-without-a-destination",
+        "slug": "a-walk-without-a-destination",
+        "status": "published",
+        "data": {
+          "title": "A walk without a destination",
+          "summary": "Why a short, unplanned walk makes a good small ritual, and how to start one.",
+          "category": "Presence",
+          "date_label": "4 September 2026",
+          "read_minutes": 3,
+          "featured": false,
+          "position": 40,
+          "photo": "/images/journal-mist-lake.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k52",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I take a ten-minute walk most mornings with no route, no podcast and no goal. Some days I notice birds. Some days I plan my to-do list anyway, and that is allowed.",
+                  "_key": "k52s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k53",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How to begin",
+                  "_key": "k53s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k54",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Choose a time you can repeat, leave your phone in a pocket, and turn left or right without deciding in advance. When you notice your mind has wandered, simply notice that, and keep walking.",
+                  "_key": "k54s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "notice-what-gives-energy-back",
+        "slug": "notice-what-gives-energy-back",
+        "status": "published",
+        "data": {
+          "title": "Notice what gives energy back",
+          "summary": "A simple notebook habit for spotting which parts of your day leave you feeling more like yourself.",
+          "category": "Habits",
+          "date_label": "21 August 2026",
+          "read_minutes": 4,
+          "featured": false,
+          "position": 50,
+          "photo": "/images/journal-bowl.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k55",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We tend to track what we get done, and rarely what we enjoy. For a week, try noting down one moment each day that felt good and one that felt flat.",
+                  "_key": "k55s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k56",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What to look for",
+                  "_key": "k56s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k57",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Look for patterns, not answers. Perhaps mornings outdoors feel good, or long meetings feel flat. Small patterns point to small changes you can make.",
+                  "_key": "k57s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k58",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This is a reflection exercise, not a medical tool, and it makes no claims about your health.",
+                  "_key": "k58s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "how-to-prepare-for-a-discovery-call",
+        "slug": "how-to-prepare-for-a-discovery-call",
+        "status": "published",
+        "data": {
+          "title": "How to prepare for a discovery call",
+          "summary": "What happens on the free call, what to bring, and how to tell whether coaching is right for you.",
+          "category": "Coaching",
+          "date_label": "7 August 2026",
+          "read_minutes": 3,
+          "featured": false,
+          "position": 60,
+          "photo": "/images/coach-terrace.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k59",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A discovery call is twenty minutes, free, and entirely without obligation. It is a chance for us to meet, and for you to ask anything.",
+                  "_key": "k59s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k60",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What to bring",
+                  "_key": "k60s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k61",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Just a rough sense of what you would like to feel differently. You do not need goals, a plan or the right words.",
+                  "_key": "k61s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k62",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How to decide",
+                  "_key": "k62s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k63",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Notice how the conversation feels. If you come away lighter and curious, that is a good sign. If not, that is useful to know too, and I am happy to suggest other places to look.",
+                  "_key": "k63s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "principles": [
+      {
+        "id": "more-presence",
+        "slug": "more-presence",
+        "status": "published",
+        "data": {
+          "title": "More Presence",
+          "text": "Feel calmer and\nmore in tune each day.",
+          "icon": "leaf",
+          "position": 10
+        }
+      },
+      {
+        "id": "more-energy",
+        "slug": "more-energy",
+        "status": "published",
+        "data": {
+          "title": "More Energy",
+          "text": "Nourish habits that\nsupport your vitality.",
+          "icon": "sun",
+          "position": 20
+        }
+      },
+      {
+        "id": "more-you",
+        "slug": "more-you",
+        "status": "published",
+        "data": {
+          "title": "More You",
+          "text": "Create a life that\nfeels aligned and real.",
+          "icon": "heart",
+          "position": 30
+        }
+      }
+    ],
+    "steps": [
+      {
+        "id": "say-hello",
+        "slug": "say-hello",
+        "status": "published",
+        "data": {
+          "title": "Say hello",
+          "text": "Book a free twenty-minute discovery call. We talk about what you would like to feel differently, and whether we are a good fit.",
+          "position": 10
+        }
+      },
+      {
+        "id": "find-your-starting-point",
+        "slug": "find-your-starting-point",
+        "status": "published",
+        "data": {
+          "title": "Find your starting point",
+          "text": "In a first session we map what already works in your days, and choose one or two small things worth trying.",
+          "position": 20
+        }
+      },
+      {
+        "id": "build-your-rhythm",
+        "slug": "build-your-rhythm",
+        "status": "published",
+        "data": {
+          "title": "Build your rhythm",
+          "text": "Between sessions you test small shifts in your mornings, evenings and in-between moments, at a pace that suits you.",
+          "position": 30
+        }
+      },
+      {
+        "id": "review-and-adjust",
+        "slug": "review-and-adjust",
+        "status": "published",
+        "data": {
+          "title": "Review and adjust",
+          "text": "Every month we look back together, keep what helps, let go of what does not, and decide what comes next.",
+          "position": 40
+        }
+      }
+    ],
+    "coach": [
+      {
+        "id": "iris",
+        "slug": "iris",
+        "status": "published",
+        "data": {
+          "title": "Iris Calder",
+          "base": "Port Alder, and online",
+          "phone": "(555) 010-0143",
+          "email": "hello@willowandwell.example",
+          "response": "Iris reads every request herself. Replies usually take one to two working days.",
+          "contact_note": "Tell Iris a little about what you have in mind. A discovery call is free, twenty minutes, and carries no obligation."
+        }
+      }
+    ]
+  }
+}

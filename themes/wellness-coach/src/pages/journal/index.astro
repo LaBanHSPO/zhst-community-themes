@@ -1,0 +1,39 @@
+---
+import Base from "../../layouts/Base.astro";
+import DiscoveryBand from "../../components/DiscoveryBand.astro";
+import PageHead from "../../components/PageHead.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getCoach, getPosts } from "../../lib/coach";
+
+const [postsResult, coachResult] = await Promise.all([getPosts(), getCoach()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(postsResult.cacheHint);
+	Astro.cache.set(coachResult.cacheHint);
+}
+const posts = postsResult.entries;
+---
+
+<Base title="Journal" description="Short, practical notes from Willow & Well on habits, rhythm and small shifts for a calmer week.">
+	<PageHead
+		id="journal-title"
+		eyebrow="Journal"
+		title="Notes for a gentler week."
+		intro="Short, practical pieces on habits, rhythm and small shifts. They are reflections on everyday routines, not medical advice."
+	/>
+
+	<section aria-labelledby="journal-title">
+		<div class="wrap">
+			{
+				posts.length > 0 ? (
+					<ul class="journal-grid">
+						{posts.map((p, i) => <li><PostCard post={p} eager={i < 3} /></li>)}
+					</ul>
+				) : (
+					<p class="empty-note">New notes are on their way.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<DiscoveryBand coach={coachResult.coach} />
+</Base>

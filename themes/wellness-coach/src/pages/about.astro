@@ -1,0 +1,63 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import DiscoveryBand from "../components/DiscoveryBand.astro";
+import PageHead from "../components/PageHead.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getCoach } from "../lib/coach";
+
+const [{ entry: page, cacheHint }, coachResult, settings] = await Promise.all([
+	getEmDashEntry("pages", "about"),
+	getCoach(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	if (cacheHint) Astro.cache.set(cacheHint);
+	Astro.cache.set(coachResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page ? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" }) : null;
+const hasBody = Boolean(page?.data.content && page.data.content.length > 0);
+---
+
+<Base
+	title={seo?.title ?? "Meet your coach"}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? page?.data.intro ?? "Meet Iris, the coach behind Willow & Well."}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<PageHead
+		id="about-title"
+		eyebrow={page?.data.eyebrow ?? "About"}
+		title={page?.data.title ?? "Meet your coach"}
+		intro={page?.data.intro}
+		edit={page ? { ...page.edit.title } : {}}
+	/>
+
+	<section class="about-story">
+		<div class="wrap about-grid">
+			<figure class="about-photo">
+				<img
+					src="/images/coach-portrait.webp"
+					alt="Iris sitting cross-legged on a woven rug at sunset, resting her chin on one hand"
+					width="860"
+					height="990"
+					loading="lazy"
+				/>
+				<figcaption>Iris Calder, in Port Alder. A fictional coach created for this theme.</figcaption>
+			</figure>
+			<div class="prose">
+				{hasBody ? <PortableText value={page!.data.content} /> : <p>Iris's story is coming soon.</p>}
+				<p class="about-links">
+					<a class="btn btn-sage" href="/contact"><span>Book a discovery call</span><Arrow /></a>
+					<a class="text-link" href="/services"><span>See services</span><Arrow /></a>
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<DiscoveryBand coach={coachResult.coach} />
+</Base>

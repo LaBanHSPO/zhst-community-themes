@@ -1,0 +1,70 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import DiscoveryBand from "../../components/DiscoveryBand.astro";
+import PageHead from "../../components/PageHead.astro";
+import { getCoach, getServices, lines, photoSrc, serviceHref } from "../../lib/coach";
+
+const [servicesResult, coachResult] = await Promise.all([getServices(), getCoach()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(coachResult.cacheHint);
+}
+const services = servicesResult.entries;
+---
+
+<Base title="Services" description="Coaching services from Willow & Well: one-to-one coaching, a twelve-week programme and workshops, with format, length and what is included.">
+	<PageHead
+		id="services-title"
+		eyebrow="Services"
+		title="Three ways to work together."
+		intro="Choose steady one-to-one support, a structured twelve weeks, or a session for your group. Each one is shaped around you. Prices are starting points in US dollars and every plan is agreed in writing."
+	/>
+
+	<section class="services" aria-labelledby="services-title">
+		<div class="wrap">
+			{
+				services.length === 0 ? (
+					<p class="empty-note">Our services are being updated. Send a note and Iris will share current options.</p>
+				) : (
+					<ul class="service-rows">
+						{services.map((s) => {
+							const src = photoSrc(s.data.image, s.data.photo);
+							return (
+								<li class="service-row" id={s.data.slug ?? s.data.id}>
+									{src && (
+										<a class="service-row-photo" href={serviceHref(s.data)} tabindex="-1" aria-hidden="true">
+											<img src={src} alt="" width="640" height="544" loading="lazy" />
+										</a>
+									)}
+									<div class="service-row-copy">
+										{s.data.best_for && <p class="eyebrow">{s.data.best_for}</p>}
+										<h2 class="service-row-name" {...s.edit.title}><a href={serviceHref(s.data)}>{s.data.title}</a></h2>
+										<p class="service-row-summary">{s.data.summary}</p>
+										<dl class="facts">
+											{s.data.format && <div><dt>Format</dt><dd>{s.data.format}</dd></div>}
+											{s.data.length && <div><dt>Length</dt><dd>{s.data.length}</dd></div>}
+											{s.data.price_label && <div><dt>Price</dt><dd class="price">{s.data.price_label}</dd></div>}
+										</dl>
+										<h3 class="includes-title">What is included</h3>
+										<ul class="includes">
+											{lines(s.data.includes).map((i) => <li>{i}</li>)}
+										</ul>
+										<p class="service-row-actions">
+											<a class="btn btn-sage" href={`/contact?service=${encodeURIComponent(s.data.slug ?? s.data.id)}`}>
+												<span>Book a discovery call</span><Arrow />
+											</a>
+											<a class="text-link" href={serviceHref(s.data)}><span>Read more</span><Arrow /></a>
+										</p>
+									</div>
+								</li>
+							);
+						})}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+
+	<DiscoveryBand coach={coachResult.coach} />
+</Base>

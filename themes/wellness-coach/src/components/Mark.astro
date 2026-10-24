@@ -1,0 +1,13 @@
+---
+interface Props {
+	class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<svg class:list={["mark", className]} width="50" height="48" viewBox="0 0 50 48" aria-hidden="true" focusable="false">
+	<path d="M24 42C8 41-1 26 3.500 7.500 20 11 29 27 24 42Z" fill="currentColor" />
+	<path d="M26.500 42C39 40 50.500 24 46 2.500 31 8 22 24 26.500 42Z" fill="currentColor" />
+	<path d="M25 41v6.500" fill="none" stroke="currentColor" stroke-width="1.600" stroke-linecap="round" />
+	<path d="M20.500 35.500C14.500 28 10.500 20 8.500 13.500M28.500 35C32 26 37 16 42.500 8" class="mark-vein" fill="none" stroke-width="1.300" stroke-linecap="round" />
+</svg>

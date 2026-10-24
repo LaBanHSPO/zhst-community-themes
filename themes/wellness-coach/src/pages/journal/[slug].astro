@@ -1,0 +1,78 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import DiscoveryBand from "../../components/DiscoveryBand.astro";
+import PostCard from "../../components/PostCard.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getCoach, getPosts, photoAlt, photoSrc } from "../../lib/coach";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: post, cacheHint } = await getEmDashEntry("posts", slug);
+if (!post) return Astro.rewrite("/404");
+
+const [allResult, coachResult, settings] = await Promise.all([getPosts(), getCoach(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(coachResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(post, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = post.data;
+const cover = photoSrc(d.image, d.photo);
+const hasBody = Boolean(d.content && d.content.length > 0);
+const others = allResult.entries.filter((p) => p.data.id !== d.id).slice(0, 3);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "posts", id: d.id, slug }}
+	current="/journal"
+>
+	<header class="article-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/journal">Journal</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.category ?? "Post"}</span>
+			</nav>
+			<h1 class="display" {...post.edit.title}>{d.title}</h1>
+			<p class="byline">
+				{d.date_label && <span>{d.date_label}</span>}
+				{d.read_minutes && <span>{d.read_minutes} min read</span>}
+				<span>By Iris Calder</span>
+			</p>
+			{cover && <div class="article-cover"><img src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="1200" height="600" fetchpriority="high" /></div>}
+		</div>
+	</header>
+
+	<section class="article-body">
+		<p class="article-summary">{d.summary}</p>
+		{hasBody && <div class="prose"><PortableText value={d.content} /></div>}
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="more-posts" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="section-head">
+						<p class="eyebrow">Keep reading</p>
+						<h2 id="more-title" class="display">More from the journal.</h2>
+					</div>
+					<ul class="card-grid">
+						{others.map((p) => <li><PostCard post={p} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<DiscoveryBand coach={coachResult.coach} />
+</Base>
