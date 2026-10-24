@@ -1,0 +1,1688 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Developer Portfolio",
+    "description": "A dark portfolio theme for a freelance full-stack developer: a photo hero with a gradient headline, a skills strip, projects with a stack filter, writing with code blocks, how the work runs and a project enquiry form, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "Devfolio",
+    "tagline": "Full-stack developer"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro line",
+          "type": "text"
+        },
+        {
+          "slug": "image",
+          "label": "Cover image (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover image path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "projects",
+      "label": "Projects",
+      "labelSingular": "Project",
+      "urlPattern": "/projects/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Project name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "kind",
+          "label": "Kind (pre-selects the project type in the enquiry form)",
+          "type": "select",
+          "required": true,
+          "indexed": true,
+          "defaultValue": "website",
+          "validation": {
+            "options": [
+              "website",
+              "web-app",
+              "frontend-rebuild",
+              "performance"
+            ]
+          }
+        },
+        {
+          "slug": "tagline",
+          "label": "Short label under the name (e.g. Booking site for a kayak rental)",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-sentence summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "stack",
+          "label": "Stack tags, separated by commas (they become the ?stack= filter)",
+          "type": "string",
+          "searchable": true
+        },
+        {
+          "slug": "role",
+          "label": "My role",
+          "type": "string"
+        },
+        {
+          "slug": "team",
+          "label": "Team",
+          "type": "string"
+        },
+        {
+          "slug": "year_label",
+          "label": "Year",
+          "type": "string"
+        },
+        {
+          "slug": "brief",
+          "label": "The brief",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "built",
+          "label": "What I built",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "choices",
+          "label": "Choices along the way",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "links",
+          "label": "Links (live site, source code)",
+          "type": "repeater",
+          "validation": {
+            "maxItems": 6,
+            "subFields": [
+              {
+                "slug": "label",
+                "label": "Button label",
+                "type": "string"
+              },
+              {
+                "slug": "url",
+                "label": "Address",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover image (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover image path",
+          "type": "string"
+        },
+        {
+          "slug": "gallery",
+          "label": "Screens",
+          "type": "repeater",
+          "validation": {
+            "maxItems": 20,
+            "subFields": [
+              {
+                "slug": "image",
+                "label": "Image (upload)",
+                "type": "image"
+              },
+              {
+                "slug": "photo",
+                "label": "Bundled image path",
+                "type": "string"
+              },
+              {
+                "slug": "caption",
+                "label": "Caption",
+                "type": "text"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "slug": "posts",
+      "label": "Writing",
+      "labelSingular": "Post",
+      "urlPattern": "/writing/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "Short summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "date_label",
+          "label": "Date shown (e.g. 14 October 2026)",
+          "type": "string"
+        },
+        {
+          "slug": "read_minutes",
+          "label": "Reading time in minutes",
+          "type": "integer"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order (newest first)",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover image (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover image path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Body (supports code blocks)",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "skills",
+      "label": "Skills",
+      "labelSingular": "Skill",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "icon",
+          "label": "Icon",
+          "type": "select",
+          "required": true,
+          "defaultValue": "html",
+          "validation": {
+            "options": [
+              "html",
+              "js",
+              "orbit",
+              "hexagon",
+              "database"
+            ]
+          }
+        },
+        {
+          "slug": "text",
+          "label": "Two short lines (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "steps",
+      "label": "How I work",
+      "labelSingular": "Step",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "when_label",
+          "label": "Short label (e.g. Weeks one to three)",
+          "type": "string"
+        },
+        {
+          "slug": "text",
+          "label": "Text",
+          "type": "text"
+        },
+        {
+          "slug": "output",
+          "label": "What you get from this step",
+          "type": "string"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "profile",
+      "label": "Contact details",
+      "labelSingular": "Contact details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Developer name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "base",
+          "label": "Based in",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Email for enquiries",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "response",
+          "label": "Reply time (shown beside the form)",
+          "type": "text"
+        },
+        {
+          "slug": "contact_note",
+          "label": "Note shown above the form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "Projects",
+          "url": "/projects"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        },
+        {
+          "type": "custom",
+          "label": "Contact",
+          "url": "/contact"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "Hello, I'm Theo.",
+          "eyebrow": "About",
+          "intro": "I'm a full-stack developer. I build websites and web apps for small teams, and I keep them fast, accessible and easy to change.",
+          "photo": "/images/portrait.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k70",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I work on my own, and I call in a designer or a copywriter when a project needs one. Most of my clients are small businesses and early teams of two to twenty people. I stay on a project from the first call to launch, and I answer your messages myself.",
+                  "_key": "k71"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k72",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Current focus",
+                  "_key": "k73"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k74",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Right now I spend most of my time on three things: web apps that keep working offline, forms that behave on slow connections, and bringing older sites up to basic accessibility checks.",
+                  "_key": "k75"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k76",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Tools I reach for",
+                  "_key": "k77"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k78",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "HTML and CSS first, with as little JavaScript as the page needs",
+                  "_key": "k79"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k80",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "TypeScript and React for apps with a lot of moving state",
+                  "_key": "k81"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k82",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Node.js for APIs and small background jobs",
+                  "_key": "k83"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k84",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "PostgreSQL by default, MongoDB when the data really is a document",
+                  "_key": "k85"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k86",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Astro for sites that are mostly content",
+                  "_key": "k87"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k88",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Where I'm based",
+                  "_key": "k89"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k90",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I live in Port Alder and work remotely with clients in any time zone that overlaps a few hours with mine. Most projects run four to sixteen weeks.",
+                  "_key": "k91"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k92",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About this site",
+                  "_key": "k93"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k94",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Theo Marsh, the projects, the clients and the places on this site are made up for the demo.",
+                  "_key": "k95"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "working-together",
+        "slug": "working-together",
+        "status": "published",
+        "data": {
+          "title": "Working together",
+          "eyebrow": "Working together",
+          "intro": "How a project starts, what I need from you and what I leave to others.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k96",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most projects begin with a thirty-minute call. We go through what you want to build, who will use it and when you need it. I tell you honestly if I am the right person for it.",
+                  "_key": "k97"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k98",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What I take on",
+                  "_key": "k99"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k100",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "New websites for small businesses and individuals",
+                  "_key": "k101"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k102",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Web apps with accounts, forms and a database",
+                  "_key": "k103"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k104",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Rebuilding an older frontend without losing its content",
+                  "_key": "k105"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k106",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Speed and accessibility fixes on a site that already exists",
+                  "_key": "k107"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k108",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What I need from you",
+                  "_key": "k109"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k110",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "One person who can answer questions and make decisions, usually within a day or two. Real content as early as you can get it, even if it is rough. Access to your hosting and domain accounts at the end, so everything lives under your name.",
+                  "_key": "k111"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k112",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What I leave to others",
+                  "_key": "k113"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k114",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I do not do brand design, copywriting or paid advertising. If you need them, I will tell you who I would ask. I also do not take on work that needs a guaranteed response time at all hours.",
+                  "_key": "k115"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k116",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How I charge",
+                  "_key": "k117"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k118",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I quote a fixed price for a clearly described piece of work, or a weekly rate when the scope is still open. The quote is written down before I start. The figures on the enquiry form are only ranges to help me prepare for the first call.",
+                  "_key": "k119"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "projects": [
+      {
+        "id": "tidemark",
+        "slug": "tidemark",
+        "status": "published",
+        "data": {
+          "title": "Tidemark",
+          "kind": "website",
+          "tagline": "Booking site for a kayak rental",
+          "summary": "A booking site for a small kayak rental on a tidal river, with tide times shown beside every slot.",
+          "stack": "Astro, TypeScript, Node.js, PostgreSQL",
+          "role": "Design and development",
+          "team": "Solo, with the owner as product lead",
+          "year_label": "2026",
+          "brief": "The owner took bookings by phone and a shared spreadsheet. Trips that fell at low tide were often cancelled on the day, so she wanted customers to see the tide before they chose a slot.",
+          "built": "A mostly static site with a booking form that checks free boats against a small PostgreSQL table. Tide times come from a published table that is loaded once a day. Confirmation emails go out through the host's mail service.",
+          "choices": "Astro kept the pages light for people on mobile data at the launch site. I used plain forms with server-side checks instead of a client framework, so booking still works when a script fails to load.",
+          "links": [
+            {
+              "label": "View live site",
+              "url": "https://tidemark.example"
+            },
+            {
+              "label": "Source code",
+              "url": "https://code.example/tidemark"
+            }
+          ],
+          "featured": true,
+          "position": 10,
+          "photo": "/images/project-laptop.webp",
+          "gallery": [
+            {
+              "photo": "/images/project-lake.webp",
+              "caption": "The landing page: one photograph of the river and three route previews."
+            },
+            {
+              "photo": "/images/project-screen.webp",
+              "caption": "Route previews and the four icons that lead to the booking steps."
+            }
+          ]
+        }
+      },
+      {
+        "id": "fieldbook",
+        "slug": "fieldbook",
+        "status": "published",
+        "data": {
+          "title": "Fieldbook",
+          "kind": "web-app",
+          "tagline": "Field notes app for land surveyors",
+          "summary": "A web app where land surveyors log site notes and photos on a phone, then export a tidy report.",
+          "stack": "React, TypeScript, Node.js, PostgreSQL",
+          "role": "Lead developer",
+          "team": "Two developers and one designer",
+          "year_label": "2026",
+          "brief": "Surveyors wrote notes on paper and typed them up in the evening. They wanted to log things on site, often with no signal, and finish the report the same day.",
+          "built": "A React app that saves each note on the device first and syncs when a connection comes back. A Node.js API stores the notes in PostgreSQL and builds a PDF report from them.",
+          "choices": "Offline-first meant deciding what happens when two people edit the same note. We kept it simple: every note has one owner, and everyone else can only add comments.",
+          "links": [
+            {
+              "label": "View live site",
+              "url": "https://fieldbook.example"
+            }
+          ],
+          "featured": true,
+          "position": 20,
+          "photo": "/images/project-code.webp",
+          "gallery": [
+            {
+              "photo": "/images/project-screen.webp",
+              "caption": "A project page with a photograph and a row of quick actions."
+            },
+            {
+              "photo": "/images/project-icons.webp",
+              "caption": "The quick actions: code, style, layers and settings."
+            }
+          ]
+        }
+      },
+      {
+        "id": "northlight",
+        "slug": "northlight",
+        "status": "published",
+        "data": {
+          "title": "Northlight",
+          "kind": "website",
+          "tagline": "Portfolio site for a landscape photographer",
+          "summary": "A fast gallery site for a photographer who sells prints, with large images that stay sharp on any screen.",
+          "stack": "HTML & CSS, JavaScript, Astro",
+          "role": "Development",
+          "team": "Solo, working from a finished design",
+          "year_label": "2025",
+          "brief": "The photographer's old site loaded slowly and cropped her pictures badly on phones. She wanted the photographs to be the page, with the print shop one click away.",
+          "built": "Static pages with responsive image sets, a lightbox that works from the keyboard and a print enquiry form that opens an email. Pages are built once and served from a plain file host.",
+          "choices": "I wrote the lightbox by hand in about eighty lines instead of adding a library. It means one less dependency to update and a smaller download on every page.",
+          "links": [
+            {
+              "label": "View live site",
+              "url": "https://northlight.example"
+            },
+            {
+              "label": "Source code",
+              "url": "https://code.example/northlight"
+            }
+          ],
+          "featured": true,
+          "position": 30,
+          "photo": "/images/project-lake.webp",
+          "gallery": [
+            {
+              "photo": "/images/project-laptop.webp",
+              "caption": "The gallery page next to the editor while building."
+            },
+            {
+              "photo": "/images/desk-notebook.webp",
+              "caption": "Layout notes made before any code."
+            }
+          ]
+        }
+      },
+      {
+        "id": "ledgerly",
+        "slug": "ledgerly",
+        "status": "published",
+        "data": {
+          "title": "Ledgerly",
+          "kind": "web-app",
+          "tagline": "Invoice tracker for freelancers",
+          "summary": "A small web app that shows which invoices are sent, which are due and which have been paid.",
+          "stack": "React, TypeScript, Node.js, MongoDB",
+          "role": "Full-stack developer",
+          "team": "Two developers",
+          "year_label": "2025",
+          "brief": "Freelancers kept track of invoices in a spreadsheet and forgot to chase late ones. The brief was one screen that answers a single question: who owes me money today?",
+          "built": "A React front end with a due-date list, a Node.js API and MongoDB for the invoice documents. Reminders are drafted as emails the user can edit and send from their own mail app.",
+          "choices": "We chose MongoDB because an invoice is one self-contained document. We did not build payments. The app records that a payment arrived and leaves the money to the bank.",
+          "links": [
+            {
+              "label": "View live site",
+              "url": "https://ledgerly.example"
+            }
+          ],
+          "featured": false,
+          "position": 40,
+          "photo": "/images/project-screen.webp",
+          "gallery": [
+            {
+              "photo": "/images/project-code.webp",
+              "caption": "The invoice list code open in the editor."
+            },
+            {
+              "photo": "/images/desk-surface.webp",
+              "caption": "A working desk during the second sprint."
+            }
+          ]
+        }
+      },
+      {
+        "id": "brace",
+        "slug": "brace",
+        "status": "published",
+        "data": {
+          "title": "Brace",
+          "kind": "frontend-rebuild",
+          "tagline": "Component library for a bus timetable site",
+          "summary": "A rebuild of a regional bus timetable site on a small set of shared components.",
+          "stack": "React, TypeScript, HTML & CSS",
+          "role": "Frontend developer",
+          "team": "Three developers and a designer",
+          "year_label": "2025",
+          "brief": "The timetable site had grown over eight years. Every page had its own buttons and tables, and keyboard users could not get past the route filter.",
+          "built": "Fourteen shared components for forms, tables, tabs and alerts, each with a short usage page. We moved the timetable, the route finder and the notices pages across one at a time.",
+          "choices": "We migrated page by page and kept both versions live for three months. It was slower than a rewrite, but nobody lost a timetable on the day of the switch.",
+          "links": [
+            {
+              "label": "View live site",
+              "url": "https://brace.example"
+            },
+            {
+              "label": "Source code",
+              "url": "https://code.example/brace"
+            }
+          ],
+          "featured": false,
+          "position": 50,
+          "photo": "/images/desk-brackets.webp",
+          "gallery": [
+            {
+              "photo": "/images/project-icons.webp",
+              "caption": "Icon buttons from the component set."
+            },
+            {
+              "photo": "/images/project-code.webp",
+              "caption": "A component's source beside its usage notes."
+            }
+          ]
+        }
+      },
+      {
+        "id": "fernhill",
+        "slug": "fernhill",
+        "status": "published",
+        "data": {
+          "title": "Fernhill",
+          "kind": "performance",
+          "tagline": "Speed and accessibility pass for a garden shop",
+          "summary": "A four-week pass over a garden centre's online shop to make it faster and usable without a mouse.",
+          "stack": "JavaScript, Node.js, HTML & CSS",
+          "role": "Developer",
+          "team": "Solo, with the shop's part-time web manager",
+          "year_label": "2026",
+          "brief": "Product pages took several seconds to show on a phone, and the checkout could not be completed with the keyboard. The shop wanted both fixed without a redesign.",
+          "built": "I resized and lazy-loaded the product photos, removed two scripts the shop no longer used and cut the stylesheet in half. I fixed focus order, labels and error messages in the checkout form.",
+          "choices": "We fixed the biggest causes first and measured after each change. Most of the gain came from the images, so I left the rest of the code alone.",
+          "links": [
+            {
+              "label": "View live site",
+              "url": "https://fernhill.example"
+            }
+          ],
+          "featured": false,
+          "position": 60,
+          "photo": "/images/desk-plant.webp",
+          "gallery": [
+            {
+              "photo": "/images/desk-mug.webp",
+              "caption": "Notes and coffee during the audit week."
+            },
+            {
+              "photo": "/images/project-laptop.webp",
+              "caption": "Profiling the product page on a laptop."
+            }
+          ]
+        }
+      }
+    ],
+    "posts": [
+      {
+        "id": "measure-the-slow-page-first",
+        "slug": "measure-the-slow-page-first",
+        "status": "published",
+        "data": {
+          "title": "Measure the slow page first",
+          "summary": "Most slow pages have one or two large causes. Here is how I find them before changing any code.",
+          "date_label": "21 October 2026",
+          "read_minutes": 5,
+          "featured": true,
+          "position": 10,
+          "photo": "/images/desk-surface.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When someone says a site feels slow, the first instinct is to start optimising code. I try not to. A page that takes six seconds usually has one or two large causes, and a few minutes of measuring finds them.",
+                  "_key": "k2"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Start with the weight",
+                  "_key": "k4"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Open the network panel, reload with the cache disabled and sort by size. On most sites I look at, a handful of images account for more than half of the bytes. Fixing those is often worth more than anything I could do in JavaScript.",
+                  "_key": "k6"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Then look at what blocks the page",
+                  "_key": "k8"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Scripts in the head and large stylesheets stop the browser from drawing anything. You can list what the browser reported with a few lines in the console:",
+                  "_key": "k10"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "code",
+              "_key": "k11",
+              "code": "const [nav] = performance.getEntriesByType(\"navigation\");\nconsole.log(\"first byte:\", Math.round(nav.responseStart), \"ms\");\nconsole.log(\"page loaded:\", Math.round(nav.loadEventEnd), \"ms\");\n\nfor (const r of performance.getEntriesByType(\"resource\")) {\n  if (r.transferSize > 200_000) {\n    console.log(Math.round(r.transferSize / 1024) + \" KB\", r.name);\n  }\n}",
+              "language": "javascript"
+            },
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The second loop prints every file over 200 KB. It is crude, and it is usually enough to name the culprits.",
+                  "_key": "k13"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Change one thing, then measure again",
+                  "_key": "k15"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I fix the biggest cause, reload and compare. If the number did not move, I undo the change. It keeps the code small and it keeps the claims honest.",
+                  "_key": "k17"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "a-form-that-works-without-javascript",
+        "slug": "a-form-that-works-without-javascript",
+        "status": "published",
+        "data": {
+          "title": "A form that works without JavaScript",
+          "summary": "Start with a plain form that posts to the server, then add the nicer behaviour on top.",
+          "date_label": "12 October 2026",
+          "read_minutes": 4,
+          "featured": true,
+          "position": 20,
+          "photo": "/images/desk-notebook.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Scripts fail more often than we like to admit. A slow connection, a blocked file or an old browser can all leave a form half-working. A plain HTML form still sends its data in every one of those cases.",
+                  "_key": "k19"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k20",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Write the plain version first",
+                  "_key": "k21"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "code",
+              "_key": "k22",
+              "code": "<form action=\"/enquiry\" method=\"post\">\n  <label for=\"email\">Email</label>\n  <input id=\"email\" name=\"email\" type=\"email\" required />\n\n  <label for=\"message\">What do you need?</label>\n  <textarea id=\"message\" name=\"message\" required></textarea>\n\n  <button type=\"submit\">Send</button>\n</form>",
+              "language": "html"
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The browser already handles required fields, email checks and the submit button. The server should check everything again, because anyone can send a request without the form.",
+                  "_key": "k24"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Then improve it",
+                  "_key": "k26"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Once the plain form works, a few lines of script can send it in the background and show a message without reloading the page.",
+                  "_key": "k28"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "code",
+              "_key": "k29",
+              "code": "const form = document.querySelector(\"form\");\n\nform.addEventListener(\"submit\", async (event) => {\n  event.preventDefault();\n  const res = await fetch(form.action, { method: \"POST\", body: new FormData(form) });\n  form.insertAdjacentHTML(\"afterend\", res.ok ? \"<p>Thanks, got it.</p>\" : \"<p>Something went wrong. Please try again.</p>\");\n});",
+              "language": "javascript"
+            },
+            {
+              "_type": "block",
+              "_key": "k30",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If that script never loads, the form still works. That is the whole point.",
+                  "_key": "k31"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "small-sql-habits",
+        "slug": "small-sql-habits",
+        "status": "published",
+        "data": {
+          "title": "Small SQL habits that save debugging time",
+          "summary": "Four habits for writing queries that are easier to read, check and change later.",
+          "date_label": "3 October 2026",
+          "read_minutes": 5,
+          "featured": true,
+          "position": 30,
+          "photo": "/images/desk-mug.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k32",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most database bugs I fix are not clever. They come from a query nobody could read, or a change that nobody could check. These habits have saved me the most time.",
+                  "_key": "k33"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k34",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Name the columns you want",
+                  "_key": "k35"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k36",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Selecting every column is quick to type and slow to debug. When a table gains a column, an unrelated page can suddenly change.",
+                  "_key": "k37"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "code",
+              "_key": "k38",
+              "code": "select id, customer_id, total_cents, paid_at\nfrom invoices\nwhere paid_at is null\n  and due_on < current_date\norder by due_on;",
+              "language": "sql"
+            },
+            {
+              "_type": "block",
+              "_key": "k39",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Store money as whole units",
+                  "_key": "k40"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k41",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Keep amounts as integers in the smallest unit, such as cents. Rounding errors disappear, and totals add up the way a person would add them.",
+                  "_key": "k42"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k43",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Check a change on a copy",
+                  "_key": "k44"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k45",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Before running an update on real data, run the same condition as a select and count the rows. If you expected twelve and see twelve hundred, you have just saved yourself an afternoon.",
+                  "_key": "k46"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "code",
+              "_key": "k47",
+              "code": "-- how many rows would this touch?\nselect count(*) from invoices where status = 'sent' and due_on < '2026-01-01';",
+              "language": "sql"
+            }
+          ]
+        }
+      },
+      {
+        "id": "css-that-survives-a-redesign",
+        "slug": "css-that-survives-a-redesign",
+        "status": "published",
+        "data": {
+          "title": "CSS that survives a redesign",
+          "summary": "Keep colours, spacing and type in a few named values, so a new look is a small edit.",
+          "date_label": "24 September 2026",
+          "read_minutes": 4,
+          "featured": false,
+          "position": 40,
+          "photo": "/images/desk-plant.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k48",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The sites that are easiest to restyle share one habit: the design decisions live in a handful of named values, not in two thousand lines of copied colours.",
+                  "_key": "k49"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k50",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Name the decisions",
+                  "_key": "k51"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "code",
+              "_key": "k52",
+              "code": ":root {\n  --surface: #0f131b;\n  --text: #f5f7fb;\n  --muted: #b3bccd;\n  --space: 1rem;\n  --radius: 12px;\n}\n\n.card {\n  padding: calc(var(--space) * 1.5);\n  border-radius: var(--radius);\n  background: var(--surface);\n  color: var(--text);\n}",
+              "language": "css"
+            },
+            {
+              "_type": "block",
+              "_key": "k53",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Now a new brand colour is one line. Without the variables it is a search across every file, and one missed spot ends up on the live site.",
+                  "_key": "k54"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k55",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Keep the selectors short",
+                  "_key": "k56"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k57",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Long chains of nested selectors tie your styles to the page structure. A single class on the element is easier to move, delete and understand.",
+                  "_key": "k58"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "offline-first-notes-in-plain-terms",
+        "slug": "offline-first-notes-in-plain-terms",
+        "status": "published",
+        "data": {
+          "title": "Offline-first notes, in plain terms",
+          "summary": "What it means to save on the device first, and the one rule that keeps syncing sane.",
+          "date_label": "15 September 2026",
+          "read_minutes": 6,
+          "featured": false,
+          "position": 50,
+          "photo": "/images/desk-brackets.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k59",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "An offline-first app saves what you type on your own device straight away and talks to the server later. The person using it never waits on a signal.",
+                  "_key": "k60"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k61",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The basic loop",
+                  "_key": "k62"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k63",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Every change goes into a small queue stored in the browser. A background step sends the queue when a connection is available and removes each item once the server confirms it.",
+                  "_key": "k64"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "code",
+              "_key": "k65",
+              "code": "const queue = JSON.parse(localStorage.getItem(\"queue\") ?? \"[]\");\n\nexport function save(note) {\n  queue.push({ id: crypto.randomUUID(), note, at: Date.now() });\n  localStorage.setItem(\"queue\", JSON.stringify(queue));\n  flush();\n}\n\nasync function flush() {\n  while (queue.length && navigator.onLine) {\n    const item = queue[0];\n    const res = await fetch(\"/api/notes\", { method: \"POST\", body: JSON.stringify(item) });\n    if (!res.ok) return;\n    queue.shift();\n    localStorage.setItem(\"queue\", JSON.stringify(queue));\n  }\n}",
+              "language": "javascript"
+            },
+            {
+              "_type": "block",
+              "_key": "k66",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "One rule for conflicts",
+                  "_key": "k67"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k68",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Two people editing the same note is where syncing gets hard. The rule I reach for is simple: one owner per note. Others can add comments, but only the owner can change the text. It removes most of the cases you would otherwise have to resolve by hand.",
+                  "_key": "k69"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "skills": [
+      {
+        "id": "html-css",
+        "slug": "html-css",
+        "status": "published",
+        "data": {
+          "title": "HTML & CSS",
+          "icon": "html",
+          "text": "Semantic. Responsive.\nAccessible.",
+          "position": 10
+        }
+      },
+      {
+        "id": "javascript",
+        "slug": "javascript",
+        "status": "published",
+        "data": {
+          "title": "JavaScript",
+          "icon": "js",
+          "text": "Interactive. Performant.\nModern.",
+          "position": 20
+        }
+      },
+      {
+        "id": "react",
+        "slug": "react",
+        "status": "published",
+        "data": {
+          "title": "React",
+          "icon": "orbit",
+          "text": "Component-driven\nexperiences.",
+          "position": 30
+        }
+      },
+      {
+        "id": "nodejs",
+        "slug": "nodejs",
+        "status": "published",
+        "data": {
+          "title": "Node.js",
+          "icon": "hexagon",
+          "text": "Powerful backend\nsolutions.",
+          "position": 40
+        }
+      },
+      {
+        "id": "databases",
+        "slug": "databases",
+        "status": "published",
+        "data": {
+          "title": "Databases",
+          "icon": "database",
+          "text": "PostgreSQL, MongoDB, more.",
+          "position": 50
+        }
+      }
+    ],
+    "steps": [
+      {
+        "id": "talk",
+        "slug": "talk",
+        "status": "published",
+        "data": {
+          "title": "Talk it through",
+          "when_label": "First week",
+          "text": "We spend an hour on a call going through what you want, who will use it and what has to work on day one. I write it up on one page so we agree on the same thing.",
+          "output": "A one-page scope",
+          "position": 10
+        }
+      },
+      {
+        "id": "thin-slice",
+        "slug": "thin-slice",
+        "status": "published",
+        "data": {
+          "title": "Build the thin slice",
+          "when_label": "Weeks one to three",
+          "text": "I build the smallest working version from end to end: one page, one form, one database table. You can click through it on a real address and tell me what is wrong with it.",
+          "output": "A link you can open",
+          "position": 20
+        }
+      },
+      {
+        "id": "fill-in",
+        "slug": "fill-in",
+        "status": "published",
+        "data": {
+          "title": "Fill it in",
+          "when_label": "Weeks three to ten",
+          "text": "Features go in a few at a time. At the end of each week I send a short written note on what changed and what comes next.",
+          "output": "Weekly written updates",
+          "position": 30
+        }
+      },
+      {
+        "id": "hand-over",
+        "slug": "hand-over",
+        "status": "published",
+        "data": {
+          "title": "Launch and hand over",
+          "when_label": "Last week",
+          "text": "I set up hosting, backups and error alerts in your own accounts, then walk you through the code and the admin. Two weeks of fixes after launch are included.",
+          "output": "The repository, notes and a handover call",
+          "position": 40
+        }
+      }
+    ],
+    "profile": [
+      {
+        "id": "theo",
+        "slug": "theo",
+        "status": "published",
+        "data": {
+          "title": "Theo Marsh",
+          "base": "Port Alder, working remotely",
+          "phone": "(555) 010-0143",
+          "email": "hello@devfolio.example",
+          "response": "Theo reads every message himself and replies within two working days.",
+          "contact_note": "Tell Theo a little about the project. A few lines are enough. Please leave out anything confidential, and never send passwords."
+        }
+      }
+    ]
+  }
+}

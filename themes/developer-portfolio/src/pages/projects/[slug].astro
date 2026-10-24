@@ -1,0 +1,152 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getProfile, getProjects, photoAlt, photoSrc, projectHref, stackTags } from "../../lib/site";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: project, cacheHint } = await getEmDashEntry("projects", slug);
+if (!project) return Astro.rewrite("/404");
+
+const [allResult, profileResult, settings] = await Promise.all([getProjects(), getProfile(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(profileResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(project, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = project.data;
+const cover = photoSrc(d.image, d.photo);
+const tags = stackTags(d.stack);
+const links = (d.links ?? []).filter((l) => l.url);
+const shots = (d.gallery ?? [])
+	.map((g) => ({ src: photoSrc(g.image, g.photo), alt: photoAlt(g.image, g.photo, g.caption ?? ""), caption: g.caption }))
+	.filter((g): g is { src: string; alt: string; caption: string | undefined } => Boolean(g.src));
+const facts = [
+	{ label: "Role", value: d.role },
+	{ label: "Year", value: d.year_label },
+	{ label: "Team", value: d.team },
+	{ label: "Kind", value: d.tagline },
+].filter((f) => f.value);
+const sections = [
+	{ label: "The brief", text: d.brief },
+	{ label: "What I built", text: d.built },
+	{ label: "Choices along the way", text: d.choices },
+].filter((s) => s.text);
+
+// Previous and next in sort order, wrapping around.
+const list = allResult.entries;
+const index = list.findIndex((p) => p.data.id === d.id);
+const prev = list.length > 1 ? list[(index - 1 + list.length) % list.length] : null;
+const next = list.length > 1 ? list[(index + 1) % list.length] : null;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "projects", id: d.id, slug }}
+	current="/projects"
+>
+	<header class="case-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/projects">Projects</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<p class="eyebrow">{d.tagline}</p>
+			<h1 class="display display-xl" {...project.edit.title}>{d.title}</h1>
+			<p class="lede">{d.summary}</p>
+			{
+				links.length > 0 && (
+					<p class="case-links">
+						{links.map((l, i) => (
+							<a class:list={["btn", i === 0 ? "btn-primary" : "btn-ghost"]} href={l.url} rel="noopener noreferrer" target="_blank">
+								<span>{l.label || "Open"}</span><Arrow />
+							</a>
+						))}
+					</p>
+				)
+			}
+		</div>
+	</header>
+
+	<section class="case-lead">
+		<div class="wrap case-lead-grid">
+			{cover && <figure class="case-cover"><img src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="1000" height="750" fetchpriority="high" /></figure>}
+			<div class="case-side">
+				<dl class="facts">
+					{facts.map((f) => <div><dt>{f.label}</dt><dd>{f.value}</dd></div>)}
+				</dl>
+				<div class="stack">
+					<h2>Stack</h2>
+					<ul class="tag-row">
+						{tags.map((t) => <li><a class="tag" href={`/projects?stack=${t.slug}`}>{t.label}</a></li>)}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="case-body">
+		<div class="wrap">
+			{
+				sections.map((s) => (
+					<div class="case-section">
+						<h2>{s.label}</h2>
+						<p>{s.text}</p>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	{
+		shots.length > 0 && (
+			<section class="case-shots" aria-label={`Screens from ${d.title}`}>
+				<div class="wrap">
+					<p class="eyebrow">Screens</p>
+					<ul class="sequence">
+						{shots.map((s) => (
+							<li>
+								<figure>
+									<img src={s.src} alt={s.alt} loading="lazy" />
+									{s.caption && <figcaption>{s.caption}</figcaption>}
+								</figure>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		prev && next && (
+			<nav class="case-nav" aria-label="More projects">
+				<div class="wrap case-nav-grid">
+					<a class="case-prev" href={projectHref(prev.data)}>
+						<span class="case-nav-label"><Arrow class="flip" /> Previous</span>
+						<span class="case-nav-name">{prev.data.title}</span>
+						<span class="case-nav-sub">{prev.data.tagline}</span>
+					</a>
+					<a class="case-next" href={projectHref(next.data)}>
+						<span class="case-nav-label">Next <Arrow /></span>
+						<span class="case-nav-name">{next.data.title}</span>
+						<span class="case-nav-sub">{next.data.tagline}</span>
+					</a>
+				</div>
+			</nav>
+		)
+	}
+
+	<ContactBand profile={profileResult.profile} type={d.kind} />
+</Base>

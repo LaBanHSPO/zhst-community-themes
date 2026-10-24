@@ -1,0 +1,20 @@
+---
+interface Props {
+	id?: string;
+	eyebrow?: string | null;
+	title: string;
+	/** Last word(s) of the title drawn with the gradient. */
+	accent?: string;
+	intro?: string | null;
+	edit?: Record<string, unknown>;
+}
+const { id, eyebrow, title, accent, intro, edit = {} } = Astro.props;
+---
+
+<header class="page-head">
+	<div class="wrap">
+		{eyebrow && <p class="eyebrow">{eyebrow}</p>}
+		<h1 id={id} class="display display-xl" {...edit}>{title}{accent && <> <span class="grad">{accent}</span></>}</h1>
+		{intro && <p class="lede">{intro}</p>}
+	</div>
+</header>

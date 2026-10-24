@@ -1,0 +1,57 @@
+---
+/** Generic line icons drawn for this theme (no third-party logos). */
+interface Props {
+	name: string;
+	size?: number;
+	class?: string;
+}
+const { name, size = 36, class: className } = Astro.props;
+---
+
+<svg class:list={["icon", className]} width={size} height={size} viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+	{name === "html" && <path d="M12 10 4 18l8 8M24 10l8 8-8 8M21 6l-6 24" />}
+	{
+		name === "js" && (
+			<>
+				<rect x="5" y="5" width="26" height="26" rx="1.500" fill="currentColor" stroke="none" />
+				<path class="knock" d="M19 14v8.500a2.500 2.500 0 0 1-5 0M23 21.500c.8 1 1.800 1.500 3 1.500 1.700 0 2.600-.9 2.600-2.100 0-3.100-5.600-1.700-5.600-5 0-1.200 1-2.100 2.700-2.100 1 0 1.900.4 2.600 1.200" />
+			</>
+		)
+	}
+	{
+		name === "orbit" && (
+			<>
+				<ellipse cx="18" cy="18" rx="14" ry="5.500" />
+				<ellipse cx="18" cy="18" rx="14" ry="5.500" transform="rotate(60 18 18)" />
+				<ellipse cx="18" cy="18" rx="14" ry="5.500" transform="rotate(120 18 18)" />
+				<circle cx="18" cy="18" r="2.200" fill="currentColor" stroke="none" />
+			</>
+		)
+	}
+	{
+		name === "hexagon" && (
+			<>
+				<path d="M18 3.500 30.500 10.750v14.500L18 32.500 5.500 25.250V10.750Z" />
+				<circle cx="18" cy="18" r="4" />
+			</>
+		)
+	}
+	{
+		name === "database" && (
+			<>
+				<ellipse cx="18" cy="9" rx="11" ry="4.500" />
+				<path d="M7 9v18c0 2.500 4.900 4.500 11 4.500s11-2 11-4.500V9M7 18c0 2.500 4.900 4.500 11 4.500S29 20.500 29 18" />
+			</>
+		)
+	}
+	{name === "bolt" && <path d="M20 3 7 20h9l-2 13 13-18h-9Z" />}
+	{name === "layers" && <path d="m18 4 14 7-14 7-14-7Zm-14 14 14 7 14-7M4 25l14 7 14-7" />}
+	{
+		name === "person" && (
+			<>
+				<circle cx="14" cy="11" r="5.500" />
+				<path d="M3 31c0-6.500 4.500-10.500 11-10.500S25 24.500 25 31M24 6c3 .5 5 2.700 5 5.500S27 16.500 24 17M28 21c3 1.200 5 4.500 5 10" />
+			</>
+		)
+	}
+</svg>

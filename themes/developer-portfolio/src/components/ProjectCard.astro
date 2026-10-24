@@ -1,0 +1,30 @@
+---
+import Arrow from "./Arrow.astro";
+import { photoAlt, photoSrc, projectHref, stackTags } from "../lib/site";
+import type { Project } from "../lib/site";
+
+interface Props {
+	project: { data: Project };
+	eager?: boolean;
+}
+const { project, eager = false } = Astro.props;
+const d = project.data;
+const src = photoSrc(d.image, d.photo);
+const tags = stackTags(d.stack).slice(0, 4);
+---
+
+<a class="project-card" href={projectHref(d)}>
+	<span class="project-thumb">
+		{src && <img src={src} alt={photoAlt(d.image, d.photo, d.title)} width="800" height="600" loading={eager ? "eager" : "lazy"} />}
+	</span>
+	<span class="project-meta">
+		<span class="project-text">
+			<span class="project-name">{d.title}</span>
+			<span class="project-sub">{d.tagline}</span>
+		</span>
+		<Arrow class="project-arrow" />
+	</span>
+	<span class="tag-row">
+		{tags.map((t) => <span class="tag">{t.label}</span>)}
+	</span>
+</a>

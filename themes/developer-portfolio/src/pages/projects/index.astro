@@ -1,0 +1,68 @@
+---
+import Base from "../../layouts/Base.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import PageHead from "../../components/PageHead.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { getProfile, getProjects, stackTags } from "../../lib/site";
+
+const [projectsResult, profileResult] = await Promise.all([getProjects(), getProfile()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(projectsResult.cacheHint);
+	Astro.cache.set(profileResult.cacheHint);
+}
+const all = projectsResult.entries;
+
+// One filter link per stack tag in use, most used first, then alphabetical.
+const counts = new Map<string, { slug: string; label: string; n: number }>();
+for (const p of all) {
+	for (const t of stackTags(p.data.stack)) {
+		const hit = counts.get(t.slug);
+		if (hit) hit.n += 1;
+		else counts.set(t.slug, { ...t, n: 1 });
+	}
+}
+const tags = [...counts.values()].sort((a, b) => b.n - a.n || a.label.localeCompare(b.label));
+// ?stack=<slug> narrows the list to projects built with one tool.
+const active = tags.find((t) => t.slug === Astro.url.searchParams.get("stack"));
+const items = active ? all.filter((p) => stackTags(p.data.stack).some((t) => t.slug === active.slug)) : all;
+---
+
+<Base
+	title={active ? `Projects built with ${active.label}` : "Projects"}
+	description="Selected web projects by Theo Marsh: sites, web apps and frontend rebuilds, each with the stack, the role and what was built. Filter by tool."
+	current="/projects"
+>
+	<PageHead
+		id="projects-title"
+		eyebrow="Projects"
+		title={active ? `Built with` : "Selected"}
+		accent={active ? `${active.label}.` : "projects."}
+		intro="Sites, web apps and rebuilds. Each page lists the stack, my role, what I built and where to see it."
+	/>
+
+	<section class="list-section" aria-labelledby="projects-title">
+		<div class="wrap">
+			{
+				tags.length > 1 && (
+					<nav class="filter" aria-label="Filter by stack">
+						<a href="/projects" aria-current={active ? undefined : "true"}>All</a>
+						{tags.map((t) => (
+							<a href={`/projects?stack=${t.slug}`} aria-current={active?.slug === t.slug ? "true" : undefined}>{t.label}</a>
+						))}
+					</nav>
+				)
+			}
+			{
+				items.length > 0 ? (
+					<ul class="project-grid">
+						{items.map((p, i) => <li><ProjectCard project={p} eager={i < 3} /></li>)}
+					</ul>
+				) : (
+					<p class="empty-note">Nothing here yet. New projects are on their way.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<ContactBand profile={profileResult.profile} />
+</Base>

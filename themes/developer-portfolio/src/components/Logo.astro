@@ -1,0 +1,13 @@
+---
+/** Wordmark: the site title in bold sans. An uploaded logo replaces it. */
+interface Props {
+	title: string;
+	logo?: { url?: string; alt?: string } | null;
+	class?: string;
+}
+const { title, logo, class: className } = Astro.props;
+---
+
+<a class:list={["wordmark", className]} href="/" aria-label={`${title}, home`}>
+	{logo?.url ? <img src={logo.url} alt={logo.alt || title} /> : <span class="wordmark-title">{title}</span>}
+</a>

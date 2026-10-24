@@ -1,0 +1,25 @@
+---
+import Arrow from "./Arrow.astro";
+import type { ProfileData } from "../lib/site";
+
+interface Props {
+	profile: ProfileData;
+	type?: string;
+}
+const { profile, type } = Astro.props;
+const href = type ? `/contact?type=${type}` : "/contact";
+---
+
+<section class="band" aria-labelledby="band-title">
+	<div class="wrap band-inner">
+		<div>
+			<p class="eyebrow">Let's build</p>
+			<h2 id="band-title" class="display display-lg">Got something to <span class="grad">build?</span></h2>
+			<p class="band-text">Tell me what it is and when you need it. A few lines are enough to start, and I reply within two working days.</p>
+		</div>
+		<div class="band-actions">
+			<a class="btn btn-primary" href={href}><span>Start a conversation</span><Arrow /></a>
+			{profile.email && <a class="band-mail" href={`mailto:${profile.email}`}>{profile.email}</a>}
+		</div>
+	</div>
+</section>

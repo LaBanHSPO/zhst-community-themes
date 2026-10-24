@@ -1,0 +1,44 @@
+---
+import Base from "../../layouts/Base.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import PageHead from "../../components/PageHead.astro";
+import PostRow from "../../components/PostRow.astro";
+import { getPosts, getProfile } from "../../lib/site";
+
+const [postsResult, profileResult] = await Promise.all([getPosts(), getProfile()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(postsResult.cacheHint);
+	Astro.cache.set(profileResult.cacheHint);
+}
+const posts = postsResult.entries;
+---
+
+<Base
+	title="Writing"
+	description="Short posts from Theo Marsh on building for the web: performance, accessibility, small backends and the habits that keep a codebase easy to change."
+	current="/writing"
+>
+	<PageHead
+		id="writing-title"
+		eyebrow="Writing"
+		title="Notes from the"
+		accent="keyboard."
+		intro="Short posts on things I ran into while building. Code samples are small enough to read in one go."
+	/>
+
+	<section class="list-section" aria-labelledby="writing-title">
+		<div class="wrap">
+			{
+				posts.length > 0 ? (
+					<ul class="post-list">
+						{posts.map((p) => <li><PostRow post={p} thumb /></li>)}
+					</ul>
+				) : (
+					<p class="empty-note">Nothing here yet. The first post is on its way.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<ContactBand profile={profileResult.profile} />
+</Base>

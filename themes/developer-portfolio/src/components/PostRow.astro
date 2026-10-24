@@ -1,0 +1,24 @@
+---
+import Arrow from "./Arrow.astro";
+import { photoAlt, photoSrc, postHref } from "../lib/site";
+import type { Post } from "../lib/site";
+
+interface Props {
+	post: { data: Post };
+	/** Show the cover thumbnail beside the text. */
+	thumb?: boolean;
+}
+const { post, thumb = false } = Astro.props;
+const d = post.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<a class:list={["post-row", { "has-thumb": thumb && src }]} href={postHref(d)}>
+	{thumb && src && <span class="post-thumb"><img src={src} alt={photoAlt(d.image, d.photo, d.title)} width="400" height="300" loading="lazy" /></span>}
+	<span class="post-body">
+		<span class="post-meta">{[d.date_label, d.read_minutes ? `${d.read_minutes} min read` : ""].filter(Boolean).join("  /  ")}</span>
+		<span class="post-title">{d.title}</span>
+		<span class="post-summary">{d.summary}</span>
+	</span>
+	<Arrow class="post-arrow" />
+</a>
