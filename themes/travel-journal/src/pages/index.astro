@@ -1,0 +1,139 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import ContactBand from "../components/ContactBand.astro";
+import PostCard from "../components/PostCard.astro";
+import {
+	buildRegions,
+	getDestinations,
+	getPosts,
+	getWriter,
+	journalHref,
+	photoAlt,
+	postHref,
+	postMeta,
+	postWord,
+} from "../lib/journal";
+
+const [postsResult, destResult, writerResult] = await Promise.all([getPosts(), getDestinations(), getWriter()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(postsResult.cacheHint);
+	Astro.cache.set(destResult.cacheHint);
+	Astro.cache.set(writerResult.cacheHint);
+}
+const allPosts = postsResult.entries;
+const picked = allPosts.filter((p) => p.data.featured);
+const latest = (picked.length > 0 ? picked : allPosts).slice(0, 3);
+const regions = buildRegions(destResult.entries, allPosts);
+const longRead = allPosts.find((p) => p.data.long_read);
+const writer = writerResult.writer;
+---
+
+<Base
+	title="Stories from the road"
+	description="A personal travel journal: slow stories from mountains, coasts and quiet streets, with photographs and notes on what each place felt like."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A hiker in a beanie with a green backpack sits on a rocky ledge above a fjord-like lake with islands and snowy peaks at golden hour"
+			width="1448"
+			height="601"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<p class="hero-eyebrow">A travel journal</p>
+			<h1 id="hero-title" class="hero-title">Stories from<br />the road.</h1>
+			<p class="hero-sub">Real places. Curious people. A more open world.</p>
+			<a class="hero-cta" href="/journal"><span>Explore the journal</span><Arrow /></a>
+		</div>
+		<p class="hand hero-note" aria-hidden="true">Good<br />Places<br />Brighter<br />Days<span class="hand-stroke"></span></p>
+	</section>
+
+	{
+		latest.length > 0 && (
+			<section class="latest" aria-labelledby="latest-title">
+				<div class="wrap">
+					<div class="latest-head">
+						<h2 id="latest-title" class="eyebrow">Latest from the journal</h2>
+						<a class="text-link" href="/journal"><span>View all posts</span><Arrow /></a>
+					</div>
+					<ul class="post-grid">
+						{latest.map((p) => <li><PostCard post={p.data} edit={{ ...p.edit.title }} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		regions.length > 0 && (
+			<section class="band" aria-labelledby="regions-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">By region</p>
+							<h2 id="regions-title" class="display">Where the posts come from.</h2>
+						</div>
+						<a class="text-link" href="/destinations"><span>All destinations</span><Arrow /></a>
+					</div>
+					<ul class="region-grid">
+						{regions.map((r) => (
+							<li>
+								<a class="region-tile" href={journalHref({ region: r.slug })}>
+									{r.photo && <img src={r.photo} alt="" width="320" height="400" loading="lazy" />}
+									<span class="region-tile-text">
+										<span class="region-tile-name">{r.name}</span>
+										<span class="region-tile-count">{postWord(r.count)}</span>
+									</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		longRead && (
+			<section class="longread" aria-labelledby="longread-title">
+				<div class="wrap longread-inner">
+					<a class="longread-photo" href={postHref(longRead.data)} tabindex="-1" aria-hidden="true">
+						<img src="/images/journal-scene.webp" alt="" width="1448" height="1086" loading="lazy" />
+					</a>
+					<div class="longread-copy">
+						<p class="eyebrow">A long read</p>
+						<h2 id="longread-title" class="display" {...longRead.edit.title}>{longRead.data.title}</h2>
+						<p class="longread-summary">{longRead.data.summary}</p>
+						<p class="longread-meta">{postMeta(longRead.data)}</p>
+						<a class="text-link" href={postHref(longRead.data)}><span>Read the essay</span><Arrow /></a>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="writer-band" aria-labelledby="writer-title">
+		<div class="wrap writer-inner">
+			<div class="writer-copy">
+				<p class="eyebrow">About the writer</p>
+				<h2 id="writer-title" class="display">Hello, I'm {writer.title.split(" ")[0] || "the writer"}.</h2>
+				{writer.short_bio && <p class="writer-bio">{writer.short_bio}</p>}
+				<a class="text-link" href="/about"><span>More about me</span><Arrow /></a>
+			</div>
+			<img
+				class="writer-photo"
+				src="/images/hiker-ledge.webp"
+				alt={photoAlt(null, "/images/hiker-ledge.webp")}
+				width="1062"
+				height="722"
+				loading="lazy"
+			/>
+		</div>
+	</section>
+
+	<ContactBand writer={writer} />
+</Base>

@@ -1,0 +1,35 @@
+---
+import Arrow from "./Arrow.astro";
+import type { WriterData } from "../lib/journal";
+
+interface Props {
+	writer: WriterData;
+}
+const { writer } = Astro.props;
+const subject = encodeURIComponent("Please send me new posts");
+---
+
+<section class="mail-band" aria-labelledby="mail-band-title">
+	<div class="wrap mail-band-inner">
+		<div>
+			<p class="eyebrow eyebrow-light">New posts by email</p>
+			<h2 id="mail-band-title" class="display display-light">Want to know when there is a new post?</h2>
+			<p class="mail-band-copy">
+				There is no sign-up service. Send me a short email and I will add you to a list I keep by hand. I write to it a
+				couple of times a month, only when something new is up.
+			</p>
+		</div>
+		<div class="mail-band-actions">
+			{
+				writer.email && (
+					<a class="btn btn-solid" href={`mailto:${writer.email}?subject=${subject}`}>
+						<span>Email me to join</span>
+						<Arrow />
+					</a>
+				)
+			}
+			{writer.email && <p class="mail-band-address"><a href={`mailto:${writer.email}`}>{writer.email}</a></p>}
+			<p class="mail-band-more"><a href="/contact?topic=newsletter">Or use the contact page</a></p>
+		</div>
+	</div>
+</section>

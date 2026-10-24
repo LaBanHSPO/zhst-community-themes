@@ -1,0 +1,128 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import PostBody from "../../components/PostBody.astro";
+import PostCard from "../../components/PostCard.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getPosts, getWriter, journalHref, photoAlt, photoSrc, postHref, postMeta, slugify } from "../../lib/journal";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: post, cacheHint } = await getEmDashEntry("journal", slug);
+if (!post) return Astro.rewrite("/404");
+
+const [allResult, writerResult, settings] = await Promise.all([getPosts(), getWriter(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(writerResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(post, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const d = post.data;
+const cover = photoSrc(d.image, d.photo);
+const hasBody = Boolean(d.content && d.content.length > 0);
+const all = allResult.entries;
+const index = all.findIndex((p) => p.data.id === d.id);
+const newer = index > 0 ? all[index - 1] : undefined;
+const older = index >= 0 && index < all.length - 1 ? all[index + 1] : undefined;
+const sameRegion = all.filter((p) => p.data.id !== d.id && p.data.region === d.region);
+const rest = all.filter((p) => p.data.id !== d.id && p.data.region !== d.region);
+const related = [...sameRegion, ...rest].slice(0, 3);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "journal", id: d.id, slug }}
+	current="/journal"
+>
+	<header class="post-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/journal">Journal</a>
+				<span aria-hidden="true">/</span>
+				<a href={journalHref({ region: slugify(d.region) })}>{d.region}</a>
+			</nav>
+			<p class="eyebrow">
+				{d.destination ? `${d.destination} · ` : ""}{postMeta(d)}
+			</p>
+			<h1 class="display display-xl" {...post.edit.title}>{d.title}</h1>
+			<p class="lede">{d.summary}</p>
+		</div>
+	</header>
+
+	{
+		cover && (
+			<figure class="post-figure">
+				<img src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="1100" height="520" fetchpriority="high" />
+			</figure>
+		)
+	}
+
+	{
+		hasBody && (
+			<section class="post-body">
+				<div class="prose">
+					<PostBody value={d.content} />
+				</div>
+			</section>
+		)
+	}
+
+	{
+		(newer || older) && (
+			<nav class="post-nav" aria-label="More posts in order">
+				<div class="wrap post-nav-inner">
+					{newer ? (
+						<a class="post-nav-link" href={postHref(newer.data)} rel="prev">
+							<span class="eyebrow">Newer post</span>
+							<span class="post-nav-title">{newer.data.title}</span>
+						</a>
+					) : (
+						<span />
+					)}
+					{older ? (
+						<a class="post-nav-link post-nav-next" href={postHref(older.data)} rel="next">
+							<span class="eyebrow">Older post</span>
+							<span class="post-nav-title">{older.data.title}</span>
+						</a>
+					) : (
+						<span />
+					)}
+				</div>
+			</nav>
+		)
+	}
+
+	{
+		related.length > 0 && (
+			<section class="band" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Keep reading</p>
+							<h2 id="more-title" class="display">More from the journal.</h2>
+						</div>
+						<a class="text-link" href="/journal"><span>All posts</span><Arrow /></a>
+					</div>
+					<ul class="post-grid">
+						{related.map((p) => <li><PostCard post={p.data} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<ContactBand writer={writerResult.writer} />
+</Base>

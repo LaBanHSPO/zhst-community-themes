@@ -1,0 +1,1343 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Travel Journal",
+    "description": "A personal travel blog theme: a full-bleed photo homepage, a journal with region filters and search, destinations, an about page and a contact page, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "Travel Journal",
+    "tagline": "Places, People, A brighter you"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "journal",
+      "label": "Journal",
+      "labelSingular": "Journal post",
+      "urlPattern": "/journal/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "region",
+          "label": "Region (e.g. Europe, Canada, Asia, Field Notes)",
+          "type": "string",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "slug": "destination",
+          "label": "Destination (must match a destination entry)",
+          "type": "string",
+          "searchable": true
+        },
+        {
+          "slug": "date_label",
+          "label": "Date (as shown, e.g. 14 October 2026)",
+          "type": "string"
+        },
+        {
+          "slug": "reading_time",
+          "label": "Reading time in minutes",
+          "type": "integer"
+        },
+        {
+          "slug": "summary",
+          "label": "One-line summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage (latest posts)",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "long_read",
+          "label": "Feature as the homepage long read",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order (newest first)",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Post (add photos with the image block)",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "destinations",
+      "label": "Destinations",
+      "labelSingular": "Destination",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Destination name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "region",
+          "label": "Region (matches the region of its posts)",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "note",
+          "label": "One or two sentences about the place",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "writer",
+      "label": "Writer details",
+      "labelSingular": "Writer details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Writer name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "base",
+          "label": "Based in",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Contact email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "short_bio",
+          "label": "Short bio (homepage)",
+          "type": "text"
+        },
+        {
+          "slug": "response",
+          "label": "Reply time (shown beside the contact form)",
+          "type": "string"
+        },
+        {
+          "slug": "contact_note",
+          "label": "Note shown beside the contact form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "Journal",
+          "url": "/journal"
+        },
+        {
+          "type": "custom",
+          "label": "Destinations",
+          "url": "/destinations"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "Hello, I'm Iris.",
+          "eyebrow": "About",
+          "intro": "I write this journal from a small flat near a harbour, between trips and sometimes during them.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k59",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I started writing about travel because friends kept asking what a place was really like, and my answers were always longer than a text message. This journal is where the longer answers live.",
+                  "_key": "k59s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k60",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I am not an expert on anywhere. I stay in places for a week or two, walk a lot, eat what looks good and write down what I noticed. Everything here is a personal impression. Things change, so check details like timetables and opening days before you go.",
+                  "_key": "k60s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k61",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How I travel",
+                  "_key": "k61s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k62",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Slowly, and usually on my own. I carry a small bag, a notebook and a camera that is older than it should be. I like early mornings, long lunches and getting a little lost. I try to leave a few hours empty in every day so the place can surprise me.",
+                  "_key": "k62s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k63",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What you will find here",
+                  "_key": "k63s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k64",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Stories about places, short field notes about habits and kit, and photographs that are mine or taken in the spirit of mine. New posts arrive when I have something to say, which is about once or twice a month.",
+                  "_key": "k64s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k65",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If a post helped you, or you went somewhere I wrote about and saw it differently, I would like to hear about it. You can write to me on the contact page.",
+                  "_key": "k65s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "journal": [
+      {
+        "id": "slow-days-on-the-amalfi-coast",
+        "slug": "slow-days-on-the-amalfi-coast",
+        "status": "published",
+        "data": {
+          "title": "Slow Days on the Amalfi Coast",
+          "region": "Europe",
+          "destination": "Amalfi Coast",
+          "date_label": "18 October 2026",
+          "reading_time": 6,
+          "summary": "Limestone towns, lemon trees and a kinder pace of life.",
+          "featured": true,
+          "long_read": false,
+          "position": 1,
+          "photo": "/images/card-amalfi.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I arrived with a list of things to see and gave it up on the second morning. The town I stayed in climbs its hillside in layers, and every staircase seems to end at a terrace with a view and somewhere to sit. There was always a reason to stop.",
+                  "_key": "k1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k2",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Mornings",
+                  "_key": "k2s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The mornings were the best part. The air stayed cool until about ten, the lanes were mostly empty, and I walked down to the water with a paper cup of coffee and nothing planned. A man was hosing down the steps outside his shop. A woman carried bread home in a paper bag. Nobody was in a hurry, so I stopped being in one too.",
+                  "_key": "k3s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "image",
+              "_key": "k4",
+              "asset": {
+                "url": "/images/amalfi-detail.webp"
+              },
+              "alt": "Pink and white houses stacked on a steep rocky hillside above blue water, with bright magenta flowers in the foreground",
+              "caption": "Houses stacked up the hillside, with flowers spilling over a wall."
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Lemons and limestone",
+                  "_key": "k5s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k6",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Lemon trees grew on the terraces behind almost every wall I passed, some trained over wooden frames. The stone underfoot was pale and worn smooth in the middle of each step. Everything felt old without feeling like a museum. People hung washing out of the same windows visitors photographed.",
+                  "_key": "k6s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I kept three rules for the week: one proper walk a day, one long lunch, and nothing booked after four. It sounds small, but it changed how the days felt. I went to bed tired from walking, not from rushing.",
+                  "_key": "k7s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k8",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What I would do again",
+                  "_key": "k8s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Wear shoes with a good grip, because the steps are steep and can be slick. Sit down earlier than you think you need to. Leave a few hours empty so the place has room to surprise you. Next time I would stay longer and see fewer things, which is a lesson I seem to relearn on every trip.",
+                  "_key": "k9s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "finding-stillness-in-banff",
+        "slug": "finding-stillness-in-banff",
+        "status": "published",
+        "data": {
+          "title": "Finding Stillness in Banff",
+          "region": "Canada",
+          "destination": "Banff",
+          "date_label": "9 October 2026",
+          "reading_time": 5,
+          "summary": "Big mountains, clearer thoughts, and a deeper breath.",
+          "featured": true,
+          "long_read": false,
+          "position": 2,
+          "photo": "/images/card-banff.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k10",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The first thing I noticed was the colour of the water. It was a milky turquoise I had only seen in photographs and had assumed was edited. It was not. I stood at the edge of the lake for a long time and did not take a single picture.",
+                  "_key": "k10s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Early, before the crowds",
+                  "_key": "k11s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I set an alarm for a time I would normally call unreasonable. By the time I reached the shore the light was low and the car park was nearly empty. A few people stood about with thermoses. Nobody talked much. It felt like the right way to be there.",
+                  "_key": "k12s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "image",
+              "_key": "k13",
+              "asset": {
+                "url": "/images/banff-trees.webp"
+              },
+              "alt": "Snow-dusted mountains above a turquoise lake, with a tall dark spruce on the right",
+              "caption": "The lake just after sunrise, with the spruce trees still in shade."
+            },
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A smaller walk",
+                  "_key": "k14s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I did not attempt anything ambitious. I took a short trail through the trees, stopped whenever I felt like it, and ate an apple on a fallen log. The mountains stayed in view the whole time, huge and unbothered. My thoughts, which had been loud for weeks, went quiet without my asking them to.",
+                  "_key": "k15s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I think that is what big landscapes do for me. They are not a challenge to beat or a view to collect. They are a reminder of scale, and the relief of being a small part of it.",
+                  "_key": "k16s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I left with cold hands, a pocket full of receipts and a clearer head than I have had in months.",
+                  "_key": "k17s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "a-quieter-side-of-hoi-an",
+        "slug": "a-quieter-side-of-hoi-an",
+        "status": "published",
+        "data": {
+          "title": "A Quieter Side of Hoi An",
+          "region": "Asia",
+          "destination": "Hoi An",
+          "date_label": "27 September 2026",
+          "reading_time": 5,
+          "summary": "Lanterns, river walks and the beauty in everyday moments.",
+          "featured": true,
+          "long_read": false,
+          "position": 3,
+          "photo": "/images/card-hoian.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most people go to Hoi An for the evenings, when the lanterns come on and the old streets fill up. I liked it just as much at seven in the morning, when the same streets were swept and almost silent.",
+                  "_key": "k18s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Before the lanterns",
+                  "_key": "k19s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k20",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I walked the river path before breakfast. Shopkeepers were lifting shutters and wiping tables. Someone was frying something that smelled wonderful, and I followed my nose to a stool at a low table. I pointed, smiled and ate whatever arrived. It was good.",
+                  "_key": "k20s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "image",
+              "_key": "k21",
+              "asset": {
+                "url": "/images/hoian-lanterns.webp"
+              },
+              "alt": "A narrow street lined with yellow walls and red and orange paper lanterns, with a woman in a conical hat walking away from the camera",
+              "caption": "A side street in the morning, lanterns still hanging."
+            },
+            {
+              "_type": "block",
+              "_key": "k22",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Slow afternoons",
+                  "_key": "k22s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When the heat built up I did what everyone else did and stopped. I sat in the shade of a courtyard with a cold drink and watched people go by on bicycles. A woman with a basket of fruit crossed the same bridge three times while I sat there. I never found out why.",
+                  "_key": "k23s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k24",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I bought a hat, mostly to be sensible about the sun, and wore it for the rest of the trip. It is not a very exciting souvenir. It reminds me to walk slowly.",
+                  "_key": "k24s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "notes-from-a-ledge-above-the-fjord",
+        "slug": "notes-from-a-ledge-above-the-fjord",
+        "status": "published",
+        "data": {
+          "title": "Notes From a Ledge Above the Fjord",
+          "region": "Europe",
+          "destination": "The Fjords",
+          "date_label": "14 September 2026",
+          "reading_time": 4,
+          "summary": "An hour on a rock, one flask of tea and no plan for the afternoon.",
+          "featured": false,
+          "long_read": false,
+          "position": 4,
+          "photo": "/images/hiker-ledge.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The climb took most of a morning. At the top there was a flat shelf of grey rock, about the size of a dining table, and below it a long stretch of dark water with small islands scattered across it. I sat down and did not want to move.",
+                  "_key": "k25s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k26",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What I wrote down",
+                  "_key": "k26s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I had my notebook with me, as always, and I wrote a list instead of a story. Wind from the left. Gulls below me, which felt backwards. A boat so small it looked drawn on. The smell of warm stone and pine. Two people further along the ledge, quiet, sharing an orange.",
+                  "_key": "k27s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "image",
+              "_key": "k28",
+              "asset": {
+                "url": "/images/fjord-lake.webp"
+              },
+              "alt": "A wide blue fjord with forested islands and snow-capped mountains in the distance, seen from above in warm evening light",
+              "caption": "The view from the ledge, with the afternoon light starting to turn."
+            },
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "No plan for the afternoon",
+                  "_key": "k29s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k30",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I stayed for an hour and then for another. I drank the tea, which was lukewarm, and watched the light change on the far hills. Nothing happened. That was the point. I walked down slowly and felt as if I had been given a free afternoon, even though I had not been busy.",
+                  "_key": "k30s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "keeping-a-paper-journal-on-the-road",
+        "slug": "keeping-a-paper-journal-on-the-road",
+        "status": "published",
+        "data": {
+          "title": "Keeping a Paper Journal on the Road",
+          "region": "Field Notes",
+          "destination": "On the Road",
+          "date_label": "2 September 2026",
+          "reading_time": 9,
+          "summary": "Why I still carry a notebook, what goes into it and how it turns into the best souvenir.",
+          "featured": false,
+          "long_read": true,
+          "position": 5,
+          "photo": "/images/journal-book.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I have kept a paper notebook on every trip for about ten years. Phones are faster, and I take plenty of pictures with mine. But the notebook is the thing I pull out when someone asks what a place was really like.",
+                  "_key": "k31s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k32",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What goes in",
+                  "_key": "k32s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k33",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Not much, and not neatly. A ticket stub, a pressed leaf, a note about the weather, a half sentence about someone I met. I write most days, usually in the evening, and I stop when it starts to feel like homework. Some pages have a single line.",
+                  "_key": "k33s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "image",
+              "_key": "k34",
+              "asset": {
+                "url": "/images/cup-blanket.webp"
+              },
+              "alt": "A leather journal and a small brass compass lying on a patterned blanket beside an enamel mug at sunset",
+              "caption": "The notebook, a compass I have carried for years, and the evening mug."
+            },
+            {
+              "_type": "block",
+              "_key": "k35",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Why paper",
+                  "_key": "k35s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k36",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A page does not ping. It does not offer anything else to do. Writing by hand slows me down enough to notice what I am describing, and the act of choosing three words about a day often tells me how I felt about it.",
+                  "_key": "k36s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k37",
+              "style": "blockquote",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The notebook is not a record of where I went. It is a record of what I paid attention to.",
+                  "_key": "k37s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k38",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Making it last",
+                  "_key": "k38s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k39",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When I get home I tape in a few printed photos and write dates in the margins. Months later I read the entries over and find things I had forgotten completely. A smell, a joke, the name of a street. The pages get softer and more crowded each year.",
+                  "_key": "k39s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k40",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you want to start, do not buy anything special. Take whatever notebook you already own and a pen that does not smudge. Write one line a day for a week. You will know after that whether it suits you.",
+                  "_key": "k40s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "image",
+              "_key": "k41",
+              "asset": {
+                "url": "/images/journal-book.webp"
+              },
+              "alt": "An open travel journal with watercolour sketches of a coastal town and two taped-in photographs of sea and cliffs",
+              "caption": "An open page from a trip along a rocky coast."
+            }
+          ]
+        }
+      },
+      {
+        "id": "sunset-over-the-water",
+        "slug": "sunset-over-the-water",
+        "status": "published",
+        "data": {
+          "title": "Sunset Over the Water",
+          "region": "Europe",
+          "destination": "Amalfi Coast",
+          "date_label": "20 August 2026",
+          "reading_time": 3,
+          "summary": "Ten quiet minutes at the end of a long walking day.",
+          "featured": false,
+          "long_read": false,
+          "position": 6,
+          "photo": "/images/sunset-water.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k42",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "There is a low wall at the end of the lane where I stayed, and every evening a few people gathered along it without being asked. Nobody planned it. We just ended up there, one by one, as the light started to go.",
+                  "_key": "k42s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k43",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The sun dropped toward a line of hills and turned the water the colour of the inside of a peach. Small boats sat very still. Someone behind me said, quietly, that it was the same sunset as yesterday and they would still watch it tomorrow. I agreed.",
+                  "_key": "k43s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k44",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A habit worth keeping",
+                  "_key": "k44s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k45",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I now try to do this at home. Not a sunset every night, since the weather and my schedule do not allow it, but ten minutes at the end of the day with nothing in my hands. It works better than I expected.",
+                  "_key": "k45s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "down-the-hill-to-the-water",
+        "slug": "down-the-hill-to-the-water",
+        "status": "published",
+        "data": {
+          "title": "Down the Hill to the Water",
+          "region": "Europe",
+          "destination": "Amalfi Coast",
+          "date_label": "6 August 2026",
+          "reading_time": 4,
+          "summary": "Steps, shade and the slow walk to the sea.",
+          "featured": false,
+          "long_read": false,
+          "position": 7,
+          "photo": "/images/hillside-town.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k46",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Every route in town led down eventually, and every route down was a staircase. I counted steps on the first day, lost count, and then stopped trying.",
+                  "_key": "k46s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k47",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Stopping places",
+                  "_key": "k47s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k48",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The good part of a steep town is that it gives you excuses to stop. A bench under a tree. A fountain. A doorway with a cat in it. I made a game of choosing a different stopping place each time, and by the end of the week I had favourites.",
+                  "_key": "k48s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k49",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "At the bottom, the water was cold and very clear. I sat with my shoes off and watched people swim. The climb back up took twice as long, which seemed fair.",
+                  "_key": "k49s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "what-i-actually-pack",
+        "slug": "what-i-actually-pack",
+        "status": "published",
+        "data": {
+          "title": "What I Actually Pack",
+          "region": "Field Notes",
+          "destination": "On the Road",
+          "date_label": "22 July 2026",
+          "reading_time": 5,
+          "summary": "A short, honest list for travelling light and still being comfortable.",
+          "featured": false,
+          "long_read": false,
+          "position": 8,
+          "photo": "/images/straw-hat.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k50",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I have packed too much on almost every trip I have taken, and I have learned the same few lessons slowly. This is the list I use now. It is not a recommendation, just what works for me.",
+                  "_key": "k50s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k51",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The short version",
+                  "_key": "k51s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k52",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A hat that will survive being squashed. Shoes I have already walked in. One warm layer, even in summer. A scarf or blanket that can be a pillow, a picnic cloth or a wrap on a cold train. A notebook and two pens. A small first aid kit that I mostly forget about.",
+                  "_key": "k52s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k53",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What I leave at home",
+                  "_key": "k53s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k54",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A second pair of nice shoes. Anything that needs ironing. More than one book. I always bring too many books, and I always read one.",
+                  "_key": "k54s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k55",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I used to think packing light was about discipline. It is more about knowing what you actually use, and that only comes from taking the wrong things a few times first.",
+                  "_key": "k55s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "a-slow-morning-by-the-lake",
+        "slug": "a-slow-morning-by-the-lake",
+        "status": "published",
+        "data": {
+          "title": "A Slow Morning by the Lake",
+          "region": "Canada",
+          "destination": "Banff",
+          "date_label": "5 July 2026",
+          "reading_time": 3,
+          "summary": "Coffee, cold air and nothing on the calendar.",
+          "featured": false,
+          "long_read": false,
+          "position": 9,
+          "photo": "/images/banff-trees.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k56",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "On the last day of the trip I did not go anywhere. I made coffee in the room, carried it down to the water in a borrowed mug and sat on a flat rock for most of the morning.",
+                  "_key": "k56s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k57",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The mountains were as large as ever. I had stopped being impressed in the way I had been on the first day, and what replaced it was something calmer. I just liked that they were there. A bird landed close by, looked at me and flew off again.",
+                  "_key": "k57s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k58",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "It was a very small morning, and I think about it more than almost anything else from the trip.",
+                  "_key": "k58s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "destinations": [
+      {
+        "id": "amalfi-coast",
+        "slug": "amalfi-coast",
+        "status": "published",
+        "data": {
+          "title": "Amalfi Coast",
+          "region": "Europe",
+          "note": "Terraced towns, lemon trees and long staircases down to the sea.",
+          "position": 1,
+          "photo": "/images/card-amalfi.webp"
+        }
+      },
+      {
+        "id": "the-fjords",
+        "slug": "the-fjords",
+        "status": "published",
+        "data": {
+          "title": "The Fjords",
+          "region": "Europe",
+          "note": "Long dark water, small islands and a lot of weather.",
+          "position": 2,
+          "photo": "/images/fjord-lake.webp"
+        }
+      },
+      {
+        "id": "banff",
+        "slug": "banff",
+        "status": "published",
+        "data": {
+          "title": "Banff",
+          "region": "Canada",
+          "note": "Mountains, spruce forest and lakes the colour of milky jade.",
+          "position": 3,
+          "photo": "/images/card-banff.webp"
+        }
+      },
+      {
+        "id": "hoi-an",
+        "slug": "hoi-an",
+        "status": "published",
+        "data": {
+          "title": "Hoi An",
+          "region": "Asia",
+          "note": "Yellow walls, river paths and lanterns after dark.",
+          "position": 4,
+          "photo": "/images/card-hoian.webp"
+        }
+      },
+      {
+        "id": "on-the-road",
+        "slug": "on-the-road",
+        "status": "published",
+        "data": {
+          "title": "On the Road",
+          "region": "Field Notes",
+          "note": "Packing lists, notebooks and small habits for slow travel.",
+          "position": 5,
+          "photo": "/images/journal-scene.webp"
+        }
+      }
+    ],
+    "writer": [
+      {
+        "id": "iris-calder",
+        "slug": "iris-calder",
+        "status": "published",
+        "data": {
+          "title": "Iris Calder",
+          "base": "a small flat near the harbour",
+          "phone": "(555) 010-0172",
+          "email": "hello@traveljournal.example",
+          "short_bio": "I write about the places I stay in for a week or two: what the mornings were like, what I ate, and what I would do differently next time.",
+          "response": "I read every message myself and usually reply within a week.",
+          "contact_note": "Pick a topic so I know what you are writing about: a note on a post, a collaboration idea, getting new posts by email, or anything else."
+        }
+      }
+    ]
+  }
+}

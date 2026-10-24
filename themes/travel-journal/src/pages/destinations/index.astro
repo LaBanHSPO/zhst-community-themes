@@ -1,0 +1,70 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PageHead from "../../components/PageHead.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import { buildRegions, getDestinations, getPosts, getWriter, journalHref, photoAlt, photoSrc, postWord, slugify } from "../../lib/journal";
+
+const [postsResult, destResult, writerResult] = await Promise.all([getPosts(), getDestinations(), getWriter()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(postsResult.cacheHint);
+	Astro.cache.set(destResult.cacheHint);
+	Astro.cache.set(writerResult.cacheHint);
+}
+const posts = postsResult.entries;
+const regions = buildRegions(destResult.entries, posts);
+const countFor = (title: string) => posts.filter((p) => p.data.destination === title).length;
+---
+
+<Base
+	title="Destinations"
+	description="Every region and destination in the travel journal, with the number of posts for each. Start with a place and read what I wrote about it."
+>
+	<PageHead
+		id="destinations-title"
+		eyebrow="Destinations"
+		title="Places I have written about."
+		intro="Pick a region to see its posts, or go straight to a single town, lake or trail."
+	/>
+
+	<section class="dest-list" aria-labelledby="destinations-title">
+		<div class="wrap">
+			{
+				regions.map((r) => {
+					const items = destResult.entries.filter((d) => d.data.region === r.name);
+					return (
+						<section class="dest-region" aria-labelledby={`region-${r.slug}`}>
+							<div class="dest-region-head">
+								<h2 id={`region-${r.slug}`} class="dest-region-name">{r.name}</h2>
+								<a class="text-link" href={journalHref({ region: r.slug })}>
+									<span>{postWord(r.count)}</span>
+									<Arrow />
+								</a>
+							</div>
+							<ul class="dest-grid">
+								{items.map((d) => {
+									const src = photoSrc(d.data.image, d.data.photo);
+									const n = countFor(d.data.title);
+									return (
+										<li>
+											<a class="dest-card" href={journalHref({ region: r.slug, destination: slugify(d.data.title) })}>
+												{src && <img src={src} alt={photoAlt(d.data.image, d.data.photo, d.data.title)} width="425" height="235" loading="lazy" />}
+												<span class="dest-card-body">
+													<span class="dest-card-title" {...d.edit.title}>{d.data.title}</span>
+													{d.data.note && <span class="dest-card-note">{d.data.note}</span>}
+													<span class="dest-card-count">{postWord(n)}</span>
+												</span>
+											</a>
+										</li>
+									);
+								})}
+							</ul>
+						</section>
+					);
+				})
+			}
+		</div>
+	</section>
+
+	<ContactBand writer={writerResult.writer} />
+</Base>

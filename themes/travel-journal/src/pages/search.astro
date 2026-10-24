@@ -1,0 +1,61 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PostCard from "../components/PostCard.astro";
+import PageHead from "../components/PageHead.astro";
+import { buildRegions, getDestinations, getPosts, journalHref, postWord } from "../lib/journal";
+
+const [postsResult, destResult] = await Promise.all([getPosts(), getDestinations()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(postsResult.cacheHint);
+	Astro.cache.set(destResult.cacheHint);
+}
+const q = (Astro.url.searchParams.get("q") ?? "").trim().slice(0, 100);
+const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+const hay = (p: (typeof postsResult.entries)[number]) =>
+	[p.data.title, p.data.summary, p.data.destination, p.data.region].join(" ").toLowerCase();
+// Every word must appear in the title, excerpt, destination or region.
+const results = terms.length === 0 ? [] : postsResult.entries.filter((p) => terms.every((t) => hay(p).includes(t)));
+const regions = buildRegions(destResult.entries, postsResult.entries);
+---
+
+<Base title={q ? `Search: ${q}` : "Search"} description="Search the travel journal by title, excerpt, destination or region." current="/search">
+	<PageHead id="search-title" eyebrow="Search" title="Find a post." />
+
+	<section class="search-panel" aria-labelledby="search-title">
+		<div class="wrap">
+			<form class="search-form" action="/search" method="get" role="search">
+				<label class="sr-only" for="q">Search the journal</label>
+				<input id="q" name="q" type="search" value={q} placeholder="A place, a title or a word" autocomplete="off" />
+				<button class="btn btn-solid" type="submit"><span>Search</span><Arrow /></button>
+			</form>
+
+			{
+				q && (
+					<p class="search-count" role="status">
+						{results.length === 0 ? `No posts match "${q}".` : `${postWord(results.length)} for "${q}".`}
+					</p>
+				)
+			}
+
+			{
+				results.length > 0 && (
+					<ul class="post-grid">
+						{results.map((p) => <li><PostCard post={p.data} meta /></li>)}
+					</ul>
+				)
+			}
+
+			{
+				(!q || results.length === 0) && (
+					<div class="search-hint">
+						<p class="eyebrow">{q ? "Try a region instead" : "Or browse by region"}</p>
+						<ul class="filters">
+							{regions.map((r) => <li><a class="chip" href={journalHref({ region: r.slug })}>{r.name}<span>{r.count}</span></a></li>)}
+						</ul>
+					</div>
+				)
+			}
+		</div>
+	</section>
+</Base>

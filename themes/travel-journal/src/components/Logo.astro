@@ -1,0 +1,33 @@
+---
+/** Wordmark: a thin mountain mark, the site title in serif and the tagline words in tiny tracked caps. */
+interface Props {
+	title: string;
+	tagline?: string;
+	logo?: { url?: string; alt?: string } | null;
+	class?: string;
+}
+const { title, tagline, logo, class: className } = Astro.props;
+const words = (tagline ?? "").split(",").map((w) => w.trim()).filter(Boolean);
+---
+
+<a class:list={["wordmark", className]} href="/" aria-label={`${title}, home`}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt || title} />
+		) : (
+			<>
+				<svg class="wordmark-mark" width="76" height="34" viewBox="0 0 76 34" aria-hidden="true" focusable="false">
+					<g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M1 33L25 9l6 6L44 1l31 32" />
+						<path d="M44 1l-6 12 7 4 3-6" />
+						<path d="M25 9l-4 8 4-2 3 6" />
+					</g>
+				</svg>
+				<span class="wordmark-text">
+					<span class="wordmark-title">{title}</span>
+					{words.length > 0 && <span class="wordmark-tagline">{words.map((w) => <span>{w}</span>)}</span>}
+				</span>
+			</>
+		)
+	}
+</a>

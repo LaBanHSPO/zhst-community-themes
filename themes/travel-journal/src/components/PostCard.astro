@@ -1,0 +1,25 @@
+---
+import Arrow from "./Arrow.astro";
+import { photoAlt, photoSrc, postHref, postMeta } from "../lib/journal";
+import type { JournalPost } from "../lib/journal";
+
+interface Props {
+	post: JournalPost;
+	edit?: Record<string, unknown>;
+	/** Show the date and reading time under the excerpt (journal lists). */
+	meta?: boolean;
+}
+const { post, edit = {}, meta = false } = Astro.props;
+const src = photoSrc(post.image, post.photo);
+---
+
+<a class="post-card" href={postHref(post)}>
+	{src && <img src={src} alt={photoAlt(post.image, post.photo, post.title)} width="425" height="235" loading="lazy" />}
+	<span class="post-card-body">
+		<span class="post-card-region">{post.region}</span>
+		<span class="post-card-title" {...edit}>{post.title}</span>
+		<span class="post-card-summary">{post.summary}</span>
+		{meta && <span class="post-card-meta">{postMeta(post)}</span>}
+		<Arrow class="post-card-arrow" />
+	</span>
+</a>
