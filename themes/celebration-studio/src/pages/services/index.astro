@@ -1,0 +1,64 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PageHead from "../../components/PageHead.astro";
+import InquiryBand from "../../components/InquiryBand.astro";
+import { getServices, getStudio, lines, photoAlt, photoSrc, serviceHref } from "../../lib/studio";
+
+const [servicesResult, studioResult] = await Promise.all([getServices(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const services = servicesResult.entries;
+---
+
+<Base title="Services" description="Party planning and styling services from Celebration Studio: styling and design, planning and coordination, unique celebrations, installations and private dinners, with what is included in each.">
+	<PageHead
+		id="services-title"
+		eyebrow="Services"
+		title="Ways to plan with us."
+		intro="Whether you want us beside you from the first idea or only for the table, we shape our help around what you need. Starting prices are indicative, in US dollars; every proposal is quoted individually."
+	/>
+
+	<section class="services" aria-labelledby="services-title">
+		{
+			services.length === 0 ? (
+				<p class="empty-note">Our services are being updated. Send us a note and we will share current options.</p>
+			) : (
+				<ul class="service-rows">
+					{services.map((s) => {
+						const src = photoSrc(s.data.image, s.data.photo);
+						return (
+							<li class="service-row" id={s.data.slug ?? s.data.id}>
+								{src && (
+									<a class="service-row-photo" href={serviceHref(s.data)} tabindex="-1" aria-hidden="true">
+										<img src={src} alt={photoAlt(s.data.image, s.data.photo, "")} width="560" height="480" loading="lazy" />
+									</a>
+								)}
+								<div class="service-row-copy">
+									{s.data.best_for && <p class="eyebrow">{s.data.best_for}</p>}
+									<h2 class="service-row-name" {...s.edit.title}><a href={serviceHref(s.data)}>{s.data.title}</a></h2>
+									<p class="service-row-summary">{s.data.summary}</p>
+									<p class="service-row-price">{s.data.price_label}</p>
+									<h3 class="includes-title">What is included</h3>
+									<ul class="includes">
+										{lines(s.data.includes).map((i) => <li>{i}</li>)}
+									</ul>
+									<p class="service-row-actions">
+										<a class="btn" href={`/contact?service=${encodeURIComponent(s.data.slug ?? s.data.id)}`}>
+											<span>Create your event</span><Arrow />
+										</a>
+										<a class="explore" href={serviceHref(s.data)}><span class="explore-rule" aria-hidden="true"></span><span class="explore-label">Read more</span><Arrow /></a>
+									</p>
+								</div>
+							</li>
+						);
+					})}
+				</ul>
+			)
+		}
+	</section>
+
+	<InquiryBand studio={studioResult.studio} />
+</Base>

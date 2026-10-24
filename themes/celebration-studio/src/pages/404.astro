@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+---
+
+<Base title="Page not found">
+	<section class="notfound" aria-labelledby="nf-title">
+		<div class="notfound-copy">
+			<p class="eyebrow">Error 404</p>
+			<h1 id="nf-title" class="display display-xl">This page has <em>wandered off.</em></h1>
+			<p class="lede">The page you are looking for has moved or never existed. These are good places to start again.</p>
+			<div class="actions">
+				<a class="btn" href="/"><span>Back to home</span><Arrow /></a>
+				<a class="pill pill-outline" href="/gallery">Gallery</a>
+				<a class="pill pill-outline" href="/contact">Create your event</a>
+			</div>
+		</div>
+		<img class="notfound-photo" src="/images/dahlia-centrepiece.webp" alt="" width="800" height="656" />
+	</section>
+</Base>

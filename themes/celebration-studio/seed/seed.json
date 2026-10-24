@@ -1,0 +1,1672 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Celebration Studio",
+    "description": "A warm, cream-and-terracotta party-planning studio theme: styling and planning services, a gallery of celebrations by occasion, an about page and an enquiry page, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "Celebration Studio",
+    "tagline": "People / Places / Happier Days"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "services",
+      "label": "Services",
+      "labelSingular": "Service",
+      "urlPattern": "/services/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Service name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "tagline",
+          "label": "Short line shown under the photo on the homepage",
+          "type": "string"
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "best_for",
+          "label": "Best for (short phrase)",
+          "type": "string"
+        },
+        {
+          "slug": "price_label",
+          "label": "Price shown (e.g. From $1,800, or On request)",
+          "type": "string"
+        },
+        {
+          "slug": "includes",
+          "label": "What is included (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Description",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "celebrations",
+      "label": "Gallery",
+      "labelSingular": "Celebration",
+      "urlPattern": "/gallery/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Celebration (e.g. Poppy's Garden Birthday)",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "occasion",
+          "label": "Occasion slug (birthdays, anniversaries, showers, dinners or milestones)",
+          "type": "string",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "slug": "place",
+          "label": "Venue and region",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "season",
+          "label": "Season and year (e.g. Late May 2026)",
+          "type": "string"
+        },
+        {
+          "slug": "guests",
+          "label": "Guests (e.g. 28 guests)",
+          "type": "string"
+        },
+        {
+          "slug": "summary",
+          "label": "One-line summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover photo path",
+          "type": "string"
+        },
+        {
+          "slug": "gallery",
+          "label": "Photo sequence",
+          "type": "repeater",
+          "validation": {
+            "maxItems": 40,
+            "subFields": [
+              {
+                "slug": "image",
+                "label": "Photo (upload)",
+                "type": "image"
+              },
+              {
+                "slug": "photo",
+                "label": "Bundled photo path",
+                "type": "string"
+              },
+              {
+                "slug": "caption",
+                "label": "Caption",
+                "type": "text"
+              }
+            ]
+          }
+        },
+        {
+          "slug": "content",
+          "label": "The story",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "occasions",
+      "label": "Occasions",
+      "labelSingular": "Occasion",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Occasion name (e.g. Birthdays)",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Short line",
+          "type": "text"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "principles",
+      "label": "Approach",
+      "labelSingular": "Approach point",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Text",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "steps",
+      "label": "Planning steps",
+      "labelSingular": "Step",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Text",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "studio",
+      "label": "Studio details",
+      "labelSingular": "Studio details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Studio name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "base",
+          "label": "Based in",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Enquiry email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "response",
+          "label": "Reply time (shown beside the form)",
+          "type": "string"
+        },
+        {
+          "slug": "inquiry_note",
+          "label": "Note shown beside the form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Services",
+          "url": "/services"
+        },
+        {
+          "type": "custom",
+          "label": "Gallery",
+          "url": "/gallery"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "Events with heart and a personal touch.",
+          "eyebrow": "About",
+          "intro": "Celebration Studio is a small party-planning and styling studio working around Port Alder and the Wren Valley, and wherever else a good table can be set.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k48",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We started the studio because we love the moment when a room fills with people who are glad to be there. Our work is warm, practical and a little bit playful, and we take on a limited number of celebrations each season so that every host gets our full attention.",
+                  "_key": "k48s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k49",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most of what we plan happens outdoors or in garden rooms, with long tables, plenty of flowers and a lot of candlelight. Whether the gathering is for eight people or eighty, the approach is the same: understand what matters, build a plan that holds, then take care of the details.",
+                  "_key": "k49s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k50",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How we work",
+                  "_key": "k50s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k51",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We begin with a conversation, not a form. We learn about your guests and the day you imagine, then propose a design, a budget and a plan. We handle suppliers, timelines and guest questions, and stay close until the last song.",
+                  "_key": "k51s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k52",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We answer every message personally, usually within two working days. Names, places and prices on this site are fictional sample content.",
+                  "_key": "k52s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "booking-notes",
+        "slug": "booking-notes",
+        "status": "published",
+        "data": {
+          "title": "Booking notes",
+          "eyebrow": "Good to know",
+          "intro": "A few things that help every celebration run smoothly.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k53",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Booking",
+                  "_key": "k53s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k54",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "An enquiry is not a booking. We reply by email, talk through your plans and, if we are a good fit, confirm with a short written agreement and a deposit.",
+                  "_key": "k54s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k55",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Payments",
+                  "_key": "k55s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k56",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Fees are paid in instalments, with the balance due before the celebration. Supplier payments are made by you directly unless we have agreed otherwise in writing.",
+                  "_key": "k56s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k57",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Changes",
+                  "_key": "k57s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k58",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Plans change. If you need to move your date or guest count, tell us as early as you can and we will do everything possible to protect your suppliers and deposits.",
+                  "_key": "k58s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "services": [
+      {
+        "id": "styling-design",
+        "slug": "styling-design",
+        "status": "published",
+        "data": {
+          "title": "Styling & Design",
+          "tagline": "Beautiful settings, your style.",
+          "summary": "Tables, flowers, colour and light, designed around your guests and your sense of fun.",
+          "best_for": "Hosts who have the date and want it to look wonderful",
+          "price_label": "From $1,800",
+          "includes": "Mood board and colour story\nTable plan and place-setting design\nFlorals, candles and linens sourced and set\nSignage, menus and place cards\nSet-up and clear-down on the day",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/card-styling.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Styling is where a celebration starts to feel like yours. We begin with a short conversation about the people coming, the place and the mood you have in mind, then turn it into a colour story, a table design and a shopping list of flowers, linens and little details.",
+                  "_key": "k1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k2",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What it looks like",
+                  "_key": "k2s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Think a long table with pink linen and brass candlesticks, a loose centrepiece of seasonal flowers, hand-lettered menus and a place card for every guest. We bring everything, set it, light it and photograph it for you before the first guest arrives.",
+                  "_key": "k3s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k4",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Styling can stand alone or sit inside a fuller planning package. Either way you get a clear proposal with a fixed price before anything is ordered.",
+                  "_key": "k4s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "planning-coordination",
+        "slug": "planning-coordination",
+        "status": "published",
+        "data": {
+          "title": "Planning & Coordination",
+          "tagline": "Calm support, joyful days.",
+          "summary": "A steady hand for the venue, suppliers, guest list and timeline, so you can enjoy your own party.",
+          "best_for": "Hosts who would rather not manage ten suppliers at once",
+          "price_label": "From $3,200",
+          "includes": "Planning call and shared checklist\nVenue shortlist and site visits\nSupplier introductions and bookings\nBudget and payment calendar\nGuest communication and RSVPs\nOn-the-day coordination from set-up to last song",
+          "featured": true,
+          "position": 20,
+          "photo": "/images/card-planning.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Good planning is mostly quiet: a checklist that is always up to date, a budget with no surprises and a person to call when something changes. We handle the thinking so that your attention stays on the people you are celebrating.",
+                  "_key": "k5s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k6",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How we work",
+                  "_key": "k6s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We find and brief the venue, caterer, florist, baker and musicians, keep every date and payment in one shared timeline, and manage guest questions as they arrive. On the day we run the schedule and look after suppliers, so you are never the one carrying the cake.",
+                  "_key": "k7s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k8",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Choose full planning from the first idea, or coordination only for the final weeks. We will suggest the lighter option if it is all you need.",
+                  "_key": "k8s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "unique-celebrations",
+        "slug": "unique-celebrations",
+        "status": "published",
+        "data": {
+          "title": "Unique Celebrations",
+          "tagline": "Moments that feel like you.",
+          "summary": "Milestone birthdays, anniversaries and one-of-a-kind gatherings, built from scratch around a story.",
+          "best_for": "Milestones that deserve a one-off idea",
+          "price_label": "On request",
+          "includes": "Concept development workshop\nCustom design for the whole setting\nBespoke installations, lighting and signage\nProgramme of moments: toasts, surprises, music\nFull planning and coordination\nPhotographer and florist liaison",
+          "featured": true,
+          "position": 30,
+          "photo": "/images/card-celebrations.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Some days are not on any template. A thirtieth with a neon sign and four hundred dahlias, a retirement lunch among the olive trees, a surprise anniversary for a couple who say they hate surprises. We start from the story and design everything to fit.",
+                  "_key": "k9s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k10",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How it works",
+                  "_key": "k10s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We hold a short concept workshop, then bring you a design, a programme for the day and a quote. Because every celebration is different, pricing is quoted individually once we know the guest count, place and scale.",
+                  "_key": "k11s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "installations",
+        "slug": "installations",
+        "status": "published",
+        "data": {
+          "title": "Floral & Balloon Installations",
+          "tagline": "Statement pieces, made to measure.",
+          "summary": "Balloon arches, flower walls and hanging garlands made to fill a doorway, backdrop or whole room.",
+          "best_for": "Parties that want one big, joyful focal point",
+          "price_label": "From $950",
+          "includes": "Design sketch and colour match\nBalloon, foliage and flower build\nDelivery, installation and removal\nBackdrop panels and stands\nFresh-flower top-ups on request",
+          "featured": false,
+          "position": 40,
+          "photo": "/images/balloon-arch.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "An installation is the photograph everyone takes first. We build arches, columns and backdrops in blush, gold and cream, wrapped in eucalyptus or olive and finished with fresh flowers where the season allows.",
+                  "_key": "k12s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Pieces are made in our workshop, installed on site and taken away afterwards, so there is nothing to dispose of at the end of the night.",
+                  "_key": "k13s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "private-dinners",
+        "slug": "private-dinners",
+        "status": "published",
+        "data": {
+          "title": "Private Dinners & Tables",
+          "tagline": "Long tables, good company.",
+          "summary": "Seated dinners for twelve to sixty: tables, tableware, menus and service for an evening to remember.",
+          "best_for": "Anniversaries, family dinners and milestone suppers",
+          "price_label": "From $1,400",
+          "includes": "Table design and hire of linens, glassware and candles\nMenu planning with local caterers\nSeating plan and place cards\nService staff for the evening\nSet-up and clear-down",
+          "featured": false,
+          "position": 50,
+          "photo": "/images/long-table.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A long table with the right people around it is hard to beat. We plan the evening end to end: the setting, the menu, the order of the night and the small details that make guests linger.",
+                  "_key": "k14s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We work in gardens, terraces, restaurants' private rooms and at home. Tell us the number of guests and the space and we will propose a layout and a price.",
+                  "_key": "k15s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "celebrations": [
+      {
+        "id": "poppys-garden-birthday",
+        "slug": "poppys-garden-birthday",
+        "status": "published",
+        "data": {
+          "title": "Poppy's Garden Birthday",
+          "occasion": "birthdays",
+          "place": "Marlow Court Gardens, Wren Valley",
+          "season": "Late May 2026",
+          "guests": "28 guests",
+          "summary": "A long table under the roses with pink linen, dahlias and a neon sign above the lawn.",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/long-table.webp",
+          "gallery": [
+            {
+              "photo": "/images/dahlia-centrepiece.webp",
+              "caption": "A tall arrangement of dahlias and ranunculus on a stone urn."
+            },
+            {
+              "photo": "/images/coupes-candles.webp",
+              "caption": "Coupe glasses and fluted votives along the table."
+            },
+            {
+              "photo": "/images/neon-wall.webp",
+              "caption": "A hand-bent neon sign lit once the sun went down."
+            },
+            {
+              "photo": "/images/place-card.webp",
+              "caption": "A lettered card at every place."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Poppy turned thirty-five and asked for a lunch that felt like a garden party in a magazine, with her closest friends and no schedule. Marlow Court gave us a sheltered terrace, a very long table and the rose-covered wall behind it.",
+                  "_key": "k16s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We dressed the table in soft pink linen and rattan chargers, set brass cutlery and ribbed votives between the plates and built a loose centrepiece in coral, peach and butter-yellow. A neon sign in warm white was hung on the wall for the evening.",
+                  "_key": "k17s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we planned",
+                  "_key": "k18s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Styling and design, supplier booking, the menu with the caterer, the birthday cake and the order of the afternoon, from the first prosecco to the last candle.",
+                  "_key": "k19s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "twenty-five-years",
+        "slug": "twenty-five-years",
+        "status": "published",
+        "data": {
+          "title": "Twenty-Five Years, One Long Table",
+          "occasion": "anniversaries",
+          "place": "The Orangery at Hallam House, Port Alder",
+          "season": "Early October 2025",
+          "guests": "46 guests",
+          "summary": "A silver anniversary dinner with peonies, gold candlesticks and the whole family at one table.",
+          "featured": true,
+          "position": 20,
+          "photo": "/images/peony-bouquet.webp",
+          "gallery": [
+            {
+              "photo": "/images/gold-candles.webp",
+              "caption": "Tall blush candles in brass holders at the head of the table."
+            },
+            {
+              "photo": "/images/napkin-candles.webp",
+              "caption": "Linen napkins folded over plates, with sprigs of olive."
+            },
+            {
+              "photo": "/images/olive-arches.webp",
+              "caption": "Evening light through the arches of the orangery."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k20",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Ana and Tomas had been married for twenty-five years and wanted to thank the people who had been there for all of them. The Orangery at Hallam House holds forty-six at a single table, which was exactly the point.",
+                  "_key": "k20s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A bowl of peonies, ranunculus and wild mimosa sat in the middle on a brass pedestal, with candles in graduated heights down the table. Each guest found a handwritten card with a memory from the couple.",
+                  "_key": "k21s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k22",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we planned",
+                  "_key": "k22s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Table design and hire, the menu and wine, the seating plan and a short programme of toasts, finishing with a surprise slide show from the children.",
+                  "_key": "k23s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "blush-and-gold-baby-shower",
+        "slug": "blush-and-gold-baby-shower",
+        "status": "published",
+        "data": {
+          "title": "Blush & Gold Baby Shower",
+          "occasion": "showers",
+          "place": "Casa Verbena, Saltmarsh Bay",
+          "season": "Mid April 2026",
+          "guests": "32 guests",
+          "summary": "A sunlit afternoon of balloons, pale flowers and a three-tier cake for a first baby.",
+          "featured": true,
+          "position": 30,
+          "photo": "/images/balloon-arch.webp",
+          "gallery": [
+            {
+              "photo": "/images/gold-candles.webp",
+              "caption": "Candles and balloon garlands against a blush backdrop."
+            },
+            {
+              "photo": "/images/garden-vase.webp",
+              "caption": "Garden roses in a speckled ceramic vase."
+            },
+            {
+              "photo": "/images/card-planning.webp",
+              "caption": "A floral cake on a brass stand."
+            },
+            {
+              "photo": "/images/coupes-candles.webp",
+              "caption": "Coupes and candles on the dessert table."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k24",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Lena wanted a baby shower that was calm, pretty and not too sweet. We took a blush-and-gold palette, kept the balloons to a single airy arch and added plenty of foliage so it felt like a garden.",
+                  "_key": "k24s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Guests were seated at two tables rather than in rows, with games kept to one short round and a long tea service in the middle of the afternoon.",
+                  "_key": "k25s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k26",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we planned",
+                  "_key": "k26s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Installation, table styling, the cake, catering and the guest flow, including a quiet corner for the mother-to-be.",
+                  "_key": "k27s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "sunset-supper-on-the-terrace",
+        "slug": "sunset-supper-on-the-terrace",
+        "status": "published",
+        "data": {
+          "title": "Sunset Supper on the Terrace",
+          "occasion": "dinners",
+          "place": "Seacliff Terrace, Cresswell Bay",
+          "season": "Late August 2025",
+          "guests": "18 guests",
+          "summary": "Lanterns, linen and a long table above the sea for eighteen friends.",
+          "featured": false,
+          "position": 40,
+          "photo": "/images/lakeside-table.webp",
+          "gallery": [
+            {
+              "photo": "/images/card-celebrations.webp",
+              "caption": "The lounge corner lit for the after-dinner hour."
+            },
+            {
+              "photo": "/images/coupes-candles.webp",
+              "caption": "Candlelight along the table as the light faded."
+            },
+            {
+              "photo": "/images/olive-arches.webp",
+              "caption": "Arches and olive trees at the edge of the terrace."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k28",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The brief from Imogen was an evening that felt like the last night of the summer. Seacliff Terrace looks west over the water, so we laid one table facing the sunset and left the other end open for a lounge.",
+                  "_key": "k28s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We lit the evening with brass lanterns and low candles, kept the flowers wild and low so nobody had to look around them, and moved the whole party to the sofas for coffee when the sky turned pink.",
+                  "_key": "k29s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k30",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we planned",
+                  "_key": "k30s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Table design, catering liaison, lighting and the evening's order, with a quiet change of scene after dinner.",
+                  "_key": "k31s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "hollis-turns-forty",
+        "slug": "hollis-turns-forty",
+        "status": "published",
+        "data": {
+          "title": "Hollis Turns Forty",
+          "occasion": "birthdays",
+          "place": "Linden Barn, Hollin Heath",
+          "season": "Early March 2026",
+          "guests": "64 guests",
+          "summary": "A neon-lit barn party with velvet chairs, balloons and a very long dance floor.",
+          "featured": false,
+          "position": 50,
+          "photo": "/images/neon-wall.webp",
+          "gallery": [
+            {
+              "photo": "/images/balloon-arch.webp",
+              "caption": "A blush and gold balloon arch at the barn door."
+            },
+            {
+              "photo": "/images/velvet-chairs.webp",
+              "caption": "Dusty-rose velvet chairs around the dinner tables."
+            },
+            {
+              "photo": "/images/long-table.webp",
+              "caption": "Pink linen and rattan chargers on the head table."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k32",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Hollis wanted a party that felt like a dinner and a disco at once. In Linden Barn we split the room: long tables with velvet chairs at one end, a neon wall and open floor at the other.",
+                  "_key": "k32s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k33",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The balloon arch at the entrance was built to be photographed, and a handwritten menu on every plate told guests what was coming next, including the late-night snack.",
+                  "_key": "k33s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k34",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we planned",
+                  "_key": "k34s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k35",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Concept and design, installation, catering, staging and the evening schedule, with a quiet hour before the music started.",
+                  "_key": "k35s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "retirement-lunch-beneath-the-olives",
+        "slug": "retirement-lunch-beneath-the-olives",
+        "status": "published",
+        "data": {
+          "title": "Retirement Lunch Beneath the Olives",
+          "occasion": "milestones",
+          "place": "Olive Row Farm, Wren Valley",
+          "season": "Mid June 2025",
+          "guests": "40 guests",
+          "summary": "Forty colleagues, one long lunch and a shaded courtyard for thirty-two years of work.",
+          "featured": false,
+          "position": 60,
+          "photo": "/images/olive-arches.webp",
+          "gallery": [
+            {
+              "photo": "/images/card-styling.webp",
+              "caption": "A menu card and olive sprig at each place."
+            },
+            {
+              "photo": "/images/lakeside-table.webp",
+              "caption": "Flowers and candles along the table."
+            },
+            {
+              "photo": "/images/dahlia-centrepiece.webp",
+              "caption": "A tall arrangement at the head of the table."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k36",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Margit retired after thirty-two years at the same school, and her colleagues wanted a lunch with room for stories rather than speeches. Olive Row Farm gave us a shaded courtyard and a set of stone arches.",
+                  "_key": "k36s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k37",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We set a single long table with linen the colour of terracotta pots, passed platters rather than plated courses and left space for a microphone that went round the table instead of up to a stage.",
+                  "_key": "k37s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k38",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we planned",
+                  "_key": "k38s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k39",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Venue, styling, catering, an open mic and a small gift table, plus a quiet send-off at four.",
+                  "_key": "k39s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "graduation-dinner-for-twelve",
+        "slug": "graduation-dinner-for-twelve",
+        "status": "published",
+        "data": {
+          "title": "Graduation Dinner for Twelve",
+          "occasion": "dinners",
+          "place": "Private home, Port Alder",
+          "season": "Late June 2026",
+          "guests": "12 guests",
+          "summary": "A small family dinner in a garden room, with candles, napkins and one proud toast.",
+          "featured": false,
+          "position": 70,
+          "photo": "/images/coupes-candles.webp",
+          "gallery": [
+            {
+              "photo": "/images/napkin-candles.webp",
+              "caption": "Soft pink napkins and brass candlesticks."
+            },
+            {
+              "photo": "/images/card-styling.webp",
+              "caption": "A menu printed for the evening."
+            },
+            {
+              "photo": "/images/velvet-chairs.webp",
+              "caption": "Velvet chairs waiting around the table."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k40",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A graduation dinner at home for the family of twelve. The garden room was small, so we kept the styling low and warm and let the candles do most of the work.",
+                  "_key": "k40s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k41",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Everything arrived ready to set: linen, glassware, flowers and a menu card for every guest. We left before the first course and returned for the clear-down while the family stayed at the table.",
+                  "_key": "k41s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k42",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we planned",
+                  "_key": "k42s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k43",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Table design, hire, menu and service staff for a single evening.",
+                  "_key": "k43s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "engagement-party-in-the-orangery",
+        "slug": "engagement-party-in-the-orangery",
+        "status": "published",
+        "data": {
+          "title": "Engagement Party in the Orangery",
+          "occasion": "milestones",
+          "place": "The Orangery at Hallam House, Port Alder",
+          "season": "Mid September 2025",
+          "guests": "52 guests",
+          "summary": "Peonies on a gold pedestal, peach velvet and an evening of toasts for two families.",
+          "featured": false,
+          "position": 80,
+          "photo": "/images/peony-table.webp",
+          "gallery": [
+            {
+              "photo": "/images/garden-vase.webp",
+              "caption": "Loose garden roses by the entrance."
+            },
+            {
+              "photo": "/images/peony-bouquet.webp",
+              "caption": "The centrepiece in peonies and mimosa."
+            },
+            {
+              "photo": "/images/card-planning.webp",
+              "caption": "A dessert table cake in warm colours."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k44",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Two families were meeting properly for the first time, and the engaged couple wanted the room to do some of the introducing. The Orangery's long windows and warm evening light helped.",
+                  "_key": "k44s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k45",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We used one dramatic centrepiece, a peony-and-mimosa bowl on a gold pedestal, and kept everything else gentle: dusty-rose velvet chairs, cream linen and low candles.",
+                  "_key": "k45s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k46",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we planned",
+                  "_key": "k46s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k47",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Design, florals, catering liaison, seating that mixed the families and a short programme of toasts.",
+                  "_key": "k47s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "occasions": [
+      {
+        "id": "birthdays",
+        "slug": "birthdays",
+        "status": "published",
+        "data": {
+          "title": "Birthdays",
+          "text": "From first birthdays to big milestones.",
+          "photo": "/images/balloon-arch.webp",
+          "position": 10
+        }
+      },
+      {
+        "id": "anniversaries",
+        "slug": "anniversaries",
+        "status": "published",
+        "data": {
+          "title": "Anniversaries",
+          "text": "Dinners that honour the years.",
+          "photo": "/images/peony-bouquet.webp",
+          "position": 20
+        }
+      },
+      {
+        "id": "showers",
+        "slug": "showers",
+        "status": "published",
+        "data": {
+          "title": "Showers",
+          "text": "Baby and bridal gatherings, softly done.",
+          "photo": "/images/garden-vase.webp",
+          "position": 30
+        }
+      },
+      {
+        "id": "dinners",
+        "slug": "dinners",
+        "status": "published",
+        "data": {
+          "title": "Dinners",
+          "text": "Long tables and good company.",
+          "photo": "/images/lakeside-table.webp",
+          "position": 40
+        }
+      },
+      {
+        "id": "milestones",
+        "slug": "milestones",
+        "status": "published",
+        "data": {
+          "title": "Milestones",
+          "text": "Retirements, graduations and engagements.",
+          "photo": "/images/olive-arches.webp",
+          "position": 50
+        }
+      }
+    ],
+    "principles": [
+      {
+        "id": "thoughtful-planning",
+        "slug": "thoughtful-planning",
+        "status": "published",
+        "data": {
+          "title": "Thoughtful planning",
+          "text": "Clear timelines, honest budgets and one person to call when plans change.",
+          "position": 10
+        }
+      },
+      {
+        "id": "beautiful-details",
+        "slug": "beautiful-details",
+        "status": "published",
+        "data": {
+          "title": "Beautiful details",
+          "text": "Flowers, linens, light and little touches chosen to suit your guests and your place.",
+          "position": 20
+        }
+      },
+      {
+        "id": "unforgettable-celebrations",
+        "slug": "unforgettable-celebrations",
+        "status": "published",
+        "data": {
+          "title": "Unforgettable celebrations",
+          "text": "A day built around moments, not just a schedule, so people remember how it felt.",
+          "position": 30
+        }
+      }
+    ],
+    "steps": [
+      {
+        "id": "hello",
+        "slug": "hello",
+        "status": "published",
+        "data": {
+          "title": "Say hello",
+          "text": "Tell us the occasion, date, place and guest count. We reply personally within two working days.",
+          "position": 10
+        }
+      },
+      {
+        "id": "ideas",
+        "slug": "ideas",
+        "status": "published",
+        "data": {
+          "title": "Share your ideas",
+          "text": "A short call about the people, the mood and what matters most. No obligation.",
+          "position": 20
+        }
+      },
+      {
+        "id": "design",
+        "slug": "design",
+        "status": "published",
+        "data": {
+          "title": "See the design",
+          "text": "A mood board, a plan and a clear quote before anything is ordered.",
+          "position": 30
+        }
+      },
+      {
+        "id": "celebrate",
+        "slug": "celebrate",
+        "status": "published",
+        "data": {
+          "title": "Celebrate",
+          "text": "We set up, run the day and clear down, so you can be a guest at your own party.",
+          "position": 40
+        }
+      }
+    ],
+    "studio": [
+      {
+        "id": "studio",
+        "slug": "studio",
+        "status": "published",
+        "data": {
+          "title": "Celebration Studio",
+          "base": "Port Alder, Wren Valley",
+          "phone": "+1 555-0143",
+          "email": "hello@celebration-studio.example",
+          "response": "We reply within two working days.",
+          "inquiry_note": "Tell us about your celebration and we will reply personally. An enquiry is not a booking; we confirm the date by email once we have spoken."
+        }
+      }
+    ]
+  }
+}

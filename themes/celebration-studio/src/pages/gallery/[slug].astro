@@ -1,0 +1,159 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import InquiryBand from "../../components/InquiryBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import {
+	celebrationHref,
+	celebrationMeta,
+	getCelebrations,
+	getOccasions,
+	getStudio,
+	photoAlt,
+	photoSrc,
+} from "../../lib/studio";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: celebration, cacheHint } = await getEmDashEntry("celebrations", slug);
+if (!celebration) return Astro.rewrite("/404");
+
+const [allResult, occasionsResult, studioResult, settings] = await Promise.all([
+	getCelebrations(),
+	getOccasions(),
+	getStudio(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(occasionsResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(celebration, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const occasion = occasionsResult.entries.find((o) => (o.data.slug ?? o.data.id) === celebration.data.occasion);
+const occasionTitle = occasion?.data.title ?? celebration.data.occasion;
+const cover = photoSrc(celebration.data.image, celebration.data.photo);
+const photos = (celebration.data.gallery ?? [])
+	.map((g) => ({ src: photoSrc(g.image, g.photo), alt: photoAlt(g.image, g.photo, g.caption ?? ""), caption: g.caption }))
+	.filter((g): g is { src: string; alt: string; caption: string | undefined } => Boolean(g.src));
+const hasBody = Boolean(celebration.data.content && celebration.data.content.length > 0);
+const others = allResult.entries.filter((c) => c.data.id !== celebration.data.id).slice(0, 3);
+const facts = [
+	["Occasion", occasionTitle],
+	["Venue", celebration.data.place],
+	["Season", celebration.data.season],
+	["Guests", celebration.data.guests],
+].filter(([, v]) => Boolean(v));
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? celebration.data.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "celebrations", id: celebration.data.id, slug }}
+	current="/gallery"
+>
+	<header class="detail-head">
+		<nav class="crumbs" aria-label="Breadcrumb">
+			<a href="/gallery">Gallery</a>
+			<span aria-hidden="true">/</span>
+			<span aria-current="page">{celebration.data.title}</span>
+		</nav>
+		<div class="detail-grid">
+			<div class="detail-copy">
+				<p class="eyebrow">{celebrationMeta(celebration.data)}</p>
+				<h1 class="display display-xl" {...celebration.edit.title}>{celebration.data.title}</h1>
+				<p class="lede">{celebration.data.summary}</p>
+				{
+					facts.length > 0 && (
+						<dl class="facts">
+							{facts.map(([k, v]) => (
+								<div>
+									<dt>{k}</dt>
+									<dd>{v}</dd>
+								</div>
+							))}
+						</dl>
+					)
+				}
+				<p class="detail-actions">
+					<a class="btn" href={`/contact?occasion=${encodeURIComponent(celebration.data.occasion)}`}>
+						<span>Create your event</span><Arrow />
+					</a>
+				</p>
+			</div>
+			{cover && <img class="detail-cover" src={cover} alt={photoAlt(celebration.data.image, celebration.data.photo, celebration.data.title)} width="700" height="600" fetchpriority="high" />}
+		</div>
+	</header>
+
+	{
+		hasBody && (
+			<section class="story-body">
+				<div class="prose">
+					<PortableText value={celebration.data.content} />
+				</div>
+			</section>
+		)
+	}
+
+	{
+		photos.length > 0 && (
+			<section class="photo-sequence" aria-label={`Photographs from ${celebration.data.title}`}>
+				<ul class="photo-grid">
+					{photos.map((p) => (
+						<li>
+							<figure>
+								<img src={p.src} alt={p.alt} width="800" height="600" loading="lazy" />
+								{p.caption && <figcaption>{p.caption}</figcaption>}
+							</figure>
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+
+	{
+		others.length > 0 && (
+			<section class="band band-deep" aria-labelledby="more-title">
+				<div class="band-inner">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">More celebrations</p>
+							<h2 id="more-title" class="display">Keep <em>exploring.</em></h2>
+						</div>
+						<a class="explore" href="/gallery"><span class="explore-rule" aria-hidden="true"></span><span class="explore-label">All celebrations</span><Arrow /></a>
+					</div>
+					<ul class="celebration-cards">
+						{others.map((c) => {
+							const src = photoSrc(c.data.image, c.data.photo);
+							return (
+								<li>
+									<a class="celebration-card" href={celebrationHref(c.data)}>
+										{src && <img src={src} alt={photoAlt(c.data.image, c.data.photo, c.data.title)} width="520" height="420" loading="lazy" />}
+										<span class="celebration-card-kicker">{occasionsResult.entries.find((o) => (o.data.slug ?? o.data.id) === c.data.occasion)?.data.title ?? c.data.occasion}</span>
+										<span class="celebration-card-name">{c.data.title}</span>
+										<span class="celebration-card-meta">{celebrationMeta(c.data)}</span>
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<InquiryBand studio={studioResult.studio} />
+</Base>

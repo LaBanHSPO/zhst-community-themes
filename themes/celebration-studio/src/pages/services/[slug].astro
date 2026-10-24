@@ -1,0 +1,106 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import InquiryBand from "../../components/InquiryBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getServices, getStudio, lines, photoAlt, photoSrc, serviceHref } from "../../lib/studio";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: service, cacheHint } = await getEmDashEntry("services", slug);
+if (!service) return Astro.rewrite("/404");
+
+const [allResult, studioResult, settings] = await Promise.all([getServices(), getStudio(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(service, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const cover = photoSrc(service.data.image, service.data.photo);
+const hasBody = Boolean(service.data.content && service.data.content.length > 0);
+const others = allResult.entries.filter((s) => s.data.id !== service.data.id).slice(0, 3);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? service.data.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "services", id: service.data.id, slug }}
+	current="/services"
+>
+	<header class="detail-head">
+		<nav class="crumbs" aria-label="Breadcrumb">
+			<a href="/services">Services</a>
+			<span aria-hidden="true">/</span>
+			<span aria-current="page">{service.data.title}</span>
+		</nav>
+		<div class="detail-grid">
+			<div class="detail-copy">
+				{service.data.best_for && <p class="eyebrow">{service.data.best_for}</p>}
+				<h1 class="display display-xl" {...service.edit.title}>{service.data.title}</h1>
+				<p class="lede">{service.data.summary}</p>
+				<p class="service-row-price">{service.data.price_label}</p>
+				<p class="detail-actions">
+					<a class="btn" href={`/contact?service=${encodeURIComponent(service.data.slug ?? service.data.id)}`}>
+						<span>Create your event</span><Arrow />
+					</a>
+				</p>
+			</div>
+			{cover && <img class="detail-cover" src={cover} alt={photoAlt(service.data.image, service.data.photo, service.data.title)} width="700" height="600" fetchpriority="high" />}
+		</div>
+	</header>
+
+	<section class="detail-body">
+		<div class="detail-body-grid">
+			<div class="prose">
+				{hasBody ? <PortableText value={service.data.content} /> : <p>{service.data.summary}</p>}
+			</div>
+			<aside class="includes-card" aria-labelledby="inc-title">
+				<h2 id="inc-title" class="includes-title">What is included</h2>
+				<ul class="includes">
+					{lines(service.data.includes).map((i) => <li>{i}</li>)}
+				</ul>
+			</aside>
+		</div>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="band band-deep" aria-labelledby="more-title">
+				<div class="band-inner">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">More services</p>
+							<h2 id="more-title" class="display">Other ways to <em>work together.</em></h2>
+						</div>
+						<a class="explore" href="/services"><span class="explore-rule" aria-hidden="true"></span><span class="explore-label">All services</span><Arrow /></a>
+					</div>
+					<ul class="teaser-list">
+						{others.map((s) => (
+							<li>
+								<a class="teaser" href={serviceHref(s.data)}>
+									<span class="teaser-name">{s.data.title}</span>
+									<span class="teaser-text">{s.data.summary}</span>
+									{s.data.price_label && <span class="teaser-price">{s.data.price_label}</span>}
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<InquiryBand studio={studioResult.studio} />
+</Base>

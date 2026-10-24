@@ -1,0 +1,180 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import InquiryBand from "../components/InquiryBand.astro";
+import {
+	celebrationHref,
+	celebrationMeta,
+	getCelebrations,
+	getOccasions,
+	getServices,
+	getSteps,
+	getStudio,
+	photoAlt,
+	photoSrc,
+	serviceHref,
+} from "../lib/studio";
+
+const [servicesResult, celebrationsResult, occasionsResult, stepsResult, studioResult] = await Promise.all([
+	getServices(),
+	getCelebrations(),
+	getOccasions(),
+	getSteps(),
+	getStudio(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(celebrationsResult.cacheHint);
+	Astro.cache.set(occasionsResult.cacheHint);
+	Astro.cache.set(stepsResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const allServices = servicesResult.entries;
+const featuredServices = allServices.filter((s) => s.data.featured);
+const services = (featuredServices.length > 0 ? featuredServices : allServices).slice(0, 3);
+const occasions = occasionsResult.entries;
+const allCelebrations = celebrationsResult.entries;
+const featured = allCelebrations.filter((c) => c.data.featured);
+const celebrations = (featured.length > 0 ? featured : allCelebrations).slice(0, 3);
+const steps = stepsResult.entries;
+const occasionName = (slug: string | undefined) => occasions.find((o) => (o.data.slug ?? o.data.id) === slug)?.data.title;
+const heroAlt =
+	"A sunlit outdoor long table with pink linen, rattan chairs and a dahlia centrepiece, with the sea and a flower-covered wall beyond";
+---
+
+<Base
+	title="Party planning and styling"
+	description="Celebration Studio plans and styles birthdays, anniversaries, showers and long-table dinners: thoughtful planning, beautiful details, unforgettable celebrations."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<picture>
+			<source media="(max-width: 899px)" srcset="/images/hero-home-mobile.webp" width="968" height="645" />
+			<img class="hero-photo" src="/images/hero-home.webp" alt={heroAlt} width="1448" height="729" fetchpriority="high" />
+		</picture>
+		<div class="hero-copy">
+			<h1 id="hero-title" class="hero-title">Make the<br />moment yours.</h1>
+			<p class="hero-sub">Thoughtful planning. Beautiful details.<br />Unforgettable celebrations.</p>
+			<a class="btn" href="/contact"><span>Create your event</span><Arrow /></a>
+		</div>
+		<p class="hero-note">
+			<span class="hero-note-rule" aria-hidden="true"></span>
+			<span>More</span>
+			<span>than events</span>
+			<span>a brighter</span>
+			<span>way to gather.</span>
+		</p>
+	</section>
+
+	<section class="approach" aria-labelledby="approach-title">
+		<div class="approach-copy">
+			<p class="eyebrow">Our approach</p>
+			<h2 id="approach-title" class="display">Events with <em>heart</em><br />and a personal touch.</h2>
+			<p class="approach-text">
+				From intimate gatherings to milestone celebrations,<br class="br-lg" /> we design meaningful experiences, beautifully brought to life.
+			</p>
+			<a class="explore" href="/services"><span class="explore-rule" aria-hidden="true"></span><span class="explore-label">Explore our services</span><Arrow /></a>
+		</div>
+		{
+			services.length > 0 && (
+				<ul class="approach-cards">
+					{services.map((s) => {
+						const src = photoSrc(s.data.image, s.data.photo);
+						return (
+							<li>
+								<a class="approach-card" href={serviceHref(s.data)}>
+									{src && <img src={src} alt={photoAlt(s.data.image, s.data.photo, s.data.title)} width="484" height="416" loading="lazy" />}
+									<span class="approach-card-name" {...s.edit.title}>{s.data.title}</span>
+									<span class="approach-card-text">{s.data.tagline || s.data.summary}</span>
+								</a>
+							</li>
+						);
+					})}
+				</ul>
+			)
+		}
+	</section>
+
+	{
+		occasions.length > 0 && (
+			<section class="band band-deep" aria-labelledby="occasions-title">
+				<div class="band-inner">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Occasions we plan</p>
+							<h2 id="occasions-title" class="display">Every kind of <em>gathering.</em></h2>
+						</div>
+						<a class="explore" href="/gallery"><span class="explore-rule" aria-hidden="true"></span><span class="explore-label">See the gallery</span><Arrow /></a>
+					</div>
+					<ul class="occasion-cards">
+						{occasions.map((o) => {
+							const src = photoSrc(o.data.image, o.data.photo);
+							return (
+								<li>
+									<a class="occasion-card" href={`/gallery?occasion=${encodeURIComponent(o.data.slug ?? o.data.id)}`}>
+										{src && <img src={src} alt={photoAlt(o.data.image, o.data.photo, o.data.title)} width="400" height="480" loading="lazy" />}
+										<span class="approach-card-name" {...o.edit.title}>{o.data.title}</span>
+										<span class="approach-card-text">{o.data.text}</span>
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		celebrations.length > 0 && (
+			<section class="band" aria-labelledby="gallery-title">
+				<div class="band-inner">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">From the gallery</p>
+							<h2 id="gallery-title" class="display">Days we have been <em>lucky</em> to plan.</h2>
+						</div>
+						<a class="explore" href="/gallery"><span class="explore-rule" aria-hidden="true"></span><span class="explore-label">All celebrations</span><Arrow /></a>
+					</div>
+					<ul class="celebration-cards">
+						{celebrations.map((c) => {
+							const src = photoSrc(c.data.image, c.data.photo);
+							return (
+								<li>
+									<a class="celebration-card" href={celebrationHref(c.data)}>
+										{src && <img src={src} alt={photoAlt(c.data.image, c.data.photo, c.data.title)} width="520" height="420" loading="lazy" />}
+										<span class="celebration-card-kicker">{occasionName(c.data.occasion) ?? c.data.occasion}</span>
+										<span class="celebration-card-name" {...c.edit.title}>{c.data.title}</span>
+										<span class="celebration-card-meta">{celebrationMeta(c.data)}</span>
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		steps.length > 0 && (
+			<section class="band band-deep" aria-labelledby="process-title">
+				<div class="band-inner">
+					<p class="eyebrow">How it works</p>
+					<h2 id="process-title" class="display">From a first hello to the <em>last song.</em></h2>
+					<ol class="steps">
+						{steps.map((s, i) => (
+							<li>
+								<span class="step-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+								<h3 {...s.edit.title}>{s.data.title}</h3>
+								{s.data.text && <p>{s.data.text}</p>}
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	<InquiryBand studio={studioResult.studio} />
+</Base>

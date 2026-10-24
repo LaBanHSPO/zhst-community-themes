@@ -1,0 +1,84 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import InquiryBand from "../../components/InquiryBand.astro";
+import {
+	celebrationHref,
+	celebrationMeta,
+	getCelebrations,
+	getOccasions,
+	getStudio,
+	photoAlt,
+	photoSrc,
+} from "../../lib/studio";
+
+const [celebrationsResult, occasionsResult, studioResult] = await Promise.all([getCelebrations(), getOccasions(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(celebrationsResult.cacheHint);
+	Astro.cache.set(occasionsResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const occasions = occasionsResult.entries;
+const all = celebrationsResult.entries;
+// ?occasion=<slug> filters the gallery; an unknown value shows everything.
+const wanted = Astro.url.searchParams.get("occasion");
+const active = occasions.find((o) => (o.data.slug ?? o.data.id) === wanted);
+const celebrations = active ? all.filter((c) => c.data.occasion === (active.data.slug ?? active.data.id)) : all;
+const countFor = (slug: string) => all.filter((c) => c.data.occasion === slug).length;
+const occasionName = (slug: string | undefined) => occasions.find((o) => (o.data.slug ?? o.data.id) === slug)?.data.title ?? slug;
+---
+
+<Base
+	title={active ? `${active.data.title} gallery` : "Gallery"}
+	description="Celebrations planned and styled by Celebration Studio: birthdays, anniversaries, showers, dinners and milestones, with the places, tables and details behind each."
+	current="/gallery"
+>
+	<PageHead
+		id="gallery-title"
+		eyebrow="Gallery"
+		title={active ? `${active.data.title}, beautifully done.` : "Celebrations we have loved."}
+		intro="A few of the gatherings we have planned and styled, from garden birthdays to long-table anniversaries. Open one to see the story and the photographs. Names and venues are fictional sample content."
+	/>
+
+	<section class="gallery" aria-labelledby="gallery-title">
+		<nav class="filters" aria-label="Filter by occasion">
+			<a class="chip" href="/gallery" aria-current={active ? undefined : "true"}>All <span>{all.length}</span></a>
+			{
+				occasions.map((o) => {
+					const slug = o.data.slug ?? o.data.id;
+					return (
+						<a class="chip" href={`/gallery?occasion=${encodeURIComponent(slug)}`} aria-current={active && slug === (active.data.slug ?? active.data.id) ? "true" : undefined}>
+							{o.data.title} <span>{countFor(slug)}</span>
+						</a>
+					);
+				})
+			}
+		</nav>
+
+		{
+			celebrations.length === 0 ? (
+				<p class="empty-note">
+					No {active?.data.title.toLowerCase() ?? "celebrations"} to show yet. <a href="/gallery">See everything</a> or <a href="/contact">tell us about yours</a>.
+				</p>
+			) : (
+				<ul class="celebration-grid">
+					{celebrations.map((c) => {
+						const src = photoSrc(c.data.image, c.data.photo);
+						return (
+							<li>
+								<a class="celebration-card" href={celebrationHref(c.data)}>
+									{src && <img src={src} alt={photoAlt(c.data.image, c.data.photo, c.data.title)} width="520" height="420" loading="lazy" />}
+									<span class="celebration-card-kicker">{occasionName(c.data.occasion)}</span>
+									<span class="celebration-card-name" {...c.edit.title}>{c.data.title}</span>
+									<span class="celebration-card-meta">{celebrationMeta(c.data)}</span>
+								</a>
+							</li>
+						);
+					})}
+				</ul>
+			)
+		}
+	</section>
+
+	<InquiryBand studio={studioResult.studio} />
+</Base>

@@ -1,0 +1,205 @@
+---
+import Base from "../layouts/Base.astro";
+import { getOccasions, getServices, getStudio, telHref } from "../lib/studio";
+
+const [{ studio, cacheHint }, servicesResult, occasionsResult] = await Promise.all([getStudio(), getServices(), getOccasions()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(occasionsResult.cacheHint);
+}
+const services = servicesResult.entries;
+const occasions = occasionsResult.entries;
+
+// ?service=<slug> and ?occasion=<slug> pre-select the matching options (links from the services and gallery pages).
+const wantedService = Astro.url.searchParams.get("service");
+const selected = services.find((s) => (s.data.slug ?? s.data.id) === wantedService);
+const wantedOccasion = Astro.url.searchParams.get("occasion");
+const selectedOccasion = occasions.find((o) => (o.data.slug ?? o.data.id) === wantedOccasion);
+
+// Earliest selectable date is today in the site's timezone.
+const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Saigon" }).format(new Date());
+---
+
+<Base title="Create your event" description="Tell Celebration Studio about your celebration: occasion, date, guests, place and the kind of help you would like. We reply to every message personally, usually within two working days.">
+	<div class="contact">
+		<div class="contact-photo">
+			<img
+				src="/images/peony-table.webp"
+				alt="A table of peonies in a gold bowl with candles, a balloon arch and a blush arched backdrop"
+				width="1448"
+				height="1086"
+			/>
+		</div>
+		<section class="contact-panel" aria-labelledby="contact-title">
+			<p class="eyebrow">Create your event</p>
+			<h1 id="contact-title" class="display display-xl">Let us hear about your <em>celebration.</em></h1>
+			<p class="lede">
+				Tell us what you are celebrating, when and where. A message is not a booking until we have replied and agreed the details together.
+			</p>
+
+			<form
+				class="contact-form"
+				data-contact-form
+				data-email={studio.email}
+				action={studio.email ? `mailto:${studio.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field full">
+						<label for="q-names">Your name</label>
+						<input id="q-names" name="names" type="text" autocomplete="name" placeholder="e.g. Poppy Hart" required />
+						<span class="field-error" data-error-for="q-names"></span>
+					</div>
+					<div class="field">
+						<label for="q-email">Email</label>
+						<input id="q-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="q-email"></span>
+					</div>
+					<div class="field">
+						<label for="q-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="q-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field full">
+						<label for="q-occasion">Occasion</label>
+						<select id="q-occasion" name="occasion" required>
+							<option value="" selected={!selectedOccasion}>Choose an occasion</option>
+							{
+								occasions.map((o) => (
+									<option value={o.data.title} selected={selectedOccasion?.data.id === o.data.id}>
+										{o.data.title}
+									</option>
+								))
+							}
+							<option value="Something else">Something else</option>
+						</select>
+						<span class="field-error" data-error-for="q-occasion"></span>
+					</div>
+					<div class="field">
+						<label for="q-date">Event date</label>
+						<input id="q-date" name="date" type="date" min={today} required />
+						<span class="field-error" data-error-for="q-date"></span>
+					</div>
+					<div class="field">
+						<label for="q-guests">Guest count</label>
+						<input id="q-guests" name="guests" type="number" inputmode="numeric" min="1" max="1000" step="1" placeholder="e.g. 80" required />
+						<span class="field-error" data-error-for="q-guests"></span>
+					</div>
+					<div class="field full">
+						<label for="q-location">Location</label>
+						<input id="q-location" name="location" type="text" placeholder="Venue, town or region, or where you are dreaming of" required />
+						<span class="field-error" data-error-for="q-location"></span>
+					</div>
+					<div class="field full">
+						<label for="q-service">Service</label>
+						<select id="q-service" name="service" required>
+							<option value="" selected={!selected}>Choose a service</option>
+							{
+								services.map((s) => (
+									<option value={s.data.title} selected={selected?.data.id === s.data.id}>
+										{[s.data.title, s.data.price_label].filter(Boolean).join(" · ")}
+									</option>
+								))
+							}
+							<option value="Not sure yet">Not sure yet, please advise</option>
+						</select>
+						<span class="field-error" data-error-for="q-service"></span>
+					</div>
+					<div class="field full">
+						<label for="q-notes">Tell us about your celebration <span class="optional">(optional)</span></label>
+						<textarea id="q-notes" name="notes" rows="4" placeholder="The feel you are after, who is coming, what is already booked, anything that matters to you…"></textarea>
+					</div>
+				</div>
+				<button class="btn btn-block" type="submit"><span>Send enquiry</span></button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{studio.email && <>Write to <a href={`mailto:${studio.email}`}>{studio.email}</a> with your name, occasion, date, guest count and location.</>}
+					</noscript>
+				</p>
+			</form>
+
+			<div class="contact-details">
+				<h2>Prefer to write or call?</h2>
+				<p>
+					{studio.email && <a href={`mailto:${studio.email}`}>{studio.email}</a>}
+					{studio.phone && <a href={telHref(studio.phone)}>{studio.phone}</a>}
+				</p>
+				{studio.response && <p class="small">{studio.response}</p>}
+				{studio.inquiry_note && <p class="small">{studio.inquiry_note}</p>}
+			</div>
+		</section>
+	</div>
+</Base>
+
+<script>
+	// Compose an inquiry email; the studio replies to it. Nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLSelectElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input[required], select[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const type = input.getAttribute("type");
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? input.tagName === "SELECT"
+							? "Please choose an option."
+							: "Please fill this in."
+						: type === "email"
+							? "Please enter a valid email address."
+							: type === "date"
+								? "Please choose today or a later date."
+								: type === "number"
+									? "Please enter a whole number of guests."
+									: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online messages are not available right now. Please call us.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const subject = `Event enquiry: ${get("occasion")} on ${get("date")} (${get("names")})`;
+			const lines = [
+				"Hello,",
+				"",
+				"I would like to talk to you about planning a celebration:",
+				`Name: ${get("names")}`,
+				`Occasion: ${get("occasion")}`,
+				`Event date: ${get("date")}`,
+				`Guest count: ${get("guests")}`,
+				`Location: ${get("location")}`,
+				`Service: ${get("service")}`,
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				get("notes") ? `About the celebration: ${get("notes")}` : "",
+				"",
+				"I understand the date is only held once you have replied and we have agreed the details together.",
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this message ready to send. It is only sent when you send that email, and we reply personally. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

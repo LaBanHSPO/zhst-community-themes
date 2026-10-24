@@ -1,0 +1,37 @@
+---
+/** Wordmark: leaf-sprig mark, the site title in a light serif and the tagline in tiny tracked caps beneath it. */
+import Sprig from "./Sprig.astro";
+
+interface Props {
+	title: string;
+	tagline?: string;
+	logo?: { url?: string; alt?: string } | null;
+	class?: string;
+}
+const { title, tagline, logo, class: className } = Astro.props;
+// The tagline is stored as "People / Places / Happier Days" and shown as three tracked-caps phrases.
+const taglineParts = (tagline ?? "")
+	.split("/")
+	.map((p) => p.trim())
+	.filter(Boolean);
+---
+
+<a class:list={["wordmark", className]} href="/" aria-label={`${title} — home`}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt || title} />
+		) : (
+			<>
+				<Sprig />
+				<span class="wordmark-text">
+					<span class="wordmark-title">{title}</span>
+					{taglineParts.length > 0 && (
+						<span class="wordmark-tagline">
+							{taglineParts.map((p) => <span>{p}</span>)}
+						</span>
+					)}
+				</span>
+			</>
+		)
+	}
+</a>
