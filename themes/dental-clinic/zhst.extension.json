@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "dental-clinic",
+	"kind": "theme",
+	"name": "Dental Clinic",
+	"type": "company",
+	"emdash": "1.2.0",
+	"entry": "themes/dental-clinic",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

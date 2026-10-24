@@ -1,0 +1,17 @@
+---
+import Icon from "./Icon.astro";
+import { entryHref } from "../lib/clinic";
+
+interface Props {
+	service: { data: { id: string; slug: string | null; title: string; summary: string; icon?: string | null; duration?: string | null; price_label?: string | null } };
+}
+const { service } = Astro.props;
+const d = service.data;
+---
+
+<a class="svc-item" href={entryHref("/services", d)}>
+	<span class="svc-icon"><Icon name={d.icon} /></span>
+	<h3>{d.title}</h3>
+	<span class="svc-meta">{d.price_label}</span>
+	<p>{d.summary}{d.duration ? ` Usually ${d.duration}.` : ""}</p>
+</a>

@@ -1,0 +1,76 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PersonCard from "../../components/PersonCard.astro";
+import { firstName, getPeople, photoSrc } from "../../lib/clinic";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: person, cacheHint } = await getEmDashEntry("people", slug);
+if (!person) return Astro.rewrite("/404");
+
+const [peopleResult, settings] = await Promise.all([getPeople(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(peopleResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(person, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = person.data;
+const src = photoSrc(d.image, d.photo);
+const colleagues = peopleResult.entries.filter((p) => p.data.id !== d.id).slice(0, 3);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary ?? `${d.title}, ${d.role}`}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "people", id: d.id, slug }}
+	current="/team"
+>
+	<section class="page-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/team">Our team</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class="profile-grid">
+				{src && <img class="person-photo" src={src} alt={`Portrait of ${d.title}`} width="520" height="650" fetchpriority="high" />}
+				<div>
+					<p class="eyebrow">{d.role}</p>
+					<h1 class="display display-xl" {...person.edit.title}>{d.title}</h1>
+					<span class="rule" aria-hidden="true"></span>
+					{d.summary && <p class="lede">{d.summary}</p>}
+					<div class="prose" style="margin-top:32px">
+						{d.content && d.content.length > 0 && <PortableText value={d.content} />}
+					</div>
+					<p class="row-actions">
+						<a class="btn" href="/contact">Book a visit with {firstName(d.title)} <Arrow /></a>
+						<a class="text-link" href="/team">All team members <Arrow /></a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	{
+		colleagues.length > 0 && (
+			<section class="page-body" aria-labelledby="colleagues-title">
+				<div class="wrap">
+					<p class="eyebrow">Colleagues</p>
+					<h2 id="colleagues-title" class="display" style="margin:12px 0 36px">Also at the clinic.</h2>
+					<div class="team-grid">
+						{colleagues.map((p) => <PersonCard person={p} heading="h3" />)}
+					</div>
+				</div>
+			</section>
+		)
+	}
+</Base>

@@ -1,0 +1,47 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref, type Clinic } from "../lib/clinic";
+
+interface Props {
+	clinic: Clinic;
+	title?: string;
+	text?: string;
+}
+const { clinic, title = "Ready to book a visit?", text = "Send us a request and the front desk will reply within one working day to agree a time." } = Astro.props;
+---
+
+<section class="section section-pale book-band" aria-labelledby="book-title">
+	<div class="wrap book-inner">
+		<div>
+			<p class="eyebrow">Appointments</p>
+			<h2 id="book-title" class="display">{title}</h2>
+			<p class="lede">{text}</p>
+		</div>
+		<div class="book-actions">
+			<a class="btn btn-lg" href="/contact">Request an appointment <Arrow /></a>
+			{clinic.phone && <a class="text-link" href={telHref(clinic.phone)}>Or call {clinic.phone}</a>}
+		</div>
+	</div>
+</section>
+
+<style>
+	.book-inner {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 28px 56px;
+	}
+	.book-inner .display {
+		margin-top: 12px;
+	}
+	.book-inner .lede {
+		margin-top: 14px;
+		max-width: 540px;
+	}
+	.book-actions {
+		display: grid;
+		gap: 16px;
+		justify-items: start;
+	}
+</style>

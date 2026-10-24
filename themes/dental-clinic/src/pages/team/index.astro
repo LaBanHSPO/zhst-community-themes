@@ -1,0 +1,39 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PersonCard from "../../components/PersonCard.astro";
+import { getPeople } from "../../lib/clinic";
+
+const peopleResult = await getPeople();
+if (Astro.cache?.enabled) Astro.cache.set(peopleResult.cacheHint);
+const people = peopleResult.entries;
+---
+
+<Base title="Our Team" description="Meet the PearlDental team: dentists, a dental hygienist and our practice manager.">
+	<header class="page-head">
+		<div class="wrap">
+			<p class="eyebrow">Our team</p>
+			<h1 class="display display-xl">The people you will meet.</h1>
+			<span class="rule" aria-hidden="true"></span>
+			<p class="lede">Five people look after the clinic. You will see the same faces from one visit to the next, and any of us can answer a question before you sit down.</p>
+		</div>
+	</header>
+
+	<section class="page-body">
+		<div class="wrap">
+			{
+				people.length > 0 ? (
+					<div class="team-grid">
+						{people.map((p) => <PersonCard person={p} />)}
+					</div>
+				) : (
+					<p class="empty">Team profiles will appear here once they are added in the admin.</p>
+				)
+			}
+			<div class="team-end">
+				<p>Not sure who to see? Tell the front desk what you need and we will book you with the right person.</p>
+				<a class="btn btn-lg" href="/contact">Book a visit <Arrow /></a>
+			</div>
+		</div>
+	</section>
+</Base>

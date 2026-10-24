@@ -1,0 +1,169 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import ServiceItem from "../components/ServiceItem.astro";
+import BookBand from "../components/BookBand.astro";
+import { getClinic, getPoints, getServices, getSteps, hoursRows, mapHref, telHref } from "../lib/clinic";
+
+const [clinicResult, pointsResult, servicesResult, stepsResult] = await Promise.all([getClinic(), getPoints(), getServices(), getSteps()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(clinicResult.cacheHint);
+	Astro.cache.set(pointsResult.cacheHint);
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(stepsResult.cacheHint);
+}
+const { clinic } = clinicResult;
+const heroPoints = pointsResult.entries.filter((p) => p.data.place === "hero");
+const approachPoints = pointsResult.entries.filter((p) => p.data.place === "approach");
+const services = servicesResult.entries;
+const steps = stepsResult.entries;
+const hours = hoursRows(clinic.hours);
+---
+
+<Base title="Feel good about your smile" description="PearlDental is a gentle, modern dental clinic: check-ups, fillings, whitening, children's dentistry and same-day emergency appointments. Meet the team and request a visit.">
+	<section class="hero" aria-labelledby="hero-title">
+		<img class="hero-photo" src="/images/hero-home.webp" alt="Three members of the PearlDental team in navy scrubs, smiling with arms crossed in a bright treatment room" width="823" height="580" fetchpriority="high" />
+		<div class="wrap hero-inner">
+			<div class="hero-copy">
+				<p class="eyebrow">Modern dental care</p>
+				<h1 id="hero-title" class="display display-xl">Feel good<br />about your smile.</h1>
+				<p class="lede">Gentle, modern dentistry in a calming environment<br />for healthier, happier smiles.</p>
+				<a class="btn btn-lg" href="/team">Meet the team <Arrow /></a>
+			</div>
+			<ul class="hero-points">
+				{
+					heroPoints.map((p) => {
+						const [first, ...rest] = p.data.title.split("\n");
+						return (
+							<li class="hero-point">
+								<Icon name={p.data.icon} />
+								<span class="hero-point-label">
+									<span>{first}</span>
+									<span>{rest.join(" ")}</span>
+								</span>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</div>
+	</section>
+
+	<section class="approach" aria-labelledby="approach-title">
+		<div class="wrap approach-grid">
+			<img
+				class="corner-photo"
+				src="/images/approach-room.webp"
+				alt="A treatment room with a reclining chair, a monitor showing a tooth, a tall plant and a window onto trees"
+				width="986"
+				height="570"
+				loading="lazy"
+			/>
+			<div class="approach-copy">
+				<p class="eyebrow">Our approach</p>
+				<h2 id="approach-title" class="display">More than a visit.</h2>
+				<span class="rule" aria-hidden="true"></span>
+				<p class="lede">We combine modern technology with a personal touch<br />to make every visit a positive experience.</p>
+				<ul class="pillars">
+					{
+						approachPoints.map((p) => (
+							<li class="pillar">
+								<span class:list={["pillar-icon", { "is-leaf": p.data.icon === "leaf" }]}>
+									<Icon name={p.data.icon} />
+								</span>
+								<h3>{p.data.title}</h3>
+								{p.data.text && <p>{p.data.text}</p>}
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	<section class="section" aria-labelledby="services-title">
+		<div class="wrap">
+			<div class="section-head section-head-row">
+				<div class="section-head">
+					<p class="eyebrow">Services</p>
+					<h2 id="services-title" class="display">What we do, and how long it takes.</h2>
+					<span class="rule" aria-hidden="true"></span>
+				</div>
+				<a class="text-link" href="/services">All services <Arrow /></a>
+			</div>
+			<ul class="svc-list">
+				{services.map((s) => <li><ServiceItem service={s} /></li>)}
+			</ul>
+		</div>
+	</section>
+
+	<section class="section section-pale" aria-labelledby="visit-title">
+		<div class="wrap visit-grid">
+			<div>
+				<p class="eyebrow">Your first visit</p>
+				<h2 id="visit-title" class="display">What happens on day one.</h2>
+				<span class="rule" aria-hidden="true" style="margin-top:16px"></span>
+				<ol class="steps">
+					{
+						steps.map((s) => (
+							<li>
+								<h3>{s.data.title}</h3>
+								<p>{s.data.text}</p>
+							</li>
+						))
+					}
+				</ol>
+				<p style="margin-top:8px"><a class="text-link" href="/new-patients">Read the new patient guide <Arrow /></a></p>
+			</div>
+			<img
+				class="visit-photo"
+				src="/images/visit-dentist.webp"
+				alt="A dentist in a white coat and a hygienist smiling with a patient reclined in a pale blue chair"
+				width="1231"
+				height="923"
+				loading="lazy"
+			/>
+		</div>
+	</section>
+
+	<section class="section" aria-labelledby="find-title">
+		<div class="wrap">
+			<div class="section-head">
+				<p class="eyebrow">Hours and location</p>
+				<h2 id="find-title" class="display">Find us on Harbour Lane.</h2>
+				<span class="rule" aria-hidden="true"></span>
+			</div>
+			<div class="find-grid">
+				<div>
+					<h3>Address</h3>
+					<address>
+						<a href={mapHref(clinic)} target="_blank" rel="noopener noreferrer">
+							{clinic.street}<br />
+							{clinic.locality}
+						</a>
+					</address>
+					<p class="contact-lines">
+						{clinic.phone && <a href={telHref(clinic.phone)}>{clinic.phone}</a>}
+						{clinic.email && <a href={`mailto:${clinic.email}`}>{clinic.email}</a>}
+					</p>
+				</div>
+				<div>
+					<h3>Opening hours</h3>
+					<dl class="hours">
+						{hours.map((h) => <div><dt>{h.day}</dt><dd>{h.time}</dd></div>)}
+					</dl>
+				</div>
+				<div>
+					<h3>Urgent problem?</h3>
+					<div class="note-box">
+						<strong>Call us first.</strong>
+						{clinic.emergency_note}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<BookBand clinic={clinic} />
+</Base>

@@ -1,0 +1,1313 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Dental Clinic",
+    "description": "A bright dental clinic theme: team, services, new-patient information and an appointment request form",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "PearlDental",
+    "tagline": "Brighter days ahead"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "services",
+      "label": "Services",
+      "labelSingular": "Service",
+      "urlPattern": "/services/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Service name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "icon",
+          "label": "Icon",
+          "type": "select",
+          "required": true,
+          "defaultValue": "tooth",
+          "validation": {
+            "options": [
+              "tooth",
+              "filling",
+              "sparkle",
+              "smile",
+              "bolt",
+              "drop"
+            ]
+          }
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "duration",
+          "label": "Typical appointment length (e.g. 45 minutes)",
+          "type": "string"
+        },
+        {
+          "slug": "price_label",
+          "label": "Price note (e.g. From $95, or Ask at reception)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "what_happens",
+          "label": "What happens at the visit (one step per line)",
+          "type": "text"
+        },
+        {
+          "slug": "aftercare",
+          "label": "Aftercare basics (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Service page content",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "people",
+      "label": "Our Team",
+      "labelSingular": "Team member",
+      "urlPattern": "/team/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "role",
+          "label": "Role",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "Short bio (cards and profile intro)",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "content",
+          "label": "Profile",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "image",
+          "label": "Portrait (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled portrait path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "points",
+      "label": "Icon points",
+      "labelSingular": "Icon point",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Short text",
+          "type": "text"
+        },
+        {
+          "slug": "icon",
+          "label": "Icon",
+          "type": "select",
+          "required": true,
+          "defaultValue": "tooth",
+          "validation": {
+            "options": [
+              "leaf",
+              "tooth",
+              "people",
+              "smile"
+            ]
+          }
+        },
+        {
+          "slug": "place",
+          "label": "Where it shows",
+          "type": "select",
+          "required": true,
+          "defaultValue": "hero",
+          "validation": {
+            "options": [
+              "hero",
+              "approach"
+            ]
+          }
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "steps",
+      "label": "First visit steps",
+      "labelSingular": "Step",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Step title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "What happens",
+          "type": "text",
+          "required": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "clinic",
+      "label": "Clinic details",
+      "labelSingular": "Clinic details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Clinic name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "street",
+          "label": "Street address",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "locality",
+          "label": "City, state and ZIP",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "country",
+          "label": "Country",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Appointment requests email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "hours",
+          "label": "Opening hours (one per line, Day|Hours)",
+          "type": "text"
+        },
+        {
+          "slug": "emergency_note",
+          "label": "Emergency note",
+          "type": "text"
+        },
+        {
+          "slug": "response_note",
+          "label": "Note shown on the contact page",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "Our Team",
+          "url": "/team"
+        },
+        {
+          "type": "custom",
+          "label": "Services",
+          "url": "/services"
+        },
+        {
+          "type": "custom",
+          "label": "Contact",
+          "url": "/contact"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "new-patients",
+        "slug": "new-patients",
+        "status": "published",
+        "data": {
+          "title": "New patients",
+          "eyebrow": "New patients",
+          "intro": "Everything you need to know before your first appointment at PearlDental.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "b0",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Before you come",
+                  "_key": "b0s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Book a check-up through the contact page or by phone. Tell us if you would like a longer first appointment or have any worries about visiting the dentist.",
+                  "_key": "b1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Bring a list of any medicines you take and the name of your previous dentist if you have one. If you have recent X-rays, bring them or ask your old clinic to send them.",
+                  "_key": "b2s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b3",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "On the day",
+                  "_key": "b3s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b4",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Arrive about ten minutes early to fill in a short health form. Your first visit takes around 45 minutes. We look at your teeth and gums, clean them and talk through a plan.",
+                  "_key": "b4s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b5",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Costs",
+                  "_key": "b5s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b6",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Prices on this site are starting points. We give you a written estimate before any treatment, and we never start work without your agreement.",
+                  "_key": "b6s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b7",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Moving or cancelling",
+                  "_key": "b7s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b8",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Please give us 24 hours' notice if you need to change an appointment, so we can offer the time to someone else.",
+                  "_key": "b8s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "privacy",
+        "slug": "privacy",
+        "status": "published",
+        "data": {
+          "title": "Privacy",
+          "eyebrow": "Privacy",
+          "intro": "How this website handles your details.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "b0",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The appointment request form on this site opens your own email app with a message ready to send. The website does not send or store what you type.",
+                  "_key": "b0s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Please do not put medical details in a request. Tell the dentist in person, where the information goes into your patient record.",
+                  "_key": "b1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This sample site does not use analytics or advertising cookies.",
+                  "_key": "b2s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "services": [
+      {
+        "id": "check-ups-and-cleaning",
+        "slug": "check-ups-and-cleaning",
+        "status": "published",
+        "data": {
+          "title": "Check-ups and cleaning",
+          "summary": "A look at your teeth and gums, then a clean, with time to ask questions.",
+          "icon": "tooth",
+          "featured": true,
+          "position": 10,
+          "duration": "45 minutes",
+          "price_label": "From $95",
+          "intro": "A regular check-up is the visit most people need most often. We look at your teeth, gums and mouth, clean away plaque and tartar, and talk through anything you have noticed.",
+          "what_happens": "We ask about your health, any changes since last time and anything that worries you.\nThe dentist checks your teeth, gums, tongue and bite. X-rays are taken only when they are needed.\nA hygienist or dentist cleans your teeth and polishes them.\nWe agree when you should come back, usually in six to twelve months.",
+          "aftercare": "Teeth can feel sensitive for a day after a deep clean. Use a soft brush and lukewarm water.\nBrush twice a day and clean between your teeth once a day.\nCall us if you notice bleeding gums that do not settle within a week.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "b0",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Bring a list of any medicines you take. If you wear a night guard or retainer, bring that too.",
+                  "_key": "b0s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b1",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How often should I come?",
+                  "_key": "b1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most adults come every six to twelve months. Some people need to come more often, for example if they have gum disease. The dentist will tell you what suits you and why.",
+                  "_key": "b2s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "photo": "/images/visit-dentist.webp"
+        }
+      },
+      {
+        "id": "fillings",
+        "slug": "fillings",
+        "status": "published",
+        "data": {
+          "title": "Fillings",
+          "summary": "Repair a cavity or a chipped tooth with a tooth-coloured filling.",
+          "icon": "filling",
+          "featured": true,
+          "position": 20,
+          "duration": "45 to 60 minutes",
+          "price_label": "From $140",
+          "intro": "A filling replaces the part of a tooth lost to decay or damage. We use tooth-coloured material, so the repair blends with the rest of the tooth.",
+          "what_happens": "The dentist explains what they found and what the filling involves.\nYour tooth is numbed so you are comfortable during the work.\nDecay is removed and the filling is placed in layers and set with a blue light.\nThe dentist checks your bite and polishes the filling.",
+          "aftercare": "Your lip and cheek stay numb for a few hours. Avoid hot drinks and chewing until the feeling returns.\nA little sensitivity to hot and cold is common for a few days.\nCall us if your bite feels high or the tooth still hurts after a week.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "b0",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Tell us if you have ever reacted to a dental material or a local anaesthetic.",
+                  "_key": "b0s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b1",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Why not leave a small cavity?",
+                  "_key": "b1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Decay does not heal by itself. Small cavities are quicker to fix and keep more of the natural tooth.",
+                  "_key": "b2s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "photo": "/images/instruments.webp"
+        }
+      },
+      {
+        "id": "teeth-whitening",
+        "slug": "teeth-whitening",
+        "status": "published",
+        "data": {
+          "title": "Teeth whitening",
+          "summary": "Lift the shade of your teeth with a plan that fits your mouth.",
+          "icon": "sparkle",
+          "featured": true,
+          "position": 30,
+          "duration": "60 minutes, plus home trays",
+          "price_label": "From $320",
+          "intro": "Whitening works on natural teeth and does not change fillings or crowns. We check your teeth and gums first, so we know it is a good fit.",
+          "what_happens": "A short check of your teeth and gums, and a chat about the shade you would like.\nWe take moulds for your custom trays, or apply a gel in the chair, depending on your plan.\nYou get clear instructions for using the gel at home and how long to wear the trays.\nWe see you again to check how your teeth and gums are doing.",
+          "aftercare": "Some people feel brief sensitivity. A toothpaste for sensitive teeth can help.\nDark drinks such as coffee and red wine can dull the shade again, so cut back for the first days.\nHow much the shade changes differs from person to person.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "b0",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We do not whiten teeth when there is untreated decay or gum disease. Those come first.",
+                  "_key": "b0s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b1",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Is whitening for everyone?",
+                  "_key": "b1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Not always. We do not recommend it during pregnancy, and it will not change the colour of crowns or fillings. The dentist will talk through your options.",
+                  "_key": "b2s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "photo": "/images/tooth-sign.webp"
+        }
+      },
+      {
+        "id": "childrens-dentistry",
+        "slug": "childrens-dentistry",
+        "status": "published",
+        "data": {
+          "title": "Children's dentistry",
+          "summary": "Short, calm visits for children, starting from their first teeth.",
+          "icon": "smile",
+          "featured": false,
+          "position": 40,
+          "duration": "30 minutes",
+          "price_label": "From $70",
+          "intro": "We keep children's visits short and explain each step in plain words. Parents are welcome in the room the whole time.",
+          "what_happens": "We say hello in the waiting room and show your child the chair and the light.\nThe dentist counts and checks their teeth and talks about brushing.\nA gentle clean and, if suitable, a fluoride varnish.\nYour child picks a sticker and we book the next visit.",
+          "aftercare": "Help young children brush until they can tie their own shoelaces.\nUse a smear of toothpaste under three years old, and a pea-sized amount after that.\nCall us if your child has a knock to a tooth, even if it looks fine.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "b0",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Bring a favourite toy if it helps. Let us know if your child has had a hard time at a dentist before.",
+                  "_key": "b0s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b1",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When should a child first visit?",
+                  "_key": "b1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Around their first birthday, or when the first tooth appears. Early visits are mostly about getting used to the room.",
+                  "_key": "b2s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "photo": "/images/patient-smile.webp"
+        }
+      },
+      {
+        "id": "emergency-appointments",
+        "slug": "emergency-appointments",
+        "status": "published",
+        "data": {
+          "title": "Emergency appointments",
+          "summary": "Same-day slots for toothache, a broken tooth or a lost filling.",
+          "icon": "bolt",
+          "featured": false,
+          "position": 50,
+          "duration": "30 minutes",
+          "price_label": "Ask at reception",
+          "intro": "We keep a few slots free each day for urgent problems. Call as early as you can and tell the receptionist what has happened.",
+          "what_happens": "Call the clinic. We ask a few questions to see how quickly you need to be seen.\nThe dentist looks at the problem and may take an X-ray.\nWe ease the pain and fix the problem where we can, or make a plan for the next visit.\nWe tell you what to do at home until your next appointment.",
+          "aftercare": "Rinse gently with warm salt water. Take pain relief as directed on the packet.\nKeep a knocked-out adult tooth in milk, not water, and call us straight away.\nIf you have swelling that makes breathing or swallowing hard, call emergency services.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "b0",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Emergency slots are for urgent problems. For anything that can wait a few days, a regular appointment is better.",
+                  "_key": "b0s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b1",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What counts as an emergency?",
+                  "_key": "b1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Severe pain, a broken or knocked-out tooth, swelling in your face or gum, or bleeding that will not stop. If you are not sure, call and ask.",
+                  "_key": "b2s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "photo": "/images/lamp.webp"
+        }
+      },
+      {
+        "id": "dental-hygiene",
+        "slug": "dental-hygiene",
+        "status": "published",
+        "data": {
+          "title": "Dental hygiene",
+          "summary": "A longer clean with advice on brushing and cleaning between teeth.",
+          "icon": "drop",
+          "featured": false,
+          "position": 60,
+          "duration": "40 minutes",
+          "price_label": "From $110",
+          "intro": "A hygiene visit is a thorough clean of the surfaces a toothbrush cannot reach, plus practical advice you can use at home.",
+          "what_happens": "The hygienist checks your gums and measures any gaps around the teeth.\nPlaque and tartar are removed above and below the gum line.\nYour teeth are polished and we show you where you are missing spots.\nWe suggest a brush, floss or interdental brushes that suit your mouth.",
+          "aftercare": "Your gums may feel tender and bleed a little for a day or two.\nClean between your teeth once a day. It matters as much as brushing.\nBook your next visit before you leave so it does not slip.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "b0",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "You can book a hygiene visit on its own, without seeing the dentist the same day.",
+                  "_key": "b0s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b1",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Does it replace a check-up?",
+                  "_key": "b1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "No. The dentist still needs to look at your teeth and mouth. Many people book the two on the same day.",
+                  "_key": "b2s"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "photo": "/images/approach-room.webp"
+        }
+      }
+    ],
+    "people": [
+      {
+        "id": "ana-reyes",
+        "slug": "ana-reyes",
+        "status": "published",
+        "data": {
+          "title": "Dr. Ana Reyes",
+          "role": "Dentist",
+          "position": 10,
+          "photo": "/images/team-ana.webp",
+          "summary": "Sees adults and teenagers for check-ups, fillings and whitening. Runs the clinic day to day.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "b0",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Ana looks after adult and teenage patients and leads the clinical side of the practice. She likes to explain what she sees on the screen before she picks up an instrument.",
+                  "_key": "b0s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b1",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "At the clinic",
+                  "_key": "b1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Ask Ana about check-ups, fillings and whitening. She keeps a jar of spare toothbrushes at the front desk for anyone who forgets theirs.",
+                  "_key": "b2s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "tom-hale",
+        "slug": "tom-hale",
+        "status": "published",
+        "data": {
+          "title": "Dr. Tom Hale",
+          "role": "Dentist",
+          "position": 20,
+          "photo": "/images/team-tom.webp",
+          "summary": "Takes most emergency appointments and repairs broken or worn teeth.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "b0",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Tom takes most of our same-day emergency appointments. He works through the problem calmly, explains the options and lets you decide.",
+                  "_key": "b0s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b1",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "At the clinic",
+                  "_key": "b1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "He also repairs chipped and worn teeth. Tom runs on Wednesday evenings, when the clinic is open until 19:00.",
+                  "_key": "b2s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "luis-ortega",
+        "slug": "luis-ortega",
+        "status": "published",
+        "data": {
+          "title": "Dr. Luis Ortega",
+          "role": "Dentist",
+          "position": 30,
+          "photo": "/images/team-luis.webp",
+          "summary": "Sees children and nervous patients, and keeps those visits short and unhurried.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "b0",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Luis sees our youngest patients and anyone who feels uneasy about the dentist. He starts by listening, and nothing happens until you are ready.",
+                  "_key": "b0s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b1",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "At the clinic",
+                  "_key": "b1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Families often book back-to-back slots with Luis so parents and children can come together.",
+                  "_key": "b2s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "priya-nair",
+        "slug": "priya-nair",
+        "status": "published",
+        "data": {
+          "title": "Priya Nair",
+          "role": "Dental hygienist",
+          "position": 40,
+          "photo": "/images/team-priya.webp",
+          "summary": "Runs hygiene visits and shows you how to clean the spots a brush misses.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "b0",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Priya runs our hygiene visits. She is happy to show you how to use floss or interdental brushes until it feels natural.",
+                  "_key": "b0s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b1",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "At the clinic",
+                  "_key": "b1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "You can book a hygiene visit with Priya on its own or on the same day as a check-up.",
+                  "_key": "b2s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "nora-quinn",
+        "slug": "nora-quinn",
+        "status": "published",
+        "data": {
+          "title": "Nora Quinn",
+          "role": "Practice manager",
+          "position": 50,
+          "photo": "/images/team-nora.webp",
+          "summary": "Looks after bookings and reception, and is the first voice when you call.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "b0",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Nora looks after the front desk, the diary and the paperwork. If you need to move an appointment or ask about costs, she is the person to ask.",
+                  "_key": "b0s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b1",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "At the clinic",
+                  "_key": "b1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "b2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Nora can give you an estimate before treatment starts, so there are no surprises at the desk.",
+                  "_key": "b2s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "points": [
+      {
+        "id": "hero-kinder",
+        "data": {
+          "title": "A kinder\nexperience",
+          "icon": "leaf",
+          "place": "hero",
+          "position": 10
+        },
+        "slug": "hero-kinder",
+        "status": "published"
+      },
+      {
+        "id": "hero-tech",
+        "data": {
+          "title": "Modern\ntechnology",
+          "icon": "tooth",
+          "place": "hero",
+          "position": 20
+        },
+        "slug": "hero-tech",
+        "status": "published"
+      },
+      {
+        "id": "hero-team",
+        "data": {
+          "title": "A friendly\nteam",
+          "icon": "people",
+          "place": "hero",
+          "position": 30
+        },
+        "slug": "hero-team",
+        "status": "published"
+      },
+      {
+        "id": "app-preventive",
+        "data": {
+          "title": "Preventive care",
+          "text": "For lifelong oral health",
+          "icon": "tooth",
+          "place": "approach",
+          "position": 10
+        },
+        "slug": "app-preventive",
+        "status": "published"
+      },
+      {
+        "id": "app-comfort",
+        "data": {
+          "title": "Comfort first",
+          "text": "A relaxed, supportive environment",
+          "icon": "leaf",
+          "place": "approach",
+          "position": 20
+        },
+        "slug": "app-comfort",
+        "status": "published"
+      },
+      {
+        "id": "app-personal",
+        "data": {
+          "title": "Personalised care",
+          "text": "Treatments tailored to you",
+          "icon": "smile",
+          "place": "approach",
+          "position": 30
+        },
+        "slug": "app-personal",
+        "status": "published"
+      }
+    ],
+    "steps": [
+      {
+        "id": "step-arrive",
+        "data": {
+          "title": "Arrive a few minutes early",
+          "text": "New patients fill in a short health form at the desk. It takes about ten minutes, and you can do it on paper or on our tablet.",
+          "position": 10
+        },
+        "slug": "step-arrive",
+        "status": "published"
+      },
+      {
+        "id": "step-talk",
+        "data": {
+          "title": "Talk before we start",
+          "text": "The dentist asks what brought you in, what you want from the visit and whether anything makes you uneasy.",
+          "position": 20
+        },
+        "slug": "step-talk",
+        "status": "published"
+      },
+      {
+        "id": "step-check",
+        "data": {
+          "title": "A check and a clean",
+          "text": "We look at your teeth and gums, take X-rays only if they are needed, and clean your teeth.",
+          "position": 30
+        },
+        "slug": "step-check",
+        "status": "published"
+      },
+      {
+        "id": "step-plan",
+        "data": {
+          "title": "A clear plan and a price",
+          "text": "You leave with a written plan and an estimate for any treatment. Nothing is booked until you say yes.",
+          "position": 40
+        },
+        "slug": "step-plan",
+        "status": "published"
+      }
+    ],
+    "clinic": [
+      {
+        "id": "clinic",
+        "slug": "clinic",
+        "status": "published",
+        "data": {
+          "title": "PearlDental",
+          "street": "Suite 2, 14 Harbour Lane",
+          "locality": "Alderbank, OR 97000",
+          "country": "United States",
+          "phone": "+1 503 555 0118",
+          "email": "hello@pearldental.example",
+          "hours": "Monday|8:00 to 17:00\nTuesday|8:00 to 17:00\nWednesday|10:00 to 19:00\nThursday|8:00 to 17:00\nFriday|8:00 to 15:00\nSaturday (1st and 3rd)|9:00 to 13:00\nSunday|Closed",
+          "emergency_note": "For a dental emergency, call the clinic as early as you can. We keep a few slots free each day for urgent problems. If you have swelling that makes breathing or swallowing hard, or bleeding that will not stop, call emergency services.",
+          "response_note": "This form sends a request only. The front desk replies by email or phone within one working day to confirm a time. Please do not include medical details here. Tell the dentist in person."
+        }
+      }
+    ]
+  }
+}

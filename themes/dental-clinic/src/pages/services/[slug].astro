@@ -1,0 +1,117 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import ServiceItem from "../../components/ServiceItem.astro";
+import BookBand from "../../components/BookBand.astro";
+import { getClinic, getServices, lines, photoSrc } from "../../lib/clinic";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: service, cacheHint } = await getEmDashEntry("services", slug);
+if (!service) return Astro.rewrite("/404");
+
+const [allResult, clinicResult, settings] = await Promise.all([getServices(), getClinic(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(clinicResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(service, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = service.data;
+const cover = photoSrc(d.image, d.photo);
+const others = allResult.entries.filter((s) => s.data.id !== d.id);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "services", id: d.id, slug }}
+	current="/services"
+>
+	<header class="page-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/services">Services</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class="detail-top">
+				<div>
+					<p class="eyebrow">Service</p>
+					<h1 class="display display-xl" {...service.edit.title}>{d.title}</h1>
+					<span class="rule" aria-hidden="true"></span>
+					<p class="lede">{d.intro ?? d.summary}</p>
+					<dl class="facts">
+						{d.duration && <div><dt>Appointment</dt><dd>{d.duration}</dd></div>}
+						{d.price_label && <div><dt>Price</dt><dd>{d.price_label}</dd></div>}
+					</dl>
+					<p class="row-actions">
+						<a class="btn" href={`/contact?service=${encodeURIComponent(d.slug ?? d.id)}`}>Request this visit <Arrow /></a>
+					</p>
+				</div>
+				{cover && <img src={cover} alt="" width="800" height="680" fetchpriority="high" />}
+			</div>
+		</div>
+	</header>
+
+	<section class="page-body">
+		<div class="wrap detail-body">
+			<div>
+				<div class="prose">
+					{d.content && d.content.length > 0 ? <PortableText value={d.content} /> : <p>{d.summary}</p>}
+				</div>
+			</div>
+			<aside aria-label="At the visit">
+				{
+					lines(d.what_happens).length > 0 && (
+						<div class="side-card">
+							<h2>What happens</h2>
+							<ol class="checks">
+								{lines(d.what_happens).map((l) => <li>{l}</li>)}
+							</ol>
+						</div>
+					)
+				}
+				{
+					lines(d.aftercare).length > 0 && (
+						<div class="side-card">
+							<h2>Aftercare basics</h2>
+							<ul class="checks is-dots">
+								{lines(d.aftercare).map((l) => <li>{l}</li>)}
+							</ul>
+						</div>
+					)
+				}
+			</aside>
+		</div>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="section section-pale" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="section-head section-head-row">
+						<div class="section-head">
+							<p class="eyebrow">More services</p>
+							<h2 id="more-title" class="display">Other visits.</h2>
+						</div>
+						<a class="text-link" href="/services">All services <Arrow /></a>
+					</div>
+					<ul class="more-grid">
+						{others.slice(0, 4).map((s) => <li><ServiceItem service={s} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<BookBand clinic={clinicResult.clinic} />
+</Base>

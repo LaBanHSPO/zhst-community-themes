@@ -1,0 +1,21 @@
+---
+import { entryHref, photoSrc } from "../lib/clinic";
+
+interface Props {
+	person: { data: { id: string; slug: string | null; title: string; role: string; summary?: string | null; image?: { src?: string } | null; photo?: string | null } };
+	heading?: "h2" | "h3";
+}
+const { person, heading = "h2" } = Astro.props;
+const d = person.data;
+const src = photoSrc(d.image, d.photo);
+const Tag = heading;
+---
+
+<article class="person-card">
+	<a href={entryHref("/team", d)}>
+		{src && <img class="person-photo" src={src} alt={`Portrait of ${d.title}`} width="520" height="650" loading="lazy" decoding="async" />}
+		<Tag>{d.title}</Tag>
+	</a>
+	<p class="person-role">{d.role}</p>
+	{d.summary && <p>{d.summary}</p>}
+</article>
