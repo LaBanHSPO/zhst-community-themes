@@ -1,0 +1,1177 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "NatureTours",
+    "description": "A nature tour operator theme with a full-bleed alpine hero, a tour collection with departures, level and region filters, destinations, a how-we-travel page, an about page and an enquiry form, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "NatureTours",
+    "tagline": "Small group nature tours"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "tours",
+      "label": "Tours",
+      "labelSingular": "Tour",
+      "urlPattern": "/tours/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Tour name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "country",
+          "label": "Country (matches a destination)",
+          "type": "string",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "slug": "region",
+          "label": "Region",
+          "type": "select",
+          "required": true,
+          "defaultValue": "europe",
+          "validation": {
+            "options": [
+              "europe",
+              "north-america",
+              "oceania",
+              "south-america"
+            ]
+          },
+          "indexed": true
+        },
+        {
+          "slug": "level",
+          "label": "Activity level",
+          "type": "select",
+          "required": true,
+          "defaultValue": "moderate",
+          "validation": {
+            "options": [
+              "gentle",
+              "moderate",
+              "active"
+            ]
+          },
+          "indexed": true
+        },
+        {
+          "slug": "group_max",
+          "label": "Largest group (guests)",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "slug": "focus",
+          "label": "Focus",
+          "type": "select",
+          "required": true,
+          "defaultValue": "landscape",
+          "validation": {
+            "options": [
+              "landscape",
+              "wildlife"
+            ]
+          }
+        },
+        {
+          "slug": "days",
+          "label": "Days",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "slug": "season",
+          "label": "Best months",
+          "type": "string"
+        },
+        {
+          "slug": "price_from",
+          "label": "From price per person, whole dollars (placeholder)",
+          "type": "integer"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph (detail page)",
+          "type": "text"
+        },
+        {
+          "slug": "itinerary",
+          "label": "Daily outline (one per line, as Day|What happens)",
+          "type": "text"
+        },
+        {
+          "slug": "includes",
+          "label": "What is included (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "pack",
+          "label": "What to pack (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "departures",
+          "label": "Departures (one per line, as YYYY-MM-DD|Open, Few places or Full)",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Extra tour page content",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "destinations",
+      "label": "Destinations",
+      "labelSingular": "Destination",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Country",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "region",
+          "label": "Region",
+          "type": "select",
+          "required": true,
+          "defaultValue": "europe",
+          "validation": {
+            "options": [
+              "europe",
+              "north-america",
+              "oceania",
+              "south-america"
+            ]
+          },
+          "indexed": true
+        },
+        {
+          "slug": "season",
+          "label": "Best months",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Description",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "pillars",
+      "label": "Home icon row",
+      "labelSingular": "Home icon",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Label (use a line break after the first word or two)",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "icon",
+          "label": "Icon",
+          "type": "select",
+          "required": true,
+          "defaultValue": "leaf",
+          "validation": {
+            "options": [
+              "leaf",
+              "group",
+              "mountains"
+            ]
+          }
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "practices",
+      "label": "How we travel",
+      "labelSingular": "Practice",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Practice",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "figure",
+          "label": "Short figure shown large (e.g. 12)",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Explanation",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "team",
+      "label": "Team",
+      "labelSingular": "Team member",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "role",
+          "label": "Role",
+          "type": "string"
+        },
+        {
+          "slug": "bio",
+          "label": "Short bio",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "company",
+      "label": "Company details",
+      "labelSingular": "Company details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Company name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "street",
+          "label": "Street address",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "locality",
+          "label": "Town, state and ZIP",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "country",
+          "label": "Country",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Enquiry email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "office",
+          "label": "Phone hours (one per line, as Day|Hours)",
+          "type": "text"
+        },
+        {
+          "slug": "enquiry_note",
+          "label": "Note shown beside the enquiry form",
+          "type": "text"
+        },
+        {
+          "slug": "included",
+          "label": "Usually included (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "not_included",
+          "label": "Not included (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "licence_note",
+          "label": "Licences and insurance (owner to fill in)",
+          "type": "text"
+        },
+        {
+          "slug": "memberships_note",
+          "label": "Memberships (owner to fill in)",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Tours",
+          "url": "/tours"
+        },
+        {
+          "type": "custom",
+          "label": "Destinations",
+          "url": "/destinations"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "A small team that walks what it sells.",
+          "eyebrow": "About",
+          "intro": "NatureTours is five people who plan and lead small-group walking tours. This page says who we are and how a tour runs.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We started in 2019 with one lead guide and four departures in Norway. Seven years later there are five of us and about thirty departures a year, in seven countries. Every tour is written by someone who has walked it, and most are led by one of us.",
+                  "_key": "k1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k2",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How a tour runs",
+                  "_key": "k2s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Groups meet on the evening before the first walk, check kit and go over the route. Each day has one main walk and a plan B for bad weather. You carry a daypack. Where bags need moving, a vehicle or a pack team does it.",
+                  "_key": "k3s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k4",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Guides carry a first aid kit, a satellite messenger and the phone numbers of every hut and guesthouse on the route. Each tour has a spare day or a shorter route for weather.",
+                  "_key": "k4s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Prices and bookings",
+                  "_key": "k5s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k6",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Prices on this site are listed as from prices for a shared room. The final price depends on the departure and on whether you want a single room. We send a written quote and nothing is charged until you accept it and pay the deposit.",
+                  "_key": "k6s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "approach",
+        "slug": "approach",
+        "status": "published",
+        "data": {
+          "title": "How we travel",
+          "eyebrow": "How we travel",
+          "intro": "Concrete rules we follow on every tour. They are short on purpose, so you can check us against them.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Group size",
+                  "_key": "k7s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k8",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "No tour has more than 12 guests, and most have 8 or 10. Small groups use small guesthouses and huts, walk quietly and fit on narrow trails. If a departure has fewer than six guests we ask everyone before we run it.",
+                  "_key": "k8s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Local guides",
+                  "_key": "k9s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k10",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Every tour has a guide who lives in the region it runs in. Above six guests a second guide joins. Local guides choose the route on the day, because they know which trail is flooded and which hut has changed hands.",
+                  "_key": "k10s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "On the trail",
+                  "_key": "k11s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We walk on marked paths and camp only in marked sites. We keep at least 100 m from bears and 30 m from other wildlife. We do not feed animals, use drones or follow a track made by an animal. If an animal changes its behaviour, we leave.",
+                  "_key": "k12s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Waste and water",
+                  "_key": "k13s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We pack out everything we bring, including food scraps and toilet paper on trails without toilets. Guesthouses and huts refill water bottles. We do not hand out single-use bottles or sachets.",
+                  "_key": "k14s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Where we sleep and eat",
+                  "_key": "k15s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We use family-run guesthouses and mountain huts where they exist. Meals come from the place we are staying or the nearest village shop. We ask about allergies and diets at booking and tell each host before we arrive.",
+                  "_key": "k16s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we do not claim",
+                  "_key": "k17s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We have not measured our carbon footprint and we do not sell offsets. Flights are the largest part of any trip, and they are not in our price. We would rather say that than print a badge.",
+                  "_key": "k18s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "tours": [
+      {
+        "id": "fjordlight-coast",
+        "slug": "fjordlight-coast",
+        "status": "published",
+        "data": {
+          "title": "Fjordlight Coast",
+          "summary": "Eight days of short walks and boat trips on the Norwegian coast, watching for sea eagles, seals and otters.",
+          "country": "Norway",
+          "region": "europe",
+          "level": "gentle",
+          "group_max": 10,
+          "focus": "wildlife",
+          "days": 8,
+          "season": "June to August",
+          "price_from": 4950,
+          "featured": true,
+          "photo": "/images/t-fjord.webp",
+          "intro": "Most days have one walk of two to four hours and one boat trip. There is time to sit and watch, and the guides carry a spotting scope.",
+          "itinerary": "Day 1|Meet in Bodø at 4 pm. Welcome dinner, then a short talk on the week's walks and the animals we may see.\nDay 2|Ferry to the island of Sundal. A flat three-hour walk along the shore to a sea eagle viewpoint. Two nights in a family guesthouse.\nDay 3|Morning boat trip with a local skipper to the seal skerries. Afternoon walk to a beach with an old fishing hut.\nDay 4|Drive and ferry to Brekkevik. Walk to the headland at low tide, then dinner of fish bought from the harbour that day.\nDay 5|Early start for otters at the river mouth. Back for breakfast, then a free afternoon or a four-hour hill walk.\nDay 6|Coastal bus and a short ferry to the outer islands. Walk across the moor to the lighthouse and stay in the keeper's cottages.\nDay 7|Slow morning, then a boat back to the mainland and a last walk above the fjord. Farewell dinner.\nDay 8|Breakfast and transfer to Bodø airport for flights after 11 am.",
+          "includes": "Seven nights in guesthouses and cottages, shared rooms for two\nAll breakfasts, six dinners and packed lunches on walking days\nFerries, boat trips and ground transport in the plan\nTwo local guides, one for every six guests\nUse of binoculars and a spotting scope",
+          "pack": "Waterproof jacket and trousers\nWalking shoes or light boots with a good grip\nBinoculars if you own a pair (we lend them if not)\nWarm hat and gloves, even in July\nWool or fleece layers\nSmall daypack, 20 to 25 litres\nReusable water bottle",
+          "departures": "2027-06-12|Open\n2027-07-10|Few places\n2027-08-07|Open",
+          "position": 10
+        }
+      },
+      {
+        "id": "waterfall-valley-traverse",
+        "slug": "waterfall-valley-traverse",
+        "status": "published",
+        "data": {
+          "title": "Waterfall Valley Traverse",
+          "summary": "Nine days on foot through a glacial valley in British Columbia, with two nights in backcountry huts.",
+          "country": "Canada",
+          "region": "north-america",
+          "level": "active",
+          "group_max": 8,
+          "focus": "landscape",
+          "days": 9,
+          "season": "July to September",
+          "price_from": 5800,
+          "featured": true,
+          "photo": "/images/t-falls.webp",
+          "intro": "Six full walking days of 12 to 18 km with up to 1,000 m of climbing. Your bag is carried between the two huts by a pack team; you carry a daypack.",
+          "itinerary": "Day 1|Meet in Pemberly at 5 pm. Kit check and a briefing on bears, weather and the route.\nDay 2|Shuttle to the valley road end. Walk 14 km up through old cedar forest to Larch Hollow Lodge.\nDay 3|Rest-day option: an easy 6 km loop to the first waterfall, or stay at the lodge. The full group walks together after lunch.\nDay 4|Climb 900 m to the hanging valley and the head of the main falls. 16 km, lunch at a stream.\nDay 5|Cross the ridge at 2,100 m and descend to Cairn Hut. Long day, 18 km, with a picnic stop at the lake.\nDay 6|Walk the high ledge above the glacier and return to Cairn Hut by a different path. 12 km.\nDay 7|Descend 1,000 m to the river and the shuttle pick-up. Showers and dinner in town.\nDay 8|Spare day for weather. If we do not need it, a half-day paddle on the lake.\nDay 9|Breakfast and transfer to Pemberly for flights after 1 pm.",
+          "includes": "Two nights in a lodge and two in huts, bunk rooms of four to six\nAll meals from dinner on day 1 to breakfast on day 9\nBags carried between huts\nTwo local guides, one for every six guests\nBear spray and a satellite messenger carried by the guides",
+          "pack": "Broken-in waterproof boots\nWaterproof jacket and trousers\nTrekking poles (a pair, folding)\nSleeping sheet for the huts\nHeadlamp with spare batteries\nLayers for 0 to 25 degrees C\nDaypack, 30 litres\nSun hat, sunglasses and sun cream",
+          "departures": "2027-07-17|Open\n2027-08-14|Few places\n2027-09-04|Full",
+          "position": 20
+        }
+      },
+      {
+        "id": "three-lakes-circuit",
+        "slug": "three-lakes-circuit",
+        "status": "published",
+        "data": {
+          "title": "Three Lakes Circuit",
+          "summary": "Seven days around three Swiss lakes, with a lift up each morning and a long walk down.",
+          "country": "Switzerland",
+          "region": "europe",
+          "level": "moderate",
+          "group_max": 12,
+          "focus": "landscape",
+          "days": 7,
+          "season": "June to September",
+          "price_from": 5400,
+          "featured": true,
+          "photo": "/images/t-peaks.webp",
+          "intro": "Cable cars and mountain railways take care of the climbing. The walking is mostly downhill or flat, five to seven hours a day on good paths.",
+          "itinerary": "Day 1|Meet at the station in Alpenau at 5 pm. Dinner at the hotel and a look at the map.\nDay 2|Train and cable car to the first lake. A 12 km walk along the shore and down through meadows to the village.\nDay 3|Boat across the lake and a steep but short climb to a viewpoint above the glacier. Lunch at an alpine dairy.\nDay 4|Bus to the pass. A 14 km ridge walk to the second lake, with an option to cut it to 9 km.\nDay 5|Free morning in the village. Afternoon walk through larch woods to the third lake, where we swim if the weather allows.\nDay 6|The longest day: 16 km along the old mule track. Dinner is a fondue night at the hut.\nDay 7|Short walk before breakfast, then the train back to Alpenau for departures after 12 noon.",
+          "includes": "Six nights in small hotels and mountain inns\nBreakfasts, five dinners and two picnic lunches\nAll lifts, boats, trains and buses in the plan\nA Swiss-qualified mountain guide and a second guide for groups above six",
+          "pack": "Walking boots with ankle support\nWaterproof jacket\nTrekking poles\nSwimwear and a small quick-dry towel\nSun cream and a hat\nA warm layer, nights are cool at altitude\nDaypack, 25 litres\nReusable water bottle, there are fountains on every route",
+          "departures": "2027-06-19|Open\n2027-07-24|Few places\n2027-09-11|Open",
+          "position": 30
+        }
+      },
+      {
+        "id": "highlands-midnight-sun",
+        "slug": "highlands-midnight-sun",
+        "status": "published",
+        "data": {
+          "title": "Highlands in the Midnight Sun",
+          "summary": "Nine days in the Icelandic highlands in June and July, with long light, puffins and wide lava country.",
+          "country": "Iceland",
+          "region": "europe",
+          "level": "moderate",
+          "group_max": 10,
+          "focus": "wildlife",
+          "days": 9,
+          "season": "June to July",
+          "price_from": 6200,
+          "featured": false,
+          "photo": "/images/t-ridge.webp",
+          "intro": "Walking days of four to seven hours. Daylight lasts almost all night, so we start late on some days and walk in the evening on others.",
+          "itinerary": "Day 1|Meet at Reykjavik airport hotel at 6 pm. Welcome dinner.\nDay 2|Drive south along the coast. Walk the cliffs at Vikurdal where puffins nest. Two nights at a farm guesthouse.\nDay 3|Hike to a hot river in the next valley and bathe. 10 km round trip.\nDay 4|Highland road in a 4x4 bus to the lava fields. Easy 12 km walk between craters.\nDay 5|Walk to the rim of the main crater and across a ridge of coloured rhyolite hills. 15 km.\nDay 6|Slow morning at the hut. Afternoon walk to a river canyon where arctic foxes den.\nDay 7|Drive back to the coast. Evening seal-watching walk on the black beach.\nDay 8|Free morning, then a boat trip to a bird island if the sea allows. Farewell dinner.\nDay 9|Transfer to Reykjavik airport for flights after 1 pm.",
+          "includes": "Eight nights in guesthouses and mountain huts\nBreakfasts, packed lunches and seven dinners\n4x4 bus and boat trips in the plan\nTwo local guides\nAn eye mask each, because the nights are bright",
+          "pack": "Waterproof boots\nRain jacket and trousers\nSwimsuit for the hot river\nEye mask and earplugs for the huts\nWarm hat and gloves\nBinoculars if you have them\nDaypack, 25 litres",
+          "departures": "2027-06-05|Open\n2027-06-26|Few places\n2027-07-17|Open",
+          "position": 40
+        }
+      },
+      {
+        "id": "southern-lakes-walks",
+        "slug": "southern-lakes-walks",
+        "status": "published",
+        "data": {
+          "title": "Southern Lakes Walks",
+          "summary": "Ten gentle days around the lakes and valleys of New Zealand's South Island, with half-day walks and long lunches.",
+          "country": "New Zealand",
+          "region": "oceania",
+          "level": "gentle",
+          "group_max": 10,
+          "focus": "landscape",
+          "days": 10,
+          "season": "November to March",
+          "price_from": 6900,
+          "featured": false,
+          "photo": "/images/t-shore.webp",
+          "intro": "Three to five hours of walking on most days, never more than 400 m of climbing. A van follows the group, so anyone can skip a stretch.",
+          "itinerary": "Day 1|Meet in Queenstown at 4 pm. Welcome dinner by the lake.\nDay 2|Lakeside walk to a swimming beach, then a boat trip to a sheep station for lunch. 8 km.\nDay 3|Valley walk beside a braided river. Afternoon at a small winery with a short tasting.\nDay 4|Drive over the pass to Wanaka. Short climb to a hilltop with views over two lakes. 6 km.\nDay 5|Kayak on the lake in the morning for those who want to. Walk to a waterfall in the afternoon.\nDay 6|Drive to the rainforest side. Boardwalk and forest walk with a guide who knows the birds. 7 km.\nDay 7|Boat to a glacier lagoon. A flat 10 km riverside walk with a picnic.\nDay 8|Return drive with a stop at a lakeside café. Free evening.\nDay 9|Ridge walk above the lake, 11 km, with the van meeting us halfway.\nDay 10|Breakfast and transfer to Queenstown airport for flights after 12 noon.",
+          "includes": "Nine nights in lodges and small hotels\nBreakfasts, packed lunches and eight dinners\nAll transport including the support van\nLocal guide and a second guide for groups above six\nKayak hire on day 5",
+          "pack": "Light walking boots or trail shoes\nSun hat, sunglasses and strong sun cream\nRain jacket\nFleece for evenings\nSwimwear\nInsect repellent for the sandflies\nDaypack, 20 litres",
+          "departures": "2027-02-06|Open\n2027-03-06|Few places\n2027-11-13|Open",
+          "position": 50
+        }
+      },
+      {
+        "id": "patagonia-forest-and-ice",
+        "slug": "patagonia-forest-and-ice",
+        "status": "published",
+        "data": {
+          "title": "Patagonia Forest and Ice",
+          "summary": "Eleven days in southern Chile with condors, guanacos and a long walk to a glacier lake.",
+          "country": "Chile",
+          "region": "south-america",
+          "level": "active",
+          "group_max": 8,
+          "focus": "wildlife",
+          "days": 11,
+          "season": "November to March",
+          "price_from": 7300,
+          "featured": true,
+          "photo": "/images/t-trail.webp",
+          "intro": "Eight walking days of 10 to 20 km in wind that can reach 60 km/h. Camps are fixed and equipped; you carry a daypack only.",
+          "itinerary": "Day 1|Meet in Punta Arenas at 6 pm. Briefing and dinner.\nDay 2|Drive five hours to Puerto Natal. Afternoon walk along the shore to look for flamingos. 6 km.\nDay 3|Enter the national park. Walk 14 km across steppe where guanacos graze, to the first camp.\nDay 4|Climb to the lookout over the three granite towers. 17 km, with a long lunch at the viewpoint.\nDay 5|Walk the valley floor through lenga forest to a second camp on a river. 15 km.\nDay 6|Condor day: an early walk to the cliff where they roost, then a loop back via a hot meal at camp. 12 km.\nDay 7|Longest day: 20 km to the glacier lake, with a short boat trip across it.\nDay 8|Rest morning at the lodge. Optional ice walk with a licensed glacier guide.\nDay 9|Return along the lake shore by boat and bus. Easy afternoon.\nDay 10|Drive back to Punta Arenas. Farewell dinner.\nDay 11|Breakfast and transfer to the airport for flights after 11 am.",
+          "includes": "Four nights in lodges and six in fixed, equipped camps\nAll meals from dinner on day 1 to breakfast on day 11\nPark fees, boats and ground transport\nTwo local guides, one for every six guests\nTents, sleeping mats and a cook at the camps",
+          "pack": "Waterproof boots, worn in\nWindproof shell jacket and trousers\nSleeping bag rated to 0 degrees C\nTrekking poles\nWarm layers and a beanie\nSunglasses with side cover\nDaypack, 30 litres\nGaiters for the dust and scree",
+          "departures": "2027-01-16|Few places\n2027-02-13|Open\n2027-11-20|Open",
+          "position": 60
+        }
+      },
+      {
+        "id": "rockies-wildlife-week",
+        "slug": "rockies-wildlife-week",
+        "status": "published",
+        "data": {
+          "title": "Rockies Wildlife Week",
+          "summary": "Seven days of easy walks and slow drives in the Canadian Rockies, looking for elk, bighorn sheep and bears from a safe distance.",
+          "country": "Canada",
+          "region": "north-america",
+          "level": "gentle",
+          "group_max": 8,
+          "focus": "wildlife",
+          "days": 7,
+          "season": "May to September",
+          "price_from": 4700,
+          "featured": true,
+          "photo": "/images/t-spruce.webp",
+          "intro": "Walks are two to four hours on wide trails. Most wildlife watching is at dawn and dusk, so mornings start early and afternoons are free.",
+          "itinerary": "Day 1|Meet in Cedar Flats at 5 pm. Briefing on wildlife safety and how we watch animals without disturbing them.\nDay 2|Dawn drive along the valley road to look for elk. Easy lake walk after breakfast. 5 km.\nDay 3|Bighorn sheep ridge: a short drive and a 6 km walk to a lick where they gather.\nDay 4|Free morning. Afternoon boat on the lake, then a forest walk led by a local First Nations guide.\nDay 5|Berry meadows at dusk, the best place for bears. We watch from a vehicle and from a marked viewing area.\nDay 6|Walk to a waterfall at 9 am, before other visitors arrive. Afternoon at the hot springs.\nDay 7|Breakfast and transfer to Cedar Flats for flights after 12 noon.",
+          "includes": "Six nights in a lodge, shared rooms for two\nBreakfasts and five dinners\nVehicle and fuel, boat trip and hot springs entry\nTwo guides, including a local First Nations guide on day 4\nBinoculars and a spotting scope to borrow",
+          "pack": "Walking shoes or light boots\nWarm layers for dawn starts\nRain jacket\nBinoculars if you own a pair\nNeutral clothing, no bright colours\nReusable water bottle\nDaypack, 20 litres",
+          "departures": "2027-05-29|Open\n2027-06-26|Open\n2027-09-18|Few places",
+          "position": 70
+        }
+      },
+      {
+        "id": "julian-alps-hut-walk",
+        "slug": "julian-alps-hut-walk",
+        "status": "published",
+        "data": {
+          "title": "Julian Alps Hut Walk",
+          "summary": "Six days between mountain huts in Slovenia, with limestone peaks, green valleys and a swim in a river pool.",
+          "country": "Slovenia",
+          "region": "europe",
+          "level": "moderate",
+          "group_max": 12,
+          "focus": "landscape",
+          "days": 6,
+          "season": "June to September",
+          "price_from": 3900,
+          "featured": false,
+          "photo": "/images/t-moss.webp",
+          "intro": "Five to seven hours of walking a day with up to 800 m of climbing. Huts serve hot meals, so you carry a light daypack and one change of clothes.",
+          "itinerary": "Day 1|Meet in Bovec at 4 pm. Dinner and a briefing on the route.\nDay 2|Walk 13 km up the river valley to the first hut. Climb 700 m through beech forest.\nDay 3|Cross the high plateau, 15 km. Lunch at a shepherd's hut where they sell cheese.\nDay 4|Walk down 800 m to a green valley and swim in the river pool. 11 km.\nDay 5|Last climb of the trip, 600 m, to a saddle with views to Italy. Walk down to a village inn.\nDay 6|Breakfast and bus to Ljubljana airport, arriving by 12 noon.",
+          "includes": "Five nights in huts and a village inn, shared rooms\nBreakfasts, five dinners and picnic lunches\nBus transfers at the start and end\nA local mountain guide and a second guide for groups above six",
+          "pack": "Walking boots with good grip on limestone\nWaterproof jacket\nTrekking poles\nHut slippers\nSleeping sheet\nSwimwear\nDaypack, 25 litres\nCash in euros for drinks at huts",
+          "departures": "2027-06-12|Open\n2027-07-17|Few places\n2027-09-04|Open",
+          "position": 80
+        }
+      }
+    ],
+    "destinations": [
+      {
+        "id": "norway",
+        "slug": "norway",
+        "status": "published",
+        "data": {
+          "title": "Norway",
+          "region": "europe",
+          "season": "June to August",
+          "position": 10,
+          "photo": "/images/t-fjord.webp",
+          "intro": "Fjords, small ferries and long summer light. Good for sea eagles, seals and otters."
+        }
+      },
+      {
+        "id": "switzerland",
+        "slug": "switzerland",
+        "status": "published",
+        "data": {
+          "title": "Switzerland",
+          "region": "europe",
+          "season": "June to September",
+          "position": 20,
+          "photo": "/images/t-peaks.webp",
+          "intro": "Lakes and high meadows, reached by trains and lifts that run on time."
+        }
+      },
+      {
+        "id": "iceland",
+        "slug": "iceland",
+        "status": "published",
+        "data": {
+          "title": "Iceland",
+          "region": "europe",
+          "season": "June to July",
+          "position": 30,
+          "photo": "/images/t-ridge.webp",
+          "intro": "Lava fields, hot rivers and sea cliffs with nesting birds. Light nearly all night in June."
+        }
+      },
+      {
+        "id": "slovenia",
+        "slug": "slovenia",
+        "status": "published",
+        "data": {
+          "title": "Slovenia",
+          "region": "europe",
+          "season": "June to September",
+          "position": 40,
+          "photo": "/images/t-moss.webp",
+          "intro": "Limestone peaks and green river valleys, with simple huts and good food."
+        }
+      },
+      {
+        "id": "canada",
+        "slug": "canada",
+        "status": "published",
+        "data": {
+          "title": "Canada",
+          "region": "north-america",
+          "season": "May to September",
+          "position": 50,
+          "photo": "/images/t-falls.webp",
+          "intro": "The Rockies and the Coast Mountains: big valleys, glaciers and wildlife."
+        }
+      },
+      {
+        "id": "new-zealand",
+        "slug": "new-zealand",
+        "status": "published",
+        "data": {
+          "title": "New Zealand",
+          "region": "oceania",
+          "season": "November to March",
+          "position": 60,
+          "photo": "/images/t-shore.webp",
+          "intro": "Lakes and rainforest on the South Island, with easy walking and warm summers."
+        }
+      },
+      {
+        "id": "chile",
+        "slug": "chile",
+        "status": "published",
+        "data": {
+          "title": "Chile",
+          "region": "south-america",
+          "season": "November to March",
+          "position": 70,
+          "photo": "/images/t-trail.webp",
+          "intro": "Patagonian steppe, granite towers and glacier lakes. Windy, wide and quiet."
+        }
+      }
+    ],
+    "pillars": [
+      {
+        "id": "destinations",
+        "slug": "destinations",
+        "status": "published",
+        "data": {
+          "title": "Stunning\nDestinations",
+          "icon": "leaf",
+          "position": 10
+        }
+      },
+      {
+        "id": "groups",
+        "slug": "groups",
+        "status": "published",
+        "data": {
+          "title": "Small\nGroups",
+          "icon": "group",
+          "position": 20
+        }
+      },
+      {
+        "id": "sustainable",
+        "slug": "sustainable",
+        "status": "published",
+        "data": {
+          "title": "A More\nSustainable Way",
+          "icon": "mountains",
+          "position": 30
+        }
+      }
+    ],
+    "practices": [
+      {
+        "id": "group-size",
+        "slug": "group-size",
+        "status": "published",
+        "data": {
+          "title": "Group size",
+          "figure": "12",
+          "text": "No tour has more than 12 guests, and most run with 8 or 10. A group that size fits a guesthouse, sits at one table and walks quietly past wildlife.",
+          "position": 10
+        }
+      },
+      {
+        "id": "local-guides",
+        "slug": "local-guides",
+        "status": "published",
+        "data": {
+          "title": "Local guides",
+          "figure": "1 in 6",
+          "text": "Every group has a guide who lives in the region, and a second guide joins above six guests. One walks at the front and one at the back, so nobody is left behind.",
+          "position": 20
+        }
+      },
+      {
+        "id": "on-trail",
+        "slug": "on-trail",
+        "status": "published",
+        "data": {
+          "title": "On the trail",
+          "figure": "Marked paths",
+          "text": "We stay on marked paths and in marked camps. We keep 100 m from bears and 30 m from other wildlife, and we leave when an animal changes its behaviour.",
+          "position": 30
+        }
+      },
+      {
+        "id": "pack-out",
+        "slug": "pack-out",
+        "status": "published",
+        "data": {
+          "title": "Packing out",
+          "figure": "Zero left",
+          "text": "Each group carries a rubbish bag and takes everything to the next town. Water is refilled at guesthouses and huts, so nobody needs to buy bottles.",
+          "position": 40
+        }
+      }
+    ],
+    "team": [
+      {
+        "id": "mara-lindqvist",
+        "slug": "mara-lindqvist",
+        "status": "published",
+        "data": {
+          "title": "Mara Lindqvist",
+          "role": "Founder and lead guide",
+          "bio": "Mara led walking groups in Norway for nine years before starting NatureTours. She plans the Europe tours and still guides two of them each summer.",
+          "position": 10
+        }
+      },
+      {
+        "id": "callum-reid",
+        "slug": "callum-reid",
+        "status": "published",
+        "data": {
+          "title": "Callum Reid",
+          "role": "Lead guide, Canada",
+          "bio": "Callum grew up in the Rockies and holds a mountain guide certificate. He leads the Waterfall Valley and Rockies tours.",
+          "position": 20
+        }
+      },
+      {
+        "id": "ines-okafor",
+        "slug": "ines-okafor",
+        "status": "published",
+        "data": {
+          "title": "Ines Okafor",
+          "role": "Operations",
+          "bio": "Ines books huts, boats and transfers and checks them again a week before each departure. She also keeps the packing lists current.",
+          "position": 30
+        }
+      },
+      {
+        "id": "tomas-vidal",
+        "slug": "tomas-vidal",
+        "status": "published",
+        "data": {
+          "title": "Tomas Vidal",
+          "role": "Guide, Patagonia and New Zealand",
+          "bio": "Tomas has guided in Chile for eleven years and spends the northern summer in New Zealand. He speaks English, Spanish and some Mapudungun.",
+          "position": 40
+        }
+      },
+      {
+        "id": "pia-hartmann",
+        "slug": "pia-hartmann",
+        "status": "published",
+        "data": {
+          "title": "Pia Hartmann",
+          "role": "Guest support",
+          "bio": "Pia answers the phone and email, helps with flights and fitness questions, and is the person you call from the road.",
+          "position": 50
+        }
+      }
+    ],
+    "company": [
+      {
+        "id": "company",
+        "slug": "company",
+        "status": "published",
+        "data": {
+          "title": "NatureTours",
+          "street": "52 Millrace Road, Unit 3",
+          "locality": "Alder Bend, WA 90000",
+          "country": "United States",
+          "phone": "+1 206 555 0147",
+          "email": "hello@naturetours.example",
+          "office": "Monday to Friday|8:30 am to 5:30 pm Pacific Time\nSaturday|10:00 am to 1:00 pm\nSunday|Closed",
+          "enquiry_note": "We reply within two working days. An enquiry is not a booking. A place is held only after you receive a written confirmation and pay the deposit.",
+          "included": "Accommodation as listed on each tour\nMeals named in the daily outline\nLocal transport in the plan\nGuides and park or hut fees",
+          "not_included": "International flights\nTravel and medical insurance\nVisas and entry fees\nMeals not named in the outline\nTips for guides and drivers",
+          "licence_note": "Placeholder for the owner: seller-of-travel registration numbers, the name of the insurer and the cover limit, and guide qualifications. Nothing here is a real licence or policy.",
+          "memberships_note": "Placeholder for the owner: list the trade associations, conservation groups or park partnerships you actually belong to, with membership numbers where they exist. None are claimed in this sample."
+        }
+      }
+    ]
+  }
+}

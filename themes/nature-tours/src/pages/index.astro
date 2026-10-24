@@ -1,0 +1,151 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import Level from "../components/Level.astro";
+import TourCard from "../components/TourCard.astro";
+import PlanBand from "../components/PlanBand.astro";
+import { allDepartures, daysLabel, getCompany, getPillars, getPractices, getTours, longDate, shortDate } from "../lib/tours";
+
+const [toursResult, pillarsResult, practicesResult, companyResult] = await Promise.all([
+	getTours(),
+	getPillars(),
+	getPractices(),
+	getCompany(),
+]);
+for (const r of [toursResult, pillarsResult, practicesResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const tours = toursResult.tours;
+const featured = tours.filter((t) => t.entry.data.featured).slice(0, 4);
+const shown = featured.length > 0 ? featured : tours.slice(0, 4);
+const departures = allDepartures(tours).filter((d) => d.date >= "2027-01-01").slice(0, 8);
+---
+
+<Base
+	title="NatureTours"
+	description="Small-group walking and wildlife tours in Norway, Canada, Switzerland, Iceland, New Zealand, Chile and Slovenia. No more than 12 guests, local guides, 2027 departures."
+	overlay
+>
+	<section class="hero">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A hiker with a green backpack stands on a rocky outcrop above a forested lake, with snow-capped peaks beyond in golden evening light"
+			width="1448"
+			height="794"
+			fetchpriority="high"
+		/>
+		<div class="hero-wash" aria-hidden="true"></div>
+		<div class="hero-copy">
+			<p class="hero-eyebrow">Wilder places<br />A brighter you</p>
+			<h1>Follow a <br />different path.</h1>
+			<p class="hero-sub">Small groups. Extraordinary places.<br />Nature tours for a more connected world.</p>
+			<a class="btn btn-moss btn-hero" href="/tours">Find your adventure <Arrow /></a>
+		</div>
+		<p class="hero-note"><span class="note-rule" aria-hidden="true"></span><span class="note-words">Explore<br />Respect<br />Belong</span></p>
+	</section>
+
+	<section class="intro" aria-labelledby="intro-title">
+		<div class="intro-inner">
+			<div class="intro-copy">
+				<p class="eyebrow">Nature Tours</p>
+				<h2 id="intro-title" class="display display-heavy">Meaningful journeys <br />in remarkable places.</h2>
+				<p class="intro-text">Thoughtfully designed tours that bring you closer <br class="br-wide" />to nature, to local communities and to what matters.</p>
+			</div>
+			<ul class="pillars">
+				{
+					pillarsResult.entries.map((p) => (
+						<li>
+							<span class="pillar-icon"><Icon name={p.data.icon} /></span>
+							<span class="pillar-label" {...p.edit.title}>
+								{p.data.title.split("\n").map((l: string, i: number) => <>{i > 0 && <br />}{l}</>)}
+							</span>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+
+	<section class="band tours-band" aria-labelledby="tours-title">
+		<div class="band-inner">
+			<div class="band-head">
+				<div>
+					<p class="eyebrow">Tours</p>
+					<h2 id="tours-title" class="display display-heavy">Four tours to start with.</h2>
+				</div>
+				<a class="link-arrow" href="/tours">All {tours.length} tours <Arrow /></a>
+			</div>
+			<ul class="tcard-grid tcard-grid-4">
+				{shown.map((t) => <li><TourCard row={t} /></li>)}
+			</ul>
+		</div>
+	</section>
+
+	<section class="practices" aria-labelledby="practices-title">
+		<div class="practices-inner">
+			<div class="practices-head">
+				<p class="eyebrow eyebrow-light">How we travel</p>
+				<h2 id="practices-title" class="display display-heavy">Four rules we follow on every tour.</h2>
+				<p class="practices-text">They are short so you can check us against them. The full list, including what we do not claim, is on one page.</p>
+				<a class="link-arrow link-light" href="/approach">Read how we travel <Arrow /></a>
+			</div>
+			<ol class="practice-list">
+				{
+					practicesResult.entries.map((p) => (
+						<li>
+							<span class="practice-figure" {...p.edit.figure}>{p.data.figure}</span>
+							<div>
+								<h3 {...p.edit.title}>{p.data.title}</h3>
+								<p>{p.data.text}</p>
+							</div>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+	</section>
+
+	<section class="band departures-band" aria-labelledby="dep-title">
+		<div class="band-inner">
+			<div class="band-head">
+				<div>
+					<p class="eyebrow">Departures</p>
+					<h2 id="dep-title" class="display display-heavy">Leaving in 2027.</h2>
+				</div>
+				<a class="link-arrow" href="/tours">Dates on every tour page <Arrow /></a>
+			</div>
+			<ul class="dep-list">
+				{
+					departures.map((d) => {
+						const s = shortDate(d.date);
+						const full = d.status.toLowerCase() === "full";
+						return (
+							<li class:list={{ "is-full": full }}>
+								<span class="dep-date" aria-label={longDate(d.date)}><b>{s.d}</b> {s.m} <span>{s.y}</span></span>
+								<a class="dep-tour" href={`/tours/${d.tour.entry.data.slug ?? d.tour.entry.data.id}`}>
+									<span class="dep-name">{d.tour.entry.data.title}</span>
+									<span class="dep-where">{d.tour.entry.data.country} · {daysLabel(d.tour.entry.data.days)}</span>
+								</a>
+								<span class="dep-level"><Level level={d.tour.entry.data.level} /></span>
+								<span class="dep-status">{d.status}</span>
+								<span class="dep-ask">
+									{
+										full ? (
+											<a href={`/contact?tour=${d.tour.entry.data.slug ?? d.tour.entry.data.id}`}>Join the waiting list</a>
+										) : (
+											<a href={`/contact?tour=${d.tour.entry.data.slug ?? d.tour.entry.data.id}&departure=${d.date}`}>Ask about this date</a>
+										)
+									}
+								</span>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</div>
+	</section>
+
+	<PlanBand company={companyResult.company} />
+</Base>

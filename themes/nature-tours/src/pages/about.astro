@@ -1,0 +1,40 @@
+---
+import CmsPage from "../components/CmsPage.astro";
+import { getCompany, getTeam } from "../lib/tours";
+
+const [teamResult, companyResult] = await Promise.all([getTeam(), getCompany()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(teamResult.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+}
+const { company } = companyResult;
+---
+
+<CmsPage slug="about">
+	<section class="team" aria-labelledby="team-title">
+		<h2 id="team-title" class="display">The team</h2>
+		<ul class="team-list">
+			{
+				teamResult.entries.map((m) => (
+					<li>
+						<span class="team-initials" aria-hidden="true">{m.data.title.split(" ").map((w: string) => w[0]).join("")}</span>
+						<div>
+							<h3 {...m.edit.title}>{m.data.title}</h3>
+							<p class="team-role">{m.data.role}</p>
+							<p>{m.data.bio}</p>
+						</div>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+	{
+		company.licence_note && (
+			<aside class="placeholder-box" aria-labelledby="lic-title">
+				<p class="placeholder-tag">Placeholder</p>
+				<h2 id="lic-title">Licences and insurance</h2>
+				<p>{company.licence_note}</p>
+			</aside>
+		)
+	}
+</CmsPage>

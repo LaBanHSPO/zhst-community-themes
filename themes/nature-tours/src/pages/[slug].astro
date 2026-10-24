@@ -1,0 +1,9 @@
+---
+import { decodeSlug } from "emdash";
+import CmsPage from "../components/CmsPage.astro";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+---
+
+<CmsPage slug={slug} />

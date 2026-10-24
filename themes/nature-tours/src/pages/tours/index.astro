@@ -1,0 +1,92 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import TourCard from "../../components/TourCard.astro";
+import PlanBand from "../../components/PlanBand.astro";
+import { LEVELS, REGIONS, countrySlug, getCompany, getTours } from "../../lib/tours";
+
+const [toursResult, companyResult] = await Promise.all([getTours(), getCompany()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(toursResult.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+}
+// ?level=gentle|moderate|active, ?region=europe|north-america|oceania|south-america and ?country=<country-slug>
+// narrow the list and combine. Unknown values show everything.
+const q = Astro.url.searchParams;
+const level = LEVELS.find((l) => l.slug === q.get("level"));
+const region = REGIONS.find((r) => r.slug === q.get("region"));
+const all = toursResult.tours;
+const countries = [...new Map(all.map((t) => [countrySlug(t.entry.data.country), t.entry.data.country])).entries()];
+const country = countries.find(([slug]) => slug === q.get("country"));
+const list = all.filter(
+	(t) =>
+		(!level || t.entry.data.level === level.slug) &&
+		(!region || t.entry.data.region === region.slug) &&
+		(!country || countrySlug(t.entry.data.country) === country[0]),
+);
+const href = (l?: string, r?: string, c?: string) => {
+	const p = new URLSearchParams();
+	if (l) p.set("level", l);
+	if (r) p.set("region", r);
+	if (c) p.set("country", c);
+	const s = p.toString();
+	return s ? `/tours?${s}` : "/tours";
+};
+const levelCount = (slug: string) => all.filter((t) => t.entry.data.level === slug).length;
+const regionCount = (slug: string) => all.filter((t) => t.entry.data.region === slug).length;
+const heading = [level?.label, region?.label, country?.[1]].filter(Boolean).join(", ");
+---
+
+<Base title="Tours" description="Small-group walking and wildlife tours with 2027 departures. Filter by activity level or region, then ask about a date.">
+	<PageHead
+		id="tours-title"
+		eyebrow="Tours"
+		title="Eight tours, no more than 12 guests on any of them."
+		intro="Each tour lists its daily outline, what is included, what to pack and the 2027 departures. Pick a level that matches how you walk today."
+	/>
+	<section class="list-section" aria-labelledby="tours-title">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter tours">
+				<div class="filter-group">
+					<span class="filter-label">Level</span>
+					<a href={href(undefined, region?.slug, country?.[0])} aria-current={level ? undefined : "true"}>All</a>
+					{LEVELS.map((l) => <a href={href(l.slug, region?.slug, country?.[0])} aria-current={level?.slug === l.slug ? "true" : undefined}>{l.label} <span>{levelCount(l.slug)}</span></a>)}
+				</div>
+				<div class="filter-group">
+					<span class="filter-label">Region</span>
+					<a href={href(level?.slug, undefined, country?.[0])} aria-current={region ? undefined : "true"}>All</a>
+					{REGIONS.map((r) => <a href={href(level?.slug, r.slug, country?.[0])} aria-current={region?.slug === r.slug ? "true" : undefined}>{r.label} <span>{regionCount(r.slug)}</span></a>)}
+				</div>
+				{
+					country && (
+						<div class="filter-group">
+							<span class="filter-label">Country</span>
+							<a href={href(level?.slug, region?.slug)}>All</a>
+							<a href={href(level?.slug, region?.slug, country[0])} aria-current="true">{country[1]}</a>
+						</div>
+					)
+				}
+			</nav>
+
+			<p class="result-line" role="status">
+				{list.length} of {all.length} tours{heading ? `: ${heading}` : ""}
+				{(level || region || country) && <> <a href="/tours">Clear filters</a></>}
+			</p>
+
+			{
+				list.length === 0 ? (
+					<p class="empty-note">No tour matches that combination yet. <a href="/tours">Show all tours</a> or <a href="/contact">tell us what you are after</a>.</p>
+				) : (
+					<ul class="tcard-grid tcard-grid-list">
+						{list.map((t) => <li><TourCard row={t} /></li>)}
+					</ul>
+				)
+			}
+
+			<dl class="level-key" aria-label="What the levels mean">
+				{LEVELS.map((l) => <div><dt>{l.label}</dt><dd>{l.hint}</dd></div>)}
+			</dl>
+		</div>
+	</section>
+	<PlanBand company={companyResult.company} />
+</Base>

@@ -1,0 +1,65 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import PlanBand from "../components/PlanBand.astro";
+import Arrow from "../components/Arrow.astro";
+import { REGIONS, countrySlug, daysLabel, getCompany, getDestinations, getTours, photoSrc } from "../lib/tours";
+
+const [destResult, toursResult, companyResult] = await Promise.all([getDestinations(), getTours(), getCompany()]);
+for (const r of [destResult, toursResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const tours = toursResult.tours;
+const groups = REGIONS.map((r) => ({
+	region: r,
+	places: destResult.entries
+		.filter((d) => d.data.region === r.slug)
+		.map((d) => ({
+			entry: d,
+			tours: tours.filter((t) => countrySlug(t.entry.data.country) === countrySlug(d.data.title)),
+		})),
+})).filter((g) => g.places.length > 0);
+---
+
+<Base title="Destinations" description="Seven countries, from Norway and Iceland to Chile and New Zealand, with the tours that run in each.">
+	<PageHead
+		id="dest-title"
+		eyebrow="Destinations"
+		title="Seven countries, one or two tours in each."
+		intro="We run few tours in each place so our guides know the paths, the huts and the weather. The count links to the tours there."
+	/>
+	<section class="dest-section" aria-labelledby="dest-title">
+		<div class="wrap">
+			{
+				groups.map((g) => (
+					<div class="dest-group">
+						<h2 class="dest-region"><a href={`/tours?region=${g.region.slug}`}>{g.region.label}</a></h2>
+						<ul class="dest-list">
+							{
+								g.places.map((p) => {
+									const src = photoSrc(p.entry.data.image, p.entry.data.photo);
+									const n = p.tours.length;
+									return (
+										<li class="dest">
+											<span class="dest-photo">{src && <img src={src} alt="" width="640" height="480" loading="lazy" />}</span>
+											<div class="dest-body">
+												<h3 {...p.entry.edit.title}>{p.entry.data.title}</h3>
+												<p>{p.entry.data.intro}</p>
+												{p.entry.data.season && <p class="dest-season">Best months: {p.entry.data.season}</p>}
+												<ul class="dest-tours">
+													{p.tours.map((t) => <li><a href={`/tours/${t.entry.data.slug ?? t.entry.data.id}`}>{t.entry.data.title}</a> <span>{daysLabel(t.entry.data.days)}</span></li>)}
+												</ul>
+												<a class="link-arrow" href={`/tours?country=${countrySlug(p.entry.data.title)}`}>{n} {n === 1 ? "tour" : "tours"} in {p.entry.data.title} <Arrow /></a>
+											</div>
+										</li>
+									);
+								})
+							}
+						</ul>
+					</div>
+				))
+			}
+		</div>
+	</section>
+	<PlanBand company={companyResult.company} />
+</Base>

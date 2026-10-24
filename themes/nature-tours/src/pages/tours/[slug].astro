@@ -1,0 +1,181 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import Level from "../../components/Level.astro";
+import TourCard from "../../components/TourCard.astro";
+import PlanBand from "../../components/PlanBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { countrySlug, daysLabel, focusLabel, formatPrice, getCompany, getTours, levelOf, lines, longDate, photoSrc, regionLabel, rows, shortDate } from "../../lib/tours";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: tour, cacheHint } = await getEmDashEntry("tours", slug);
+if (!tour) return Astro.rewrite("/404");
+
+const [allResult, companyResult, settings] = await Promise.all([getTours(), getCompany(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(tour, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = tour.data;
+const key = d.slug ?? d.id;
+const src = photoSrc(d.image, d.photo);
+const outline = rows(d.itinerary);
+const includes = lines(d.includes);
+const pack = lines(d.pack);
+const departures = rows(d.departures).map((r) => ({ date: r.left, status: r.right || "Open" }));
+const notIncluded = lines(companyResult.company.not_included);
+const level = levelOf(d.level);
+const related = allResult.tours
+	.filter((t) => t.entry.data.id !== d.id && (t.entry.data.country === d.country || t.entry.data.level === d.level))
+	.slice(0, 3);
+const hasBody = Boolean(d.content && d.content.length > 0);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "tours", id: d.id, slug }}
+	current="/tours"
+>
+	<section class="detail-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/tours">Tours</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class:list={["detail-grid", { "is-text-only": !src }]}>
+				<div class="detail-copy">
+					<p class="eyebrow">{d.country} · {daysLabel(d.days)}</p>
+					<h1 class="display display-heavy" {...tour.edit.title}>{d.title}</h1>
+					<p class="lede" {...tour.edit.summary}>{d.summary}</p>
+					<dl class="facts">
+						<div><dt>Country</dt><dd><a href={`/tours?country=${countrySlug(d.country)}`}>{d.country}</a>, <a href={`/tours?region=${d.region}`}>{regionLabel(d.region)}</a></dd></div>
+						<div><dt>Length</dt><dd>{daysLabel(d.days)}</dd></div>
+						<div><dt>Level</dt><dd><a href={`/tours?level=${d.level}`}><Level level={d.level} /></a>{level && <span class="fact-hint">{level.hint}</span>}</dd></div>
+						<div><dt>Group size</dt><dd>Up to {d.group_max} guests</dd></div>
+						<div><dt>Focus</dt><dd>{focusLabel(d.focus)}</dd></div>
+						{d.season ? <div><dt>Best months</dt><dd>{d.season}</dd></div> : null}
+						{d.price_from ? <div><dt>Price</dt><dd>From {formatPrice(d.price_from)} per person, shared room (sample price)</dd></div> : null}
+					</dl>
+					<a class="btn btn-moss btn-lg" href={`/contact?tour=${encodeURIComponent(key)}`}>Plan this trip <Arrow /></a>
+				</div>
+				{src && <figure class="detail-photo"><img src={src} alt={d.image?.alt ?? ""} width="640" height="480" /></figure>}
+			</div>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="wrap detail-cols">
+			<div class="prose">
+				{d.intro && <p class="prose-lead">{d.intro}</p>}
+				{hasBody ? <PortableText value={d.content} /> : null}
+
+				{
+					outline.length > 0 && (
+						<>
+							<h2>Daily outline</h2>
+							<ol class="itinerary">
+								{outline.map((r) => <li><span class="it-day">{r.left}</span><span class="it-text">{r.right}</span></li>)}
+							</ol>
+						</>
+					)
+				}
+			</div>
+			<aside class="side-stack">
+				{
+					includes.length > 0 && (
+						<div class="side-box" aria-labelledby="inc-title">
+							<h2 id="inc-title">What is included</h2>
+							<ul class="ticks">{includes.map((b) => <li>{b}</li>)}</ul>
+						</div>
+					)
+				}
+				{
+					notIncluded.length > 0 && (
+						<div class="side-box" aria-labelledby="exc-title">
+							<h2 id="exc-title">Not included</h2>
+							<ul class="plain-list">{notIncluded.map((b) => <li>{b}</li>)}</ul>
+						</div>
+					)
+				}
+				{
+					pack.length > 0 && (
+						<div class="side-box" aria-labelledby="pack-title">
+							<h2 id="pack-title">What to pack</h2>
+							<ul class="plain-list">{pack.map((b) => <li>{b}</li>)}</ul>
+						</div>
+					)
+				}
+			</aside>
+		</div>
+	</section>
+
+	{
+		departures.length > 0 && (
+			<section class="band departures-band tour-departures" aria-labelledby="deps-title">
+				<div class="band-inner">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Departures</p>
+							<h2 id="deps-title" class="display display-heavy">Dates for 2027</h2>
+						</div>
+						<p class="band-note">Up to {d.group_max} guests on each date. A date only runs with six or more.</p>
+					</div>
+					<ul class="dep-list dep-list-tour">
+						{
+							departures.map((dep) => {
+								const s = shortDate(dep.date);
+								const full = dep.status.toLowerCase() === "full";
+								return (
+									<li class:list={{ "is-full": full }}>
+										<span class="dep-date" aria-label={longDate(dep.date)}><b>{s.d}</b> {s.m} <span>{s.y}</span></span>
+										<span class="dep-tour">
+											<span class="dep-name">{longDate(dep.date)}</span>
+											<span class="dep-where">{daysLabel(d.days)} · {d.country}</span>
+										</span>
+										<span class="dep-status">{dep.status}</span>
+										<span class="dep-ask">
+											<a href={`/contact?tour=${encodeURIComponent(key)}&departure=${dep.date}`}>{full ? "Join the waiting list" : "Ask about this date"}</a>
+										</span>
+									</li>
+								);
+							})
+						}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		related.length > 0 && (
+			<section class="band" aria-labelledby="related-title">
+				<div class="band-inner">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Similar tours</p>
+							<h2 id="related-title" class="display display-heavy">Also worth a look</h2>
+						</div>
+						<a class="link-arrow" href="/tours">All tours <Arrow /></a>
+					</div>
+					<ul class="tcard-grid tcard-grid-3">
+						{related.map((t) => <li><TourCard row={t} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<PlanBand company={companyResult.company} tour={key} />
+</Base>

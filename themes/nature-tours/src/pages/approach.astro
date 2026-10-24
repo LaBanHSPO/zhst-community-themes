@@ -1,0 +1,19 @@
+---
+import CmsPage from "../components/CmsPage.astro";
+import { getCompany } from "../lib/tours";
+
+const { company, cacheHint } = await getCompany();
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+---
+
+<CmsPage slug="approach">
+	{
+		company.memberships_note && (
+			<aside class="placeholder-box" aria-labelledby="mem-title">
+				<p class="placeholder-tag">Placeholder</p>
+				<h2 id="mem-title">Memberships</h2>
+				<p>{company.memberships_note}</p>
+			</aside>
+		)
+	}
+</CmsPage>

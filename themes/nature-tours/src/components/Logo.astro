@@ -1,0 +1,28 @@
+---
+import type { MediaReference } from "../utils/site-identity";
+
+interface Props {
+	title: string;
+	logo?: MediaReference | null;
+	class?: string;
+	light?: boolean;
+}
+const { title, logo, class: className, light = false } = Astro.props;
+---
+
+<a class:list={["wordmark", { "is-light": light }, className]} href="/" aria-label={`${title}, home`}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt ?? title} width="200" height="46" />
+		) : (
+			<>
+				<svg class="wordmark-mark" viewBox="0 0 60 38" width="59" height="37" aria-hidden="true" focusable="false">
+					<path class="mk-back" d="M21 36.500 L40.500 3.500 L58.500 36.500 Z" fill="none" stroke-width="3.200" stroke-linejoin="round" />
+					<path class="mk-snow" d="M34.200 14.800 L40.500 5.500 L46.800 14.800 L40.500 12.800 Z" stroke="none" />
+					<path class="mk-front" d="M1 37 L19 9.500 L37 37 Z" stroke="none" />
+				</svg>
+				<span class="wordmark-title">{title}</span>
+			</>
+		)
+	}
+</a>

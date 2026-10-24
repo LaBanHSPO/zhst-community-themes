@@ -1,0 +1,27 @@
+---
+import Level from "./Level.astro";
+import { daysLabel, photoSrc } from "../lib/tours";
+import type { TourRow } from "../lib/tours";
+
+interface Props {
+	row: TourRow;
+}
+const { row } = Astro.props;
+const d = row.entry.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<a class="tcard" href={`/tours/${d.slug ?? d.id}`}>
+	<span class="tcard-photo">
+		{src && <img src={src} alt="" width="640" height="480" loading="lazy" />}
+	</span>
+	<span class="tcard-body">
+		<span class="tcard-country">{d.country}</span>
+		<span class="tcard-title" {...row.entry.edit.title}>{d.title}</span>
+		<span class="tcard-meta">
+			<span>{daysLabel(d.days)}</span>
+			<Level level={d.level} />
+			<span>Up to {d.group_max}</span>
+		</span>
+	</span>
+</a>

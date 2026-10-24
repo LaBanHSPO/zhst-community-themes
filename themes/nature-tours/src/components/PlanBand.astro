@@ -1,0 +1,30 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref } from "../lib/tours";
+import type { CompanyData } from "../lib/tours";
+
+interface Props {
+	company: CompanyData;
+	tour?: string;
+}
+const { company, tour } = Astro.props;
+const href = tour ? `/contact?tour=${encodeURIComponent(tour)}` : "/contact";
+---
+
+<section class="plan-band" aria-labelledby="plan-title">
+	<div class="plan-inner">
+		<div class="plan-copy">
+			<p class="eyebrow">Plan your trip</p>
+			<h2 id="plan-title" class="display">Pick a tour and a date. We will check the rest with you.</h2>
+			<p class="plan-text">Send us the tour, the departure you like and who is coming. Pia or Mara writes back within two working days, usually with a question about fitness or flights.</p>
+			<div class="plan-actions">
+				<a class="btn btn-lg" href={href}>Plan your trip <Arrow /></a>
+				<p class="plan-lines">
+					{company.phone && <a href={telHref(company.phone)}>{company.phone}</a>}
+					{company.email && <a href={`mailto:${company.email}`}>{company.email}</a>}
+				</p>
+			</div>
+		</div>
+		<img class="plan-photo" src="/images/t-shore.webp" alt="A hiker with a green backpack seen from behind, looking over a wide blue lake and forested hills" width="568" height="360" loading="lazy" />
+	</div>
+</section>

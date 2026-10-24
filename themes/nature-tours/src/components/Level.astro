@@ -1,0 +1,19 @@
+---
+import { levelOf } from "../lib/tours";
+
+interface Props {
+	level: string | null | undefined;
+}
+const info = levelOf(Astro.props.level);
+---
+
+{
+	info && (
+		<span class="level" title={info.hint}>
+			<span class="level-dots" aria-hidden="true">
+				{[1, 2, 3].map((n) => <i class:list={{ on: n <= info.dots }} />)}
+			</span>
+			{info.label}
+		</span>
+	)
+}
