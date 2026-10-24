@@ -1,0 +1,151 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import TalkBand from "../../components/TalkBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { disciplineLabel, getProjects, getStudio, lines, photoAlt, photoSrc, projectHref } from "../../lib/site";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: project, cacheHint } = await getEmDashEntry("projects", slug);
+if (!project) return Astro.rewrite("/404");
+
+const [allResult, studioResult, settings] = await Promise.all([getProjects(), getStudio(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(project, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const d = project.data;
+const cover = photoSrc(d.image, d.photo);
+const photos = (d.gallery ?? [])
+	.map((g) => ({ src: photoSrc(g.image, g.photo), alt: photoAlt(g.image, g.photo, g.caption ?? ""), caption: g.caption }))
+	.filter((g): g is { src: string; alt: string; caption: string | undefined } => Boolean(g.src));
+const credits = lines(d.credits).map((l) => {
+	const i = l.indexOf(":");
+	return i > 0 ? { role: l.slice(0, i).trim(), name: l.slice(i + 1).trim() } : { role: "", name: l };
+});
+
+// Previous and next project in the full list, wrapping around at the ends.
+const list = allResult.entries;
+const at = list.findIndex((p) => p.data.id === d.id);
+const prev = list.length > 1 ? list[(at - 1 + list.length) % list.length] : undefined;
+const next = list.length > 1 ? list[(at + 1) % list.length] : undefined;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "projects", id: d.id, slug }}
+	current="/work"
+>
+	<header class="project-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/work">Work</a>
+				<span aria-hidden="true">/</span>
+				{d.discipline && <a href={`/work?discipline=${d.discipline}`}>{disciplineLabel(d.discipline)}</a>}
+				{d.discipline && <span aria-hidden="true">/</span>}
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class="project-head-grid">
+				<div>
+					<p class="eyebrow">{[disciplineLabel(d.discipline), d.year].filter(Boolean).join(" · ")}</p>
+					<h1 class="display display-xl" {...project.edit.title}>{d.title}</h1>
+				</div>
+				<p class="lede">{d.summary}</p>
+			</div>
+		</div>
+	</header>
+
+	{
+		cover && (
+			<div class="wrap">
+				<figure class="project-cover">
+					<img src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="846" height="468" fetchpriority="high" />
+				</figure>
+			</div>
+		)
+	}
+
+	<section class="project-text" aria-label="About the project">
+		<div class="wrap project-text-grid">
+			<dl class="facts">
+				<div><dt>Client</dt><dd>{d.client}</dd></div>
+				<div><dt>Discipline</dt><dd>{disciplineLabel(d.discipline)}</dd></div>
+				{d.year && <div><dt>Year</dt><dd>{d.year}</dd></div>}
+				{
+					credits.length > 0 && (
+						<div>
+							<dt>Credits</dt>
+							<dd>
+								<ul class="credit-list">
+									{credits.map((c) => <li>{c.role && <span>{c.role}</span>} {c.name}</li>)}
+								</ul>
+							</dd>
+						</div>
+					)
+				}
+			</dl>
+			<div class="project-story">
+				{d.brief && (<><h2 class="mini-title">The brief</h2><p>{d.brief}</p></>)}
+				{d.approach && (<><h2 class="mini-title">The approach</h2><p>{d.approach}</p></>)}
+			</div>
+		</div>
+	</section>
+
+	{
+		photos.length > 0 && (
+			<section class="project-photos" aria-label={`Images from ${d.title}`}>
+				<div class="wrap">
+					<ul class="sequence">
+						{photos.map((p) => (
+							<li>
+								<figure>
+									<img src={p.src} alt={p.alt} width="1000" height="700" loading="lazy" />
+									{p.caption && <figcaption>{p.caption}</figcaption>}
+								</figure>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="project-cta">
+		<div class="wrap">
+			<a class="pill" href={`/contact?discipline=${d.discipline ?? ""}`}><span>Start a similar project</span><Arrow /></a>
+		</div>
+	</section>
+
+	{
+		prev && next && (
+			<nav class="pager" aria-label="More projects">
+				<div class="wrap pager-inner">
+					<a class="pager-link pager-prev" href={projectHref(prev.data)} rel="prev">
+						<span class="pager-label">Previous project</span>
+						<span class="pager-title">{prev.data.title}</span>
+					</a>
+					<a class="pager-link pager-next" href={projectHref(next.data)} rel="next">
+						<span class="pager-label">Next project</span>
+						<span class="pager-title">{next.data.title}</span>
+					</a>
+				</div>
+			</nav>
+		)
+	}
+
+	<TalkBand studio={studioResult.studio} discipline={d.discipline} />
+</Base>

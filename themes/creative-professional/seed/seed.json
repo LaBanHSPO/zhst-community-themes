@@ -1,0 +1,1271 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Creative Professional",
+    "description": "A light, editorial portfolio theme for a creative director and photographer: portrait hero with a handwritten note, selected work, services, process, a work archive with a discipline filter and project pages, journal, About and an enquiry page, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "NOVA",
+    "tagline": "Ideas into reality"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "image",
+          "label": "Side photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled side photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "projects",
+      "label": "Work",
+      "labelSingular": "Project",
+      "urlPattern": "/work/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Project name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "discipline",
+          "label": "Discipline (work filter)",
+          "type": "select",
+          "required": true,
+          "indexed": true,
+          "defaultValue": "brand-identity",
+          "validation": {
+            "options": [
+              "brand-identity",
+              "campaign",
+              "photography",
+              "creative-direction"
+            ]
+          }
+        },
+        {
+          "slug": "client",
+          "label": "Client (shown as a credit)",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "year",
+          "label": "Year",
+          "type": "string"
+        },
+        {
+          "slug": "summary",
+          "label": "One-line summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "brief",
+          "label": "The brief",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "approach",
+          "label": "The approach",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "credits",
+          "label": "Credits (one per line, as Role: Name)",
+          "type": "text"
+        },
+        {
+          "slug": "featured",
+          "label": "Show in Selected work on the homepage",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover image (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover image path",
+          "type": "string"
+        },
+        {
+          "slug": "gallery",
+          "label": "Image sequence",
+          "type": "repeater",
+          "validation": {
+            "maxItems": 40,
+            "subFields": [
+              {
+                "slug": "image",
+                "label": "Image (upload)",
+                "type": "image"
+              },
+              {
+                "slug": "photo",
+                "label": "Bundled image path",
+                "type": "string"
+              },
+              {
+                "slug": "caption",
+                "label": "Caption",
+                "type": "text"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "slug": "posts",
+      "label": "Journal",
+      "labelSingular": "Journal post",
+      "urlPattern": "/journal/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "date_label",
+          "label": "Date (as shown, e.g. 12 March 2026)",
+          "type": "string"
+        },
+        {
+          "slug": "topic",
+          "label": "Topic label (e.g. Process)",
+          "type": "string"
+        },
+        {
+          "slug": "summary",
+          "label": "One-line summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover image (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover image path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Post",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "services",
+      "label": "Services",
+      "labelSingular": "Service",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Service name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "discipline",
+          "label": "Matching work filter",
+          "type": "select",
+          "required": true,
+          "defaultValue": "brand-identity",
+          "validation": {
+            "options": [
+              "brand-identity",
+              "campaign",
+              "photography",
+              "creative-direction"
+            ]
+          }
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true
+        },
+        {
+          "slug": "includes",
+          "label": "What is included (one item per line)",
+          "type": "text"
+        },
+        {
+          "slug": "timeline",
+          "label": "Usual timeline",
+          "type": "string"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "steps",
+      "label": "Process",
+      "labelSingular": "Step",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Step name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Text",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "studio",
+      "label": "Studio details",
+      "labelSingular": "Studio details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Studio name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "base",
+          "label": "Based in",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Enquiry email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "response",
+          "label": "Reply time",
+          "type": "string"
+        },
+        {
+          "slug": "note",
+          "label": "Note shown beside the contact form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Work",
+          "url": "/work"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        },
+        {
+          "type": "custom",
+          "label": "Journal",
+          "url": "/journal"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "Hello, I’m Nova.",
+          "eyebrow": "About",
+          "intro": "I’m a creative director and photographer. I design identities, direct campaigns and take the photographs, mostly for small studios and makers.",
+          "photo": "/images/studio-portrait.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I work on my own from a small studio in Marlow Bay. Most of my clients are small too: a wellness studio, a ceramics workshop, a family-run guesthouse. They usually need a few things at once, such as a name, a look and photographs to go with it, and they would rather deal with one person than three.",
+                  "_key": "k1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k2",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Where I started",
+                  "_key": "k2s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I began as a photographer’s assistant, carrying lights and learning how long a good picture can take. After that I spent six years as an in-house designer for a furniture maker, where I worked on catalogues, packaging and a lot of product photography. I went freelance in 2021 and have worked for myself since.",
+                  "_key": "k3s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k4",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How I work",
+                  "_key": "k4s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I start every project with a conversation, then write a one-page brief that we both sign off. I show a small number of ideas, not a wall of options, and I explain why I prefer one of them. Two rounds of changes are included in every fixed-fee project.",
+                  "_key": "k5s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k6",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When a job needs a printer, a copywriter or a second photographer, I bring in people I have worked with before and tell you who they are and what they cost.",
+                  "_key": "k6s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What I will not do",
+                  "_key": "k7s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k8",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I do not take rush jobs that need a finished identity in a week. I do not copy another studio’s look. And I will tell you if I think you do not need a new logo yet.",
+                  "_key": "k8s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About this site",
+                  "_key": "k9s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k10",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "NOVA is a sample site. Nova Hartley, the clients and the projects shown here are fictional, and the portrait is AI-generated.",
+                  "_key": "k10s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "working-together",
+        "slug": "working-together",
+        "status": "published",
+        "data": {
+          "title": "Working together",
+          "eyebrow": "Working together",
+          "intro": "The practical details: how fees, changes, payment and image rights work.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Fees",
+                  "_key": "k11s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Projects are quoted as a fixed fee after the first call. The quote lists what is included and how long it should take. Photography shoots are priced per day, with retouching listed separately.",
+                  "_key": "k12s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Payment",
+                  "_key": "k13s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Half of the fee is due when you accept the quote, and the rest when final files are delivered. Invoices are payable within fourteen days.",
+                  "_key": "k14s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Changes",
+                  "_key": "k15s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Each fixed-fee project includes two rounds of changes. If you need more, I will tell you before I start and agree an hourly rate for the extra work.",
+                  "_key": "k16s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Image and design rights",
+                  "_key": "k17s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When the final invoice is paid, you own the identity and the artwork made for it. Photographs are licensed for the uses listed in the quote. If you want to use them somewhere new, ask first and we will update the licence.",
+                  "_key": "k18s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Portfolio use",
+                  "_key": "k19s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k20",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I may show finished work in my portfolio unless you ask me not to. If a project is confidential, we will agree that at the start.",
+                  "_key": "k20s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "projects": [
+      {
+        "id": "still-here",
+        "slug": "still-here",
+        "status": "published",
+        "data": {
+          "title": "Still Here",
+          "discipline": "brand-identity",
+          "client": "Stillwater Wellness Studio",
+          "year": "2026",
+          "featured": true,
+          "position": 10,
+          "summary": "A name, a wordmark and printed cards for a small studio that teaches slow movement.",
+          "brief": "Stillwater had been running classes for two years under a placeholder name and a template logo. They wanted something that felt calm without looking like every other wellness brand, and it had to work on a card, a door sign and a tiny social avatar.",
+          "approach": "I started with the room itself: stone, plants and afternoon shadows. The wordmark is a light serif with generous spacing, set in warm black. The main printed piece is a folded card on uncoated stock, with a short line inside that changes each season. I photographed the first batch of cards on a garden stone so the studio had images to use straight away.",
+          "credits": "Art direction: Nova Hartley\nDesign: Nova Hartley\nPhotography: Nova Hartley\nPrinting: Harrow Lane Press",
+          "photo": "/images/work-still-here.webp",
+          "gallery": [
+            {
+              "photo": "/images/brush-pot.webp",
+              "caption": "Early sketches and tools on the desk during the naming stage."
+            },
+            {
+              "photo": "/images/sketch.webp",
+              "caption": "A loose pencil line that became the studio’s secondary mark."
+            },
+            {
+              "photo": "/images/open-book.webp",
+              "caption": "The printed proofs, checked page by page before the final run."
+            }
+          ]
+        }
+      },
+      {
+        "id": "open-spaces",
+        "slug": "open-spaces",
+        "status": "published",
+        "data": {
+          "title": "Open Spaces",
+          "discipline": "campaign",
+          "client": "Harbor Light Villas",
+          "year": "2025",
+          "featured": true,
+          "position": 20,
+          "summary": "A booking campaign for three villas on a rocky coast, shot over two evenings.",
+          "brief": "Harbor Light rents three stone villas above the sea. Most bookings came from one old listing page. They wanted a set of images and a short campaign for spring that showed how quiet the place is, without crowding the pictures with offers.",
+          "approach": "I visited once in daylight to plan, then returned for two evenings when the stone turns pink and the terrace empties. We shot wide and left plenty of sky. The campaign ran as a small set of print pieces for local travel desks, a refreshed booking page and a short email series. Every image carries one line of copy at most.",
+          "credits": "Creative direction: Nova Hartley\nPhotography: Nova Hartley\nCopy: Imogen Vale\nRetouching: Nova Hartley",
+          "photo": "/images/work-open-spaces.webp",
+          "gallery": [
+            {
+              "photo": "/images/sea-print.webp",
+              "caption": "A test print of the sea at dusk, made to check the colour before the final selects."
+            },
+            {
+              "photo": "/images/prints-desk.webp",
+              "caption": "Contact prints laid out on the studio desk to choose the sequence."
+            },
+            {
+              "photo": "/images/terracotta-print.webp",
+              "caption": "A colour study taken from the warm tones of the terrace stone."
+            }
+          ]
+        }
+      },
+      {
+        "id": "human-nature",
+        "slug": "human-nature",
+        "status": "published",
+        "data": {
+          "title": "Human Nature",
+          "discipline": "photography",
+          "client": "Fernhill Botanicals",
+          "year": "2025",
+          "featured": true,
+          "position": 30,
+          "summary": "Close photographs of leaves and plant shadows for a small skincare maker.",
+          "brief": "Fernhill makes a short range of plant-based skincare in small batches. They had product shots but nothing that showed where the ingredients came from. They asked for a set of images they could use on labels, on their site and in a printed leaflet.",
+          "approach": "We worked in a borrowed greenhouse in late morning, when the light is soft and the leaves are still damp. I used a single window of daylight and a white board to lift the shadows. The final set is twenty-four images, each cropped for three formats: square, tall and wide.",
+          "credits": "Photography: Nova Hartley\nStyling: Tess Okoro\nRetouching: Nova Hartley",
+          "photo": "/images/work-human-nature.webp",
+          "gallery": [
+            {
+              "photo": "/images/botanical-print.webp",
+              "caption": "A black and white print of leaf shadows, made from one of the greenhouse frames."
+            },
+            {
+              "photo": "/images/olive-vase.webp",
+              "caption": "Cuttings in a vase in the studio, photographed to test the colour of the labels."
+            },
+            {
+              "photo": "/images/profile-print.webp",
+              "caption": "A portrait test print used to check skin tones on the leaflet paper."
+            }
+          ]
+        }
+      },
+      {
+        "id": "terracotta-line",
+        "slug": "terracotta-line",
+        "status": "published",
+        "data": {
+          "title": "Terracotta Line",
+          "discipline": "brand-identity",
+          "client": "Ember & Clay Ceramics",
+          "year": "2024",
+          "position": 40,
+          "summary": "A new look for a ceramics workshop, taken from the colours of its own kiln.",
+          "brief": "Ember & Clay sells hand-thrown tableware through its own shop and four local stockists. The old logo was a clip-art pot. They wanted an identity that looked at home on a box, a shelf label and a market stall banner.",
+          "approach": "I spent a day at the workshop and photographed glazes, tools and the kiln door. The palette comes straight from those pictures: terracotta, slate and a pale clay white. The mark is a single drawn line that runs under the name and curves like the lip of a bowl. Packaging uses plain kraft board with a one-colour print.",
+          "credits": "Design: Nova Hartley\nPhotography: Nova Hartley\nPackaging print: Harrow Lane Press",
+          "photo": "/images/terracotta-print.webp",
+          "gallery": [
+            {
+              "photo": "/images/olive-vase.webp",
+              "caption": "A vase and tools in front of the terracotta test wall."
+            },
+            {
+              "photo": "/images/sculpture.webp",
+              "caption": "A looped form used as the shape reference for the line mark."
+            },
+            {
+              "photo": "/images/brush-pot.webp",
+              "caption": "Glaze brushes at the workshop, photographed for the brand guide."
+            }
+          ]
+        }
+      },
+      {
+        "id": "salt-and-slate",
+        "slug": "salt-and-slate",
+        "status": "published",
+        "data": {
+          "title": "Salt and Slate",
+          "discipline": "campaign",
+          "client": "Northcoast Outfitters",
+          "year": "2024",
+          "position": 50,
+          "summary": "An autumn campaign for a coastal clothing shop, built around one stormy afternoon.",
+          "brief": "Northcoast is a family-run shop selling waterproof jackets and wool layers. They wanted an autumn campaign that did not rely on models standing on cliffs. The budget covered one shoot day and a small print run.",
+          "approach": "I proposed photographing the sea, the gear and the weather, and leaving people out of most frames. We spent a morning at the harbour wall and an afternoon in the studio shooting jackets against slate and sea prints. The campaign used three images, a poster, shop window vinyls and a short email.",
+          "credits": "Creative direction: Nova Hartley\nPhotography: Nova Hartley\nPrint production: Harrow Lane Press",
+          "photo": "/images/sea-print.webp",
+          "gallery": [
+            {
+              "photo": "/images/prints-desk.webp",
+              "caption": "Prints on the studio desk, ready to be chosen for the window display."
+            },
+            {
+              "photo": "/images/open-book.webp",
+              "caption": "The campaign book used in the first client review."
+            },
+            {
+              "photo": "/images/botanical-print.webp",
+              "caption": "A shadow study used for the poster background."
+            }
+          ]
+        }
+      },
+      {
+        "id": "quiet-portraits",
+        "slug": "quiet-portraits",
+        "status": "published",
+        "data": {
+          "title": "Quiet Portraits",
+          "discipline": "photography",
+          "client": "Marlow Bay Arts Trust",
+          "year": "2024",
+          "position": 60,
+          "summary": "Black and white portraits of the people who run a small community arts centre.",
+          "brief": "The Arts Trust wanted portraits of its twelve volunteers and staff for a wall display and its annual leaflet. Nobody was used to being photographed, and the shoot had to fit around the centre’s opening hours.",
+          "approach": "I set up a plain backdrop in the corridor and worked for fifteen minutes with each person, talking more than shooting. We used one window and a reflector. The set is in black and white so that it hangs together on the wall, and each portrait is printed on matte paper at the same size.",
+          "credits": "Photography: Nova Hartley\nPrinting: Harrow Lane Press",
+          "photo": "/images/profile-print.webp",
+          "gallery": [
+            {
+              "photo": "/images/open-book.webp",
+              "caption": "The portraits bound into a proof book for the trust to review."
+            },
+            {
+              "photo": "/images/prints-desk.webp",
+              "caption": "The wall display being planned on the studio desk."
+            },
+            {
+              "photo": "/images/sketch.webp",
+              "caption": "A pencil sketch used to plan the layout of the wall."
+            }
+          ]
+        }
+      },
+      {
+        "id": "paper-season",
+        "slug": "paper-season",
+        "status": "published",
+        "data": {
+          "title": "Paper Season",
+          "discipline": "creative-direction",
+          "client": "Juniper Press",
+          "year": "2026",
+          "position": 70,
+          "summary": "A year of creative direction for a small publisher of art books and prints.",
+          "brief": "Juniper Press releases four titles a year and had no consistent way of showing them. Each cover and launch looked different. They asked for a steady eye on design, photography and printing across the year, without hiring a full-time art director.",
+          "approach": "I meet the editors once a month to look at what is coming. I write a short brief for each cover and each launch, choose the photographer or illustrator, and review proofs. We built a moodboard wall in the press’s office that shows the look of the season and is updated with every title.",
+          "credits": "Creative direction: Nova Hartley\nCover design: Adaeze Brandt\nPrinting: Harrow Lane Press",
+          "photo": "/images/moodboard.webp",
+          "gallery": [
+            {
+              "photo": "/images/sculpture.webp",
+              "caption": "A sculpture photographed for the spring title."
+            },
+            {
+              "photo": "/images/open-book.webp",
+              "caption": "Printed spreads from the first book of the year."
+            },
+            {
+              "photo": "/images/brush-pot.webp",
+              "caption": "Studio props used in the launch photographs."
+            }
+          ]
+        }
+      },
+      {
+        "id": "common-ground",
+        "slug": "common-ground",
+        "status": "published",
+        "data": {
+          "title": "Common Ground",
+          "discipline": "creative-direction",
+          "client": "Orchard Street Market",
+          "year": "2025",
+          "position": 80,
+          "summary": "A look and a set of rules for a weekend food market run by volunteers.",
+          "brief": "Orchard Street Market is run by a rotating group of volunteers, so signs, posters and social posts kept changing with whoever made them. They needed one look that anyone could follow, with no design skills.",
+          "approach": "I wrote a four-page guide with a fixed colour set, two typefaces and a layout for each of the five things the market prints most: a poster, a stall sign, a price card, a banner and a social post. Each template is a file that volunteers fill in with their own words. I ran one evening session to walk the team through them.",
+          "credits": "Creative direction: Nova Hartley\nTemplate design: Nova Hartley",
+          "photo": "/images/prints-desk.webp",
+          "gallery": [
+            {
+              "photo": "/images/moodboard.webp",
+              "caption": "The reference wall used in the first workshop."
+            },
+            {
+              "photo": "/images/terracotta-print.webp",
+              "caption": "A colour card from the market palette."
+            },
+            {
+              "photo": "/images/sketch.webp",
+              "caption": "A hand sketch for the banner layout."
+            }
+          ]
+        }
+      }
+    ],
+    "posts": [
+      {
+        "id": "how-i-write-a-one-page-brief",
+        "slug": "how-i-write-a-one-page-brief",
+        "status": "published",
+        "data": {
+          "title": "How I write a one-page brief",
+          "date_label": "12 September 2026",
+          "topic": "Process",
+          "position": 10,
+          "summary": "Why every project I take on starts with a single page that both of us sign.",
+          "photo": "/images/open-book.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A brief does not have to be long. Mine fits on one page, and I write it after the first call so that you can check I listened.",
+                  "_key": "k21s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k22",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "It has five parts: what we are making, who it is for, what has to work (a card, a website, a shop window), what is not up for change, and the dates and fee. I put anything I am unsure about at the bottom in a short list of questions.",
+                  "_key": "k22s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The page is useful later too. When a round of feedback comes in and someone asks for something new, we can look at the brief and decide if it is a change or a different project.",
+                  "_key": "k23s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k24",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you have ever started a design job and ended up three months in without knowing what finished meant, a one-page brief is the cheapest fix I know.",
+                  "_key": "k24s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "shooting-a-villa-at-dusk",
+        "slug": "shooting-a-villa-at-dusk",
+        "status": "published",
+        "data": {
+          "title": "Shooting a villa at dusk",
+          "date_label": "28 August 2026",
+          "topic": "Photography",
+          "position": 20,
+          "summary": "What I plan, what I carry and what I wait for when the light is only good for twenty minutes.",
+          "photo": "/images/sea-print.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Dusk looks easy in a finished photograph. In practice you have a window of about twenty minutes when the sky and the lit windows are close enough in brightness to sit in the same frame.",
+                  "_key": "k25s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k26",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I visit in daylight first and mark where the tripod will go for each shot. On the evening itself I set up everything an hour early, then wait. I shoot in short bursts and change the exposure every few frames, because the light moves faster than you think.",
+                  "_key": "k26s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Afterwards I choose the single best frame for each angle and leave the sky mostly alone. A little more blue or pink in retouching is fine. A sky that did not exist is not.",
+                  "_key": "k27s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "why-i-show-three-routes",
+        "slug": "why-i-show-three-routes",
+        "status": "published",
+        "data": {
+          "title": "Why I show three logo routes, not ten",
+          "date_label": "5 August 2026",
+          "topic": "Process",
+          "position": 30,
+          "summary": "A short list of options is easier to judge, and it makes the final choice stronger.",
+          "photo": "/images/brush-pot.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k28",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Early in my career I showed clients as many logo ideas as I could. It felt generous. It also made decisions harder, because people chose the one that looked least like the others.",
+                  "_key": "k28s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Now I show three routes. Each one is a clear answer to the brief, and I explain what it is good at and where it falls short. Clients usually pick one, and often ask to borrow a detail from another.",
+                  "_key": "k29s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k30",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Three is enough to show range and few enough to compare properly. If none of them is right, that tells us something about the brief, and we fix that before drawing anything more.",
+                  "_key": "k30s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "a-card-on-a-stone",
+        "slug": "a-card-on-a-stone",
+        "status": "published",
+        "data": {
+          "title": "A card on a stone: notes on Still Here",
+          "date_label": "17 July 2026",
+          "topic": "Notes",
+          "position": 40,
+          "summary": "How a folded card, a garden stone and afternoon light became the picture for a new brand.",
+          "photo": "/images/sculpture.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The first image for the Stillwater identity was not made in the studio. It was a folded card propped on a flat stone in the garden next to the yoga room.",
+                  "_key": "k31s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k32",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I wanted the card to look as if it had always been there. I moved it a few centimetres at a time until the shadow of a leaf crossed the lower corner, then took about forty frames as the sun shifted.",
+                  "_key": "k32s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k33",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The line on the card, A calmer brighter you, was written by the studio’s owner on the day. I only set the type. It still gets more comments than anything I designed for them.",
+                  "_key": "k33s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "services": [
+      {
+        "id": "brand-identity",
+        "slug": "brand-identity",
+        "status": "published",
+        "data": {
+          "title": "Brand identity",
+          "discipline": "brand-identity",
+          "position": 10,
+          "summary": "A name check, a wordmark, colours, type and the printed pieces that go with them.",
+          "includes": "A short list of name ideas and a quick check for clashes\nThree logo routes, then one developed in full\nColours and type with notes on how to use them\nCards, labels, packaging and social templates\nA twelve-page guide as a PDF",
+          "timeline": "Usually 4 to 6 weeks"
+        }
+      },
+      {
+        "id": "campaign",
+        "slug": "campaign",
+        "status": "published",
+        "data": {
+          "title": "Campaigns",
+          "discipline": "campaign",
+          "position": 20,
+          "summary": "One idea carried across photography, print and a small set of digital formats.",
+          "includes": "A written concept and brief\nShoot planning and art direction\nLayouts for print, web and social\nRetouched final files in every size you need",
+          "timeline": "Usually 3 to 5 weeks"
+        }
+      },
+      {
+        "id": "photography",
+        "slug": "photography",
+        "status": "published",
+        "data": {
+          "title": "Photography",
+          "discipline": "photography",
+          "position": 30,
+          "summary": "Product, place and portrait photography, on location or in a borrowed room.",
+          "includes": "A planning call and a shot list\nOne shoot day of up to eight hours\nSelects sent within three days\nTwenty to thirty retouched images",
+          "timeline": "Usually 2 to 3 weeks"
+        }
+      },
+      {
+        "id": "creative-direction",
+        "slug": "creative-direction",
+        "status": "published",
+        "data": {
+          "title": "Creative direction",
+          "discipline": "creative-direction",
+          "position": 40,
+          "summary": "A steady eye on how things look, for studios and small brands without an art director.",
+          "includes": "A monthly look at what you plan to publish\nMoodboards and shoot briefs\nFeedback on the designers, photographers and printers you already use\nOne working session each month",
+          "timeline": "Monthly, three-month minimum"
+        }
+      }
+    ],
+    "steps": [
+      {
+        "id": "talk",
+        "slug": "talk",
+        "status": "published",
+        "data": {
+          "title": "Talk",
+          "position": 10,
+          "text": "A free call of about thirty minutes. You tell me what the work is for and who needs to see it. I tell you honestly whether I am the right person."
+        }
+      },
+      {
+        "id": "brief",
+        "slug": "brief",
+        "status": "published",
+        "data": {
+          "title": "Brief",
+          "position": 20,
+          "text": "I write a one-page brief with the scope, the timeline and a fixed fee. Nothing starts until you have read it and said yes."
+        }
+      },
+      {
+        "id": "make",
+        "slug": "make",
+        "status": "published",
+        "data": {
+          "title": "Make",
+          "position": 30,
+          "text": "Work arrives at set points: first ideas, a chosen direction, then finished files. Two rounds of changes are included."
+        }
+      },
+      {
+        "id": "hand-over",
+        "slug": "hand-over",
+        "status": "published",
+        "data": {
+          "title": "Hand over",
+          "position": 40,
+          "text": "You receive final files and a short guide to using them. A month later I call to see how it is going."
+        }
+      }
+    ],
+    "studio": [
+      {
+        "id": "studio",
+        "slug": "studio",
+        "status": "published",
+        "data": {
+          "title": "NOVA",
+          "base": "Marlow Bay",
+          "phone": "+1 (415) 555-0127",
+          "email": "hello@nova-studio.example",
+          "response": "Replies within two working days, Monday to Friday.",
+          "note": "An enquiry is not a booking. I confirm scope, dates and fee in writing before any work starts."
+        }
+      }
+    ]
+  }
+}

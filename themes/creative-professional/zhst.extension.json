@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "creative-professional",
+	"kind": "theme",
+	"name": "Creative Professional",
+	"type": "bio",
+	"emdash": "1.2.0",
+	"entry": "themes/creative-professional",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

@@ -1,0 +1,60 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import TalkBand from "../components/TalkBand.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getStudio, photoAlt, photoSrc } from "../lib/site";
+
+const [{ entry: page, cacheHint }, studioResult, settings] = await Promise.all([
+	getEmDashEntry("pages", "about"),
+	getStudio(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	if (cacheHint) Astro.cache.set(cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page ? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" }) : null;
+const hasBody = Boolean(page?.data.content && page.data.content.length > 0);
+const photo = photoSrc(page?.data.image, page?.data.photo) ?? "/images/studio-portrait.webp";
+---
+
+<Base
+	title={seo?.title ?? "About"}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? page?.data.intro ?? "About Nova Hartley, a creative director and photographer."}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<PageHead
+		id="about-title"
+		eyebrow={page?.data.eyebrow ?? "About"}
+		title={page?.data.title ?? "Hello, I’m Nova."}
+		intro={page?.data.intro}
+		edit={page ? { ...page.edit.title } : {}}
+	/>
+
+	<section class="about-story">
+		<div class="wrap about-grid">
+			<figure class="about-photo">
+				<img
+					src={photo}
+					alt={photoAlt(page?.data.image, page?.data.photo, "Nova in a black linen jacket at her desk, smiling, with pinned prints behind her")}
+					width="1104"
+					height="1120"
+					loading="lazy"
+				/>
+			</figure>
+			<div class="prose">
+				{hasBody ? <PortableText value={page!.data.content} /> : <p>More about the studio is coming soon.</p>}
+				<p class="about-link"><a class="text-link" href="/work"><span>See the work</span><Arrow /></a></p>
+			</div>
+		</div>
+	</section>
+
+	<TalkBand studio={studioResult.studio} />
+</Base>

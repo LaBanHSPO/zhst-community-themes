@@ -1,0 +1,30 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref } from "../lib/site";
+import type { StudioData } from "../lib/site";
+
+interface Props {
+	studio: StudioData;
+	/** Pre-selects a discipline on the contact page. */
+	discipline?: string | null;
+}
+const { studio, discipline } = Astro.props;
+const href = discipline ? `/contact?discipline=${encodeURIComponent(discipline)}` : "/contact";
+---
+
+<section class="talk" aria-labelledby="talk-title">
+	<div class="wrap talk-inner">
+		<div>
+			<p class="eyebrow eyebrow-light">Let’s talk</p>
+			<h2 id="talk-title" class="display display-light">Have something worth making?</h2>
+			<p class="talk-copy">Tell me what it is, who it is for and when you need it. I answer every message myself, usually within two working days.</p>
+		</div>
+		<div class="talk-actions">
+			<a class="pill pill-light" href={href}><span>Start a project</span><Arrow /></a>
+			<p class="talk-contact">
+				{studio.email && <a href={`mailto:${studio.email}`}>{studio.email}</a>}
+				{studio.phone && <a href={telHref(studio.phone)}>{studio.phone}</a>}
+			</p>
+		</div>
+	</div>
+</section>

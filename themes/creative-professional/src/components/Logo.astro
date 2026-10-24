@@ -1,0 +1,34 @@
+---
+/** Wordmark: the site title in thin, widely tracked capitals (an A is drawn without a crossbar) with the tagline in tiny tracked capitals below. */
+interface Props {
+	title: string;
+	tagline?: string;
+	logo?: { url?: string; alt?: string } | null;
+	class?: string;
+}
+const { title, tagline, logo, class: className } = Astro.props;
+const letters = [...title.toUpperCase()];
+---
+
+<a class:list={["wordmark", className]} href="/" aria-label={`${title}, home`}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt || title} />
+		) : (
+			<>
+				<span class="wordmark-title" aria-hidden="true">
+					{letters.map((ch) =>
+						ch === "A" ? (
+							<svg class="wm-a" viewBox="0 0 22 28" width="22" height="28" focusable="false">
+								<path d="M1.200 27.500 11 1.500l9.800 26" fill="none" stroke="currentColor" stroke-width="1.300" stroke-linejoin="miter" />
+							</svg>
+						) : (
+							<span>{ch}</span>
+						),
+					)}
+				</span>
+				{tagline && <span class="wordmark-tagline">{tagline}</span>}
+			</>
+		)
+	}
+</a>
