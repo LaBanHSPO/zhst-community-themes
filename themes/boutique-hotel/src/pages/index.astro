@@ -1,0 +1,150 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import RoomCard from "../components/RoomCard.astro";
+import BookBand from "../components/BookBand.astro";
+import { getCompany, getExperiences, getRooms, getWalks, photoSrc, rows } from "../lib/hotel";
+
+const [roomsResult, expResult, walksResult, companyResult] = await Promise.all([getRooms(), getExperiences(), getWalks(), getCompany()]);
+for (const r of [roomsResult, expResult, walksResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const allRooms = roomsResult.rooms;
+const featured = allRooms.filter((r) => r.data.featured).slice(0, 3);
+const shown = featured.length > 0 ? featured : allRooms.slice(0, 3);
+const breakfast = expResult.entries.find((e) => (e.data.slug ?? e.data.id) === "breakfast");
+const terrace = expResult.entries.find((e) => (e.data.slug ?? e.data.id) === "terrace-bar");
+const walks = walksResult.entries.slice(0, 4);
+const { company } = companyResult;
+const reception = rows(company.reception)[0];
+---
+
+<Base
+	title="Elmwood Boutique Hotel"
+	description="Six rooms in a stone house above the lake in Valmora. See the rooms, breakfast, the terrace bar and local walks, then send a request for your dates."
+	overlay
+>
+	<section class="hero">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A guest room with a linen bed, an olive green cushion, an armchair and open balcony doors onto a hillside village and a lake"
+			width="1448"
+			height="707"
+			fetchpriority="high"
+		/>
+		<div class="hero-wash" aria-hidden="true"></div>
+		<div class="hero-copy">
+			<p class="hero-eyebrow"><span>Local soul. A brighter stay.</span><span class="rule" aria-hidden="true"></span></p>
+			<h1>A stay with<br />a sense of place.</h1>
+			<a class="btn btn-lg" href="/rooms">Explore rooms <Arrow /></a>
+		</div>
+	</section>
+
+	<section class="more" aria-labelledby="more-title">
+		<div class="more-copy">
+			<p class="eyebrow"><span>More than a hotel</span><span class="rule" aria-hidden="true"></span></p>
+			<h2 id="more-title" class="display">A warmer way<br />to travel.</h2>
+			<p class="more-text">Thoughtful rooms, local flavors and authentic<br class="br-wide" /> experiences: a boutique hotel rooted in its surroundings.</p>
+		</div>
+		<div class="more-panels">
+			<figure class="panel">
+				<img src="/images/panel-coffee.webp" alt="A stone cup of black coffee on a marble ledge beside an olive branch and a closed book" width="852" height="674" loading="lazy" />
+			</figure>
+			<figure class="panel panel-note">
+				<img src="/images/panel-wall.webp" alt="A sunlit stone wall with the shadow of olive leaves" width="730" height="674" loading="lazy" />
+				<p class="note" aria-hidden="true">
+					<span>Good</span>
+					<span>Stays</span>
+					<span>Brighter</span>
+					<span>Days</span>
+				</p>
+			</figure>
+		</div>
+	</section>
+
+	<section class="rooms-preview" aria-labelledby="rooms-title">
+		<div class="rooms-inner">
+			<div class="section-head">
+				<div>
+					<p class="eyebrow"><span>Rooms</span><span class="rule" aria-hidden="true"></span></p>
+					<h2 id="rooms-title" class="display">Six rooms, each a little different.</h2>
+					<p class="section-text">From a single room on the garden to a loft with space for four. Prices are per room, per night.</p>
+				</div>
+				<a class="link-arrow" href="/rooms">All rooms <Arrow /></a>
+			</div>
+			<ul class="room-grid">
+				{shown.map((r) => <li><RoomCard room={r} /></li>)}
+			</ul>
+		</div>
+	</section>
+
+	{
+		(breakfast || terrace) && (
+			<section class="table-section" aria-labelledby="table-title">
+				<div class="table-inner">
+					<figure class="table-photo">
+						<img src={photoSrc(terrace?.data.image, terrace?.data.photo) ?? "/images/terrace.webp"} alt={terrace?.data.photo_alt ?? ""} width="782" height="602" loading="lazy" />
+					</figure>
+					<div class="table-copy">
+						<p class="eyebrow"><span>Breakfast and the terrace</span><span class="rule" aria-hidden="true"></span></p>
+						<h2 id="table-title" class="display">Slow mornings, early evenings.</h2>
+						<div class="table-blocks">
+							{
+								[breakfast, terrace].filter(Boolean).map((e) => (
+									<div class="table-block">
+										<h3>{e!.data.title}</h3>
+										<p>{e!.data.summary}</p>
+										<dl class="detail-list">
+											{rows(e!.data.details).slice(0, 2).map((r) => <><dt>{r.left}</dt><dd>{r.right}</dd></>)}
+										</dl>
+									</div>
+								))
+							}
+						</div>
+						<a class="link-arrow" href="/experience">Everything we offer <Arrow /></a>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="hood" aria-labelledby="hood-title">
+		<div class="hood-inner">
+			<div class="hood-copy">
+				<p class="eyebrow eyebrow-light"><span>The neighbourhood</span><span class="rule" aria-hidden="true"></span></p>
+				<h2 id="hood-title" class="display">A village, a lake and a lot of walking.</h2>
+				<p class="hood-text">Valmora sits on a hill above Lake Serrin. Most of what you need is within twenty minutes on foot.</p>
+				<ul class="walk-list">
+					{
+						walks.map((w) => (
+							<li>
+								<span class="walk-name">{w.data.title}</span>
+								<span class="walk-time">{w.data.duration}</span>
+							</li>
+						))
+					}
+				</ul>
+				<a class="link-arrow link-arrow-light" href="/experience#local-walks">More about the walks <Arrow /></a>
+			</div>
+			<figure class="hood-photo">
+				<img src="/images/view.webp" alt="A hillside village with a church tower above a lake, seen from a balcony" width="875" height="747" loading="lazy" />
+			</figure>
+		</div>
+	</section>
+
+	<section class="goodtoknow" aria-labelledby="gtk-title">
+		<div class="gtk-inner">
+			<h2 id="gtk-title" class="gtk-title">Good to know before you book</h2>
+			<dl class="gtk-list">
+				{company.checkin && <div><dt>Check-in</dt><dd>From {company.checkin}</dd></div>}
+				{company.checkout && <div><dt>Check-out</dt><dd>By {company.checkout}</dd></div>}
+				{reception && <div><dt>Reception</dt><dd>{reception.right}</dd></div>}
+				{company.parking && <div><dt>Parking</dt><dd>{company.parking}</dd></div>}
+			</dl>
+			<a class="link-arrow" href="/policies">Read the house policies <Arrow /></a>
+		</div>
+	</section>
+
+	<BookBand company={company} />
+</Base>

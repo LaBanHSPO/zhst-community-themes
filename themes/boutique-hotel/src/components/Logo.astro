@@ -1,0 +1,24 @@
+---
+import type { MediaReference } from "../utils/site-identity";
+
+interface Props {
+	title: string;
+	tagline?: string;
+	logo?: MediaReference | null;
+	class?: string;
+}
+const { title, tagline, logo, class: className } = Astro.props;
+---
+
+<a class:list={["wordmark", className]} href="/" aria-label={`${title} ${tagline ?? ""}, home`.replace(/\s+/g, " ")}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt ?? title} width="200" height="46" />
+		) : (
+			<>
+				<span class="wordmark-title">{title}</span>
+				{tagline && <span class="wordmark-tagline">{tagline}</span>}
+			</>
+		)
+	}
+</a>

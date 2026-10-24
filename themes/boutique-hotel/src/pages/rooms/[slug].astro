@@ -1,0 +1,119 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import RoomCard from "../../components/RoomCard.astro";
+import BookBand from "../../components/BookBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { formatPrice, getCompany, getRooms, guestsLabel, lines, photoSrc, viewLabel } from "../../lib/hotel";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: room, cacheHint } = await getEmDashEntry("rooms", slug);
+if (!room) return Astro.rewrite("/404");
+
+const [allResult, companyResult, settings] = await Promise.all([getRooms(), getCompany(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(room, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = room.data;
+const key = d.slug ?? d.id;
+const main = photoSrc(d.image, d.photo);
+const photos = [main, ...lines(d.gallery)].filter((p): p is string => Boolean(p));
+const amenities = lines(d.amenities);
+const related = allResult.rooms.filter((r) => r.data.id !== d.id && (r.data.view === d.view || r.data.max_guests === d.max_guests)).slice(0, 3);
+const hasBody = Boolean(d.content && d.content.length > 0);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? main}
+	content={{ collection: "rooms", id: d.id, slug }}
+	current="/rooms"
+>
+	<section class="detail-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/rooms">Rooms</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class:list={["detail-grid", { "is-text-only": photos.length === 0 }]}>
+				<div class="detail-copy">
+					<p class="eyebrow"><span>{viewLabel(d.view)} view</span><span class="rule" aria-hidden="true"></span></p>
+					<h1 class="display" {...room.edit.title}>{d.title}</h1>
+					<p class="lede" {...room.edit.summary}>{d.summary}</p>
+					<dl class="facts">
+						<div><dt>Size</dt><dd>{d.size_m2} m²</dd></div>
+						<div><dt>Bed</dt><dd>{d.bed}</dd></div>
+						<div><dt>Sleeps</dt><dd>Up to {guestsLabel(d.max_guests)}</dd></div>
+						<div><dt>View</dt><dd><a href={`/rooms?view=${d.view}`}>{viewLabel(d.view)}</a></dd></div>
+						{d.price_from ? <div><dt>Price</dt><dd>From {formatPrice(d.price_from)} per night (sample price)</dd></div> : null}
+					</dl>
+					<a class="btn btn-lg" href={`/contact?room=${encodeURIComponent(key)}&guests=${Math.min(2, Number(d.max_guests ?? 2))}`}>Request this room <Arrow /></a>
+				</div>
+				{
+					photos.length > 0 && (
+						<div class:list={["gallery", `gallery-${Math.min(photos.length, 4)}`]}>
+							{photos.slice(0, 4).map((p, i) => <figure><img src={p} alt={i === 0 ? (d.image?.alt ?? d.photo_alt ?? d.title) : `${d.title}, photo ${i + 1}`} width="800" height="560" loading={i === 0 ? "eager" : "lazy"} /></figure>)}
+						</div>
+					)
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="wrap detail-cols">
+			<div class="prose">
+				{d.intro && <p class="prose-lead">{d.intro}</p>}
+				{hasBody ? <PortableText value={d.content} /> : <p>{d.summary}</p>}
+			</div>
+			<aside class="side-stack">
+				{
+					amenities.length > 0 && (
+						<div class="side-box" aria-labelledby="amen-title">
+							<h2 id="amen-title">In the room</h2>
+							<ul class="ticks">{amenities.map((b) => <li>{b}</li>)}</ul>
+						</div>
+					)
+				}
+				<div class="side-box side-ask">
+					<h2>Dates in mind?</h2>
+					<p class="small">Send a request. We confirm availability and the price for your dates by email.</p>
+					<a class="link-arrow" href={`/contact?room=${encodeURIComponent(key)}`}>Request this room <Arrow /></a>
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	{
+		related.length > 0 && (
+			<section class="band" aria-labelledby="related-title">
+				<div class="wrap">
+					<div class="section-head">
+						<div>
+							<p class="eyebrow"><span>Other rooms</span><span class="rule" aria-hidden="true"></span></p>
+							<h2 id="related-title" class="display">Also worth a look</h2>
+						</div>
+						<a class="link-arrow" href="/rooms">All rooms <Arrow /></a>
+					</div>
+					<ul class="room-grid">
+						{related.map((r) => <li><RoomCard room={r} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<BookBand company={companyResult.company} room={key} />
+</Base>

@@ -1,0 +1,23 @@
+---
+import { formatPrice, guestsLabel, photoSrc, viewLabel } from "../lib/hotel";
+import type { RoomEntry } from "../lib/hotel";
+
+interface Props {
+	room: RoomEntry;
+}
+const { room } = Astro.props;
+const d = room.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<a class="room-card" href={`/rooms/${d.slug ?? d.id}`}>
+	<span class="room-photo">
+		{src && <img src={src} alt={d.image?.alt ?? d.photo_alt ?? ""} width="640" height="460" loading="lazy" />}
+	</span>
+	<span class="room-body">
+		<span class="room-view">{viewLabel(d.view)} view</span>
+		<span class="room-name" {...room.edit.title}>{d.title}</span>
+		<span class="room-meta">{d.size_m2} m² · {d.bed} · Up to {guestsLabel(d.max_guests)}</span>
+		{d.price_from ? <span class="room-price">From <strong>{formatPrice(d.price_from)}</strong> per night</span> : null}
+	</span>
+</a>

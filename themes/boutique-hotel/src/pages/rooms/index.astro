@@ -1,0 +1,73 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import RoomCard from "../../components/RoomCard.astro";
+import BookBand from "../../components/BookBand.astro";
+import { GUEST_STEPS, VIEWS, getCompany, getRooms } from "../../lib/hotel";
+
+const [roomsResult, companyResult] = await Promise.all([getRooms(), getCompany()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(roomsResult.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+}
+// ?guests=N shows rooms that fit N people or more, ?view=garden|hillside|lake narrows by view. They combine.
+// Unknown values show everything.
+const q = Astro.url.searchParams;
+const all = roomsResult.rooms;
+const guestsParam = Number.parseInt(q.get("guests") ?? "", 10);
+const guests = GUEST_STEPS.find((g) => g === guestsParam);
+const view = VIEWS.find((v) => v.slug === q.get("view"));
+const fits = (r: (typeof all)[number], g?: number) => !g || Number(r.data.max_guests ?? 0) >= g;
+const list = all.filter((r) => fits(r, guests) && (!view || r.data.view === view.slug));
+const href = (g?: number, v?: string) => {
+	const p = new URLSearchParams();
+	if (g) p.set("guests", String(g));
+	if (v) p.set("view", v);
+	const s = p.toString();
+	return s ? `/rooms?${s}` : "/rooms";
+};
+const guestCount = (g: number) => all.filter((r) => fits(r, g) && (!view || r.data.view === view.slug)).length;
+const viewCount = (slug: string) => all.filter((r) => fits(r, guests) && r.data.view === slug).length;
+const heading = [guests ? `fits ${guests} ${guests === 1 ? "guest" : "guests"}` : "", view ? `${view.label.toLowerCase()} view` : ""].filter(Boolean).join(", ");
+---
+
+<Base title="Rooms" description="Six rooms at Elmwood, from a single on the garden to a loft for four. Filter by number of guests and by view, then send a request for your dates.">
+	<PageHead
+		id="rooms-title"
+		eyebrow="Rooms"
+		title="Six rooms, each a little different."
+		intro="Every room has its own bathroom, good bedding and shutters. Prices are a starting point per room, per night, and change with the season."
+	/>
+	<section class="list-section" aria-labelledby="rooms-title">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter rooms">
+				<div class="filter-group">
+					<span class="filter-label">Guests</span>
+					<a href={href(undefined, view?.slug)} aria-current={guests ? undefined : "true"}>Any</a>
+					{GUEST_STEPS.map((g) => <a href={href(g, view?.slug)} aria-current={guests === g ? "true" : undefined}>For {g} <span>{guestCount(g)}</span></a>)}
+				</div>
+				<div class="filter-group">
+					<span class="filter-label">View</span>
+					<a href={href(guests, undefined)} aria-current={view ? undefined : "true"}>All</a>
+					{VIEWS.map((v) => <a href={href(guests, v.slug)} aria-current={view?.slug === v.slug ? "true" : undefined}>{v.label} <span>{viewCount(v.slug)}</span></a>)}
+				</div>
+			</nav>
+
+			<p class="result-line" role="status">
+				{list.length} of {all.length} rooms{heading ? `: ${heading}` : ""}
+				{(guests || view) && <> <a href="/rooms">Clear filters</a></>}
+			</p>
+
+			{
+				list.length === 0 ? (
+					<p class="empty-note">No room matches that combination. <a href="/rooms">Show all rooms</a> or <a href="/contact">tell us what you need</a>.</p>
+				) : (
+					<ul class="room-grid room-grid-list">
+						{list.map((r) => <li><RoomCard room={r} /></li>)}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+	<BookBand company={companyResult.company} />
+</Base>

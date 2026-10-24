@@ -1,0 +1,1240 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Elmwood Boutique Hotel",
+    "description": "A boutique hotel theme with a full-bleed guest room hero, a rooms collection filtered by guests and view, experiences, local walks, an about page, house policies and an availability request form, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "Elmwood",
+    "tagline": "Boutique Hotel"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "rooms",
+      "label": "Rooms",
+      "labelSingular": "Room",
+      "urlPattern": "/rooms/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Room name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "view",
+          "label": "View",
+          "type": "select",
+          "required": true,
+          "defaultValue": "garden",
+          "indexed": true,
+          "validation": {
+            "options": [
+              "garden",
+              "hillside",
+              "lake"
+            ]
+          }
+        },
+        {
+          "slug": "size_m2",
+          "label": "Size in square metres",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "slug": "bed",
+          "label": "Bed type (e.g. Double bed (160 cm))",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "max_guests",
+          "label": "Maximum guests",
+          "type": "integer",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "slug": "amenities",
+          "label": "Amenities (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "price_from",
+          "label": "From price per night, whole dollars (placeholder)",
+          "type": "integer"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph (room page)",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Room page content",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "image",
+          "label": "Main photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled main photo path",
+          "type": "string"
+        },
+        {
+          "slug": "photo_alt",
+          "label": "Main photo description",
+          "type": "string"
+        },
+        {
+          "slug": "gallery",
+          "label": "More bundled photo paths (one per line)",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "slug": "experiences",
+      "label": "Experiences",
+      "labelSingular": "Experience",
+      "supports": [
+        "drafts",
+        "revisions",
+        "search"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "Description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "details",
+          "label": "Details (one per line, as Label|Value)",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "photo_alt",
+          "label": "Photo description",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "walks",
+      "label": "Local walks",
+      "labelSingular": "Walk",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Walk",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "duration",
+          "label": "Time and terrain",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "note",
+          "label": "Short note",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "team",
+      "label": "Team",
+      "labelSingular": "Team member",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "First name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "role",
+          "label": "Role",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "bio",
+          "label": "Two sentences about them",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "company",
+      "label": "Hotel details",
+      "labelSingular": "Hotel details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Hotel name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "street",
+          "label": "Street address",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "locality",
+          "label": "Town and region",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "country",
+          "label": "Country",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Booking email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "reception",
+          "label": "Reception hours (one per line, as Day|Hours)",
+          "type": "text"
+        },
+        {
+          "slug": "checkin",
+          "label": "Check-in from",
+          "type": "string"
+        },
+        {
+          "slug": "checkout",
+          "label": "Check-out by",
+          "type": "string"
+        },
+        {
+          "slug": "parking",
+          "label": "Parking note",
+          "type": "string"
+        },
+        {
+          "slug": "request_note",
+          "label": "Note shown beside the booking form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Rooms",
+          "url": "/rooms"
+        },
+        {
+          "type": "custom",
+          "label": "Experience",
+          "url": "/experience"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "A small house on a hill.",
+          "eyebrow": "About",
+          "intro": "Elmwood is a six-room hotel in the village of Valmora, run by a team of five.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k136",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The house",
+                  "_key": "k137"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k138",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Elmwood was built in 1931 as a doctor's home, with thick stone walls and a chestnut tree that still stands by the gate. It was a boarding house for a while, then stood empty for years.",
+                  "_key": "k139"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k140",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The present owners bought it in 2016. They kept the walls, the tile floors and the shutters, and added bathrooms and heating. It opened as a hotel in spring 2018.",
+                  "_key": "k141"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k142",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How we run it",
+                  "_key": "k143"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k144",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "With six rooms we know every guest by name. Breakfast is cooked to order, and the menu on the table says where the eggs, honey and cheese came from.",
+                  "_key": "k145"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k146",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We answer booking requests ourselves, usually the same day. If we are full, we say so and suggest other dates or another house in the village.",
+                  "_key": "k147"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k148",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What it is not",
+                  "_key": "k149"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k150",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "There is no pool, no spa and no lift. The house has stairs, and the upper rooms are up one or two flights. If that is a problem, ask for the ground floor when you send your request.",
+                  "_key": "k151"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "policies",
+        "slug": "policies",
+        "status": "published",
+        "data": {
+          "title": "House policies",
+          "eyebrow": "Policies",
+          "intro": "The short version of how a stay works. Please read it before you send a request.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k152",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Check-in and check-out",
+                  "_key": "k153"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k154",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Check-in is from 3:00 pm and check-out is by 11:00 am. If you arrive earlier we will keep your bags and tell you when the room is ready. If you will arrive after 10:00 pm, tell us in your request so we can arrange a key.",
+                  "_key": "k155"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k156",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Cancellation",
+                  "_key": "k157"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k158",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sample text, replace it with your own terms before you publish. You can cancel free of charge up to 7 days before arrival. After that we charge the first night. If you do not arrive and have not told us, we charge the full stay.",
+                  "_key": "k159"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k160",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Payment",
+                  "_key": "k161"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k162",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Nothing is charged when you send a request. When we confirm your dates we will tell you the total and how to pay. The tourist tax is paid at check-out.",
+                  "_key": "k163"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k164",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Pets",
+                  "_key": "k165"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k166",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Dogs under 15 kg are welcome in the Garden Room and the Courtyard Single for $15 per stay. They are not allowed in the dining room or on the terrace at breakfast.",
+                  "_key": "k167"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k168",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Children",
+                  "_key": "k169"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k170",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Children of any age are welcome. Travel cots are free, so ask when you send your request. The Family Loft and the Lake Suite each sleep four.",
+                  "_key": "k171"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k172",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Quiet hours",
+                  "_key": "k173"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k174",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Quiet hours run from 10:00 pm to 7:30 am. The walls are thick, but the stairs are wooden.",
+                  "_key": "k175"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "rooms": [
+      {
+        "id": "garden-room",
+        "slug": "garden-room",
+        "status": "published",
+        "data": {
+          "title": "Garden Room",
+          "summary": "A double room on the ground floor with a stone step down to the garden.",
+          "view": "garden",
+          "size_m2": 18,
+          "bed": "Double bed (160 cm)",
+          "max_guests": 2,
+          "amenities": "Door to the garden\nArmchair and reading lamp\nPrivate bathroom with a rain shower\nCotton and linen bedding\nWi-Fi\nHeating and shutters, no air conditioning\nKettle, tea and ground coffee",
+          "price_from": 135,
+          "featured": true,
+          "position": 10,
+          "photo": "/images/headboard.webp",
+          "photo_alt": "A linen bed with olive green cushions, a brass lamp and a round stone bedside table",
+          "gallery": "/images/suite.webp\n/images/bench.webp",
+          "intro": "The quietest of the six, with a door that opens straight onto the lawn and the old chestnut tree.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k100",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About the room",
+                  "_key": "k101"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k102",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The room is on the ground floor, so there are no stairs between the bed and the garden. The walls are original stone, painted white, and the floor is tile that stays cool in summer.",
+                  "_key": "k103"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k104",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Good for two people who want to sit outside with a coffee before anyone else is up. The bathroom has a walk-in shower and a heated towel rail.",
+                  "_key": "k105"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "hillside-room",
+        "slug": "hillside-room",
+        "status": "published",
+        "data": {
+          "title": "Hillside Room",
+          "summary": "First floor, facing the hill and the old church tower, with early light in summer.",
+          "view": "hillside",
+          "size_m2": 22,
+          "bed": "Double bed (160 cm)",
+          "max_guests": 2,
+          "amenities": "Two tall windows with shutters\nWriting desk\nPrivate bathroom with a rain shower\nCotton and linen bedding\nWi-Fi\nHeating and shutters, no air conditioning\nKettle, tea and ground coffee",
+          "price_from": 165,
+          "featured": true,
+          "position": 20,
+          "photo": "/images/bed.webp",
+          "photo_alt": "A wide bed with a woven olive blanket and white pillows in warm evening light",
+          "gallery": "/images/view.webp\n/images/armchair.webp",
+          "intro": "A bright room on the first floor with a long view across the roofs of Valmora to the hill behind.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k106",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About the room",
+                  "_key": "k107"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k108",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Two tall windows face east, so the room fills with light soon after sunrise. Close the shutters if you want to sleep in.",
+                  "_key": "k109"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k110",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "There is a desk by the window and a chair that is comfortable enough to read in. The room is up one flight of stairs.",
+                  "_key": "k111"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "balcony-room",
+        "slug": "balcony-room",
+        "status": "published",
+        "data": {
+          "title": "Balcony Room",
+          "summary": "A corner room with a small balcony, two chairs and a view over the lake.",
+          "view": "lake",
+          "size_m2": 26,
+          "bed": "Large double bed (180 cm)",
+          "max_guests": 3,
+          "amenities": "Balcony with a table and two chairs\nSofa bed for a third guest\nReading lamps on both sides of the bed\nPrivate bathroom with a rain shower\nCotton and linen bedding\nWi-Fi\nHeating and shutters, no air conditioning\nKettle, tea and ground coffee",
+          "price_from": 205,
+          "featured": true,
+          "position": 30,
+          "photo": "/images/hero-home.webp",
+          "photo_alt": "A guest room with a linen bed, an armchair and open balcony doors to a hillside village and lake",
+          "gallery": "/images/terrace.webp\n/images/view.webp\n/images/bed.webp",
+          "intro": "The doors open onto a balcony just big enough for breakfast, with the lake and the village below.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k112",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About the room",
+                  "_key": "k113"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k114",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A corner room on the first floor with windows on two sides. The balcony has a small round table and two woven chairs, and gets the sun from about four in the afternoon.",
+                  "_key": "k115"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k116",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The sofa bed sleeps a third person, a child or an adult for a short stay. Tell us when you ask for your dates and we will make it up.",
+                  "_key": "k117"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "lake-suite",
+        "slug": "lake-suite",
+        "status": "published",
+        "data": {
+          "title": "Lake Suite",
+          "summary": "The largest room, with a sitting area and tall doors on the lake side.",
+          "view": "lake",
+          "size_m2": 38,
+          "bed": "Large double bed (180 cm) and a sofa bed",
+          "max_guests": 4,
+          "amenities": "Separate sitting area\nTwo sets of tall doors\nBath as well as a shower\nSofa bed for two children or one adult\nPrivate bathroom with a rain shower\nCotton and linen bedding\nWi-Fi\nHeating and shutters, no air conditioning\nKettle, tea and ground coffee",
+          "price_from": 285,
+          "featured": false,
+          "position": 40,
+          "photo": "/images/suite.webp",
+          "photo_alt": "A large bed under an arched wall with olive green cushions, a brass lamp and a view of a bay at sunset",
+          "gallery": "/images/arch.webp\n/images/headboard.webp\n/images/b-bench.webp",
+          "intro": "Room to spread out, with a bath, a sofa and a wide view of the lake from the bed.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k118",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About the room",
+                  "_key": "k119"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k120",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This is the only room with a bath. The sitting area has a sofa, a low table and a lamp, and the tall doors fold back in warm weather.",
+                  "_key": "k121"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k122",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "It suits two adults who want space, or two adults and up to two children. The suite is on the first floor, up one flight of stairs.",
+                  "_key": "k123"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "family-loft",
+        "slug": "family-loft",
+        "status": "published",
+        "data": {
+          "title": "Family Loft",
+          "summary": "Top floor under the roof beams, with a double bed and two single beds.",
+          "view": "hillside",
+          "size_m2": 44,
+          "bed": "Double bed (160 cm) and two single beds (90 cm)",
+          "max_guests": 4,
+          "amenities": "Two single beds that can be pushed together\nSpace for a travel cot\nSkylights, with blinds\nSmall table for games and homework\nPrivate bathroom with a rain shower\nCotton and linen bedding\nWi-Fi\nHeating and shutters, no air conditioning\nKettle, tea and ground coffee",
+          "price_from": 295,
+          "featured": false,
+          "position": 50,
+          "photo": "/images/b-bench.webp",
+          "photo_alt": "A woven bench with a straw hat and a folded throw on a jute rug at the foot of a bed",
+          "gallery": "/images/arch.webp\n/images/view.webp",
+          "intro": "One big room under the roof for a family of four, with the hill outside the skylights.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k124",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About the room",
+                  "_key": "k125"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k126",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The loft has one double bed and two single beds, and enough floor space for children to play. The ceiling is high in the middle and slopes at the sides, so watch your head near the walls.",
+                  "_key": "k127"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k128",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "It is on the top floor, up two flights of stairs. A travel cot is free if you ask when you send your request.",
+                  "_key": "k129"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "courtyard-single",
+        "slug": "courtyard-single",
+        "status": "published",
+        "data": {
+          "title": "Courtyard Single",
+          "summary": "A quiet single room on the ground floor with a window onto the herb garden.",
+          "view": "garden",
+          "size_m2": 14,
+          "bed": "Single bed (120 cm)",
+          "max_guests": 1,
+          "amenities": "Writing desk\nWindow onto the herb garden\nPrivate bathroom with a rain shower\nCotton and linen bedding\nWi-Fi\nHeating and shutters, no air conditioning\nKettle, tea and ground coffee",
+          "price_from": 95,
+          "featured": false,
+          "position": 60,
+          "photo": "/images/armchair.webp",
+          "photo_alt": "An olive green armchair next to a round wooden table with two books",
+          "gallery": "/images/bench.webp\n/images/terrace.webp",
+          "intro": "The smallest room in the house, and the best value for one person travelling alone.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k130",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About the room",
+                  "_key": "k131"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k132",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A single bed, a desk and a good reading chair. The window looks onto the herb garden and the kitchen door, so you will smell breakfast before you hear it.",
+                  "_key": "k133"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k134",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "It is on the ground floor next to the dining room.",
+                  "_key": "k135"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "experiences": [
+      {
+        "id": "breakfast",
+        "slug": "breakfast",
+        "status": "published",
+        "data": {
+          "title": "Breakfast",
+          "summary": "Bread from the village bakery, eggs cooked to order, local cheese, honey, fruit and strong coffee. It is served in the dining room, or on the terrace when it is warm.",
+          "details": "Served|7:30 to 10:30 am, every day\nPrice|$14 per person, not included in the room price\nDiets|Vegetarian and gluten-free on request the evening before",
+          "position": 10,
+          "photo": "/images/panel-coffee.webp",
+          "photo_alt": "A stone cup of black coffee on a marble ledge with an olive branch and a closed book"
+        }
+      },
+      {
+        "id": "terrace-bar",
+        "slug": "terrace-bar",
+        "status": "published",
+        "data": {
+          "title": "Terrace bar",
+          "summary": "A short list of local wines, a few spirits and soft drinks, with olives, bread and cheese. The terrace faces the lake and gets the evening sun.",
+          "details": "Open|5:00 to 10:00 pm, April to October\nFood|Cheese, olives and bread. There is no dinner kitchen\nSeats|Twelve outside, six inside if it rains",
+          "position": 20,
+          "photo": "/images/terrace.webp",
+          "photo_alt": "A small round table and woven chairs on a stone terrace above the lake"
+        }
+      },
+      {
+        "id": "local-walks",
+        "slug": "local-walks",
+        "status": "published",
+        "data": {
+          "title": "Local walks",
+          "summary": "Marked paths start behind the garden gate. We keep paper maps at reception and can mark the route you want on one.",
+          "details": "Maps|Free at reception\nGuided|Marta walks the lake path on Sundays at 9:00 am, no charge\nShoes|Grass is wet until late morning, so bring something with grip",
+          "position": 30,
+          "photo": "/images/view.webp",
+          "photo_alt": "A hillside village with a church tower above a lake, seen through open balcony doors"
+        }
+      },
+      {
+        "id": "bikes",
+        "slug": "bikes",
+        "status": "published",
+        "data": {
+          "title": "Bikes",
+          "summary": "Six town bikes with baskets, helmets and a lock. The road along the lake is flat for about six kilometres.",
+          "details": "Hire|$12 for half a day, $20 for the whole day\nIncludes|Helmet, lock, basket and a map\nBooking|At reception the day before",
+          "position": 40
+        }
+      },
+      {
+        "id": "excursions",
+        "slug": "excursions",
+        "status": "published",
+        "data": {
+          "title": "Arranged excursions",
+          "summary": "We can book a boat across the lake, a visit to a cheese farm, a cooking morning in the village or a driver for a longer day out. You pay the price the provider charges.",
+          "details": "Boat|Wednesdays and Saturdays, about two hours\nCooking|Morning class in the village, six people at most\nDriver|Day rate on request, booked 48 hours ahead",
+          "position": 50,
+          "photo": "/images/bench.webp",
+          "photo_alt": "A straw hat and a folded throw on a woven bench"
+        }
+      }
+    ],
+    "walks": [
+      {
+        "id": "lake-path",
+        "slug": "lake-path",
+        "status": "published",
+        "data": {
+          "title": "Lake path to the old pier",
+          "duration": "45 minutes, flat",
+          "note": "Starts at the garden gate. There are benches every few hundred metres and a small beach at the end.",
+          "position": 10
+        }
+      },
+      {
+        "id": "church-tower",
+        "slug": "church-tower",
+        "status": "published",
+        "data": {
+          "title": "Church tower and the upper lane",
+          "duration": "1 hour, uphill",
+          "note": "Steep at first, then level under the chestnut trees. The tower has the best view of the village roofs.",
+          "position": 20
+        }
+      },
+      {
+        "id": "market-morning",
+        "slug": "market-morning",
+        "status": "published",
+        "data": {
+          "title": "Market morning",
+          "duration": "20 minutes each way",
+          "note": "The village market is on Thursdays. Go early for bread and cheese.",
+          "position": 30
+        }
+      },
+      {
+        "id": "vineyard-loop",
+        "slug": "vineyard-loop",
+        "status": "published",
+        "data": {
+          "title": "Vineyard loop",
+          "duration": "2 hours 30 minutes",
+          "note": "A circular route through terraced vines. Take water, because there is no shop on the way.",
+          "position": 40
+        }
+      },
+      {
+        "id": "quarry-swim",
+        "slug": "quarry-swim",
+        "status": "published",
+        "data": {
+          "title": "Quarry swim",
+          "duration": "1 hour 15 minutes",
+          "note": "A short climb to a cold pool in an old quarry. Summer only.",
+          "position": 50
+        }
+      }
+    ],
+    "team": [
+      {
+        "id": "marta",
+        "slug": "marta",
+        "status": "published",
+        "data": {
+          "title": "Marta",
+          "role": "Owner and host",
+          "bio": "Marta grew up two villages away and runs the front desk most mornings. She leads the Sunday walk.",
+          "position": 10
+        }
+      },
+      {
+        "id": "teo",
+        "slug": "teo",
+        "status": "published",
+        "data": {
+          "title": "Teo",
+          "role": "Breakfast and kitchen",
+          "bio": "Teo cooks breakfast and bakes the plain cake on the terrace bar. He buys eggs and honey from neighbours.",
+          "position": 20
+        }
+      },
+      {
+        "id": "ines",
+        "slug": "ines",
+        "status": "published",
+        "data": {
+          "title": "Ines",
+          "role": "Housekeeping lead",
+          "bio": "Ines has looked after the rooms since the day the hotel opened. She knows which shutter sticks.",
+          "position": 30
+        }
+      },
+      {
+        "id": "jonas",
+        "slug": "jonas",
+        "status": "published",
+        "data": {
+          "title": "Jonas",
+          "role": "Reception and bikes",
+          "bio": "Jonas covers evenings and keeps the bikes running. Ask him for the walk that suits your legs.",
+          "position": 40
+        }
+      },
+      {
+        "id": "lucia",
+        "slug": "lucia",
+        "status": "published",
+        "data": {
+          "title": "Lucia",
+          "role": "Terrace bar",
+          "bio": "Lucia pours from April to October and chooses the wine list from three small growers nearby.",
+          "position": 50
+        }
+      }
+    ],
+    "company": [
+      {
+        "id": "company",
+        "slug": "company",
+        "status": "published",
+        "data": {
+          "title": "Elmwood Boutique Hotel",
+          "street": "14 Chestnut Lane",
+          "locality": "Valmora, Lake Serrin",
+          "country": "",
+          "phone": "+1 555 0143",
+          "email": "stay@elmwood-hotel.example",
+          "reception": "Every day|7:30 am to 10:00 pm\nAfter 10:00 pm|Ring the night bell, by arrangement",
+          "checkin": "3:00 pm",
+          "checkout": "11:00 am",
+          "parking": "Six free spaces behind the house",
+          "request_note": "This form sends a request by email. It is not a booking. We reply within one working day to confirm availability and the price for your dates, and nothing is charged until you agree."
+        }
+      }
+    ]
+  }
+}

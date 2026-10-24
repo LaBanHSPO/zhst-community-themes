@@ -1,0 +1,59 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import BookBand from "../components/BookBand.astro";
+import { getCompany, getExperiences, getWalks, photoSrc, rows } from "../lib/hotel";
+
+const [expResult, walksResult, companyResult] = await Promise.all([getExperiences(), getWalks(), getCompany()]);
+for (const r of [expResult, walksResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const walks = walksResult.entries;
+---
+
+<Base title="Experience" description="Breakfast, the terrace bar, local walks, bikes and arranged excursions at Elmwood. Times, prices and what is included.">
+	<PageHead
+		id="experience-title"
+		eyebrow="Experience"
+		title="What there is to do here."
+		intro="Nothing on this page is compulsory. These are the things guests ask about most, with times and prices."
+	/>
+	<section class="exp-section" aria-labelledby="experience-title">
+		<ol class="exp-list">
+			{
+				expResult.entries.map((e, i) => {
+					const src = photoSrc(e.data.image, e.data.photo);
+					const id = e.data.slug ?? e.data.id;
+					return (
+						<li class:list={["exp-item", { "is-flip": i % 2 === 1, "is-plain": !src }]} id={id}>
+							{src && <figure class="exp-photo"><img src={src} alt={e.data.image?.alt ?? e.data.photo_alt ?? ""} width="856" height="560" loading={i === 0 ? "eager" : "lazy"} /></figure>}
+							<div class="exp-copy">
+								<h2 class="display" {...e.edit.title}>{e.data.title}</h2>
+								<p class="exp-text">{e.data.summary}</p>
+								<dl class="detail-list">
+									{rows(e.data.details).map((r) => <><dt>{r.left}</dt><dd>{r.right}</dd></>)}
+								</dl>
+								{
+									id === "local-walks" && walks.length > 0 && (
+										<ul class="walk-list walk-list-dark">
+											{
+												walks.map((w) => (
+													<li>
+														<span class="walk-name">{w.data.title}</span>
+														<span class="walk-time">{w.data.duration}</span>
+														{w.data.note && <span class="walk-note">{w.data.note}</span>}
+													</li>
+												))
+											}
+										</ul>
+									)
+								}
+							</div>
+						</li>
+					);
+				})
+			}
+		</ol>
+	</section>
+	<BookBand company={companyResult.company} />
+</Base>
