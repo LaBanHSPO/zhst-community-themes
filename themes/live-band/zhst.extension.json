@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "live-band",
+	"kind": "theme",
+	"name": "Live Band",
+	"type": "bio",
+	"emdash": "1.2.0",
+	"entry": "themes/live-band",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

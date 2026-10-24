@@ -1,0 +1,25 @@
+---
+import Arrow from "./Arrow.astro";
+import { photoAlt, photoSrc, shortDate, showHref } from "../lib/band";
+import type { Show } from "../lib/band";
+
+interface Props {
+	show: { data: Show };
+	day: string;
+}
+const { show, day } = Astro.props;
+const d = show.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<a class="show-card" href={showHref(d)}>
+	{src && <img class="show-card-photo" src={src} alt={photoAlt(d.image, d.photo)} width="710" height="412" loading="lazy" decoding="async" />}
+	<span class="show-card-body">
+		<span class="show-card-text">
+			<span class="show-card-date">{shortDate(day)}{d.ticket_status === "sold-out" && <span class="show-card-flag"> · Sold out</span>}</span>
+			<span class="show-card-city">{d.title}</span>
+			<span class="show-card-venue">{d.venue}</span>
+		</span>
+		<Arrow size={20} />
+	</span>
+</a>

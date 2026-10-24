@@ -1,0 +1,1246 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Live Band",
+    "description": "An energetic independent-band theme: tour dates that split into upcoming and past, releases with tracklists, an about page and a contact page, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "The Live Band",
+    "tagline": "Live music"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "shows",
+      "label": "Tour dates",
+      "labelSingular": "Show",
+      "urlPattern": "/tour/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "City",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "venue",
+          "label": "Venue",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "show_date",
+          "label": "Show date",
+          "type": "datetime",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "slug": "doors",
+          "label": "Doors / start time (as shown, e.g. Doors 7:00 pm)",
+          "type": "string"
+        },
+        {
+          "slug": "ticket_status",
+          "label": "Ticket status",
+          "type": "select",
+          "required": true,
+          "indexed": true,
+          "defaultValue": "on-sale",
+          "validation": {
+            "options": [
+              "on-sale",
+              "sold-out",
+              "cancelled"
+            ]
+          }
+        },
+        {
+          "slug": "ticket_url",
+          "label": "Ticket link (optional)",
+          "type": "string"
+        },
+        {
+          "slug": "note",
+          "label": "Short note (age limit, support act, anything useful)",
+          "type": "text"
+        },
+        {
+          "slug": "image",
+          "label": "Venue photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled venue photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "About this show",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "releases",
+      "label": "Music",
+      "labelSingular": "Release",
+      "urlPattern": "/music/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "kind",
+          "label": "Format",
+          "type": "select",
+          "required": true,
+          "indexed": true,
+          "defaultValue": "Album",
+          "validation": {
+            "options": [
+              "Album",
+              "EP",
+              "Single"
+            ]
+          }
+        },
+        {
+          "slug": "year",
+          "label": "Year",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "image",
+          "label": "Cover (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover path",
+          "type": "string"
+        },
+        {
+          "slug": "tracklist",
+          "label": "Tracklist",
+          "type": "repeater",
+          "validation": {
+            "maxItems": 40,
+            "subFields": [
+              {
+                "slug": "title",
+                "label": "Track title",
+                "type": "string"
+              },
+              {
+                "slug": "length",
+                "label": "Length (e.g. 3:42)",
+                "type": "string"
+              },
+              {
+                "slug": "audio_url",
+                "label": "Audio file URL (optional, plays in the page)",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        {
+          "slug": "credits",
+          "label": "Credits (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order (newest first)",
+          "type": "integer"
+        },
+        {
+          "slug": "content",
+          "label": "Liner notes",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "members",
+      "label": "Band members",
+      "labelSingular": "Member",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "role",
+          "label": "Role",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "initials",
+          "label": "Initials (shown when there is no photo)",
+          "type": "string"
+        },
+        {
+          "slug": "bio",
+          "label": "Short bio",
+          "type": "text"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "photos",
+      "label": "Gallery",
+      "labelSingular": "Photo",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "caption",
+          "label": "Caption",
+          "type": "text"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "band",
+      "label": "Band details",
+      "labelSingular": "Band details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Band name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "base",
+          "label": "Based in",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "General / updates email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "booking_email",
+          "label": "Booking email",
+          "type": "string"
+        },
+        {
+          "slug": "press_email",
+          "label": "Press email",
+          "type": "string"
+        },
+        {
+          "slug": "response",
+          "label": "Reply time (shown beside the contact form)",
+          "type": "string"
+        },
+        {
+          "slug": "note",
+          "label": "Note shown beside the contact form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "Tour",
+          "url": "/tour"
+        },
+        {
+          "type": "custom",
+          "label": "Music",
+          "url": "/music"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "Four people, one loud room.",
+          "eyebrow": "About",
+          "intro": "The Live Band is a four-piece that has spent six years turning small rooms into the loudest, happiest place in town.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We started in a rented rehearsal space above a hardware shop, playing to whoever wandered up the stairs. Eli wrote songs about the places we drove through, Rafa kept the time, and Tess found the bass lines that made people look up from their drinks.",
+                  "_key": "k1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Since then the plan has stayed the same: play the songs as if it were the last night of the tour, every night. We would rather be a little rough and completely there than polished and far away.",
+                  "_key": "k2s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How we play",
+                  "_key": "k3s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k4",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "No backing tracks, no click track in the front rows. The set list changes with the room, and the last song is always the one the crowd asks for.",
+                  "_key": "k4s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We keep our shows all-ages wherever the venue allows it, and every venue on the tour page lists its own door policy so nobody turns up to a surprise.",
+                  "_key": "k5s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k6",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Say hello",
+                  "_key": "k6s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Want updates when new dates land, a booking for your venue or festival, or a press kit? Use the contact page and pick the topic; it reaches the right person.",
+                  "_key": "k7s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "show-info",
+        "slug": "show-info",
+        "status": "published",
+        "data": {
+          "title": "Show info and house rules",
+          "eyebrow": "Show info",
+          "intro": "What to expect at a Live Band show, from doors to the last song.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k8",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Before you go",
+                  "_key": "k8s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Doors and start times are on each tour date. Support acts are listed on the show page when they are confirmed. If a date is marked sold out, the venue may release a small number of tickets on the day; we cannot hold or reserve any.",
+                  "_key": "k9s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k10",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Looking after each other",
+                  "_key": "k10s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Be kind in the front rows, look out for the person next to you, and tell venue staff if someone needs help. Everyone is here for the same reason.",
+                  "_key": "k11s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Venues set their own bag, camera and re-entry rules. Check the show page first, and write to us from the contact page if you need an accessible space or have a question about getting in.",
+                  "_key": "k12s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Cancellations",
+                  "_key": "k13s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If a show is cancelled it is marked on the tour page. Tickets bought through a venue are refunded by that venue under its own policy.",
+                  "_key": "k14s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "shows": [
+      {
+        "id": "riverton-2027-04",
+        "slug": "riverton-2027-04",
+        "status": "published",
+        "data": {
+          "title": "Riverton",
+          "venue": "The Meridian",
+          "show_date": "2027-04-12T12:00:00.000Z",
+          "doors": "Doors 7:00 pm",
+          "ticket_status": "on-sale",
+          "ticket_url": "https://tickets.example/live-band/riverton",
+          "note": "All ages. Local support to be announced.",
+          "photo": "/images/venue-riverton.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The Meridian is a converted cinema with a deep stage and a balcony that rattles in the best way. We open the tour here because the room never lets a quiet song stay quiet.",
+                  "_key": "k15s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "lakeside-2027-04",
+        "slug": "lakeside-2027-04",
+        "status": "published",
+        "data": {
+          "title": "Lakeside",
+          "venue": "Harbor Hall",
+          "show_date": "2027-04-18T12:00:00.000Z",
+          "doors": "Doors 6:30 pm",
+          "ticket_status": "on-sale",
+          "ticket_url": "https://tickets.example/live-band/lakeside",
+          "note": "All ages. Seated balcony, standing floor.",
+          "photo": "/images/venue-lakeside.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Harbor Hall has a proscenium stage, wood panelling and an echo we have learned to play with. Expect the slow ones to ring out across the whole room.",
+                  "_key": "k16s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "maplewood-2027-04",
+        "slug": "maplewood-2027-04",
+        "status": "published",
+        "data": {
+          "title": "Maplewood",
+          "venue": "The Foundry",
+          "show_date": "2027-04-26T12:00:00.000Z",
+          "doors": "Doors 7:30 pm",
+          "ticket_status": "on-sale",
+          "ticket_url": "https://tickets.example/live-band/maplewood",
+          "note": "18+. Standing only.",
+          "photo": "/images/venue-maplewood.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The Foundry is brick, steel and low ceilings, the kind of room where the crowd and the band end up on the same level. Bring earplugs and a loud voice.",
+                  "_key": "k17s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "stonebridge-2027-05",
+        "slug": "stonebridge-2027-05",
+        "status": "published",
+        "data": {
+          "title": "Stonebridge",
+          "venue": "The Copper Room",
+          "show_date": "2027-05-09T12:00:00.000Z",
+          "doors": "Doors 8:00 pm",
+          "ticket_status": "sold-out",
+          "note": "Sold out. Check with the venue for returns on the day.",
+          "photo": "/images/venue-club.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A small, warm room with a copper-topped bar and a stage barely taller than a step. This one went quickly.",
+                  "_key": "k18s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "eastport-2027-05",
+        "slug": "eastport-2027-05",
+        "status": "published",
+        "data": {
+          "title": "Eastport",
+          "venue": "Dockside Ballroom",
+          "show_date": "2027-05-22T12:00:00.000Z",
+          "doors": "Doors 7:00 pm",
+          "ticket_status": "on-sale",
+          "ticket_url": "https://tickets.example/live-band/eastport",
+          "note": "All ages. Dance floor, no seating.",
+          "photo": "/images/venue-hall.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Dockside Ballroom is wide and bright with a sprung dance floor. We plan to play the faster half of the set list first and let the floor decide the rest.",
+                  "_key": "k19s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "ashford-2027-06",
+        "slug": "ashford-2027-06",
+        "status": "published",
+        "data": {
+          "title": "Ashford",
+          "venue": "The Orchard Stage",
+          "show_date": "2027-06-05T12:00:00.000Z",
+          "doors": "Gates 5:00 pm",
+          "ticket_status": "on-sale",
+          "ticket_url": "https://tickets.example/live-band/ashford",
+          "note": "Outdoor, all ages. Bring a jacket.",
+          "photo": "/images/venue-pit.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k20",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "An open-air stage at the edge of an orchard, with the crowd on the grass. We go on as the sun drops behind the trees.",
+                  "_key": "k20s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "hollis-2027-06",
+        "slug": "hollis-2027-06",
+        "status": "published",
+        "data": {
+          "title": "Hollis",
+          "venue": "Grand Lantern",
+          "show_date": "2027-06-19T12:00:00.000Z",
+          "doors": "Doors 7:00 pm",
+          "ticket_status": "cancelled",
+          "note": "This date has been cancelled.",
+          "photo": "/images/venue-stage.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This date has been cancelled. We are sorry; see the tour page for nearby shows.",
+                  "_key": "k21s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "northvale-2026-09",
+        "slug": "northvale-2026-09",
+        "status": "published",
+        "data": {
+          "title": "Northvale",
+          "venue": "Union Hall",
+          "show_date": "2026-09-12T12:00:00.000Z",
+          "doors": "Doors 7:00 pm",
+          "ticket_status": "on-sale",
+          "note": "Past show.",
+          "photo": "/images/venue-hall.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k22",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A long, high room with a stage in the middle of the long wall. The crowd sang the last chorus without us.",
+                  "_key": "k22s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "pinecrest-2026-08",
+        "slug": "pinecrest-2026-08",
+        "status": "published",
+        "data": {
+          "title": "Pinecrest",
+          "venue": "The Boathouse",
+          "show_date": "2026-08-29T12:00:00.000Z",
+          "doors": "Doors 6:00 pm",
+          "ticket_status": "on-sale",
+          "note": "Past show.",
+          "photo": "/images/venue-club.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A boathouse on the water with the doors open to the dock. The sunset set was one of the best of the year.",
+                  "_key": "k23s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "fairmont-2026-07",
+        "slug": "fairmont-2026-07",
+        "status": "published",
+        "data": {
+          "title": "Fairmont",
+          "venue": "Old Mill Theatre",
+          "show_date": "2026-07-18T12:00:00.000Z",
+          "doors": "Doors 7:00 pm",
+          "ticket_status": "on-sale",
+          "note": "Past show.",
+          "photo": "/images/venue-pit.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k24",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A restored mill with a wooden stage and great sound. We stayed an hour after the encore.",
+                  "_key": "k24s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "cedar-falls-2026-06",
+        "slug": "cedar-falls-2026-06",
+        "status": "published",
+        "data": {
+          "title": "Cedar Falls",
+          "venue": "The Underpass",
+          "show_date": "2026-06-06T12:00:00.000Z",
+          "doors": "Doors 8:00 pm",
+          "ticket_status": "on-sale",
+          "note": "Past show.",
+          "photo": "/images/venue-stage.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A basement room under a rail bridge. Trains passed over the quiet song and the crowd cheered every time.",
+                  "_key": "k25s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "releases": [
+      {
+        "id": "louder-together",
+        "slug": "louder-together",
+        "status": "published",
+        "data": {
+          "title": "Louder Together",
+          "kind": "Album",
+          "year": 2026,
+          "summary": "Nine songs recorded live in one room over four days, with the crowd sounds left in.",
+          "photo": "/images/cover-louder-together.webp",
+          "position": 10,
+          "tracklist": [
+            {
+              "title": "The Meridian Lights",
+              "length": "3:42"
+            },
+            {
+              "title": "Hands Up, Lights Down",
+              "length": "3:18"
+            },
+            {
+              "title": "Harbor Hall",
+              "length": "4:05"
+            },
+            {
+              "title": "Second Row",
+              "length": "3:31"
+            },
+            {
+              "title": "Maplewood Road",
+              "length": "4:12"
+            },
+            {
+              "title": "Static and Sugar",
+              "length": "2:58"
+            },
+            {
+              "title": "Until the Floor Gives",
+              "length": "4:36"
+            },
+            {
+              "title": "Quiet Between Songs",
+              "length": "3:07"
+            },
+            {
+              "title": "Same Stage",
+              "length": "5:01"
+            }
+          ],
+          "credits": "Written by The Live Band\nRecorded live over four days\nMixed by the band\nCover photograph: The Live Band on stage",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k26",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We set up in a single room, put the amps where they sounded best and played the set from start to finish. What you hear is the take we kept, with the mistakes that made us laugh left in.",
+                  "_key": "k26s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The crowd on Hands Up, Lights Down is the first night of the autumn tour. The quiet between the last two songs is real.",
+                  "_key": "k27s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "harbor-lights",
+        "slug": "harbor-lights",
+        "status": "published",
+        "data": {
+          "title": "Harbor Lights",
+          "kind": "EP",
+          "year": 2025,
+          "summary": "Five songs written on the road, in vans and on ferries.",
+          "photo": "/images/cover-harbor-lights.webp",
+          "position": 20,
+          "tracklist": [
+            {
+              "title": "Harbor Lights",
+              "length": "3:49"
+            },
+            {
+              "title": "Ferry Home",
+              "length": "3:22"
+            },
+            {
+              "title": "Soundcheck Sunday",
+              "length": "2:41"
+            },
+            {
+              "title": "Salt and Static",
+              "length": "4:08"
+            },
+            {
+              "title": "Last Bus Out",
+              "length": "3:55"
+            }
+          ],
+          "credits": "Written by The Live Band\nRecorded in a rehearsal room above a hardware shop\nMixed by the band",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k28",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Harbor Lights was written between shows, mostly on ferries, and recorded in the room where the band started. It is the sound of a band learning how loud it can get.",
+                  "_key": "k28s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "second-row",
+        "slug": "second-row",
+        "status": "published",
+        "data": {
+          "title": "Second Row",
+          "kind": "Single",
+          "year": 2025,
+          "summary": "A two-song single for the people standing just behind the barrier.",
+          "photo": "/images/cover-second-row.webp",
+          "position": 30,
+          "tracklist": [
+            {
+              "title": "Second Row",
+              "length": "3:31"
+            },
+            {
+              "title": "Second Row (stripped)",
+              "length": "3:40"
+            }
+          ],
+          "credits": "Written by The Live Band\nRecorded in one afternoon",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Second Row is the song the crowd asked for most, so we recorded it twice: once loud, once almost whispered.",
+                  "_key": "k29s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "members": [
+      {
+        "id": "eli-marrow",
+        "slug": "eli-marrow",
+        "status": "published",
+        "data": {
+          "title": "Eli Marrow",
+          "role": "Lead vocals and guitar",
+          "initials": "EM",
+          "bio": "Writes most of the songs, usually in a van, and refuses to use a set list longer than a page.",
+          "photo": "/images/member-vocals.webp",
+          "position": 10
+        }
+      },
+      {
+        "id": "rafa-lindqvist",
+        "slug": "rafa-lindqvist",
+        "status": "published",
+        "data": {
+          "title": "Rafa Lindqvist",
+          "role": "Drums",
+          "initials": "RL",
+          "bio": "Keeps time for the whole band and has never once started a song at the tempo it was rehearsed.",
+          "photo": "/images/member-drums.webp",
+          "position": 20
+        }
+      },
+      {
+        "id": "tess-calloway",
+        "slug": "tess-calloway",
+        "status": "published",
+        "data": {
+          "title": "Tess Calloway",
+          "role": "Bass",
+          "initials": "TC",
+          "bio": "The reason the front rows move. Collects thrift-shop jackets and old amplifier manuals.",
+          "photo": "/images/member-bass.webp",
+          "position": 30
+        }
+      },
+      {
+        "id": "june-abara",
+        "slug": "june-abara",
+        "status": "published",
+        "data": {
+          "title": "June Abara",
+          "role": "Keys and backing vocals",
+          "initials": "JA",
+          "bio": "Joined for one tour and stayed. Arranges the harmonies and the quiet parts.",
+          "position": 40
+        }
+      }
+    ],
+    "photos": [
+      {
+        "id": "on-stage",
+        "slug": "on-stage",
+        "status": "published",
+        "data": {
+          "title": "Full set",
+          "caption": "The whole band under the lights.",
+          "photo": "/images/gallery-stage.webp",
+          "position": 10
+        }
+      },
+      {
+        "id": "front-row",
+        "slug": "front-row",
+        "status": "published",
+        "data": {
+          "title": "Front row",
+          "caption": "Hands up from the first song.",
+          "photo": "/images/gallery-crowd.webp",
+          "position": 20
+        }
+      },
+      {
+        "id": "singer",
+        "slug": "singer",
+        "status": "published",
+        "data": {
+          "title": "At the mic",
+          "caption": "Eli on the last chorus.",
+          "photo": "/images/gallery-singer.webp",
+          "position": 30
+        }
+      },
+      {
+        "id": "drums",
+        "slug": "drums",
+        "status": "published",
+        "data": {
+          "title": "Behind the kit",
+          "caption": "Rafa keeping the room together.",
+          "photo": "/images/gallery-drums.webp",
+          "position": 40
+        }
+      },
+      {
+        "id": "bass",
+        "slug": "bass",
+        "status": "published",
+        "data": {
+          "title": "Low end",
+          "caption": "Tess finding the groove.",
+          "photo": "/images/gallery-bass.webp",
+          "position": 50
+        }
+      },
+      {
+        "id": "kit",
+        "slug": "kit",
+        "status": "published",
+        "data": {
+          "title": "The kit",
+          "caption": "Smoke, cymbals and warm light.",
+          "photo": "/images/gallery-kit.webp",
+          "position": 60
+        }
+      }
+    ],
+    "band": [
+      {
+        "id": "band",
+        "slug": "band",
+        "status": "published",
+        "data": {
+          "title": "The Live Band",
+          "base": "Riverton",
+          "phone": "+1 555-0142",
+          "email": "hello@livebandmusic.example",
+          "booking_email": "booking@livebandmusic.example",
+          "press_email": "press@livebandmusic.example",
+          "response": "We reply within three working days.",
+          "note": "Pick a topic, write a few lines and your email app opens with the message ready. Nothing is sent until you send it."
+        }
+      }
+    ]
+  }
+}

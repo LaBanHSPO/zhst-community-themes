@@ -1,0 +1,26 @@
+---
+interface Props {
+	id?: string;
+	eyebrow?: string | null;
+	title: string;
+	intro?: string | null;
+	note?: string[];
+	edit?: Record<string, unknown>;
+}
+const { id, eyebrow, title, intro, note, edit = {} } = Astro.props;
+---
+
+<header class="page-head">
+	<div class="wrap page-head-inner">
+		{eyebrow && <p class="eyebrow">{eyebrow}</p>}
+		<h1 id={id} class="display" {...edit}>{title}</h1>
+		{intro && <p class="lede">{intro}</p>}
+	</div>
+	{
+		note && (
+			<p class="head-note" aria-hidden="true">
+				{note.map((w) => <span>{w}</span>)}
+			</p>
+		)
+	}
+</header>

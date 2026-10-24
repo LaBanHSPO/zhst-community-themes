@@ -1,0 +1,105 @@
+---
+import { getEmDashEntry, getSeoMeta, decodeSlug, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getReleases, lines, photoAlt, photoSrc, releaseHref } from "../../lib/band";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: release, cacheHint } = await getEmDashEntry("releases", slug);
+if (!release) return Astro.rewrite("/404");
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+const d = release.data;
+const tracks = d.tracklist ?? [];
+const hasAudio = tracks.some((t) => t.audio_url);
+const credits = lines(d.credits);
+const others = (await getReleases()).entries.filter((r) => r.data.id !== d.id);
+const seo = getSeoMeta(release, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+---
+
+<Base
+	title={d.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	content={{ collection: "releases", id: d.id, slug }}
+	current="/music"
+>
+	<header class="page-head">
+		<div class="wrap release-head">
+			<img
+				class="release-cover"
+				src={photoSrc(d.image, d.photo)}
+				alt={photoAlt(d.image, d.photo, `${d.title} cover`)}
+				width="548"
+				height="548"
+				decoding="async"
+			/>
+			<div class="page-head-inner">
+				<p class="eyebrow">{d.kind} · {d.year}</p>
+				<h1 class="display" {...release.edit.title}>{d.title}</h1>
+				<p class="lede">{d.summary}</p>
+			</div>
+		</div>
+	</header>
+	<section class="section-paper">
+		<div class="wrap release-body">
+			<div>
+				<h2 class="list-title">Tracklist</h2>
+				{
+					tracks.length > 0 ? (
+						<ol class="track-table">
+							{tracks.map((t) => (
+								<li>
+									<span class="track-title">{t.title}</span>
+									<span class="track-len">{t.length}</span>
+									{t.audio_url && <audio controls preload="none" src={t.audio_url} aria-label={`Play ${t.title}`} />}
+								</li>
+							))}
+						</ol>
+					) : (
+						<p class="empty">The tracklist has not been published yet.</p>
+					)
+				}
+				{tracks.length > 0 && !hasAudio && <p class="small-note">Audio is not published for this release yet.</p>}
+			</div>
+			<div class="release-side">
+				{
+					credits.length > 0 && (
+						<>
+							<h2 class="list-title">Credits</h2>
+							<ul class="credits">{credits.map((c) => <li>{c}</li>)}</ul>
+						</>
+					)
+				}
+				<div class="prose"><PortableText value={d.content} /></div>
+			</div>
+		</div>
+	</section>
+	{
+		others.length > 0 && (
+			<section class="section-dark">
+				<div class="wrap">
+					<h2 class="list-title list-title-light">More music</h2>
+					<ul class="release-grid release-grid-dark">
+						{others.slice(0, 3).map((r) => (
+							<li>
+								<a class="release-card" href={releaseHref(r.data)}>
+									<img src={photoSrc(r.data.image, r.data.photo)} alt="" width="560" height="560" loading="lazy" decoding="async" />
+									<span class="release-meta">{r.data.kind} · {r.data.year}</span>
+									<span class="release-title">{r.data.title}</span>
+								</a>
+							</li>
+						))}
+					</ul>
+					<p><a class="text-link text-link-light" href="/music"><span>All music</span><Arrow size={18} /></a></p>
+				</div>
+			</section>
+		)
+	}
+</Base>

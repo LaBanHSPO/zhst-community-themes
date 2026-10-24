@@ -1,0 +1,66 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getMembers, initialsOf, photoAlt, photoSrc } from "../lib/band";
+
+const [{ entry: page, cacheHint }, membersResult] = await Promise.all([getEmDashEntry("pages", "about"), getMembers()]);
+if (!page) return Astro.rewrite("/404");
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(membersResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+const seo = getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" });
+const members = membersResult.entries;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? page.data.intro}
+	canonical={seo.canonical}
+	content={{ collection: "pages", id: page.data.id, slug: "about" }}
+>
+	<PageHead eyebrow={page.data.eyebrow} title={page.data.title} intro={page.data.intro} note={["Music", "People", "Better", "Days"]} edit={{ ...page.edit.title }} />
+	<section class="section-paper">
+		<div class="wrap about-body">
+			<div class="prose"><PortableText value={page.data.content} /></div>
+			<img class="about-photo" src="/images/gallery-stage.webp" alt="The whole band on stage: drummer on the left, singer and guitarist in the centre, bassist on the right" width="1448" height="1086" decoding="async" />
+		</div>
+	</section>
+	{
+		members.length > 0 && (
+			<section class="section-dark" aria-labelledby="members-title">
+				<div class="wrap">
+					<h2 id="members-title" class="list-title list-title-light">The band</h2>
+					<ul class="member-grid member-grid-dark member-grid-bio">
+						{members.map((m) => {
+							const src = photoSrc(m.data.image, m.data.photo);
+							return (
+								<li class="member">
+									<div class="member-photo">
+										{src ? (
+											<img src={src} alt={photoAlt(m.data.image, m.data.photo, m.data.title)} width="400" height="500" loading="lazy" decoding="async" />
+										) : (
+											<span class="member-initials" aria-hidden="true">{initialsOf(m.data.title, m.data.initials)}</span>
+										)}
+									</div>
+									<h3>{m.data.title}</h3>
+									<p class="member-role">{m.data.role}</p>
+									{m.data.bio && <p class="member-bio">{m.data.bio}</p>}
+								</li>
+							);
+						})}
+					</ul>
+					<p class="page-cta">
+						<a class="btn-red" href="/contact?topic=booking"><span>Book the band</span><Arrow size={20} /></a>
+					</p>
+				</div>
+			</section>
+		)
+	}
+</Base>

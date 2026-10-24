@@ -1,0 +1,250 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import { getBand, telHref } from "../lib/band";
+
+const { band, cacheHint } = await getBand();
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const TOPICS = [
+	{ value: "updates", label: "Get updates (new dates and music)" },
+	{ value: "booking", label: "Booking a show or festival" },
+	{ value: "press", label: "Press and media" },
+	{ value: "general", label: "Something else" },
+];
+const HEADINGS: Record<string, { eyebrow: string; title: string; intro: string }> = {
+	updates: {
+		eyebrow: "Get updates",
+		title: "Never miss a night.",
+		intro: "Leave your name and email. We write when new dates or songs land, and only then.",
+	},
+	booking: {
+		eyebrow: "Booking",
+		title: "Book the band.",
+		intro: "Tell us the date, the room and the crowd you expect. We reply to every booking request personally.",
+	},
+	press: {
+		eyebrow: "Press",
+		title: "Press and media.",
+		intro: "Interviews, photos, review copies and a one-page bio: tell us what you need and when.",
+	},
+	general: {
+		eyebrow: "Contact",
+		title: "Say hello.",
+		intro: "A question, a hello or something that fits none of the above. We read everything.",
+	},
+};
+const wanted = Astro.url.searchParams.get("topic");
+const topic = TOPICS.some((t) => t.value === wanted) ? (wanted as string) : "general";
+const heading = HEADINGS[topic];
+const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Saigon" }).format(new Date());
+const addresses = {
+	updates: band.email,
+	booking: band.booking_email || band.email,
+	press: band.press_email || band.email,
+	general: band.email,
+};
+---
+
+<Base title={heading.eyebrow === "Contact" ? "Contact" : heading.eyebrow} description="Get updates from The Live Band, book a show or contact the press team. Email and phone are always listed on this page.">
+	<PageHead eyebrow={heading.eyebrow} title={heading.title} intro={heading.intro} note={["Real", "People", "Louder", "Together"]} />
+	<section class="section-paper">
+		<div class="wrap contact-grid">
+			<form
+				class="contact-form"
+				data-contact-form
+				data-addresses={JSON.stringify(addresses)}
+				action={band.email ? `mailto:${band.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field full">
+						<label for="c-topic">What is this about?</label>
+						<select id="c-topic" name="topic" required>
+							{TOPICS.map((t) => <option value={t.value} selected={t.value === topic}>{t.label}</option>)}
+						</select>
+					</div>
+					<div class="field">
+						<label for="c-name">Your name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field" data-show-for="booking" hidden={topic !== "booking"}>
+						<label for="c-date">Event date</label>
+						<input id="c-date" name="date" type="date" min={today} />
+						<span class="field-error" data-error-for="c-date"></span>
+					</div>
+					<div class="field" data-show-for="booking" hidden={topic !== "booking"}>
+						<label for="c-place">City and venue</label>
+						<input id="c-place" name="place" type="text" placeholder="e.g. Riverton, The Meridian" />
+						<span class="field-error" data-error-for="c-place"></span>
+					</div>
+					<div class="field" data-hide-for="updates" hidden={topic === "updates"}>
+						<label for="c-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field full" data-hide-for="updates" hidden={topic === "updates"}>
+						<label for="c-message">Message</label>
+						<textarea id="c-message" name="message" rows="5" placeholder="A few lines is plenty."></textarea>
+						<span class="field-error" data-error-for="c-message"></span>
+					</div>
+				</div>
+				<button class="btn-red btn-block" type="submit"><span data-submit-label>Send</span></button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{band.email && <>Write to <a href={`mailto:${band.email}`}>{band.email}</a> instead.</>}
+					</noscript>
+				</p>
+			</form>
+
+			<aside class="contact-side">
+				<h2>Prefer to write or call?</h2>
+				<dl>
+					{band.email && <div><dt>General and updates</dt><dd><a href={`mailto:${band.email}`}>{band.email}</a></dd></div>}
+					{band.booking_email && <div><dt>Booking</dt><dd><a href={`mailto:${band.booking_email}`}>{band.booking_email}</a></dd></div>}
+					{band.press_email && <div><dt>Press</dt><dd><a href={`mailto:${band.press_email}`}>{band.press_email}</a></dd></div>}
+					{band.phone && <div><dt>Phone</dt><dd><a href={telHref(band.phone)}>{band.phone}</a></dd></div>}
+				</dl>
+				{band.response && <p class="small">{band.response}</p>}
+				{band.note && <p class="small">{band.note}</p>}
+			</aside>
+		</div>
+	</section>
+</Base>
+
+<script>
+	// Compose an email for the chosen topic; the band replies to it. Nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		const select = form.querySelector<HTMLSelectElement>("#c-topic");
+		const label = form.querySelector<HTMLElement>("[data-submit-label]");
+		if (!status || !select) return;
+		const addresses: Record<string, string> = JSON.parse(form.dataset.addresses || "{}");
+
+		const SUBMIT: Record<string, string> = {
+			updates: "Sign me up",
+			booking: "Send booking request",
+			press: "Send press request",
+			general: "Send message",
+		};
+		const needsMessage = () => select.value !== "updates";
+
+		const sync = () => {
+			const t = select.value;
+			form.querySelectorAll<HTMLElement>("[data-show-for]").forEach((el) => {
+				el.hidden = el.dataset.showFor !== t;
+			});
+			form.querySelectorAll<HTMLElement>("[data-hide-for]").forEach((el) => {
+				el.hidden = el.dataset.hideFor === t;
+			});
+			if (label) label.textContent = SUBMIT[t] ?? "Send";
+			const url = new URL(window.location.href);
+			url.searchParams.set("topic", t);
+			window.history.replaceState(null, "", url);
+		};
+		select.addEventListener("change", sync);
+		sync();
+
+		const showErrors = (): boolean => {
+			let first: HTMLElement | null = null;
+			const check = (id: string, message: string) => {
+				const input = form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`#${id}`);
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${id}"]`);
+				if (!input) return;
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !first) first = input;
+			};
+			const name = form.querySelector<HTMLInputElement>("#c-name")!;
+			const email = form.querySelector<HTMLInputElement>("#c-email")!;
+			check("c-name", name.value.trim() ? "" : "Please fill this in.");
+			check(
+				"c-email",
+				email.validity.valueMissing ? "Please fill this in." : email.validity.valid ? "" : "Please enter a valid email address.",
+			);
+			if (select.value === "booking") {
+				const date = form.querySelector<HTMLInputElement>("#c-date")!;
+				const place = form.querySelector<HTMLInputElement>("#c-place")!;
+				check("c-date", !date.value ? "Please choose a date." : date.validity.valid ? "" : "Please choose today or a later date.");
+				check("c-place", place.value.trim() ? "" : "Please fill this in.");
+			} else {
+				check("c-date", "");
+				check("c-place", "");
+			}
+			const msg = form.querySelector<HTMLTextAreaElement>("#c-message")!;
+			check("c-message", needsMessage() && !msg.value.trim() ? "Please add a few lines." : "");
+			if (first) (first as HTMLElement).focus();
+			return !first;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const t = select.value;
+			const to = addresses[t] || addresses.general || "";
+			if (!to) {
+				status.textContent = "Online contact is not available right now. Please call us.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			let subject = "";
+			let body: string[] = [];
+			if (t === "updates") {
+				subject = `Updates: please add ${get("name")}`;
+				body = ["Hello,", "", "Please send me news of new tour dates and music.", `Name: ${get("name")}`, `Email: ${get("email")}`];
+			} else if (t === "booking") {
+				subject = `Booking request: ${get("place")} on ${get("date")}`;
+				body = [
+					"Hello,",
+					"",
+					"I would like to ask about booking the band:",
+					`Name: ${get("name")}`,
+					`Event date: ${get("date")}`,
+					`City and venue: ${get("place")}`,
+					`Email: ${get("email")}`,
+					get("phone") ? `Phone: ${get("phone")}` : "",
+					get("message") ? `Details: ${get("message")}` : "",
+				];
+			} else if (t === "press") {
+				subject = `Press request from ${get("name")}`;
+				body = [
+					"Hello,",
+					"",
+					"I would like to ask about press and media:",
+					`Name: ${get("name")}`,
+					`Email: ${get("email")}`,
+					get("phone") ? `Phone: ${get("phone")}` : "",
+					`Request: ${get("message")}`,
+				];
+			} else {
+				subject = `Message from ${get("name")}`;
+				body = [
+					"Hello,",
+					"",
+					get("message"),
+					"",
+					`Name: ${get("name")}`,
+					`Email: ${get("email")}`,
+					get("phone") ? `Phone: ${get("phone")}` : "",
+				];
+			}
+			const text = body.filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0)).join("\n");
+			window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
+			status.textContent =
+				"Your email app should open with this message ready to send. It is only sent when you send that email. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${to}`;
+			a.textContent = to;
+			status.append(a, ".");
+		});
+	});
+</script>

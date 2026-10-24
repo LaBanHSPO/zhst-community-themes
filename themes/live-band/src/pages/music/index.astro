@@ -1,0 +1,42 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import { getReleases, photoAlt, photoSrc, releaseHref } from "../../lib/band";
+
+const result = await getReleases();
+if (Astro.cache?.enabled) Astro.cache.set(result.cacheHint);
+const releases = result.entries;
+---
+
+<Base title="Music" description="Albums, EPs and singles by The Live Band, with cover art, year and full tracklists.">
+	<PageHead eyebrow="Music" title="Songs for the room." intro="Everything we have released, newest first. Open a release for the tracklist and credits." note={["Music", "People", "Better", "Days"]} />
+	<section class="section-paper">
+		<div class="wrap">
+			{
+				releases.length > 0 ? (
+					<ul class="release-grid">
+						{releases.map((r) => (
+							<li>
+								<a class="release-card" href={releaseHref(r.data)}>
+									<img
+										src={photoSrc(r.data.image, r.data.photo)}
+										alt={photoAlt(r.data.image, r.data.photo, `${r.data.title} cover`)}
+										width="560"
+										height="560"
+										loading="lazy"
+										decoding="async"
+									/>
+									<span class="release-meta">{r.data.kind} · {r.data.year}</span>
+									<span class="release-title">{r.data.title}</span>
+									<span class="release-sum">{r.data.summary}</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				) : (
+					<p class="empty">New music is on the way. <a href="/contact?topic=updates">Get updates</a> and we will tell you first.</p>
+				)
+			}
+		</div>
+	</section>
+</Base>
