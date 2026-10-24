@@ -1,0 +1,145 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import ContactBand from "../components/ContactBand.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { getCredentials, getProfile, getProjects, getRoles, getSkills, lines } from "../lib/site";
+
+const [rolesResult, skillsResult, projectsResult, credentialsResult, profileResult] = await Promise.all([
+	getRoles(),
+	getSkills(),
+	getProjects(),
+	getCredentials(),
+	getProfile(),
+]);
+if (Astro.cache?.enabled) {
+	for (const r of [rolesResult, skillsResult, projectsResult, credentialsResult, profileResult]) Astro.cache.set(r.cacheHint);
+}
+// The timeline shows the four most recent roles, oldest first.
+const roles = rolesResult.entries.slice(-4);
+const skills = skillsResult.entries;
+const allProjects = projectsResult.entries;
+const featured = allProjects.filter((p) => p.data.featured);
+const projects = (featured.length > 0 ? featured : allProjects).slice(0, 3);
+const credentials = credentialsResult.entries;
+---
+
+<Base
+	title="Experience with a clear direction"
+	description="Theo Alder is a fictional product design lead. A career timeline, roles with plain bullet points, selected projects, skills, a printable resume and an email contact form."
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="Theo Alder, a man with curly dark hair and glasses, in a dark blazer and sweater, looking off to the side in front of a pale wall with a green plant"
+			width="908"
+			height="660"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<p class="hero-eyebrow">Ideas / Products / People</p>
+			<h1 id="hero-title" class="hero-title">Experience with<br />a clear direction.</h1>
+			<p class="hero-sub">
+				I&rsquo;m a product-focused professional with a track record<br class="desk" /> of turning complex problems into simple, human-centered<br class="desk" /> solutions.
+			</p>
+			<div class="hero-actions">
+				<a class="btn btn-green" href="/experience"><span>View experience</span><Arrow /></a>
+				<a class="learn-more" href="/about">Learn more</a>
+			</div>
+		</div>
+		<p class="hand-note" aria-hidden="true"><span class="note-stroke"></span><span class="note-text">Build<br />what matters.</span></p>
+		<p class="hero-caps hero-caps-top" aria-hidden="true"><span class="caps-rule"></span>Strategy<br />Design<br />Execution<br />A brighter<br />tomorrow</p>
+		<p class="hero-caps hero-caps-low" aria-hidden="true">People<br />Ideas<br />Progress</p>
+	</section>
+
+	<section class="journey" aria-labelledby="journey-title">
+		<div class="journey-inner">
+			<div class="journey-copy">
+				<p class="eyebrow eyebrow-gold">My journey</p>
+				<h2 id="journey-title" class="journey-title">A career<br />in progress.</h2>
+				<p class="journey-text">Different roles. A consistent focus:<br class="desk" /> creating impact through people,<br class="desk" /> products and purposeful work.</p>
+			</div>
+			<ol class="timeline">
+				{
+					roles.map((r) => (
+						<li class:list={["tl-item", { "is-current": r.data.current }]}>
+							<span class="tl-node" aria-hidden="true"></span>
+							<p class="tl-period">{r.data.period}</p>
+							<h3 class="tl-title" {...r.edit.title}>{r.data.title}</h3>
+							<p class="tl-text">{r.data.summary}</p>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+	</section>
+
+	{
+		skills.length > 0 && (
+			<section class="skills" aria-labelledby="skills-title">
+				<div class="wrap">
+					<div class="section-head">
+						<p class="eyebrow">What I bring</p>
+						<h2 id="skills-title" class="display">Four areas of practice.</h2>
+					</div>
+					<ul class="skill-grid">
+						{skills.map((s) => (
+							<li class="skill-group">
+								<h3 class="skill-name" {...s.edit.title}>{s.data.title}</h3>
+								{s.data.blurb && <p class="skill-blurb">{s.data.blurb}</p>}
+								<ul class="skill-items">
+									{lines(s.data.items).map((item) => <li>{item}</li>)}
+								</ul>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		projects.length > 0 && (
+			<section class="projects-teaser" aria-labelledby="projects-title">
+				<div class="wrap">
+					<div class="section-head section-head-row">
+						<div>
+							<p class="eyebrow">Selected projects</p>
+							<h2 id="projects-title" class="display">Work I can walk you through.</h2>
+						</div>
+						<a class="text-link" href="/projects"><span>All projects</span><Arrow /></a>
+					</div>
+					<ul class="project-grid">
+						{projects.map((p, i) => <li><ProjectCard project={p} eager={i < 3} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		credentials.length > 0 && (
+			<section class="credentials" aria-labelledby="cred-title">
+				<div class="wrap credentials-inner">
+					<div class="credentials-head">
+						<p class="eyebrow">Education and certifications</p>
+						<h2 id="cred-title" class="display">Where I studied.</h2>
+						<p class="placeholder-note">Placeholder entries. Replace them with your own in the admin.</p>
+					</div>
+					<ul class="credential-list">
+						{credentials.map((c) => (
+							<li class="credential">
+								<p class="credential-kind">{c.data.kind}</p>
+								<h3 class="credential-title" {...c.edit.title}>{c.data.title}</h3>
+								<p class="credential-meta">{[c.data.org, c.data.years].filter(Boolean).join(" · ")}</p>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<ContactBand profile={profileResult.profile} />
+</Base>

@@ -1,0 +1,24 @@
+---
+/** Wordmark: the site title in serif, with the part after the capital letter in green (ProResume -> Pro + Resume). */
+interface Props {
+	title: string;
+	logo?: { url?: string; alt?: string } | null;
+	class?: string;
+}
+const { title, logo, class: className } = Astro.props;
+const match = title.match(/^(.+?[a-z])([A-Z].*)$/);
+const [first, second] = match ? [match[1], match[2]] : [title, ""];
+---
+
+<a class:list={["wordmark", className]} href="/" aria-label={`${title}, home`}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt || title} />
+		) : (
+			<span class="wordmark-text">
+				{first}
+				{second && <span class="wordmark-accent">{second}</span>}
+			</span>
+		)
+	}
+</a>

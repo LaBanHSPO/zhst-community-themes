@@ -1,0 +1,78 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import ContactBand from "../components/ContactBand.astro";
+import PageHead from "../components/PageHead.astro";
+import { getCredentials, getProfile, getRoles, lines } from "../lib/site";
+
+const [rolesResult, credentialsResult, profileResult] = await Promise.all([getRoles(), getCredentials(), getProfile()]);
+if (Astro.cache?.enabled) {
+	for (const r of [rolesResult, credentialsResult, profileResult]) Astro.cache.set(r.cacheHint);
+}
+// Newest role first on this page.
+const roles = [...rolesResult.entries].reverse();
+const credentials = credentialsResult.entries;
+---
+
+<Base
+	title="Experience"
+	description="Theo Alder's work history as a product designer, from junior designer to design lead, with what was done in each role, plus education and certifications."
+>
+	<PageHead
+		eyebrow="Experience"
+		title="Where I have worked."
+		intro="Each role below lists what I did, in plain words. For a one-page version, open the printable resume."
+	/>
+
+	<section class="exp" aria-label="Roles">
+		<div class="wrap exp-grid">
+			<ol class="exp-list">
+				{
+					roles.map((r) => {
+						const bullets = lines(r.data.bullets);
+						return (
+							<li class:list={["exp-item", { "is-current": r.data.current }]}>
+								<span class="exp-node" aria-hidden="true"></span>
+								<div class="exp-when">
+									<p class="exp-period">{r.data.period}</p>
+									<p class="exp-where">{[r.data.location, r.data.work_mode].filter(Boolean).join(" · ")}</p>
+								</div>
+								<div class="exp-what">
+									<h2 class="exp-title" {...r.edit.title}>{r.data.title}</h2>
+									<p class="exp-company">{r.data.company}</p>
+									<p class="exp-summary">{r.data.summary}</p>
+									{bullets.length > 0 && <ul class="exp-bullets">{bullets.map((b) => <li>{b}</li>)}</ul>}
+								</div>
+							</li>
+						);
+					})
+				}
+			</ol>
+			<aside class="exp-side" aria-label="Resume and credentials">
+				<div class="side-card">
+					<h2 class="side-title">One-page resume</h2>
+					<p>A print-friendly version with roles, projects, skills and education. Use Print, then Save as PDF.</p>
+					<a class="btn btn-green btn-sm" href="/resume"><span>Open printable resume</span><Arrow /></a>
+				</div>
+				{
+					credentials.length > 0 && (
+						<div class="side-block">
+							<h2 class="side-title">Education and certifications</h2>
+							<ul class="side-list">
+								{credentials.map((c) => (
+									<li>
+										<strong>{c.data.title}</strong>
+										<span>{[c.data.org, c.data.years].filter(Boolean).join(" · ")}</span>
+									</li>
+								))}
+							</ul>
+							<p class="placeholder-note">Placeholder entries. Replace them with your own.</p>
+						</div>
+					)
+				}
+			</aside>
+		</div>
+	</section>
+
+	<ContactBand profile={profileResult.profile} />
+</Base>

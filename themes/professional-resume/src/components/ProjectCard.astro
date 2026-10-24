@@ -1,0 +1,22 @@
+---
+import { photoAlt, photoSrc, projectHref } from "../lib/site";
+
+interface Props {
+	project: { data: any; edit: any };
+	eager?: boolean;
+}
+const { project, eager = false } = Astro.props;
+const d = project.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<a class="project-card" href={projectHref(d)}>
+	<span class="project-card-photo">
+		{src && <img src={src} alt={photoAlt(d.image, d.photo, d.title)} width="640" height="480" loading={eager ? "eager" : "lazy"} />}
+	</span>
+	<span class="project-card-meta">
+		{[d.company, d.year].filter(Boolean).join(" · ")}
+	</span>
+	<span class="project-card-title" {...project.edit?.title}>{d.title}</span>
+	<span class="project-card-summary">{d.summary}</span>
+</a>

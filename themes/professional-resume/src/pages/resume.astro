@@ -1,0 +1,110 @@
+---
+import Base from "../layouts/Base.astro";
+import { getCredentials, getProfile, getProjects, getRoles, getSkills, lines, telHref } from "../lib/site";
+
+const [rolesResult, projectsResult, skillsResult, credentialsResult, profileResult] = await Promise.all([
+	getRoles(),
+	getProjects(),
+	getSkills(),
+	getCredentials(),
+	getProfile(),
+]);
+if (Astro.cache?.enabled) {
+	for (const r of [rolesResult, projectsResult, skillsResult, credentialsResult, profileResult]) Astro.cache.set(r.cacheHint);
+}
+const roles = [...rolesResult.entries].reverse();
+const { profile } = profileResult;
+const projects = projectsResult.entries;
+const skills = skillsResult.entries;
+const credentials = credentialsResult.entries;
+---
+
+<Base
+	title="Resume"
+	description="A one-page, print-friendly resume for Theo Alder, a fictional product design lead. Use your browser's Print command to save it as a PDF."
+>
+	<div class="resume-tools no-print">
+		<div class="wrap resume-tools-inner">
+			<p>Printable resume. Choose Print, then Save as PDF.</p>
+			<button class="btn btn-green btn-sm" type="button" data-print hidden><span>Print or save as PDF</span></button>
+			<noscript><span>Use your browser's Print command to save this page as a PDF.</span></noscript>
+		</div>
+	</div>
+
+	<article class="resume">
+		<header class="resume-head">
+			<h1 class="resume-name">{profile.title}</h1>
+			<p class="resume-headline">{profile.headline}</p>
+			<p class="resume-contact">
+				{profile.email && <a href={`mailto:${profile.email}`}>{profile.email}</a>}
+				{profile.phone && <a href={telHref(profile.phone)}>{profile.phone}</a>}
+				{profile.location && <span>{profile.location}</span>}
+				{profile.profile_url && <a href={profile.profile_url}>{profile.profile_url.replace(/^https?:\/\//, "")}</a>}
+			</p>
+			{profile.summary && <p class="resume-summary">{profile.summary}</p>}
+		</header>
+
+		<section class="resume-section">
+			<h2>Experience</h2>
+			{
+				roles.map((r) => (
+					<div class="resume-role">
+						<div class="resume-role-head">
+							<h3>{r.data.title}, {r.data.company}</h3>
+							<p>{r.data.period}</p>
+						</div>
+						<p class="resume-role-where">{[r.data.location, r.data.work_mode].filter(Boolean).join(" · ")}</p>
+						<ul>{lines(r.data.bullets).map((b) => <li>{b}</li>)}</ul>
+					</div>
+				))
+			}
+		</section>
+
+		<section class="resume-section">
+			<h2>Selected projects</h2>
+			{
+				projects.map((p) => (
+					<div class="resume-project">
+						<h3>
+							{p.data.title}
+							<span>{[p.data.company, p.data.year].filter(Boolean).join(", ")}</span>
+						</h3>
+						<p>{p.data.summary}</p>
+					</div>
+				))
+			}
+		</section>
+
+		<div class="resume-cols">
+			<section class="resume-section">
+				<h2>Skills</h2>
+				{
+					skills.map((s) => (
+						<p class="resume-skill">
+							<strong>{s.data.title}.</strong> {lines(s.data.items).join(", ")}.
+						</p>
+					))
+				}
+			</section>
+			<section class="resume-section">
+				<h2>Education and certifications</h2>
+				{
+					credentials.map((c) => (
+						<p class="resume-cred">
+							<strong>{c.data.title}</strong>, {[c.data.org, c.data.years].filter(Boolean).join(", ")}
+						</p>
+					))
+				}
+				<p class="resume-note">Sample entries. Replace them with your own.</p>
+			</section>
+		</div>
+	</article>
+</Base>
+
+<script>
+	const button = document.querySelector<HTMLButtonElement>("[data-print]");
+	if (button) {
+		button.hidden = false;
+		button.addEventListener("click", () => window.print());
+	}
+</script>

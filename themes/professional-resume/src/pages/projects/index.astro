@@ -1,0 +1,39 @@
+---
+import Base from "../../layouts/Base.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import PageHead from "../../components/PageHead.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { getProfile, getProjects } from "../../lib/site";
+
+const [projectsResult, profileResult] = await Promise.all([getProjects(), getProfile()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(projectsResult.cacheHint);
+	Astro.cache.set(profileResult.cacheHint);
+}
+const projects = projectsResult.entries;
+---
+
+<Base
+	title="Projects"
+	description="Selected projects by Theo Alder, a fictional product design lead: the situation, the role, what was done and what changed, described in plain words."
+>
+	<PageHead
+		eyebrow="Projects"
+		title="Selected projects."
+		intro="Each project has the situation, my role, what I did and what changed. I describe results in words, not numbers, because I would rather explain than claim."
+	/>
+	<section class="projects-page">
+		<div class="wrap">
+			{
+				projects.length > 0 ? (
+					<ul class="project-grid project-grid-wide">
+						{projects.map((p, i) => <li><ProjectCard project={p} eager={i < 4} /></li>)}
+					</ul>
+				) : (
+					<p class="empty">Projects will appear here once they are added in the admin.</p>
+				)
+			}
+		</div>
+	</section>
+	<ContactBand profile={profileResult.profile} />
+</Base>

@@ -1,0 +1,962 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Professional Resume",
+    "description": "An online resume theme: a calm hero with a portrait, a career timeline, roles with plain bullet points, projects, skills, a printable resume page and an email contact form, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "ProResume",
+    "tagline": "Product design from first question to launch"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro line",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "roles",
+      "label": "Roles",
+      "labelSingular": "Role",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Job title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "company",
+          "label": "Company",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "period",
+          "label": "Dates shown (e.g. 2022 – 2024 or 2024 – Present)",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "location",
+          "label": "Location",
+          "type": "string"
+        },
+        {
+          "slug": "work_mode",
+          "label": "On site, hybrid or remote",
+          "type": "string"
+        },
+        {
+          "slug": "summary",
+          "label": "One-line summary (shown on the home timeline)",
+          "type": "text",
+          "required": true
+        },
+        {
+          "slug": "bullets",
+          "label": "What I did (3 to 5 items, one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "current",
+          "label": "Current role (highlighted on the timeline)",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order (oldest first)",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "projects",
+      "label": "Projects",
+      "labelSingular": "Project",
+      "urlPattern": "/projects/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Project title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line summary (shown on cards)",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "company",
+          "label": "Company or team",
+          "type": "string"
+        },
+        {
+          "slug": "year",
+          "label": "Year",
+          "type": "string"
+        },
+        {
+          "slug": "role",
+          "label": "My role",
+          "type": "string"
+        },
+        {
+          "slug": "context",
+          "label": "Context: the situation and the problem",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "actions",
+          "label": "What I did (one item per line)",
+          "type": "text"
+        },
+        {
+          "slug": "outcome",
+          "label": "Outcome, described in words",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Reflection (optional)",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "skills",
+      "label": "Skill groups",
+      "labelSingular": "Skill group",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Group name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "blurb",
+          "label": "One sentence about this area",
+          "type": "text"
+        },
+        {
+          "slug": "items",
+          "label": "Skills (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "credentials",
+      "label": "Education and certifications",
+      "labelSingular": "Credential",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "kind",
+          "label": "Education or Certification",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "org",
+          "label": "School or issuer",
+          "type": "string"
+        },
+        {
+          "slug": "years",
+          "label": "Years",
+          "type": "string"
+        },
+        {
+          "slug": "note",
+          "label": "Short note",
+          "type": "string"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "profile",
+      "label": "Contact details",
+      "labelSingular": "Contact details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Full name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "headline",
+          "label": "Professional headline",
+          "type": "string"
+        },
+        {
+          "slug": "location",
+          "label": "Based in",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Email for enquiries",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "availability",
+          "label": "What I am open to (shown beside the form)",
+          "type": "text"
+        },
+        {
+          "slug": "profile_url",
+          "label": "Professional profile URL",
+          "type": "string"
+        },
+        {
+          "slug": "notes_url",
+          "label": "Writing or portfolio URL",
+          "type": "string"
+        },
+        {
+          "slug": "summary",
+          "label": "Summary line for the printable resume",
+          "type": "text"
+        },
+        {
+          "slug": "contact_note",
+          "label": "Note shown above the form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "Experience",
+          "url": "/experience"
+        },
+        {
+          "type": "custom",
+          "label": "Projects",
+          "url": "/projects"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "Hello, I'm Theo.",
+          "eyebrow": "About",
+          "intro": "I am a product designer who now leads a small team. I like clear problems and plain answers.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I have designed software for six years: first for salons, then for team scheduling, then for clinics. I started in a two-person design team and now lead four designers and a researcher.",
+                  "_key": "s5"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k6",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How I work",
+                  "_key": "s6"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I begin by talking to the people who will use the thing. Then I write down the problem in one paragraph and check it with the team before I draw anything. Most of my early drafts are rough, and I would rather show a rough draft on Monday than a polished one on Friday.",
+                  "_key": "s7"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k8",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I write my own interface copy, I test with a keyboard and a screen reader, and I keep notes short enough that someone else will read them.",
+                  "_key": "s8"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What I am looking for",
+                  "_key": "s9"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k10",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I am open to design lead and head of design roles at product companies with teams of ten to a few hundred people. I would like a place where design, research and engineering plan together, and where the team is still small enough to know each other's work.",
+                  "_key": "s10"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Teams that talk to their customers regularly",
+                  "_key": "s11"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A manager role that still leaves time to design",
+                  "_key": "s12"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Remote or hybrid, within a few hours of Linden Harbor",
+                  "_key": "s13"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Outside work",
+                  "_key": "s14"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I cook for friends on Sundays, swim most mornings and keep a list of books I have not finished.",
+                  "_key": "s15"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About this site",
+                  "_key": "s16"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Theo Alder is a fictional person, and the portrait on this site is AI-generated. The companies, projects, dates and contact details are sample content made for this theme.",
+                  "_key": "s17"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "colophon",
+        "slug": "colophon",
+        "status": "published",
+        "data": {
+          "title": "Colophon",
+          "eyebrow": "About this site",
+          "intro": "How this site is made, in a few lines.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This is a sample site for the Professional Resume theme. The person, employers, projects and dates are invented.",
+                  "_key": "s18"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Type",
+                  "_key": "s19"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k20",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Headlines are set in Newsreader, body text in Inter, and the handwritten note on the home page in Zeyada. All three are free fonts under the SIL Open Font License and are served from this site.",
+                  "_key": "s20"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Printing the resume",
+                  "_key": "s21"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k22",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The resume page has a print layout. Choose Print in your browser, then Save as PDF. Margins and page breaks are set for A4 and US Letter.",
+                  "_key": "s22"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Replace the sample content",
+                  "_key": "s23"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k24",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Roles, projects, skills, education and the contact details are all editable in the admin. Delete the sample entries and add your own.",
+                  "_key": "s24"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "roles": [
+      {
+        "id": "junior-product-designer",
+        "slug": "junior-product-designer",
+        "status": "published",
+        "data": {
+          "title": "Junior Product Designer",
+          "company": "Brindle & Co.",
+          "period": "2019 – 2020",
+          "location": "Linden Harbor",
+          "work_mode": "On site",
+          "summary": "Learned by doing: shipped features, gathered insights, grew fast.",
+          "bullets": "Designed and shipped small features for a booking app used by independent salons: reminder settings, a simpler rebooking flow and a printable day sheet.\nJoined a customer call every week and wrote up what people struggled with in plain language for the whole team.\nRan my first usability sessions with five salon owners and turned the notes into a ranked list of fixes.\nBuilt a shared set of icons and spacing rules with the one other designer on the team.",
+          "current": false,
+          "position": 10
+        }
+      },
+      {
+        "id": "product-designer",
+        "slug": "product-designer",
+        "status": "published",
+        "data": {
+          "title": "Product Designer",
+          "company": "Tidewater Software",
+          "period": "2020 – 2022",
+          "location": "Linden Harbor",
+          "work_mode": "Remote",
+          "summary": "Led key projects from research to launch, with a focus on user value.",
+          "bullets": "Led design for a team scheduling product from the first interviews to launch, working with two engineers and a product manager.\nRedesigned onboarding after watching new users get stuck on the same two screens in every session.\nWrote the usability test script that the team still uses before each release.\nHosted a weekly design review that anyone in the company could join.\nMoved the team's design files from loose screens into one organised library.",
+          "current": false,
+          "position": 20
+        }
+      },
+      {
+        "id": "senior-product-designer",
+        "slug": "senior-product-designer",
+        "status": "published",
+        "data": {
+          "title": "Senior Product Designer",
+          "company": "Quillfield Health",
+          "period": "2022 – 2024",
+          "location": "Linden Harbor",
+          "work_mode": "Hybrid",
+          "summary": "Expanded impact across products, mentored others, shaped design systems.",
+          "bullets": "Designed appointment reminders and message threads for clinic staff and patients, on the web and on phones.\nStarted the shared component library with two engineers and wrote usage notes for every component.\nMentored two junior designers with weekly one-to-ones and portfolio reviews.\nRan a keyboard and screen reader pass before every release.\nLed a workshop that settled naming and spacing across three product teams.",
+          "current": false,
+          "position": 30
+        }
+      },
+      {
+        "id": "design-lead",
+        "slug": "design-lead",
+        "status": "published",
+        "data": {
+          "title": "Design Lead",
+          "company": "Northgate Labs",
+          "period": "2024 – Present",
+          "location": "Linden Harbor",
+          "work_mode": "Remote",
+          "summary": "Driving product vision and cross-functional collaboration.",
+          "bullets": "Lead a team of four designers and one researcher across two products.\nAgree the quarterly design priorities with product and engineering leads and keep them on a single page.\nRun hiring for design roles: write the brief, run the interviews and send written feedback to every candidate.\nKeep the design system tidy: review changes, retire unused components and publish short release notes.\nWalk the leadership team through major design decisions each quarter, in plain language.",
+          "current": true,
+          "position": 40
+        }
+      }
+    ],
+    "projects": [
+      {
+        "id": "first-week-onboarding",
+        "slug": "first-week-onboarding",
+        "status": "published",
+        "data": {
+          "title": "A calmer first week in a scheduling app",
+          "summary": "Rebuilt onboarding for a team scheduling product after watching new users get stuck.",
+          "company": "Tidewater Software",
+          "year": "2021",
+          "role": "Lead product designer",
+          "context": "New teams signed up, invited a few colleagues and then stopped. In recorded sessions the same two screens caused most of the stalls: choosing a work week and inviting people before there was anything to see.",
+          "actions": "Interviewed eight people who had signed up and left, and watched six new users set up a team while thinking aloud.\nMapped the first week as a sequence of small decisions and cut the first session down to one: name the team.\nPrototyped three flows and tested them with the same kind of new user before choosing one.\nWrote the empty-state copy myself and agreed it with support, so the app and the help pages used the same words.",
+          "outcome": "New users reached a first shared schedule in their first session more often, and support stopped getting the same two questions. The team kept the test script and reused it for later releases.",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/project-notebook.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I would involve support earlier next time. They already knew which questions came up on day one, and I only found that out in the second round of interviews.",
+                  "_key": "s1"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "shared-component-library",
+        "slug": "shared-component-library",
+        "status": "published",
+        "data": {
+          "title": "One component library for three teams",
+          "summary": "Replaced three sets of slightly different buttons and forms with one documented library.",
+          "company": "Quillfield Health",
+          "year": "2023",
+          "role": "Senior product designer",
+          "context": "Three product teams had copied each other's screens over time. Buttons, form fields and error messages looked alike but behaved differently, and every new feature started with a debate about spacing.",
+          "actions": "Audited every screen and listed each distinct button, input and alert in a single sheet.\nAgreed a short list of components with the three team leads, then built them with two engineers.\nWrote one page of usage notes per component: when to use it, when not to, and how it behaves with a keyboard.\nPublished release notes for every change so nobody was surprised by an update.",
+          "outcome": "Teams started new features from the library instead of from copied screens. Design reviews moved from spacing questions to questions about the problem being solved.",
+          "featured": true,
+          "position": 20,
+          "photo": "/images/project-marble.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The library worked because the usage notes were short. Our first draft was long, and nobody read it.",
+                  "_key": "s2"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "trip-planner-small-teams",
+        "slug": "trip-planner-small-teams",
+        "status": "published",
+        "data": {
+          "title": "A trip planner for small teams",
+          "summary": "Designed a shared itinerary tool for teams of five to fifteen who travel together a few times a year.",
+          "company": "Northgate Labs",
+          "year": "2024",
+          "role": "Design lead",
+          "context": "Small teams planned trips in a mix of spreadsheets, chat threads and email. Nobody could say which version of the plan was current, and last-minute changes reached people late.",
+          "actions": "Interviewed seven office managers who organise team trips and collected the documents they actually use.\nSet a single rule for the product: one itinerary, one place to change it, and everyone sees changes as they happen.\nLed two designers through the booking, itinerary and notification flows, and reviewed their work twice a week.\nTested a clickable prototype with a team on a real two-day trip.",
+          "outcome": "Testers stopped keeping a private copy of the plan. The trip organisers said the change log was the feature they would miss most.",
+          "featured": true,
+          "position": 30,
+          "photo": "/images/project-globe.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This was the first project where I mostly reviewed and coached instead of drawing screens. I still drew the first version of the change log myself, because it was the idea I trusted most.",
+                  "_key": "s3"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "notification-settings",
+        "slug": "notification-settings",
+        "status": "published",
+        "data": {
+          "title": "Notification settings people can find",
+          "summary": "Reorganised reminders and message alerts so clinic staff could set them once and trust them.",
+          "company": "Quillfield Health",
+          "year": "2022",
+          "role": "Senior product designer",
+          "context": "Reminders could be changed in four different places. Staff turned alerts off when they got too noisy and then missed messages that mattered.",
+          "actions": "Listed every notification the product sent and who received it.\nGrouped them into three plain categories and moved all settings onto one screen.\nWrote short descriptions for each setting using the words staff used in interviews.\nChecked the whole screen with a keyboard and a screen reader before handing it over.",
+          "outcome": "Support received fewer questions about missing reminders, and staff could explain the settings to each other without a guide.",
+          "featured": false,
+          "position": 40,
+          "photo": "/images/project-plant.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k4",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A quiet screen is not the same as a simple one. I spent most of the time deciding what to remove.",
+                  "_key": "s4"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "skills": [
+      {
+        "id": "research",
+        "slug": "research",
+        "status": "published",
+        "data": {
+          "title": "Research",
+          "blurb": "Finding out what people are trying to do before drawing anything.",
+          "items": "Customer interviews\nUsability testing\nSurvey design\nJourney mapping\nWriting up findings",
+          "position": 10
+        }
+      },
+      {
+        "id": "interaction",
+        "slug": "interaction",
+        "status": "published",
+        "data": {
+          "title": "Interaction",
+          "blurb": "Turning a decision into screens people can use without instructions.",
+          "items": "Flows and wireframes\nClickable prototypes\nInterface design\nAccessibility checks\nInterface copy",
+          "position": 20
+        }
+      },
+      {
+        "id": "systems",
+        "slug": "systems",
+        "status": "published",
+        "data": {
+          "title": "Systems",
+          "blurb": "Making common parts reusable so teams spend time on new problems.",
+          "items": "Component libraries\nDesign tokens\nUsage documentation\nHandoff to engineering\nRelease notes",
+          "position": 30
+        }
+      },
+      {
+        "id": "leadership",
+        "slug": "leadership",
+        "status": "published",
+        "data": {
+          "title": "Leadership",
+          "blurb": "Helping a team agree on what to build and do it well.",
+          "items": "Mentoring\nHiring\nDesign reviews\nQuarterly planning\nPresenting to leadership",
+          "position": 40
+        }
+      }
+    ],
+    "credentials": [
+      {
+        "id": "education-placeholder",
+        "slug": "education-placeholder",
+        "status": "published",
+        "data": {
+          "title": "BA in Interaction Design",
+          "kind": "Education",
+          "org": "Example University",
+          "years": "2015 – 2019",
+          "note": "Placeholder entry. Replace it with your own degree.",
+          "position": 10
+        }
+      },
+      {
+        "id": "certificate-accessibility",
+        "slug": "certificate-accessibility",
+        "status": "published",
+        "data": {
+          "title": "Accessible Interface Design",
+          "kind": "Certification",
+          "org": "Sample Learning Institute",
+          "years": "2022",
+          "note": "Placeholder entry. Replace it with your own certificate.",
+          "position": 20
+        }
+      },
+      {
+        "id": "certificate-facilitation",
+        "slug": "certificate-facilitation",
+        "status": "published",
+        "data": {
+          "title": "Workshop Facilitation",
+          "kind": "Certification",
+          "org": "Sample Learning Institute",
+          "years": "2023",
+          "note": "Placeholder entry. Replace it with your own certificate.",
+          "position": 30
+        }
+      }
+    ],
+    "profile": [
+      {
+        "id": "theo",
+        "slug": "theo",
+        "status": "published",
+        "data": {
+          "title": "Theo Alder",
+          "headline": "Product design lead",
+          "location": "Linden Harbor, and remote",
+          "phone": "(555) 010-0142",
+          "email": "hello@theoalder.example",
+          "availability": "Open to design lead and head of design roles, and to a small number of project conversations. I reply within two working days.",
+          "profile_url": "https://profiles.example/theo-alder",
+          "notes_url": "https://notes.example/theo-alder",
+          "summary": "Product designer with six years of experience, now leading a team of four. I work from the first customer interview to launch, and I care about clear writing and accessible interfaces.",
+          "contact_note": "Tell me a little about the role or the project. A few sentences are enough. I reply within two working days."
+        }
+      }
+    ]
+  }
+}
