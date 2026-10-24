@@ -1,0 +1,72 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import TourCard from "../../components/TourCard.astro";
+import { TYPES, getCompany, getTours, langSlug } from "../../lib/tours";
+
+const [toursResult, companyResult] = await Promise.all([getTours(), getCompany()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(toursResult.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+}
+// ?type=walking|food|highlights|private and ?lang=<language-slug> narrow the list and combine.
+// Unknown values show everything.
+const q = Astro.url.searchParams;
+const type = TYPES.find((t) => t.slug === q.get("type"));
+const all = toursResult.tours;
+const languages = [...new Map(all.flatMap((t) => t.languages).map((l) => [langSlug(l), l])).entries()].sort((a, b) => a[1].localeCompare(b[1]));
+const lang = languages.find(([slug]) => slug === q.get("lang"));
+const shown = all.filter(
+	(t) => (!type || t.entry.data.tour_type === type.slug) && (!lang || t.languages.some((l) => langSlug(l) === lang[0])),
+);
+const href = (t?: string, l?: string) => {
+	const p = new URLSearchParams();
+	if (t) p.set("type", t);
+	if (l) p.set("lang", l);
+	const s = p.toString();
+	return s ? `/tours?${s}` : "/tours";
+};
+const typeCount = (slug: string) => all.filter((t) => t.entry.data.tour_type === slug && (!lang || t.languages.some((l) => langSlug(l) === lang[0]))).length;
+const langCount = (slug: string) => all.filter((t) => t.languages.some((l) => langSlug(l) === slug) && (!type || t.entry.data.tour_type === type.slug)).length;
+const heading = [type?.label, lang?.[1]].filter(Boolean).join(", ");
+---
+
+<Base title="Tours" description="Walking, food, highlight and private tours of the old city. Filter by type or language, see times, meeting points and prices.">
+	<PageHead
+		id="tours-title"
+		eyebrow="Our tours"
+		title="Pick a tour, a time and a language."
+		intro="Every tour has a named meeting point, a group limit and a list of what is included. Prices are samples until you add your own."
+	/>
+	<section class="list-section" aria-labelledby="tours-title">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter tours">
+				<div class="filter-group">
+					<span class="filter-label">Type</span>
+					<a href={href(undefined, lang?.[0])} aria-current={type ? undefined : "true"}>All</a>
+					{TYPES.map((t) => <a href={href(t.slug, lang?.[0])} aria-current={type?.slug === t.slug ? "true" : undefined}>{t.label} <span>{typeCount(t.slug)}</span></a>)}
+				</div>
+				<div class="filter-group">
+					<span class="filter-label">Language</span>
+					<a href={href(type?.slug)} aria-current={lang ? undefined : "true"}>All</a>
+					{languages.map(([slug, label]) => <a href={href(type?.slug, slug)} aria-current={lang?.[0] === slug ? "true" : undefined}>{label} <span>{langCount(slug)}</span></a>)}
+				</div>
+			</nav>
+
+			<p class="result-line" role="status">
+				{shown.length} of {all.length} tours{heading ? `: ${heading}` : ""}
+				{(type || lang) && <> <a href="/tours">Clear filters</a></>}
+			</p>
+
+			{
+				shown.length === 0 ? (
+					<p class="empty-note">No tour matches that combination yet. <a href="/tours">Show all tours</a> or <a href="/contact">ask us about a private one</a>.</p>
+				) : (
+					<ul class="tcard-grid">
+						{shown.map((t) => <li><TourCard row={t} /></li>)}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+</Base>

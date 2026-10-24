@@ -1,0 +1,1515 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Local City Tours",
+    "description": "A local tour operator theme with a full-bleed old-town hero, tours filtered by type and language, a weekly timetable, guides, stories, an about page and a mailto booking request form, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "Local City Tours",
+    "tagline": "Real people  Bolder stories"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "tours",
+      "label": "Tours",
+      "labelSingular": "Tour",
+      "urlPattern": "/tours/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Tour name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "tour_type",
+          "label": "Type",
+          "type": "select",
+          "required": true,
+          "defaultValue": "walking",
+          "indexed": true,
+          "validation": {
+            "options": [
+              "walking",
+              "food",
+              "highlights",
+              "private"
+            ]
+          }
+        },
+        {
+          "slug": "duration",
+          "label": "Duration (e.g. 2 hours 30 minutes)",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "group_max",
+          "label": "Largest group",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "slug": "start_times",
+          "label": "Start times, 24 hour, comma separated (e.g. 10:00, 15:00)",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "runs_on",
+          "label": "Days it runs, comma separated (mon,tue,wed,thu,fri,sat,sun)",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "meeting_point",
+          "label": "Meeting point (name of the square or landmark)",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "meeting_note",
+          "label": "How to recognize us at the meeting point",
+          "type": "text"
+        },
+        {
+          "slug": "languages",
+          "label": "Languages, comma separated (e.g. English, Spanish)",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "price_from",
+          "label": "Price in whole dollars (placeholder)",
+          "type": "integer"
+        },
+        {
+          "slug": "price_unit",
+          "label": "Price is charged",
+          "type": "select",
+          "defaultValue": "person",
+          "validation": {
+            "options": [
+              "person",
+              "group"
+            ]
+          }
+        },
+        {
+          "slug": "accessibility",
+          "label": "Accessibility notes",
+          "type": "text"
+        },
+        {
+          "slug": "included",
+          "label": "What is included (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "route",
+          "label": "Route outline (one stop per line, as Stop|What we do there)",
+          "type": "text"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph (detail page)",
+          "type": "text"
+        },
+        {
+          "slug": "featured",
+          "label": "Show first",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "content",
+          "label": "Extra page content",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "guides",
+      "label": "Guides",
+      "labelSingular": "Guide",
+      "urlPattern": "/guides",
+      "supports": [
+        "drafts",
+        "revisions",
+        "search"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "First name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "languages",
+          "label": "Languages, comma separated",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "likes",
+          "label": "What they like to show",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "bio",
+          "label": "Two sentences about them",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Portrait (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled portrait path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "stories",
+      "label": "Stories",
+      "labelSingular": "Story",
+      "urlPattern": "/stories/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "excerpt",
+          "label": "Short summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "category",
+          "label": "Kind of story (e.g. Tips)",
+          "type": "string"
+        },
+        {
+          "slug": "published",
+          "label": "Date shown, YYYY-MM-DD",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "minutes",
+          "label": "Minutes to read",
+          "type": "integer"
+        },
+        {
+          "slug": "content",
+          "label": "Story",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "company",
+      "label": "Company details",
+      "labelSingular": "Company details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Company name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "street",
+          "label": "Street address",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "locality",
+          "label": "Neighborhood and city",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "country",
+          "label": "Country",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Booking email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "office",
+          "label": "Phone and desk hours (one per line, as Day|Hours)",
+          "type": "text"
+        },
+        {
+          "slug": "booking_note",
+          "label": "Note shown beside the booking form",
+          "type": "text"
+        },
+        {
+          "slug": "meeting_text",
+          "label": "Meeting point paragraph (homepage)",
+          "type": "text"
+        },
+        {
+          "slug": "bring",
+          "label": "What to bring (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "private_text",
+          "label": "Private tours paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "licence_note",
+          "label": "Licences and insurance (owner to fill in)",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Tours",
+          "url": "/tours"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        },
+        {
+          "type": "custom",
+          "label": "Stories",
+          "url": "/stories"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "Local people who like showing their city.",
+          "eyebrow": "About",
+          "intro": "Local City Tours is a small company of guides who grew up in or near the old city. This page says who we are and how we work.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k135",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We started with one guide and a handful of friends who asked for a walk. Now there are six of us. We lead around forty tours a week in high season, in four languages.",
+                  "_key": "k135s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k136",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How we work",
+                  "_key": "k136s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k137",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Groups stay small, between eight and fourteen. Every guide lives in the city and writes their own route within the same set of stops.",
+                  "_key": "k137s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k138",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We do not sell on commission, we do not take you to a shop and we do not tell you where to buy a souvenir. If you ask for a restaurant, we give you two.",
+                  "_key": "k138s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k139",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we ask of you",
+                  "_key": "k139s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k140",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Be at the meeting point ten minutes early. Tell us about allergies and mobility when you book. Say so if the pace is wrong, because we can change it.",
+                  "_key": "k140s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k141",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Booking",
+                  "_key": "k141s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k142",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Send a booking request from the Book page. We confirm by email, usually within one working day. You pay your guide on the day.",
+                  "_key": "k142s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "cancellations",
+        "slug": "cancellations",
+        "status": "published",
+        "data": {
+          "title": "Cancellations and weather (sample text)",
+          "eyebrow": "Cancellations",
+          "intro": "Sample wording only. Replace it with your own terms before you publish.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k143",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This page is placeholder text so the site has a policy page. It is not a contract and no real company stands behind it.",
+                  "_key": "k143s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k144",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you cancel",
+                  "_key": "k144s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k145",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sample: cancel at least 48 hours before the start time for a full refund. Later cancellations are charged at half price.",
+                  "_key": "k145s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k146",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If we cancel",
+                  "_key": "k146s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k147",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sample: we cancel only if the weather is unsafe or fewer than two people have booked. You get a full refund or a new date.",
+                  "_key": "k147s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k148",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Late arrivals",
+                  "_key": "k148s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k149",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sample: we wait ten minutes after the start time. After that, the tour moves on and we cannot refund the place.",
+                  "_key": "k149s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "tours": [
+      {
+        "id": "ivy-alley-walk",
+        "slug": "ivy-alley-walk",
+        "status": "published",
+        "data": {
+          "title": "Ivy Alley Walk",
+          "tour_type": "walking",
+          "summary": "A slow loop through the narrow streets of the Old Gate quarter, with the stories behind the doors.",
+          "duration": "2 hours",
+          "group_max": 10,
+          "start_times": "10:00, 15:00",
+          "runs_on": "mon,tue,wed,thu,fri,sat,sun",
+          "meeting_point": "Lantern Square, steps of the dry fountain",
+          "meeting_note": "Look for a green flag and a guide wearing a lanyard. We wait ten minutes after the start time.",
+          "languages": "English, Spanish",
+          "price_from": 32,
+          "price_unit": "person",
+          "accessibility": "Mostly flat, but the street is cobbled and there are two short flights of steps near the end. A step-free route is possible on a private tour.",
+          "included": "A local guide for the whole walk\nA paper map of the old city with our favorite stops marked\nA water refill stop halfway\nA short list of places to eat nearby",
+          "route": "Lantern Square|We meet, check the group and agree a pace.\nCooper's Row|The old workshops, and why the doors are so low.\nIvy Passage|The narrowest street in the quarter. We stop for photos.\nBakers' Steps|A rest, a story about the lantern lighters and a look over the roofs.\nGate Square|We finish at the old gate. The guide suggests where to go next.",
+          "intro": "Most visitors walk past Ivy Passage without seeing it. We go in, slowly, and talk about who lived and worked on this street.",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/tour-walking.webp"
+        }
+      },
+      {
+        "id": "river-steps-and-bridges",
+        "slug": "river-steps-and-bridges",
+        "status": "published",
+        "data": {
+          "title": "River Steps and Bridges",
+          "tour_type": "walking",
+          "summary": "Down to the water by the old mill steps, then across three bridges that each tell a different part of the story.",
+          "duration": "2 hours 30 minutes",
+          "group_max": 12,
+          "start_times": "09:30",
+          "runs_on": "mon,wed,fri,sat",
+          "meeting_point": "Mill Steps landing",
+          "meeting_note": "We stand at the bottom of the steps, next to the iron mooring posts.",
+          "languages": "English, French",
+          "price_from": 38,
+          "price_unit": "person",
+          "accessibility": "There are 60 steps down to the river and a gentle slope back up. We take it slowly and stop often. Not suitable for wheelchairs.",
+          "included": "A local guide\nA printed map of the river walk\nA coffee stop at a family-run kiosk (one drink each)",
+          "route": "Mill Steps|The mills that once powered the quarter.\nLower Bridge|Where the market boats used to unload.\nStone Bridge|The oldest crossing. We talk about the floods.\nRiver Wall|A flat stretch with views of the dome.\nKiosk stop|Coffee or tea, and a seat.",
+          "intro": "The river is easy to miss from the main streets. This walk puts it at the center and keeps the pace gentle.",
+          "featured": false,
+          "position": 20,
+          "photo": "/images/cobbles.webp"
+        }
+      },
+      {
+        "id": "lantern-evening-walk",
+        "slug": "lantern-evening-walk",
+        "status": "published",
+        "data": {
+          "title": "Lantern Evening Walk",
+          "tour_type": "walking",
+          "summary": "The old streets as the lamps come on, with fewer people and a lot more shadow.",
+          "duration": "1 hour 45 minutes",
+          "group_max": 10,
+          "start_times": "18:30",
+          "runs_on": "thu,fri,sat,sun",
+          "meeting_point": "Lantern Square, steps of the dry fountain",
+          "meeting_note": "Look for the guide holding a small brass lantern.",
+          "languages": "English, German, Spanish",
+          "price_from": 29,
+          "price_unit": "person",
+          "accessibility": "Streets are cobbled and some are poorly lit. Bring a small flashlight if you prefer. Mostly flat.",
+          "included": "A local guide\nA lantern for the group to follow\nA hot drink or a cold one at the end (one each)",
+          "route": "Lantern Square|We meet as the first lamps are lit.\nCooper's Row|Quiet at this hour. We talk about the night watch.\nIvy Passage|Best seen with the lamps on.\nGate Square|We finish with a drink at a corner bar the guide trusts.",
+          "intro": "A shorter walk for the end of the day. We keep to the quiet streets and finish with a drink.",
+          "featured": false,
+          "position": 30,
+          "photo": "/images/street-group.webp"
+        }
+      },
+      {
+        "id": "market-and-plates",
+        "slug": "market-and-plates",
+        "status": "published",
+        "data": {
+          "title": "Market and Plates",
+          "tour_type": "food",
+          "summary": "A morning in the covered market and five small plates at the stalls and counters locals actually use.",
+          "duration": "3 hours",
+          "group_max": 8,
+          "start_times": "10:30",
+          "runs_on": "tue,wed,thu,fri,sat",
+          "meeting_point": "Bell Tower Square, south arch",
+          "meeting_note": "We meet under the south arch of the bell tower. Please arrive hungry.",
+          "languages": "English, Spanish, German",
+          "price_from": 68,
+          "price_unit": "person",
+          "accessibility": "Flat, with a lot of standing at counters. Seats are available at two of the five stops. Tell us about allergies and diets when you book.",
+          "included": "Five tastings at five different stalls and counters\nWater and one glass of local wine or juice\nA local guide who knows the stallholders\nA printed list of what we ate and where to buy it",
+          "route": "Bell Tower Square|We meet and talk through the morning.\nCovered market|Cheese, olives and bread from the same family for three generations.\nFish counter|A small plate cooked in front of us.\nCooper's Row|A bakery with a queue before eight.\nCorner counter|A last plate and a sit down.",
+          "intro": "You eat at counters, standing up, the way people here do. The guide knows who to ask for what.",
+          "featured": true,
+          "position": 40,
+          "photo": "/images/tour-food.webp"
+        }
+      },
+      {
+        "id": "cellar-and-cheese-evening",
+        "slug": "cellar-and-cheese-evening",
+        "status": "published",
+        "data": {
+          "title": "Cellar and Cheese Evening",
+          "tour_type": "food",
+          "summary": "Two cellars, one cheese counter and a long table at the end. A calm evening with local wine and plain food.",
+          "duration": "2 hours 30 minutes",
+          "group_max": 8,
+          "start_times": "17:30",
+          "runs_on": "wed,fri,sat",
+          "meeting_point": "14 Cooper's Row, blue door",
+          "meeting_note": "Our office has a blue door. The guide waits on the step.",
+          "languages": "English, French",
+          "price_from": 74,
+          "price_unit": "person",
+          "accessibility": "One cellar has 14 narrow steps down. The second is at street level. Ask us if the steps are a problem and we will swap it.",
+          "included": "Four wines or juices, poured by the people who made them\nCheese, bread and cured meats (a vegetarian board on request)\nA local guide\nA card with the names of what you tasted",
+          "route": "Cooper's Row|We meet and walk to the first cellar.\nLower cellar|Two wines and a talk about how the quarter stored them.\nCheese counter|Three cheeses and the story of the dairy.\nLong table|Bread, a last glass and time to ask questions.",
+          "intro": "An evening for adults. We go slowly, we sit down and nobody is hurried.",
+          "featured": false,
+          "position": 50,
+          "photo": "/images/tour-food.webp"
+        }
+      },
+      {
+        "id": "dome-and-rooftops",
+        "slug": "dome-and-rooftops",
+        "status": "published",
+        "data": {
+          "title": "Dome and Rooftops",
+          "tour_type": "highlights",
+          "summary": "The main sights, in a sensible order, with a climb to the dome terrace for the best view of the old city.",
+          "duration": "3 hours",
+          "group_max": 14,
+          "start_times": "10:00, 14:00",
+          "runs_on": "mon,tue,wed,thu,fri,sat,sun",
+          "meeting_point": "Gate Square, north side",
+          "meeting_note": "Look for a green flag by the old gate. The guide has a lanyard and a folded map.",
+          "languages": "English, Spanish, French, German",
+          "price_from": 36,
+          "price_unit": "person",
+          "accessibility": "The terrace is up 220 steps and is optional. The rest of the tour is flat, with some cobbles. Entry to the terrace is paid at the door, about $8.",
+          "included": "A local guide\nA route that avoids the longest lines\nA short break at a courtyard café (drinks not included)\nA paper map with the day's route",
+          "route": "Gate Square|Introductions and how the old city grew.\nCathedral steps|The facade and what the carvings show.\nDome terrace|The climb is optional. The view is the reason we came.\nOld Exchange|A quiet courtyard and a coffee break.\nBell Tower Square|We finish at the market edge.",
+          "intro": "If you have one morning, this is the one. We cover the big sights in a sensible order and avoid the worst crowds.",
+          "featured": true,
+          "position": 60,
+          "photo": "/images/view-bridge.webp"
+        }
+      },
+      {
+        "id": "terrace-at-sunset",
+        "slug": "terrace-at-sunset",
+        "status": "published",
+        "data": {
+          "title": "Terrace at Sunset",
+          "tour_type": "highlights",
+          "summary": "Three viewpoints over the old city, timed for the last hour of light, with a sit-down at the final one.",
+          "duration": "2 hours",
+          "group_max": 12,
+          "start_times": "16:30",
+          "runs_on": "mon,tue,wed,thu,fri,sat,sun",
+          "meeting_point": "Bell Tower Square, south arch",
+          "meeting_note": "We meet under the south arch. Look for the green flag.",
+          "languages": "English, German",
+          "price_from": 34,
+          "price_unit": "person",
+          "accessibility": "One steep ramp and about 80 steps in total. There is a bench at every viewpoint. Not suitable for wheelchairs.",
+          "included": "A local guide\nA soft drink or glass of wine at the last viewpoint\nA photo spot at each stop (the guide will take your picture)",
+          "route": "Bell Tower Square|We set out as the light turns yellow.\nStone terrace|The first view of the dome and the river.\nGarden wall|A quiet spot most visitors never find.\nRoof terrace|A seat, a drink and the last of the light.",
+          "intro": "The best light in the old city is in the last hour of the day. We plan the route around it.",
+          "featured": false,
+          "position": 70,
+          "photo": "/images/tour-highlights.webp"
+        }
+      },
+      {
+        "id": "private-family-walk",
+        "slug": "private-family-walk",
+        "status": "published",
+        "data": {
+          "title": "Private Family Walk",
+          "tour_type": "private",
+          "summary": "Your family, your pace and a guide who adjusts the route to the youngest and the slowest walker.",
+          "duration": "2 to 3 hours",
+          "group_max": 6,
+          "start_times": "Any time from 09:00 to 17:00",
+          "runs_on": "mon,tue,wed,thu,fri,sat,sun",
+          "meeting_point": "Your hotel or a place you choose inside the old city",
+          "meeting_note": "We confirm the exact place by email.",
+          "languages": "English, Spanish, French, German",
+          "price_from": 180,
+          "price_unit": "group",
+          "accessibility": "We plan a step-free route on request. Strollers are welcome. Tell us about mobility needs when you book.",
+          "included": "A local guide just for your group\nA route you help choose\nSnack and bathroom stops planned in\nChild-friendly stories and a scavenger sheet for ages 6 to 12",
+          "route": "Your meeting place|We start where it suits you.\nA route built around you|We pick from the alleys, market and viewpoints.\nPlanned breaks|A snack stop and bathroom stops are written into the plan.",
+          "intro": "We ask a few questions by email, then write a route that suits your group. Nothing is fixed until you agree to it.",
+          "featured": false,
+          "position": 80,
+          "photo": "/images/group-couple.webp"
+        }
+      },
+      {
+        "id": "private-day-small-groups",
+        "slug": "private-day-small-groups",
+        "status": "published",
+        "data": {
+          "title": "Private Day for Small Groups",
+          "tour_type": "private",
+          "summary": "A half or full day with one guide for up to twelve people. Good for birthdays, reunions and small teams.",
+          "duration": "4 hours (half day) or 7 hours (full day)",
+          "group_max": 12,
+          "start_times": "Any time from 08:30 to 16:00",
+          "runs_on": "mon,tue,wed,thu,fri,sat,sun",
+          "meeting_point": "A place you choose inside the old city",
+          "meeting_note": "We confirm the exact place by email.",
+          "languages": "English, Spanish, French, German",
+          "price_from": 320,
+          "price_unit": "group",
+          "accessibility": "We plan the route around your group. Tell us about mobility needs, diets and ages when you book.",
+          "included": "A local guide for the whole day\nA route written with you\nA lunch stop booked in advance (food not included)\nA printed map for everyone in the group",
+          "route": "Meeting place|We start where it suits you.\nMorning route|Usually the alleys or the river walk.\nLunch|A table booked ahead at a place the guide trusts.\nAfternoon route|Usually a viewpoint and a quiet courtyard.",
+          "intro": "Tell us who is coming and what the day is for. We plan the route, the lunch and the pace around that.",
+          "featured": false,
+          "position": 90,
+          "photo": "/images/group-guide.webp"
+        }
+      }
+    ],
+    "guides": [
+      {
+        "id": "marta",
+        "slug": "marta",
+        "status": "published",
+        "data": {
+          "title": "Marta",
+          "languages": "English, Spanish",
+          "position": 10,
+          "photo": "/images/guide-marta.webp",
+          "likes": "The back courtyards of Cooper's Row and the story of the lantern lighters.",
+          "bio": "Marta grew up two streets from Lantern Square. She leads most of the Ivy Alley walks and the family tours."
+        }
+      },
+      {
+        "id": "teo",
+        "slug": "teo",
+        "status": "published",
+        "data": {
+          "title": "Teo",
+          "languages": "English, German",
+          "position": 20,
+          "likes": "The bridges, the old mill steps and why the river floods every few years.",
+          "bio": "Teo worked on the river ferries for ten years before he started guiding. He knows every landing."
+        }
+      },
+      {
+        "id": "ines",
+        "slug": "ines",
+        "status": "published",
+        "data": {
+          "title": "Inès",
+          "languages": "French, English",
+          "position": 30,
+          "likes": "Bakeries, cheese counters and which stall to trust on which day.",
+          "bio": "Inès used to cook in a quarter restaurant. She leads the market and cellar tours."
+        }
+      },
+      {
+        "id": "jonas",
+        "slug": "jonas",
+        "status": "published",
+        "data": {
+          "title": "Jonas",
+          "languages": "German, English",
+          "position": 40,
+          "likes": "Rooftops, church towers and the best place for a photo at five o'clock.",
+          "bio": "Jonas is a retired surveyor who likes angles, steps and a good view. He leads the dome and terrace tours."
+        }
+      },
+      {
+        "id": "noor",
+        "slug": "noor",
+        "status": "published",
+        "data": {
+          "title": "Noor",
+          "languages": "English, French",
+          "position": 50,
+          "likes": "Craft workshops, door knockers and the people who still make things by hand.",
+          "bio": "Noor studied history and ended up showing people the streets instead. She leads the evening walks."
+        }
+      },
+      {
+        "id": "pablo",
+        "slug": "pablo",
+        "status": "published",
+        "data": {
+          "title": "Pablo",
+          "languages": "Spanish, English",
+          "position": 60,
+          "likes": "Cellars, old trade signs and which wine goes with which cheese.",
+          "bio": "Pablo grew up in a family of wine sellers. He leads the cellar evening and private groups."
+        }
+      }
+    ],
+    "stories": [
+      {
+        "id": "why-we-cap-groups-at-twelve",
+        "slug": "why-we-cap-groups-at-twelve",
+        "status": "published",
+        "data": {
+          "title": "Why we cap groups at twelve",
+          "category": "Behind the tours",
+          "published": "2026-10-12",
+          "minutes": 3,
+          "photo": "/images/group-guide.webp",
+          "excerpt": "Our biggest tour has fourteen places. Most have eight to twelve. Here is why we do not go higher.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k100",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "In a narrow street, a group of twelve fits on one side and still lets a local pass. At twenty, nobody at the back can hear the guide and the street is blocked.",
+                  "_key": "k100s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k101",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What changes at fourteen",
+                  "_key": "k101s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k102",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Past fourteen people, the guide has to raise their voice. People at the back start talking among themselves, and the group splits.",
+                  "_key": "k102s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k103",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "So we cap the walking tours at ten to fourteen, the food tours at eight and the private tours at the size you book.",
+                  "_key": "k103s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k104",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What it costs us",
+                  "_key": "k104s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k105",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We run more departures than we would with large groups. Some days the first tour sells out and the second is half empty. We prefer that.",
+                  "_key": "k105s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "what-to-bring-on-a-cobbled-tour",
+        "slug": "what-to-bring-on-a-cobbled-tour",
+        "status": "published",
+        "data": {
+          "title": "What to bring on a cobbled tour",
+          "category": "Tips",
+          "published": "2026-10-05",
+          "minutes": 3,
+          "photo": "/images/cobbles.webp",
+          "excerpt": "Shoes matter more than anything else. A short list of what is worth carrying.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k106",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Cobbles are harder on feet than they look. Flat shoes with a thick sole will do more for you than anything else on this list.",
+                  "_key": "k106s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k107",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Worth carrying",
+                  "_key": "k107s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k108",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A refillable water bottle. There are drinking fountains on every tour route and the guide will show you where.",
+                  "_key": "k108s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k109",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A light layer. Narrow streets are shaded and cool even in summer.",
+                  "_key": "k109s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k110",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A small bag worn across the body. You will want both hands for the steps.",
+                  "_key": "k110s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k111",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Not worth carrying",
+                  "_key": "k111s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k112",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Large backpacks, heels and umbrellas with long spikes. The streets are tight.",
+                  "_key": "k112s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "how-to-eat-well-in-two-days",
+        "slug": "how-to-eat-well-in-two-days",
+        "status": "published",
+        "data": {
+          "title": "How to eat well in the old city in two days",
+          "category": "Food",
+          "published": "2026-09-27",
+          "minutes": 4,
+          "photo": "/images/tour-food.webp",
+          "excerpt": "Where to stand, what to order and what to skip if you only have a weekend.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k113",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "You do not need a reservation for most of the good places. You need to arrive when the locals do.",
+                  "_key": "k113s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k114",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Breakfast",
+                  "_key": "k114s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k115",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Go to a bakery before eight. Order whatever the person in front of you ordered.",
+                  "_key": "k115s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k116",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Lunch",
+                  "_key": "k116s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k117",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Between one and two the market counters fill up. Arrive at half past twelve and you will find a seat.",
+                  "_key": "k117s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k118",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Dinner",
+                  "_key": "k118s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k119",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Locals eat late. If you are hungry at six, a cellar bar will feed you well and the food is simple.",
+                  "_key": "k119s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "the-lantern-lighters-of-coopers-row",
+        "slug": "the-lantern-lighters-of-coopers-row",
+        "status": "published",
+        "data": {
+          "title": "The lantern lighters of Cooper's Row",
+          "category": "History",
+          "published": "2026-09-14",
+          "minutes": 4,
+          "photo": "/images/street-group.webp",
+          "excerpt": "Until a hundred years ago one family lit every lamp in the quarter by hand. Some of the lamps are still there.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k120",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Each evening a man with a long pole walked from Lantern Square to Gate Square. He lit about sixty lamps and was done in under an hour.",
+                  "_key": "k120s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k121",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The family",
+                  "_key": "k121s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k122",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The job passed from father to son for four generations. The last lighter retired when the lamps were switched to electricity.",
+                  "_key": "k122s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k123",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What is left",
+                  "_key": "k123s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k124",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Some of the brackets are still on the walls. On the Lantern Evening Walk we stop under the oldest one.",
+                  "_key": "k124s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "a-rainy-day-on-the-old-city-tours",
+        "slug": "a-rainy-day-on-the-old-city-tours",
+        "status": "published",
+        "data": {
+          "title": "A rainy day on our tours",
+          "category": "Tips",
+          "published": "2026-09-02",
+          "minutes": 3,
+          "photo": "/images/view-bridge.webp",
+          "excerpt": "Tours run in light rain. What we change, and when we cancel.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k125",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Our tours go ahead in light rain. The old streets have arches and covered passages, so most of the route stays dry.",
+                  "_key": "k125s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k126",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we change",
+                  "_key": "k126s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k127",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The guide may swap the viewpoints for the market, or skip the river walk. You still see the old city.",
+                  "_key": "k127s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k128",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When we cancel",
+                  "_key": "k128s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k129",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We cancel only if the weather is unsafe, for example lightning or high wind on the terraces. You get a full refund or a new date.",
+                  "_key": "k129s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "how-we-pick-a-meeting-point",
+        "slug": "how-we-pick-a-meeting-point",
+        "status": "published",
+        "data": {
+          "title": "How we pick a meeting point",
+          "category": "Behind the tours",
+          "published": "2026-08-19",
+          "minutes": 3,
+          "photo": "/images/tour-walking.webp",
+          "excerpt": "Every tour starts at a square with somewhere to sit and a way to find us. That is harder than it sounds.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k130",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A good meeting point is easy to find from the main roads, has some shade and room for a group to stand without blocking anyone.",
+                  "_key": "k130s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k131",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Our four squares",
+                  "_key": "k131s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k132",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Lantern Square has the dry fountain and steps. Bell Tower Square has an arch where you can shelter. Gate Square is by the old gate. Mill Steps is at the river.",
+                  "_key": "k132s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k133",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How to recognize us",
+                  "_key": "k133s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k134",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A green flag and a guide wearing a lanyard. If you cannot find us, call the number on your confirmation email.",
+                  "_key": "k134s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "company": [
+      {
+        "id": "company",
+        "slug": "company",
+        "status": "published",
+        "data": {
+          "title": "Local City Tours",
+          "street": "14 Cooper's Row, Old Gate Quarter",
+          "locality": "The Old City",
+          "phone": "+1 415 555 0143",
+          "email": "hello@local-city-tours.example",
+          "office": "Monday to Saturday|8:30 am to 6:00 pm local time\nSunday|9:00 am to 1:00 pm",
+          "booking_note": "We confirm every booking by email, usually within one working day. Sending this form does not reserve a place until you get our confirmation. You pay on the day, so nothing is charged online.",
+          "meeting_text": "Most tours start at Lantern Square, by the steps of the dry fountain. Look for a green flag and a guide wearing a lanyard. Please arrive ten minutes early. We wait ten minutes after the start time, then move on.",
+          "bring": "Flat shoes with a thick sole, because the streets are cobbled\nA refillable water bottle\nA light layer, since the narrow streets stay cool\nA small bag worn across the body\nYour booking email on your phone\nPhoto ID for the cellar evening",
+          "private_text": "Families and small groups can book a guide for two hours or a full day. Tell us who is coming and what you would like to see, and we write the route with you.",
+          "licence_note": "Placeholder for the owner: add your tour operator license number, guide registration and insurance details here before you publish this site. None are claimed in the sample content."
+        }
+      }
+    ]
+  }
+}

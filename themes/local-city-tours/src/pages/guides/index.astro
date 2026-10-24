@@ -1,0 +1,50 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PageHead from "../../components/PageHead.astro";
+import { getGuides, getTours, initials, langSlug, list, photoSrc } from "../../lib/tours";
+
+const [guidesResult, toursResult] = await Promise.all([getGuides(), getTours()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(guidesResult.cacheHint);
+	Astro.cache.set(toursResult.cacheHint);
+}
+const guides = guidesResult.entries;
+---
+
+<Base title="Guides" description="The six local guides who lead our tours: their languages and what they like to show you.">
+	<PageHead
+		id="guides-title"
+		eyebrow="Your guides"
+		title="Six people who live here."
+		intro="Every guide lives in the old city and writes their own route. Pick a language and we match you with a guide who speaks it."
+	/>
+	<section class="list-section" aria-labelledby="guides-title">
+		<div class="wrap">
+			<ul class="guide-grid">
+				{
+					guides.map((g) => {
+						const src = photoSrc(g.data.image, g.data.photo);
+						const langs = list(g.data.languages);
+						return (
+							<li class="guide-card guide-card-lg">
+								{src ? (
+									<img class="guide-photo" src={src} alt={`Portrait of ${g.data.title}`} width="450" height="600" loading="lazy" />
+								) : (
+									<span class="guide-initials" aria-hidden="true">{initials(g.data.title)}</span>
+								)}
+								<h2 {...g.edit.title}>{g.data.title}</h2>
+								<p class="guide-langs">
+									{langs.map((l, i) => <><a href={`/tours?lang=${langSlug(l)}`}>{l}</a>{i < langs.length - 1 ? ", " : ""}</>)}
+								</p>
+								<p class="guide-likes"><span>Likes to show</span> {g.data.likes}</p>
+								{g.data.bio && <p class="guide-bio">{g.data.bio}</p>}
+							</li>
+						);
+					})
+				}
+			</ul>
+			<p class="page-cta"><a class="btn btn-green" href="/contact">Book a tour <Arrow /></a></p>
+		</div>
+	</section>
+</Base>

@@ -1,0 +1,56 @@
+---
+import type { MediaReference } from "../utils/site-identity";
+
+interface Props {
+	title: string;
+	tagline?: string;
+	logo?: MediaReference | null;
+	class?: string;
+	light?: boolean;
+}
+const { title, tagline, logo, class: className, light = false } = Astro.props;
+// The tagline is two short phrases separated by two or more spaces: "Real people  Bolder stories".
+const phrases = (tagline ?? "").split(/\s{2,}|\|/).filter(Boolean);
+---
+
+<a class:list={["wordmark", { "is-light": light }, className]} href="/" aria-label={`${title}, home`}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt ?? title} width="200" height="46" />
+		) : (
+			<>
+				<svg class="wordmark-mark" viewBox="0 0 66 49" width="66" height="49" aria-hidden="true" focusable="false">
+					<g fill="currentColor">
+						<rect x="39.2" y="0" width="1.6" height="6" />
+						<path d="M30.2 19.6C30.2 11 34 6.2 40 5c6 1.2 9.8 6 9.8 14.6z" />
+						<rect x="29" y="19.6" width="22" height="12" />
+						<path d="M24 47c0-7 4-13.5 10-15.5h12c6 2 10.5 8.5 10.5 15.5z" />
+						<path d="M15.3 41.5V17L19.3 12l4.1 5v24.5z" />
+						<path d="M2.2 45V30l4.3-3.5L10.9 30v15z" />
+						<path d="M56.5 41.5V26L60 22l4 4v15.5z" />
+						<rect x="-0.4" y="46.4" width="67" height="2.4" />
+					</g>
+					<g fill="var(--mark-cut, #f3f1e9)">
+						<rect x="5.8" y="36.8" width="2" height="2.2" />
+						<rect x="5.8" y="41.4" width="2" height="2.2" />
+						<rect x="17.7" y="25" width="2.4" height="2" />
+						<rect x="17.7" y="29.8" width="2.4" height="2" />
+						<rect x="17.7" y="35" width="2.4" height="4.6" />
+						<rect x="32" y="25.8" width="2" height="4.4" />
+						<rect x="46" y="25.8" width="2" height="4.4" />
+						<rect x="59" y="34" width="2" height="2.2" />
+						<rect x="59" y="38.6" width="2" height="2.2" />
+					</g>
+					<g fill="none" stroke="var(--mark-cut, #f3f1e9)" stroke-width="1" stroke-linecap="round">
+						<path d="M33.5 47V43.5A6.5 6.5 0 0 1 46.5 43.5V47" />
+						<path d="M31 36.5L40 31L49 36.5" />
+					</g>
+				</svg>
+				<span class="wordmark-text">
+					<span class="wordmark-title">{title}</span>
+					{phrases.length > 0 && <span class="wordmark-tagline">{phrases.map((p) => <span>{p}</span>)}</span>}
+				</span>
+			</>
+		)
+	}
+</a>

@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "local-city-tours",
+	"kind": "theme",
+	"name": "Local City Tours",
+	"type": "company",
+	"emdash": "1.2.0",
+	"entry": "themes/local-city-tours",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

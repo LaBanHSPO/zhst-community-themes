@@ -1,0 +1,131 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import TourCard from "../../components/TourCard.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { formatPrice, getTours, langSlug, lines, photoSrc, rows, runsLabel, typeLabel } from "../../lib/tours";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: tour, cacheHint } = await getEmDashEntry("tours", slug);
+if (!tour) return Astro.rewrite("/404");
+
+const [toursResult, settings] = await Promise.all([getTours(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(toursResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(tour, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = tour.data;
+const key = d.slug ?? d.id;
+const src = photoSrc(d.image, d.photo);
+const languages = (d.languages ?? "").split(",").map((l) => l.trim()).filter(Boolean);
+const times = (d.start_times ?? "").split(",").map((l) => l.trim()).filter(Boolean);
+const route = rows(d.route);
+const included = lines(d.included);
+const related = toursResult.tours.filter((t) => t.entry.data.tour_type === d.tour_type && t.entry.data.id !== d.id).slice(0, 3);
+const more = related.length > 0 ? related : toursResult.tours.filter((t) => t.entry.data.id !== d.id).slice(0, 3);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "tours", id: d.id, slug }}
+	current="/tours"
+>
+	<article>
+		<header class="page-head tour-head">
+			<div class="wrap">
+				<nav class="crumbs" aria-label="Breadcrumb">
+					<a href="/tours">Tours</a>
+					<span aria-hidden="true">/</span>
+					<a href={`/tours?type=${d.tour_type}`}>{typeLabel(d.tour_type)}</a>
+				</nav>
+				<p class="eyebrow">{typeLabel(d.tour_type)}</p>
+				<h1 class="display" {...tour.edit.title}>{d.title}</h1>
+				<p class="lede">{d.summary}</p>
+			</div>
+		</header>
+		{src && <figure class="tour-cover wrap"><img src={src} alt={d.image?.alt ?? ""} width="1200" height="520" /></figure>}
+
+		<section class="tour-body">
+			<div class="wrap tour-grid">
+				<div class="tour-main">
+					{d.intro && <p class="prose-lead">{d.intro}</p>}
+					<dl class="facts">
+						<div><dt>Duration</dt><dd>{d.duration}</dd></div>
+						<div><dt>Group size</dt><dd>Up to {d.group_max} people</dd></div>
+						<div><dt>Start {times.length > 1 ? "times" : "time"}</dt><dd>{times.join(", ")}</dd></div>
+						<div><dt>Runs</dt><dd>{runsLabel(d.runs_on)}</dd></div>
+						<div class="facts-wide"><dt>Meeting point</dt><dd>{d.meeting_point}{d.meeting_note && <span class="facts-note">{d.meeting_note}</span>}</dd></div>
+						<div class="facts-wide">
+							<dt>Languages</dt>
+							<dd>{languages.map((l, i) => <><a href={`/tours?lang=${langSlug(l)}`}>{l}</a>{i < languages.length - 1 ? ", " : ""}</>)}</dd>
+						</div>
+					</dl>
+
+					{
+						route.length > 0 && (
+							<>
+								<h2>Route outline</h2>
+								<ol class="route">
+									{route.map((r, i) => <li><span class="route-n">{i + 1}</span><span class="route-stop">{r.left}</span><span class="route-text">{r.right}</span></li>)}
+								</ol>
+							</>
+						)
+					}
+					{d.content && d.content.length > 0 && <div class="prose"><PortableText value={d.content} /></div>}
+				</div>
+				<aside class="side-stack">
+					<div class="side-box side-book">
+						<p class="side-price">From {formatPrice(d.price_from, d.price_unit)}</p>
+						<p class="small">Sample price. You pay your guide on the day, and we confirm every booking by email.</p>
+						<a class="btn btn-green btn-block" href={`/contact?tour=${encodeURIComponent(key)}`}>Book this tour <Arrow /></a>
+					</div>
+					{
+						included.length > 0 && (
+							<div class="side-box">
+								<h2>What is included</h2>
+								<ul class="ticks">{included.map((b) => <li>{b}</li>)}</ul>
+							</div>
+						)
+					}
+					{
+						d.accessibility && (
+							<div class="side-box">
+								<h2>Accessibility</h2>
+								<p class="small">{d.accessibility}</p>
+							</div>
+						)
+					}
+				</aside>
+			</div>
+		</section>
+	</article>
+
+	{
+		more.length > 0 && (
+			<section class="band" aria-labelledby="related-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">{related.length > 0 ? `More ${typeLabel(d.tour_type).toLowerCase()}` : "More tours"}</p>
+							<h2 id="related-title" class="display">Also on offer</h2>
+						</div>
+						<a class="link-arrow" href="/tours">All tours <Arrow /></a>
+					</div>
+					<ul class="tcard-grid">
+						{more.map((t) => <li><TourCard row={t} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+</Base>

@@ -1,0 +1,53 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import { getCompany, getGuides, initials, list } from "../lib/tours";
+
+const [{ entry: page, cacheHint }, companyResult, guidesResult] = await Promise.all([getEmDashEntry("pages", "about"), getCompany(), getGuides()]);
+for (const h of [cacheHint, companyResult.cacheHint, guidesResult.cacheHint]) {
+	if (Astro.cache?.enabled) Astro.cache.set(h);
+}
+const d = page?.data;
+const { company } = companyResult;
+---
+
+<Base title="About" description={d?.intro ?? "About Local City Tours."}>
+	<PageHead id="about-title" eyebrow={d?.eyebrow ?? "About"} title={d?.title ?? "About us"} intro={d?.intro} edit={{ ...page?.edit.title }} />
+	<section class="about-body">
+		<div class="wrap about-grid">
+			<div class="prose">
+				{d?.content ? <PortableText value={d.content} /> : <p>Our story is coming soon.</p>}
+				{
+					company.licence_note && (
+						<aside class="placeholder-box" aria-label="Licences and insurance placeholder">
+							<p class="placeholder-label">Placeholder</p>
+							<h3>Licences and insurance</h3>
+							<p>{company.licence_note}</p>
+						</aside>
+					)
+				}
+				<p class="page-cta"><a class="btn btn-green" href="/tours">Explore tours <Arrow /></a></p>
+			</div>
+			<aside class="about-guides" aria-labelledby="about-guides-title">
+				<h2 id="about-guides-title">The guides</h2>
+				<ul>
+					{
+						guidesResult.entries.map((g) => (
+							<li>
+								<span class="guide-initials guide-initials-sm" aria-hidden="true">{initials(g.data.title)}</span>
+								<span>
+									<strong>{g.data.title}</strong>
+									<span class="small">{list(g.data.languages).join(", ")}</span>
+								</span>
+							</li>
+						))
+					}
+				</ul>
+				<a class="link-arrow" href="/guides">Meet the guides <Arrow /></a>
+			</aside>
+		</div>
+	</section>
+</Base>

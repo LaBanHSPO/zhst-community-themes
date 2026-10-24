@@ -1,0 +1,91 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getStories, longDate, photoSrc } from "../../lib/tours";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: post, cacheHint } = await getEmDashEntry("stories", slug);
+if (!post) return Astro.rewrite("/404");
+
+const [postsResult, settings] = await Promise.all([getStories(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(postsResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(post, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = post.data;
+const src = photoSrc(d.image, d.photo);
+const others = postsResult.entries.filter((p) => p.data.id !== d.id).slice(0, 3);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.excerpt}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "stories", id: d.id, slug }}
+	current="/stories"
+>
+	<article>
+		<header class="page-head post-head">
+			<div class="wrap wrap-narrow">
+				<nav class="crumbs" aria-label="Breadcrumb">
+					<a href="/stories">Stories</a>
+					<span aria-hidden="true">/</span>
+					<span aria-current="page">{d.title}</span>
+				</nav>
+				<p class="eyebrow">{d.category} · {longDate(d.published)} · {d.minutes ?? 3} min read</p>
+				<h1 class="display" {...post.edit.title}>{d.title}</h1>
+				<p class="lede">{d.excerpt}</p>
+			</div>
+		</header>
+		{src && <figure class="post-cover"><img src={src} alt={d.image?.alt ?? ""} width="870" height="480" /></figure>}
+		<div class="page-body">
+			<div class="wrap wrap-narrow">
+				<div class="prose">
+					<PortableText value={d.content} />
+				</div>
+				<p class="page-cta"><a class="btn btn-green" href="/tours">Explore tours <Arrow /></a></p>
+			</div>
+		</div>
+	</article>
+
+	{
+		others.length > 0 && (
+			<section class="band" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">More stories</p>
+							<h2 id="more-title" class="display">Keep reading</h2>
+						</div>
+						<a class="link-arrow" href="/stories">All stories <Arrow /></a>
+					</div>
+					<ul class="post-grid">
+						{
+							others.map((p) => {
+								const s = photoSrc(p.data.image, p.data.photo);
+								return (
+									<li>
+										<a class="post-card" href={`/stories/${p.data.slug ?? p.data.id}`}>
+											<span class="post-photo">{s && <img src={s} alt="" width="640" height="420" loading="lazy" />}</span>
+											<span class="post-meta">{p.data.category} · {longDate(p.data.published)}</span>
+											<span class="post-title">{p.data.title}</span>
+										</a>
+									</li>
+								);
+							})
+						}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+</Base>

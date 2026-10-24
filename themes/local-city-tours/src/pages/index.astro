@@ -1,0 +1,180 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import { getCompany, getGuides, getTours, initials, lines, list, photoSrc, telHref, weekAhead } from "../lib/tours";
+
+const [toursResult, guidesResult, companyResult] = await Promise.all([getTours(), getGuides(), getCompany()]);
+for (const r of [toursResult, guidesResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const { company } = companyResult;
+const week = weekAhead(toursResult.tours);
+const guides = guidesResult.entries.slice(0, 4);
+const bring = lines(company.bring);
+const typeCards = [
+	{
+		slug: "walking",
+		title: "Walking Tours",
+		src: "/images/tour-walking.webp",
+		alt: "A narrow cobbled alley between ocher houses, with ivy on the walls and potted plants by the doors",
+	},
+	{
+		slug: "food",
+		title: "Food Tours",
+		src: "/images/tour-food.webp",
+		alt: "Shared plates of food and glasses of wine on a table, with a chalkboard reading Local Food Happier People",
+	},
+	{
+		slug: "highlights",
+		title: "City Highlights",
+		src: "/images/tour-highlights.webp",
+		alt: "Four people sitting on a terrace wall looking over the rooftops and the dome of the old city at sunset",
+	},
+];
+const MAX_CHIPS = 3;
+---
+
+<Base
+	title="Local City Tours"
+	description="Guided walking, food and highlight tours of the old city, led by local people. Small groups, four languages, booked by email."
+	overlay
+>
+	<section class="hero">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A smiling local guide in a white shirt and lanyard points down a cobbled old-town street while four travelers watch, with ivy on the walls, lanterns and a large dome at the far end of the street"
+			width="1448"
+			height="680"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<p class="hero-eyebrow">Local people. Brighter perspectives.</p>
+			<h1>See the city <br />through local eyes.</h1>
+			<p class="hero-sub">Authentic tours. Real stories. A deeper<br class="br-wide" /> connection to the places you visit.</p>
+			<a class="btn btn-gold btn-xl" href="/tours">Explore tours <Arrow /></a>
+		</div>
+	</section>
+
+	<section class="tours-intro" aria-labelledby="tours-title">
+		<div class="tours-head">
+			<div>
+				<p class="eyebrow">Our tours</p>
+				<h2 id="tours-title" class="display">A closer look<br />at the real city.</h2>
+			</div>
+			<p class="tours-blurb">From hidden alleys to local favorites, our tours bring you<br class="br-wide" /> the stories, flavors and people that make the city unique.</p>
+			<a class="link-arrow" href="/tours">View all tours <Arrow /></a>
+		</div>
+		<ul class="type-grid">
+			{
+				typeCards.map((c) => (
+					<li>
+						<a class="type-card" href={`/tours?type=${c.slug}`}>
+							<span class="type-photo"><img src={c.src} alt={c.alt} width="852" height="302" loading="lazy" /></span>
+							<span class="type-title">
+								<span>{c.title}</span>
+								<Arrow />
+							</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<section class="week" aria-labelledby="week-title">
+		<div class="wrap week-grid">
+			<div class="week-copy">
+				<p class="eyebrow">This week</p>
+				<h2 id="week-title" class="display">Times you can join.</h2>
+				<p>Groups leave on time from the meeting point. Send a booking request so we know to expect you. We confirm by email, and you pay your guide on the day.</p>
+				<p class="week-links">
+					<a class="btn btn-green" href="/contact">Book a tour <Arrow /></a>
+					<a class="link-arrow" href="/tours">All tours and times <Arrow /></a>
+				</p>
+			</div>
+			<div class="week-table" role="table" aria-label="Departures for the next seven days">
+				{
+					week.map((d) => (
+						<div class="week-row" role="row">
+							<span class="week-day" role="rowheader">{d.label}</span>
+							<span class="week-times" role="cell">
+								{d.departures.slice(0, MAX_CHIPS).map((dep) => (
+									<a class="chip" href={`/tours/${dep.tour.entry.data.slug ?? dep.tour.entry.data.id}`}>
+										<b>{dep.time}</b> {dep.tour.entry.data.title}
+									</a>
+								))}
+								{d.departures.length > MAX_CHIPS && <a class="chip chip-more" href="/tours">+{d.departures.length - MAX_CHIPS} more</a>}
+								{d.departures.length === 0 && <span class="week-none">No scheduled tours. Ask about a private one.</span>}
+							</span>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="guides-band" aria-labelledby="guides-title">
+		<div class="wrap">
+			<div class="band-head">
+				<div>
+					<p class="eyebrow">Your guides</p>
+					<h2 id="guides-title" class="display">Meet the people who walk with you.</h2>
+				</div>
+				<a class="link-arrow" href="/guides">All guides <Arrow /></a>
+			</div>
+			<ul class="guide-row">
+				{
+					guides.map((g) => {
+						const src = photoSrc(g.data.image, g.data.photo);
+						return (
+							<li class="guide-card">
+								{src ? (
+									<img class="guide-photo" src={src} alt={`Portrait of ${g.data.title}`} width="450" height="600" loading="lazy" />
+								) : (
+									<span class="guide-initials" aria-hidden="true">{initials(g.data.title)}</span>
+								)}
+								<h3 {...g.edit.title}>{g.data.title}</h3>
+								<p class="guide-langs">{list(g.data.languages).join(", ")}</p>
+								<p class="guide-likes">{g.data.likes}</p>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</div>
+	</section>
+
+	<section class="meet" aria-labelledby="meet-title">
+		<div class="wrap meet-grid">
+			<figure class="meet-photo">
+				<img src="/images/map-note.webp" alt="A folded paper map of the old city on a wooden table with a handwritten note card" width="208" height="350" loading="lazy" />
+			</figure>
+			<div class="meet-copy">
+				<p class="eyebrow">Before you come</p>
+				<h2 id="meet-title" class="display">Where to find us, and what to bring.</h2>
+				{company.meeting_text && <p>{company.meeting_text}</p>}
+				<p class="meet-links"><a class="link-arrow" href="/tours">Meeting point for each tour <Arrow /></a></p>
+			</div>
+			<div class="meet-bring">
+				<h3>What to bring</h3>
+				<ul class="ticks">{bring.map((b) => <li>{b}</li>)}</ul>
+			</div>
+		</div>
+	</section>
+
+	<section class="private" aria-labelledby="private-title">
+		<div class="private-inner">
+			<div class="private-copy">
+				<p class="eyebrow eyebrow-light">Private tours</p>
+				<h2 id="private-title" class="display">Want the old city to yourselves?</h2>
+				{company.private_text && <p>{company.private_text}</p>}
+				<p class="private-actions">
+					<a class="btn btn-gold" href="/contact?tour=private-family-walk">Ask about a private tour <Arrow /></a>
+					{company.phone && <a class="private-phone" href={telHref(company.phone)}>or call {company.phone}</a>}
+				</p>
+			</div>
+			<img class="private-photo" src="/images/group-couple.webp" alt="Two travelers with a camera and a straw hat smile as they walk beside a local guide" width="640" height="846" loading="lazy" />
+		</div>
+	</section>
+</Base>

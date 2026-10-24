@@ -1,0 +1,39 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import { getStories, longDate, photoSrc } from "../../lib/tours";
+
+const result = await getStories();
+if (Astro.cache?.enabled) Astro.cache.set(result.cacheHint);
+const posts = result.entries;
+---
+
+<Base title="Stories" description="Notes from our guides: practical tips, local history and how the tours work.">
+	<PageHead
+		id="stories-title"
+		eyebrow="Stories"
+		title="Notes from the street."
+		intro="Short pieces from our guides about the old city, what to eat, what to wear and how we plan a day."
+	/>
+	<section class="list-section" aria-labelledby="stories-title">
+		<div class="wrap">
+			<ul class="post-grid">
+				{
+					posts.map((p) => {
+						const src = photoSrc(p.data.image, p.data.photo);
+						return (
+							<li>
+								<a class="post-card" href={`/stories/${p.data.slug ?? p.data.id}`}>
+									<span class="post-photo">{src && <img src={src} alt="" width="640" height="420" loading="lazy" />}</span>
+									<span class="post-meta">{p.data.category} · {longDate(p.data.published)}</span>
+									<span class="post-title" {...p.edit.title}>{p.data.title}</span>
+									<span class="post-excerpt">{p.data.excerpt}</span>
+								</a>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</div>
+	</section>
+</Base>
