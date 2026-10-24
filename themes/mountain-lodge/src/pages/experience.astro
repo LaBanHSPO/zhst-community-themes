@@ -1,0 +1,58 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import BookBand from "../components/BookBand.astro";
+import { getCompany, getExperiences, lines, photoSrc, rows, seasonLabel } from "../lib/lodge";
+
+const [expResult, companyResult] = await Promise.all([getExperiences(), getCompany()]);
+for (const r of [expResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const cap = (s: string | undefined) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : "");
+---
+
+<Base title="Experience" description="Hiking, snowshoeing, the sauna, stargazing and the kitchen at Pinecrest. Season, duration, difficulty and what to bring for each.">
+	<PageHead
+		id="experience-title"
+		eyebrow="Experience"
+		title="What there is to do up here."
+		intro="Nothing on this page is compulsory. Each entry says when it works best, how long it takes and what to bring. Ask at the front desk and we will help you plan the day."
+	/>
+	<section class="exp-section" aria-labelledby="experience-title">
+		<ol class="exp-list">
+			{
+				expResult.entries.map((e, i) => {
+					const src = photoSrc(e.data.image, e.data.photo);
+					const id = e.data.slug ?? e.data.id;
+					const bring = lines(e.data.bring);
+					return (
+						<li class:list={["exp-item", { "is-flip": i % 2 === 1, "is-plain": !src }]} id={id}>
+							{src && <figure class="exp-photo"><img src={src} alt={e.data.image?.alt ?? e.data.photo_alt ?? ""} width="856" height="560" loading={i === 0 ? "eager" : "lazy"} /></figure>}
+							<div class="exp-copy">
+								<p class="exp-tags">
+									<span>{seasonLabel(e.data.season)}</span>
+									{e.data.duration && <span>{e.data.duration}</span>}
+									{e.data.difficulty && <span>{cap(e.data.difficulty)}</span>}
+								</p>
+								<h2 class="display" {...e.edit.title}>{e.data.title}</h2>
+								<p class="exp-text">{e.data.summary}</p>
+								<dl class="detail-list">
+									{rows(e.data.details).map((r) => <><dt>{r.left}</dt><dd>{r.right}</dd></>)}
+								</dl>
+								{
+									bring.length > 0 && (
+										<div class="bring">
+											<h3>What to bring</h3>
+											<ul class="ticks">{bring.map((b) => <li>{b}</li>)}</ul>
+										</div>
+									)
+								}
+							</div>
+						</li>
+					);
+				})
+			}
+		</ol>
+	</section>
+	<BookBand company={companyResult.company} />
+</Base>

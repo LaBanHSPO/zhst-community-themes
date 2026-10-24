@@ -1,0 +1,22 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+---
+
+<Base title="Page not found">
+	<section class="notfound" aria-labelledby="nf-title">
+		<div class="wrap notfound-inner">
+			<div class="notfound-copy">
+				<p class="eyebrow">Error 404</p>
+				<h1 id="nf-title" class="display">This trail ends here.</h1>
+				<p class="lede">The page you are looking for has moved or never existed. Here are a few places to start.</p>
+				<div class="actions">
+					<a class="btn" href="/">Back to home <Arrow /></a>
+					<a class="btn btn-ghost" href="/stay">Stay</a>
+					<a class="btn btn-ghost" href="/contact">Book a Stay</a>
+				</div>
+			</div>
+			<img class="notfound-photo" src="/images/pines-ridge.webp" alt="" width="770" height="968" />
+		</div>
+	</section>
+</Base>

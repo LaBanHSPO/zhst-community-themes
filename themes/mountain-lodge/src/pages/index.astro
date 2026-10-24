@@ -1,0 +1,174 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import StayCard from "../components/StayCard.astro";
+import BookBand from "../components/BookBand.astro";
+import { getCompany, getExperiences, getStays, lines, photoSrc, rows, seasonLabel } from "../lib/lodge";
+
+const [staysResult, expResult, companyResult] = await Promise.all([getStays(), getExperiences(), getCompany()]);
+for (const r of [staysResult, expResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const all = staysResult.stays;
+const featured = all.filter((s) => s.data.featured).slice(0, 3);
+const shown = featured.length > 0 ? featured : all.slice(0, 3);
+const bySlug = (slug: string) => expResult.entries.find((e) => (e.data.slug ?? e.data.id) === slug);
+const seasons = [bySlug("day-hikes"), bySlug("snowshoeing")].filter((e): e is NonNullable<typeof e> => Boolean(e));
+const kitchen = bySlug("kitchen-and-breakfast");
+const { company } = companyResult;
+const roomCount = all.filter((s) => s.data.type === "room").length;
+const cabinCount = all.filter((s) => s.data.type === "cabin").length;
+---
+
+<Base
+	title="Pinecrest Mountain Lodge"
+	description="Four rooms and three cabins on a mountain ridge. See the stays, the seasons, breakfast and how to get here, then send a request for your dates."
+	overlay
+>
+	<section class="hero">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A timber and stone lodge with a lit deck and fire pit above a river valley, with snow-capped peaks at sunset"
+			width="1448"
+			height="730"
+			fetchpriority="high"
+		/>
+		<div class="hero-wash" aria-hidden="true"></div>
+		<div class="hero-copy">
+			<h1>Find your quiet escape.</h1>
+			<p class="hero-sub">Cozy stays. Wild surroundings. A deeper kind of rest<br class="br-wide" /> in the heart of the mountains.</p>
+			<a class="btn btn-lg btn-hero" href="/stay">Explore the lodge <Arrow class="arrow-long" /></a>
+		</div>
+		<p class="hero-tag" aria-hidden="true">
+			<span class="rule"></span>
+			<span class="tag-lines"><span>Higher</span><span>Places</span><span>Brighter</span><span>Days</span></span>
+		</p>
+	</section>
+
+	<section class="lodge" aria-labelledby="lodge-title">
+		<div class="lodge-grid">
+			<div class="lodge-copy">
+				<p class="eyebrow">The Lodge</p>
+				<h2 id="lodge-title" class="display">A warmer way<br />to experience<br />the mountains.</h2>
+				<p class="lodge-text">Thoughtfully designed stays, breathtaking scenery<br class="br-wide" /> and a sense of calm that stays with you.</p>
+			</div>
+			<figure class="lodge-photo">
+				<img src="/images/room-bed.webp" alt="A bed with a plaid wool blanket in a timber room, beside a window onto snow-capped peaks" width="1024" height="576" loading="eager" />
+			</figure>
+			<ul class="lodge-list">
+				<li>
+					<svg viewBox="0 0 52 40" width="52" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+						<path d="M1.5 38.5 20 8l9 15 5-7 15.5 22.5Z" /><path d="M14 17l6 6 5-5" />
+					</svg>
+					<span>Comfortable<br />Accommodations</span>
+				</li>
+				<li>
+					<svg viewBox="0 0 52 40" width="52" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+						<path d="M26 2l-9 13h5L14 26h7L12 36h28L31 26h7L30 15h5Z" /><path d="M26 36v4" />
+					</svg>
+					<span>Nature at<br />Your Doorstep</span>
+				</li>
+				<li>
+					<svg viewBox="0 0 52 40" width="52" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+						<g transform="translate(-5.2 -4.4) scale(1.2)"><path d="M16 17h20v10a8 8 0 0 1-8 8h-4a8 8 0 0 1-8-8ZM36 20h3a4 4 0 0 1 0 8h-3M12 38h28M20 12c-2-2 2-3 0-6M26 12c-2-2 2-3 0-6M32 12c-2-2 2-3 0-6" /></g>
+					</svg>
+					<span>Simple Pleasures<br />Real Connections</span>
+				</li>
+			</ul>
+		</div>
+	</section>
+
+	<section class="stays-preview" aria-labelledby="stays-title">
+		<div class="wrap">
+			<div class="section-head">
+				<div>
+					<p class="eyebrow">Stay</p>
+					<h2 id="stays-title" class="display">{roomCount} rooms and {cabinCount} cabins.</h2>
+					<p class="section-text">Four rooms in the main lodge and three cabins along the ridge path. Each has a view, wool blankets and a door that opens onto the trees. Prices are per night for the whole room or cabin.</p>
+				</div>
+				<a class="link-arrow" href="/stay">All rooms and cabins <Arrow /></a>
+			</div>
+			<ul class="stay-grid">
+				{shown.map((s) => <li><StayCard stay={s} /></li>)}
+			</ul>
+		</div>
+	</section>
+
+	{
+		seasons.length > 0 && (
+			<section class="seasons" aria-labelledby="seasons-title">
+				<div class="wrap">
+					<div class="section-head section-head-light">
+						<div>
+							<p class="eyebrow eyebrow-light">Seasons</p>
+							<h2 id="seasons-title" class="display">On foot in summer, on snowshoes in winter.</h2>
+							<p class="section-text">Trails open in June and the first snow usually arrives in late November. Here is what each season is like and what to pack.</p>
+						</div>
+						<a class="link-arrow link-arrow-light" href="/experience">All experiences <Arrow /></a>
+					</div>
+					<div class="season-grid">
+						{
+							seasons.map((e) => {
+								const src = photoSrc(e.data.image, e.data.photo);
+								return (
+									<article class="season">
+										{src && <figure class="season-photo"><img src={src} alt={e.data.image?.alt ?? e.data.photo_alt ?? ""} width="860" height="540" loading="lazy" /></figure>}
+										<div class="season-body">
+											<p class="season-label">{seasonLabel(e.data.season)}</p>
+											<h3 {...e.edit.title}>{e.data.title}</h3>
+											<p>{e.data.summary}</p>
+											<dl class="detail-list detail-list-light">
+												{rows(e.data.details).slice(0, 2).map((r) => <><dt>{r.left}</dt><dd>{r.right}</dd></>)}
+												<dt>Bring</dt><dd>{lines(e.data.bring).slice(0, 3).map((b, i) => (i === 0 ? b : b.charAt(0).toLowerCase() + b.slice(1))).join(", ")}</dd>
+											</dl>
+										</div>
+									</article>
+								);
+							})
+						}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		kitchen && (
+			<section class="kitchen" aria-labelledby="kitchen-title">
+				<div class="kitchen-inner">
+					<figure class="kitchen-photo">
+						<img src="/images/glow-room.webp" alt="The lit lounge with a stone fireplace seen through the tall windows at dusk" width="1008" height="672" loading="lazy" />
+						<img class="kitchen-mug" src="/images/mug-pines.webp" alt="A speckled stoneware mug with a pine tree print on a cork coaster" width="495" height="780" loading="lazy" />
+					</figure>
+					<div class="kitchen-copy">
+						<p class="eyebrow">The kitchen</p>
+						<h2 id="kitchen-title" class="display">Breakfast by the window.</h2>
+						<p class="section-text">Breakfast is included with every stay: eggs, thick toast from the Brookmere bakery, porridge with stewed fruit, local cheese and coffee that does not run out. In the evening Rafe cooks one set menu on the wood range.</p>
+						<dl class="detail-list">
+							{rows(kitchen.data.details).map((r) => <><dt>{r.left}</dt><dd>{r.right}</dd></>)}
+						</dl>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="getting-here" aria-labelledby="here-title">
+		<div class="here-inner">
+			<div class="here-copy">
+				<p class="eyebrow">Getting here</p>
+				<h2 id="here-title" class="display">Eleven kilometres above Brookmere.</h2>
+				<p class="section-text">Pinecrest sits at 1,640 metres on Larch Ridge. Most guests arrive by car. There is no train or bus to the door.</p>
+			</div>
+			<dl class="here-list">
+				{company.road && <div><dt>By road</dt><dd>{company.road}</dd></div>}
+				{company.parking && <div><dt>Parking</dt><dd>{company.parking}.</dd></div>}
+				{company.winter_note && <div><dt>Winter</dt><dd>{company.winter_note}</dd></div>}
+				{company.checkin && <div><dt>Arrival</dt><dd>Check-in is from {company.checkin} and check-out is by {company.checkout}. Tell us if you will arrive after 8:00 pm.</dd></div>}
+			</dl>
+		</div>
+	</section>
+
+	<BookBand company={company} />
+</Base>

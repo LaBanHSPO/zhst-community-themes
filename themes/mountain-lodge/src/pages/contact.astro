@@ -1,0 +1,208 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import { formatPrice, getCompany, getStays, mapHref, rows, sleepsLabel, telHref, typeLabel } from "../lib/lodge";
+
+const [{ company, cacheHint }, staysResult] = await Promise.all([getCompany(), getStays()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(staysResult.cacheHint);
+}
+const reception = rows(company.reception);
+const stays = staysResult.stays;
+// ?room=<slug> pre-selects the room or cabin, ?guests=<1-8> pre-selects the number of guests.
+const wantedRoom = Astro.url.searchParams.get("room");
+const wantedGuests = Number.parseInt(Astro.url.searchParams.get("guests") ?? "", 10);
+const selected = stays.find((s) => (s.data.slug ?? s.data.id) === wantedRoom);
+const guestsValue = wantedGuests >= 1 && wantedGuests <= 8 ? wantedGuests : 2;
+const arrivals = ["Between 3:00 and 5:00 pm", "Between 5:00 and 8:00 pm", "After 8:00 pm, I will tell you the time", "Not sure yet"];
+---
+
+<Base title="Book a Stay" description="Send Pinecrest a request for your dates: room or cabin, check-in and check-out, guests, arrival time and anything we should know. We confirm availability and the rate by email.">
+	<PageHead
+		id="contact-title"
+		eyebrow="Book a Stay"
+		title="Request your dates."
+		intro="Choose a room or cabin and your dates and we will check them. This sends a request, not a booking."
+	/>
+	<section class="contact-section" aria-labelledby="contact-title">
+		<div class="wrap contact-grid">
+			<form
+				class="enquiry-form"
+				data-enquiry-form
+				data-email={company.email}
+				action={company.email ? `mailto:${company.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<p class="form-note">
+					<strong>How this works.</strong>
+					{company.request_note ?? "This form sends a request by email. It is not a booking. We confirm availability and the rate by email, and nothing is charged until you agree."}
+				</p>
+				<div class="form-grid">
+					<div class="field full">
+						<label for="c-room">Room or cabin</label>
+						<select id="c-room" name="room" required>
+							<option value="" selected={!selected}>Choose a room or cabin</option>
+							{
+								stays.map((s) => (
+									<option value={s.data.title} selected={selected?.data.id === s.data.id}>
+										{s.data.title} · {typeLabel(s.data.type)} · {sleepsLabel(s.data.sleeps).toLowerCase()}{s.data.price_from ? ` · from ${formatPrice(s.data.price_from)}` : ""}
+									</option>
+								))
+							}
+							<option value="No preference">No preference, suggest one</option>
+						</select>
+						<span class="field-error" data-error-for="c-room"></span>
+					</div>
+					<div class="field">
+						<label for="c-in">Check-in</label>
+						<input id="c-in" name="checkin" type="date" required />
+						<span class="field-error" data-error-for="c-in"></span>
+					</div>
+					<div class="field">
+						<label for="c-out">Check-out</label>
+						<input id="c-out" name="checkout" type="date" required />
+						<span class="field-error" data-error-for="c-out"></span>
+					</div>
+					<div class="field">
+						<label for="c-guests">Guests</label>
+						<select id="c-guests" name="guests" required>
+							{[1, 2, 3, 4, 5, 6, 7, 8].map((n) => <option value={String(n)} selected={guestsValue === n}>{n} {n === 1 ? "guest" : "guests"}</option>)}
+						</select>
+					</div>
+					<div class="field">
+						<label for="c-arrival">Arrival time</label>
+						<select id="c-arrival" name="arrival">
+							{arrivals.map((a, i) => <option value={a} selected={i === 0}>{a}</option>)}
+						</select>
+					</div>
+					<div class="field full">
+						<label for="c-name">Name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field">
+						<label for="c-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field full">
+						<label for="c-notes">Special requests <span class="optional">(optional)</span></label>
+						<textarea id="c-notes" name="notes" rows="4" placeholder="A dog, a travel cot, an allergy, an anniversary, whether you will drive up in winter"></textarea>
+					</div>
+				</div>
+				<button class="btn btn-lg btn-block" type="submit">Send request</button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{company.email && <>Write to <a href={`mailto:${company.email}`}>{company.email}</a> with the room, your dates and the number of guests.</>}
+					</noscript>
+				</p>
+			</form>
+
+			<aside class="contact-side">
+				<h2>Prefer to write or call?</h2>
+				<p>
+					{company.phone && <>Call <a href={telHref(company.phone)}>{company.phone}</a></>}
+					{company.phone && company.email && " or email "}
+					{!company.phone && company.email && "Email "}
+					{company.email && <a href={`mailto:${company.email}`}>{company.email}</a>}.
+				</p>
+				{
+					(company.street || company.locality) && (
+						<p>
+							<a href={mapHref(company)} target="_blank" rel="noopener noreferrer">{[company.street, company.locality].filter(Boolean).join(", ")}</a>
+						</p>
+					)
+				}
+				<h3>Arrival</h3>
+				<dl class="side-hours">
+					{company.checkin && <><dt>Check-in</dt><dd>From {company.checkin}</dd></>}
+					{company.checkout && <><dt>Check-out</dt><dd>By {company.checkout}</dd></>}
+					{reception.map((h) => <><dt>{h.left}</dt><dd>{h.right}</dd></>)}
+				</dl>
+				<p class="small">Cancellation, pets and winter driving are covered in the <a href="/lodge-policies">lodge policies</a>.</p>
+				<img src="/images/deck-chair.webp" alt="An armchair and a lantern on the timber deck in front of the lit lodge windows" width="1089" height="322" loading="lazy" />
+			</aside>
+		</div>
+	</section>
+</Base>
+
+<script>
+	// Validate, then compose a request email. Nothing is sent by the site itself;
+	// the lodge confirms by reply.
+	document.querySelectorAll<HTMLFormElement>("[data-enquiry-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		const inEl = form.querySelector<HTMLInputElement>("#c-in");
+		const outEl = form.querySelector<HTMLInputElement>("#c-out");
+		if (!status || !inEl || !outEl) return;
+
+		const iso = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+		inEl.min = iso(new Date());
+		inEl.addEventListener("change", () => {
+			outEl.min = inEl.value || inEl.min;
+		});
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLSelectElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input[required], select[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				let message = "";
+				if (input.validity.valueMissing) {
+					message = input.tagName === "SELECT" ? "Please choose an option." : "Please fill this in.";
+				} else if (input.id === "c-out" && inEl.value && outEl.value <= inEl.value) {
+					message = "Check-out must be after check-in.";
+				} else if (!input.validity.valid) {
+					message = input.getAttribute("type") === "email" ? "Please enter a valid email address." : "Please check this field.";
+				}
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online requests are not available right now. Please call us.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const subject = `Availability request: ${get("room")}, ${get("checkin")} to ${get("checkout")}`;
+			const lines = [
+				"Hello,",
+				"",
+				"I would like to ask about a stay:",
+				`Room or cabin: ${get("room")}`,
+				`Check-in: ${get("checkin")}`,
+				`Check-out: ${get("checkout")}`,
+				`Guests: ${get("guests")}`,
+				`Arrival time: ${get("arrival")}`,
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				get("notes") ? `Special requests: ${get("notes")}` : "",
+				"",
+				"I understand this is a request and nothing is booked until the lodge confirms availability and the rate by email.",
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this request ready to send. It is only sent when you send that email, and we reply to confirm. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

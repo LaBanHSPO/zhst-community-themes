@@ -1,0 +1,57 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import BookBand from "../components/BookBand.astro";
+import { getCompany, getTeam } from "../lib/lodge";
+
+const [{ entry: page, cacheHint }, team, companyResult] = await Promise.all([getEmDashEntry("pages", "about"), getTeam(), getCompany()]);
+if (!page) return Astro.rewrite("/404");
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(team.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+}
+---
+
+<Base title="About" description={page.data.intro} content={{ collection: "pages", id: page.data.id, slug: "about" }}>
+	<PageHead eyebrow={page.data.eyebrow} title={page.data.title} intro={page.data.intro} edit={{ ...page.edit.title }} />
+	<div class="page-body">
+		<div class="wrap about-grid">
+			<div class="prose">
+				<PortableText value={page.data.content} />
+			</div>
+			<figure class="about-photo">
+				<img src="/images/lodge-dusk.webp" alt="The lodge with its steep slate roof and stone chimney at dusk" width="991" height="1162" loading="eager" />
+			</figure>
+		</div>
+	</div>
+
+	{
+		team.entries.length > 0 && (
+			<section class="team" aria-labelledby="team-title">
+				<div class="wrap">
+					<div class="section-head">
+						<div>
+							<p class="eyebrow">The team</p>
+							<h2 id="team-title" class="display">Five people, seven places to sleep.</h2>
+						</div>
+					</div>
+					<ul class="team-list">
+						{
+							team.entries.map((m) => (
+								<li>
+									<h3 {...m.edit.title}>{m.data.title}</h3>
+									<p class="team-role">{m.data.role}</p>
+									<p>{m.data.bio}</p>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+	<BookBand company={companyResult.company} />
+</Base>

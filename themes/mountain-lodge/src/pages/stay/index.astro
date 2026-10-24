@@ -1,0 +1,73 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import StayCard from "../../components/StayCard.astro";
+import BookBand from "../../components/BookBand.astro";
+import { SLEEP_STEPS, TYPES, getCompany, getStays } from "../../lib/lodge";
+
+const [staysResult, companyResult] = await Promise.all([getStays(), getCompany()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(staysResult.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+}
+// ?type=room|cabin narrows by type, ?sleeps=2|4|6 shows stays that sleep that many or more. They combine.
+// Unknown values show everything.
+const q = Astro.url.searchParams;
+const all = staysResult.stays;
+const sleepsParam = Number.parseInt(q.get("sleeps") ?? "", 10);
+const sleeps = SLEEP_STEPS.find((g) => g === sleepsParam);
+const type = TYPES.find((t) => t.slug === q.get("type"));
+const fits = (s: (typeof all)[number], n?: number) => !n || Number(s.data.sleeps ?? 0) >= n;
+const list = all.filter((s) => fits(s, sleeps) && (!type || s.data.type === type.slug));
+const href = (n?: number, t?: string) => {
+	const p = new URLSearchParams();
+	if (t) p.set("type", t);
+	if (n) p.set("sleeps", String(n));
+	const s = p.toString();
+	return s ? `/stay?${s}` : "/stay";
+};
+const sleepCount = (n: number) => all.filter((s) => fits(s, n) && (!type || s.data.type === type.slug)).length;
+const typeCount = (slug: string) => all.filter((s) => fits(s, sleeps) && s.data.type === slug).length;
+const heading = [type ? type.label.toLowerCase() : "", sleeps ? `sleeping ${sleeps} or more` : ""].filter(Boolean).join(", ");
+---
+
+<Base title="Stay" description="Four rooms in the lodge and three cabins on the ridge. Filter by type and by how many people sleep, then send a request for your dates.">
+	<PageHead
+		id="stay-title"
+		eyebrow="Stay"
+		title="Rooms and cabins."
+		intro="Every room and cabin has its own bathroom and a view. Prices are a starting point per night for the whole room or cabin and change with the season."
+	/>
+	<section class="list-section" aria-labelledby="stay-title">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter rooms and cabins">
+				<div class="filter-group">
+					<span class="filter-label">Type</span>
+					<a href={href(sleeps, undefined)} aria-current={type ? undefined : "true"}>All</a>
+					{TYPES.map((t) => <a href={href(sleeps, t.slug)} aria-current={type?.slug === t.slug ? "true" : undefined}>{t.label} <span>{typeCount(t.slug)}</span></a>)}
+				</div>
+				<div class="filter-group">
+					<span class="filter-label">Sleeps</span>
+					<a href={href(undefined, type?.slug)} aria-current={sleeps ? undefined : "true"}>Any</a>
+					{SLEEP_STEPS.map((n) => <a href={href(n, type?.slug)} aria-current={sleeps === n ? "true" : undefined}>{n} or more <span>{sleepCount(n)}</span></a>)}
+				</div>
+			</nav>
+
+			<p class="result-line" role="status">
+				{list.length} of {all.length} places to stay{heading ? `: ${heading}` : ""}
+				{(sleeps || type) && <> <a href="/stay">Clear filters</a></>}
+			</p>
+
+			{
+				list.length === 0 ? (
+					<p class="empty-note">Nothing matches that combination. <a href="/stay">Show everything</a> or <a href="/contact">tell us what you need</a>.</p>
+				) : (
+					<ul class="stay-grid stay-grid-list">
+						{list.map((s) => <li><StayCard stay={s} /></li>)}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+	<BookBand company={companyResult.company} />
+</Base>

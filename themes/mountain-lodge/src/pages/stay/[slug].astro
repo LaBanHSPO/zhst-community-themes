@@ -1,0 +1,121 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import StayCard from "../../components/StayCard.astro";
+import BookBand from "../../components/BookBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { formatPrice, getCompany, getStays, lines, photoSrc, sleepsLabel, typeLabel } from "../../lib/lodge";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: stay, cacheHint } = await getEmDashEntry("stays", slug);
+if (!stay) return Astro.rewrite("/404");
+
+const [allResult, companyResult, settings] = await Promise.all([getStays(), getCompany(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(stay, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = stay.data;
+const key = d.slug ?? d.id;
+const main = photoSrc(d.image, d.photo);
+const photos = [main, ...lines(d.gallery)].filter((p): p is string => Boolean(p));
+const amenities = lines(d.amenities);
+const related = allResult.stays.filter((s) => s.data.id !== d.id && (s.data.type === d.type || s.data.sleeps === d.sleeps)).slice(0, 3);
+const hasBody = Boolean(d.content && d.content.length > 0);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? main}
+	content={{ collection: "stays", id: d.id, slug }}
+	current="/stay"
+>
+	<section class="detail-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/stay">Stay</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class:list={["detail-grid", { "is-text-only": photos.length === 0 }]}>
+				<div class="detail-copy">
+					<p class="eyebrow">{typeLabel(d.type)}{d.fireplace ? ", wood fire" : ""}</p>
+					<h1 class="display" {...stay.edit.title}>{d.title}</h1>
+					<p class="lede" {...stay.edit.summary}>{d.summary}</p>
+					<dl class="facts">
+						<div><dt>Type</dt><dd><a href={`/stay?type=${d.type}`}>{typeLabel(d.type)}</a></dd></div>
+						<div><dt>Sleeps</dt><dd>{sleepsLabel(d.sleeps).replace("Sleeps ", "Up to ")}</dd></div>
+						<div><dt>Beds</dt><dd>{d.beds}</dd></div>
+						<div><dt>Size</dt><dd>{d.size_m2} m²</dd></div>
+						<div><dt>Fireplace</dt><dd>{d.fireplace ? "Yes, wood fire" : "No"}</dd></div>
+						{d.view ? <div><dt>View</dt><dd>{d.view}</dd></div> : null}
+						{d.price_from ? <div><dt>Price</dt><dd>From {formatPrice(d.price_from)} per night (sample price)</dd></div> : null}
+					</dl>
+					<a class="btn btn-lg" href={`/contact?room=${encodeURIComponent(key)}&guests=${Math.min(2, Number(d.sleeps ?? 2))}`}>Request this stay <Arrow /></a>
+				</div>
+				{
+					photos.length > 0 && (
+						<div class:list={["gallery", `gallery-${Math.min(photos.length, 4)}`]}>
+							{photos.slice(0, 4).map((p, i) => <figure><img src={p} alt={i === 0 ? (d.image?.alt ?? d.photo_alt ?? d.title) : `${d.title}, photo ${i + 1}`} width="800" height="560" loading={i === 0 ? "eager" : "lazy"} /></figure>)}
+						</div>
+					)
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="wrap detail-cols">
+			<div class="prose">
+				{d.intro && <p class="prose-lead">{d.intro}</p>}
+				{hasBody ? <PortableText value={d.content} /> : <p>{d.summary}</p>}
+			</div>
+			<aside class="side-stack">
+				{
+					amenities.length > 0 && (
+						<div class="side-box" aria-labelledby="amen-title">
+							<h2 id="amen-title">What is included</h2>
+							<ul class="ticks">{amenities.map((b) => <li>{b}</li>)}</ul>
+						</div>
+					)
+				}
+				<div class="side-box side-ask">
+					<h2>Dates in mind?</h2>
+					<p class="small">Send a request. We confirm availability and the rate for your dates by email.</p>
+					<a class="link-arrow" href={`/contact?room=${encodeURIComponent(key)}`}>Request this stay <Arrow /></a>
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	{
+		related.length > 0 && (
+			<section class="band" aria-labelledby="related-title">
+				<div class="wrap">
+					<div class="section-head">
+						<div>
+							<p class="eyebrow">Other places to stay</p>
+							<h2 id="related-title" class="display">Also worth a look</h2>
+						</div>
+						<a class="link-arrow" href="/stay">All rooms and cabins <Arrow /></a>
+					</div>
+					<ul class="stay-grid">
+						{related.map((s) => <li><StayCard stay={s} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<BookBand company={companyResult.company} room={key} />
+</Base>

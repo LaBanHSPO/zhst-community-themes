@@ -1,0 +1,62 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import BookBand from "../components/BookBand.astro";
+import { CATEGORIES, getCompany, getGallery, photoSrc } from "../lib/lodge";
+
+const [galleryResult, companyResult] = await Promise.all([getGallery(), getCompany()]);
+for (const r of [galleryResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+// ?category=lodge|rooms|valley|details narrows the grid. Unknown values show everything.
+const all = galleryResult.entries;
+const category = CATEGORIES.find((c) => c.slug === Astro.url.searchParams.get("category"));
+const list = category ? all.filter((p) => p.data.category === category.slug) : all;
+const count = (slug: string) => all.filter((p) => p.data.category === slug).length;
+---
+
+<Base title="Gallery" description="Photos of the lodge, the rooms, the valley and the small details. Filter by category.">
+	<PageHead
+		id="gallery-title"
+		eyebrow="Gallery"
+		title="The lodge, the rooms and the valley."
+		intro="Taken around the lodge at different hours. Use the filter to see one kind of photo at a time."
+	/>
+	<section class="list-section" aria-labelledby="gallery-title">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter photos">
+				<div class="filter-group">
+					<span class="filter-label">Show</span>
+					<a href="/gallery" aria-current={category ? undefined : "true"}>All <span>{all.length}</span></a>
+					{CATEGORIES.map((c) => <a href={`/gallery?category=${c.slug}`} aria-current={category?.slug === c.slug ? "true" : undefined}>{c.label} <span>{count(c.slug)}</span></a>)}
+				</div>
+			</nav>
+			<p class="result-line" role="status">
+				{list.length} of {all.length} photos{category ? `: ${category.label.toLowerCase()}` : ""}
+				{category && <> <a href="/gallery">Clear filter</a></>}
+			</p>
+			{
+				list.length === 0 ? (
+					<p class="empty-note">No photos in this category yet. <a href="/gallery">Show all photos</a>.</p>
+				) : (
+					<ul class="photo-grid">
+						{
+							list.map((p, i) => {
+								const src = photoSrc(p.data.image, p.data.photo);
+								return (
+									<li>
+										<figure>
+											{src && <img src={src} alt={p.data.image?.alt ?? p.data.photo_alt ?? p.data.title} width="900" height="700" loading={i < 3 ? "eager" : "lazy"} />}
+											<figcaption {...p.edit.title}>{p.data.title}</figcaption>
+										</figure>
+									</li>
+								);
+							})
+						}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+	<BookBand company={companyResult.company} />
+</Base>

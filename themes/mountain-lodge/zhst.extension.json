@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "mountain-lodge",
+	"kind": "theme",
+	"name": "Mountain Lodge",
+	"type": "company",
+	"emdash": "1.2.0",
+	"entry": "themes/mountain-lodge",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

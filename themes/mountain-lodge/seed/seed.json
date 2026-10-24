@@ -1,0 +1,1578 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Pinecrest Mountain Lodge",
+    "description": "A mountain lodge theme with a dusk hero photo, a rooms and cabins collection, experiences, a gallery and an availability request form that opens an email. Seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "Pinecrest",
+    "tagline": "Mountain Lodge"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "stays",
+      "label": "Rooms and cabins",
+      "labelSingular": "Room or cabin",
+      "urlPattern": "/stay/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "type",
+          "label": "Type",
+          "type": "select",
+          "required": true,
+          "defaultValue": "room",
+          "indexed": true,
+          "validation": {
+            "options": [
+              "room",
+              "cabin"
+            ]
+          }
+        },
+        {
+          "slug": "sleeps",
+          "label": "Sleeps (maximum guests)",
+          "type": "integer",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "slug": "beds",
+          "label": "Beds (e.g. 1 king bed)",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "size_m2",
+          "label": "Size in square metres",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "slug": "fireplace",
+          "label": "Has a wood fireplace",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "view",
+          "label": "View",
+          "type": "string"
+        },
+        {
+          "slug": "amenities",
+          "label": "Amenities (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "price_from",
+          "label": "From price per night, whole dollars (placeholder)",
+          "type": "integer"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph (detail page)",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Detail page content",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "image",
+          "label": "Main photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled main photo path",
+          "type": "string"
+        },
+        {
+          "slug": "photo_alt",
+          "label": "Main photo description",
+          "type": "string"
+        },
+        {
+          "slug": "gallery",
+          "label": "More bundled photo paths (one per line)",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "slug": "experiences",
+      "label": "Experiences",
+      "labelSingular": "Experience",
+      "supports": [
+        "drafts",
+        "revisions",
+        "search"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "Description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "season",
+          "label": "Season",
+          "type": "select",
+          "required": true,
+          "defaultValue": "all-year",
+          "indexed": true,
+          "validation": {
+            "options": [
+              "summer",
+              "winter",
+              "all-year"
+            ]
+          }
+        },
+        {
+          "slug": "duration",
+          "label": "Duration",
+          "type": "string"
+        },
+        {
+          "slug": "difficulty",
+          "label": "Difficulty",
+          "type": "select",
+          "validation": {
+            "options": [
+              "easy",
+              "moderate",
+              "demanding"
+            ]
+          }
+        },
+        {
+          "slug": "bring",
+          "label": "What to bring (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "details",
+          "label": "Details (one per line, as Label|Value)",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "photo_alt",
+          "label": "Photo description",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "gallery",
+      "label": "Gallery",
+      "labelSingular": "Gallery photo",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Caption",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "category",
+          "label": "Category",
+          "type": "select",
+          "required": true,
+          "defaultValue": "lodge",
+          "indexed": true,
+          "validation": {
+            "options": [
+              "lodge",
+              "rooms",
+              "valley",
+              "details"
+            ]
+          }
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "photo_alt",
+          "label": "Photo description",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "team",
+      "label": "Team",
+      "labelSingular": "Team member",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "First name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "role",
+          "label": "Role",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "bio",
+          "label": "Two sentences about them",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "company",
+      "label": "Lodge details",
+      "labelSingular": "Lodge details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Lodge name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "street",
+          "label": "Street address",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "locality",
+          "label": "Town and region",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "country",
+          "label": "Country",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Booking email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "reception",
+          "label": "Reception hours (one per line, as Day|Hours)",
+          "type": "text"
+        },
+        {
+          "slug": "checkin",
+          "label": "Check-in from",
+          "type": "string"
+        },
+        {
+          "slug": "checkout",
+          "label": "Check-out by",
+          "type": "string"
+        },
+        {
+          "slug": "parking",
+          "label": "Parking note",
+          "type": "string"
+        },
+        {
+          "slug": "road",
+          "label": "Directions by road",
+          "type": "text"
+        },
+        {
+          "slug": "winter_note",
+          "label": "Winter driving note",
+          "type": "text"
+        },
+        {
+          "slug": "request_note",
+          "label": "Note shown beside the booking form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "Stay",
+          "url": "/stay"
+        },
+        {
+          "type": "custom",
+          "label": "Experience",
+          "url": "/experience"
+        },
+        {
+          "type": "custom",
+          "label": "Gallery",
+          "url": "/gallery"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "A hut that grew into a lodge.",
+          "eyebrow": "About",
+          "intro": "Pinecrest is a seven-bed lodge on Larch Ridge, run by the same family for three generations.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k43",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How it started",
+                  "_key": "k44"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k45",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Pinecrest began in 1958 as a one-room hut that the Haldane family built for hunting season. They added a kitchen, then a second floor, and by the 1970s were taking in walkers for the summer.",
+                  "_key": "k46"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k47",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Ingrid Haldane took over in 2016. The lodge was cold in winter and the roof leaked at the north corner, so the first two years went on insulation, a new slate roof and a wood range for the kitchen.",
+                  "_key": "k48"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k49",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The lodge today",
+                  "_key": "k50"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k51",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "There are four rooms in the main lodge and three cabins on the ridge path. The lodge has a lounge with a stone fireplace, a dining room, a deck with a fire pit and a cedar sauna.",
+                  "_key": "k52"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k53",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most of what you see is local: the stone is from the quarry below Brookmere, the pine panelling was milled in the valley and the wool blankets are woven by a family two valleys over.",
+                  "_key": "k54"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k55",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Staying small",
+                  "_key": "k56"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k57",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We have never wanted more than seven places to sleep. It means the same people cook your breakfast, light your fire and remember how you take your coffee.",
+                  "_key": "k58"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "lodge-policies",
+        "slug": "lodge-policies",
+        "status": "published",
+        "data": {
+          "title": "Lodge policies",
+          "eyebrow": "Policies",
+          "intro": "The short version of how a stay works. Please read it before you send a request.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k59",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Check-in and check-out",
+                  "_key": "k60"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k61",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Check-in is from 3:00 pm and check-out is by 10:30 am. If you will arrive after 8:00 pm, tell us when you request your dates and we will leave a key and a lamp lit.",
+                  "_key": "k62"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k63",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Cancellation",
+                  "_key": "k64"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k65",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This is sample text for the theme. Edit it to match your own terms. For example: free cancellation up to 14 days before arrival, half the first night charged from 14 to 3 days, and the first night charged after that.",
+                  "_key": "k66"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k67",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Children and pets",
+                  "_key": "k68"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k69",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Children are welcome in every room and cabin. Dogs are welcome in Juniper, Heron and Timber cabins for a $25 cleaning charge per stay. Please keep dogs off the beds and on a lead near the lodge.",
+                  "_key": "k70"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k71",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Fires and quiet",
+                  "_key": "k72"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k73",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The deck fire pits and the cabin fire bowls can be used until 10:00 pm. Quiet hours run from 10:00 pm to 7:00 am. We are a long way from the nearest neighbour, but sound carries across the valley.",
+                  "_key": "k74"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k75",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Smoking",
+                  "_key": "k76"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k77",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "No smoking inside the lodge or the cabins. There is a covered spot by the car park with a bucket of sand.",
+                  "_key": "k78"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k79",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Winter driving",
+                  "_key": "k80"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k81",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "From 1 November to 15 April you must carry winter tyres or chains. If you would rather not drive the last 11 km, ask us and we will collect you from Brookmere.",
+                  "_key": "k82"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "stays": [
+      {
+        "id": "spruce-room",
+        "slug": "spruce-room",
+        "status": "published",
+        "data": {
+          "title": "Spruce Room",
+          "summary": "A double room on the first floor of the lodge with a wide window onto the valley and a plaid wool blanket on the bed.",
+          "type": "room",
+          "sleeps": 2,
+          "beds": "1 queen bed",
+          "size_m2": 24,
+          "fireplace": false,
+          "view": "Valley and river",
+          "amenities": "Window seat facing the valley\nPrivate bathroom with a walk-in shower\nWool blankets and a second set of pillows\nKettle, tea and ground coffee\nUnderfloor heating in the bathroom",
+          "price_from": 145,
+          "featured": false,
+          "position": 10,
+          "intro": "The quietest room on the upper floor, with a window seat for watching the light change on the peaks.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About the room",
+                  "_key": "k2"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The Spruce Room is at the end of the first-floor corridor, so there is no foot traffic outside the door. The bed faces the window and the valley below, and the window seat is wide enough to sit with a book and a cup of tea.",
+                  "_key": "k4"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The walls and ceiling are pine, left unpainted. The bathroom has a walk-in shower and a heated floor, which is welcome after a day on the trail.",
+                  "_key": "k6"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "photo": "/images/room-bed.webp",
+          "photo_alt": "A queen bed with a plaid wool blanket beside a tall window that looks onto snow-capped peaks",
+          "gallery": "/images/room-window.webp\n/images/room-bed-low.webp"
+        }
+      },
+      {
+        "id": "larch-room",
+        "slug": "larch-room",
+        "status": "published",
+        "data": {
+          "title": "Larch Room",
+          "summary": "A king room with a reading lamp on each side of the bed and a small balcony facing the peaks.",
+          "type": "room",
+          "sleeps": 2,
+          "beds": "1 king bed",
+          "size_m2": 28,
+          "fireplace": false,
+          "view": "Peaks",
+          "amenities": "Balcony with two chairs\nPrivate bathroom with a bath\nReading lamp on both sides of the bed\nKettle, tea and ground coffee\nBlackout curtains",
+          "price_from": 165,
+          "featured": false,
+          "position": 20,
+          "intro": "A king room with a balcony that catches the first sun on the high peaks.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About the room",
+                  "_key": "k8"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The Larch Room faces east. In summer the sun is on the balcony by six, and in winter it reaches the peaks first and the balcony an hour later.",
+                  "_key": "k10"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "There is a bath as well as a shower, and the bed has a wool throw in a brown plaid. Blackout curtains keep the room dark if you want to sleep past the sunrise.",
+                  "_key": "k12"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "photo": "/images/room-lamp.webp",
+          "photo_alt": "A bed with a plaid blanket, a wall lamp and a vase of greenery, with a window onto the mountains",
+          "gallery": "/images/room-window.webp\n/images/sky-sun.webp"
+        }
+      },
+      {
+        "id": "alder-family-room",
+        "slug": "alder-family-room",
+        "status": "published",
+        "data": {
+          "title": "Alder Family Room",
+          "summary": "A two-room family unit with a queen bed, two bunks and space to spread out when the weather turns.",
+          "type": "room",
+          "sleeps": 4,
+          "beds": "1 queen bed and 2 bunks",
+          "size_m2": 36,
+          "fireplace": false,
+          "view": "Forest",
+          "amenities": "Separate sleeping area with two bunks\nPrivate bathroom with a bath\nTable for four\nBoard games and a shelf of paperbacks\nTravel cot on request, no charge",
+          "price_from": 210,
+          "featured": false,
+          "position": 30,
+          "intro": "Two rooms joined by a short passage, one for parents and one for children.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About the room",
+                  "_key": "k14"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The Alder Family Room has a queen bed in the main room and a small bunk room next to it, joined by an open doorway with a curtain. The table in the main room seats four for card games or puzzles.",
+                  "_key": "k16"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Children are welcome in all rooms and cabins. A travel cot, a high chair and a step stool for the bathroom basin are free if you ask when you book.",
+                  "_key": "k18"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "photo": "/images/room-bed-low.webp",
+          "photo_alt": "A bed with a plaid wool blanket and white pillows in a timber room",
+          "gallery": "/images/room-lamp.webp\n/images/pines-ridge.webp"
+        }
+      },
+      {
+        "id": "ridge-suite",
+        "slug": "ridge-suite",
+        "status": "published",
+        "data": {
+          "title": "Ridge Suite",
+          "summary": "The largest room in the lodge, with a corner window, a wood fireplace and a sitting area facing the peaks.",
+          "type": "room",
+          "sleeps": 2,
+          "beds": "1 king bed",
+          "size_m2": 38,
+          "fireplace": true,
+          "view": "Peaks and valley",
+          "amenities": "Wood fireplace, logs and kindling supplied\nCorner window and sitting area\nPrivate bathroom with a bath and a shower\nKettle, tea and ground coffee\nUnderfloor heating throughout",
+          "price_from": 235,
+          "featured": true,
+          "position": 40,
+          "intro": "A corner room with a fireplace and the widest view in the lodge.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About the suite",
+                  "_key": "k20"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The Ridge Suite takes the whole corner of the first floor. One window faces the peaks and the other the valley, and an armchair sits where you can see both.",
+                  "_key": "k22"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We lay the fire before you arrive in the colder months. Logs and kindling are in the basket by the hearth, and the lodge team will bring more if you run low.",
+                  "_key": "k24"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "photo": "/images/room-window.webp",
+          "photo_alt": "A tall window framing a range of snowy peaks above a bed and an upholstered armchair",
+          "gallery": "/images/room-bed.webp\n/images/glow-room.webp\n/images/peak-clouds.webp"
+        }
+      },
+      {
+        "id": "juniper-cabin",
+        "slug": "juniper-cabin",
+        "status": "published",
+        "data": {
+          "title": "Juniper Cabin",
+          "summary": "A one-bedroom cabin on the ridge path with a wood stove, a small kitchen and a porch facing the sunset.",
+          "type": "cabin",
+          "sleeps": 4,
+          "beds": "1 king bed and a sofa bed",
+          "size_m2": 46,
+          "fireplace": true,
+          "view": "Sunset ridge",
+          "amenities": "Wood stove, logs supplied\nSmall kitchen with a two-ring hob\nPorch with two chairs\nPrivate bathroom with a walk-in shower\nBreakfast delivered to the door on request",
+          "price_from": 265,
+          "featured": true,
+          "position": 50,
+          "intro": "A cabin for two or four, 150 steps from the lodge on a gravel path.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About the cabin",
+                  "_key": "k26"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Juniper Cabin sits on the ridge path about 150 steps from the lodge. It has one bedroom, a living area with a sofa bed and a wood stove, and a small kitchen for making tea and breakfast.",
+                  "_key": "k28"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The porch faces west, so evenings here are long and orange. The cabin has no Wi-Fi, but the lodge lounge is a short walk up the path.",
+                  "_key": "k30"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "photo": "/images/deck-chair.webp",
+          "photo_alt": "A timber deck with an armchair and a lantern in front of glowing lodge windows",
+          "gallery": "/images/glow-room.webp\n/images/pines-ridge.webp"
+        }
+      },
+      {
+        "id": "heron-cabin",
+        "slug": "heron-cabin",
+        "status": "published",
+        "data": {
+          "title": "Heron Cabin",
+          "summary": "A small cabin for two with a wood stove, a deep tub and a deck above the river bend.",
+          "type": "cabin",
+          "sleeps": 2,
+          "beds": "1 queen bed",
+          "size_m2": 40,
+          "fireplace": true,
+          "view": "River valley",
+          "amenities": "Wood stove, logs supplied\nDeep soaking tub\nDeck with a fire bowl and two chairs\nKettle, tea and ground coffee\nPrivate parking beside the door",
+          "price_from": 240,
+          "featured": false,
+          "position": 60,
+          "intro": "A cabin for two, set apart from the others at the end of the path.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About the cabin",
+                  "_key": "k32"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k33",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Heron Cabin is the last on the path and the furthest from the lodge, about five minutes on foot. The deck looks down on a bend in the river, and on still mornings the valley fills with low cloud.",
+                  "_key": "k34"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k35",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "There is a deep tub in the bathroom and a wood stove in the main room. The fire bowl on the deck can be used until 10 pm.",
+                  "_key": "k36"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "photo": "/images/firepit-deck.webp",
+          "photo_alt": "A stone fire pit burning on a timber deck beside wooden chairs, with a lit glass-fronted lodge behind",
+          "gallery": "/images/valley-fog.webp\n/images/lodge-glass.webp"
+        }
+      },
+      {
+        "id": "timber-cabin",
+        "slug": "timber-cabin",
+        "status": "published",
+        "data": {
+          "title": "Timber Cabin",
+          "summary": "A three-bedroom cabin for up to six, with a long table, a stone fireplace and a glass front facing the peaks.",
+          "type": "cabin",
+          "sleeps": 6,
+          "beds": "1 king bed, 1 queen bed and 2 singles",
+          "size_m2": 72,
+          "fireplace": true,
+          "view": "Peaks",
+          "amenities": "Stone fireplace, logs supplied\nFull kitchen with an oven\nLong table that seats eight\nTwo bathrooms\nDeck with a fire pit",
+          "price_from": 360,
+          "featured": true,
+          "position": 70,
+          "intro": "Three bedrooms, a full kitchen and a long table for family weekends or small groups.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k37",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About the cabin",
+                  "_key": "k38"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k39",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Timber Cabin has a glass front that looks straight at the peaks. The main room has a stone fireplace, a long table and a full kitchen, so a group can cook and eat together.",
+                  "_key": "k40"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k41",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "It has three bedrooms and two bathrooms. Dinner from the lodge kitchen can be sent down on request, with a day's notice.",
+                  "_key": "k42"
+                }
+              ],
+              "markDefs": []
+            }
+          ],
+          "photo": "/images/lodge-dusk.webp",
+          "photo_alt": "A timber and stone cabin with a steep roof and a stone chimney under a dusk sky",
+          "gallery": "/images/lodge-glass.webp\n/images/firepit-deck.webp\n/images/glow-room.webp"
+        }
+      }
+    ],
+    "experiences": [
+      {
+        "id": "day-hikes",
+        "slug": "day-hikes",
+        "status": "published",
+        "data": {
+          "title": "Day hikes",
+          "summary": "Marked trails start at the lodge door. Short loops to the lower tarn take two hours and the ridge walk to Cairn Point takes most of a day.",
+          "season": "summer",
+          "duration": "2 to 7 hours",
+          "bring": "Sturdy boots\n1.5 litres of water each\nRain jacket\nSun hat and sun cream\nPaper map (we lend one)",
+          "details": "Best months|June to September\nStarts|From the lodge door\nGuide|Tomas leads a group walk on Wednesdays at 9:00 am, no charge",
+          "position": 10,
+          "photo": "/images/peak-clouds.webp",
+          "photo_alt": "A snow-capped mountain range above low cloud at sunrise",
+          "difficulty": "moderate"
+        }
+      },
+      {
+        "id": "snowshoeing",
+        "slug": "snowshoeing",
+        "status": "published",
+        "data": {
+          "title": "Snowshoeing",
+          "summary": "Snowshoes and poles are lent to guests. The loop through the larch wood is flat and takes about two hours. The trail to the viewpoint climbs for the last half hour.",
+          "season": "winter",
+          "duration": "2 to 4 hours",
+          "bring": "Warm layers and a hat\nWaterproof gloves\nSunglasses\nBoots with room for thick socks\nThermos (we fill it)",
+          "details": "Best months|December to March\nHire|Snowshoes and poles free for guests\nGuide|Tomas leads a group on Saturdays at 10:00 am",
+          "position": 20,
+          "photo": "/images/pines-ridge.webp",
+          "photo_alt": "Tall pines on a ridge above a misty valley",
+          "difficulty": "easy"
+        }
+      },
+      {
+        "id": "wood-fired-sauna",
+        "slug": "wood-fired-sauna",
+        "status": "published",
+        "data": {
+          "title": "Wood-fired sauna",
+          "summary": "A cedar sauna beside the lodge, heated by wood from late afternoon. Slots are for one party of up to six, so you have it to yourselves.",
+          "season": "all-year",
+          "duration": "90 minute slot",
+          "bring": "Towel (we lend one for a small fee)\nSandals\nWater bottle",
+          "details": "Open|Daily from 4:00 pm\nPrice|$30 per slot, up to six people\nBook|At the front desk by noon",
+          "position": 30,
+          "photo": "/images/glow-room.webp",
+          "photo_alt": "Warm lights glowing inside a timber and glass lodge at dusk"
+        }
+      },
+      {
+        "id": "stargazing",
+        "slug": "stargazing",
+        "status": "published",
+        "data": {
+          "title": "Stargazing on the deck",
+          "summary": "On clear nights the sky over the ridge is dark enough to see the Milky Way. We keep the deck lights off, put out blankets and leave a thermos of hot chocolate.",
+          "season": "all-year",
+          "duration": "1 hour or more",
+          "bring": "Warm hat\nGloves\nSomething to sit on (we lend blankets)",
+          "details": "Best months|September to March\nWhere|The lodge deck, lights off\nCancelled|If the cloud is down, no charge",
+          "position": 40,
+          "photo": "/images/sky-sun.webp",
+          "photo_alt": "A sun low over mountain ridges and a pink-orange sky"
+        }
+      },
+      {
+        "id": "lake-swim",
+        "slug": "lake-swim",
+        "status": "published",
+        "data": {
+          "title": "Lake swim",
+          "summary": "The lower tarn is a 35-minute walk and stays cold into July. Most guests swim for a few minutes, then sit on the rocks to dry off.",
+          "season": "summer",
+          "duration": "2 hours with the walk",
+          "bring": "Towel\nWater shoes\nSnack\nSun cream",
+          "details": "Best months|July to early September\nWater|Cold, around 14 degrees C\nNo lifeguard|Swim at your own risk",
+          "position": 50,
+          "photo": "/images/valley-fog.webp",
+          "photo_alt": "Mist lying over a mountain lake at sunrise",
+          "difficulty": "easy"
+        }
+      },
+      {
+        "id": "cross-country-skiing",
+        "slug": "cross-country-skiing",
+        "status": "published",
+        "data": {
+          "title": "Cross-country skiing",
+          "summary": "Nine kilometres of groomed track run through the forest below the lodge. Skis can be hired in Brookmere, and we can book them for you.",
+          "season": "winter",
+          "duration": "1 to 3 hours",
+          "bring": "Warm layers\nLight gloves\nSunglasses\nSnack",
+          "details": "Best months|January to early March\nTrail|9 km groomed, two loops\nHire|In Brookmere, from $22 a day",
+          "position": 60,
+          "photo": "/images/lodge-glass.webp",
+          "photo_alt": "A timber lodge with tall glass windows lit at dusk",
+          "difficulty": "moderate"
+        }
+      },
+      {
+        "id": "kitchen-and-breakfast",
+        "slug": "kitchen-and-breakfast",
+        "status": "published",
+        "data": {
+          "title": "Kitchen and breakfast",
+          "summary": "Breakfast is included with every stay. Dinner is a set menu on four nights, cooked on a wood range and served at one long table.",
+          "season": "all-year",
+          "duration": "Breakfast 7:30 to 10:00 am",
+          "bring": "Tell us about allergies when you request your dates",
+          "details": "Breakfast|7:30 to 10:00 am, every day\nDinner|Thursday to Sunday, 6:30 pm\nPacked lunch|$12, ask the evening before",
+          "position": 70,
+          "photo": "/images/mug-pines.webp",
+          "photo_alt": "A speckled stoneware mug with a pine tree print on a cork coaster"
+        }
+      }
+    ],
+    "gallery": [
+      {
+        "id": "g01",
+        "slug": "g01",
+        "status": "published",
+        "data": {
+          "title": "The lodge at sunset from the lower path",
+          "category": "lodge",
+          "position": 10,
+          "photo": "/images/b-full.webp",
+          "photo_alt": "The lodge on a rock ledge with snow-capped peaks and low cloud at sunset"
+        }
+      },
+      {
+        "id": "g02",
+        "slug": "g02",
+        "status": "published",
+        "data": {
+          "title": "The lodge at dusk",
+          "category": "lodge",
+          "position": 20,
+          "photo": "/images/lodge-dusk.webp",
+          "photo_alt": "A timber and stone lodge with a steep slate roof and a stone chimney"
+        }
+      },
+      {
+        "id": "g03",
+        "slug": "g03",
+        "status": "published",
+        "data": {
+          "title": "Fire pit on the deck",
+          "category": "lodge",
+          "position": 30,
+          "photo": "/images/firepit-deck.webp",
+          "photo_alt": "A fire burning in a stone pit on a timber deck with chairs and a lit lodge window"
+        }
+      },
+      {
+        "id": "g04",
+        "slug": "g04",
+        "status": "published",
+        "data": {
+          "title": "Glass front and stone chimney",
+          "category": "lodge",
+          "position": 40,
+          "photo": "/images/lodge-glass.webp",
+          "photo_alt": "The glass front of the lodge with a stone chimney and lanterns on the deck"
+        }
+      },
+      {
+        "id": "g05",
+        "slug": "g05",
+        "status": "published",
+        "data": {
+          "title": "Plaid blanket on a queen bed",
+          "category": "rooms",
+          "position": 50,
+          "photo": "/images/room-bed.webp",
+          "photo_alt": "A bed with a brown plaid wool blanket beside a window onto peaks"
+        }
+      },
+      {
+        "id": "g06",
+        "slug": "g06",
+        "status": "published",
+        "data": {
+          "title": "The window in the Ridge Suite",
+          "category": "rooms",
+          "position": 60,
+          "photo": "/images/room-window.webp",
+          "photo_alt": "A tall timber window framing snowy peaks above an armchair"
+        }
+      },
+      {
+        "id": "g07",
+        "slug": "g07",
+        "status": "published",
+        "data": {
+          "title": "Bedside light and a vase of spruce",
+          "category": "rooms",
+          "position": 70,
+          "photo": "/images/room-bed-low.webp",
+          "photo_alt": "A bed with a wool blanket and white pillows in pine-panelled room"
+        }
+      },
+      {
+        "id": "g08",
+        "slug": "g08",
+        "status": "published",
+        "data": {
+          "title": "Mist over the lake at sunrise",
+          "category": "valley",
+          "position": 80,
+          "photo": "/images/valley-fog.webp",
+          "photo_alt": "Cloud lying low over a lake with pines in the foreground"
+        }
+      },
+      {
+        "id": "g09",
+        "slug": "g09",
+        "status": "published",
+        "data": {
+          "title": "Pines below the deck",
+          "category": "valley",
+          "position": 90,
+          "photo": "/images/pines-ridge.webp",
+          "photo_alt": "Tall pines on a rocky ridge with the deck rail to one side"
+        }
+      },
+      {
+        "id": "g10",
+        "slug": "g10",
+        "status": "published",
+        "data": {
+          "title": "First light on the high peaks",
+          "category": "valley",
+          "position": 100,
+          "photo": "/images/peak-clouds.webp",
+          "photo_alt": "A snowy peak above low cloud with a warm pink sky"
+        }
+      },
+      {
+        "id": "g11",
+        "slug": "g11",
+        "status": "published",
+        "data": {
+          "title": "Sun over the far ridge",
+          "category": "valley",
+          "position": 110,
+          "photo": "/images/sky-sun.webp",
+          "photo_alt": "A low sun and clouds over a line of mountains"
+        }
+      },
+      {
+        "id": "g12",
+        "slug": "g12",
+        "status": "published",
+        "data": {
+          "title": "Evening in the lounge",
+          "category": "details",
+          "position": 120,
+          "photo": "/images/glow-room.webp",
+          "photo_alt": "A lit lounge with a stone fireplace seen through tall windows"
+        }
+      },
+      {
+        "id": "g13",
+        "slug": "g13",
+        "status": "published",
+        "data": {
+          "title": "A chair on the deck rail",
+          "category": "details",
+          "position": 130,
+          "photo": "/images/deck-chair.webp",
+          "photo_alt": "A cushioned armchair and a candle lantern on a timber deck"
+        }
+      },
+      {
+        "id": "g14",
+        "slug": "g14",
+        "status": "published",
+        "data": {
+          "title": "Reading lamp by the bed",
+          "category": "details",
+          "position": 140,
+          "photo": "/images/room-lamp.webp",
+          "photo_alt": "A wall lamp, a vase of greenery and a plaid blanket"
+        }
+      },
+      {
+        "id": "g15",
+        "slug": "g15",
+        "status": "published",
+        "data": {
+          "title": "Stoneware mug at breakfast",
+          "category": "details",
+          "position": 150,
+          "photo": "/images/mug-pines.webp",
+          "photo_alt": "A speckled stoneware mug with a pine tree print on a cork coaster"
+        }
+      }
+    ],
+    "team": [
+      {
+        "id": "ingrid",
+        "slug": "ingrid",
+        "status": "published",
+        "data": {
+          "title": "Ingrid",
+          "role": "Owner and host",
+          "bio": "Ingrid took over the lodge from her parents in 2016 and lives in the cottage below the car park. She is at the front desk most mornings.",
+          "position": 10
+        }
+      },
+      {
+        "id": "rafe",
+        "slug": "rafe",
+        "status": "published",
+        "data": {
+          "title": "Rafe",
+          "role": "Head of kitchen",
+          "bio": "Rafe cooks breakfast and the Thursday to Sunday dinners on the wood range. He bakes the bread the night before.",
+          "position": 20
+        }
+      },
+      {
+        "id": "mina",
+        "slug": "mina",
+        "status": "published",
+        "data": {
+          "title": "Mina",
+          "role": "Front desk and bookings",
+          "bio": "Mina answers the phone and the booking emails. She can tell you which cabin is warmest in January.",
+          "position": 30
+        }
+      },
+      {
+        "id": "tomas",
+        "slug": "tomas",
+        "status": "published",
+        "data": {
+          "title": "Tomas",
+          "role": "Trails and guiding",
+          "bio": "Tomas has walked the ridge trails for twenty years and leads the Wednesday and Saturday group outings.",
+          "position": 40
+        }
+      },
+      {
+        "id": "dale",
+        "slug": "dale",
+        "status": "published",
+        "data": {
+          "title": "Dale",
+          "role": "Grounds and winter driving",
+          "bio": "Dale clears the road, stacks the firewood and drives guests up from Brookmere when the snow is deep.",
+          "position": 50
+        }
+      }
+    ],
+    "company": [
+      {
+        "id": "company",
+        "slug": "company",
+        "status": "published",
+        "data": {
+          "title": "Pinecrest Mountain Lodge",
+          "street": "Larch Ridge Road",
+          "locality": "Highmark Valley",
+          "country": "",
+          "phone": "+1 555 0162",
+          "email": "stay@pinecrest-lodge.example",
+          "reception": "Every day|8:00 am to 8:00 pm\nAfter 8:00 pm|Call the number on your key tag",
+          "checkin": "3:00 pm",
+          "checkout": "10:30 am",
+          "parking": "Free for every guest, eight spaces by the lodge and six by the cabins",
+          "road": "From the village of Brookmere take Larch Ridge Road for 11 km. The last 3 km are gravel and take about 15 minutes. There is no phone signal on the upper road, so save these directions before you set off.",
+          "winter_note": "From 1 November to 15 April you must carry winter tyres or chains. Dale can collect you from Brookmere if you would rather not drive the last 11 km.",
+          "request_note": "This form sends a request by email. It is not a booking. We reply within a day to confirm availability and the rate, and nothing is charged until you agree."
+        }
+      }
+    ]
+  }
+}

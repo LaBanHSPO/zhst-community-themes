@@ -1,0 +1,29 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref } from "../lib/lodge";
+import type { CompanyData } from "../lib/lodge";
+
+interface Props {
+	company: CompanyData;
+	room?: string;
+}
+const { company, room } = Astro.props;
+const href = room ? `/contact?room=${encodeURIComponent(room)}` : "/contact";
+---
+
+<section class="book-band" aria-labelledby="book-band-title">
+	<div class="book-inner">
+		<div class="book-copy">
+			<p class="eyebrow eyebrow-light">Book a Stay</p>
+			<h2 id="book-band-title" class="display">Pick your dates.</h2>
+			<p class="book-text">Send a request and we reply by email, usually within a day, to confirm availability and the rate. Nothing is charged until you agree.</p>
+		</div>
+		<div class="book-actions">
+			<a class="btn btn-light" href={href}>Request your dates <Arrow /></a>
+			<p class="book-lines">
+				{company.phone && <a href={telHref(company.phone)}>{company.phone}</a>}
+				{company.email && <a href={`mailto:${company.email}`}>{company.email}</a>}
+			</p>
+		</div>
+	</div>
+</section>
