@@ -1,0 +1,24 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref, type CoachData } from "../lib/fitness";
+
+interface Props {
+	coach: CoachData;
+}
+const { coach } = Astro.props;
+---
+
+<section class="start-band" aria-labelledby="start-title">
+	<div class="wrap start-inner">
+		<div class="start-copy">
+			<p class="eyebrow eyebrow-light">Start here</p>
+			<h2 id="start-title" class="display">Start with a free call.</h2>
+			<p>Twenty minutes to talk about your week, your space and what you want from training. No pressure to sign up.</p>
+			<div class="actions">
+				<a class="btn btn-light btn-lg" href="/contact">Start with a free call <Arrow /></a>
+				{coach.phone && <a class="band-phone" href={telHref(coach.phone)}>{coach.phone}</a>}
+			</div>
+		</div>
+		<img class="start-photo" src="/images/coach-reach.webp" alt="The coach kneeling on a mat in a bright living room, reaching a hand towards the camera" width="560" height="420" loading="lazy" />
+	</div>
+</section>

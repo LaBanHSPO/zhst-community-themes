@@ -1,0 +1,125 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import ProgramCard from "../components/ProgramCard.astro";
+import FaqList from "../components/FaqList.astro";
+import StartBand from "../components/StartBand.astro";
+import { getCoach, getFaqs, getHighlights, getPrograms, getSteps, getWeek, lines } from "../lib/fitness";
+
+const [highlights, steps, programs, week, faqs, coachResult] = await Promise.all([
+	getHighlights(),
+	getSteps(),
+	getPrograms(),
+	getWeek(),
+	getFaqs(),
+	getCoach(),
+]);
+if (Astro.cache?.enabled) {
+	for (const r of [highlights, steps, programs, week, faqs, coachResult]) Astro.cache.set(r.cacheHint);
+}
+const featured = programs.entries.filter((p) => p.data.featured).slice(0, 3);
+const homeFaqs = faqs.entries.filter((f) => f.data.home).slice(0, 4);
+---
+
+<Base
+	title="Online fitness coach"
+	description="Online coaching with simple workouts, flexible schedules and real support. Choose a program, do the workouts at home or in the gym, and check in with your coach."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img class="hero-img" src="/images/hero-home.webp" alt="A smiling woman in a dark green sports set sits on a mat in a bright living room with plants and a shelf of kettlebells" width="1448" height="766" fetchpriority="high" />
+		<div class="hero-copy">
+			<p class="eyebrow hero-eyebrow">Real people. Real progress.</p>
+			<h1 id="hero-title" class="hero-title">Training that <span>fits your life.</span></h1>
+			<p class="hero-sub">Flexible online coaching, simple workouts and real support, so you can feel stronger, happier and more like you.</p>
+			<a class="btn btn-hero" href="/about">Meet your coach <Arrow /></a>
+			<ul class="hero-points">
+				{
+					highlights.entries.map((h) => (
+						<li>
+							<Icon name={h.data.icon ?? "dumbbell"} size={44} />
+							<span>{lines(h.data.title).map((l) => <span class="point-line">{l}</span>)}</span>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+
+	<section class="how" aria-labelledby="how-title">
+		<div class="how-inner">
+			<p class="eyebrow eyebrow-center">How it works</p>
+			<h2 id="how-title" class="how-title">Simple. Flexible. Built around you.</h2>
+			<ol class="how-steps">
+				{
+					steps.entries.map((s) => (
+						<li class={`how-step tint-${s.data.tint ?? "peach"}`}>
+							<span class="step-circle"><Icon name={s.data.icon ?? "plan"} size={50} /></span>
+							<span class="step-copy">
+								<span class="step-title" {...s.edit.title}>{s.data.title}</span>
+								<span class="step-text">{lines(s.data.text).map((l) => <span class="step-line">{l} </span>)}</span>
+							</span>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+	</section>
+
+	<section class="band programs-band" aria-labelledby="programs-title">
+		<div class="wrap">
+			<div class="band-head">
+				<div>
+					<p class="eyebrow">Programs</p>
+					<h2 id="programs-title" class="section-title">Pick the one that matches your space.</h2>
+				</div>
+				<a class="link-arrow" href="/programs">All programs <Arrow /></a>
+			</div>
+			<ul class="program-grid">
+				{featured.map((p) => <li><ProgramCard program={p.data} edit={{ ...p.edit.title }} /></li>)}
+			</ul>
+			<p class="band-note">
+				Short on kit? Filter by what you have:{" "}
+				<a href="/programs?equipment=none">no equipment</a>,{" "}
+				<a href="/programs?equipment=dumbbells">dumbbells</a> or{" "}
+				<a href="/programs?equipment=gym">gym</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="band week-band" aria-labelledby="week-title">
+		<div class="wrap">
+			<div class="week-head">
+				<p class="eyebrow">A week with me</p>
+				<h2 id="week-title" class="section-title">Three workouts, a <span class="nowrap">check-in</span> and real rest days.</h2>
+				<p class="lede">This is the pattern on the three day plans. The four day plans add one more workout and keep the rest days.</p>
+			</div>
+			<ol class="week-grid">
+				{
+					week.entries.map((d) => (
+						<li class={`day day-${d.data.kind ?? "workout"}`}>
+							<span class="day-name">{d.data.day}</span>
+							<span class="day-title" {...d.edit.title}>{d.data.title}</span>
+							<span class="day-detail">{d.data.detail}</span>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+	</section>
+
+	<section class="band faq-band" aria-labelledby="faq-title">
+		<div class="wrap faq-cols">
+			<div class="faq-intro">
+				<p class="eyebrow">Questions</p>
+				<h2 id="faq-title" class="section-title">Before you get in touch.</h2>
+				<p class="lede">The short answers. The rest is on the FAQ page.</p>
+				<a class="link-arrow" href="/faq">All questions <Arrow /></a>
+			</div>
+			<FaqList items={homeFaqs} />
+		</div>
+	</section>
+
+	<StartBand coach={coachResult.coach} />
+</Base>

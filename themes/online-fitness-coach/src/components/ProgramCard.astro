@@ -1,0 +1,38 @@
+---
+import { equipmentLabel, formatPrice, levelLabel } from "../lib/fitness";
+
+interface Props {
+	program: {
+		id: string;
+		slug: string | null;
+		title: string;
+		summary: string;
+		level?: string;
+		weeks?: number;
+		sessions?: number;
+		session_length?: string;
+		equipment?: string;
+		price?: number;
+		photo?: string;
+		image?: { src?: string; alt?: string };
+	};
+	edit?: Record<string, unknown>;
+}
+const { program: p, edit = {} } = Astro.props;
+const src = p.image?.src || p.photo;
+---
+
+<a class="program-card" href={`/programs/${p.slug ?? p.id}`}>
+	<span class="program-photo">
+		{src ? <img src={src} alt="" width="640" height="440" loading="lazy" /> : <span class="program-photo-empty" aria-hidden="true"></span>}
+		<span class="chip">{equipmentLabel(p.equipment)}</span>
+	</span>
+	<span class="program-title" {...edit}>{p.title}</span>
+	<span class="program-summary">{p.summary}</span>
+	<span class="program-facts">
+		<span>{levelLabel(p.level)}</span>
+		{p.weeks && <span>{p.weeks} weeks</span>}
+		{p.sessions && <span>{p.sessions} a week</span>}
+		{p.price && <span class="program-price">From {formatPrice(p.price)}/mo</span>}
+	</span>
+</a>

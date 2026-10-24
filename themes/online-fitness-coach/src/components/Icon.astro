@@ -1,0 +1,60 @@
+---
+/** Line icons (inline SVG approximations of the design icons). */
+interface Props {
+	name: string;
+	size?: number;
+}
+const { name, size = 44 } = Astro.props;
+const common = {
+	width: size,
+	height: size,
+	viewBox: "0 0 48 48",
+	fill: "none",
+	stroke: "currentColor",
+	"stroke-width": 2.4,
+	"stroke-linecap": "round",
+	"stroke-linejoin": "round",
+	"aria-hidden": "true",
+	focusable: "false",
+} as const;
+---
+
+{
+	name === "dumbbell" ? (
+		<svg {...common}>
+			<rect x="3" y="17" width="5.500" height="14" rx="2" />
+			<rect x="8.500" y="12" width="6.500" height="24" rx="2.500" />
+			<path d="M15 24h18" />
+			<rect x="33" y="12" width="6.500" height="24" rx="2.500" />
+			<rect x="39.500" y="17" width="5.500" height="14" rx="2" />
+		</svg>
+	) : name === "laptop" ? (
+		<svg {...common}>
+			<rect x="9" y="9" width="30" height="21" rx="2.500" />
+			<path d="M3 37h42l-3 0c0 1.700-1.300 3-3 3H9c-1.700 0-3-1.300-3-3z" />
+			<path d="M3 37h3M42 37h3" />
+		</svg>
+	) : name === "heart" ? (
+		<svg {...common}>
+			<path d="M24 41C11 31 5 24.500 5 17.500 5 12 9 8 14 8c4 0 7.500 2.300 10 6.300C26.500 10.300 30 8 34 8c5 0 9 4 9 9.500C43 24.500 37 31 24 41z" />
+		</svg>
+	) : name === "plan" ? (
+		<svg {...common}>
+			<rect x="10" y="8" width="28" height="35" rx="4" />
+			<path d="M18 8V6.500c0-1 .8-1.800 1.800-1.800h8.400c1 0 1.800.8 1.800 1.800V8" />
+			<path d="m16 20 2 2 4-4M26 20h8M16 30l2 2 4-4M26 30h8" />
+		</svg>
+	) : name === "shoe" ? (
+		<svg {...common}>
+			<path d="M5 32c0-6 1-12 3-17l5 3c2 2 4.500 3.500 7.500 3.500l2-3.500 4 2.500-2 3.500c4.500 1.500 9 3 13.500 5.500 2 1.200 3 2.800 3 4.500V36H5z" />
+			<path d="M5 36v2.500c0 1 .8 1.500 1.500 1.500H42c1.500 0 2.500-1 2.500-2.500V36M18 24l3 2M23 22.500l3 2" />
+		</svg>
+	) : (
+		<svg {...common}>
+			<circle cx="24" cy="12" r="5.500" />
+			<circle cx="9" cy="19" r="4" />
+			<circle cx="39" cy="19" r="4" />
+			<path d="M14 40v-6c0-4.500 4.500-7.500 10-7.500S34 29.500 34 34v6M2 36v-3.500c0-3 2.500-5 6-5M46 36v-3.500c0-3-2.500-5-6-5" />
+		</svg>
+	)
+}

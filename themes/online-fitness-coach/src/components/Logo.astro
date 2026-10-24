@@ -1,0 +1,29 @@
+---
+/** Wordmark: leaf mark, the site title and the tagline in tracked caps. An uploaded logo replaces all of it. */
+interface Props {
+	title: string;
+	tagline?: string;
+	logo?: { url?: string; alt?: string } | null;
+	class?: string;
+}
+const { title, tagline, logo, class: className } = Astro.props;
+---
+
+<a class:list={["wordmark", className]} href="/" aria-label={`${title}, home`}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt || title} />
+		) : (
+			<>
+				<svg class="wordmark-mark" width="42" height="44" viewBox="0 0 42 44" aria-hidden="true" focusable="false">
+					<path d="M1.500 41.500C4 33 14 26 22 20c6-5 12-12 19-18.500C41.500 12 38 24 31 32c-7 7-19 11-29.500 9.500z" fill="currentColor" />
+					<circle cx="10.800" cy="17.800" r="9.700" fill="currentColor" opacity=".82" />
+				</svg>
+				<span class="wordmark-text">
+					<span class="wordmark-title">{title}</span>
+					{tagline && <span class="wordmark-tag">{tagline}</span>}
+				</span>
+			</>
+		)
+	}
+</a>

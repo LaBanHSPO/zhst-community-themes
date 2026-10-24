@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+import FaqList from "../components/FaqList.astro";
+import PageHead from "../components/PageHead.astro";
+import StartBand from "../components/StartBand.astro";
+import { getCoach, getFaqs } from "../lib/fitness";
+
+const [faqsResult, coachResult] = await Promise.all([getFaqs(), getCoach()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(faqsResult.cacheHint);
+	Astro.cache.set(coachResult.cacheHint);
+}
+---
+
+<Base title="FAQ" description="Plain answers about online coaching: how it works, equipment, workout length, injuries, form feedback, payment and time zones.">
+	<PageHead eyebrow="FAQ" title="Questions people ask first." intro="If yours is not here, ask it on the free call or send an email." />
+	<section class="faq-page">
+		<div class="wrap">
+			<FaqList items={faqsResult.entries} />
+		</div>
+	</section>
+	<StartBand coach={coachResult.coach} />
+</Base>

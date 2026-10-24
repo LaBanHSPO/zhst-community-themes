@@ -1,0 +1,2787 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Online Fitness Coach",
+  "description": "A bright online fitness coaching theme: programs with an equipment filter, resources, about page, FAQ and a start-with-a-call contact form",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "FitWithYou",
+  "tagline": "Online fitness coach"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Small label above the title (also used in the footer)",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "programs",
+   "label": "Programs",
+   "labelSingular": "Program",
+   "urlPattern": "/programs/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Program name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "One-line description",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "level",
+     "label": "Level",
+     "type": "select",
+     "required": true,
+     "defaultValue": "all-levels",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "beginner",
+       "all-levels",
+       "intermediate"
+      ]
+     }
+    },
+    {
+     "slug": "weeks",
+     "label": "Length in weeks",
+     "type": "integer"
+    },
+    {
+     "slug": "sessions",
+     "label": "Workouts per week",
+     "type": "integer"
+    },
+    {
+     "slug": "session_length",
+     "label": "Workout length (e.g. 30 min)",
+     "type": "string"
+    },
+    {
+     "slug": "equipment",
+     "label": "Equipment needed",
+     "type": "select",
+     "required": true,
+     "defaultValue": "none",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "none",
+       "dumbbells",
+       "gym"
+      ]
+     }
+    },
+    {
+     "slug": "included",
+     "label": "What is included (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "price",
+     "label": "Price in dollars per month (placeholder, whole number)",
+     "type": "integer"
+    },
+    {
+     "slug": "featured",
+     "label": "Show on the homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph (detail page)",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "How it runs (detail page content)",
+     "type": "portableText",
+     "searchable": true
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "resources",
+   "label": "Resources",
+   "labelSingular": "Resource",
+   "urlPattern": "/resources/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "One-line description",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "category",
+     "label": "Category",
+     "type": "select",
+     "required": true,
+     "defaultValue": "workouts",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "workouts",
+       "habits",
+       "getting-started"
+      ]
+     }
+    },
+    {
+     "slug": "meta",
+     "label": "Length (e.g. 20 min workout, 5 min read)",
+     "type": "string"
+    },
+    {
+     "slug": "posted",
+     "label": "Date shown (e.g. October 2026)",
+     "type": "string"
+    },
+    {
+     "slug": "featured",
+     "label": "Show on the homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "faqs",
+   "label": "FAQ",
+   "labelSingular": "Question",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Question",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "answer",
+     "label": "Answer",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "home",
+     "label": "Show on the homepage",
+     "type": "boolean"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "week",
+   "label": "A week with me",
+   "labelSingular": "Day",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "What happens",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "day",
+     "label": "Day label (e.g. Mon)",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "detail",
+     "label": "One or two sentences",
+     "type": "text"
+    },
+    {
+     "slug": "kind",
+     "label": "Kind",
+     "type": "select",
+     "defaultValue": "workout",
+     "validation": {
+      "options": [
+       "workout",
+       "rest",
+       "chat"
+      ]
+     }
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "steps",
+   "label": "How it works",
+   "labelSingular": "Step",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "Short text (line breaks are kept)",
+     "type": "text"
+    },
+    {
+     "slug": "icon",
+     "label": "Icon",
+     "type": "select",
+     "defaultValue": "plan",
+     "validation": {
+      "options": [
+       "plan",
+       "shoe",
+       "group"
+      ]
+     }
+    },
+    {
+     "slug": "tint",
+     "label": "Circle colour",
+     "type": "select",
+     "defaultValue": "peach",
+     "validation": {
+      "options": [
+       "peach",
+       "mint"
+      ]
+     }
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "highlights",
+   "label": "Hero icons",
+   "labelSingular": "Icon",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Label (two short lines)",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "icon",
+     "label": "Icon",
+     "type": "select",
+     "defaultValue": "dumbbell",
+     "validation": {
+      "options": [
+       "dumbbell",
+       "laptop",
+       "heart"
+      ]
+     }
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "coach",
+   "label": "Coach details",
+   "labelSingular": "Coach details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Brand name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "name",
+     "label": "Coach name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "place",
+     "label": "Where you are based",
+     "type": "string"
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Contact email",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "hours",
+     "label": "When you reply (one per line, as Label|Details)",
+     "type": "text"
+    },
+    {
+     "slug": "booking_note",
+     "label": "Note shown beside the contact form",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Home",
+     "url": "/"
+    },
+    {
+     "type": "custom",
+     "label": "Programs",
+     "url": "/programs"
+    },
+    {
+     "type": "custom",
+     "label": "About",
+     "url": "/about"
+    },
+    {
+     "type": "custom",
+     "label": "Resources",
+     "url": "/resources"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "Meet your coach.",
+     "eyebrow": "About",
+     "intro": "I'm Nora. I coach people online, one plan at a time, with workouts that fit around work, family and the space you have.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k221",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I train people over video and messages. Most of my clients work out at home with a mat and a pair of dumbbells. Some use a gym. We start by looking at your week, because the best plan is the one you can actually do.",
+         "_key": "k222"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k223",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How coaching works",
+         "_key": "k224"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k225",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You fill in a short form about your goals, your schedule and the equipment you have.",
+         "_key": "k226"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k227",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We have a free 20 minute call to talk it through. You can ask anything, and there is no pressure to sign up.",
+         "_key": "k228"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k229",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I write your plan and send it as a weekly schedule with a short video for each exercise.",
+         "_key": "k230"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k231",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You message me after a workout if you like. I check in twice a week and change the plan when something is not working.",
+         "_key": "k232"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k233",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What I care about",
+         "_key": "k234"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k235",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Workouts you can finish in the time you have. Clear instructions. Rest days that are planned, not a source of guilt. I do not use before and after photos, and I do not promise a number on the scale.",
+         "_key": "k236"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k237",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Qualifications",
+         "_key": "k238"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k239",
+       "style": "blockquote",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Placeholder. Replace this box with your real qualifications, for example the name of your certification, the body that issued it and the year. Nothing on this page is a real credential.",
+         "_key": "k240"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "privacy",
+    "slug": "privacy",
+    "status": "published",
+    "data": {
+     "title": "Privacy.",
+     "eyebrow": "Privacy",
+     "intro": "This site does not track you. Here is what happens when you get in touch.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k241",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "This site does not run analytics and does not set tracking cookies.",
+         "_key": "k242"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k243",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The contact form does not send anything by itself. It opens your own email app with a message ready to send. The message only leaves your device when you press send, and it goes to the address shown on the contact page.",
+         "_key": "k244"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k245",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What I do with your email",
+         "_key": "k246"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k247",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I use it to reply to you. I do not add you to a mailing list and I do not share it with anyone.",
+         "_key": "k248"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k249",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Your health information",
+         "_key": "k250"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k251",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If you tell me about an injury or a health condition, I use it only to plan your workouts. You do not have to share anything you would rather keep private.",
+         "_key": "k252"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "programs": [
+   {
+    "id": "start-strong",
+    "slug": "start-strong",
+    "status": "published",
+    "data": {
+     "title": "Start Strong",
+     "summary": "Six weeks of short bodyweight workouts to build a routine you can keep.",
+     "level": "beginner",
+     "weeks": 6,
+     "sessions": 3,
+     "session_length": "25 min",
+     "equipment": "none",
+     "included": "3 workouts a week, about 25 minutes each\nA short video for every exercise\nOne check-in message from me each week\nEasier and harder options for each move\nA plan you can repeat if a week goes wrong",
+     "price": 59,
+     "featured": true,
+     "position": 10,
+     "intro": "New to training, or coming back after a long break? Each workout is short, the moves are basic and every exercise comes with a video.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k1",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How it runs",
+         "_key": "k2"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Weeks 1 and 2 teach the basic moves: squat, hip hinge, push-up (on a wall, a bench or the floor), glute bridge and plank. Weeks 3 and 4 add a little more volume. Weeks 5 and 6 put it together into a full session you can run on your own.",
+         "_key": "k4"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k5",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You only need a mat, or a towel on a carpet. A chair helps for a few of the exercises.",
+         "_key": "k6"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "photo": "/images/mat-sneaker.webp"
+    }
+   },
+   {
+    "id": "busy-weeks",
+    "slug": "busy-weeks",
+    "status": "published",
+    "data": {
+     "title": "Busy Weeks",
+     "summary": "Four 20 minute workouts a week for people who are short on time.",
+     "level": "all-levels",
+     "weeks": 6,
+     "sessions": 4,
+     "session_length": "20 min",
+     "equipment": "none",
+     "included": "4 workouts a week, 20 minutes each\nA one page plan you can stick on the fridge\nTwo check-in messages a week\nA swap list for travel and holidays",
+     "price": 49,
+     "featured": false,
+     "position": 20,
+     "intro": "If a 45 minute session never fits, this one might. The workouts are short and use the same few moves, so you do not have to think about what comes next.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k7",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How it runs",
+         "_key": "k8"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k9",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Each workout is a timed circuit: 40 seconds of work, 20 seconds of rest, three rounds. The moves rotate every week so it stays interesting without getting harder in big jumps.",
+         "_key": "k10"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k11",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "There is no equipment. A mat helps but a carpet works too.",
+         "_key": "k12"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "photo": "/images/plants.webp"
+    }
+   },
+   {
+    "id": "move-at-home",
+    "slug": "move-at-home",
+    "status": "published",
+    "data": {
+     "title": "Move at Home",
+     "summary": "Eight weeks of mat workouts that mix strength, mobility and easy cardio.",
+     "level": "all-levels",
+     "weeks": 8,
+     "sessions": 3,
+     "session_length": "30 min",
+     "equipment": "none",
+     "included": "3 workouts a week, about 30 minutes each\nVideo for every exercise, with a front and a side view\nA weekly check-in message\nA new block of moves every two weeks",
+     "price": 69,
+     "featured": false,
+     "position": 30,
+     "intro": "A balanced plan for a living room floor. Strength work comes first, then a block of easy cardio and a few minutes of stretching.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k13",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How it runs",
+         "_key": "k14"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k15",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Each week has two strength sessions and one lighter session that mixes mobility and low impact cardio. You choose the days. Most people train Monday, Wednesday and Friday, or Tuesday, Thursday and Saturday.",
+         "_key": "k16"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k17",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Low impact options are listed for every cardio move, so you can keep the noise down in an apartment.",
+         "_key": "k18"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "photo": "/images/ball-plant.webp"
+    }
+   },
+   {
+    "id": "dumbbell-basics",
+    "slug": "dumbbell-basics",
+    "status": "published",
+    "data": {
+     "title": "Dumbbell Basics",
+     "summary": "Learn the main lifts with one or two pairs of dumbbells.",
+     "level": "beginner",
+     "weeks": 8,
+     "sessions": 3,
+     "session_length": "35 min",
+     "equipment": "dumbbells",
+     "included": "3 workouts a week, about 35 minutes each\nA video for every lift, with set-up notes\nA guide to choosing your weights\nForm feedback: send me a clip and I reply within one working day\nA weekly check-in",
+     "price": 79,
+     "featured": true,
+     "position": 40,
+     "intro": "You do not need a rack or a bench. A pair of dumbbells in a weight you can lift ten times with good form is enough to start.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k19",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How it runs",
+         "_key": "k20"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k21",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The first two weeks use light weights while you learn the movements. After that you add a little weight or one more rep when a set feels easy. I tell you when to move up and when to stay where you are.",
+         "_key": "k22"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k23",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If you only have one pair of dumbbells, the plan still works. I show how to make the same exercise harder or easier without changing the weight.",
+         "_key": "k24"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "photo": "/images/gear-corner.webp"
+    }
+   },
+   {
+    "id": "strength-at-home",
+    "slug": "strength-at-home",
+    "status": "published",
+    "data": {
+     "title": "Strength at Home",
+     "summary": "A four day plan built around a pair of adjustable dumbbells.",
+     "level": "intermediate",
+     "weeks": 10,
+     "sessions": 4,
+     "session_length": "40 min",
+     "equipment": "dumbbells",
+     "included": "4 workouts a week, about 40 minutes each\nWeekly plan with weights and reps written out\nA mid-program review call\nForm feedback on request\nA deload week after week 5",
+     "price": 89,
+     "featured": false,
+     "position": 50,
+     "intro": "For people who already train and want a plan that fits a spare room. Two upper body days and two lower body days, with a bench or a sturdy chair.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k25",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How it runs",
+         "_key": "k26"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k27",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Each week follows the same pattern, so you always know what day it is. The weights go up in small steps. Week 5 is lighter on purpose, and week 10 repeats the week 1 workouts so you can see how much more you can do.",
+         "_key": "k28"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k29",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You need adjustable dumbbells or three pairs in different weights, and a bench or sturdy chair.",
+         "_key": "k30"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "photo": "/images/living-corner.webp"
+    }
+   },
+   {
+    "id": "gym-starter",
+    "slug": "gym-starter",
+    "status": "published",
+    "data": {
+     "title": "Gym Starter",
+     "summary": "Walk into the gym with a plan: machines, free weights and how to set each one up.",
+     "level": "beginner",
+     "weeks": 8,
+     "sessions": 3,
+     "session_length": "45 min",
+     "equipment": "gym",
+     "included": "3 workouts a week, about 45 minutes each\nA video for every machine and free weight exercise\nA printable card for your phone or pocket\nA short call before week 1 to talk through your gym\nA weekly check-in",
+     "price": 89,
+     "featured": true,
+     "position": 60,
+     "intro": "The first visit is the hardest. This program tells you what to do in what order, and each exercise has a video showing the set-up.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k31",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How it runs",
+         "_key": "k32"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k33",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You start on machines, where the path of the movement is set for you. From week 4 we add dumbbells and a barbell, once you are comfortable with the basics. Each workout is the same length, so you can plan your visit.",
+         "_key": "k34"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k35",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Any commercial gym or a well-equipped home gym works. If a machine is missing, I swap in something else.",
+         "_key": "k36"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "photo": "/images/shelf-kettlebells.webp"
+    }
+   },
+   {
+    "id": "gym-strength",
+    "slug": "gym-strength",
+    "status": "published",
+    "data": {
+     "title": "Gym Strength Block",
+     "summary": "Twelve weeks of barbell and dumbbell work for people with some gym experience.",
+     "level": "intermediate",
+     "weeks": 12,
+     "sessions": 4,
+     "session_length": "55 min",
+     "equipment": "gym",
+     "included": "4 workouts a week, about 55 minutes each\nWeekly plan with sets, reps and rest times\nA review call every four weeks\nForm feedback on request\nPlanned lighter weeks",
+     "price": 99,
+     "featured": false,
+     "position": 70,
+     "intro": "A four day plan with a clear pattern: heavy sets first, lighter work after. You write down each set, and I use your numbers to adjust the next week.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k37",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How it runs",
+         "_key": "k38"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k39",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You log your weights in a simple sheet that I share with you. Every four weeks we look at the numbers together and set the next block. If you miss a session, we move it rather than doubling up.",
+         "_key": "k40"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k41",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You need access to a barbell, a rack or a similar station, dumbbells and a bench.",
+         "_key": "k42"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "photo": "/images/coach-smile.webp"
+    }
+   }
+  ],
+  "resources": [
+   {
+    "id": "twenty-minute-circuit",
+    "slug": "twenty-minute-circuit",
+    "status": "published",
+    "data": {
+     "title": "A 20 minute no-equipment circuit",
+     "summary": "Five moves, three rounds and a mat. You can do it in a hallway.",
+     "category": "workouts",
+     "meta": "20 min workout",
+     "posted": "October 2026",
+     "featured": true,
+     "position": 10,
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k43",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What you need",
+         "_key": "k44"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k45",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A mat or a towel, a timer and a bit of floor space. Wear shoes if you prefer them for lunges.",
+         "_key": "k46"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k47",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The circuit",
+         "_key": "k48"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k49",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Work for 40 seconds, rest for 20, and go through the list once per round. Rest for 90 seconds after each round.",
+         "_key": "k50"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k51",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Bodyweight squat",
+         "_key": "k52"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k53",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Reverse lunge, alternating legs",
+         "_key": "k54"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k55",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Incline push-up with hands on a sofa or counter",
+         "_key": "k56"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k57",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Glute bridge",
+         "_key": "k58"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k59",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Forearm plank",
+         "_key": "k60"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k61",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How to do it",
+         "_key": "k62"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k63",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Go at a pace where you could still say a short sentence. If 40 seconds is too long, do 30. If it feels easy by the third round, slow each rep down instead of rushing.",
+         "_key": "k64"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k65",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Stop if something hurts. If you are not sure a workout is right for you right now, check with your doctor first.",
+         "_key": "k66"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "photo": "/images/mat-sneaker.webp"
+    }
+   },
+   {
+    "id": "thirty-minute-dumbbell",
+    "slug": "thirty-minute-dumbbell",
+    "status": "published",
+    "data": {
+     "title": "A 30 minute dumbbell workout for the whole body",
+     "summary": "Six lifts, a warm-up and a cool-down with one pair of dumbbells.",
+     "category": "workouts",
+     "meta": "30 min workout",
+     "posted": "October 2026",
+     "featured": true,
+     "position": 20,
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k67",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What you need",
+         "_key": "k68"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k69",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "One pair of dumbbells. Pick a weight you could lift about 12 times with good form. It should feel hard on the last two reps, not impossible.",
+         "_key": "k70"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k71",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Warm up",
+         "_key": "k72"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k73",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Three minutes of marching on the spot, arm circles and bodyweight squats.",
+         "_key": "k74"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k75",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The workout",
+         "_key": "k76"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k77",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Do each exercise for 10 to 12 reps. Rest for a minute, then repeat for three rounds in total.",
+         "_key": "k78"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k79",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Goblet squat, holding one dumbbell at your chest",
+         "_key": "k80"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k81",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Dumbbell Romanian deadlift",
+         "_key": "k82"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k83",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Single arm row, one hand on a chair",
+         "_key": "k84"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k85",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Shoulder press, standing",
+         "_key": "k86"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k87",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Reverse lunge, holding both dumbbells at your sides",
+         "_key": "k88"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k89",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Dead bug, no weight",
+         "_key": "k90"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k91",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Cool down",
+         "_key": "k92"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k93",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Walk around for a minute, then stretch your thighs, chest and back for 30 seconds each.",
+         "_key": "k94"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k95",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Stop if something hurts. If you are not sure a workout is right for you right now, check with your doctor first.",
+         "_key": "k96"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "photo": "/images/gear-corner.webp"
+    }
+   },
+   {
+    "id": "ten-minute-mobility",
+    "slug": "ten-minute-mobility",
+    "status": "published",
+    "data": {
+     "title": "A 10 minute morning mobility routine",
+     "summary": "Gentle moves to do before work, before coffee or both.",
+     "category": "workouts",
+     "meta": "10 min routine",
+     "posted": "October 2026",
+     "featured": false,
+     "position": 30,
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k97",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What you need",
+         "_key": "k98"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k99",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A mat, or just the floor. Wear whatever you slept in.",
+         "_key": "k100"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k101",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The routine",
+         "_key": "k102"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k103",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Spend about a minute on each move, and move slowly.",
+         "_key": "k104"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k105",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Cat and cow on hands and knees",
+         "_key": "k106"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k107",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Child's pose",
+         "_key": "k108"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k109",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Low lunge with a reach overhead, each side",
+         "_key": "k110"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k111",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Hip circles, standing",
+         "_key": "k112"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k113",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Thoracic rotations on hands and knees, each side",
+         "_key": "k114"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k115",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Slow bodyweight squat, hold at the bottom for a breath",
+         "_key": "k116"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k117",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "When to do it",
+         "_key": "k118"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k119",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Right after you get up works for many people. Some prefer it at lunchtime as a break from the desk. Choose a time you can repeat every day, and keep it easy.",
+         "_key": "k120"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k121",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Stop if something hurts. If you are not sure a workout is right for you right now, check with your doctor first.",
+         "_key": "k122"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "photo": "/images/plants.webp"
+    }
+   },
+   {
+    "id": "gym-machine-circuit",
+    "slug": "gym-machine-circuit",
+    "status": "published",
+    "data": {
+     "title": "Gym day: a simple machine circuit",
+     "summary": "Seven machines, one lap and a clear order to follow.",
+     "category": "workouts",
+     "meta": "40 min workout",
+     "posted": "October 2026",
+     "featured": false,
+     "position": 40,
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k123",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What you need",
+         "_key": "k124"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k125",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Access to a gym with the machines below. If one is taken, skip it and come back at the end.",
+         "_key": "k126"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k127",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The lap",
+         "_key": "k128"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k129",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Do 2 sets of 10 to 12 reps on each machine, resting for about 60 seconds between sets. Choose a weight that leaves you with two or three reps in reserve.",
+         "_key": "k130"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k131",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Leg press",
+         "_key": "k132"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k133",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Chest press",
+         "_key": "k134"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k135",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Seated row",
+         "_key": "k136"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k137",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Leg curl",
+         "_key": "k138"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k139",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Shoulder press",
+         "_key": "k140"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k141",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Lat pulldown",
+         "_key": "k142"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k143",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Plank, on the floor mat area",
+         "_key": "k144"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "number",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k145",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Set up",
+         "_key": "k146"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k147",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Adjust the seat so the handles line up with the middle of your chest, and keep your feet flat. If you are not sure how a machine works, ask a staff member to show you before you start.",
+         "_key": "k148"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k149",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Stop if something hurts. If you are not sure a workout is right for you right now, check with your doctor first.",
+         "_key": "k150"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "photo": "/images/shelf-kettlebells.webp"
+    }
+   },
+   {
+    "id": "fit-workouts-into-a-busy-week",
+    "slug": "fit-workouts-into-a-busy-week",
+    "status": "published",
+    "data": {
+     "title": "How to fit workouts into a busy week",
+     "summary": "Pick the days first, then make each session smaller than you think.",
+     "category": "habits",
+     "meta": "5 min read",
+     "posted": "October 2026",
+     "featured": true,
+     "position": 50,
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k151",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Most plans fail because the sessions are too long for the week you actually have. A better approach is to plan small and protect it.",
+         "_key": "k152"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k153",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Pick your days on Sunday",
+         "_key": "k154"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k155",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Look at the next seven days and choose the three that have the most room. Put the workouts in your calendar like any other appointment, with a start time.",
+         "_key": "k156"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k157",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Make each workout shorter than you think",
+         "_key": "k158"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k159",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If you can only find 20 minutes, 20 minutes is a workout. A short session you do beats a long one you skip.",
+         "_key": "k160"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k161",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Have a back-up day",
+         "_key": "k162"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k163",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Choose a second day for each workout in case the first falls through. If neither works, let it go and carry on with the next one. Do not add it to the following day.",
+         "_key": "k164"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k165",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Lay out your kit the night before",
+         "_key": "k166"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k167",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Put your shoes and your mat where you will see them. It sounds small, and it removes one decision from the morning.",
+         "_key": "k168"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "photo": "/images/living-corner.webp"
+    }
+   },
+   {
+    "id": "missed-a-week",
+    "slug": "missed-a-week",
+    "status": "published",
+    "data": {
+     "title": "Missed a week? Start here.",
+     "summary": "A short guide to getting back in without trying to make up for lost time.",
+     "category": "habits",
+     "meta": "4 min read",
+     "posted": "October 2026",
+     "featured": false,
+     "position": 60,
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k169",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "It happens to everyone. Illness, travel, a bad week at work. What matters is how you come back.",
+         "_key": "k170"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k171",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Do not double up",
+         "_key": "k172"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k173",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Skip the workouts you missed. Do not squeeze two into one day to catch up. Pick up where the plan is today.",
+         "_key": "k174"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k175",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Start with a lighter session",
+         "_key": "k176"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k177",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Do the first workout at about 70 percent of your usual effort. Use lighter weights or fewer rounds. If it feels fine, go back to your usual level the next time.",
+         "_key": "k178"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k179",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Tell your coach",
+         "_key": "k180"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k181",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If you work with me, send a message. I will adjust the plan so the next week fits where you are, not where you were.",
+         "_key": "k182"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k183",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If you were ill",
+         "_key": "k184"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k185",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Wait until you feel well again, and talk to your doctor if you are unsure when to start.",
+         "_key": "k186"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "photo": "/images/ball-plant.webp"
+    }
+   },
+   {
+    "id": "small-space-set-up",
+    "slug": "small-space-set-up",
+    "status": "published",
+    "data": {
+     "title": "Setting up a small space for workouts at home",
+     "summary": "What you need, what you can skip and where to keep it.",
+     "category": "getting-started",
+     "meta": "4 min read",
+     "posted": "October 2026",
+     "featured": false,
+     "position": 70,
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k187",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You need less than you think. A clear patch of floor about the size of a yoga mat, plus room to extend your arms, is enough for most workouts.",
+         "_key": "k188"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k189",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The basics",
+         "_key": "k190"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k191",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A mat or a thick towel",
+         "_key": "k192"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k193",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A water bottle",
+         "_key": "k194"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k195",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A timer, which can be your phone",
+         "_key": "k196"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k197",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A sturdy chair or the end of a sofa for step-ups and incline push-ups",
+         "_key": "k198"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k199",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "When you are ready for more",
+         "_key": "k200"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k201",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A pair of dumbbells is the next purchase for most people. A resistance band is a cheap second. You do not need a bench, a rack or a treadmill.",
+         "_key": "k202"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k203",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Where to keep it",
+         "_key": "k204"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k205",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Store the mat and weights where you can see them. A basket by the sofa works well. If your kit is in a cupboard, you will use it less.",
+         "_key": "k206"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "photo": "/images/coach-reach.webp"
+    }
+   },
+   {
+    "id": "choosing-first-dumbbells",
+    "slug": "choosing-first-dumbbells",
+    "status": "published",
+    "data": {
+     "title": "Choosing your first pair of dumbbells",
+     "summary": "How to pick a weight, and why one pair is enough to start.",
+     "category": "getting-started",
+     "meta": "4 min read",
+     "posted": "October 2026",
+     "featured": false,
+     "position": 80,
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k207",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Dumbbells come in many weights, and the shop shelf can be confusing. The aim is simple: choose a weight you can lift about 12 times with good form, with the last two reps feeling hard.",
+         "_key": "k208"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k209",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A starting range",
+         "_key": "k210"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k211",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Many adults start with something between 4 and 10 kilograms per hand for upper body lifts, and a bit more for squats. If you are not sure, go for the lighter pair. You can always add a second pair later.",
+         "_key": "k212"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k213",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Adjustable or fixed",
+         "_key": "k214"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k215",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Adjustable dumbbells take up less space and save money if you plan to progress. Fixed dumbbells are easier to grab and cost less per pair when you only need one weight.",
+         "_key": "k216"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k217",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Test before you buy",
+         "_key": "k218"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k219",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If you can, try a pair at a shop. If you are buying online, pick a weight and be ready to swap it after the first week. Check the return policy before you order.",
+         "_key": "k220"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "photo": "/images/gear-corner.webp"
+    }
+   }
+  ],
+  "faqs": [
+   {
+    "id": "q01",
+    "slug": "q01",
+    "status": "published",
+    "data": {
+     "title": "How does online coaching work?",
+     "answer": "You tell me your goals, your schedule and the equipment you have. We talk on a free call, then I write your plan. You get a weekly schedule, a short video for every exercise and a way to message me.",
+     "home": true,
+     "position": 10
+    }
+   },
+   {
+    "id": "q02",
+    "slug": "q02",
+    "status": "published",
+    "data": {
+     "title": "Do I need any equipment?",
+     "answer": "No. Several programs use only a mat or a towel. Others use dumbbells or a gym. You can filter the programs page by the equipment you have.",
+     "home": true,
+     "position": 20
+    }
+   },
+   {
+    "id": "q03",
+    "slug": "q03",
+    "status": "published",
+    "data": {
+     "title": "How long are the workouts?",
+     "answer": "Most run between 20 and 55 minutes, three or four times a week. Each program page lists the length of a session.",
+     "home": true,
+     "position": 30
+    }
+   },
+   {
+    "id": "q04",
+    "slug": "q04",
+    "status": "published",
+    "data": {
+     "title": "What if I have an injury or a health condition?",
+     "answer": "Please check with your doctor or physiotherapist before you start, and tell me about it on the contact form. I can adjust exercises, but I cannot give medical advice.",
+     "home": true,
+     "position": 40
+    }
+   },
+   {
+    "id": "q05",
+    "slug": "q05",
+    "status": "published",
+    "data": {
+     "title": "How do I get feedback on my form?",
+     "answer": "Film a set on your phone and send it to me. I reply with notes within one working day.",
+     "home": false,
+     "position": 50
+    }
+   },
+   {
+    "id": "q06",
+    "slug": "q06",
+    "status": "published",
+    "data": {
+     "title": "How does payment work?",
+     "answer": "Programs are billed monthly. You can stop before the next billing date and keep the plan for the days you have already paid for.",
+     "home": false,
+     "position": 60
+    }
+   },
+   {
+    "id": "q07",
+    "slug": "q07",
+    "status": "published",
+    "data": {
+     "title": "Can I switch programs?",
+     "answer": "Yes. If a plan feels too hard or too easy, tell me and I will swap it at the start of the next week.",
+     "home": false,
+     "position": 70
+    }
+   },
+   {
+    "id": "q08",
+    "slug": "q08",
+    "status": "published",
+    "data": {
+     "title": "Which time zone do you work in?",
+     "answer": "I am on Pacific time. I answer messages from Monday to Friday, and calls happen in the morning or early evening Pacific time. I coach people in other time zones too, so tell me yours.",
+     "home": false,
+     "position": 80
+    }
+   },
+   {
+    "id": "q09",
+    "slug": "q09",
+    "status": "published",
+    "data": {
+     "title": "Is this suitable if I am pregnant or recovering from an operation?",
+     "answer": "Please speak to your doctor first. If they say you can exercise, I can build a plan around their advice.",
+     "home": false,
+     "position": 90
+    }
+   }
+  ],
+  "week": [
+   {
+    "id": "d1",
+    "slug": "d1",
+    "status": "published",
+    "data": {
+     "title": "Workout 1",
+     "day": "Mon",
+     "detail": "30 minutes. Squats, presses and a short finisher.",
+     "kind": "workout",
+     "position": 10
+    }
+   },
+   {
+    "id": "d2",
+    "slug": "d2",
+    "status": "published",
+    "data": {
+     "title": "Walk or rest",
+     "day": "Tue",
+     "detail": "Your choice. Some people take a 20 minute walk.",
+     "kind": "rest",
+     "position": 20
+    }
+   },
+   {
+    "id": "d3",
+    "slug": "d3",
+    "status": "published",
+    "data": {
+     "title": "Workout 2",
+     "day": "Wed",
+     "detail": "30 minutes. Hinges, rows and core.",
+     "kind": "workout",
+     "position": 30
+    }
+   },
+   {
+    "id": "d4",
+    "slug": "d4",
+    "status": "published",
+    "data": {
+     "title": "Check-in",
+     "day": "Thu",
+     "detail": "A 10 minute message or call about how the week is going.",
+     "kind": "chat",
+     "position": 40
+    }
+   },
+   {
+    "id": "d5",
+    "slug": "d5",
+    "status": "published",
+    "data": {
+     "title": "Workout 3",
+     "day": "Fri",
+     "detail": "30 minutes. Lunges, push-ups and a finisher.",
+     "kind": "workout",
+     "position": 50
+    }
+   },
+   {
+    "id": "d6",
+    "slug": "d6",
+    "status": "published",
+    "data": {
+     "title": "Optional stretch",
+     "day": "Sat",
+     "detail": "10 minutes of mobility, or skip it.",
+     "kind": "rest",
+     "position": 60
+    }
+   },
+   {
+    "id": "d7",
+    "slug": "d7",
+    "status": "published",
+    "data": {
+     "title": "Rest and plan",
+     "day": "Sun",
+     "detail": "Look at next week and move anything that clashes.",
+     "kind": "rest",
+     "position": 70
+    }
+   }
+  ],
+  "steps": [
+   {
+    "id": "get-a-plan",
+    "slug": "get-a-plan",
+    "status": "published",
+    "data": {
+     "title": "Get a plan",
+     "text": "Personalized workouts\nfor your goals and schedule.",
+     "icon": "plan",
+     "tint": "peach",
+     "position": 10
+    }
+   },
+   {
+    "id": "work-out-anywhere",
+    "slug": "work-out-anywhere",
+    "status": "published",
+    "data": {
+     "title": "Work out anywhere",
+     "text": "Follow along at home, in the gym\nor on the go.",
+     "icon": "shoe",
+     "tint": "mint",
+     "position": 20
+    }
+   },
+   {
+    "id": "stay-supported",
+    "slug": "stay-supported",
+    "status": "published",
+    "data": {
+     "title": "Stay supported",
+     "text": "Ongoing coaching and motivation\nevery step of the way.",
+     "icon": "group",
+     "tint": "peach",
+     "position": 30
+    }
+   }
+  ],
+  "highlights": [
+   {
+    "id": "workouts-anywhere",
+    "slug": "workouts-anywhere",
+    "status": "published",
+    "data": {
+     "title": "WORKOUTS\nANYWHERE",
+     "icon": "dumbbell",
+     "position": 10
+    }
+   },
+   {
+    "id": "guidance-online",
+    "slug": "guidance-online",
+    "status": "published",
+    "data": {
+     "title": "GUIDANCE\nONLINE",
+     "icon": "laptop",
+     "position": 20
+    }
+   },
+   {
+    "id": "a-stronger-you",
+    "slug": "a-stronger-you",
+    "status": "published",
+    "data": {
+     "title": "A STRONGER\nYOU",
+     "icon": "heart",
+     "position": 30
+    }
+   }
+  ],
+  "coach": [
+   {
+    "id": "coach",
+    "slug": "coach",
+    "status": "published",
+    "data": {
+     "title": "FitWithYou",
+     "name": "Nora Whitfield",
+     "place": "Online coaching from Alder Creek, Oregon",
+     "phone": "+1 503 555 0172",
+     "email": "hello@fitwithyou.example",
+     "hours": "Messages|Monday to Friday, answered within one working day\nCalls|Mornings and early evenings, Pacific time",
+     "booking_note": "Sending this form opens your email app. Nothing is stored on this site, and I reply within one working day."
+    }
+   }
+  ]
+ }
+}

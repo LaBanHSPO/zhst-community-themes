@@ -1,0 +1,70 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import StartBand from "../../components/StartBand.astro";
+import { CATEGORIES, categoryLabel, getCoach, getResources } from "../../lib/fitness";
+
+const [resourcesResult, coachResult] = await Promise.all([getResources(), getCoach()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(resourcesResult.cacheHint);
+	Astro.cache.set(coachResult.cacheHint);
+}
+// ?category=workouts | habits | getting-started narrows the list; anything else shows everything.
+const wanted = Astro.url.searchParams.get("category");
+const category = CATEGORIES.find((c) => c.slug === wanted);
+const all = resourcesResult.entries;
+const shown = category ? all.filter((r) => r.data.category === category.slug) : all;
+const count = (slug: string) => all.filter((r) => r.data.category === slug).length;
+---
+
+<Base
+	title={category ? category.label : "Resources"}
+	description="Free workouts and short guides: no-equipment circuits, dumbbell sessions, a gym machine lap and advice on fitting training into a busy week."
+>
+	<PageHead
+		id="resources-title"
+		eyebrow="Resources"
+		title={category ? `${category.label}.` : "Workouts and guides to start with."}
+		intro={category ? category.blurb : "Simple workouts you can do today and short guides on habits and set-up. Each one says how long it takes and what you need."}
+	/>
+	<section class="list-section" aria-labelledby="resources-title">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter resources by category">
+				<a href="/resources" aria-current={category ? undefined : "true"}>Everything <span>{all.length}</span></a>
+				{
+					CATEGORIES.map((c) => (
+						<a href={`/resources?category=${c.slug}`} aria-current={category?.slug === c.slug ? "true" : undefined}>
+							{c.label} <span>{count(c.slug)}</span>
+						</a>
+					))
+				}
+			</nav>
+			{
+				shown.length === 0 ? (
+					<p class="empty-note">Nothing in that category yet. <a href="/resources">See everything</a>.</p>
+				) : (
+					<ul class="res-grid">
+						{
+							shown.map((r) => (
+								<li>
+									<a class="res-card" href={`/resources/${r.data.slug ?? r.data.id}`}>
+										<span class="res-photo">
+											{(r.data.image?.src || r.data.photo) && <img src={r.data.image?.src || r.data.photo} alt="" width="640" height="480" loading="lazy" />}
+										</span>
+										<span class="res-meta">
+											<span>{categoryLabel(r.data.category)}</span>
+											{r.data.meta && <span>{r.data.meta}</span>}
+										</span>
+										<span class="res-title" {...r.edit.title}>{r.data.title}</span>
+										<span class="res-summary">{r.data.summary}</span>
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+	<StartBand coach={coachResult.coach} />
+</Base>

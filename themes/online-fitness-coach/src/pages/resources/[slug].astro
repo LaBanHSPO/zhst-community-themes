@@ -1,0 +1,64 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PageHead from "../../components/PageHead.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { categoryLabel, getResources, photoSrc } from "../../lib/fitness";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: res, cacheHint } = await getEmDashEntry("resources", slug);
+if (!res) return Astro.rewrite("/404");
+
+const [allResult, settings] = await Promise.all([getResources(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(res, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = res.data;
+const src = photoSrc(d.image, d.photo);
+const more = allResult.entries.filter((r) => r.data.id !== d.id && r.data.category === d.category).slice(0, 2);
+const eyebrow = [categoryLabel(d.category), d.meta].filter(Boolean).join("  /  ");
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "resources", id: d.id, slug }}
+	current="/resources"
+>
+	<PageHead eyebrow={eyebrow} title={d.title} intro={d.summary} edit={{ ...res.edit.title }} />
+	<div class="page-body">
+		<div class="wrap">
+			{
+				src && (
+					<figure class="article-photo">
+						<img src={src} alt={d.image?.alt ?? ""} width="1100" height="520" />
+					</figure>
+				)
+			}
+			<div class="prose">
+				<PortableText value={d.content} />
+				<p class="page-cta"><a class="start-link" href="/contact">Start with a free call <Arrow /></a></p>
+			</div>
+			{
+				more.length > 0 && (
+					<nav class="more-links" aria-label="More in this category">
+						<h2>More {categoryLabel(d.category).toLowerCase()}</h2>
+						<ul>
+							{more.map((r) => <li><a href={`/resources/${r.data.slug ?? r.data.id}`}>{r.data.title}</a></li>)}
+						</ul>
+					</nav>
+				)
+			}
+		</div>
+	</div>
+</Base>

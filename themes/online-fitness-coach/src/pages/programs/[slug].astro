@@ -1,0 +1,128 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import ProgramCard from "../../components/ProgramCard.astro";
+import StartBand from "../../components/StartBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { equipmentLabel, formatPrice, getCoach, getPrograms, levelLabel, lines, photoSrc } from "../../lib/fitness";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: program, cacheHint } = await getEmDashEntry("programs", slug);
+if (!program) return Astro.rewrite("/404");
+
+const [allResult, coachResult, settings] = await Promise.all([getPrograms(), getCoach(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(coachResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(program, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = program.data;
+const key = d.slug ?? d.id;
+const src = photoSrc(d.image, d.photo);
+const included = lines(d.included);
+const related = allResult.entries
+	.filter((p) => p.data.id !== d.id && (p.data.equipment === d.equipment || p.data.level === d.level))
+	.slice(0, 3);
+const hasBody = Boolean(d.content && d.content.length > 0);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "programs", id: d.id, slug }}
+	current="/programs"
+>
+	<section class="detail-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/programs">Programs</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class:list={["detail-grid", { "is-text-only": !src }]}>
+				<div class="detail-copy">
+					<p class="eyebrow">{equipmentLabel(d.equipment)}</p>
+					<h1 class="display" {...program.edit.title}>{d.title}</h1>
+					<p class="lede" {...program.edit.summary}>{d.summary}</p>
+					<dl class="facts">
+						<div><dt>Level</dt><dd>{levelLabel(d.level)}</dd></div>
+						{d.weeks && <div><dt>Length</dt><dd>{d.weeks} weeks</dd></div>}
+						{d.sessions && <div><dt>Workouts</dt><dd>{d.sessions} a week</dd></div>}
+						{d.session_length && <div><dt>Each workout</dt><dd>{d.session_length}</dd></div>}
+					</dl>
+					<a class="btn btn-lg" href={`/contact?program=${encodeURIComponent(key)}`}>Start this program <Arrow /></a>
+				</div>
+				{
+					src && (
+						<figure class="detail-photo">
+							<img src={src} alt={d.image?.alt ?? ""} width="640" height="512" />
+						</figure>
+					)
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="wrap detail-cols">
+			<div class="prose">
+				{d.intro && <p class="prose-lead">{d.intro}</p>}
+				{hasBody ? <PortableText value={d.content} /> : <p>{d.summary}</p>}
+			</div>
+			<aside class="side-stack">
+				{
+					typeof d.price === "number" && (
+						<div class="includes price-box">
+							<h2>Price</h2>
+							<p class="price-big">{formatPrice(d.price)}<span>per month</span></p>
+							<p>Placeholder price. Set your own in the CMS.</p>
+						</div>
+					)
+				}
+				{
+					included.length > 0 && (
+						<div class="includes" aria-labelledby="included-title">
+							<h2 id="included-title">What is included</h2>
+							<ul class="ticks">{included.map((i) => <li>{i}</li>)}</ul>
+						</div>
+					)
+				}
+				<div class="includes">
+					<h2>Equipment</h2>
+					<p>{equipmentLabel(d.equipment)}.</p>
+					<p class="small">Not sure this is right for you? Ask on a free call. If you have an injury or a health condition, check with your doctor before you start.</p>
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	{
+		related.length > 0 && (
+			<section class="band programs-band" aria-labelledby="related-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">More programs</p>
+							<h2 id="related-title" class="section-title">Other programs to look at.</h2>
+						</div>
+						<a class="link-arrow" href="/programs">All programs <Arrow /></a>
+					</div>
+					<ul class="program-grid">
+						{related.map((p) => <li><ProgramCard program={p.data} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<StartBand coach={coachResult.coach} />
+</Base>

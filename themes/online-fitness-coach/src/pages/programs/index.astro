@@ -1,0 +1,55 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import ProgramCard from "../../components/ProgramCard.astro";
+import StartBand from "../../components/StartBand.astro";
+import { EQUIPMENT, getCoach, getPrograms } from "../../lib/fitness";
+
+const [programsResult, coachResult] = await Promise.all([getPrograms(), getCoach()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(programsResult.cacheHint);
+	Astro.cache.set(coachResult.cacheHint);
+}
+// ?equipment=none | dumbbells | gym narrows the list; anything else shows every program.
+const wanted = Astro.url.searchParams.get("equipment");
+const equipment = EQUIPMENT.find((e) => e.slug === wanted);
+const all = programsResult.entries;
+const shown = equipment ? all.filter((p) => p.data.equipment === equipment.slug) : all;
+const count = (slug: string) => all.filter((p) => p.data.equipment === slug).length;
+---
+
+<Base
+	title={equipment ? `${equipment.label} programs` : "Programs"}
+	description="Online coaching programs for every kit list: no equipment, dumbbells or the gym. Each one shows its level, length, workouts per week and what is included."
+>
+	<PageHead
+		id="programs-title"
+		eyebrow="Programs"
+		title={equipment ? `${equipment.label} programs.` : "Programs for the kit you have."}
+		intro={equipment ? equipment.blurb : "Choose by equipment, then by level. Each program lists how many weeks it runs, how many workouts a week and how long each one takes."}
+	/>
+	<section class="list-section" aria-labelledby="programs-title">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter programs by equipment">
+				<a href="/programs" aria-current={equipment ? undefined : "true"}>All programs <span>{all.length}</span></a>
+				{
+					EQUIPMENT.map((e) => (
+						<a href={`/programs?equipment=${e.slug}`} aria-current={equipment?.slug === e.slug ? "true" : undefined}>
+							{e.label} <span>{count(e.slug)}</span>
+						</a>
+					))
+				}
+			</nav>
+			{
+				shown.length === 0 ? (
+					<p class="empty-note">No programs for that yet. <a href="/programs">See all programs</a>.</p>
+				) : (
+					<ul class="program-grid">
+						{shown.map((p) => <li><ProgramCard program={p.data} edit={{ ...p.edit.title }} /></li>)}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+	<StartBand coach={coachResult.coach} />
+</Base>

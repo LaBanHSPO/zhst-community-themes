@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "online-fitness-coach",
+	"kind": "theme",
+	"name": "Online Fitness Coach",
+	"type": "bio",
+	"emdash": "1.2.0",
+	"entry": "themes/online-fitness-coach",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

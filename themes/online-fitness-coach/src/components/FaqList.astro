@@ -1,0 +1,22 @@
+---
+interface Props {
+	items: { data: { id: string; title: string; answer: string } }[];
+}
+const { items } = Astro.props;
+---
+
+<div class="faq-list">
+	{
+		items.map((item) => (
+			<details class="faq-item">
+				<summary>
+					<span>{item.data.title}</span>
+					<svg class="faq-plus" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+						<path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" />
+					</svg>
+				</summary>
+				<p>{item.data.answer}</p>
+			</details>
+		))
+	}
+</div>
