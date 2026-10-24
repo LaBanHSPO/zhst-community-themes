@@ -1,0 +1,18 @@
+---
+interface Props {
+	id?: string;
+	eyebrow?: string | null;
+	title: string;
+	intro?: string | null;
+	edit?: Record<string, unknown>;
+}
+const { id, eyebrow, title, intro, edit = {} } = Astro.props;
+---
+
+<header class="page-head">
+	<div class="wrap">
+		{eyebrow && <p class="mono-label">{eyebrow}</p>}
+		<h1 id={id} class="display display-xl" {...edit}>{title}</h1>
+		{intro && <p class="lede">{intro}</p>}
+	</div>
+</header>

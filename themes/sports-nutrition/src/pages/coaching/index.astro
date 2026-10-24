@@ -1,0 +1,68 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PageHead from "../../components/PageHead.astro";
+import { getPlans, getSteps, photoSrc, planHref } from "../../lib/nutri";
+
+const [plansResult, stepsResult] = await Promise.all([getPlans(), getSteps()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(plansResult.cacheHint);
+	Astro.cache.set(stepsResult.cacheHint);
+}
+const plans = plansResult.entries;
+const steps = stepsResult.entries;
+---
+
+<Base title="Coaching" description="Sports nutrition coaching plans for endurance athletes, lifters, team sport players and people getting started. Who each plan is for, how it works, how often we check in and what it costs from.">
+	<PageHead eyebrow="Coaching" title="Plans for how you train." intro="Four plans, each with a set format, a check-in schedule and a starting price. All prices are sample prices and are confirmed after the intro call." />
+	<section class="plan-list">
+		<div class="wrap">
+			<ol class="plan-cards">
+				{
+					plans.map((p, i) => {
+						const src = photoSrc(p.data.image, p.data.photo);
+						return (
+							<li class="plan-card">
+								<a class="plan-card-photo" href={planHref(p.data)} tabindex="-1" aria-hidden="true">
+									{src && <img src={src} alt="" width="520" height="400" loading="lazy" />}
+								</a>
+								<div class="plan-card-body">
+									<p class="mono-label">{String(i + 1).padStart(2, "0")} / {p.data.sports}</p>
+									<h2 class="plan-card-title" {...p.edit.title}><a href={planHref(p.data)}>{p.data.title}</a></h2>
+									<p class="plan-card-sum">{p.data.summary}</p>
+									<dl class="facts">
+										<div><dt>Who it is for</dt><dd>{p.data.who_for}</dd></div>
+										<div><dt>Format</dt><dd>{p.data.format}</dd></div>
+										<div><dt>Check-ins</dt><dd>{p.data.check_ins}</dd></div>
+										<div><dt>Price</dt><dd>{p.data.price}</dd></div>
+									</dl>
+									<a class="text-link" href={planHref(p.data)}><span>Read the plan</span><Arrow /></a>
+								</div>
+							</li>
+						);
+					})
+				}
+			</ol>
+		</div>
+	</section>
+	{
+		steps.length > 0 && (
+			<section class="how" aria-labelledby="how-title">
+				<div class="wrap">
+					<p class="mono-label">How coaching starts</p>
+					<h2 id="how-title" class="section-title">From first message<br />to first plan.</h2>
+					<ol class="how-steps">
+						{steps.map((s, i) => (
+							<li>
+								<span class="how-num">{String(i + 1).padStart(2, "0")}</span>
+								<strong {...s.edit.title}>{s.data.title}</strong>
+								<span>{s.data.text}</span>
+							</li>
+						))}
+					</ol>
+					<p class="how-foot"><a class="btn" href="/contact?interest=coaching"><span>Get Started</span><Arrow /></a></p>
+				</div>
+			</section>
+		)
+	}
+</Base>

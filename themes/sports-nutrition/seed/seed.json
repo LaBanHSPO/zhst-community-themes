@@ -1,0 +1,2034 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Sports Nutrition",
+    "description": "A sunlit sports nutrition coaching theme: a full-bleed photo hero, coaching plans, a weekly meal prep menu, a lifestyle journal with category filter, an about page and a get-started page. Seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "Nutriforce",
+    "tagline": "Sports Nutrition"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "urlPattern": "/{slug}",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Eyebrow",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText"
+        }
+      ]
+    },
+    {
+      "slug": "plans",
+      "label": "Coaching plans",
+      "labelSingular": "Coaching plan",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "urlPattern": "/coaching/{slug}",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "summary",
+          "label": "Summary",
+          "type": "text"
+        },
+        {
+          "slug": "who_for",
+          "label": "Who it is for",
+          "type": "string"
+        },
+        {
+          "slug": "sports",
+          "label": "Sports covered",
+          "type": "string"
+        },
+        {
+          "slug": "format",
+          "label": "Format",
+          "type": "text"
+        },
+        {
+          "slug": "check_ins",
+          "label": "Check-in cadence",
+          "type": "string"
+        },
+        {
+          "slug": "price",
+          "label": "Price (a 'from' placeholder)",
+          "type": "string"
+        },
+        {
+          "slug": "includes",
+          "label": "What is included (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on home page",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Image",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText"
+        }
+      ]
+    },
+    {
+      "slug": "meals",
+      "label": "Meals",
+      "labelSingular": "Meal",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "summary",
+          "label": "Short description",
+          "type": "text"
+        },
+        {
+          "slug": "ingredients",
+          "label": "Ingredients",
+          "type": "text"
+        },
+        {
+          "slug": "allergens",
+          "label": "Allergens",
+          "type": "text"
+        },
+        {
+          "slug": "calories",
+          "label": "Calories per serving (approximate)",
+          "type": "integer"
+        },
+        {
+          "slug": "protein",
+          "label": "Protein in grams (approximate)",
+          "type": "integer"
+        },
+        {
+          "slug": "carbs",
+          "label": "Carbohydrate in grams (approximate)",
+          "type": "integer"
+        },
+        {
+          "slug": "fat",
+          "label": "Fat in grams (approximate)",
+          "type": "integer"
+        },
+        {
+          "slug": "price",
+          "label": "Price (placeholder)",
+          "type": "string"
+        },
+        {
+          "slug": "tag",
+          "label": "Label (for example Vegetarian)",
+          "type": "string"
+        },
+        {
+          "slug": "this_week",
+          "label": "On this week's menu",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Image",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "posts",
+      "label": "Lifestyle posts",
+      "labelSingular": "Lifestyle post",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "urlPattern": "/lifestyle/{slug}",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "excerpt",
+          "label": "Excerpt",
+          "type": "text"
+        },
+        {
+          "slug": "category",
+          "label": "Category",
+          "type": "string"
+        },
+        {
+          "slug": "posted",
+          "label": "Date posted (YYYY-MM-DD)",
+          "type": "string"
+        },
+        {
+          "slug": "read_time",
+          "label": "Reading time",
+          "type": "string"
+        },
+        {
+          "slug": "image",
+          "label": "Image",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText"
+        }
+      ]
+    },
+    {
+      "slug": "steps",
+      "label": "How coaching starts",
+      "labelSingular": "Step",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Text",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "studio",
+      "label": "Studio details",
+      "labelSingular": "Studio details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Email",
+          "type": "string"
+        },
+        {
+          "slug": "address",
+          "label": "Pickup address",
+          "type": "text"
+        },
+        {
+          "slug": "hours",
+          "label": "Hours (Day | time per line)",
+          "type": "text"
+        },
+        {
+          "slug": "hours_note",
+          "label": "Hours note",
+          "type": "text"
+        },
+        {
+          "slug": "order_info",
+          "label": "Weekly meal order info (one line per row)",
+          "type": "text"
+        },
+        {
+          "slug": "form_note",
+          "label": "Form note",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Coaching",
+          "url": "/coaching"
+        },
+        {
+          "type": "custom",
+          "label": "Meal Prep",
+          "url": "/meal-prep"
+        },
+        {
+          "type": "custom",
+          "label": "Lifestyle",
+          "url": "/lifestyle"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "A small team that cooks and coaches.",
+          "eyebrow": "About",
+          "intro": "Nutriforce is a sports nutrition coaching business with its own kitchen. This is a demo business with sample content.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k173",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Who we are",
+                  "_key": "k174s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k175",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The coaching side is three coaches, each working with a few sports. They write plans, run check-ins and answer messages. The kitchen has two cooks who make the weekly meals on Saturday. One coordinator handles the inbox, orders and scheduling.",
+                  "_key": "k176s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k177",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Nobody on the team is listed with qualifications on this demo site. If you use this theme for a real business, add yours and any registration your country requires.",
+                  "_key": "k178s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k179",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How we work",
+                  "_key": "k180s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k181",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Plans are short and written in plain language. We use foods you already buy. Check-ins are by message and video, and we adjust the plan when your training changes.",
+                  "_key": "k182s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k183",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We do not sell supplements, set weight targets or promise changes to your body or your performance.",
+                  "_key": "k184s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k185",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About the photos",
+                  "_key": "k186s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k187",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The people and food photos on this site are AI-generated illustrations. The athlete on the home page is a fictional person. She is not a member of the team, a coach or a client, and nothing on this site is her endorsement.",
+                  "_key": "k188s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k189",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Medical advice",
+                  "_key": "k190s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k191",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we publish is general guidance. It does not replace advice from your doctor or a registered dietitian. If you have a medical condition, an allergy, take medication or are pregnant, speak to them before changing how you eat.",
+                  "_key": "k192s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "plans": [
+      {
+        "id": "endurance-coaching",
+        "slug": "endurance-coaching",
+        "status": "published",
+        "data": {
+          "title": "Endurance Coaching",
+          "summary": "Food plans for runners, cyclists, swimmers and triathletes, built around your training week.",
+          "who_for": "Runners, cyclists, swimmers and triathletes, from a first 10k to long events",
+          "sports": "Running, cycling, swimming, triathlon",
+          "format": "A written plan based on your training calendar, a review of what you eat now, and fuelling notes for long sessions and race day.",
+          "check_ins": "Message check-in every week, video call every two weeks",
+          "price": "From $120 a month (sample price)",
+          "includes": "Intro call and a review of your usual week of food\nA written plan matched to your training calendar\nFuelling notes for long sessions, race day and travel\nWeekly message check-in\nVideo call every two weeks\nOptional meal prep orders at the member price",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/landscape.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Endurance training asks a lot of your food. Long sessions need fuel on the bike or the road, hard days need a proper meal afterwards, and rest days still need to be eaten well. This plan puts those pieces on your calendar so you are not working them out at 6 am.",
+                  "_key": "k2s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we put together",
+                  "_key": "k4s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "After the intro call we look at your training weeks, your work hours and the food you already like. The plan is a short document: what to eat before, during and after your key sessions, a few default breakfasts and dinners, and a shopping list you can repeat.",
+                  "_key": "k6s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Before an event we write a separate race-week page with meal times, what to pack and what to avoid trying for the first time on the day.",
+                  "_key": "k8s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we ask of you",
+                  "_key": "k10s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Send a message once a week to say how training went and how the food worked. Tell us when something does not suit you. We adjust the plan rather than ask you to push through.",
+                  "_key": "k12s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What this plan does not do",
+                  "_key": "k14s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We do not promise race times, weight loss or any change to your body. We do not replace your doctor or a registered dietitian. If you have a medical condition, an eating disorder history or are pregnant, speak to your doctor first and tell us what they advise.",
+                  "_key": "k16s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "strength-coaching",
+        "slug": "strength-coaching",
+        "status": "published",
+        "data": {
+          "title": "Strength Coaching",
+          "summary": "Protein and calorie targets that follow your training split, with meal timing around your sessions.",
+          "who_for": "Lifters and gym members training with weights three or more days a week",
+          "sports": "Weightlifting, powerlifting, gym training, strength classes",
+          "format": "Daily targets set from your training split, a plain meal template, and a weekly shopping list you can batch cook from.",
+          "check_ins": "Message check-in every week, video call every month",
+          "price": "From $100 a month (sample price)",
+          "includes": "Intro call and a food diary review\nDaily targets for training days and rest days\nA meal template with swaps for foods you dislike\nA weekly shopping list\nWeekly message check-in\nVideo call once a month",
+          "featured": true,
+          "position": 20,
+          "photo": "/images/dumbbell.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Lifting is easier to plan around than most sports because the week is regular. Same days, same sessions. That makes the food plan simple to follow once it is written down.",
+                  "_key": "k18s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How the plan is set",
+                  "_key": "k20s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We ask how many days you train, how long sessions run and what your day looks like outside the gym. From that we set a protein target and a daily energy range, then split it into meals that fit your schedule.",
+                  "_key": "k22s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The template lists breakfast, lunch, dinner and snack options with portions in plain terms: a palm of chicken, a fist of rice, two eggs. Swaps are built in so one dislike does not break the plan.",
+                  "_key": "k24s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Check-ins",
+                  "_key": "k26s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Each week you send a short message. Once a month there is a video call to review what changed in your training and adjust the targets.",
+                  "_key": "k28s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What this plan does not do",
+                  "_key": "k30s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We do not give training programmes. If you need one, ask your gym or a strength coach. We also do not recommend supplements or promise changes in size or weight.",
+                  "_key": "k32s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "team-sport-coaching",
+        "slug": "team-sport-coaching",
+        "status": "published",
+        "data": {
+          "title": "Team Sport Coaching",
+          "summary": "Food plans for players and small squads, built around match days and training weeks.",
+          "who_for": "Players in football, rugby, netball, hockey and basketball, and squads of six or more",
+          "sports": "Football, rugby, netball, hockey, basketball",
+          "format": "A plan for match week and for training weeks, plus a 60-minute group session for squads that covers travel food, tournaments and snacks for the bench.",
+          "check_ins": "Message check-in every week, call at the start of each fixture block",
+          "price": "From $90 a month per player, group rates on request (sample price)",
+          "includes": "Intro call with the player, or with the coach for a squad\nMatch day and training day plans\nTravel and tournament food list\nWeekly message check-in\nA call at the start of each fixture block\nGroup session for squads of six or more",
+          "featured": true,
+          "position": 30,
+          "photo": "/images/scene.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k33",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Team sport weeks are uneven. Two training nights, a match at the weekend, a late kick-off now and then. A good plan has to cope with that.",
+                  "_key": "k34s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k35",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "For individual players",
+                  "_key": "k36s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k37",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We plan around your fixture list. You get a match-day timeline with what to eat and when, a lighter pattern for training nights and a few easy meals for the nights you get home late.",
+                  "_key": "k38s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k39",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "For squads",
+                  "_key": "k40s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k41",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The group session runs for an hour at your club or on video. We cover what to eat before and after games, what to pack for away fixtures and tournaments, and how to keep a bag of food in the changing room that does not go off.",
+                  "_key": "k42s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k43",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Parents and coaches are welcome on the intro call for players under 18. We ask for a parent or guardian to be on that call and to agree the plan.",
+                  "_key": "k44s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k45",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What this plan does not do",
+                  "_key": "k46s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k47",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We do not promise results on the pitch, and we do not advise on injury or illness. Talk to your club's medical staff or your doctor for those.",
+                  "_key": "k48s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "getting-started",
+        "slug": "getting-started",
+        "status": "published",
+        "data": {
+          "title": "Getting Started",
+          "summary": "A four-week starter for people new to training or coming back after a break.",
+          "who_for": "People new to regular exercise, or returning after time away",
+          "sports": "Walking, jogging, gym classes, home workouts",
+          "format": "One video call a week for four weeks, a simple food plan and a shopping list. No tracking apps needed.",
+          "check_ins": "One video call a week for four weeks",
+          "price": "From $79 for four weeks (sample price)",
+          "includes": "Intro call to talk through your week\nA simple food plan with a weekly shopping list\nFour weekly video calls of 20 minutes\nA one-page summary at the end with next steps",
+          "featured": true,
+          "position": 40,
+          "photo": "/images/athlete.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k49",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you are starting out, you do not need a spreadsheet. You need a few reliable meals, a shopping list and someone to check in with.",
+                  "_key": "k50s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k51",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What happens in four weeks",
+                  "_key": "k52s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k53",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Week 1: we talk through your usual week and pick two or three changes to try.",
+                  "_key": "k54s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k55",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Week 2: we look at how those went and adjust the shopping list.",
+                  "_key": "k56s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k57",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Week 3: we add snacks and a plan for busy days.",
+                  "_key": "k58s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k59",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Week 4: we write a one-page summary of what works for you.",
+                  "_key": "k60s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k61",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "After the four weeks you can stop, or move to one of the ongoing plans.",
+                  "_key": "k62s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k63",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What this plan does not do",
+                  "_key": "k64s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k65",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We do not set weight targets or promise changes to your body. If you have a health condition or take medication, check with your doctor before changing how you eat.",
+                  "_key": "k66s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "meals": [
+      {
+        "id": "chicken-sweet-potato-kale-bowl",
+        "slug": "chicken-sweet-potato-kale-bowl",
+        "status": "published",
+        "data": {
+          "title": "Chicken, sweet potato and kale bowl",
+          "summary": "Grilled chicken over quinoa and bulgur with roasted sweet potato, kale and avocado.",
+          "ingredients": "Grilled chicken thigh, roasted sweet potato, kale, quinoa, bulgur, avocado, pumpkin seeds, lemon and olive oil dressing",
+          "allergens": "Contains gluten (bulgur). Prepared in a kitchen that also handles nuts, sesame and dairy.",
+          "calories": 540,
+          "protein": 42,
+          "carbs": 52,
+          "fat": 18,
+          "price": "$11.50 (sample price)",
+          "tag": "Bowl",
+          "this_week": true,
+          "position": 10,
+          "photo": "/images/bowl-top.webp"
+        }
+      },
+      {
+        "id": "chicken-quinoa-avocado-bowl",
+        "slug": "chicken-quinoa-avocado-bowl",
+        "status": "published",
+        "data": {
+          "title": "Chicken and quinoa bowl with avocado",
+          "summary": "Sliced grilled chicken, tri-colour quinoa, rocket, red cabbage, tomato and seeds.",
+          "ingredients": "Grilled chicken breast, tri-colour quinoa, rocket, red cabbage, cherry tomato, avocado, pumpkin seeds, chia, lemon dressing",
+          "allergens": "Free from gluten. Prepared in a kitchen that also handles nuts, sesame and dairy.",
+          "calories": 560,
+          "protein": 45,
+          "carbs": 46,
+          "fat": 22,
+          "price": "$11.50 (sample price)",
+          "tag": "Gluten-free ingredients",
+          "this_week": true,
+          "position": 20,
+          "photo": "/images/bowl-side.webp"
+        }
+      },
+      {
+        "id": "grilled-chicken-sweet-potato",
+        "slug": "grilled-chicken-sweet-potato",
+        "status": "published",
+        "data": {
+          "title": "Grilled chicken with sweet potato",
+          "summary": "A plain protein box: chicken thigh with herbs and roasted sweet potato wedges.",
+          "ingredients": "Chicken thigh, sweet potato, olive oil, parsley, paprika, garlic, salt, black pepper",
+          "allergens": "No major allergens in the recipe. Prepared in a kitchen that also handles nuts, sesame, dairy and gluten.",
+          "calories": 480,
+          "protein": 40,
+          "carbs": 44,
+          "fat": 15,
+          "price": "$9.50 (sample price)",
+          "tag": "Protein box",
+          "this_week": true,
+          "position": 30,
+          "photo": "/images/chicken.webp"
+        }
+      },
+      {
+        "id": "avocado-tomato-quinoa-salad",
+        "slug": "avocado-tomato-quinoa-salad",
+        "status": "published",
+        "data": {
+          "title": "Avocado and tomato quinoa salad",
+          "summary": "A cold vegetarian box with quinoa, avocado, tomato, rocket and toasted seeds.",
+          "ingredients": "Quinoa, avocado, cherry tomato, rocket, pumpkin seeds, chickpeas, lemon, olive oil, salt",
+          "allergens": "Free from gluten and dairy. Prepared in a kitchen that also handles nuts and sesame.",
+          "calories": 460,
+          "protein": 17,
+          "carbs": 49,
+          "fat": 22,
+          "price": "$9.00 (sample price)",
+          "tag": "Vegan",
+          "this_week": false,
+          "position": 40,
+          "photo": "/images/avocado.webp"
+        }
+      },
+      {
+        "id": "spinach-lemon-smoothie",
+        "slug": "spinach-lemon-smoothie",
+        "status": "published",
+        "data": {
+          "title": "Spinach and lemon smoothie",
+          "summary": "A blended drink of spinach, banana, oats, Greek yoghurt and lemon, sold in a 500 ml bottle.",
+          "ingredients": "Spinach, banana, rolled oats, Greek yoghurt, lemon juice, chia seeds, water",
+          "allergens": "Contains milk and oats (may contain gluten). Prepared in a kitchen that also handles nuts and sesame.",
+          "calories": 290,
+          "protein": 18,
+          "carbs": 38,
+          "fat": 7,
+          "price": "$5.50 (sample price)",
+          "tag": "Drink",
+          "this_week": false,
+          "position": 50,
+          "photo": "/images/shaker.webp"
+        }
+      },
+      {
+        "id": "recovery-set",
+        "slug": "recovery-set",
+        "status": "published",
+        "data": {
+          "title": "Recovery set: bowl and smoothie",
+          "summary": "A chicken quinoa bowl and a spinach smoothie packed together for the evening after a long session.",
+          "ingredients": "Chicken and quinoa bowl with avocado, rocket and tomato; spinach and lemon smoothie",
+          "allergens": "Contains milk and oats (may contain gluten) in the smoothie. Prepared in a kitchen that also handles nuts and sesame.",
+          "calories": 850,
+          "protein": 63,
+          "carbs": 84,
+          "fat": 29,
+          "price": "$16.00 (sample price)",
+          "tag": "Set",
+          "this_week": false,
+          "position": 60,
+          "photo": "/images/scene.webp"
+        }
+      }
+    ],
+    "posts": [
+      {
+        "id": "what-to-eat-before-a-morning-run",
+        "slug": "what-to-eat-before-a-morning-run",
+        "status": "published",
+        "data": {
+          "title": "What to eat before a morning run",
+          "excerpt": "A short guide to eating before an early run, for people who do not feel like breakfast.",
+          "category": "Fuelling",
+          "posted": "2026-09-28",
+          "read_time": "4 min read",
+          "photo": "/images/landscape.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k67",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Early runs are awkward. You want some fuel, but a full breakfast sitting in your stomach at 6:30 is no help.",
+                  "_key": "k68s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k69",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you have an hour",
+                  "_key": "k70s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k71",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Eat something small and low in fibre: a banana with a spoonful of peanut butter, or toast with honey. Drink a glass of water.",
+                  "_key": "k72s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k73",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you have twenty minutes",
+                  "_key": "k74s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k75",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Go lighter still. Half a banana, a handful of dried fruit or a slice of white toast. Save the bigger breakfast for afterwards.",
+                  "_key": "k76s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k77",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you cannot eat at all",
+                  "_key": "k78s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k79",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Some people run fine on an empty stomach for an easy 30 minutes. Longer or harder runs usually go better with something in you. Try a few options on easy days, never on race day.",
+                  "_key": "k80s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k81",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This is general information. If you have a medical condition or take medication, ask your doctor what suits you.",
+                  "_key": "k82s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "five-lunches-in-one-hour",
+        "slug": "five-lunches-in-one-hour",
+        "status": "published",
+        "data": {
+          "title": "Five lunches in one hour",
+          "excerpt": "A Sunday routine for cooking a week of lunches without buying a stack of containers.",
+          "category": "Recipes",
+          "posted": "2026-09-14",
+          "read_time": "5 min read",
+          "photo": "/images/bowl-top.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k83",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This is the routine we give most new clients. It takes about an hour and makes five lunches that do not taste the same on Friday as they did on Monday.",
+                  "_key": "k84s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k85",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Cook four things",
+                  "_key": "k86s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k87",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A grain: two cups of dry quinoa or rice, cooked in one pot.",
+                  "_key": "k88s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k89",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A protein: chicken thighs or a tray of tofu, roasted at 200 C for 25 minutes.",
+                  "_key": "k90s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k91",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A vegetable: a tray of sweet potato cubes roasted alongside the protein.",
+                  "_key": "k92s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k93",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A raw side: kale or cabbage, shredded and dressed with lemon and oil.",
+                  "_key": "k94s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k95",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Pack in two steps",
+                  "_key": "k96s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k97",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Fill five boxes with grain and protein. Keep the raw side and any avocado in a separate tub and add them each morning, so nothing goes soft.",
+                  "_key": "k98s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k99",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Boxes keep in the fridge for up to four days. For day five, freeze one box on Sunday and take it out on Thursday night.",
+                  "_key": "k100s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "how-much-protein-is-on-your-plate",
+        "slug": "how-much-protein-is-on-your-plate",
+        "status": "published",
+        "data": {
+          "title": "How much protein is on your plate",
+          "excerpt": "Rough hand-size portions for common protein foods, so you can plan without a scale.",
+          "category": "Fuelling",
+          "posted": "2026-08-30",
+          "read_time": "4 min read",
+          "photo": "/images/chicken.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k101",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A scale is the most accurate tool, but most people do not want to weigh food at every meal. Hand sizes are close enough to start with.",
+                  "_key": "k102s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k103",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Rough numbers",
+                  "_key": "k104s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k105",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A cooked chicken breast the size of your palm: about 30 g protein.",
+                  "_key": "k106s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k107",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Two eggs: about 12 g.",
+                  "_key": "k108s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k109",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A cup of Greek yoghurt: about 20 g.",
+                  "_key": "k110s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k111",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A cup of cooked lentils: about 18 g.",
+                  "_key": "k112s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k113",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "These are approximate and vary by brand and cooking method.",
+                  "_key": "k114s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k115",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Spread it out",
+                  "_key": "k116s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k117",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Many people eat most of their protein at dinner. Moving some to breakfast is often the easiest change to make. Add eggs, yoghurt or tofu to a morning you currently spend on toast alone.",
+                  "_key": "k118s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k119",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How much protein is right for you depends on your size, training and health. Your coach or a registered dietitian can help you set a figure.",
+                  "_key": "k120s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "rest-days-are-part-of-the-plan",
+        "slug": "rest-days-are-part-of-the-plan",
+        "status": "published",
+        "data": {
+          "title": "Rest days are part of the plan",
+          "excerpt": "Why we write food plans for rest days too, and what we usually put on them.",
+          "category": "Training",
+          "posted": "2026-08-12",
+          "read_time": "3 min read",
+          "photo": "/images/dumbbell.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k121",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "New clients often ask what to eat on days off. Many assume it should be much less. In practice we keep most things the same.",
+                  "_key": "k122s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k123",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What changes",
+                  "_key": "k124s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k125",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Meals are usually a little smaller, with less food built around training. A rest day still has three proper meals and some protein at each.",
+                  "_key": "k126s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k127",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What stays",
+                  "_key": "k128s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k129",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sleep, water and a regular meal pattern. Rest days are a good time to batch cook, shop and plan the week ahead.",
+                  "_key": "k130s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k131",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you notice you are cutting food heavily on rest days or feel anxious about eating on them, tell your coach or speak to your doctor.",
+                  "_key": "k132s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "eating-the-week-before-a-first-10k",
+        "slug": "eating-the-week-before-a-first-10k",
+        "status": "published",
+        "data": {
+          "title": "Eating the week before a first 10k",
+          "excerpt": "What to keep the same, what to leave alone, and what to pack for race morning.",
+          "category": "Fuelling",
+          "posted": "2026-07-22",
+          "read_time": "5 min read",
+          "photo": "/images/athlete.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k133",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The week before your first 10k is not the time to change how you eat. Most of what you need to do is avoid new things.",
+                  "_key": "k134s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k135",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Keep the same",
+                  "_key": "k136s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k137",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Eat the breakfasts, lunches and dinners you have been eating on training weeks. If a meal has been working, repeat it.",
+                  "_key": "k138s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k139",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Leave alone",
+                  "_key": "k140s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k141",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "New supplements, unfamiliar restaurants the night before and very large portions. None of these help and some upset your stomach.",
+                  "_key": "k142s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k143",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Race morning",
+                  "_key": "k144s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k145",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Eat what you ate before your longest training runs, about two hours before the start. Pack a banana and water in case you are waiting around. Check the event information for what the course provides.",
+                  "_key": "k146s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "spinach-lemon-smoothie-recipe",
+        "slug": "spinach-lemon-smoothie-recipe",
+        "status": "published",
+        "data": {
+          "title": "Spinach and lemon smoothie",
+          "excerpt": "The recipe for the smoothie on our meal prep menu, with swaps for dairy-free.",
+          "category": "Recipes",
+          "posted": "2026-07-05",
+          "read_time": "2 min read",
+          "photo": "/images/shaker.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k147",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This makes two 350 ml glasses and takes five minutes.",
+                  "_key": "k148s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k149",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What you need",
+                  "_key": "k150s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k151",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "2 large handfuls of baby spinach",
+                  "_key": "k152s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k153",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "1 ripe banana",
+                  "_key": "k154s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k155",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "60 g rolled oats",
+                  "_key": "k156s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k157",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "200 g Greek yoghurt",
+                  "_key": "k158s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k159",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Juice of half a lemon",
+                  "_key": "k160s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k161",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "1 tablespoon chia seeds",
+                  "_key": "k162s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k163",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "200 ml cold water",
+                  "_key": "k164s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k165",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Method",
+                  "_key": "k166s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k167",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Blend everything for about 45 seconds until smooth. Add water a splash at a time if it is too thick. Drink it fresh or keep it in the fridge for a day.",
+                  "_key": "k168s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k169",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Swaps",
+                  "_key": "k170s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k171",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Use a plain soy yoghurt for a dairy-free version. Swap oats for 30 g of ground almonds if you need to avoid gluten, and skip this if you have a nut allergy.",
+                  "_key": "k172s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "steps": [
+      {
+        "id": "tell-us",
+        "slug": "tell-us",
+        "status": "published",
+        "data": {
+          "title": "Tell us what you train for",
+          "text": "Send your sport, your usual week and your goals through the Get Started form.",
+          "position": 10
+        }
+      },
+      {
+        "id": "intro-call",
+        "slug": "intro-call",
+        "status": "published",
+        "data": {
+          "title": "Twenty-minute intro call",
+          "text": "We ask about food, schedule, allergies and what has not worked before. You decide if it fits.",
+          "position": 20
+        }
+      },
+      {
+        "id": "first-plan",
+        "slug": "first-plan",
+        "status": "published",
+        "data": {
+          "title": "Your first plan",
+          "text": "A written plan arrives within three working days of the call.",
+          "position": 30
+        }
+      },
+      {
+        "id": "check-ins",
+        "slug": "check-ins",
+        "status": "published",
+        "data": {
+          "title": "Regular check-ins",
+          "text": "Messages and calls on the schedule of your plan. The plan changes as your training does.",
+          "position": 40
+        }
+      }
+    ],
+    "studio": [
+      {
+        "id": "nutriforce",
+        "slug": "nutriforce",
+        "status": "published",
+        "data": {
+          "title": "Nutriforce Sports Nutrition",
+          "phone": "(555) 010-0173",
+          "email": "hello@nutriforce.example",
+          "address": "Kitchen pickup\n14 Orchard Row\nSeaton Bay",
+          "hours": "Monday to Friday | 9:00 am to 5:00 pm\nSunday | Meal prep pickup, 10:00 am to 1:00 pm",
+          "hours_note": "Coaching is online. Hours, prices and the address are sample details for this demo.",
+          "order_info": "The menu is posted every Monday.\nOrders close Thursday at 6:00 pm.\nMeals are cooked on Saturday.\nPickup is Sunday from 10:00 am to 1:00 pm at the kitchen.\nMeals keep in the fridge for up to four days.\nThere is no online checkout. Send your order by email or with the Get Started form.",
+          "form_note": "Please leave out medical details and test results. Tell us about allergies and foods you avoid in the message box."
+        }
+      }
+    ]
+  }
+}

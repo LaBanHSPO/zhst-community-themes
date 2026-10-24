@@ -1,0 +1,176 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import LineIcon from "../components/LineIcon.astro";
+import { formatDate, getMeals, getPlans, getPosts, getStudio, lines, macroLine, photoAlt, photoSrc, planHref, postHref } from "../lib/nutri";
+
+const [plansResult, mealsResult, postsResult, studioResult] = await Promise.all([getPlans(), getMeals(), getPosts(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(plansResult.cacheHint);
+	Astro.cache.set(mealsResult.cacheHint);
+	Astro.cache.set(postsResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const allPlans = plansResult.entries;
+const plans = (allPlans.some((p) => p.data.featured) ? allPlans.filter((p) => p.data.featured) : allPlans).slice(0, 4);
+const allMeals = mealsResult.entries;
+const weekMeals = (allMeals.some((m) => m.data.this_week) ? allMeals.filter((m) => m.data.this_week) : allMeals).slice(0, 3);
+const posts = postsResult.entries.slice(0, 3);
+const orderLines = lines(studioResult.studio.order_info).slice(0, 4);
+const plain = (price: string | null | undefined) => (price ?? "").replace(/\s*\(sample price\)/i, "");
+---
+
+<Base
+	title="Fuel your next chapter"
+	description="Nutriforce is a sports nutrition coaching business with its own kitchen: coaching plans for endurance, strength and team sports, weekly meal prep, and recipes and training notes."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A woman in a black sports top and leggings sits on a rocky summit at golden hour, with hills and the sea behind her"
+			width="1448"
+			height="647"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<h1 id="hero-title" class="hero-title">Fuel your<br />next chapter.</h1>
+			<p class="hero-sub">Personalized nutrition coaching, athlete meal{" "}<br class="br-d" />preparation and a healthier, more active you.</p>
+			<a class="btn hero-btn" href="/coaching"><span>Explore coaching</span><Arrow /></a>
+			<p class="hero-tags">Good food / Stronger days / Further goals</p>
+		</div>
+		<p class="hero-note"><span>Better</span><span>Food</span><span>Brighter</span><span>Days</span></p>
+		<svg class="hero-stroke" width="90" height="40" viewBox="0 0 90 40" aria-hidden="true" focusable="false">
+			<path d="M2 38C26 33 56 22 88 3" fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" />
+		</svg>
+	</section>
+
+	<section class="split" aria-labelledby="split-title">
+		<div class="split-photo">
+			<img src="/images/bowl-home.webp" alt="A grain bowl of sliced chicken, roasted sweet potato, kale and avocado on grey stone beside a green linen cloth and a black bottle" width="796" height="434" loading="eager" />
+			<p class="split-words">Nutrition<br />Movement<br />Progress<br />A brighter you</p>
+			<span class="split-rule" aria-hidden="true"></span>
+		</div>
+		<div class="split-copy">
+			<p class="mono-label">A holistic approach</p>
+			<h2 id="split-title" class="split-title">Real food.<br />Active lives.</h2>
+			<p class="split-text">Nutrition coaching, ready-to-eat meals and inspiration{" "}<br class="br-d" />to help you perform, feel good and make the most{" "}<br class="br-d" />of every day.</p>
+			<ul class="split-icons">
+				<li><LineIcon name="leaf" size={46} /><span>Nutrition coaching</span></li>
+				<li><LineIcon name="bowl" size={56} /><span>Athlete meal prep</span></li>
+				<li><LineIcon name="mountains" size={56} /><span>Active lifestyle</span></li>
+			</ul>
+		</div>
+	</section>
+
+	{
+		plans.length > 0 && (
+			<section class="plans" aria-labelledby="plans-title">
+				<div class="wrap">
+					<div class="section-head">
+						<div>
+							<p class="mono-label">Coaching plans</p>
+							<h2 id="plans-title" class="section-title">Pick the plan that<br />fits your week.</h2>
+						</div>
+						<p class="section-aside">Each plan has a set check-in schedule and a starting price. Prices shown are sample prices.</p>
+					</div>
+					<ol class="plan-rows">
+						{plans.map((p, i) => (
+							<li>
+								<a class="plan-row" href={planHref(p.data)}>
+									<span class="plan-num">{String(i + 1).padStart(2, "0")}</span>
+									<span class="plan-main">
+										<strong class="plan-name" {...p.edit.title}>{p.data.title}</strong>
+										<span class="plan-sum">{p.data.summary}</span>
+									</span>
+									<span class="plan-cell"><em>Who it is for</em>{p.data.who_for}</span>
+									<span class="plan-cell"><em>Check-ins</em>{p.data.check_ins}</span>
+									<span class="plan-price">{plain(p.data.price)}</span>
+									<span class="plan-go" aria-hidden="true"><Arrow /></span>
+								</a>
+							</li>
+						))}
+					</ol>
+					<p class="plans-foot"><a class="text-link" href="/coaching"><span>Compare all plans</span><Arrow /></a></p>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		weekMeals.length > 0 && (
+			<section class="menu" aria-labelledby="menu-title">
+				<div class="menu-inner">
+					<div class="menu-photo">
+						<img src="/images/scene.webp" alt="A chicken and quinoa bowl and a green smoothie on a stone ledge, with a dumbbell, a folded towel and a mountain coast behind" width="1448" height="1086" loading="lazy" />
+					</div>
+					<div class="menu-copy">
+						<p class="mono-label">This week's menu</p>
+						<h2 id="menu-title" class="section-title">Cooked Saturday.<br />Ready Sunday.</h2>
+						<ul class="menu-list">
+							{weekMeals.map((m) => (
+								<li>
+									<span class="menu-name" {...m.edit.title}>{m.data.title}</span>
+									<span class="menu-macros">{macroLine(m.data)}</span>
+									<span class="menu-price">{plain(m.data.price)}</span>
+								</li>
+							))}
+						</ul>
+						{orderLines.length > 0 && (
+							<ul class="menu-order">
+								{orderLines.map((l) => <li>{l}</li>)}
+							</ul>
+						)}
+						<p class="menu-note">Macros are approximate, per serving. Prices are sample prices.</p>
+						<a class="btn btn-light" href="/meal-prep"><span>See the full menu</span><Arrow /></a>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		posts.length > 0 && (
+			<section class="journal" aria-labelledby="journal-title">
+				<div class="wrap">
+					<div class="section-head">
+						<div>
+							<p class="mono-label">Lifestyle</p>
+							<h2 id="journal-title" class="section-title">Recipes and<br />training notes.</h2>
+						</div>
+						<a class="text-link" href="/lifestyle"><span>All posts</span><Arrow /></a>
+					</div>
+					<ul class="post-list">
+						{posts.map((p) => {
+							const src = photoSrc(p.data.image, p.data.photo);
+							return (
+								<li>
+									<a class="post-card" href={postHref(p.data)}>
+										{src && <img src={src} alt={photoAlt(p.data.image, p.data.photo, p.data.title)} width="520" height="340" loading="lazy" />}
+										<span class="post-meta">{[p.data.category, formatDate(p.data.posted)].filter(Boolean).join(" / ")}</span>
+										<strong class="post-title" {...p.edit.title}>{p.data.title}</strong>
+										<span class="post-excerpt">{p.data.excerpt}</span>
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="start" aria-labelledby="start-title">
+		<div class="wrap start-inner">
+			<div>
+				<p class="mono-label">Get started</p>
+				<h2 id="start-title" class="section-title">Tell us what<br />you train for.</h2>
+			</div>
+			<div class="start-copy">
+				<p>Send your sport, your usual week and what you would like to change. We reply within two working days, and the first call is 20 minutes.</p>
+				<a class="btn btn-light" href="/contact"><span>Get Started</span><Arrow /></a>
+			</div>
+		</div>
+	</section>
+</Base>

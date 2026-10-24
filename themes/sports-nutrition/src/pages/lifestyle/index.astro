@@ -1,0 +1,51 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import { formatDate, getPosts, photoAlt, photoSrc, postHref } from "../../lib/nutri";
+
+const result = await getPosts();
+if (Astro.cache?.enabled) Astro.cache.set(result.cacheHint);
+const all = result.entries;
+const categories = [...new Set(all.map((p) => p.data.category).filter((c): c is string => Boolean(c)))];
+// ?category=<name> filters the list; an unknown value shows everything.
+const wanted = Astro.url.searchParams.get("category");
+const active = categories.find((c) => c.toLowerCase() === (wanted ?? "").toLowerCase());
+const posts = active ? all.filter((p) => p.data.category === active) : all;
+---
+
+<Base title="Lifestyle" description="Recipes, fuelling notes and training habits from the Nutriforce team. Filter by category: fuelling, recipes or training." current="/lifestyle">
+	<PageHead eyebrow="Lifestyle" title="Recipes and training notes." intro="Practical posts on eating around training, cooking ahead and the habits that make a plan easy to keep." />
+	<section class="journal-list" aria-label="Posts">
+		<div class="wrap">
+			{
+				categories.length > 0 && (
+					<nav class="filters" aria-label="Filter by category">
+						<a href="/lifestyle" aria-current={active ? undefined : "true"}>All</a>
+						{categories.map((c) => <a href={`/lifestyle?category=${encodeURIComponent(c)}`} aria-current={c === active ? "true" : undefined}>{c}</a>)}
+					</nav>
+				)
+			}
+			{
+				posts.length > 0 ? (
+					<ul class="post-grid">
+						{posts.map((p, i) => {
+							const src = photoSrc(p.data.image, p.data.photo);
+							return (
+								<li>
+									<a class="post-card" href={postHref(p.data)}>
+										{src && <img src={src} alt={photoAlt(p.data.image, p.data.photo, p.data.title)} width="520" height="340" loading={i < 3 ? "eager" : "lazy"} />}
+										<span class="post-meta">{[p.data.category, formatDate(p.data.posted)].filter(Boolean).join(" / ")}</span>
+										<strong class="post-title" {...p.edit.title}>{p.data.title}</strong>
+										<span class="post-excerpt">{p.data.excerpt}</span>
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				) : (
+					<p class="empty">No posts in this category yet.</p>
+				)
+			}
+		</div>
+	</section>
+</Base>

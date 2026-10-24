@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "sports-nutrition",
+	"kind": "theme",
+	"name": "Sports Nutrition",
+	"type": "company",
+	"emdash": "1.2.0",
+	"entry": "themes/sports-nutrition",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

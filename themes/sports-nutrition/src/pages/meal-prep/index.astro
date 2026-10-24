@@ -1,0 +1,56 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PageHead from "../../components/PageHead.astro";
+import { getMeals, getStudio, lines, macroLine, photoAlt, photoSrc } from "../../lib/nutri";
+
+const [mealsResult, studioResult] = await Promise.all([getMeals(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(mealsResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const meals = mealsResult.entries;
+const { studio } = studioResult;
+const orderLines = lines(studio.order_info);
+---
+
+<Base title="Meal Prep" description="Ready-to-eat meals cooked every Saturday and picked up on Sunday: ingredients, allergens, approximate macros per serving and sample prices, plus how the weekly order works.">
+	<PageHead eyebrow="Meal prep" title="Cooked Saturday. Ready Sunday." intro="Meals for the week ahead, made in our kitchen and collected on Sunday. Macros are approximate, per serving. Prices are sample prices." />
+	<section class="meal-section">
+		<div class="wrap meal-grid-wrap">
+			<aside class="order-card" aria-labelledby="order-title">
+				<p class="mono-label">Weekly order</p>
+				<h2 id="order-title" class="side-title">How ordering works</h2>
+				{orderLines.length > 0 && <ol class="order-list">{orderLines.map((l) => <li>{l}</li>)}</ol>}
+				<p class="side-action"><a class="btn btn-light" href="/contact?interest=meal-prep"><span>Send an order</span><Arrow /></a></p>
+				{studio.email && <p class="order-mail">Or write to <a href={`mailto:${studio.email}`}>{studio.email}</a></p>}
+			</aside>
+			<ul class="meal-list">
+				{
+					meals.map((m) => {
+						const src = photoSrc(m.data.image, m.data.photo);
+						return (
+							<li class="meal">
+								{src && <div class="meal-photo"><img src={src} alt={photoAlt(m.data.image, m.data.photo, m.data.title)} width="520" height="400" loading="lazy" /></div>}
+								<div class="meal-body">
+									<p class="meal-tags">
+										{m.data.this_week && <span class="chip chip-on">On this week's menu</span>}
+										{m.data.tag && <span class="chip">{m.data.tag}</span>}
+									</p>
+									<h2 class="meal-title" {...m.edit.title}>{m.data.title}</h2>
+									<p class="meal-sum">{m.data.summary}</p>
+									<p class="meal-macros">{macroLine(m.data)} <span>per serving, approximate</span></p>
+									<dl class="meal-facts">
+										<div><dt>Ingredients</dt><dd>{m.data.ingredients}</dd></div>
+										<div><dt>Allergens</dt><dd>{m.data.allergens}</dd></div>
+									</dl>
+									<p class="meal-price">{m.data.price}</p>
+								</div>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</div>
+	</section>
+</Base>
