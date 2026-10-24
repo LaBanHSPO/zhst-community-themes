@@ -1,0 +1,22 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+---
+
+<Base title="Page not found">
+	<section class="notfound" aria-labelledby="nf-title">
+		<div class="wrap notfound-inner">
+			<div class="notfound-copy">
+				<p class="eyebrow">Error 404</p>
+				<h1 id="nf-title" class="display">This table is not set.</h1>
+				<p class="lede">The page you are looking for has moved or never existed. Start again from one of these.</p>
+				<div class="actions">
+					<a class="pill pill-green" href="/">Back to home <Arrow /></a>
+					<a class="pill pill-ghost" href="/experiences">Experiences</a>
+					<a class="pill pill-ghost" href="/contact">Plan Your Trip</a>
+				</div>
+			</div>
+			<img class="notfound-photo" src="/images/garlic-chili.webp" alt="Braids of garlic and strings of dried red chilies hanging at a market stall" width="430" height="470" />
+		</div>
+	</section>
+</Base>

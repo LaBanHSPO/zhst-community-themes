@@ -1,0 +1,120 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import ExperienceCard from "../../components/ExperienceCard.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { DIETS, altFor, formatPrice, getDestinations, getExperiences, lines, photoSrc, typeLabel } from "../../lib/food";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: exp, cacheHint } = await getEmDashEntry("experiences", slug);
+if (!exp) return Astro.rewrite("/404");
+
+const [expResult, destResult, settings] = await Promise.all([getExperiences(), getDestinations(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(expResult.cacheHint);
+	Astro.cache.set(destResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(exp, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = exp.data;
+const key = d.slug ?? d.id;
+const src = photoSrc(d.image, d.photo);
+const place = destResult.destinations.find((x) => (x.data.slug ?? x.data.id) === d.destination);
+const placeLabel = place ? `${place.data.title}, ${place.data.country}` : d.destination;
+const tastes = lines(d.tastes);
+const clock = /^\d/.test(d.start_time);
+const related = expResult.experiences.filter((e) => e.data.id !== d.id && (e.data.exp_type === d.exp_type || e.data.destination === d.destination)).slice(0, 3);
+const more = related.length > 0 ? related : expResult.experiences.filter((e) => e.data.id !== d.id).slice(0, 3);
+const placeOf = new Map(destResult.destinations.map((x) => [x.data.slug ?? x.data.id, x.data.title]));
+const dietOf = (k: string) => ((d as unknown as Record<string, unknown>)[k] === "yes" ? "Yes" : "Ask us first");
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "experiences", id: d.id, slug }}
+	current="/experiences"
+>
+	<article>
+		<header class="page-head xp-head">
+			<div class="wrap">
+				<nav class="crumbs" aria-label="Breadcrumb">
+					<a href="/experiences">Experiences</a>
+					<span aria-hidden="true">/</span>
+					<a href={`/experiences?type=${d.exp_type}`}>{typeLabel(d.exp_type)}s</a>
+				</nav>
+				<p class="eyebrow">{typeLabel(d.exp_type)}</p>
+				<h1 class="display" {...exp.edit.title}>{d.title}</h1>
+				<p class="lede">{d.summary}</p>
+			</div>
+		</header>
+		{src && <figure class="xp-cover wrap"><img src={src} alt={d.image?.alt || altFor(d.photo)} width="1200" height="520" /></figure>}
+
+		<section class="xp-body">
+			<div class="wrap xp-grid">
+				<div class="xp-main">
+					{d.intro && <p class="prose-lead">{d.intro}</p>}
+					<dl class="facts">
+						<div><dt>Destination</dt><dd><a href={`/experiences?destination=${d.destination}`}>{placeLabel}</a></dd></div>
+						<div><dt>Duration</dt><dd>{d.duration}</dd></div>
+						<div><dt>{clock ? "Start time" : "Arrival"}</dt><dd>{d.start_time}</dd></div>
+						<div><dt>Group size</dt><dd>Up to {d.group_max} guests</dd></div>
+						{d.runs && <div class="facts-wide"><dt>Runs</dt><dd>{d.runs}</dd></div>}
+						<div class="facts-wide"><dt>Meeting point</dt><dd>{d.meeting_point}{d.meeting_note && <span class="facts-note">{d.meeting_note}</span>}</dd></div>
+					</dl>
+
+					{
+						tastes.length > 0 && (
+							<>
+								<h2>{d.exp_type === "cooking" ? "What you will make" : d.exp_type === "multi-day" ? "What is on the plan" : "What you will taste"}</h2>
+								<ul class="ticks ticks-wide">{tastes.map((t) => <li>{t}</li>)}</ul>
+							</>
+						)
+					}
+					{d.content && d.content.length > 0 && <div class="prose"><PortableText value={d.content} /></div>}
+				</div>
+				<aside class="side-stack">
+					<div class="side-box side-book">
+						<p class="side-price">From {formatPrice(d.price_from)}</p>
+						<p class="small">Sample price. This is an enquiry, not a booking. We reply by email with dates and how to pay.</p>
+						<a class="pill pill-green pill-block" href={`/contact?experience=${encodeURIComponent(key)}`}>Ask about this experience <Arrow /></a>
+					</div>
+					<div class="side-box">
+						<h2>Dietary options</h2>
+						<dl class="diet-list">
+							{DIETS.map((x) => <><dt>{x.label}</dt><dd class:list={{ "is-yes": dietOf(x.key) === "Yes" }}>{dietOf(x.key)}</dd></>)}
+						</dl>
+						<p class="small">Allergies need a conversation first. <a href="/allergies-and-diets">Read how we handle them</a>.</p>
+					</div>
+				</aside>
+			</div>
+		</section>
+	</article>
+
+	{
+		more.length > 0 && (
+			<section class="band" aria-labelledby="related-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">{related.length > 0 ? "Similar experiences" : "More experiences"}</p>
+							<h2 id="related-title" class="display">Also on offer</h2>
+						</div>
+						<a class="link-arrow" href="/experiences">All experiences <Arrow /></a>
+					</div>
+					<ul class="xcard-grid">
+						{more.map((e) => <li><ExperienceCard entry={e} place={placeOf.get(e.data.destination) ?? ""} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+</Base>

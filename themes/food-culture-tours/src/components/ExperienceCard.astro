@@ -1,0 +1,32 @@
+---
+import { altFor, formatPrice, photoSrc, typeLabel } from "../lib/food";
+import type { ExperienceEntry } from "../lib/food";
+
+interface Props {
+	entry: ExperienceEntry;
+	place: string;
+}
+const { entry, place } = Astro.props;
+const d = entry.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<a class="xcard" href={`/experiences/${d.slug ?? d.id}`}>
+	<span class="xcard-photo">{src && <img src={src} alt={d.image?.alt || altFor(d.photo)} width="640" height="400" loading="lazy" />}</span>
+	<span class="xcard-body">
+		<span class="xcard-type">{typeLabel(d.exp_type)}{place && <> · {place}</>}</span>
+		<span class="xcard-title" {...entry.edit.title}>{d.title}</span>
+		<span class="xcard-summary">{d.summary}</span>
+		<span class="xcard-meta">
+			<span>{d.duration}</span>
+			<span>Up to {d.group_max}</span>
+			<span>{/^\d/.test(d.start_time) ? `Starts ${d.start_time}` : d.start_time}</span>
+		</span>
+		<span class="xcard-foot">
+			<span class="xcard-price">From {formatPrice(d.price_from)}</span>
+			<span class="xcard-go" aria-hidden="true">
+				<svg width="16" height="12" viewBox="0 0 16 12" focusable="false"><path d="M0 6h14.5M9.5 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+			</span>
+		</span>
+	</span>
+</a>

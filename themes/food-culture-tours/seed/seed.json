@@ -1,0 +1,1322 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Food Culture Tours",
+    "description": "A food tour operator theme with a market photo hero, cream sections and a dark green pill header, plus experiences, destinations, hosts and a mailto enquiry form.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "Food Culture Tours",
+    "tagline": "People  Places  Good Food"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "experiences",
+      "label": "Experiences",
+      "labelSingular": "Experience",
+      "urlPattern": "/experiences/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Experience name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "exp_type",
+          "label": "Type",
+          "type": "select",
+          "required": true,
+          "defaultValue": "market",
+          "indexed": true,
+          "validation": {
+            "options": [
+              "market",
+              "cooking",
+              "lunch",
+              "multi-day"
+            ]
+          }
+        },
+        {
+          "slug": "destination",
+          "label": "Destination (slug of a destination)",
+          "type": "string",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "slug": "duration",
+          "label": "Duration (e.g. 3 hours 30 minutes)",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "group_max",
+          "label": "Largest group",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "slug": "start_time",
+          "label": "Start time (e.g. 08:30)",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "runs",
+          "label": "Days it runs (plain words)",
+          "type": "string"
+        },
+        {
+          "slug": "diet_vegetarian",
+          "label": "Vegetarian version",
+          "type": "select",
+          "defaultValue": "yes",
+          "validation": {
+            "options": [
+              "yes",
+              "ask"
+            ]
+          }
+        },
+        {
+          "slug": "diet_vegan",
+          "label": "Vegan version",
+          "type": "select",
+          "defaultValue": "ask",
+          "validation": {
+            "options": [
+              "yes",
+              "ask"
+            ]
+          }
+        },
+        {
+          "slug": "diet_gluten_free",
+          "label": "Gluten-free version",
+          "type": "select",
+          "defaultValue": "ask",
+          "validation": {
+            "options": [
+              "yes",
+              "ask"
+            ]
+          }
+        },
+        {
+          "slug": "price_from",
+          "label": "Price per person in whole euros (placeholder)",
+          "type": "integer"
+        },
+        {
+          "slug": "tastes",
+          "label": "What you will taste or make (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "meeting_point",
+          "label": "Meeting point",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "meeting_note",
+          "label": "How to recognize us at the meeting point",
+          "type": "text"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph (detail page)",
+          "type": "text"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "content",
+          "label": "Extra page content",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "destinations",
+      "label": "Destinations",
+      "labelSingular": "Destination",
+      "urlPattern": "/destinations",
+      "supports": [
+        "drafts",
+        "revisions",
+        "search"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Place name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "country",
+          "label": "Country",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "blurb",
+          "label": "What the place is like",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "season",
+          "label": "Best months",
+          "type": "string"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "hosts",
+      "label": "Hosts",
+      "labelSingular": "Host",
+      "urlPattern": "/about",
+      "supports": [
+        "drafts",
+        "revisions",
+        "search"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "First name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "role",
+          "label": "Role",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "place",
+          "label": "Based in",
+          "type": "string"
+        },
+        {
+          "slug": "bio",
+          "label": "Two sentences about them",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Portrait (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled portrait path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "company",
+      "label": "Company details",
+      "labelSingular": "Company details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Company name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "street",
+          "label": "Street address",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "locality",
+          "label": "Town and country",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Enquiry email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "office",
+          "label": "Desk hours (one per line, as Day|Hours)",
+          "type": "text"
+        },
+        {
+          "slug": "booking_note",
+          "label": "Note shown beside the enquiry form",
+          "type": "text"
+        },
+        {
+          "slug": "day_text",
+          "label": "How a tour day runs (one per line, as Time|What happens)",
+          "type": "text"
+        },
+        {
+          "slug": "diet_text",
+          "label": "Allergies and diets paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "plan_text",
+          "label": "Plan your trip band paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "licence_note",
+          "label": "Licences and insurance (owner to fill in)",
+          "type": "text"
+        },
+        {
+          "slug": "safety_note",
+          "label": "Food safety registration (owner to fill in)",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Experiences",
+          "url": "/experiences"
+        },
+        {
+          "type": "custom",
+          "label": "Destinations",
+          "url": "/destinations"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "A small company that likes feeding people.",
+          "eyebrow": "About",
+          "intro": "Food Culture Tours is six hosts in five towns. We take small groups into the markets, kitchens and tables where we eat ourselves.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k112",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We started with one market walk on Tuesdays in Marenta. People asked if they could come back and cook, so we added a kitchen. Then they asked about lunch, then about other towns. Each new place came from a host we already knew.",
+                  "_key": "k112s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k113",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How we work",
+                  "_key": "k113s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k114",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Groups are never larger than twelve, and most are eight or fewer. That is how many people can stand at a market stall without blocking it, and how many can sit at one table and hear each other.",
+                  "_key": "k114s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k115",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We buy from the same producers every week and we pay them the price on the stall. When we bring a group, they know us by name and they have time to talk.",
+                  "_key": "k115s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k116",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Hosts are named on every experience page. If you want one host in particular, say so when you ask for a date.",
+                  "_key": "k116s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k117",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Food and hosts",
+                  "_key": "k117s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k118",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Every experience has a vegetarian version. Vegan and gluten-free versions are marked yes or ask on each experience page. We cook with wheat, eggs, dairy, nuts and shellfish in most kitchens and cannot promise an allergen-free table.",
+                  "_key": "k118s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "allergies-and-diets",
+        "slug": "allergies-and-diets",
+        "status": "published",
+        "data": {
+          "title": "Allergies and special diets (sample text)",
+          "eyebrow": "Allergies and diets",
+          "intro": "Sample wording only. Replace it with your own policy before you publish.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k119",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This page is placeholder text so the site has a policy page to link to. It is not legal or medical advice.",
+                  "_key": "k119s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k120",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Tell us early",
+                  "_key": "k120s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k121",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Write to us about allergies and diets when you ask for a date, not on the morning. We read every enquiry and reply with what we can and cannot do on that experience.",
+                  "_key": "k121s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k122",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we cannot promise",
+                  "_key": "k122s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k123",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Our kitchens handle wheat, eggs, dairy, tree nuts, sesame, fish and shellfish. Traces can be present in any dish. If a reaction could be serious, we will say plainly that a tour may not be safe for you.",
+                  "_key": "k123s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k124",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Children",
+                  "_key": "k124s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k125",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Children of any age may join the market walks and long lunches with an adult. Cooking classes are for ages ten and up with an adult.",
+                  "_key": "k125s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "changes-and-cancellations",
+        "slug": "changes-and-cancellations",
+        "status": "published",
+        "data": {
+          "title": "Changes and cancellations (sample text)",
+          "eyebrow": "Changes and cancellations",
+          "intro": "Sample wording only. Replace it with your own terms.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k126",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This page is placeholder text so the site has a cancellations page to link to.",
+                  "_key": "k126s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k127",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you change the date",
+                  "_key": "k127s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k128",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Write to us at least seven days before. We move you to another date if there is space, at no charge.",
+                  "_key": "k128s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k129",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you cancel",
+                  "_key": "k129s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k130",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Replace this paragraph with your refund terms. Say what you refund, by when, and how.",
+                  "_key": "k130s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k131",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If we cancel",
+                  "_key": "k131s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k132",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If a host is ill or the market is closed, we offer another date or a full refund. Replace this paragraph with your own wording.",
+                  "_key": "k132s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "experiences": [
+      {
+        "id": "morning-at-the-piazza-market",
+        "slug": "morning-at-the-piazza-market",
+        "status": "published",
+        "data": {
+          "title": "Morning at the Piazza Market",
+          "summary": "Walk the weekday market with Giulia, meet three producers and finish with a tasting at a shared table.",
+          "exp_type": "market",
+          "destination": "marenta-coast",
+          "duration": "3 hours",
+          "group_max": 8,
+          "start_time": "08:30",
+          "runs": "Tuesday to Saturday",
+          "diet_vegetarian": "yes",
+          "diet_vegan": "yes",
+          "diet_gluten_free": "yes",
+          "price_from": 65,
+          "tastes": "Sheep's cheese with warm bread\nBlood oranges and early lemons\nOlives from the Ferrante family stall\nCoffee and a small almond cake",
+          "meeting_point": "Fountain of the Four Lemons, Piazza Verde",
+          "meeting_note": "Giulia wears a green apron and carries a woven market basket.",
+          "intro": "The market in Piazza Verde runs from seven until one. We arrive when the stalls are still being set up, because that is when the producers have time to talk. You taste as you go and can buy what you like to take home.",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/card-market.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k100",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What the morning looks like",
+                  "_key": "k100s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k101",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We start at the fountain and walk the market in a loop, stopping at three stalls that Giulia has bought from for years. At each one the producer explains what is in season and what to ask for.",
+                  "_key": "k101s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k102",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The tasting at the end happens at a long table in the old grain store behind the square. Bread, cheese, fruit and coffee. Nothing is rushed, and the group is never more than eight.",
+                  "_key": "k102s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "fresh-pasta-by-hand",
+        "slug": "fresh-pasta-by-hand",
+        "status": "published",
+        "data": {
+          "title": "Fresh Pasta by Hand",
+          "summary": "Learn to roll, fill and shape two kinds of pasta with Luca, then eat what you made at his long table.",
+          "exp_type": "cooking",
+          "destination": "san-tiberio",
+          "duration": "3 hours 30 minutes",
+          "group_max": 8,
+          "start_time": "10:00",
+          "runs": "Monday to Saturday",
+          "diet_vegetarian": "yes",
+          "diet_vegan": "ask",
+          "diet_gluten_free": "ask",
+          "price_from": 95,
+          "tastes": "Egg pasta, rolled and cut by hand\nFilled pasta with ricotta and herbs\nA plain tomato sauce\nA glass of local white wine, or juice",
+          "meeting_point": "Luca's kitchen, 4 Via del Forno, San Tiberio",
+          "meeting_note": "The green door next to the bakery. Ring the bell twice.",
+          "intro": "Luca teaches the way his grandmother taught him: no scales, a lot of flour on the table and a lot of patience. Everyone makes their own dough and shapes their own pasta.",
+          "featured": true,
+          "position": 20,
+          "photo": "/images/class-pasta.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k103",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Before you book",
+                  "_key": "k103s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k104",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The dough uses wheat flour and eggs. If you need a gluten-free or egg-free version, tell us when you enquire and Luca will say honestly what he can change. We will not promise a table free of flour dust.",
+                  "_key": "k104s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k105",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Aprons are provided. Wear shoes you can stand in for a few hours.",
+                  "_key": "k105s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "long-lunch-on-the-terrace",
+        "slug": "long-lunch-on-the-terrace",
+        "status": "published",
+        "data": {
+          "title": "Long Lunch on the Terrace",
+          "summary": "Four courses of market vegetables and the morning's fish, served at one table above the sea.",
+          "exp_type": "lunch",
+          "destination": "marenta-coast",
+          "duration": "3 hours",
+          "group_max": 12,
+          "start_time": "12:30",
+          "runs": "Wednesday to Sunday",
+          "diet_vegetarian": "yes",
+          "diet_vegan": "ask",
+          "diet_gluten_free": "yes",
+          "price_from": 110,
+          "tastes": "Marinated anchovies or artichokes\nA pasta course\nGrilled fish, or a vegetable main\nLemon cake and coffee",
+          "meeting_point": "Terrazza Limone, 9 Via Alta, Marenta",
+          "meeting_note": "Ask for the table with the blue cloth. Your host is Giulia or Anna.",
+          "intro": "One long table, one menu that changes with the market, and nobody checking the time. Most guests stay until after three.",
+          "featured": true,
+          "position": 30,
+          "photo": "/images/card-lunch.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k106",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How the lunch works",
+                  "_key": "k106s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k107",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The menu is set each morning after Giulia visits the market and the harbour. We tell you the dishes when you arrive, and you tell us what you cannot eat.",
+                  "_key": "k107s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k108",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Wine is poured with each course. A non-alcoholic pairing is always available.",
+                  "_key": "k108s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "tomato-and-basil-kitchen",
+        "slug": "tomato-and-basil-kitchen",
+        "status": "published",
+        "data": {
+          "title": "Tomato and Basil Kitchen",
+          "summary": "Cook a tomato lunch with Tomas: a cold soup, tomato bread, a slow stew and a salad from the garden.",
+          "exp_type": "cooking",
+          "destination": "torre-almina",
+          "duration": "3 hours",
+          "group_max": 10,
+          "start_time": "11:00",
+          "runs": "Tuesday to Sunday",
+          "diet_vegetarian": "yes",
+          "diet_vegan": "yes",
+          "diet_gluten_free": "yes",
+          "price_from": 80,
+          "tastes": "Cold tomato soup with olive oil\nBread rubbed with ripe tomato\nSlow tomato and bean stew\nGarden salad with basil",
+          "meeting_point": "Casa Almina, 17 Calle del Huerto, Torre Almina",
+          "meeting_note": "A blue gate beside the water tower. Tomas will be at the gate at ten to eleven.",
+          "intro": "Tomas grows the tomatoes himself, so the class starts in the garden with a basket. Most of the menu is vegetarian by default, and every dish can be made vegan and gluten-free.",
+          "featured": false,
+          "position": 40,
+          "photo": "/images/produce.webp"
+        }
+      },
+      {
+        "id": "spice-and-garlic-stalls",
+        "slug": "spice-and-garlic-stalls",
+        "status": "published",
+        "data": {
+          "title": "Spice and Garlic Stalls",
+          "summary": "A short morning at the harbour stalls with Nikos: dried herbs, garlic, chili and the cheese that goes with them.",
+          "exp_type": "market",
+          "destination": "thalia-bay",
+          "duration": "2 hours 30 minutes",
+          "group_max": 8,
+          "start_time": "09:00",
+          "runs": "Monday to Saturday",
+          "diet_vegetarian": "yes",
+          "diet_vegan": "yes",
+          "diet_gluten_free": "yes",
+          "price_from": 55,
+          "tastes": "Mountain tea and dried oregano\nGarlic, chili and capers\nGoat's cheese and thick yogurt\nHoney on warm bread",
+          "meeting_point": "The blue ferry kiosk on the quay, Thalia Bay",
+          "meeting_note": "Nikos has a grey beard and a canvas shopping bag.",
+          "intro": "A small harbour market where most of the stalls are run by the people who picked or made what they sell. Nikos takes you to the ones he buys from.",
+          "featured": false,
+          "position": 50,
+          "photo": "/images/garlic-chili.webp"
+        }
+      },
+      {
+        "id": "cheese-counter-walk",
+        "slug": "cheese-counter-walk",
+        "status": "published",
+        "data": {
+          "title": "Cheese Counter Walk",
+          "summary": "Visit a cheese counter, a bakery and a cured-meat shop with Luca, and learn how to order at each one.",
+          "exp_type": "market",
+          "destination": "san-tiberio",
+          "duration": "2 hours",
+          "group_max": 8,
+          "start_time": "10:30",
+          "runs": "Tuesday to Saturday",
+          "diet_vegetarian": "yes",
+          "diet_vegan": "ask",
+          "diet_gluten_free": "ask",
+          "price_from": 50,
+          "tastes": "Three cheeses, young to aged\nTwo kinds of bread\nCured meats (a vegetarian plate is available)\nA small glass of local wine or juice",
+          "meeting_point": "Piazza del Pozzo, by the well, San Tiberio",
+          "meeting_note": "Luca carries a clipboard with the route on it. The route is not secret.",
+          "intro": "This one is for people who want to feel at ease in a food shop. We stop at three counters and Luca teaches the words you need: how much, how ripe, how it is usually eaten.",
+          "featured": false,
+          "position": 60,
+          "photo": "/images/cheese-board.webp"
+        }
+      },
+      {
+        "id": "three-days-on-the-marenta-coast",
+        "slug": "three-days-on-the-marenta-coast",
+        "status": "published",
+        "data": {
+          "title": "Three Days on the Marenta Coast",
+          "summary": "Three days and two nights in a family hotel: the market, a cooking class and the terrace lunch, with free time between.",
+          "exp_type": "multi-day",
+          "destination": "marenta-coast",
+          "duration": "3 days, 2 nights",
+          "group_max": 10,
+          "start_time": "Arrive the evening before",
+          "runs": "Every other Friday, April to October",
+          "diet_vegetarian": "yes",
+          "diet_vegan": "ask",
+          "diet_gluten_free": "ask",
+          "price_from": 690,
+          "tastes": "Day one: market morning and a harbour walk\nDay two: pasta class and the terrace lunch\nDay three: lemon terraces and a farewell breakfast",
+          "meeting_point": "Hotel Casa Limone reception, Marenta",
+          "meeting_note": "Anna meets the group in the lobby at six in the evening on the day before.",
+          "intro": "A relaxed long weekend. The food days are in the morning and at midday, and the afternoons are yours for swimming, walking or sleeping. Two nights in a small hotel, breakfast and four meals included.",
+          "featured": true,
+          "position": 70,
+          "photo": "/images/coast-town.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k109",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What is included",
+                  "_key": "k109s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k110",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Two nights in a shared-bathroom family hotel or a private room for a supplement, breakfast every day, the market morning, the pasta class and the terrace lunch, and the lemon terrace walk.",
+                  "_key": "k110s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k111",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Flights, transfers to Marenta and drinks outside the meals are not included.",
+                  "_key": "k111s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "five-days-in-the-hill-towns",
+        "slug": "five-days-in-the-hill-towns",
+        "status": "published",
+        "data": {
+          "title": "Five Days in the Hill Towns",
+          "summary": "Five days and four nights between three hill towns, with a cooking class, an olive mill visit and one long lunch each day.",
+          "exp_type": "multi-day",
+          "destination": "san-tiberio",
+          "duration": "5 days, 4 nights",
+          "group_max": 8,
+          "start_time": "Arrive the evening before",
+          "runs": "Departs monthly, May to October",
+          "diet_vegetarian": "yes",
+          "diet_vegan": "ask",
+          "diet_gluten_free": "ask",
+          "price_from": 1150,
+          "tastes": "Pasta, bread and a slow Sunday sauce\nOlive oil from the press\nCheese from the hill farms\nA different long table every day",
+          "meeting_point": "Piazza del Pozzo, San Tiberio",
+          "meeting_note": "Luca meets the group at the well at five in the afternoon.",
+          "intro": "We move by minibus between San Tiberio and two smaller towns, with one meal and one activity each day. The groups are small so we can eat at family tables, not restaurants.",
+          "featured": false,
+          "position": 80,
+          "photo": "/images/tomato-woman.webp"
+        }
+      },
+      {
+        "id": "lunch-with-a-stallholder",
+        "slug": "lunch-with-a-stallholder",
+        "status": "published",
+        "data": {
+          "title": "Lunch with a Stallholder",
+          "summary": "Shop the harbour market with Ines, then eat a long lunch at the home of a stallholder who has sold there for forty years.",
+          "exp_type": "lunch",
+          "destination": "vila-raposa",
+          "duration": "3 hours",
+          "group_max": 6,
+          "start_time": "11:30",
+          "runs": "Tuesday to Saturday",
+          "diet_vegetarian": "yes",
+          "diet_vegan": "ask",
+          "diet_gluten_free": "yes",
+          "price_from": 90,
+          "tastes": "Grilled sardines or grilled vegetables\nRice cooked with the day's shellfish, or with beans\nBread, olives and salted almonds\nEgg and cinnamon pudding",
+          "meeting_point": "Harbour Market gate, Vila Raposa",
+          "meeting_note": "Ines wears a red scarf and holds a paper bag from the bakery.",
+          "intro": "Six places at a family table. You shop first, so you know where the lunch came from, and you eat in a home, not a dining room.",
+          "featured": false,
+          "position": 90,
+          "photo": "/images/vendor-stall.webp"
+        }
+      },
+      {
+        "id": "sunday-table-cook-and-eat",
+        "slug": "sunday-table-cook-and-eat",
+        "status": "published",
+        "data": {
+          "title": "Sunday Table: Cook and Eat",
+          "summary": "A relaxed class where the group cooks one big shared meal and sits down to it at two o'clock.",
+          "exp_type": "cooking",
+          "destination": "torre-almina",
+          "duration": "4 hours",
+          "group_max": 12,
+          "start_time": "10:30",
+          "runs": "Sundays",
+          "diet_vegetarian": "yes",
+          "diet_vegan": "yes",
+          "diet_gluten_free": "ask",
+          "price_from": 85,
+          "tastes": "A rice dish cooked in a wide pan\nRoasted vegetables with almond sauce\nFried dough with honey\nWine, juice and coffee",
+          "meeting_point": "Casa Almina, 17 Calle del Huerto, Torre Almina",
+          "meeting_note": "A blue gate beside the water tower. Tomas will be at the gate at half past ten.",
+          "intro": "A slower class for groups of friends and families. Children from ten years old can join if an adult comes with them.",
+          "featured": false,
+          "position": 100,
+          "photo": "/images/table-wide.webp"
+        }
+      }
+    ],
+    "destinations": [
+      {
+        "id": "marenta-coast",
+        "slug": "marenta-coast",
+        "status": "published",
+        "data": {
+          "title": "Marenta Coast",
+          "country": "Italy",
+          "blurb": "A steep coastal town of lemon terraces, with a produce market every morning and a harbour where the boats land before dawn.",
+          "season": "April to October",
+          "position": 10,
+          "photo": "/images/coast-town.webp"
+        }
+      },
+      {
+        "id": "san-tiberio",
+        "slug": "san-tiberio",
+        "status": "published",
+        "data": {
+          "title": "San Tiberio",
+          "country": "Italy",
+          "blurb": "A hill town of stone lanes, bakeries and olive mills, about an hour inland from the coast.",
+          "season": "March to November",
+          "position": 20,
+          "photo": "/images/class-pasta.webp"
+        }
+      },
+      {
+        "id": "vila-raposa",
+        "slug": "vila-raposa",
+        "status": "published",
+        "data": {
+          "title": "Vila Raposa",
+          "country": "Portugal",
+          "blurb": "A fishing and farming town at the mouth of a river. The harbour market opens at six in the morning.",
+          "season": "May to October",
+          "position": 30,
+          "photo": "/images/vendor-stall.webp"
+        }
+      },
+      {
+        "id": "torre-almina",
+        "slug": "torre-almina",
+        "status": "published",
+        "data": {
+          "title": "Torre Almina",
+          "country": "Spain",
+          "blurb": "A walled town of tomato farms and orange groves, where lunch starts late and ends later.",
+          "season": "April to November",
+          "position": 40,
+          "photo": "/images/produce.webp"
+        }
+      },
+      {
+        "id": "thalia-bay",
+        "slug": "thalia-bay",
+        "status": "published",
+        "data": {
+          "title": "Thalia Bay",
+          "country": "Greece",
+          "blurb": "A small island harbour with herb sellers, goat's cheese and fishing boats unloading at the quay.",
+          "season": "May to September",
+          "position": 50,
+          "photo": "/images/garlic-chili.webp"
+        }
+      }
+    ],
+    "hosts": [
+      {
+        "id": "giulia",
+        "slug": "giulia",
+        "status": "published",
+        "data": {
+          "title": "Giulia",
+          "role": "Market host",
+          "place": "Marenta Coast",
+          "bio": "Giulia grew up above a fruit stall in Piazza Verde. She knows which grower has the first figs and which one only sells to regulars.",
+          "position": 10
+        }
+      },
+      {
+        "id": "luca",
+        "slug": "luca",
+        "status": "published",
+        "data": {
+          "title": "Luca",
+          "role": "Cooking host",
+          "place": "San Tiberio",
+          "bio": "Luca ran a bakery kitchen for twelve years before he started teaching. He cooks for a table of eight the same way he cooks for his family.",
+          "position": 20,
+          "photo": "/images/host-luca.webp"
+        }
+      },
+      {
+        "id": "ines",
+        "slug": "ines",
+        "status": "published",
+        "data": {
+          "title": "Ines",
+          "role": "Lunch host",
+          "place": "Vila Raposa",
+          "bio": "Ines worked the harbour market as a teenager and still knows every stallholder by name. She plans each lunch around what came off the boats that morning.",
+          "position": 30
+        }
+      },
+      {
+        "id": "tomas",
+        "slug": "tomas",
+        "status": "published",
+        "data": {
+          "title": "Tomas",
+          "role": "Cooking host",
+          "place": "Torre Almina",
+          "bio": "Tomas farms tomatoes and beans outside Torre Almina and teaches in his own garden kitchen. He talks about soil more than most people talk about recipes.",
+          "position": 40
+        }
+      },
+      {
+        "id": "nikos",
+        "slug": "nikos",
+        "status": "published",
+        "data": {
+          "title": "Nikos",
+          "role": "Market host",
+          "place": "Thalia Bay",
+          "bio": "Nikos has run the quay stalls' unofficial tour for years, usually for friends who visit. He started doing it properly when the friends began to bring friends.",
+          "position": 50
+        }
+      },
+      {
+        "id": "anna",
+        "slug": "anna",
+        "status": "published",
+        "data": {
+          "title": "Anna",
+          "role": "Trip planner",
+          "place": "Marenta Coast",
+          "bio": "Anna answers the enquiries, builds multi-day trips and meets groups at the hotel. She is the person to write to about diets, access and dates.",
+          "position": 60
+        }
+      }
+    ],
+    "company": [
+      {
+        "id": "company",
+        "slug": "company",
+        "status": "published",
+        "data": {
+          "title": "Food Culture Tours",
+          "street": "12 Via dei Limoni",
+          "locality": "Marenta, Italy",
+          "phone": "+39 055 555 0147",
+          "email": "plan@food-culture-tours.example",
+          "office": "Monday to Friday|9:00 am to 5:30 pm, Central European Time\nSaturday|9:00 am to 1:00 pm\nSunday|Closed. Email and we reply on Monday",
+          "booking_note": "This is an enquiry, not a booking. Anna replies by email, usually within one working day, with dates, the price and how to pay.",
+          "day_text": "08:30|We meet at the fountain in Piazza Verde. Giulia hands out baskets and says who is who in the market.\n09:00|Three stalls, three producers. You taste as you go and buy what you want to cook with.\n11:00|Back to the kitchen above the old grain store. Everyone gets an apron and a job.\n13:00|We eat at one long table: what we cooked, bread, and wine or juice.\n15:30|Coffee, then the recipes arrive by email. Giulia walks anyone heading back down to the harbour.",
+          "diet_text": "Tell us about allergies and diets when you ask for a date. Every experience has a vegetarian version. Most kitchens use wheat, eggs, dairy, nuts and shellfish, so we cannot promise an allergen-free table, but we will say honestly what we can do.",
+          "plan_text": "Tell us when you want to come, how many of you there are and what you cannot eat. Anna writes back with dates and a price.",
+          "licence_note": "Placeholder for the owner: add your tour operator licence number, the insurance provider and policy period, and the date of your last review.",
+          "safety_note": "Placeholder for the owner: add your food-business registration number, the authority that issued it, and the date of your last hygiene inspection."
+        }
+      }
+    ]
+  }
+}

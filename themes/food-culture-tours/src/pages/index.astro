@@ -1,0 +1,165 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import { DIETS, altFor, formatPrice, getCompany, getDestinations, getExperiences, photoSrc, rows, telHref, typeLabel } from "../lib/food";
+
+const [expResult, destResult, companyResult] = await Promise.all([getExperiences(), getDestinations(), getCompany()]);
+for (const r of [expResult, destResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const { company } = companyResult;
+const all = expResult.experiences;
+const placeOf = new Map(destResult.destinations.map((d) => [d.data.slug ?? d.data.id, d.data.title]));
+const featured = all.filter((e) => e.data.featured).slice(0, 4);
+const day = rows(company.day_text);
+const diets = DIETS.map((diet) => {
+	const yes = all.filter((e) => (e.data as unknown as Record<string, unknown>)[diet.key] === "yes").length;
+	return { label: diet.label, yes, ask: all.length - yes };
+});
+
+const cards = [
+	{
+		type: "market",
+		title: "Vibrant Markets",
+		sub: "Meet local producers and taste the freshest flavors.",
+		src: "/images/card-market.webp",
+	},
+	{
+		type: "cooking",
+		title: "Hands-On Experiences",
+		sub: "Cook, learn and create together.",
+		src: "/images/card-pasta.webp",
+	},
+	{
+		type: "lunch",
+		title: "Meaningful Encounters",
+		sub: "Share meals. Hear new perspectives. Feel at home.",
+		src: "/images/card-lunch.webp",
+	},
+];
+---
+
+<Base
+	title="Food Culture Tours"
+	description="Market walks, cooking classes and long lunches in five food towns in Italy, Portugal, Spain and Greece. Small groups, local hosts, enquiries by email."
+	overlay
+>
+	<section class="hero">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A smiling woman in a straw hat holds a ripe tomato at a sunny market stall while a stallholder in a flat cap smiles behind the crates, with stone buildings in the background"
+			width="1448"
+			height="625"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<h1>Taste the <br />stories of a place.</h1>
+			<p class="hero-sub">Food brings people together. Our tours take you deeper:<br class="br-wide" /> into the flavors, traditions and local lives that make a place unique.</p>
+			<a class="pill pill-coral" href="/experiences">Discover experiences <Arrow /></a>
+			<p class="hero-keys">Markets <span aria-hidden="true">/</span> Cooking <span aria-hidden="true">/</span> Culture <span aria-hidden="true">/</span> Real connections</p>
+		</div>
+	</section>
+
+	<section class="intro" aria-labelledby="intro-title">
+		<p class="rule-eyebrow"><span>More than a tour</span></p>
+		<h2 id="intro-title" class="display">Real food. Richer connections.</h2>
+		<ul class="photo-cards">
+			{
+				cards.map((c) => (
+					<li>
+						<a class="photo-card" href={`/experiences?type=${c.type}`}>
+							<span class="photo-card-img"><img src={c.src} alt={altFor(c.src)} width="852" height="460" loading="lazy" /></span>
+							<span class="photo-card-title">{c.title}</span>
+							<span class="photo-card-sub">{c.sub}</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<section class="board" aria-labelledby="board-title">
+		<div class="wrap">
+			<p class="rule-eyebrow"><span>Coming up</span></p>
+			<h2 id="board-title" class="display">Pick a morning, an afternoon or a few days.</h2>
+			<ol class="board-list">
+				{
+					featured.map((e) => {
+						const d = e.data;
+						const src = photoSrc(d.image, d.photo);
+						const clock = /^\d/.test(d.start_time);
+						return (
+							<li class="board-row">
+								<a class="board-link" href={`/experiences/${d.slug ?? d.id}`}>
+									<span class="board-photo">{src && <img src={src} alt={d.image?.alt || altFor(d.photo)} width="640" height="400" loading="lazy" />}</span>
+									<span class="board-main">
+										<span class="board-kicker">{typeLabel(d.exp_type)} · {placeOf.get(d.destination) ?? d.destination}</span>
+										<span class="board-title" {...e.edit.title}>{d.title}</span>
+										<span class="board-summary">{d.summary}</span>
+										<span class="board-meta">{d.duration} · up to {d.group_max} guests · {d.runs}</span>
+									</span>
+									<span class="board-when">
+										<span class:list={["board-time", { "is-text": !clock }]}>{d.start_time}</span>
+										<span class="board-price">From {formatPrice(d.price_from)}</span>
+										<span class="board-go">Details <Arrow /></span>
+									</span>
+								</a>
+							</li>
+						);
+					})
+				}
+			</ol>
+			<p class="board-all"><a class="link-arrow" href="/experiences">All experiences <Arrow /></a><span class="small">Prices are samples until you add your own.</span></p>
+		</div>
+	</section>
+
+	<section class="dayrun" aria-labelledby="day-title">
+		<div class="wrap dayrun-grid">
+			<figure class="dayrun-photo">
+				<img src="/images/class-pasta.webp" alt={altFor("/images/class-pasta.webp")} width="1248" height="720" loading="lazy" />
+			</figure>
+			<div class="dayrun-copy">
+				<p class="eyebrow">A sample day</p>
+				<h2 id="day-title" class="display">How a food tour day runs.</h2>
+				<ol class="timeline">
+					{day.map((s) => <li><span class="timeline-time">{s.left}</span><span class="timeline-text">{s.right}</span></li>)}
+				</ol>
+				<p class="small">This is the market morning in Marenta. Other experiences keep the same order: meet, taste, make, sit down.</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="diets" aria-labelledby="diets-title">
+		<div class="wrap diets-grid">
+			<div class="diets-copy">
+				<p class="eyebrow">Allergies and diets</p>
+				<h2 id="diets-title" class="display">Tell us what you cannot eat.</h2>
+				{company.diet_text && <p>{company.diet_text}</p>}
+				<p><a class="link-arrow" href="/allergies-and-diets">Read the full note <Arrow /></a></p>
+			</div>
+			<table class="diet-table">
+				<caption>Versions available across our {all.length} experiences</caption>
+				<thead><tr><th scope="col">Diet</th><th scope="col">Yes</th><th scope="col">Ask us first</th></tr></thead>
+				<tbody>
+					{diets.map((d) => <tr><th scope="row">{d.label}</th><td>{d.yes}</td><td>{d.ask}</td></tr>)}
+				</tbody>
+			</table>
+		</div>
+	</section>
+
+	<section class="plan" aria-labelledby="plan-title">
+		<div class="plan-inner">
+			<div class="plan-copy">
+				<p class="eyebrow eyebrow-light">Plan Your Trip</p>
+				<h2 id="plan-title" class="display">Write to Anna. She will find you a table.</h2>
+				{company.plan_text && <p>{company.plan_text}</p>}
+				<p class="plan-actions">
+					<a class="pill pill-coral" href="/contact">Plan Your Trip <Arrow /></a>
+					{company.phone && <a class="plan-phone" href={telHref(company.phone)}>or call {company.phone}</a>}
+				</p>
+			</div>
+			<img class="plan-photo" src="/images/tomato-woman.webp" alt={altFor("/images/tomato-woman.webp")} width="550" height="565" loading="lazy" />
+		</div>
+	</section>
+</Base>

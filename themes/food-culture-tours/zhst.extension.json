@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "food-culture-tours",
+	"kind": "theme",
+	"name": "Food Culture Tours",
+	"type": "company",
+	"emdash": "1.2.0",
+	"entry": "themes/food-culture-tours",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

@@ -1,0 +1,54 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PageHead from "../../components/PageHead.astro";
+import { getDestinations, getExperiences, photoSrc } from "../../lib/food";
+
+const [destResult, expResult] = await Promise.all([getDestinations(), getExperiences()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(destResult.cacheHint);
+	Astro.cache.set(expResult.cacheHint);
+}
+const count = (slug: string) => expResult.experiences.filter((e) => e.data.destination === slug).length;
+---
+
+<Base title="Destinations" description="Five food towns in Italy, Portugal, Spain and Greece, with the number of experiences in each. Choose a town to see its market walks, classes and lunches.">
+	<PageHead
+		id="destinations-title"
+		eyebrow="Destinations"
+		title="Five towns, each with its own table."
+		intro="We only work where we have a host who lives there. Choose a town to see what runs, and when."
+	/>
+	<section class="list-section" aria-labelledby="destinations-title">
+		<div class="wrap">
+			<ul class="dest-list">
+				{
+					destResult.destinations.map((x) => {
+						const d = x.data;
+						const slug = d.slug ?? d.id;
+						const n = count(slug);
+						const src = photoSrc(d.image, d.photo);
+						return (
+							<li class="dest-row">
+								<a class="dest-photo" href={`/experiences?destination=${slug}`} tabindex="-1" aria-hidden="true">
+									{src && <img src={src} alt="" width="640" height="400" loading="lazy" />}
+								</a>
+								<div class="dest-main">
+									<p class="eyebrow">{d.country}</p>
+									<h2 class="dest-title" {...x.edit.title}>{d.title}</h2>
+									<p>{d.blurb}</p>
+									{d.season && <p class="small">Best months: {d.season}</p>}
+								</div>
+								<div class="dest-count">
+									<a class="pill pill-green" href={`/experiences?destination=${slug}`} aria-label={`${n} ${n === 1 ? "experience" : "experiences"} in ${d.title}`}>
+										{n} {n === 1 ? "experience" : "experiences"} <Arrow />
+									</a>
+								</div>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</div>
+	</section>
+</Base>

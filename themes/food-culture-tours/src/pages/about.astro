@@ -1,0 +1,71 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import { altFor, getCompany, getHosts, initials, photoSrc } from "../lib/food";
+
+const [{ entry: page, cacheHint }, companyResult, hostsResult] = await Promise.all([getEmDashEntry("pages", "about"), getCompany(), getHosts()]);
+for (const h of [cacheHint, companyResult.cacheHint, hostsResult.cacheHint]) {
+	if (Astro.cache?.enabled) Astro.cache.set(h);
+}
+const d = page?.data;
+const { company } = companyResult;
+---
+
+<Base title="About" description={d?.intro ?? "About Food Culture Tours."}>
+	<PageHead id="about-title" eyebrow={d?.eyebrow ?? "About"} title={d?.title ?? "About us"} intro={d?.intro} edit={{ ...page?.edit.title }} />
+	<section class="about-body">
+		<div class="wrap about-grid">
+			<div class="prose">
+				{d?.content ? <PortableText value={d.content} /> : <p>Our story is coming soon.</p>}
+				{
+					(company.licence_note || company.safety_note) && (
+						<div class="placeholder-pair">
+							{company.licence_note && (
+								<aside class="placeholder-box" aria-label="Licences and insurance placeholder">
+									<p class="placeholder-label">Placeholder</p>
+									<h3>Licences and insurance</h3>
+									<p>{company.licence_note}</p>
+								</aside>
+							)}
+							{company.safety_note && (
+								<aside class="placeholder-box" aria-label="Food safety registration placeholder">
+									<p class="placeholder-label">Placeholder</p>
+									<h3>Food safety registration</h3>
+									<p>{company.safety_note}</p>
+								</aside>
+							)}
+						</div>
+					)
+				}
+				<p class="page-cta"><a class="pill pill-green" href="/experiences">See the experiences <Arrow /></a></p>
+			</div>
+			<aside class="host-list" aria-labelledby="hosts-title">
+				<h2 id="hosts-title">Your hosts</h2>
+				<ul>
+					{
+						hostsResult.entries.map((h) => {
+							const src = photoSrc(h.data.image, h.data.photo);
+							return (
+								<li>
+									{src ? (
+										<img class="host-photo" src={src} alt={h.data.image?.alt || altFor(h.data.photo)} width="88" height="88" loading="lazy" />
+									) : (
+										<span class="host-initials" aria-hidden="true">{initials(h.data.title)}</span>
+									)}
+									<span class="host-text">
+										<strong {...h.edit.title}>{h.data.title}</strong>
+										<span class="host-role">{h.data.role}{h.data.place && <> · {h.data.place}</>}</span>
+										<span class="host-bio">{h.data.bio}</span>
+									</span>
+								</li>
+							);
+						})
+					}
+				</ul>
+			</aside>
+		</div>
+	</section>
+</Base>

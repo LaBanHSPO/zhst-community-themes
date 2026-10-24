@@ -1,0 +1,71 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import ExperienceCard from "../../components/ExperienceCard.astro";
+import { TYPES, getDestinations, getExperiences } from "../../lib/food";
+
+const [expResult, destResult] = await Promise.all([getExperiences(), getDestinations()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(expResult.cacheHint);
+	Astro.cache.set(destResult.cacheHint);
+}
+// ?type=market|cooking|lunch|multi-day and ?destination=<destination-slug> narrow the list and combine.
+// Unknown values show everything.
+const q = Astro.url.searchParams;
+const all = expResult.experiences;
+const destinations = destResult.destinations.map((d) => ({ slug: d.data.slug ?? d.data.id, label: d.data.title }));
+const type = TYPES.find((t) => t.slug === q.get("type"));
+const dest = destinations.find((d) => d.slug === q.get("destination"));
+const shown = all.filter((e) => (!type || e.data.exp_type === type.slug) && (!dest || e.data.destination === dest.slug));
+const placeOf = new Map(destinations.map((d) => [d.slug, d.label]));
+const href = (t?: string, d?: string) => {
+	const p = new URLSearchParams();
+	if (t) p.set("type", t);
+	if (d) p.set("destination", d);
+	const s = p.toString();
+	return s ? `/experiences?${s}` : "/experiences";
+};
+const typeCount = (slug: string) => all.filter((e) => e.data.exp_type === slug && (!dest || e.data.destination === dest.slug)).length;
+const destCount = (slug: string) => all.filter((e) => e.data.destination === slug && (!type || e.data.exp_type === type.slug)).length;
+const heading = [type?.label, dest?.label].filter(Boolean).join(", ");
+---
+
+<Base title="Experiences" description="Market walks, cooking classes, long lunches and multi-day trips in five food towns. Filter by type or destination and see times, group sizes, dietary options and sample prices.">
+	<PageHead
+		id="experiences-title"
+		eyebrow="Experiences"
+		title="Pick a table, a town and a time."
+		intro="Each experience has a named meeting point, a group limit and a note on vegetarian, vegan and gluten-free versions. Prices are samples until you add your own."
+	/>
+	<section class="list-section" aria-labelledby="experiences-title">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter experiences">
+				<div class="filter-group">
+					<span class="filter-label">Type</span>
+					<a href={href(undefined, dest?.slug)} aria-current={type ? undefined : "true"}>All</a>
+					{TYPES.map((t) => <a href={href(t.slug, dest?.slug)} aria-current={type?.slug === t.slug ? "true" : undefined}>{t.label} <span>{typeCount(t.slug)}</span></a>)}
+				</div>
+				<div class="filter-group">
+					<span class="filter-label">Destination</span>
+					<a href={href(type?.slug)} aria-current={dest ? undefined : "true"}>All</a>
+					{destinations.map((d) => <a href={href(type?.slug, d.slug)} aria-current={dest?.slug === d.slug ? "true" : undefined}>{d.label} <span>{destCount(d.slug)}</span></a>)}
+				</div>
+			</nav>
+
+			<p class="result-line" role="status">
+				{shown.length} of {all.length} experiences{heading ? `: ${heading}` : ""}
+				{(type || dest) && <> <a href="/experiences">Clear filters</a></>}
+			</p>
+
+			{
+				shown.length === 0 ? (
+					<p class="empty-note">Nothing matches that combination yet. <a href="/experiences">Show all experiences</a> or <a href="/contact">ask Anna about a private table</a>.</p>
+				) : (
+					<ul class="xcard-grid">
+						{shown.map((e) => <li><ExperienceCard entry={e} place={placeOf.get(e.data.destination) ?? ""} /></li>)}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+</Base>

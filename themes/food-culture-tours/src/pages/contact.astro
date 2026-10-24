@@ -1,0 +1,211 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import { TYPES, altFor, getCompany, getExperiences, rows, telHref } from "../lib/food";
+
+const [{ company, cacheHint }, expResult] = await Promise.all([getCompany(), getExperiences()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(expResult.cacheHint);
+}
+const office = rows(company.office);
+const all = expResult.experiences;
+// ?experience=<slug> pre-selects the experience.
+const selected = all.find((e) => (e.data.slug ?? e.data.id) === Astro.url.searchParams.get("experience"));
+---
+
+<Base title="Plan Your Trip" description="Send an enquiry to Food Culture Tours: the experience you like, a date, your group size, dietary needs and allergies. We reply by email. Phone and email are on this page.">
+	<PageHead
+		id="contact-title"
+		eyebrow="Plan Your Trip"
+		title="Tell us when you want to come."
+		intro="Choose an experience, a date and how many of you there are. Tell us what you cannot eat. We check the host and the table and reply by email, usually within one working day."
+	/>
+	<section class="contact-section" aria-labelledby="contact-title">
+		<div class="wrap contact-grid">
+			<form
+				class="enquiry-form"
+				data-enquiry-form
+				data-email={company.email}
+				action={company.email ? `mailto:${company.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field full">
+						<label for="c-exp">Experience</label>
+						<select id="c-exp" name="experience" required>
+							<option value="" selected={!selected}>Choose an experience</option>
+							{
+								TYPES.map((ty) => (
+									<optgroup label={ty.label}>
+										{all
+											.filter((e) => e.data.exp_type === ty.slug)
+											.map((e) => (
+												<option value={e.data.title} selected={selected?.data.id === e.data.id}>
+													{e.data.title} ({e.data.duration})
+												</option>
+											))}
+									</optgroup>
+								))
+							}
+							<option value="Not sure yet, please suggest one">Not sure yet, please suggest one</option>
+						</select>
+						<span class="field-error" data-error-for="c-exp"></span>
+					</div>
+					<div class="field">
+						<label for="c-date">Preferred date</label>
+						<input id="c-date" name="date" type="date" required />
+						<span class="field-error" data-error-for="c-date"></span>
+					</div>
+					<div class="field">
+						<label for="c-people">Group size</label>
+						<select id="c-people" name="people" required>
+							<option value="1">1 person</option>
+							<option value="2" selected>2 people</option>
+							<option value="3 to 4">3 to 4 people</option>
+							<option value="5 to 8">5 to 8 people</option>
+							<option value="9 to 12">9 to 12 people</option>
+							<option value="More than 12">More than 12 people</option>
+						</select>
+					</div>
+					<div class="field full">
+						<label for="c-diet">Dietary needs</label>
+						<select id="c-diet" name="diet" required>
+							<option value="None">No dietary needs</option>
+							<option value="Vegetarian">Vegetarian</option>
+							<option value="Vegan">Vegan</option>
+							<option value="Gluten-free">Gluten-free</option>
+							<option value="More than one, described below">More than one, described below</option>
+							<option value="Other, described below">Other, described below</option>
+						</select>
+					</div>
+					<div class="field full">
+						<label for="c-allergies">Allergies <span class="optional">(optional)</span></label>
+						<textarea id="c-allergies" name="allergies" rows="3" placeholder="Nuts, shellfish, eggs, dairy, sesame, or anything else. Say how serious it is."></textarea>
+						<span class="field-hint">We read this before we confirm. If we cannot cook safely for you, we will say so.</span>
+					</div>
+					<div class="field full">
+						<label for="c-name">Name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field">
+						<label for="c-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field full">
+						<label for="c-notes">Anything else? <span class="optional">(optional)</span></label>
+						<textarea id="c-notes" name="notes" rows="3" placeholder="An occasion, the ages of children, a town you would like to visit"></textarea>
+					</div>
+				</div>
+				<button class="pill pill-green pill-lg pill-block" type="submit">Send enquiry</button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{company.email && <>Write to <a href={`mailto:${company.email}`}>{company.email}</a> with the experience, date, group size and dietary needs.</>}
+					</noscript>
+				</p>
+			</form>
+
+			<aside class="contact-side">
+				<h2>Prefer to talk?</h2>
+				<p>
+					{company.phone && <>Call <a href={telHref(company.phone)}>{company.phone}</a></>}
+					{company.phone && company.email && " or email "}
+					{!company.phone && company.email && "Email "}
+					{company.email && <a href={`mailto:${company.email}`}>{company.email}</a>}.
+				</p>
+				{
+					(company.street || company.locality) && (
+						<p>{[company.street, company.locality].filter(Boolean).join(", ")}</p>
+					)
+				}
+				{
+					office.length > 0 && (
+						<>
+							<h3>Desk hours</h3>
+							<dl class="side-hours">
+								{office.map((h) => <><dt>{h.left}</dt><dd>{h.right}</dd></>)}
+							</dl>
+						</>
+					)
+				}
+				{company.booking_note && <p class="small">{company.booking_note}</p>}
+				<img src="/images/notebook.webp" alt={altFor("/images/notebook.webp")} width="506" height="570" loading="lazy" />
+			</aside>
+		</div>
+	</section>
+</Base>
+
+<script>
+	// Validate, then compose an enquiry email. Nothing is sent by the site itself;
+	// the company replies by email.
+	document.querySelectorAll<HTMLFormElement>("[data-enquiry-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLSelectElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input[required], select[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? input.tagName === "SELECT"
+							? "Please choose an option."
+							: "Please fill this in."
+						: input.getAttribute("type") === "email"
+							? "Please enter a valid email address."
+							: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online enquiries are not available right now. Please call us.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const subject = `Enquiry: ${get("experience")} on ${get("date")}`;
+			const lines = [
+				"Hello,",
+				"",
+				"I would like to ask about a trip:",
+				`Experience: ${get("experience")}`,
+				`Preferred date: ${get("date")}`,
+				`Group size: ${get("people")}`,
+				`Dietary needs: ${get("diet")}`,
+				get("allergies") ? `Allergies: ${get("allergies")}` : "",
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				get("notes") ? `Notes: ${get("notes")}` : "",
+				"",
+				"I understand this is an enquiry and nothing is booked until I get your reply.",
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this enquiry ready to send. It is only sent when you send that email, and nothing is booked until we reply. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>
