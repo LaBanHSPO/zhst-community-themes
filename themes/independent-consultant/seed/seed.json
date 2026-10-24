@@ -1,0 +1,1850 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Independent Consultant",
+  "description": "A bright, editorial theme for a solo consultant: full-bleed portrait hero with a handwritten note, services as cards, how an engagement works, typical projects, insights with a topic filter, an About page and an enquiry form, seeded with synthetic sample content.",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "Bridgewell",
+  "tagline": "Independent Consultant"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Small label above the title (also used in the footer)",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro line",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "services",
+   "label": "Services",
+   "labelSingular": "Service",
+   "urlPattern": "/services/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Service name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "One-line description",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "best_for",
+     "label": "Who it is for",
+     "type": "text"
+    },
+    {
+     "slug": "format",
+     "label": "Format",
+     "type": "string"
+    },
+    {
+     "slug": "length",
+     "label": "Length",
+     "type": "string"
+    },
+    {
+     "slug": "price_label",
+     "label": "Price shown (e.g. From $2,400 or On request)",
+     "type": "string"
+    },
+    {
+     "slug": "includes",
+     "label": "What is included (one item per line)",
+     "type": "text"
+    },
+    {
+     "slug": "icon",
+     "label": "Home card icon (compass, people or bars)",
+     "type": "string"
+    },
+    {
+     "slug": "featured",
+     "label": "Show on the homepage",
+     "type": "boolean"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "content",
+     "label": "Description",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "insights",
+   "label": "Insights",
+   "labelSingular": "Insight",
+   "urlPattern": "/insights/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "Short summary",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "topic",
+     "label": "Topic (strategy, leadership or execution)",
+     "type": "string"
+    },
+    {
+     "slug": "date_label",
+     "label": "Date shown (e.g. 14 October 2026)",
+     "type": "string"
+    },
+    {
+     "slug": "read_minutes",
+     "label": "Reading time in minutes",
+     "type": "integer"
+    },
+    {
+     "slug": "featured",
+     "label": "Show on the homepage",
+     "type": "boolean"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order (newest first)",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Cover photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled cover photo path",
+     "type": "string"
+    },
+    {
+     "slug": "content",
+     "label": "Body",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "steps",
+   "label": "How an engagement works",
+   "labelSingular": "Step",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "when_label",
+     "label": "When it happens (e.g. Week one)",
+     "type": "string"
+    },
+    {
+     "slug": "text",
+     "label": "Text",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "projects",
+   "label": "Typical projects",
+   "labelSingular": "Project",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "who",
+     "label": "Who it was for (plain description, no client names)",
+     "type": "string"
+    },
+    {
+     "slug": "text",
+     "label": "What we did",
+     "type": "text"
+    },
+    {
+     "slug": "service",
+     "label": "Related service slug",
+     "type": "string"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "practice",
+   "label": "Contact details",
+   "labelSingular": "Contact details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Consultant name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "base",
+     "label": "Based in",
+     "type": "string"
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Email for enquiries",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "response",
+     "label": "Reply time (shown beside the form)",
+     "type": "text"
+    },
+    {
+     "slug": "contact_note",
+     "label": "Note shown above the form",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Home",
+     "url": "/"
+    },
+    {
+     "type": "custom",
+     "label": "About",
+     "url": "/about"
+    },
+    {
+     "type": "custom",
+     "label": "Services",
+     "url": "/services"
+    },
+    {
+     "type": "custom",
+     "label": "Insights",
+     "url": "/insights"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "Hello, I'm Clara.",
+     "eyebrow": "About",
+     "intro": "I am an independent consultant. I help owners, managers and small teams decide what to do next and then get it done.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I work with people who are good at what they do and want help deciding what comes next. Some are leading a small business. Some are new managers. Some have a plan and cannot find the time to carry it out.",
+         "_key": "s1"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k2",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How I got here",
+         "_key": "s2"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I spent the first part of my working life inside organisations: a small manufacturer, a professional services group and a regional charity. I ran teams, wrote plans, and sat on both sides of the table when plans met reality. After that I began working on my own, and I have done so ever since.",
+         "_key": "s3"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k4",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I still work the way I did as an employee. I read the paperwork, talk to the people doing the job and write things down.",
+         "_key": "s4"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k5",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How I work",
+         "_key": "s5"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k6",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I take on a small number of projects at a time, so you work with me and not a junior.",
+         "_key": "s6"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k7",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I write short documents. If it will not fit on a few pages, we have not decided yet.",
+         "_key": "s7"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k8",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I say so when something is not working, including when it is my own advice.",
+         "_key": "s8"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k9",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I keep what you tell me private. Nothing about your business is shared or used as an example without your say-so.",
+         "_key": "s9"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k10",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Outside work",
+         "_key": "s10"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k11",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I live in Ashby Cove, walk most mornings and keep a vegetable patch with mixed results.",
+         "_key": "s11"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k12",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If you would like to know whether I can help, the easiest first step is a thirty-minute discovery call. It is free, and you are under no obligation afterwards.",
+         "_key": "s12"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "working-together",
+    "slug": "working-together",
+    "status": "published",
+    "data": {
+     "title": "Working together",
+     "eyebrow": "Terms of work",
+     "intro": "How projects start, how fees work and how I handle what you tell me.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k13",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A short note on how I work with clients, so there are no surprises.",
+         "_key": "s13"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k14",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Before we start",
+         "_key": "s14"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k15",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Every project begins with a written proposal that sets out the goal, what I will do, how long it will take and the fee. Work starts when you have agreed to it in writing, and not before.",
+         "_key": "s15"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k16",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Fees and invoices",
+         "_key": "s16"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k17",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Fees are quoted in US dollars. For projects, I invoice half at the start and half at the end. For Monthly Advisory, I invoice at the start of each month. Invoices are due within fourteen days.",
+         "_key": "s17"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k18",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Changing or stopping",
+         "_key": "s18"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k19",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If the scope changes, we agree the new fee before the extra work begins. You can stop a project at any time. You pay for the work done up to that point.",
+         "_key": "s19"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k20",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Confidentiality",
+         "_key": "s20"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k21",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What you share with me stays with me. I do not name clients, describe their situations or share their documents. If I want to use something as an example, I ask first and remove anything that identifies you.",
+         "_key": "s21"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k22",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What I do not do",
+         "_key": "s22"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k23",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I do not give legal, tax or financial advice. If a question needs a specialist, I will tell you and suggest you speak to one.",
+         "_key": "s23"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "services": [
+   {
+    "id": "strategy-and-direction",
+    "slug": "strategy-and-direction",
+    "status": "published",
+    "data": {
+     "title": "Strategy & Direction",
+     "summary": "Clarify your goals and turn insight into a focused plan.",
+     "best_for": "Founders, small leadership teams and independent professionals who have several good options and need to choose one.",
+     "format": "Video calls, or on site if you are within an hour of Ashby Cove",
+     "length": "Four weeks",
+     "price_label": "From $3,200",
+     "icon": "compass",
+     "featured": true,
+     "position": 10,
+     "includes": "A discovery call and a written brief that we both agree on\nTwo working sessions of about two hours each\nInterviews with up to five people inside or around your business\nA plan of no more than ten pages: where to focus, what to stop, what happens first\nA review call two weeks after the plan is delivered",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k24",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Most people who come to me are not short of ideas. They have too many, and each one has a reasonable case behind it. Strategy & Direction is a short, structured piece of work that ends with a decision and a plan you can run.",
+         "_key": "s24"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k25",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How it goes",
+         "_key": "s25"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k26",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We start with a call to agree what you need to decide. I then talk to the people who know the business best, read what you already have, and run two working sessions with you and your team. The plan comes back as a short document, not a slide deck, with a clear first ninety days.",
+         "_key": "s26"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k27",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What you get",
+         "_key": "s27"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k28",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You get a written plan, the reasoning behind it and a list of the questions we chose to leave open. If you want help carrying it out, Execution Support is the natural next step, but there is no obligation to book it.",
+         "_key": "s28"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "leadership-and-growth",
+    "slug": "leadership-and-growth",
+    "status": "published",
+    "data": {
+     "title": "Leadership & Growth",
+     "summary": "Build capability, unlock potential, create lasting change.",
+     "best_for": "New and experienced managers, and founders who are stepping back from day-to-day work and need their team to carry more.",
+     "format": "One-to-one sessions by video or in person, plus optional team sessions",
+     "length": "Three months, with a session every two weeks",
+     "price_label": "From $2,400",
+     "icon": "people",
+     "featured": true,
+     "position": 20,
+     "includes": "A short conversation with you and, if you agree, your manager or board member\nSix one-to-one sessions of 75 minutes\nNotes after each session with the two or three things to try before the next one\nOne half-day session with your team if it is useful\nA closing review to decide what carries on without me",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k29",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Leadership and Growth is regular, practical coaching for people who lead others. We work on real situations from your week: a hard conversation you have been putting off, a team that is stuck, a role that has outgrown its description.",
+         "_key": "s29"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k30",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How it goes",
+         "_key": "s30"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k31",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Sessions are every two weeks, which leaves time to try things between them. Each session starts with what happened since the last one, then moves to the next situation on your list. I keep notes and send them to you the same day.",
+         "_key": "s31"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k32",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Who it suits",
+         "_key": "s32"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k33",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "It works best when you have a specific change in mind, such as moving from doing the work to leading it. It is not a good fit if you are looking for a formal qualification or a personality assessment.",
+         "_key": "s33"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "execution-support",
+    "slug": "execution-support",
+    "status": "published",
+    "data": {
+     "title": "Execution Support",
+     "summary": "Turn plans into progress with practical, hands-on help.",
+     "best_for": "Teams that have a plan and need someone to keep it moving: set up the routines, chase the blockers and report honestly on progress.",
+     "format": "Embedded part-time with your team, on site or remote",
+     "length": "Eight weeks, extendable by agreement",
+     "price_label": "On request",
+     "icon": "bars",
+     "featured": true,
+     "position": 30,
+     "includes": "A kick-off session to set owners, dates and a weekly rhythm\nOne day a week of hands-on work with your team\nA short written update every Friday\nA shared tracker that your team keeps after I leave\nA hand-over session at the end",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k34",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Execution Support is for the stage after the plan is written, when the work meets everyone's other priorities. I join your team for a fixed period and do the unglamorous parts: running the weekly check-in, writing things down, following up, and raising problems early.",
+         "_key": "s34"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k35",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How it goes",
+         "_key": "s35"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k36",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We agree three or four outcomes for the period and one person who owns each. I spend about one day a week with the team. Every Friday you get a short note covering what moved, what did not and what I need from you.",
+         "_key": "s36"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k37",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Pricing",
+         "_key": "s37"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k38",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The price depends on team size and how many outcomes we are tracking, so I quote after a discovery call. It is usually a fixed fee for the eight weeks.",
+         "_key": "s38"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "decision-workshop",
+    "slug": "decision-workshop",
+    "status": "published",
+    "data": {
+     "title": "Decision Workshop",
+     "summary": "A half day to settle one big question with the right people in the room.",
+     "best_for": "Leadership teams of four to eight people facing a single decision, such as a new market, a hire, an investment or a restructure.",
+     "format": "In person at your office or a hired room, or online in two shorter sessions",
+     "length": "Half a day, plus preparation and a written summary",
+     "price_label": "From $1,400",
+     "icon": "compass",
+     "featured": false,
+     "position": 40,
+     "includes": "A preparation call and a one-page question brief\nShort pre-reading for everyone attending\nA facilitated half day\nA written summary of the decision, the reasons and the owners within two working days\nA 30-minute check-in two weeks later",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k39",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Some decisions stall because the right people have never been in the same room with the same information. A Decision Workshop fixes that in half a day.",
+         "_key": "s39"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k40",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What happens",
+         "_key": "s40"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k41",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Before the day, I speak to each person who will attend and write a one-page brief. On the day we look at the options side by side, test them against what you know, and finish with a decision or a clear list of what is missing.",
+         "_key": "s41"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k42",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You leave with a written summary that records what was decided, why, and who is doing what.",
+         "_key": "s42"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "monthly-advisory",
+    "slug": "monthly-advisory",
+    "status": "published",
+    "data": {
+     "title": "Monthly Advisory",
+     "summary": "A standing monthly conversation and light support between bigger projects.",
+     "best_for": "Past clients and owners who want a regular sounding board without a full project.",
+     "format": "Video call, with email in between",
+     "length": "Rolling month to month",
+     "price_label": "From $900 a month",
+     "icon": "people",
+     "featured": false,
+     "position": 50,
+     "includes": "One 90-minute call each month\nEmail replies within two working days\nA short review of your priorities before each call\nNotice of one month to stop or pause",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k43",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Monthly Advisory is a regular call and an open line for questions. It suits people who already know how I work and want a steady second opinion.",
+         "_key": "s43"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k44",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What it is not",
+         "_key": "s44"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k45",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "It is not on-call support or a substitute for a full project. If something big comes up, we agree whether it needs its own piece of work.",
+         "_key": "s45"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "insights": [
+   {
+    "id": "choosing-between-two-good-options",
+    "slug": "choosing-between-two-good-options",
+    "status": "published",
+    "data": {
+     "title": "Choosing between two good options",
+     "summary": "When both choices are sound, more analysis rarely helps. A short test usually does.",
+     "topic": "strategy",
+     "date_label": "16 October 2026",
+     "read_minutes": 5,
+     "featured": true,
+     "position": 10,
+     "photo": "/images/cover-globe.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k46",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Hard decisions are not always the ones with a bad option. Often they are the ones where both options are fine, and each has a person who feels strongly about it.",
+         "_key": "s46"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k47",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Name what you would be giving up",
+         "_key": "s47"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k48",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Write down what you lose with each option, not only what you gain. A choice feels easier once you can say, in one sentence, what the cost is and who will pay it.",
+         "_key": "s48"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k49",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Ask what would change your mind",
+         "_key": "s49"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k50",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "For each option, write the one fact that would make you drop it. Then decide who will find that fact and by when. If it cannot be found in two weeks, it will not decide anything, so stop waiting for it.",
+         "_key": "s50"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k51",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Set a date",
+         "_key": "s51"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k52",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Pick the day the decision will be made and tell the people affected. Most delays come from a missing date, not missing information.",
+         "_key": "s52"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "a-one-page-plan-is-usually-enough",
+    "slug": "a-one-page-plan-is-usually-enough",
+    "status": "published",
+    "data": {
+     "title": "A one-page plan is usually enough",
+     "summary": "Long plans get filed. A page that fits on a desk gets used.",
+     "topic": "strategy",
+     "date_label": "2 October 2026",
+     "read_minutes": 4,
+     "featured": true,
+     "position": 20,
+     "photo": "/images/cover-route.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k53",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I ask most clients to fit their plan on one page. It is not a trick. It forces a choice about what matters most, and it gives everyone the same thing to look at on a Monday morning.",
+         "_key": "s53"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k54",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What goes on the page",
+         "_key": "s54"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k55",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The outcome you want in twelve months, in one sentence",
+         "_key": "s55"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k56",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Three priorities, with one owner each",
+         "_key": "s56"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k57",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What you are choosing not to do this year",
+         "_key": "s57"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k58",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The first step for each priority and its date",
+         "_key": "s58"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k59",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The list of things you are not doing matters as much as the priorities. Without it, the plan only ever grows.",
+         "_key": "s59"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k60",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Review the page once a month. If it needs a second page, something on the first one is not clear yet.",
+         "_key": "s60"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "what-a-new-manager-needs-in-month-one",
+    "slug": "what-a-new-manager-needs-in-month-one",
+    "status": "published",
+    "data": {
+     "title": "What a new manager needs in month one",
+     "summary": "Not a grand vision. A few conversations, a clear picture of the work and one early fix.",
+     "topic": "leadership",
+     "date_label": "18 September 2026",
+     "read_minutes": 6,
+     "featured": true,
+     "position": 30,
+     "photo": "/images/cover-books.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k61",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "New managers often feel they should arrive with a plan. In my experience the first month goes better when they arrive with questions.",
+         "_key": "s61"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k62",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Talk to everyone one-to-one",
+         "_key": "s62"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k63",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Ask each person what is working, what is not and what they would change first. Take notes and do not defend anything yet. Tell them afterwards what you heard.",
+         "_key": "s63"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k64",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Learn how the work actually moves",
+         "_key": "s64"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k65",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Follow one piece of work from request to delivery. You will see where it waits, who it passes through and where people work around the official process.",
+         "_key": "s65"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k66",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Fix one small thing",
+         "_key": "s66"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k67",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Choose a minor irritation that people have mentioned more than once and sort it out visibly. It shows you listen, and it costs little.",
+         "_key": "s67"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k68",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Big changes can wait until month two, when you know what you are changing.",
+         "_key": "s68"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "feedback-people-can-act-on",
+    "slug": "feedback-people-can-act-on",
+    "status": "published",
+    "data": {
+     "title": "Feedback that people can act on",
+     "summary": "Be specific about what you saw, what it caused and what you would like next time.",
+     "topic": "leadership",
+     "date_label": "4 September 2026",
+     "read_minutes": 4,
+     "featured": false,
+     "position": 40,
+     "photo": "/images/cover-olive.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k69",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Most feedback fails because it is either too vague to use or too heavy to hear. A simple structure helps.",
+         "_key": "s69"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k70",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Three parts",
+         "_key": "s70"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k71",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What I saw: a specific moment, described without judgement",
+         "_key": "s71"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k72",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What it led to: the effect on the work or the team",
+         "_key": "s72"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k73",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What I would like next time: one clear request",
+         "_key": "s73"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k74",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "For example: In Tuesday's meeting you talked over Sam twice. Sam stopped adding to the discussion after that. Next time, could you let her finish before you respond?",
+         "_key": "s74"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k75",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Give it soon after the event and in private. Then stop talking and listen to the reply.",
+         "_key": "s75"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "why-plans-stall-in-week-three",
+    "slug": "why-plans-stall-in-week-three",
+    "status": "published",
+    "data": {
+     "title": "Why plans stall in week three",
+     "summary": "The first two weeks run on enthusiasm. After that, the plan competes with everything else.",
+     "topic": "execution",
+     "date_label": "21 August 2026",
+     "read_minutes": 5,
+     "featured": true,
+     "position": 50,
+     "photo": "/images/cover-desk.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k76",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A new plan usually starts well. In week three the urgent work comes back, nobody has been given time for the plan, and the weekly meeting is the first thing to move.",
+         "_key": "s76"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k77",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Give the plan hours, not hope",
+         "_key": "s77"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k78",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "For each priority, decide how many hours a week it gets and whose calendar they come out of. If nobody can name the hours, the priority is a wish.",
+         "_key": "s78"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k79",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Keep one short weekly check",
+         "_key": "s79"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k80",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Fifteen minutes, same time every week. Each owner says what moved, what is blocked and what they need. If a blocker has no owner by the end of the call, it gets one.",
+         "_key": "s80"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k81",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Report plainly",
+         "_key": "s81"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k82",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A red item with a clear note is more useful than a green item nobody believes. Make it normal to say that something is late.",
+         "_key": "s82"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "a-weekly-review-that-takes-twenty-minutes",
+    "slug": "a-weekly-review-that-takes-twenty-minutes",
+    "status": "published",
+    "data": {
+     "title": "A weekly review that takes twenty minutes",
+     "summary": "A small routine that keeps priorities visible and surprises small.",
+     "topic": "execution",
+     "date_label": "7 August 2026",
+     "read_minutes": 4,
+     "featured": false,
+     "position": 60,
+     "photo": "/images/cover-route-2.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k83",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Most of my clients do not need a new tool. They need a short, regular habit. This is the one I suggest most often.",
+         "_key": "s83"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k84",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The twenty minutes",
+         "_key": "s84"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k85",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Five minutes: look back at last week and note what moved",
+         "_key": "s85"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k86",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Five minutes: check the three priorities against the calendar for the week ahead",
+         "_key": "s86"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k87",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Five minutes: write down the one thing that would make the week a success",
+         "_key": "s87"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k88",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Five minutes: send a short note to anyone waiting on you",
+         "_key": "s88"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k89",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Do it at the same time each week, ideally on Friday afternoon or early Monday. Keep the notes in one document so you can see the pattern after a few weeks.",
+         "_key": "s89"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "steps": [
+   {
+    "id": "step-1",
+    "slug": "step-1",
+    "status": "published",
+    "data": {
+     "title": "Discovery call",
+     "when_label": "Free, 30 minutes",
+     "text": "We talk about what you want to change and what has been tried. I tell you honestly whether I am the right person to help.",
+     "position": 10
+    }
+   },
+   {
+    "id": "step-2",
+    "slug": "step-2",
+    "status": "published",
+    "data": {
+     "title": "Scoped proposal",
+     "when_label": "Within three working days",
+     "text": "You get a short written proposal: the goal, what I will do, how long it takes and the fee. No work starts until you agree to it.",
+     "position": 20
+    }
+   },
+   {
+    "id": "step-3",
+    "slug": "step-3",
+    "status": "published",
+    "data": {
+     "title": "The work",
+     "when_label": "Usually four to twelve weeks",
+     "text": "We work to the plan in the proposal, with a regular rhythm of sessions and short written notes so you always know where things stand.",
+     "position": 30
+    }
+   },
+   {
+    "id": "step-4",
+    "slug": "step-4",
+    "status": "published",
+    "data": {
+     "title": "Review",
+     "when_label": "At the end, and two weeks later",
+     "text": "We look at what was done and what was not. I hand over what you need to carry on, and check in again a fortnight later.",
+     "position": 40
+    }
+   }
+  ],
+  "projects": [
+   {
+    "id": "project-1",
+    "slug": "project-1",
+    "status": "published",
+    "data": {
+     "title": "Choosing one product from three",
+     "who": "A software company with eleven people",
+     "text": "The team had three product ideas and room to build one. We interviewed six existing customers, compared the options on a single page and agreed a ninety-day plan for the one they chose.",
+     "service": "strategy-and-direction",
+     "position": 10
+    }
+   },
+   {
+    "id": "project-2",
+    "slug": "project-2",
+    "status": "published",
+    "data": {
+     "title": "Moving from doing to leading",
+     "who": "A founder of a small design studio",
+     "text": "She was still doing most of the client work herself. Over three months we sorted out which decisions she would hand over, how her team would take them on, and how she would stay informed.",
+     "service": "leadership-and-growth",
+     "position": 20
+    }
+   },
+   {
+    "id": "project-3",
+    "slug": "project-3",
+    "status": "published",
+    "data": {
+     "title": "Getting a stalled plan moving",
+     "who": "A regional charity with a new three-year plan",
+     "text": "The plan was agreed but nobody owned the first year. I joined for eight weeks, set up a weekly check-in, named an owner for each of four outcomes and left a simple tracker behind.",
+     "service": "execution-support",
+     "position": 30
+    }
+   }
+  ],
+  "practice": [
+   {
+    "id": "clara",
+    "slug": "clara",
+    "status": "published",
+    "data": {
+     "title": "Clara Weston",
+     "base": "Ashby Cove, and online",
+     "phone": "(555) 010-0148",
+     "email": "hello@bridgewell.example",
+     "response": "Clara reads every enquiry herself and replies within two working days, usually sooner.",
+     "contact_note": "Tell Clara a little about your situation. Please leave out anything confidential. The first call is free and there is no obligation."
+    }
+   }
+  ]
+ }
+}

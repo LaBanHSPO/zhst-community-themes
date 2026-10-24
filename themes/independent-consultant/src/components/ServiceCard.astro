@@ -1,0 +1,22 @@
+---
+import type { Service } from "../../emdash-env";
+import Arrow from "./Arrow.astro";
+import Icon from "./Icon.astro";
+import { serviceHref } from "../lib/site";
+
+interface Props {
+	service: { data: Service; edit?: Record<string, any> };
+	tint: "sage" | "rose" | "blue";
+}
+const { service, tint } = Astro.props;
+const d = service.data;
+---
+
+<a class="svc-card" href={serviceHref(d)}>
+	<span class={`svc-icon tint-${tint}`}><Icon name={d.icon} /></span>
+	<span class="svc-body">
+		<span class="svc-title" {...service.edit?.title}>{d.title}</span>
+		<span class="svc-text">{d.summary}</span>
+	</span>
+	<Arrow />
+</a>

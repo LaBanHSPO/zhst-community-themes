@@ -1,0 +1,59 @@
+---
+import Base from "../../layouts/Base.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import PageHead from "../../components/PageHead.astro";
+import InsightCard from "../../components/InsightCard.astro";
+import { TOPICS, getPractice, getInsights } from "../../lib/site";
+
+const [insightsResult, practiceResult] = await Promise.all([getInsights(), getPractice()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(insightsResult.cacheHint);
+	Astro.cache.set(practiceResult.cacheHint);
+}
+const all = insightsResult.entries;
+
+// One filter link per topic that has at least one entry, in a fixed order.
+const topics = TOPICS.filter((c) => all.some((r) => r.data.topic === c.slug));
+// ?topic=<slug> narrows the list to one topic.
+const active = topics.find((c) => c.slug === Astro.url.searchParams.get("topic"));
+const insights = active ? all.filter((r) => r.data.topic === active.slug) : all;
+---
+
+<Base
+	title={active ? `${active.label} insights` : "Insights"}
+	description="Short, practical notes from Bridgewell on strategy, leadership and getting plans done. Filter by topic."
+	current="/insights"
+>
+	<PageHead
+		id="insights-title"
+		eyebrow="Insights"
+		title={active ? `${active.label}.` : "Notes from recent work."}
+		intro="Short pieces on choosing a direction, leading people and getting plans done. Pick a topic or read them all."
+	/>
+
+	<section class="list-section" aria-labelledby="insights-title">
+		<div class="wrap">
+			{
+				topics.length > 1 && (
+					<nav class="filter" aria-label="Filter by topic">
+						<a href="/insights" aria-current={active ? undefined : "true"}>All</a>
+						{topics.map((c) => (
+							<a href={`/insights?topic=${c.slug}`} aria-current={active?.slug === c.slug ? "true" : undefined}>{c.label}</a>
+						))}
+					</nav>
+				)
+			}
+			{
+				insights.length > 0 ? (
+					<ul class="res-grid">
+						{insights.map((r, i) => <li><InsightCard insight={r} eager={i < 3} /></li>)}
+					</ul>
+				) : (
+					<p class="empty-note">Nothing here yet. New notes are on their way.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<ContactBand practice={practiceResult.practice} />
+</Base>

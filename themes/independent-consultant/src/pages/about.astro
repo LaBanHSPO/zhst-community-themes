@@ -1,0 +1,64 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import ContactBand from "../components/ContactBand.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getPractice } from "../lib/site";
+
+const [{ entry: page, cacheHint }, practiceResult, settings] = await Promise.all([
+	getEmDashEntry("pages", "about"),
+	getPractice(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	if (cacheHint) Astro.cache.set(cacheHint);
+	Astro.cache.set(practiceResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page ? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" }) : null;
+const hasBody = Boolean(page?.data.content && page.data.content.length > 0);
+---
+
+<Base
+	title={seo?.title ?? "About"}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? page?.data.intro ?? "About Clara Weston, the independent consultant behind Bridgewell."}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<header class="about-head">
+		<div class="wrap about-head-grid">
+			<div class="about-head-copy">
+				<p class="eyebrow">{page?.data.eyebrow ?? "About"}</p>
+				<h1 id="about-title" class="display display-xl" {...(page ? page.edit.title : {})}>{page?.data.title ?? "Hello, I'm Clara."}</h1>
+				{page?.data.intro && <p class="lede">{page.data.intro}</p>}
+				<p class="about-links">
+					<a class="btn btn-green" href="/contact"><span>Work with me</span><Arrow /></a>
+					<a class="text-link" href="/services"><span>See services</span><Arrow /></a>
+				</p>
+			</div>
+			<figure class="about-photo">
+				<img
+					src="/images/about-portrait.webp"
+					alt="Clara resting her chin on one hand at her desk, in a dark green blazer, with a laptop and a mug beside her"
+					width="862"
+					height="963"
+					fetchpriority="high"
+				/>
+				<figcaption>Clara Weston is a fictional consultant, shown here with an AI-generated portrait made for this theme.</figcaption>
+			</figure>
+		</div>
+	</header>
+
+	<section class="about-story">
+		<div class="wrap">
+			<div class="prose">
+				{hasBody ? <PortableText value={page!.data.content} /> : <p>Clara's story is coming soon.</p>}
+			</div>
+		</div>
+	</section>
+
+	<ContactBand practice={practiceResult.practice} />
+</Base>

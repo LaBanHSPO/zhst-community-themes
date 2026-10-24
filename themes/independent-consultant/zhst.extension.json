@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "id": "independent-consultant",
+  "kind": "theme",
+  "name": "Independent Consultant",
+  "type": "bio",
+  "emdash": "1.2.0",
+  "entry": "themes/independent-consultant",
+  "capabilities": {
+    "pwa": false,
+    "publicItems": true,
+    "inquiry": true,
+    "booking": false,
+    "checkout": false,
+    "map": false,
+    "whatsapp": false
+  }
+}

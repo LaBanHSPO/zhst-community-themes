@@ -1,0 +1,66 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import PageHead from "../../components/PageHead.astro";
+import { getPractice, getServices, lines, serviceHref } from "../../lib/site";
+
+const [servicesResult, practiceResult] = await Promise.all([getServices(), getPractice()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(practiceResult.cacheHint);
+}
+const services = servicesResult.entries;
+---
+
+<Base title="Services" description="Consulting services from Bridgewell: strategy, leadership coaching, hands-on execution support, a decision workshop and monthly advisory, with who each is for, what is included, length and starting prices.">
+	<PageHead
+		id="services-title"
+		eyebrow="Services"
+		title="Ways to work with me."
+		intro="Three main projects and two smaller ones. Prices are starting points in US dollars. Every engagement is scoped in writing before you pay anything."
+	/>
+
+	<section class="services" aria-labelledby="services-title">
+		<div class="wrap">
+			{
+				services.length === 0 ? (
+					<p class="empty-note">Services are being updated. Send a note and Clara will share current options.</p>
+				) : (
+					<ul class="service-rows">
+						{services.map((s) => {
+							return (
+								<li class="service-row" id={s.data.slug ?? s.data.id}>
+									<div class="service-row-copy">
+										<h2 class="service-row-name" {...s.edit.title}><a href={serviceHref(s.data)}>{s.data.title}</a></h2>
+										<p class="service-row-summary">{s.data.summary}</p>
+										{s.data.best_for && <p class="service-row-for"><strong>Who it is for.</strong> {s.data.best_for}</p>}
+										<p class="service-row-actions">
+											<a class="btn btn-green" href={`/contact?service=${encodeURIComponent(s.data.slug ?? s.data.id)}`}>
+												<span>Enquire about this</span><Arrow />
+											</a>
+											<a class="text-link" href={serviceHref(s.data)}><span>Read more</span><Arrow /></a>
+										</p>
+									</div>
+									<div class="service-row-aside">
+										<dl class="facts">
+											{s.data.format && <div><dt>Format</dt><dd>{s.data.format}</dd></div>}
+											{s.data.length && <div><dt>Length</dt><dd>{s.data.length}</dd></div>}
+											{s.data.price_label && <div><dt>Price</dt><dd class="price">{s.data.price_label}</dd></div>}
+										</dl>
+										<h3 class="includes-title">What is included</h3>
+										<ul class="includes">
+											{lines(s.data.includes).map((i) => <li>{i}</li>)}
+										</ul>
+									</div>
+								</li>
+							);
+						})}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+
+	<ContactBand practice={practiceResult.practice} />
+</Base>

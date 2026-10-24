@@ -1,0 +1,24 @@
+---
+import type { Insight } from "../../emdash-env";
+import { insightHref, photoAlt, photoSrc, topicLabel } from "../lib/site";
+
+interface Props {
+	insight: { data: Insight; edit?: Record<string, any> };
+	eager?: boolean;
+}
+const { insight, eager = false } = Astro.props;
+const d = insight.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<article class="ins-card">
+	<a class="ins-card-photo" href={insightHref(d)} tabindex="-1" aria-hidden="true">
+		{src && <img src={src} alt={photoAlt(d.image, d.photo, "")} width="640" height="480" loading={eager ? "eager" : "lazy"} />}
+	</a>
+	<p class="ins-card-meta">
+		{d.topic && <span class="tag">{topicLabel(d.topic) || d.topic}</span>}
+		{d.date_label && <span>{d.date_label}</span>}
+	</p>
+	<h3 class="ins-card-title" {...insight.edit?.title}><a href={insightHref(d)}>{d.title}</a></h3>
+	<p class="ins-card-text">{d.summary}</p>
+</article>
