@@ -1,0 +1,111 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import CreditCard from "../../components/CreditCard.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { ROLE_LABEL, audioSrc, getCredits, getProducer, lines, photoSrc, rolesOf } from "../../lib/studio";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry, cacheHint } = await getEmDashEntry("credits", slug);
+if (!entry) return Astro.rewrite("/404");
+
+const [allResult, producerResult, settings] = await Promise.all([getCredits(), getProducer(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(producerResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(entry, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = entry.data;
+const cover = photoSrc(d.cover, d.cover_photo);
+const audio = audioSrc(d);
+const roles = rolesOf(d);
+const hasBody = Boolean(d.content && d.content.length > 0);
+const credits = lines(d.credits);
+const others = allResult.entries.filter((c) => c.data.id !== d.id).slice(0, 4);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "credits", id: d.id, slug }}
+	current="/music"
+>
+	<header class="release-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/music">Music</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class="release-head-grid">
+				<div class="release-head-cover">
+					{cover && <img src={cover} alt={d.cover?.alt || `Cover art for ${d.title} by ${d.artist}`} width="500" height="647" fetchpriority="high" />}
+				</div>
+				<div class="release-head-copy">
+					<p class="caps-label">{[d.kind, d.year].filter(Boolean).join(" · ")}</p>
+					<h1 class="display display-xl" {...entry.edit.title}>{d.title}</h1>
+					<p class="release-artist">{d.artist}</p>
+					<ul class="role-tags" aria-label="Studio role">
+						{roles.map((r) => <li><a href={`/music?role=${r}`}>{ROLE_LABEL[r]}</a></li>)}
+					</ul>
+					{d.summary && <p class="release-summary">{d.summary}</p>}
+					<div class="preview">
+						<p class="caps-label">Audio preview</p>
+						{
+							audio ? (
+								<audio class="preview-audio" controls preload="none" src={audio} aria-label={`Preview of ${d.title}`}></audio>
+							) : (
+								<p class="preview-none">No audio preview has been uploaded for this credit yet.</p>
+							)
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	{
+		(credits.length > 0 || hasBody) && (
+			<section class="release-section" aria-labelledby="notes-title">
+				<div class="wrap release-section-grid">
+					<h2 id="notes-title" class="release-section-label caps-label">Session notes</h2>
+					<div class="prose">
+						{hasBody && <PortableText value={d.content} />}
+						{credits.length > 0 && <p class="credits">{credits.join(" ")}</p>}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		others.length > 0 && (
+			<section class="band" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="caps-label">More music</p>
+							<h2 id="more-title" class="display">Keep listening.</h2>
+						</div>
+						<a class="more-link" href="/music"><span>All music</span><Arrow /></a>
+					</div>
+					<ul class="credit-grid">
+						{others.map((c) => <li><CreditCard credit={c.data} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<ContactBand producer={producerResult.producer} />
+</Base>

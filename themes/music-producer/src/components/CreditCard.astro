@@ -1,0 +1,36 @@
+---
+import { creditHref, photoSrc, roleText } from "../lib/studio";
+import type { Credit } from "../lib/studio";
+
+interface Props {
+	credit: Credit;
+	edit?: Record<string, unknown>;
+	/** Show title and artist laid over the cover (homepage style) instead of beneath it. */
+	overlay?: boolean;
+}
+const { credit, edit = {}, overlay = false } = Astro.props;
+const src = photoSrc(credit.cover, credit.cover_photo);
+---
+
+<a class:list={["credit-card", { "is-overlay": overlay }]} href={creditHref(credit)}>
+	<span class="credit-cover">
+		{src && <img src={src} alt={credit.cover?.alt || `Cover art for ${credit.title} by ${credit.artist}`} width="500" height="647" loading="lazy" />}
+		{
+			overlay && (
+				<span class="credit-over">
+					<span class="credit-over-title" {...edit}>{credit.title}</span>
+					<span class="credit-over-artist">{credit.artist}</span>
+				</span>
+			)
+		}
+	</span>
+	{
+		!overlay && (
+			<span class="credit-meta">
+				<span class="credit-title" {...edit}>{credit.title}</span>
+				<span class="credit-artist">{credit.artist}</span>
+				<span class="credit-role">{[roleText(credit), credit.year].filter(Boolean).join(" · ")}</span>
+			</span>
+		)
+	}
+</a>

@@ -1,0 +1,114 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import ContactBand from "../components/ContactBand.astro";
+import PageHead from "../components/PageHead.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getProducer, getRooms, getServices, lines, photoSrc } from "../lib/studio";
+
+const [{ entry: page, cacheHint }, producerResult, roomsResult, servicesResult, settings] = await Promise.all([
+	getEmDashEntry("pages", "studio"),
+	getProducer(),
+	getRooms(),
+	getServices(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	if (cacheHint) Astro.cache.set(cacheHint);
+	Astro.cache.set(producerResult.cacheHint);
+	Astro.cache.set(roomsResult.cacheHint);
+	Astro.cache.set(servicesResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page ? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/studio" }) : null;
+const hasBody = Boolean(page?.data.content && page.data.content.length > 0);
+---
+
+<Base
+	title={seo?.title ?? "Studio"}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? page?.data.intro ?? "The SonicForge studio: rooms, gear and services."}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "studio" } : undefined}
+>
+	<PageHead
+		id="studio-title"
+		eyebrow={page?.data.eyebrow ?? "The Studio"}
+		title={page?.data.title ?? "A creative home for bold ideas."}
+		intro={page?.data.intro}
+		edit={page ? { ...page.edit.title } : {}}
+	/>
+
+	<div class="wrap">
+		<img
+			class="studio-banner"
+			src="/images/studio-desk.webp"
+			alt="Studio desk at night: over-ear headphones, a record sleeve with a vinyl record, a notebook and pen, a pad controller, a microphone and a plant beside a speaker"
+			width="1448"
+			height="1086"
+		/>
+	</div>
+
+	<section class="band" aria-labelledby="rooms-title">
+		<div class="wrap">
+			<p class="caps-label">Rooms and gear</p>
+			<h2 id="rooms-title" class="display">Four rooms, one clear sound.</h2>
+			<ul class="rooms">
+				{
+					roomsResult.entries.map((r) => {
+						const src = photoSrc(r.data.image, r.data.photo);
+						return (
+							<li class="room">
+								<div class="room-photo">{src && <img src={src} alt={`${r.data.title}`} width="800" height="560" loading="lazy" />}</div>
+								<div class="room-copy">
+									<h3 {...r.edit.title}>{r.data.title}</h3>
+									<p>{r.data.summary}</p>
+									<ul class="gear">{lines(r.data.gear).map((g) => <li>{g}</li>)}</ul>
+								</div>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</div>
+	</section>
+
+	<section class="band band-process" aria-labelledby="rates-title">
+		<div class="wrap">
+			<p class="caps-label">Services and rates</p>
+			<h2 id="rates-title" class="display">Clear starting prices.</h2>
+			<ul class="rates">
+				{
+					servicesResult.entries.map((s) => (
+						<li class="rate">
+							<div>
+								<h3 {...s.edit.title}>{s.data.title}</h3>
+								<p>{s.data.summary}</p>
+								<ul class="gear">{lines(s.data.includes).map((g) => <li>{g}</li>)}</ul>
+							</div>
+							<div class="rate-side">
+								{s.data.from_rate && <p class="rate-price">{s.data.from_rate}</p>}
+								<a class="btn btn-outline" href={`/contact?service=${s.data.slug ?? s.data.id}`}><span>Book {s.data.title.toLowerCase()}</span><Arrow /></a>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+			<p class="fine-print">All rates on this page are fictional placeholder figures for the theme. Replace them in the CMS before you publish.</p>
+		</div>
+	</section>
+
+	{
+		hasBody && (
+			<section class="band" aria-label="About the studio">
+				<div class="wrap prose-narrow">
+					<div class="prose"><PortableText value={page!.data.content} /></div>
+				</div>
+			</section>
+		)
+	}
+
+	<ContactBand producer={producerResult.producer} />
+</Base>

@@ -1,0 +1,61 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import ContactBand from "../components/ContactBand.astro";
+import PageHead from "../components/PageHead.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getProducer } from "../lib/studio";
+
+const [{ entry: page, cacheHint }, producerResult, settings] = await Promise.all([
+	getEmDashEntry("pages", "about"),
+	getProducer(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	if (cacheHint) Astro.cache.set(cacheHint);
+	Astro.cache.set(producerResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page ? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" }) : null;
+const hasBody = Boolean(page?.data.content && page.data.content.length > 0);
+---
+
+<Base
+	title={seo?.title ?? "About"}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? page?.data.intro ?? "About SonicForge, a one-producer music studio."}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<PageHead
+		id="about-title"
+		eyebrow={page?.data.eyebrow ?? "About"}
+		title={page?.data.title ?? "Sound is a team sport."}
+		intro={page?.data.intro}
+		edit={page ? { ...page.edit.title } : {}}
+	/>
+
+	<section class="about-story">
+		<figure class="about-photo">
+			<img
+				src="/images/producer-console.webp"
+				alt="The producer seen from behind in a beanie, resting his chin on his hand while looking at a monitor above the mixing console"
+				width="590"
+				height="530"
+				loading="lazy"
+			/>
+			<figcaption>In the control room, SonicForge, Larkfield</figcaption>
+		</figure>
+		<div class="prose">
+			{hasBody ? <PortableText value={page!.data.content} /> : <p>The story is coming soon.</p>}
+			<p class="about-links">
+				<a class="btn btn-outline" href="/music"><span>Hear the work</span><Arrow /></a>
+				<a class="gold-link" href="/studio"><span>Explore the studio</span><Arrow /></a>
+			</p>
+		</div>
+	</section>
+
+	<ContactBand producer={producerResult.producer} />
+</Base>

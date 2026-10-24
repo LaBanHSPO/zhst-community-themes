@@ -1,0 +1,47 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import CreditCard from "../../components/CreditCard.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import { ROLES, ROLE_LABEL, getCredits, getProducer, rolesOf } from "../../lib/studio";
+import type { Role } from "../../lib/studio";
+
+const [creditsResult, producerResult] = await Promise.all([getCredits(), getProducer()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(creditsResult.cacheHint);
+	Astro.cache.set(producerResult.cacheHint);
+}
+const all = creditsResult.entries;
+// ?role=produced|mixed|mastered filters the list; anything else shows everything.
+const wanted = Astro.url.searchParams.get("role");
+const role = (ROLES as readonly string[]).includes(wanted ?? "") ? (wanted as Role) : null;
+const shown = role ? all.filter((c) => rolesOf(c.data).includes(role)) : all;
+const count = (r: Role) => all.filter((c) => rolesOf(c.data).includes(r)).length;
+---
+
+<Base title="Music" description="Records produced, mixed and mastered at SonicForge. Filter by role: produced, mixed or mastered." current="/music">
+	<PageHead
+		id="music-title"
+		eyebrow="Music"
+		title="Records made here."
+		intro="A selection of releases the studio has worked on. Filter by what the studio did on each one."
+	/>
+	<section class="music-list" aria-labelledby="music-title">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter by role">
+				<a href="/music" aria-current={role ? undefined : "page"} class="chip">All <span>{all.length}</span></a>
+				{ROLES.map((r) => <a href={`/music?role=${r}`} aria-current={role === r ? "page" : undefined} class="chip">{ROLE_LABEL[r]} <span>{count(r)}</span></a>)}
+			</nav>
+			{
+				shown.length === 0 ? (
+					<p class="empty-note">Nothing here yet. New credits are added after each project.</p>
+				) : (
+					<ul class="credit-grid">
+						{shown.map((c) => <li><CreditCard credit={c.data} edit={{ ...c.edit.title }} /></li>)}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+	<ContactBand producer={producerResult.producer} />
+</Base>

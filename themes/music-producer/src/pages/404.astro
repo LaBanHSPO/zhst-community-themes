@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+---
+
+<Base title="Page not found">
+	<section class="notfound" aria-labelledby="nf-title">
+		<img class="notfound-photo" src="/images/cover-afterglow.webp" alt="" width="520" height="520" />
+		<div class="notfound-copy">
+			<p class="caps-label">Error 404</p>
+			<h1 id="nf-title" class="display display-xl">This track is not on the record.</h1>
+			<p class="lede">The page you are looking for has moved or never existed. These are good places to start again.</p>
+			<div class="actions">
+				<a class="btn btn-gold" href="/"><span>Back to home</span><Arrow /></a>
+				<a class="pill" href="/music">Music</a>
+				<a class="pill" href="/studio">Studio</a>
+			</div>
+		</div>
+	</section>
+</Base>

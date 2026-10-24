@@ -1,0 +1,1002 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Music Producer",
+  "description": "A dark, cinematic music-producer theme: a full-bleed studio hero, latest credits, services, process and booking, a music collection filterable by role with optional audio previews, a studio page with rooms and gear, an about page and a booking contact page, seeded with synthetic sample content.",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "SonicForge",
+  "tagline": "Music Producer"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Small label above the title (also used in the footer)",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "credits",
+   "label": "Music",
+   "labelSingular": "Credit",
+   "urlPattern": "/music/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "artist",
+     "label": "Artist",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "year",
+     "label": "Year",
+     "type": "string"
+    },
+    {
+     "slug": "kind",
+     "label": "Type",
+     "type": "select",
+     "defaultValue": "Single",
+     "validation": {
+      "options": [
+       "Single",
+       "EP",
+       "Album"
+      ]
+     }
+    },
+    {
+     "slug": "roles",
+     "label": "Studio role (filter on the music page)",
+     "type": "multiSelect",
+     "validation": {
+      "options": [
+       "produced",
+       "mixed",
+       "mastered"
+      ]
+     }
+    },
+    {
+     "slug": "summary",
+     "label": "Short description",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order (newest first)",
+     "type": "integer"
+    },
+    {
+     "slug": "cover",
+     "label": "Cover (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "cover_photo",
+     "label": "Bundled cover path",
+     "type": "string"
+    },
+    {
+     "slug": "audio",
+     "label": "Audio preview (optional; leave empty if there is none)",
+     "type": "file"
+    },
+    {
+     "slug": "credits",
+     "label": "Credits (plain text)",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Notes from the session",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "services",
+   "label": "Services",
+   "labelSingular": "Service",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Service name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "Short description",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "from_rate",
+     "label": "Starting rate (placeholder wording, e.g. From $400 per song)",
+     "type": "string"
+    },
+    {
+     "slug": "includes",
+     "label": "What is included (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    }
+   ]
+  },
+  {
+   "slug": "rooms",
+   "label": "Rooms",
+   "labelSingular": "Room",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Room name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "Short description",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "gear",
+     "label": "Gear and features (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    }
+   ]
+  },
+  {
+   "slug": "producer",
+   "label": "Studio details",
+   "labelSingular": "Studio details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Studio name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "base",
+     "label": "Based in",
+     "type": "string"
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Contact email",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "response",
+     "label": "Reply time (shown beside the contact form)",
+     "type": "text"
+    },
+    {
+     "slug": "contact_note",
+     "label": "Note shown beside the contact form",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Home",
+     "url": "/"
+    },
+    {
+     "type": "custom",
+     "label": "Studio",
+     "url": "/studio"
+    },
+    {
+     "type": "custom",
+     "label": "Music",
+     "url": "/music"
+    },
+    {
+     "type": "custom",
+     "label": "About",
+     "url": "/about"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "Sound is a team sport.",
+     "eyebrow": "About",
+     "intro": "SonicForge is a one-producer studio that helps artists finish records they are proud of.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I started out recording friends in a spare bedroom with one microphone and a borrowed interface. Years later the gear is better, the room is quieter and the approach is the same: listen first, make decisions that serve the song, and never let the technology get louder than the feeling.",
+         "_key": "k1s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k2",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I work with singers, bands and writers who arrive with anything from a voice memo to a half-built session. Some want a producer in the room from the first chord; others only need a mix that finally translates to the car.",
+         "_key": "k2s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k3",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How a project runs",
+         "_key": "k3s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k4",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We start with a listening session and a short conversation about where the song should land. Then we build, record and refine in the studio, usually a few days at a time, with you hearing every version as it changes.",
+         "_key": "k4s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k5",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "When the record is done I mix and master it here, so the sound you approved in the room is the sound that leaves it. You keep the sessions and the stems.",
+         "_key": "k5s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k6",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What I care about",
+         "_key": "k6s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k7",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Honest performances, space in the mix and finishing things. Great sound should feel at home on a phone speaker as much as on a big system.",
+         "_key": "k7s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "studio",
+    "slug": "studio",
+    "status": "published",
+    "data": {
+     "title": "A creative home for bold ideas.",
+     "eyebrow": "The Studio",
+     "intro": "A purpose-built studio for writing, recording, mixing and finishing, where great sound feels at home.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k8",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "SonicForge is a small private studio: one control room, one live room, a vocal booth and a lounge for listening back. Sessions are booked for a single artist or band at a time, so the room is yours for the day.",
+         "_key": "k8s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k9",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Every project starts with a conversation, so tell me about the song and I will suggest the right mix of rooms, time and services.",
+         "_key": "k9s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "booking-terms",
+    "slug": "booking-terms",
+    "status": "published",
+    "data": {
+     "title": "Booking terms.",
+     "eyebrow": "Booking terms",
+     "intro": "A plain-language summary of how sessions are booked, paid for and delivered.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k10",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Booking",
+         "_key": "k10s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k11",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A session is confirmed once a date is agreed by email. Dates can be moved with 48 hours notice.",
+         "_key": "k11s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k12",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Delivery",
+         "_key": "k12s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k13",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Final mixes and masters are delivered as high-resolution files within the time agreed at the start of the project. Two rounds of revisions are included.",
+         "_key": "k13s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k14",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Ownership",
+         "_key": "k14s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k15",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You own your songs and recordings. The studio asks only for permission to mention the project in its credits list.",
+         "_key": "k15s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k16",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "These sample terms are placeholder text for the theme and are not legal advice.",
+         "_key": "k16s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "credits": [
+   {
+    "id": "higher-ground",
+    "slug": "higher-ground",
+    "status": "published",
+    "data": {
+     "title": "Higher Ground",
+     "artist": "Lena Ray",
+     "year": "2026",
+     "kind": "EP",
+     "roles": [
+      "produced",
+      "mixed"
+     ],
+     "summary": "Five songs written over one slow winter and recorded in a single week in the live room.",
+     "position": 1,
+     "cover_photo": "/images/cover-higher-ground.webp",
+     "credits": "Artist: Lena Ray. Produced and mixed at SonicForge. Mastering by an outside engineer.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k17",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The brief was warmth: acoustic guitar, a borrowed piano and room sound left in on purpose.",
+         "_key": "k17s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k18",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We tracked everything live with the lamps on, then built the record around the first takes.",
+         "_key": "k18s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "midnight-thoughts",
+    "slug": "midnight-thoughts",
+    "status": "published",
+    "data": {
+     "title": "Midnight Thoughts",
+     "artist": "Jae Kell",
+     "year": "2026",
+     "kind": "Single",
+     "roles": [
+      "produced",
+      "mixed",
+      "mastered"
+     ],
+     "summary": "A late-night single built from a voice memo, finished start to end in the studio.",
+     "position": 2,
+     "cover_photo": "/images/cover-midnight-thoughts.webp",
+     "credits": "Artist: Jae Kell. Produced, mixed and mastered at SonicForge.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k19",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Jae arrived with a phone recording of a hummed chorus. Two sessions later it was a finished song.",
+         "_key": "k19s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k20",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The vocal is the first take, kept because nothing we recorded afterwards felt as honest.",
+         "_key": "k20s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "same-skies",
+    "slug": "same-skies",
+    "status": "published",
+    "data": {
+     "title": "Same Skies",
+     "artist": "The Vars",
+     "year": "2025",
+     "kind": "EP",
+     "roles": [
+      "mixed",
+      "mastered"
+     ],
+     "summary": "A four-piece band record, recorded elsewhere and mixed and mastered here.",
+     "position": 3,
+     "cover_photo": "/images/cover-same-skies.webp",
+     "credits": "Artist: The Vars. Mixed and mastered at SonicForge.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k21",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The band self-recorded in a rehearsal room and sent over the session. The job was to give it depth without losing the rough edges.",
+         "_key": "k21s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k22",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Mastering aimed for a record that sounds the same on earbuds and on a big system.",
+         "_key": "k22s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "still-here",
+    "slug": "still-here",
+    "status": "published",
+    "data": {
+     "title": "Still Here",
+     "artist": "Elio",
+     "year": "2025",
+     "kind": "Album",
+     "roles": [
+      "produced"
+     ],
+     "summary": "A quiet, spacious album produced over three months of short sessions.",
+     "position": 4,
+     "cover_photo": "/images/cover-still-here.webp",
+     "credits": "Artist: Elio. Produced at SonicForge. Mixed and mastered elsewhere.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k23",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Elio wanted the feeling of a still sea: very little movement, a lot of space.",
+         "_key": "k23s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k24",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We recorded sparse arrangements and resisted adding anything that did not earn its place.",
+         "_key": "k24s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "afterglow",
+    "slug": "afterglow",
+    "status": "published",
+    "data": {
+     "title": "Afterglow",
+     "artist": "Marlo Quinn",
+     "year": "2025",
+     "kind": "Single",
+     "roles": [
+      "mixed"
+     ],
+     "summary": "A single mixed for vinyl, with extra attention to low end and stereo width.",
+     "position": 5,
+     "cover_photo": "/images/cover-afterglow.webp",
+     "credits": "Artist: Marlo Quinn. Mixed at SonicForge.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k25",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The mix was prepared with a vinyl cut in mind, so bass and top end stay controlled.",
+         "_key": "k25s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "midnight-skies",
+    "slug": "midnight-skies",
+    "status": "published",
+    "data": {
+     "title": "Midnight Skies",
+     "artist": "Tavi Rowe",
+     "year": "2024",
+     "kind": "Single",
+     "roles": [
+      "produced"
+     ],
+     "summary": "A moody single produced from scratch with a vocalist and a drum machine.",
+     "position": 6,
+     "cover_photo": "/images/cover-midnight-skies.webp",
+     "credits": "Artist: Tavi Rowe. Produced at SonicForge.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k26",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We started with a drum pattern and a single chord and let the song find its own shape.",
+         "_key": "k26s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "further-still",
+    "slug": "further-still",
+    "status": "published",
+    "data": {
+     "title": "Further Still",
+     "artist": "Harbour Lights",
+     "year": "2024",
+     "kind": "EP",
+     "roles": [
+      "mastered"
+     ],
+     "summary": "A coastal indie EP mastered for consistent loudness across five songs.",
+     "position": 7,
+     "cover_photo": "/images/cover-further-still.webp",
+     "credits": "Artist: Harbour Lights. Mastered at SonicForge.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k27",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Mastering focused on keeping the songs dynamic while matching their level and tone.",
+         "_key": "k27s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "slow-light",
+    "slug": "slow-light",
+    "status": "published",
+    "data": {
+     "title": "Slow Light",
+     "artist": "Odell Park",
+     "year": "2024",
+     "kind": "Single",
+     "roles": [
+      "mixed",
+      "mastered"
+     ],
+     "summary": "A slow ballad mixed and mastered with the vocal front and centre.",
+     "position": 8,
+     "cover_photo": "/images/cover-slow-light.webp",
+     "credits": "Artist: Odell Park. Mixed and mastered at SonicForge.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k28",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The vocal sits close and dry, with a long soft reverb that only appears between the lines.",
+         "_key": "k28s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "services": [
+   {
+    "id": "production",
+    "slug": "production",
+    "status": "published",
+    "data": {
+     "title": "Production",
+     "summary": "Turn a demo or an idea into a finished arrangement, with a producer in the room.",
+     "from_rate": "From $450 per song (sample rate)",
+     "includes": "Songwriting and arrangement help\nSession musicians on request\nFull project files and stems",
+     "position": 1,
+     "photo": "/images/gear-pads.webp"
+    }
+   },
+   {
+    "id": "recording",
+    "slug": "recording",
+    "status": "published",
+    "data": {
+     "title": "Recording",
+     "summary": "Capture vocals, guitars, keys and full bands in the live room and vocal booth.",
+     "from_rate": "From $60 per hour (sample rate)",
+     "includes": "Engineer included\nLive room and vocal booth\nRough mixes the same day",
+     "position": 2,
+     "photo": "/images/gear-mic.webp"
+    }
+   },
+   {
+    "id": "mixing",
+    "slug": "mixing",
+    "status": "published",
+    "data": {
+     "title": "Mixing",
+     "summary": "Balance, shape and polish your tracks so the song feels bigger without getting louder.",
+     "from_rate": "From $220 per song (sample rate)",
+     "includes": "Two rounds of revisions\nStem and alternate versions\nReference notes for mastering",
+     "position": 3,
+     "photo": "/images/desk-console.webp"
+    }
+   },
+   {
+    "id": "mastering",
+    "slug": "mastering",
+    "status": "published",
+    "data": {
+     "title": "Mastering",
+     "summary": "Final tone and level for streaming, download and vinyl, checked on several systems.",
+     "from_rate": "From $90 per song (sample rate)",
+     "includes": "Files for streaming and vinyl\nConsistent level across a release\nShort turnaround on request",
+     "position": 4,
+     "photo": "/images/gear-headphones.webp"
+    }
+   }
+  ],
+  "rooms": [
+   {
+    "id": "control-room",
+    "slug": "control-room",
+    "status": "published",
+    "data": {
+     "title": "Control room",
+     "summary": "The heart of the studio: a large analogue-style console, treated walls and a pair of full-range monitors.",
+     "gear": "Analogue-style mixing console\nFull-range main monitors and a small second pair\nOutboard compressors and equalisers\nProducer desk and writing table",
+     "position": 1,
+     "photo": "/images/producer-console.webp"
+    }
+   },
+   {
+    "id": "live-room",
+    "slug": "live-room",
+    "status": "published",
+    "data": {
+     "title": "Live room",
+     "summary": "A warm, treated room with room to track a small band, guitars, keys and a piano.",
+     "gear": "Space for four players\nAcoustic guitars and amps on hand\nUpright piano\nSelection of condenser and ribbon microphones",
+     "position": 2,
+     "photo": "/images/gear-monitor.webp"
+    }
+   },
+   {
+    "id": "vocal-booth",
+    "slug": "vocal-booth",
+    "status": "published",
+    "data": {
+     "title": "Vocal booth",
+     "summary": "A quiet, dry booth with a classic condenser microphone set up and ready to sing into.",
+     "gear": "Large-diaphragm condenser microphone\nPop filter and boom stand\nComfortable headphone mix\nLyric stand and notebook",
+     "position": 3,
+     "photo": "/images/gear-mic.webp"
+    }
+   },
+   {
+    "id": "lounge",
+    "slug": "lounge",
+    "status": "published",
+    "data": {
+     "title": "Lounge",
+     "summary": "A relaxed space to listen back, write and take a break between takes.",
+     "gear": "Sofa and listening speakers\nTea and coffee\nNatural wood and warm lamps\nSpace for friends and collaborators",
+     "position": 4,
+     "photo": "/images/studio-lounge.webp"
+    }
+   }
+  ],
+  "producer": [
+   {
+    "id": "sonicforge",
+    "slug": "sonicforge",
+    "status": "published",
+    "data": {
+     "title": "SonicForge",
+     "base": "Larkfield",
+     "phone": "(555) 010-0148",
+     "email": "hello@sonicforge.example",
+     "response": "Every message is read by the producer. Replies usually take one to two working days.",
+     "contact_note": "Choose a service so your message reaches the right desk. Not sure yet? Pick anything else and describe the song."
+    }
+   }
+  ]
+ }
+}

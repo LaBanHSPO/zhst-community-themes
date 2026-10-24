@@ -1,0 +1,125 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import ContactBand from "../components/ContactBand.astro";
+import CreditCard from "../components/CreditCard.astro";
+import { getCredits, getProducer, getServices, photoSrc } from "../lib/studio";
+
+const [creditsResult, servicesResult, producerResult] = await Promise.all([getCredits(), getServices(), getProducer()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(creditsResult.cacheHint);
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(producerResult.cacheHint);
+}
+const latest = creditsResult.entries.slice(0, 4);
+const services = servicesResult.entries;
+
+const steps = [
+	{ n: "01", title: "Listen", text: "We hear the demo, talk about the song and agree where it should land." },
+	{ n: "02", title: "Make", text: "Writing, arranging and recording in the studio, with you in the room." },
+	{ n: "03", title: "Shape", text: "Mixing that balances every part, with two rounds of revisions included." },
+	{ n: "04", title: "Finish", text: "Mastering and delivery, ready for streaming, download and vinyl." },
+];
+---
+
+<Base
+	title="Bring your sound to life"
+	description="SonicForge is a music producer's studio: production, recording, mixing and mastering for artists who want more than ordinary."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A producer in a beanie seen from behind, sitting at a mixing console in front of a monitor and studio speakers, lit by a warm lamp"
+			width="1448"
+			height="650"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<p class="hero-kicker">Ideas <i>/</i> People <i>/</i> Higher sound</p>
+			<h1 id="hero-title" class="hero-title"><span>Bring your</span><span class="gold">sound to life.</span></h1>
+			<p class="hero-sub">Production, recording and mixing for artists<br />who want more than ordinary.</p>
+			<a class="btn btn-gold btn-lg" href="/music"><span>Hear the work</span><Arrow /></a>
+		</div>
+		<p class="chalk" aria-hidden="true">Good<br />Music<br />Brings<br />People<br />Closer<span class="chalk-stroke"></span></p>
+	</section>
+
+	<section class="rel-studio" aria-label="Latest releases and the studio">
+		<div class="rs-releases" aria-labelledby="latest-title">
+			<div class="rs-head">
+				<h2 id="latest-title" class="caps-label">Latest releases</h2>
+				<a class="more-link" href="/music"><span>More music</span><Arrow /></a>
+			</div>
+			<ul class="rs-cards">
+				{latest.map((c) => <li><CreditCard credit={c.data} edit={{ ...c.edit.title }} overlay /></li>)}
+			</ul>
+		</div>
+		<div class="rs-studio" aria-labelledby="studio-title">
+			<div class="rs-studio-copy">
+				<p class="caps-label">The studio</p>
+				<h2 id="studio-title" class="rs-studio-title">A creative home for bold ideas.</h2>
+				<p class="rs-studio-body">A purpose-built studio for writing, recording, mixing and finishing &mdash; where great sound feels at home.</p>
+				<a class="gold-link" href="/studio"><span>Explore the studio</span><Arrow /></a>
+			</div>
+			<img
+				class="rs-studio-photo"
+				src="/images/studio-lounge.webp"
+				alt="The studio lounge: a leather sofa, an acoustic guitar and a neon sign glowing on a dark wall, with plants and a warm lamp"
+				width="561"
+				height="612"
+				loading="lazy"
+			/>
+		</div>
+	</section>
+
+	<section class="band" aria-labelledby="services-title">
+		<div class="wrap">
+			<div class="band-head">
+				<div>
+					<p class="caps-label">What I do</p>
+					<h2 id="services-title" class="display">From first idea to final master.</h2>
+				</div>
+				<a class="more-link" href="/studio"><span>All services and rates</span><Arrow /></a>
+			</div>
+			<ul class="svc-grid">
+				{
+					services.map((s) => {
+						const src = photoSrc(s.data.image, s.data.photo);
+						return (
+							<li class="svc">
+								<a class="svc-link" href={`/contact?service=${s.data.slug ?? s.data.id}`}>
+									<span class="svc-photo">{src && <img src={src} alt="" width="640" height="420" loading="lazy" />}</span>
+									<span class="svc-title" {...s.edit.title}>{s.data.title}</span>
+									<span class="svc-text">{s.data.summary}</span>
+									{s.data.from_rate && <span class="svc-rate">{s.data.from_rate}</span>}
+									<span class="svc-go">Book {s.data.title.toLowerCase()} <Arrow /></span>
+								</a>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</div>
+	</section>
+
+	<section class="band band-process" aria-labelledby="process-title">
+		<div class="wrap">
+			<p class="caps-label">How it works</p>
+			<h2 id="process-title" class="display">Four steps, no surprises.</h2>
+			<ol class="steps">
+				{
+					steps.map((s) => (
+						<li class="step">
+							<span class="step-n">{s.n}</span>
+							<h3>{s.title}</h3>
+							<p>{s.text}</p>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+	</section>
+
+	<ContactBand producer={producerResult.producer} />
+</Base>

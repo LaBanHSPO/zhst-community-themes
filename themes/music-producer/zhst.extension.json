@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "music-producer",
+	"kind": "theme",
+	"name": "Music Producer",
+	"type": "bio",
+	"emdash": "1.2.0",
+	"entry": "themes/music-producer",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

@@ -1,0 +1,26 @@
+---
+/** Wordmark: "SONIC" in white and "FORGE" in gold (split at the last capitalised word), tagline in tiny tracked caps beneath. */
+interface Props {
+	title: string;
+	tagline?: string;
+	logo?: { url?: string; alt?: string } | null;
+	class?: string;
+}
+const { title, tagline, logo, class: className } = Astro.props;
+const m = title.match(/^(.+?)([A-Z][a-z]+)$/);
+const first = m ? m[1] : title;
+const second = m ? m[2] : "";
+---
+
+<a class:list={["wordmark", className]} href="/" aria-label={`${title} — home`}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt || title} />
+		) : (
+			<span class="wordmark-text">
+				<span class="wordmark-title"><span class="wm-a">{first}</span>{second && <span class="wm-b">{second}</span>}</span>
+				{tagline && <span class="wordmark-tagline">{tagline}</span>}
+			</span>
+		)
+	}
+</a>

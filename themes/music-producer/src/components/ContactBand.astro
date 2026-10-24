@@ -1,0 +1,25 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref } from "../lib/studio";
+import type { ProducerData } from "../lib/studio";
+
+interface Props {
+	producer: ProducerData;
+}
+const { producer } = Astro.props;
+---
+
+<section class="contact-band" aria-labelledby="contact-band-title">
+	<div class="wrap contact-band-inner">
+		<p class="caps-label">Book a session</p>
+		<h2 id="contact-band-title" class="display">Let&rsquo;s make something that lasts.</h2>
+		<p class="contact-band-copy">Tell me about the song, the artist and the deadline. I will reply with availability and a clear quote. Email and phone are always here too.</p>
+		<div class="contact-band-actions">
+			<a class="btn btn-gold" href="/contact"><span>Book the studio</span><Arrow /></a>
+			<p class="contact-band-contact">
+				{producer.email && <a href={`mailto:${producer.email}`}>{producer.email}</a>}
+				{producer.phone && <a href={telHref(producer.phone)}>{producer.phone}</a>}
+			</p>
+		</div>
+	</div>
+</section>
