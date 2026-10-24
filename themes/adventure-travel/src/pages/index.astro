@@ -1,0 +1,172 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import PlanBand from "../components/PlanBand.astro";
+import {
+	dateBadge,
+	dateRange,
+	daysLabel,
+	difficultyLabel,
+	getActivities,
+	getCompany,
+	getSteps,
+	getTrips,
+	lines,
+	photoSrc,
+	regionLabel,
+	upcomingDepartures,
+} from "../lib/travel";
+
+const [tripsResult, activitiesResult, stepsResult, companyResult] = await Promise.all([getTrips(), getActivities(), getSteps(), getCompany()]);
+for (const r of [tripsResult, activitiesResult, stepsResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const departures = upcomingDepartures(tripsResult.trips).slice(0, 6);
+const included = lines(companyResult.company.included);
+const notIncluded = lines(companyResult.company.not_included);
+---
+
+<Base
+	title="WILDROUTES Adventure Travel"
+	description="Small-group hiking, kayaking and expedition trips in the Alps, Norway, Patagonia and the Rockies, led by guides who work outdoors for a living."
+	overlay
+>
+	<section class="hero">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A hiker with a backpack stands on a rocky summit at golden hour, looking over a long lake and snow-topped peaks"
+			width="1448"
+			height="680"
+			fetchpriority="high"
+		/>
+		<div class="hero-shade" aria-hidden="true"></div>
+		<div class="hero-copy">
+			<p class="hero-eyebrow"><span>Adventure travel for a brighter you</span><span class="rule" aria-hidden="true"></span></p>
+			<h1>Go further. <br />Feel more.</h1>
+			<p class="hero-sub">Small groups. Big landscapes. A more meaningful way to see the world.</p>
+			<a class="btn btn-lg" href="/trips">Explore adventures <Arrow /></a>
+		</div>
+		<p class="hero-note" aria-hidden="true">Bigger<br />Horizons<br />Brighter You<span class="note-stroke"></span></p>
+	</section>
+
+	<section class="intro" aria-labelledby="intro-title">
+		<div class="intro-copy">
+			<p class="eyebrow"><span>Our trips</span><span class="rule" aria-hidden="true"></span></p>
+			<h2 id="intro-title" class="display">Real places. <br />Remarkable people.</h2>
+			<p class="intro-text">Join small-group adventures to incredible places, <br />led by expert guides who live and breathe the outdoors.</p>
+			<a class="btn btn-outline btn-md" href="/trips">Find your next trip <Arrow /></a>
+		</div>
+		<ul class="activity-cards">
+			{
+				activitiesResult.entries.map((a) => {
+					const src = photoSrc(a.data.image, a.data.photo);
+					return (
+						<li>
+							<a class="activity-card" href={`/trips?activity=${a.data.activity}`}>
+								{src && <img src={src} alt="" width="252" height="322" loading="lazy" />}
+								<span class="activity-body">
+									<span class="activity-icon"><Icon name={a.data.icon ?? "mountains"} /></span>
+									<span class="activity-title" {...a.edit.title}>{a.data.title}</span>
+									<span class="activity-tag">{a.data.tagline}</span>
+								</span>
+							</a>
+						</li>
+					);
+				})
+			}
+		</ul>
+	</section>
+
+	{
+		departures.length > 0 && (
+			<section class="band" aria-labelledby="dep-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow"><span>Departures</span><span class="rule" aria-hidden="true"></span></p>
+							<h2 id="dep-title" class="display">Next dates we are running</h2>
+						</div>
+						<a class="link-arrow" href="/trips">All trips <Arrow /></a>
+					</div>
+					<ol class="departure-list">
+						{
+							departures.map((d) => {
+								const t = d.trip.entry.data;
+								const b = dateBadge(d.start);
+								return (
+									<li>
+										<span class="dep-badge" aria-hidden="true"><b>{b.day}</b><i>{b.mon}</i><em>{b.year}</em></span>
+										<span class="dep-main">
+											<a class="dep-title" href={`/trips/${t.slug ?? t.id}`}>{t.title}</a>
+											<span class="dep-meta">
+												{dateRange(d.start, d.end)}<span aria-hidden="true"> / </span>{regionLabel(t.region)}<span aria-hidden="true"> / </span>{daysLabel(t.days)}<span aria-hidden="true"> / </span>{difficultyLabel(t.difficulty)}
+											</span>
+										</span>
+										<span class="dep-spaces">Spaces: ask</span>
+										<a class="dep-link" href={`/contact?trip=${t.slug ?? t.id}&departure=${d.start}`}>Ask about this date <Arrow /></a>
+									</li>
+								);
+							})
+						}
+					</ol>
+					<p class="band-note">We keep spaces off the website because they change between emails. Ask and we answer the same day we can.</p>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		stepsResult.entries.length > 0 && (
+			<section class="band band-tint how" aria-labelledby="how-title">
+				<div class="wrap how-grid">
+					<figure class="how-photo">
+						<img src="/images/hikers-ridge.webp" alt="Four hikers with poles walking a rocky ridge above a lake and cloud at sunset" width="720" height="720" loading="lazy" />
+					</figure>
+					<div class="how-copy">
+						<p class="eyebrow"><span>How a trip works</span><span class="rule" aria-hidden="true"></span></p>
+						<h2 id="how-title" class="display">From first email to first day</h2>
+						<ol class="step-list">
+							{
+								stepsResult.entries.map((s, i) => (
+									<li>
+										<span class="step-n">{String(i + 1).padStart(2, "0")}</span>
+										<span class="step-body">
+											<strong {...s.edit.title}>{s.data.title}</strong>
+											<span>{s.data.text}</span>
+										</span>
+									</li>
+								))
+							}
+						</ol>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		(included.length > 0 || notIncluded.length > 0) && (
+			<section class="band" aria-labelledby="inc-title">
+				<div class="wrap">
+					<p class="eyebrow"><span>What is in the price</span><span class="rule" aria-hidden="true"></span></p>
+					<h2 id="inc-title" class="display">Included, and not included</h2>
+					<div class="inc-grid">
+						<div>
+							<h3>Included</h3>
+							<ul class="ticks">{included.map((l) => <li>{l}</li>)}</ul>
+						</div>
+						<div>
+							<h3>Not included</h3>
+							<ul class="crosses">{notIncluded.map((l) => <li>{l}</li>)}</ul>
+						</div>
+					</div>
+					<p class="band-note">Each trip page lists exactly what that trip includes. Where it differs from this list, the trip page is right.</p>
+				</div>
+			</section>
+		)
+	}
+
+	<PlanBand company={companyResult.company} />
+</Base>

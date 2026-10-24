@@ -1,0 +1,89 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import TripCard from "../../components/TripCard.astro";
+import PlanBand from "../../components/PlanBand.astro";
+import { ACTIVITIES, DIFFICULTIES, REGIONS, getCompany, getTrips } from "../../lib/travel";
+
+const [tripsResult, companyResult] = await Promise.all([getTrips(), getCompany()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(tripsResult.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+}
+// ?activity=hiking|kayaking|expedition, ?difficulty=easy|moderate|challenging and ?region=alps|norway|patagonia|rockies
+// narrow the list and combine. Unknown values show everything.
+const q = Astro.url.searchParams;
+const activity = ACTIVITIES.find((a) => a.slug === q.get("activity"));
+const difficulty = DIFFICULTIES.find((d) => d.slug === q.get("difficulty"));
+const region = REGIONS.find((r) => r.slug === q.get("region"));
+const all = tripsResult.trips;
+const trips = all.filter(
+	(t) =>
+		(!activity || t.entry.data.activity === activity.slug) &&
+		(!difficulty || t.entry.data.difficulty === difficulty.slug) &&
+		(!region || t.entry.data.region === region.slug),
+);
+const href = (a?: string, d?: string, r?: string) => {
+	const p = new URLSearchParams();
+	if (a) p.set("activity", a);
+	if (d) p.set("difficulty", d);
+	if (r) p.set("region", r);
+	const s = p.toString();
+	return s ? `/trips?${s}` : "/trips";
+};
+const count = (key: "activity" | "difficulty" | "region", slug: string) => all.filter((t) => t.entry.data[key] === slug).length;
+const heading = [activity?.label, difficulty ? `${difficulty.label.toLowerCase()}` : "", region ? `in ${region.label}` : ""].filter(Boolean).join(", ");
+---
+
+<Base title="Trips" description="Walking, kayaking and expedition trips with dates in 2027. Filter by activity, difficulty or region.">
+	<PageHead
+		id="trips-title"
+		eyebrow="Trips"
+		title="Choose how you want to travel."
+		intro="Ten small-group trips with day-by-day plans and dates in 2027. From prices are samples. Spaces are always: ask."
+	/>
+	<section class="list-section" aria-labelledby="trips-title">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter trips">
+				<div class="filter-group">
+					<span class="filter-label">Activity</span>
+					<a href={href(undefined, difficulty?.slug, region?.slug)} aria-current={activity ? undefined : "true"}>All</a>
+					{ACTIVITIES.map((a) => <a href={href(a.slug, difficulty?.slug, region?.slug)} aria-current={activity?.slug === a.slug ? "true" : undefined}>{a.label} <span>{count("activity", a.slug)}</span></a>)}
+				</div>
+				<div class="filter-group">
+					<span class="filter-label">Difficulty</span>
+					<a href={href(activity?.slug, undefined, region?.slug)} aria-current={difficulty ? undefined : "true"}>Any</a>
+					{DIFFICULTIES.map((d) => <a href={href(activity?.slug, d.slug, region?.slug)} aria-current={difficulty?.slug === d.slug ? "true" : undefined}>{d.label} <span>{count("difficulty", d.slug)}</span></a>)}
+				</div>
+				<div class="filter-group">
+					<span class="filter-label">Region</span>
+					<a href={href(activity?.slug, difficulty?.slug)} aria-current={region ? undefined : "true"}>All</a>
+					{REGIONS.map((r) => <a href={href(activity?.slug, difficulty?.slug, r.slug)} aria-current={region?.slug === r.slug ? "true" : undefined}>{r.label} <span>{count("region", r.slug)}</span></a>)}
+				</div>
+			</nav>
+
+			<p class="result-line" role="status">
+				{trips.length} of {all.length} trips{heading ? `: ${heading}` : ""}
+				{(activity || difficulty || region) && <> <a href="/trips">Clear filters</a></>}
+			</p>
+
+			{
+				trips.length === 0 ? (
+					<p class="empty-note">No trip matches that combination. <a href="/trips">Show all trips</a> or <a href="/contact">tell us what you are after</a>.</p>
+				) : (
+					<ul class="card-grid">
+						{trips.map((t) => <li><TripCard row={t} /></li>)}
+					</ul>
+				)
+			}
+
+			<aside class="scale-note" aria-label="Difficulty guide">
+				<h2>How we grade trips</h2>
+				<dl>
+					{DIFFICULTIES.map((d) => <><dt>{d.label}</dt><dd>{d.note}</dd></>)}
+				</dl>
+			</aside>
+		</div>
+	</section>
+	<PlanBand company={companyResult.company} />
+</Base>

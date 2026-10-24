@@ -1,0 +1,31 @@
+---
+interface Props {
+	name: string;
+}
+const { name } = Astro.props;
+---
+
+{
+	name === "paddle" ? (
+		<svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+			<path d="M20 4v32" />
+			<path d="M20 4c-3 0-5 3-5 6s2 5 5 5" />
+			<path d="M20 4c3 0 5 3 5 6s-2 5-5 5" />
+			<path d="M20 25c-3 0-5 3-5 6s2 5 5 5" />
+			<path d="M20 25c3 0 5 3 5 6s-2 5-5 5" />
+			<path d="M11 20h18" opacity="0" />
+		</svg>
+	) : name === "summit" ? (
+		<svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+			<path d="M3 34L16 10l6 11 4-7 11 20z" />
+			<path d="M16 10l-3.5 6.5 3.5-1.5 2.5 3.5" />
+			<path d="M11 34l7-11 7 11" />
+		</svg>
+	) : (
+		<svg viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+			<path d="M3 34L15 11l7 12 5-8 10 19z" />
+			<path d="M15 11l-3 6 3-1.5 3 3" />
+			<path d="M12 34l8-12 8 12" />
+		</svg>
+	)
+}

@@ -1,0 +1,28 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref } from "../lib/travel";
+import type { CompanyData } from "../lib/travel";
+
+interface Props {
+	company: CompanyData;
+	trip?: string;
+}
+const { company, trip } = Astro.props;
+const href = trip ? `/contact?trip=${encodeURIComponent(trip)}` : "/contact";
+---
+
+<section class="plan-band" aria-labelledby="plan-title">
+	<img class="plan-photo" src="/images/trail-sunset.webp" alt="" width="1448" height="1086" loading="lazy" />
+	<div class="plan-inner">
+		<p class="eyebrow eyebrow-light"><span>Plan your trip</span><span class="rule" aria-hidden="true"></span></p>
+		<h2 id="plan-title" class="display">Tell us where you want to walk or paddle.</h2>
+		<p class="plan-text">Send a trip, a date and how many of you are coming. We write back within two working days.</p>
+		<div class="plan-actions">
+			<a class="btn btn-light" href={href}>Plan your trip <Arrow /></a>
+			<p class="plan-lines">
+				{company.phone && <a href={telHref(company.phone)}>{company.phone}</a>}
+				{company.email && <a href={`mailto:${company.email}`}>{company.email}</a>}
+			</p>
+		</div>
+	</div>
+</section>

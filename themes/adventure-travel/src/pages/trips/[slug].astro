@@ -1,0 +1,164 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import TripCard from "../../components/TripCard.astro";
+import PlanBand from "../../components/PlanBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import {
+	activityLabel,
+	dateRange,
+	daysLabel,
+	difficultyLabel,
+	formatPrice,
+	getCompany,
+	getTrips,
+	lines,
+	parseDepartures,
+	photoSrc,
+	regionLabel,
+	rows,
+} from "../../lib/travel";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: trip, cacheHint } = await getEmDashEntry("trips", slug);
+if (!trip) return Astro.rewrite("/404");
+
+const [allResult, companyResult, settings] = await Promise.all([getTrips(), getCompany(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(trip, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = trip.data;
+const key = d.slug ?? d.id;
+const src = photoSrc(d.image, d.photo);
+const departures = parseDepartures(d.departures);
+const itinerary = rows(d.itinerary);
+const includes = lines(d.includes);
+const bring = lines(d.bring);
+const related = allResult.trips
+	.filter((t) => t.entry.data.id !== d.id && (t.entry.data.activity === d.activity || t.entry.data.region === d.region))
+	.slice(0, 3);
+const hasBody = Boolean(d.content && d.content.length > 0);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "trips", id: d.id, slug }}
+	current="/trips"
+>
+	<section class="detail-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/trips">Trips</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class:list={["detail-grid", { "is-text-only": !src }]}>
+				<div class="detail-copy">
+					<p class="eyebrow"><span>{activityLabel(d.activity)} / {regionLabel(d.region)}</span><span class="rule" aria-hidden="true"></span></p>
+					<h1 class="display" {...trip.edit.title}>{d.title}</h1>
+					<p class="lede" {...trip.edit.summary}>{d.summary}</p>
+					<dl class="facts">
+						<div><dt>Place</dt><dd>{d.location}</dd></div>
+						<div><dt>Length</dt><dd>{daysLabel(d.days)}</dd></div>
+						<div><dt>Difficulty</dt><dd>{difficultyLabel(d.difficulty)}</dd></div>
+						{d.group_size ? <div><dt>Group size</dt><dd>Up to {d.group_size} people</dd></div> : null}
+						{d.price_from ? <div><dt>Price</dt><dd>From {formatPrice(d.price_from)} per person (sample price)</dd></div> : null}
+					</dl>
+					<a class="btn btn-lg" href={`/contact?trip=${encodeURIComponent(key)}`}>Plan this trip <Arrow /></a>
+				</div>
+				{src && <figure class="detail-photo"><img src={src} alt={d.image?.alt ?? ""} width="640" height="480" /></figure>}
+			</div>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="wrap detail-cols">
+			<div class="prose">
+				{d.intro && <p class="prose-lead">{d.intro}</p>}
+				{hasBody ? <PortableText value={d.content} /> : <p>{d.summary}</p>}
+
+				{
+					itinerary.length > 0 && (
+						<>
+							<h2>Day by day</h2>
+							<ol class="itinerary">
+								{itinerary.map((r) => <li><span class="it-day">{r.left}</span><span class="it-text">{r.right}</span></li>)}
+							</ol>
+						</>
+					)
+				}
+			</div>
+			<aside class="side-stack">
+				<div class="includes" aria-labelledby="dates-title">
+					<h2 id="dates-title">Departures</h2>
+					{
+						departures.length > 0 ? (
+							<ul class="date-list">
+								{
+									departures.map((x) => (
+										<li>
+											<span class="date-range">{dateRange(x.start, x.end)}</span>
+											<span class="date-spaces">Spaces: ask</span>
+											<a href={`/contact?trip=${encodeURIComponent(key)}&departure=${x.start}`}>Ask about this date <Arrow /></a>
+										</li>
+									))
+								}
+							</ul>
+						) : (
+							<p class="small">No dates are listed right now. <a href={`/contact?trip=${encodeURIComponent(key)}`}>Ask us about the next one</a>.</p>
+						)
+					}
+				</div>
+				{
+					includes.length > 0 && (
+						<div class="includes" aria-labelledby="inc-title">
+							<h2 id="inc-title">What is included</h2>
+							<ul class="ticks">{includes.map((b) => <li>{b}</li>)}</ul>
+						</div>
+					)
+				}
+				{
+					bring.length > 0 && (
+						<div class="includes" aria-labelledby="bring-title">
+							<h2 id="bring-title">What to bring</h2>
+							<ul class="plain-list">{bring.map((b) => <li>{b}</li>)}</ul>
+						</div>
+					)
+				}
+			</aside>
+		</div>
+	</section>
+
+	{
+		related.length > 0 && (
+			<section class="band band-tint" aria-labelledby="related-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow"><span>Similar trips</span><span class="rule" aria-hidden="true"></span></p>
+							<h2 id="related-title" class="display">You might also look at</h2>
+						</div>
+						<a class="link-arrow" href="/trips">All trips <Arrow /></a>
+					</div>
+					<ul class="card-grid card-grid-3">
+						{related.map((t) => <li><TripCard row={t} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<PlanBand company={companyResult.company} trip={key} />
+</Base>

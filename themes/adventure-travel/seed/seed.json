@@ -1,0 +1,1711 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Adventure Travel",
+    "description": "A small-group adventure travel theme with a full-bleed mountain hero, trips filtered by activity and difficulty, destinations, upcoming departures, an about page and an enquiry form, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "WILDROUTES",
+    "tagline": "Adventure Travel"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "trips",
+      "label": "Trips",
+      "labelSingular": "Trip",
+      "urlPattern": "/trips/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Trip name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "activity",
+          "label": "Activity",
+          "type": "select",
+          "required": true,
+          "defaultValue": "hiking",
+          "indexed": true,
+          "validation": {
+            "options": [
+              "hiking",
+              "kayaking",
+              "expedition"
+            ]
+          }
+        },
+        {
+          "slug": "region",
+          "label": "Region (matches a destination)",
+          "type": "select",
+          "required": true,
+          "defaultValue": "alps",
+          "indexed": true,
+          "validation": {
+            "options": [
+              "alps",
+              "norway",
+              "patagonia",
+              "rockies"
+            ]
+          }
+        },
+        {
+          "slug": "location",
+          "label": "Place (e.g. Val Corvane, northern Italy)",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "days",
+          "label": "Days",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "slug": "difficulty",
+          "label": "Difficulty",
+          "type": "select",
+          "required": true,
+          "defaultValue": "moderate",
+          "indexed": true,
+          "validation": {
+            "options": [
+              "easy",
+              "moderate",
+              "challenging"
+            ]
+          }
+        },
+        {
+          "slug": "group_size",
+          "label": "Largest group",
+          "type": "integer"
+        },
+        {
+          "slug": "price_from",
+          "label": "From price per person, whole dollars (placeholder)",
+          "type": "integer"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph (detail page)",
+          "type": "text"
+        },
+        {
+          "slug": "departures",
+          "label": "Departures (one per line, as First day|Last day, YYYY-MM-DD)",
+          "type": "text"
+        },
+        {
+          "slug": "itinerary",
+          "label": "Day by day (one per line, as Day|What happens)",
+          "type": "text"
+        },
+        {
+          "slug": "includes",
+          "label": "What is included (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "bring",
+          "label": "What to bring (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Trip page content",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "destinations",
+      "label": "Destinations",
+      "labelSingular": "Destination",
+      "urlPattern": "/destinations/{slug}",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Destination name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "region",
+          "label": "Region key (matches the trips)",
+          "type": "select",
+          "required": true,
+          "defaultValue": "alps",
+          "indexed": true,
+          "validation": {
+            "options": [
+              "alps",
+              "norway",
+              "patagonia",
+              "rockies"
+            ]
+          }
+        },
+        {
+          "slug": "country",
+          "label": "Country or countries",
+          "type": "string"
+        },
+        {
+          "slug": "season",
+          "label": "When we run trips here",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Short description",
+          "type": "text",
+          "required": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "activities",
+      "label": "Activities",
+      "labelSingular": "Activity",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name shown on the card",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "activity",
+          "label": "Trips filter it opens",
+          "type": "select",
+          "required": true,
+          "defaultValue": "hiking",
+          "validation": {
+            "options": [
+              "hiking",
+              "kayaking",
+              "expedition"
+            ]
+          }
+        },
+        {
+          "slug": "tagline",
+          "label": "Line under the name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "icon",
+          "label": "Icon",
+          "type": "select",
+          "required": true,
+          "defaultValue": "mountains",
+          "validation": {
+            "options": [
+              "mountains",
+              "paddle",
+              "summit"
+            ]
+          }
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "steps",
+      "label": "How a trip works",
+      "labelSingular": "Step",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Step",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "text",
+          "label": "Description",
+          "type": "text",
+          "required": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "guides",
+      "label": "Team",
+      "labelSingular": "Team member",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "role",
+          "label": "Role",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "bio",
+          "label": "Two sentences about them",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "company",
+      "label": "Company details",
+      "labelSingular": "Company details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Company name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "street",
+          "label": "Street address",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "locality",
+          "label": "Town, state and ZIP",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "country",
+          "label": "Country",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Enquiry email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "office",
+          "label": "Office hours (one per line, as Day|Hours)",
+          "type": "text"
+        },
+        {
+          "slug": "enquiry_note",
+          "label": "Note shown beside the enquiry form",
+          "type": "text"
+        },
+        {
+          "slug": "included",
+          "label": "Included on every trip (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "not_included",
+          "label": "Not included (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "licence_note",
+          "label": "Licences and insurance (owner to fill in)",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Trips",
+          "url": "/trips"
+        },
+        {
+          "type": "custom",
+          "label": "Destinations",
+          "url": "/destinations"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "A small company that walks and paddles.",
+          "eyebrow": "About",
+          "intro": "WILDROUTES is a small group of guides who run a few trips a year in mountains and on water. This page says who we are and how we work.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k176",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We started with one summer of hut walks in the Alps for friends and friends of friends. Each year we added a trip we wanted to do ourselves: a fjord paddle, a base camp trek, a week of easy walking for parents. We still run only ten trips, each with eight to twelve people at most.",
+                  "_key": "k177"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k178",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How we run trips",
+                  "_key": "k179"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k180",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Groups are small so that you can talk to the guide and everyone fits in a hut or a van. Every trip has the same shape: a first evening to meet, a few days that build, a rest or spare day, and a last day that finishes before lunch so you can travel on.",
+                  "_key": "k181"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k182",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Each trip page gives the distances, hours on foot or on the water, and where you sleep. If the plan on the page does not match what you want, tell us. We would rather say no than send you home disappointed.",
+                  "_key": "k183"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k184",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Planning and safety",
+                  "_key": "k185"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k186",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Guides make the call each morning on where it is safe to go. We carry a first aid kit and a satellite messenger on every trip. We change the route or stay put when the weather says so and we do not charge extra for that.",
+                  "_key": "k187"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k188",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Licences and insurance",
+                  "_key": "k189"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k190",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The sample content on this site does not claim any licence, award or certification. The owner of the real business adds those details in the box below.",
+                  "_key": "k191"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "booking-terms",
+        "slug": "booking-terms",
+        "status": "published",
+        "data": {
+          "title": "Booking terms (sample text)",
+          "eyebrow": "Booking terms",
+          "intro": "Sample wording only. Replace it with your own deposit, payment and cancellation terms before you publish.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k192",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This page is placeholder text so the site has a terms page. It is not a contract and no real company stands behind it.",
+                  "_key": "k193"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k194",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Holding a place",
+                  "_key": "k195"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k196",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A place is held once we confirm it by email. Sample deposit: 20 percent of the trip price. Sample balance due: 60 days before the first day.",
+                  "_key": "k197"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k198",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Changes by you",
+                  "_key": "k199"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k200",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sample wording: if you cancel more than 60 days before departure we return your deposit minus a small admin fee. Closer to departure the fee goes up in steps.",
+                  "_key": "k201"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k202",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Changes by us",
+                  "_key": "k203"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k204",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sample wording: if a trip cannot run we offer another date, a credit or a full refund. If weather changes the route on the day, the trip carries on with a new plan and no refund is due.",
+                  "_key": "k205"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k206",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Insurance",
+                  "_key": "k207"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k208",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sample wording: every guest needs travel and medical insurance that covers the activities on the trip. We ask to see the policy before departure.",
+                  "_key": "k209"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "trips": [
+      {
+        "id": "lake-corvane-hut-circuit",
+        "slug": "lake-corvane-hut-circuit",
+        "status": "published",
+        "data": {
+          "title": "Lake Corvane Hut Circuit",
+          "summary": "Seven days between mountain huts above a glacial lake, with short climbs and long lunches.",
+          "activity": "hiking",
+          "region": "alps",
+          "location": "Val Corvane, northern Italy",
+          "days": 7,
+          "difficulty": "moderate",
+          "group_size": 10,
+          "price_from": 1890,
+          "featured": true,
+          "position": 10,
+          "photo": "/images/peaks-glacier.webp",
+          "intro": "A loop of six walking days from one valley, sleeping in a different hut most nights. Days are five to seven hours on foot with one big climb each day.",
+          "departures": "2027-06-19|2027-06-25\n2027-07-17|2027-07-23\n2027-09-04|2027-09-10",
+          "itinerary": "Day 1|Meet in Corvane village at 4 pm. Kit check, dinner and a short briefing from your guide.\nDay 2|Valley path to Rifugio Alzo. 5 hours, 700 m up.\nDay 3|Over the Passo Sella Nera to the lake hut. 6 hours, 850 m up, 600 m down.\nDay 4|Rest morning by the lake, then an easy ridge walk. 4 hours.\nDay 5|Longest day: the glacier moraine path to Rifugio Tre Corni. 7 hours.\nDay 6|Down through larch forest to the village of Ponte Alto. 5 hours.\nDay 7|Breakfast, then transfer to Corvane by 11 am.",
+          "includes": "Six nights: two in a village guesthouse, four in mountain huts (shared rooms)\nBreakfast and dinner every day, trail lunches on walking days\nOne guide for up to six walkers, two guides for seven to ten\nTransfers between the meeting point and the trailheads\nPark and hut-booking fees",
+          "bring": "Broken-in walking boots\nWaterproof jacket and trousers\nA 30 to 40 litre daypack\nWalking poles\nSheet sleeping bag for the huts\nSun hat, sunglasses and sun cream\nTwo litres of water capacity",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k100",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Who this trip suits",
+                  "_key": "k101"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k102",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "You are comfortable walking all day with a light pack and have done some hill walking before. You do not need mountaineering experience.",
+                  "_key": "k103"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k104",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What a day is like",
+                  "_key": "k105"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k106",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We leave the hut around 8 am, stop for lunch at a viewpoint and arrive between 3 and 4 pm. Your main luggage is carried by road to the village on day 1 and 7. For the huts you carry only what you need for four nights.",
+                  "_key": "k107"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "three-passes-trek",
+        "slug": "three-passes-trek",
+        "status": "published",
+        "data": {
+          "title": "Three Passes Trek",
+          "summary": "Nine days crossing three high passes, with two nights in tents and a rest day at a lakeside village.",
+          "activity": "hiking",
+          "region": "alps",
+          "location": "Alta Serrenta range, northern Italy",
+          "days": 9,
+          "difficulty": "challenging",
+          "group_size": 8,
+          "price_from": 2640,
+          "featured": true,
+          "position": 20,
+          "photo": "/images/hikers-ridge.webp",
+          "intro": "A hard walking trip for people who like long days. Expect up to eight hours on foot and climbs of 1,000 m. Nights alternate between huts and small tents.",
+          "departures": "2027-07-03|2027-07-11\n2027-08-21|2027-08-29",
+          "itinerary": "Day 1|Meet in Serrenta at 5 pm. Briefing and dinner.\nDay 2|First pass, Colle dei Fabbri. 7 hours, 1,000 m up.\nDay 3|Hut to hut along the Serrenta ridge. 6 hours.\nDay 4|Second pass and our first tent camp. 8 hours.\nDay 5|Camp to Lago Verro. 6 hours.\nDay 6|Rest day at the lakeside village. Swim, wash clothes, sleep.\nDay 7|Third pass, Forcella Grigia. 8 hours.\nDay 8|Long descent and a last night in a hut. 6 hours.\nDay 9|Short walk to the road. Transfer to Serrenta by noon.",
+          "includes": "Eight nights: five in huts, two in tents, one in a village guesthouse\nAll meals from dinner on day 1 to lunch on day 9\nTents, sleeping mats and cooking gear for the camp nights\nTwo guides on every departure\nTransfers at the start and end",
+          "bring": "Broken-in walking boots\nSleeping bag rated to 0 C\nA 40 litre pack for camp nights\nWalking poles\nWarm layer and gloves\nSwimwear for the lake rest day",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k108",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Fitness",
+                  "_key": "k109"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k110",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Train for three months before you come. Walk four to six hours with a loaded pack at least once a week, ideally on hills. We send a simple plan after you confirm.",
+                  "_key": "k111"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k112",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Tent nights",
+                  "_key": "k113"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k114",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We carry shared tents and food between us. Everyone takes a share of group gear, around three kilos.",
+                  "_key": "k115"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "hardvik-plateau-walk",
+        "slug": "hardvik-plateau-walk",
+        "status": "published",
+        "data": {
+          "title": "Hardvik Plateau Walk",
+          "summary": "Six easy days across open plateau and fjord edge, with a guesthouse bed every night.",
+          "activity": "hiking",
+          "region": "norway",
+          "location": "Hardvik, western Norway",
+          "days": 6,
+          "difficulty": "easy",
+          "group_size": 12,
+          "price_from": 1520,
+          "featured": false,
+          "position": 30,
+          "photo": "/images/lake-sunset.webp",
+          "intro": "Gentle walking on good paths. Days are three to five hours with little climbing, and your bags go ahead by van.",
+          "departures": "2027-06-12|2027-06-17\n2027-08-07|2027-08-12",
+          "itinerary": "Day 1|Meet in Hardvik at 3 pm. Walk the harbour path before dinner.\nDay 2|Fjord edge to Skarsnes. 4 hours.\nDay 3|Up to the plateau. 5 hours, 450 m up. Picnic by the tarn.\nDay 4|Plateau crossing to the old farm at Lundavoll. 4 hours.\nDay 5|Down the valley to the waterfall. 3 hours, then a free afternoon.\nDay 6|Breakfast and a short walk, then transfer to Hardvik by 1 pm.",
+          "includes": "Five nights in guesthouses, two people to a room (single room on request)\nBreakfast, trail lunch and dinner every day\nOne guide for up to twelve walkers\nDaily luggage transfer by van\nBoat ticket on day 2",
+          "bring": "Walking shoes or light boots\nWaterproof jacket\nA 20 to 30 litre daypack\nWarm hat, light gloves\nSwimsuit if you want a cold swim",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k116",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Who this trip suits",
+                  "_key": "k117"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k118",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "First-time group travellers, walkers who prefer a bed and a hot shower, and anyone who wants long days outside without a heavy pack.",
+                  "_key": "k119"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k120",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Light all night",
+                  "_key": "k121"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k122",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "In June it stays light until after 11 pm. Bring an eye mask if that bothers you.",
+                  "_key": "k123"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "silver-pine-lakes-walk",
+        "slug": "silver-pine-lakes-walk",
+        "status": "published",
+        "data": {
+          "title": "Silver Pine Lakes Walk",
+          "summary": "Six days of lake loops and wildflower meadows in the Canadian Rockies, with a cabin base.",
+          "activity": "hiking",
+          "region": "rockies",
+          "location": "Silver Pine Valley, Alberta, Canada",
+          "days": 6,
+          "difficulty": "easy",
+          "group_size": 12,
+          "price_from": 1690,
+          "featured": false,
+          "position": 40,
+          "photo": "/images/screen-trail.webp",
+          "intro": "One cabin base for five nights and a different trail each day. Most days are four to five hours with a lake to swim in at the end.",
+          "departures": "2027-07-10|2027-07-15\n2027-08-14|2027-08-19",
+          "itinerary": "Day 1|Meet at the cabins at 4 pm. Walk to the first viewpoint.\nDay 2|Silver Pine Lake loop. 4 hours.\nDay 3|Meadow trail and the old fire lookout. 5 hours, 500 m up.\nDay 4|Free choice: a long walk, a short one, or a canoe on the lake.\nDay 5|Ridge trail to Marten Pass. 5 hours.\nDay 6|Breakfast, then transfer to the town of Cairnford by 11 am.",
+          "includes": "Five nights in shared cabins (rooms of two to four)\nAll meals, cooked in the cabin kitchen by the group\nOne guide for up to twelve walkers\nPark passes\nCanoe hire on day 4",
+          "bring": "Walking boots\nWaterproof jacket\nInsect repellent\nA 20 to 30 litre daypack\nSwimsuit and quick-dry towel\nBear spray is carried by guides, so you do not need your own",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k124",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Wildlife",
+                  "_key": "k125"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k126",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Bears and elk live here. Your guide will explain how we walk and what to do if we meet one. We make noise on the trail and keep food in sealed containers.",
+                  "_key": "k127"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k128",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Cabin life",
+                  "_key": "k129"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k130",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Each person takes a turn at cooking or washing up. The kitchen has a woodstove and the cabins have electric heaters.",
+                  "_key": "k131"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "ostrevik-fjord-paddle",
+        "slug": "ostrevik-fjord-paddle",
+        "status": "published",
+        "data": {
+          "title": "Ostrevik Fjord Paddle",
+          "summary": "Five days of calm-water sea kayaking in a western Norwegian fjord, camping on small beaches.",
+          "activity": "kayaking",
+          "region": "norway",
+          "location": "Ostrevik fjord, western Norway",
+          "days": 5,
+          "difficulty": "easy",
+          "group_size": 8,
+          "price_from": 1780,
+          "featured": true,
+          "position": 50,
+          "photo": "/images/kayak-lake.webp",
+          "intro": "A first multi-day paddle. Four to five hours on the water each day in sheltered fjord water, with a kayak guide in front and one behind.",
+          "departures": "2027-06-26|2027-06-30\n2027-07-24|2027-07-28\n2027-08-28|2027-09-01",
+          "itinerary": "Day 1|Meet in Ostrevik at 10 am. Boat handling practice in the harbour, then a short paddle to our first beach.\nDay 2|Along the north shore to the waterfall. 12 km.\nDay 3|Crossing to the island camp. 10 km. Swim and fire if the weather allows.\nDay 4|Round the island and up the side fjord. 14 km.\nDay 5|Back to Ostrevik by 3 pm. Hot showers at the harbour house.",
+          "includes": "Four nights camping (tents and mats provided)\nAll meals from lunch on day 1 to lunch on day 5\nTwo-person sea kayaks or singles, paddles, spray skirts and buoyancy aids\nDry bags for everyone\nTwo guides for up to eight paddlers",
+          "bring": "Warm base layers (no cotton)\nWaterproof jacket\nNeoprene shoes or sandals with grip\nSleeping bag rated to 0 C\nSun cream and a hat",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k132",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Do I need paddling experience?",
+                  "_key": "k133"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k134",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "No. We teach the basics on day 1. You should be able to swim and be happy sitting in a boat for up to two hours at a stretch.",
+                  "_key": "k135"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k136",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Weather",
+                  "_key": "k137"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k138",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We decide each morning where it is safe to paddle. If wind keeps us ashore we change the plan and walk instead.",
+                  "_key": "k139"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "ravenhead-lake-kayak-camp",
+        "slug": "ravenhead-lake-kayak-camp",
+        "status": "published",
+        "data": {
+          "title": "Ravenhead Lake Kayak Camp",
+          "summary": "Six days on a long mountain lake in British Columbia, paddling by day and camping at the water's edge.",
+          "activity": "kayaking",
+          "region": "rockies",
+          "location": "Ravenhead Lake, British Columbia, Canada",
+          "days": 6,
+          "difficulty": "moderate",
+          "group_size": 8,
+          "price_from": 2050,
+          "featured": false,
+          "position": 60,
+          "photo": "/images/turquoise-lake.webp",
+          "intro": "Longer paddling days on a lake that can get windy by afternoon. We start early and aim to be off the water by 1 pm.",
+          "departures": "2027-07-31|2027-08-05",
+          "itinerary": "Day 1|Meet at Ravenhead dock at 9 am. Skills session and a short evening paddle.\nDay 2|North arm and the first camp. 15 km.\nDay 3|To the glacier creek mouth. 18 km. Hike to a viewpoint in the afternoon.\nDay 4|Rest or a short paddle to the hot spring pool. 8 km.\nDay 5|Return along the east shore. 17 km.\nDay 6|Final paddle to the dock by noon, then transfer to Ravenhead town.",
+          "includes": "Five nights camping (tents and mats provided)\nAll meals, cooked on camp stoves\nTouring kayaks, paddles, spray skirts and buoyancy aids\nTwo guides for up to eight paddlers\nPark camping permits",
+          "bring": "Warm base layers\nWaterproof jacket and trousers\nSleeping bag rated to minus 5 C\nSun hat and polarised sunglasses\nSwimsuit for the hot spring day",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k140",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Fitness",
+                  "_key": "k141"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k142",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "You should be comfortable being active for six hours a day. Some paddling experience helps but is not required. Tell us when you enquire and we will suggest a short practice session near you.",
+                  "_key": "k143"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "calafque-channels-kayak",
+        "slug": "calafque-channels-kayak",
+        "status": "published",
+        "data": {
+          "title": "Calafque Channels Kayak",
+          "summary": "Eight days weaving between forested islands in southern Chile, with glaciers at the far end.",
+          "activity": "kayaking",
+          "region": "patagonia",
+          "location": "Calafque Channels, southern Chile",
+          "days": 8,
+          "difficulty": "challenging",
+          "group_size": 6,
+          "price_from": 2980,
+          "featured": false,
+          "position": 70,
+          "photo": "/images/fjord-lake.webp",
+          "intro": "Open channels, strong tides and cold water. This is a trip for confident paddlers who are fit and happy to camp in rain.",
+          "departures": "2027-02-06|2027-02-13\n2027-03-06|2027-03-13",
+          "itinerary": "Day 1|Fly to Puerto Calafque. Meet at 6 pm at the guesthouse.\nDay 2|Boat transfer to the put-in. Gear check and a first paddle.\nDay 3|Island hopping west. 20 km.\nDay 4|Tide-timed crossing of the main channel. 16 km.\nDay 5|Forest camp and a day walk to a viewpoint. 8 km paddling.\nDay 6|To the glacier face. 18 km.\nDay 7|Return paddle. 20 km.\nDay 8|Boat transfer and flight connections from Puerto Calafque.",
+          "includes": "Six nights camping (tents and mats provided)\nAll meals from dinner on day 1 to breakfast on day 8\nSingle sea kayaks, drysuits or paddle jackets, spray skirts and buoyancy aids\nTwo guides for up to six paddlers\nBoat transfers at the start and end",
+          "bring": "Warm thermal base layers\nSleeping bag rated to minus 5 C\nRain jacket and trousers\nWarm hat and gloves\nTwo pairs of dry socks per day",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k144",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Experience we ask for",
+                  "_key": "k145"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k146",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "You should have paddled a sea kayak on open water before and be able to do an assisted rescue. If you are not sure, tell us and we will talk it through before you book.",
+                  "_key": "k147"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k148",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Seasons",
+                  "_key": "k149"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k150",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Dates are in the southern summer. Expect 5 to 14 C, wind and rain on most days.",
+                  "_key": "k151"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "cerro-pellin-base-camp",
+        "slug": "cerro-pellin-base-camp",
+        "status": "published",
+        "data": {
+          "title": "Cerro Pellin Base Camp Trek",
+          "summary": "Twelve days walking to a base camp at the foot of a granite spire, with a rest day and a summit attempt on a nearby peak.",
+          "activity": "expedition",
+          "region": "patagonia",
+          "location": "Cerro Pellin massif, Patagonia",
+          "days": 12,
+          "difficulty": "challenging",
+          "group_size": 6,
+          "price_from": 4150,
+          "featured": true,
+          "position": 80,
+          "photo": "/images/summit-hiker.webp",
+          "intro": "A long trip into remote country. You walk with a pack for several days, then base from one camp. A summit attempt is offered to those who are keen and fit, if conditions allow.",
+          "departures": "2027-01-16|2027-01-27\n2027-02-20|2027-03-03",
+          "itinerary": "Day 1|Meet in Rio Pellin town at 5 pm. Kit check.\nDay 2|Drive to the trailhead. Walk 6 hours to the first camp.\nDays 3 to 5|Valley approach, two river crossings. 6 to 8 hours a day.\nDay 6|Arrive at base camp. Afternoon rest.\nDay 7|Day walk to the glacier lake. 7 hours.\nDay 8|Rest day at base camp.\nDay 9|Summit attempt on Pico Gris (3,100 m), starting at 4 am. 12 hours, weather permitting.\nDay 10|Spare day for weather or rest.\nDays 11 and 12|Walk out and transfer to Rio Pellin.",
+          "includes": "Eleven nights in tents and one in a town guesthouse\nAll meals, cooked by the guides and the group\nGroup tents, mats, stoves and fuel\nHelmets, harnesses and crampons for the summit day\nPorters carry food and group camp gear, you carry your own kit (about 12 kg)",
+          "bring": "Mountain boots that take crampons\nSleeping bag rated to minus 10 C\nWarm down jacket\nWaterproof shell, jacket and trousers\nGloves, two pairs\nTrekking poles\nA 50 litre pack",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k152",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Is this trip for me?",
+                  "_key": "k153"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k154",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "You should have done at least one multi-day trek with a pack before. We ask everyone to fill in a short experience form and we call each person before accepting a booking.",
+                  "_key": "k155"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k156",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The summit",
+                  "_key": "k157"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k158",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Summit day is optional. Guides decide on the day, based on weather, snow and how the group is feeling. Not everyone will go up, and that is part of the plan.",
+                  "_key": "k159"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "hohe-marten-ice-ridge",
+        "slug": "hohe-marten-ice-ridge",
+        "status": "published",
+        "data": {
+          "title": "Hohe Marten Ice Ridge",
+          "summary": "Ten days of glacier travel and rock scrambling in the Austrian Alps, with a skills course in the first three days.",
+          "activity": "expedition",
+          "region": "alps",
+          "location": "Hohe Marten group, Austria",
+          "days": 10,
+          "difficulty": "challenging",
+          "group_size": 6,
+          "price_from": 3860,
+          "featured": false,
+          "position": 90,
+          "photo": "/images/ridge-hiker.webp",
+          "intro": "We teach rope work, crampon use and glacier travel in the first three days, then use them on a three-day traverse. A mountaineering-skills trip for fit people with some hill experience.",
+          "departures": "2027-07-24|2027-08-02",
+          "itinerary": "Day 1|Meet in Martental at 4 pm. Kit check.\nDays 2 and 3|Skills on a low glacier: crampons, ice axe, rope teams, crevasse rescue.\nDay 4|Walk to the Marten hut. 4 hours.\nDays 5 to 7|Three-day traverse with two hut nights. 6 to 9 hours a day.\nDay 8|Summit day on the Marten spire (3,350 m), weather permitting.\nDay 9|Spare day for weather.\nDay 10|Descent to Martental and transfer by 2 pm.",
+          "includes": "Nine nights: five in huts, four in a village guesthouse\nAll meals except drinks at huts\nRopes, helmets, harnesses and group safety equipment\nThree guides for up to six people (two people per rope team with a guide each)\nGlacier skills instruction",
+          "bring": "Stiff mountain boots\nCrampons that fit your boots (we can advise)\nIce axe\nWarm jacket and shell\nGloves and a spare pair\nSun cream and glacier glasses",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k160",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Who this trip suits",
+                  "_key": "k161"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k162",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "You are fit, enjoy exposed ground and have been on a few multi-day walking trips. We do not expect you to have used a rope before.",
+                  "_key": "k163"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k164",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Hire",
+                  "_key": "k165"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k166",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Boots, crampons, axe and harness can be hired locally. Tell us your sizes when you confirm.",
+                  "_key": "k167"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "mount-ledger-high-camp",
+        "slug": "mount-ledger-high-camp",
+        "status": "published",
+        "data": {
+          "title": "Mount Ledger High Camp",
+          "summary": "Eight days that introduce high-altitude camping and snow skills in the Rockies, with a gentle summit at the end.",
+          "activity": "expedition",
+          "region": "rockies",
+          "location": "Mount Ledger, British Columbia, Canada",
+          "days": 8,
+          "difficulty": "moderate",
+          "group_size": 8,
+          "price_from": 3320,
+          "featured": false,
+          "position": 100,
+          "photo": "/images/golden-ridge.webp",
+          "intro": "A first expedition-style trip. We camp at 2,600 m, learn basic snow skills, and walk to the Ledger summit on day 6 if conditions allow. No climbing experience needed.",
+          "departures": "2027-08-07|2027-08-14",
+          "itinerary": "Day 1|Meet in Ledger Creek at 3 pm. Kit check and briefing.\nDay 2|Walk to Low Camp. 5 hours, 600 m up.\nDay 3|Move up to High Camp. 4 hours. Camp craft session.\nDay 4|Snow skills: walking in crampons, using an ice axe, stopping a slide. Half day.\nDay 5|Acclimatisation walk to the col. 5 hours.\nDay 6|Summit day, 8 to 10 hours, weather permitting.\nDay 7|Spare day, then walk down to Low Camp.\nDay 8|Walk out and transfer by 1 pm.",
+          "includes": "Seven nights in tents (Low Camp and High Camp)\nAll meals, with hot drinks at camp\nGroup tents, stoves and fuel\nHelmets, crampons and ice axes for the snow day\nTwo guides for up to eight people",
+          "bring": "Sturdy hiking or mountain boots\nSleeping bag rated to minus 10 C\nWarm layers and a down jacket\nWaterproof shell\nGloves and warm hat\nA 45 litre pack",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k168",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Altitude",
+                  "_key": "k169"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k170",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The highest point is about 3,100 m. Most people feel a little slow and may get a headache. We go up slowly and your guides check in with everyone each evening.",
+                  "_key": "k171"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k172",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If we cannot summit",
+                  "_key": "k173"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k174",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The summit is a bonus and not a promise. In poor weather we walk to the col instead and use the time for skills.",
+                  "_key": "k175"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "destinations": [
+      {
+        "id": "alps",
+        "slug": "alps",
+        "status": "published",
+        "data": {
+          "title": "The Alps",
+          "region": "alps",
+          "country": "Italy and Austria",
+          "season": "June to September",
+          "position": 10,
+          "photo": "/images/peaks-glacier.webp",
+          "intro": "Hut-to-hut walking and glacier skills in two mountain ranges. Days are long and the food at the huts is good."
+        }
+      },
+      {
+        "id": "norway",
+        "slug": "norway",
+        "status": "published",
+        "data": {
+          "title": "Norway",
+          "region": "norway",
+          "country": "Norway",
+          "season": "June to September",
+          "position": 20,
+          "photo": "/images/lake-sunset.webp",
+          "intro": "Fjords, plateau walking and sea kayaking on small beaches. Long summer light, cold water and a lot of waterfalls."
+        }
+      },
+      {
+        "id": "patagonia",
+        "slug": "patagonia",
+        "status": "published",
+        "data": {
+          "title": "Patagonia",
+          "region": "patagonia",
+          "country": "Chile",
+          "season": "January to March",
+          "position": 30,
+          "photo": "/images/kayak-lake.webp",
+          "intro": "Remote trekking and channel kayaking in the southern summer. Wind, rain and long views."
+        }
+      },
+      {
+        "id": "rockies",
+        "slug": "rockies",
+        "status": "published",
+        "data": {
+          "title": "The Rockies",
+          "region": "rockies",
+          "country": "Canada",
+          "season": "July to August",
+          "position": 40,
+          "photo": "/images/screen-trail.webp",
+          "intro": "Cabin-based walking, lake paddling and an introduction to high camping, in valleys with plenty of wildlife."
+        }
+      }
+    ],
+    "activities": [
+      {
+        "id": "hiking",
+        "slug": "hiking",
+        "status": "published",
+        "data": {
+          "title": "Hiking",
+          "activity": "hiking",
+          "tagline": "Iconic trails, real connections.",
+          "icon": "mountains",
+          "position": 10,
+          "photo": "/images/card-hiking.webp"
+        }
+      },
+      {
+        "id": "kayaking",
+        "slug": "kayaking",
+        "status": "published",
+        "data": {
+          "title": "Kayaking",
+          "activity": "kayaking",
+          "tagline": "New perspectives await.",
+          "icon": "paddle",
+          "position": 20,
+          "photo": "/images/card-kayaking.webp"
+        }
+      },
+      {
+        "id": "expeditions",
+        "slug": "expeditions",
+        "status": "published",
+        "data": {
+          "title": "Expeditions",
+          "activity": "expedition",
+          "tagline": "Further than the ordinary.",
+          "icon": "summit",
+          "position": 30,
+          "photo": "/images/card-expeditions.webp"
+        }
+      }
+    ],
+    "steps": [
+      {
+        "id": "choose",
+        "slug": "choose",
+        "status": "published",
+        "data": {
+          "title": "Pick a trip and a date",
+          "position": 10,
+          "text": "Filter trips by activity and difficulty and read the day-by-day plan. Dates are listed on each trip page. How many places are left changes often, so ask us before you book flights."
+        }
+      },
+      {
+        "id": "enquire",
+        "slug": "enquire",
+        "status": "published",
+        "data": {
+          "title": "Send an enquiry",
+          "position": 20,
+          "text": "Tell us the trip, the date you prefer, how many are coming and what you have done outdoors before. We reply by email within two working days."
+        }
+      },
+      {
+        "id": "talk",
+        "slug": "talk",
+        "status": "published",
+        "data": {
+          "title": "Talk it through",
+          "position": 30,
+          "text": "We check the trip suits you and answer questions about fitness and gear. A place is held only once we confirm it by email."
+        }
+      },
+      {
+        "id": "meet",
+        "slug": "meet",
+        "status": "published",
+        "data": {
+          "title": "Meet at the start",
+          "position": 40,
+          "text": "About six weeks before, you get a kit list, the meeting point and a short call with your guide. On day 1 the group meets, packs are checked and the trip begins."
+        }
+      }
+    ],
+    "guides": [
+      {
+        "id": "maren-voss",
+        "slug": "maren-voss",
+        "status": "published",
+        "data": {
+          "title": "Maren Voss",
+          "role": "Founder and lead guide",
+          "position": 10,
+          "bio": "Started WILDROUTES after ten summers leading walking groups. Leads most of the Alps and Norway departures."
+        }
+      },
+      {
+        "id": "tomas-aldric",
+        "slug": "tomas-aldric",
+        "status": "published",
+        "data": {
+          "title": "Tomas Aldric",
+          "role": "Mountain guide, Alps",
+          "position": 20,
+          "bio": "Grew up in a village below the Serrenta range. Plans the hut stays and knows which hut serves the best soup."
+        }
+      },
+      {
+        "id": "priya-lindqvist",
+        "slug": "priya-lindqvist",
+        "status": "published",
+        "data": {
+          "title": "Priya Lindqvist",
+          "role": "Sea kayak guide",
+          "position": 30,
+          "bio": "Runs the paddling trips in Norway and Chile. Teaches the boat-handling session on day 1."
+        }
+      },
+      {
+        "id": "dario-quell",
+        "slug": "dario-quell",
+        "status": "published",
+        "data": {
+          "title": "Dario Quell",
+          "role": "Expedition leader",
+          "position": 40,
+          "bio": "Leads the Patagonia and Rockies expeditions and writes the kit lists for them."
+        }
+      },
+      {
+        "id": "hannah-boyd",
+        "slug": "hannah-boyd",
+        "status": "published",
+        "data": {
+          "title": "Hannah Boyd",
+          "role": "Trip planner, office",
+          "position": 50,
+          "bio": "Answers your emails and calls, books huts and transfers, and sends you what you need before departure."
+        }
+      }
+    ],
+    "company": [
+      {
+        "id": "company",
+        "slug": "company",
+        "status": "published",
+        "data": {
+          "title": "WILDROUTES Adventure Travel",
+          "street": "18 Millrace Lane, Unit 2",
+          "locality": "Pinecrest, MT 59000",
+          "country": "United States",
+          "phone": "+1 406 555 0172",
+          "email": "hello@wildroutes.example",
+          "office": "Monday to Friday|9:00 am to 5:00 pm Mountain Time\nSaturday|By appointment\nSunday|Closed",
+          "enquiry_note": "We reply within two working days. An enquiry is not a booking until we confirm it by email.",
+          "included": "Accommodation as listed on each trip (huts, guesthouses, cabins or tents)\nMeals as listed on each trip, with trail lunches packed in the morning\nGuides, with one guide for every six to eight people\nTransfers between the meeting point and the trailheads\nGroup equipment: tents, stoves, first aid kit and a satellite messenger\nPaddles, kayaks and buoyancy aids on paddling trips",
+          "not_included": "Flights and travel to the meeting point\nTravel and medical insurance (we ask to see it before departure)\nPersonal gear on the packing list for each trip\nMeals and hotels before and after the trip\nTips for guides and hut staff, if you choose to give them\nVisas, if you need one",
+          "licence_note": "Placeholder for the owner: add your tour operator registration, guide qualifications and insurance details here before you publish this site. None are claimed in the sample content."
+        }
+      }
+    ]
+  }
+}

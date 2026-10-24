@@ -1,0 +1,72 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import PlanBand from "../components/PlanBand.astro";
+import { getCompany, getGuides } from "../lib/travel";
+
+const [{ entry: page, cacheHint }, companyResult, guidesResult] = await Promise.all([getEmDashEntry("pages", "about"), getCompany(), getGuides()]);
+for (const h of [cacheHint, companyResult.cacheHint, guidesResult.cacheHint]) {
+	if (Astro.cache?.enabled) Astro.cache.set(h);
+}
+const d = page?.data;
+const { company } = companyResult;
+const initials = (name: string) =>
+	name
+		.split(/\s+/)
+		.map((p) => p[0])
+		.slice(0, 2)
+		.join("")
+		.toUpperCase();
+---
+
+<Base title="About" description={d?.intro ?? "About WILDROUTES Adventure Travel."}>
+	<PageHead id="about-title" eyebrow={d?.eyebrow ?? "About"} title={d?.title ?? "About us"} intro={d?.intro} edit={{ ...page?.edit.title }} />
+	<section class="about-body">
+		<div class="wrap about-grid">
+			<div class="prose">
+				{d?.content ? <PortableText value={d.content} /> : <p>Our story is coming soon.</p>}
+				{
+					company.licence_note && (
+						<aside class="placeholder-box" aria-label="Licences and insurance placeholder">
+							<p class="placeholder-label">Placeholder</p>
+							<h3>Licences and insurance</h3>
+							<p>{company.licence_note}</p>
+						</aside>
+					)
+				}
+				<p class="page-cta"><a class="btn" href="/trips">Explore adventures <Arrow /></a></p>
+			</div>
+			<figure class="about-photo">
+				<img src="/images/trail-sunset.webp" alt="A guide and three walkers on a rocky trail above a lake at sunset, with a glacier range behind" width="1448" height="1086" loading="lazy" />
+			</figure>
+		</div>
+	</section>
+
+	{
+		guidesResult.entries.length > 0 && (
+			<section class="band band-tint" aria-labelledby="team-title">
+				<div class="wrap">
+					<p class="eyebrow"><span>The team</span><span class="rule" aria-hidden="true"></span></p>
+					<h2 id="team-title" class="display">Who answers your emails and who leads the trip</h2>
+					<ul class="team-grid">
+						{
+							guidesResult.entries.map((g) => (
+								<li>
+									<span class="team-initials" aria-hidden="true">{initials(g.data.title)}</span>
+									<span class="team-name" {...g.edit.title}>{g.data.title}</span>
+									<span class="team-role">{g.data.role}</span>
+									{g.data.bio && <span class="team-bio">{g.data.bio}</span>}
+								</li>
+							))
+						}
+					</ul>
+					<p class="band-note">Names and roles are fictional sample content.</p>
+				</div>
+			</section>
+		)
+	}
+	<PlanBand company={company} />
+</Base>

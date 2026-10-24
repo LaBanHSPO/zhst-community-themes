@@ -1,0 +1,33 @@
+---
+import { activityLabel, daysLabel, difficultyLabel, formatPrice, photoSrc, regionLabel } from "../lib/travel";
+import type { TripRow } from "../lib/travel";
+import { dateRange } from "../lib/travel";
+
+interface Props {
+	row: TripRow;
+}
+const { row } = Astro.props;
+const d = row.entry.data;
+const src = photoSrc(d.image, d.photo);
+const next = row.departures[0];
+---
+
+<a class="trip-card" href={`/trips/${d.slug ?? d.id}`}>
+	<span class="card-photo">
+		{src && <img src={src} alt="" width="640" height="480" loading="lazy" />}
+		<span class="card-tag">{activityLabel(d.activity)}</span>
+	</span>
+	<span class="card-meta">
+		<span>{regionLabel(d.region)}</span>
+		<span aria-hidden="true">/</span>
+		<span>{daysLabel(d.days)}</span>
+		<span aria-hidden="true">/</span>
+		<span>{difficultyLabel(d.difficulty)}</span>
+	</span>
+	<span class="card-title" {...row.entry.edit.title}>{d.title}</span>
+	<span class="card-summary">{d.summary}</span>
+	<span class="card-foot">
+		<span class="card-next">{next ? `Next: ${dateRange(next.start, next.end)}` : "Dates on request"}</span>
+		{d.price_from ? <span class="card-price">from {formatPrice(d.price_from)}</span> : null}
+	</span>
+</a>

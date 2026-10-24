@@ -1,0 +1,54 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PageHead from "../../components/PageHead.astro";
+import PlanBand from "../../components/PlanBand.astro";
+import { daysLabel, getCompany, getDestinations, getTrips, photoSrc } from "../../lib/travel";
+
+const [destResult, tripsResult, companyResult] = await Promise.all([getDestinations(), getTrips(), getCompany()]);
+for (const r of [destResult, tripsResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const tripsIn = (region: string) => tripsResult.trips.filter((t) => t.entry.data.region === region);
+---
+
+<Base title="Destinations" description="Four regions: the Alps, Norway, Patagonia and the Rockies. See how many trips run in each and when.">
+	<PageHead
+		id="dest-title"
+		eyebrow="Destinations"
+		title="Four regions, ten trips."
+		intro="We run trips in a few places we know well. Pick a region to see the trips that go there."
+	/>
+	<section class="list-section" aria-labelledby="dest-title">
+		<div class="wrap">
+			<ul class="dest-list">
+				{
+					destResult.entries.map((e) => {
+						const d = e.data;
+						const key = d.region ?? e.data.id;
+						const list = tripsIn(key);
+						const src = photoSrc(d.image, d.photo);
+						return (
+							<li class="dest-row">
+								{src && <img class="dest-photo" src={src} alt="" width="560" height="420" loading="lazy" />}
+								<div class="dest-copy">
+									<p class="eyebrow"><span>{d.country}</span><span class="rule" aria-hidden="true"></span></p>
+									<h2 class="display" {...e.edit.title}>{d.title}</h2>
+									<p class="dest-intro">{d.intro}</p>
+									{d.season && <p class="dest-season"><span>When</span> {d.season}</p>}
+									<ul class="dest-trips">
+										{list.map((t) => <li><a href={`/trips/${t.entry.data.slug ?? t.entry.data.id}`}>{t.entry.data.title}</a> <span>{daysLabel(t.entry.data.days)}</span></li>)}
+									</ul>
+									<a class="link-arrow" href={`/trips?region=${key}`}>
+										{list.length} {list.length === 1 ? "trip" : "trips"} in {d.title} <Arrow />
+									</a>
+								</div>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</div>
+	</section>
+	<PlanBand company={companyResult.company} />
+</Base>
