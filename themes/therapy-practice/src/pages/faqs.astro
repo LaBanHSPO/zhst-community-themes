@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+import ContactBand from "../components/ContactBand.astro";
+import FaqList from "../components/FaqList.astro";
+import PageHead from "../components/PageHead.astro";
+import { getFaqs, getPractice } from "../lib/practice";
+
+const [faqsResult, practiceResult] = await Promise.all([getFaqs(), getPractice()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(faqsResult.cacheHint);
+	Astro.cache.set(practiceResult.cacheHint);
+}
+---
+
+<Base title="FAQs" description="Plain answers to common questions about therapy at Willow & Co.: the intro call, session length, in person or online, confidentiality and cost.">
+	<PageHead eyebrow="FAQs" title="Questions people ask first." intro="If yours is not here, ask it on the intro call or send an email." />
+	<section class="faq-page">
+		<div class="wrap">
+			<FaqList items={faqsResult.entries} />
+		</div>
+	</section>
+	<ContactBand practice={practiceResult.practice} />
+</Base>

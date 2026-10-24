@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "id": "therapy-practice",
+  "kind": "theme",
+  "name": "Therapy Practice",
+  "type": "bio",
+  "emdash": "1.2.0",
+  "entry": "themes/therapy-practice",
+  "capabilities": {
+    "pwa": false,
+    "publicItems": true,
+    "inquiry": true,
+    "booking": false,
+    "checkout": false,
+    "map": false,
+    "whatsapp": false
+  }
+}

@@ -1,0 +1,878 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Therapy Practice",
+  "description": "A calm cream and sage theme for a one-to-one therapy practice: a full-bleed photo hero, three themes of support, what a first session is like, areas of work, session length and fees, an FAQ, an About page, an Approach page and an intro call enquiry page, seeded with synthetic sample content.",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "Willow & Co.",
+  "tagline": "Therapy Practice"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Small label above the title (also used in the footer)",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro line",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "faqs",
+   "label": "FAQs",
+   "labelSingular": "FAQ",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Question",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "answer",
+     "label": "Answer",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "home",
+     "label": "Show on the homepage",
+     "type": "boolean"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "principles",
+   "label": "Three points",
+   "labelSingular": "Point",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "Text (a line break splits it)",
+     "type": "text"
+    },
+    {
+     "slug": "icon",
+     "label": "Icon (leaf, heart or sun)",
+     "type": "string"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "steps",
+   "label": "First session steps",
+   "labelSingular": "Step",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "when_label",
+     "label": "When or how long (for example 15 minutes)",
+     "type": "string"
+    },
+    {
+     "slug": "text",
+     "label": "Text",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "areas",
+   "label": "Areas I work with",
+   "labelSingular": "Area",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Area",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "One line of detail",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "practice",
+   "label": "Practice details",
+   "labelSingular": "Practice details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Therapist name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "base",
+     "label": "Based in",
+     "type": "string"
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Email for enquiries",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "intro_length",
+     "label": "Intro call length",
+     "type": "string"
+    },
+    {
+     "slug": "session_length",
+     "label": "Session length",
+     "type": "string"
+    },
+    {
+     "slug": "fee_label",
+     "label": "Fee per session (shown on the homepage)",
+     "type": "string"
+    },
+    {
+     "slug": "registration",
+     "label": "Registration and training details (shown on About)",
+     "type": "text"
+    },
+    {
+     "slug": "response",
+     "label": "Reply time (shown beside the form)",
+     "type": "text"
+    },
+    {
+     "slug": "contact_note",
+     "label": "Note shown above the form",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Home",
+     "url": "/"
+    },
+    {
+     "type": "custom",
+     "label": "About",
+     "url": "/about"
+    },
+    {
+     "type": "custom",
+     "label": "Approach",
+     "url": "/approach"
+    },
+    {
+     "type": "custom",
+     "label": "FAQs",
+     "url": "/faqs"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "Meet your therapist",
+     "eyebrow": "About",
+     "intro": "Hello, I'm Maren. I offer one-to-one therapy in a quiet room in Larkfield, and online.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I set up Willow & Co. to be a calm place to talk. Many people arrive having held things together for a long time. It can be a relief to say them out loud to someone who will listen before offering advice.",
+         "_key": "k2"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "My sessions are unhurried. I listen first, we take things at the pace that suits you, and you decide what we spend our time on. Some people come with a clear problem. Others only know that something feels heavy and want help finding the words for it.",
+         "_key": "k4"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k5",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How I work",
+         "_key": "k6"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k7",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "One to one, with adults",
+         "_key": "k8"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k9",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Sessions of 50 minutes, usually weekly at first",
+         "_key": "k10"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k11",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "In person in Larkfield, or online by video",
+         "_key": "k12"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k13",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Plain language, and you can ask why we are doing something at any point",
+         "_key": "k14"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k15",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The first step is a free intro call. It lasts 15 minutes and there is no obligation. It gives you a chance to ask questions and to notice whether I feel like the right person to talk to.",
+         "_key": "k16"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "approach",
+    "slug": "approach",
+    "status": "published",
+    "data": {
+     "title": "How therapy works here",
+     "eyebrow": "Approach",
+     "intro": "A plain description of what to expect, from the first call to the last session.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k17",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Starting out",
+         "_key": "k18"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k19",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You begin with a free intro call of about 15 minutes, by phone or video. You tell me a little about what brings you here, ask anything you like, and then decide whether to book a first session. If I think someone else would suit you better, I will say so.",
+         "_key": "k20"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k21",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "In the room, or online",
+         "_key": "k22"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k23",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Sessions last 50 minutes. In person, we meet in a quiet room in Larkfield with comfortable chairs and a place to wait. Online, I send you a private video link before we start. You will need a space where you will not be overheard, a charged device and, if you have them, headphones.",
+         "_key": "k24"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k25",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What a session is like",
+         "_key": "k26"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k27",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Mostly we talk. I ask questions, say back what I am hearing and sometimes suggest something to try before we next meet. You can say no to any suggestion. There is no homework unless you would like some.",
+         "_key": "k28"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k29",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How often we meet",
+         "_key": "k30"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k31",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Most people start weekly, then move to every two weeks as things settle. Every few sessions we stop and check whether this is helping. You can end whenever you choose, and I will not try to keep you coming.",
+         "_key": "k32"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k33",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Confidentiality in plain words",
+         "_key": "k34"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k35",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What you tell me stays between us. I keep short session notes and store them securely. There are a few limits. If I believe you or someone else is at serious risk of harm, or if the law requires me to share information, I may have to act. I explain this properly before we begin, and you can ask me about it at any time.",
+         "_key": "k36"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k37",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What this is not",
+         "_key": "k38"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k39",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "An emergency service. This practice can't respond urgently.",
+         "_key": "k40"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k41",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A place for diagnosis or medication advice",
+         "_key": "k42"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k43",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A replacement for your doctor or other health care",
+         "_key": "k44"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k45",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If you are in crisis or at risk, contact your local emergency number or crisis line now.",
+         "_key": "k46"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "faqs": [
+   {
+    "id": "faq-1",
+    "slug": "faq-1",
+    "status": "published",
+    "data": {
+     "title": "Do I have to talk about everything straight away?",
+     "answer": "No. You choose what to share and when. Many people start with the part that is easiest to say. We can come back to the rest if and when you want to.",
+     "home": true,
+     "position": 10
+    }
+   },
+   {
+    "id": "faq-2",
+    "slug": "faq-2",
+    "status": "published",
+    "data": {
+     "title": "What happens in the free intro call?",
+     "answer": "It is about 15 minutes by phone or video. You tell me briefly what brings you here, ask any questions, and we talk through how sessions work. Then you decide whether to book. You do not have to decide on the call.",
+     "home": true,
+     "position": 20
+    }
+   },
+   {
+    "id": "faq-3",
+    "slug": "faq-3",
+    "status": "published",
+    "data": {
+     "title": "How long is a session, and how often do we meet?",
+     "answer": "A session is 50 minutes. Most people begin weekly and move to every two weeks. We agree a pattern together and change it if it stops fitting your life.",
+     "home": true,
+     "position": 30
+    }
+   },
+   {
+    "id": "faq-4",
+    "slug": "faq-4",
+    "status": "published",
+    "data": {
+     "title": "Should I choose in person or online?",
+     "answer": "Either works well. In person suits people who like to leave the house for it. Online suits people with a tight schedule or a long way to travel. You can switch between them if you need to.",
+     "home": false,
+     "position": 40
+    }
+   },
+   {
+    "id": "faq-5",
+    "slug": "faq-5",
+    "status": "published",
+    "data": {
+     "title": "Is what I say confidential?",
+     "answer": "Yes, with a few limits that I explain before we start. They cover serious risk of harm and legal requirements. You are welcome to ask about them at any time.",
+     "home": true,
+     "position": 50
+    }
+   },
+   {
+    "id": "faq-6",
+    "slug": "faq-6",
+    "status": "published",
+    "data": {
+     "title": "How much does it cost?",
+     "answer": "The fee for a 50-minute session is listed on the home page, and I confirm it on the intro call so there are no surprises. The intro call itself is free.",
+     "home": false,
+     "position": 60
+    }
+   },
+   {
+    "id": "faq-7",
+    "slug": "faq-7",
+    "status": "published",
+    "data": {
+     "title": "What if I need to cancel a session?",
+     "answer": "Tell me as early as you can. The cancellation terms are set out at the start so they are agreed before your first session.",
+     "home": false,
+     "position": 70
+    }
+   },
+   {
+    "id": "faq-8",
+    "slug": "faq-8",
+    "status": "published",
+    "data": {
+     "title": "Can you help me in a crisis?",
+     "answer": "No. This practice can't respond urgently. If you are in crisis or at risk, contact your local emergency number or crisis line now.",
+     "home": false,
+     "position": 80
+    }
+   },
+   {
+    "id": "faq-9",
+    "slug": "faq-9",
+    "status": "published",
+    "data": {
+     "title": "How will I know if therapy is right for me?",
+     "answer": "The intro call is there to help with that. Therapy suits some people at some times and not others. If I think another kind of support would help you more, I will tell you.",
+     "home": false,
+     "position": 90
+    }
+   }
+  ],
+  "principles": [
+   {
+    "id": "explore",
+    "slug": "explore",
+    "status": "published",
+    "data": {
+     "title": "Explore",
+     "text": "Gain clarity about\nwhat matters to you.",
+     "icon": "leaf",
+     "position": 10
+    }
+   },
+   {
+    "id": "heal",
+    "slug": "heal",
+    "status": "published",
+    "data": {
+     "title": "Heal",
+     "text": "Work through life's\nchallenges with support.",
+     "icon": "heart",
+     "position": 20
+    }
+   },
+   {
+    "id": "grow",
+    "slug": "grow",
+    "status": "published",
+    "data": {
+     "title": "Grow",
+     "text": "Build a kinder, more\nconfident you.",
+     "icon": "sun",
+     "position": 30
+    }
+   }
+  ],
+  "steps": [
+   {
+    "id": "intro-call",
+    "slug": "intro-call",
+    "status": "published",
+    "data": {
+     "title": "A free intro call",
+     "when_label": "15 minutes",
+     "text": "We talk by phone or video. You say a little about what brings you here, ask whatever you like and decide whether to book. There is no obligation.",
+     "position": 10
+    }
+   },
+   {
+    "id": "first-session",
+    "slug": "first-session",
+    "status": "published",
+    "data": {
+     "title": "Your first session",
+     "when_label": "50 minutes",
+     "text": "We start slowly. I ask what is going on, what you hope for and what you would like me to know. You set the pace and can change the subject at any point.",
+     "position": 20
+    }
+   },
+   {
+    "id": "settling-in",
+    "slug": "settling-in",
+    "status": "published",
+    "data": {
+     "title": "Finding a rhythm",
+     "when_label": "Weekly at first",
+     "text": "Most people meet weekly, then every two weeks. Every few sessions we check whether it is helping, and you can stop whenever you choose.",
+     "position": 30
+    }
+   }
+  ],
+  "areas": [
+   {
+    "id": "anxiety",
+    "slug": "anxiety",
+    "status": "published",
+    "data": {
+     "title": "Anxiety",
+     "text": "Worry that is hard to switch off, or a constant sense of being on edge.",
+     "position": 10
+    }
+   },
+   {
+    "id": "stress",
+    "slug": "stress",
+    "status": "published",
+    "data": {
+     "title": "Stress",
+     "text": "Too much on, too little rest and no room to think.",
+     "position": 20
+    }
+   },
+   {
+    "id": "relationships",
+    "slug": "relationships",
+    "status": "published",
+    "data": {
+     "title": "Relationships",
+     "text": "Partners, family, friends and colleagues, including patterns that keep repeating.",
+     "position": 30
+    }
+   },
+   {
+    "id": "life-transitions",
+    "slug": "life-transitions",
+    "status": "published",
+    "data": {
+     "title": "Life transitions",
+     "text": "A new job, a move, becoming a parent, an ending.",
+     "position": 40
+    }
+   },
+   {
+    "id": "low-mood",
+    "slug": "low-mood",
+    "status": "published",
+    "data": {
+     "title": "Low mood",
+     "text": "Feeling flat, tired or stuck without a clear reason.",
+     "position": 50
+    }
+   },
+   {
+    "id": "grief-and-loss",
+    "slug": "grief-and-loss",
+    "status": "published",
+    "data": {
+     "title": "Grief and loss",
+     "text": "Losing someone, or something that mattered to you.",
+     "position": 60
+    }
+   },
+   {
+    "id": "self-esteem",
+    "slug": "self-esteem",
+    "status": "published",
+    "data": {
+     "title": "Self-esteem",
+     "text": "Being hard on yourself and finding it hard to stop.",
+     "position": 70
+    }
+   },
+   {
+    "id": "burnout",
+    "slug": "burnout",
+    "status": "published",
+    "data": {
+     "title": "Burnout",
+     "text": "Running on empty after a long stretch of too much.",
+     "position": 80
+    }
+   }
+  ],
+  "practice": [
+   {
+    "id": "maren",
+    "slug": "maren",
+    "status": "published",
+    "data": {
+     "title": "Maren Ellis",
+     "base": "Larkfield, and online",
+     "phone": "(555) 010-0148",
+     "email": "hello@willowandco.example",
+     "intro_length": "15 minutes",
+     "session_length": "50 minutes",
+     "fee_label": "[Add your fee per session]",
+     "registration": "[Placeholder] Add your professional body, registration number and qualifications here.",
+     "response": "Maren reads every message herself and usually replies within two working days. She can't reply urgently.",
+     "contact_note": "Please do not share detailed personal or clinical information by email or in this form. Say only what you are comfortable with. The rest can wait until we speak."
+    }
+   }
+  ]
+ }
+}

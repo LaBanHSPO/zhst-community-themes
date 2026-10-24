@@ -1,0 +1,163 @@
+---
+import Base from "../layouts/Base.astro";
+import { getPractice, telHref } from "../lib/practice";
+
+const { practice, cacheHint } = await getPractice();
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+// ?format=online or ?format=in-person pre-selects how to meet (links from other pages).
+const wanted = Astro.url.searchParams.get("format");
+const formats = [
+	{ value: "", label: "No preference" },
+	{ value: "in-person", label: "In person in Larkfield" },
+	{ value: "online", label: "Online by video" },
+];
+const selected = formats.find((o) => o.value && o.value === wanted);
+---
+
+<Base title="Get in touch" description="Ask Willow & Co. for a free 15-minute intro call: leave your name, email and the times that suit you. Email and phone are always listed. Please do not share detailed personal or clinical information.">
+	<div class="contact">
+		<section class="contact-panel" aria-labelledby="contact-title">
+			<p class="eyebrow">Get in touch</p>
+			<h1 id="contact-title" class="display display-xl">Ask for a free intro call.</h1>
+			<p class="lede">Tell Maren how to reach you and when suits you. She replies within two working days to arrange a 15-minute call. You are not committing to anything.</p>
+
+			<div class="notice" role="note">
+				<strong>Please keep it brief.</strong>{" "}
+				{practice.contact_note ?? "Please do not share detailed personal or clinical information by email or in this form."}
+			</div>
+			<div class="notice notice-crisis" role="note">
+				<strong>If you are in crisis or at risk,</strong> contact your local emergency number or crisis line now. This practice can't respond urgently.
+			</div>
+
+			<form
+				class="contact-form"
+				data-contact-form
+				data-email={practice.email}
+				action={practice.email ? `mailto:${practice.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field">
+						<label for="c-name">Your name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field">
+						<label for="c-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field">
+						<label for="c-format">In person or online?</label>
+						<select id="c-format" name="format">
+							{formats.map((o) => <option value={o.label} selected={selected?.value === o.value}>{o.label}</option>)}
+						</select>
+					</div>
+					<div class="field full">
+						<label for="c-times">Best times to reach you</label>
+						<input id="c-times" name="times" type="text" placeholder="For example: weekday mornings, or after 6pm" required />
+						<span class="field-error" data-error-for="c-times"></span>
+					</div>
+					<div class="field full">
+						<label for="c-why">What brings you here? <span class="optional">(optional)</span></label>
+						<textarea id="c-why" name="why" rows="4" maxlength="300" placeholder="A sentence or two is plenty. Please leave out personal or clinical detail."></textarea>
+					</div>
+				</div>
+				<button class="btn btn-olive btn-block" type="submit"><span>Send my request</span></button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{practice.email && <>Write to <a href={`mailto:${practice.email}`}>{practice.email}</a> with your name and the times that suit you.</>}
+					</noscript>
+				</p>
+			</form>
+		</section>
+
+		<aside class="contact-aside">
+			<img
+				src="/images/therapist-portrait.webp"
+				alt="Maren in a cream cardigan sitting in a boucle armchair with an open notebook on her knee, smiling gently"
+				width="820"
+				height="1046"
+			/>
+			<div class="contact-details">
+				<h2>Prefer to write or call?</h2>
+				<p class="detail-line">
+					{practice.email && <a href={`mailto:${practice.email}`}>{practice.email}</a>}
+					{practice.phone && <a href={telHref(practice.phone)}>{practice.phone}</a>}
+					{practice.base && <span>{practice.base}</span>}
+				</p>
+				{practice.response && <p class="small">{practice.response}</p>}
+			</div>
+		</aside>
+	</div>
+</Base>
+
+<script>
+	// Compose an email to the practice; nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>("[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? input.tagName === "SELECT"
+							? "Please choose an option."
+							: "Please fill this in."
+						: input.getAttribute("type") === "email"
+							? "Please enter a valid email address."
+							: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online requests are not available right now. Please call instead.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const subject = `Intro call request: ${get("name")}`;
+			const body = [
+				"Hello Maren,",
+				"",
+				"I would like to arrange a free intro call.",
+				"",
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				`Best times to reach me: ${get("times")}`,
+				`Preferred format: ${get("format")}`,
+				"",
+				get("why") ? `What brings me here: ${get("why")}` : "",
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this request ready to send. It is only sent when you send that email. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

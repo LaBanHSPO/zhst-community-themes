@@ -1,0 +1,165 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import ContactBand from "../components/ContactBand.astro";
+import FaqList from "../components/FaqList.astro";
+import Icon from "../components/Icon.astro";
+import { getAreas, getFaqs, getPractice, getPrinciples, getSteps, lines } from "../lib/practice";
+
+const [principlesResult, stepsResult, areasResult, faqsResult, practiceResult] = await Promise.all([
+	getPrinciples(),
+	getSteps(),
+	getAreas(),
+	getFaqs(),
+	getPractice(),
+]);
+if (Astro.cache?.enabled) {
+	for (const r of [principlesResult, stepsResult, areasResult, faqsResult, practiceResult]) Astro.cache.set(r.cacheHint);
+}
+const principles = principlesResult.entries;
+const steps = stepsResult.entries;
+const areas = areasResult.entries;
+const faqs = faqsResult.entries.filter((f) => f.data.home).slice(0, 4);
+const { practice } = practiceResult;
+const tints = ["sage", "rose", "butter"];
+---
+
+<Base
+	title="A space to feel heard"
+	description="Willow & Co. is a one-to-one therapy practice in Larkfield and online. Meet your therapist, see how sessions work, and arrange a free 15-minute intro call."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A smiling woman with long dark hair in an oatmeal cardigan sits in a boucle armchair in a calm therapy room with a lamp, plants and books"
+			width="1448"
+			height="790"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<h1 id="hero-title" class="hero-title">A space to<br />feel heard.</h1>
+			<p class="hero-sub">Compassionate, down-to-earth therapy<br />for a more aligned, fulfilling life.</p>
+			<a class="btn btn-olive" href="/about"><span>Meet your therapist</span><Arrow /></a>
+			<p class="hero-caps">
+				<span>Real conversations</span><span class="bar" aria-hidden="true">|</span><span>Lasting change</span><span class="bar" aria-hidden="true">|</span><span>A brighter you</span>
+			</p>
+		</div>
+	</section>
+
+	<section class="support" aria-labelledby="support-title">
+		<div class="support-inner">
+			<div class="support-copy">
+				<p class="eyebrow">Support for a more you</p>
+				<h2 id="support-title" class="support-title">Life feels lighter<br />when you don’t have to<br />carry it all alone.</h2>
+			</div>
+			<ul class="points">
+				{
+					principles.map((p, i) => (
+						<li class="point">
+							<span class={`point-icon tint-${tints[i % tints.length]}`}><Icon name={p.data.icon} /></span>
+							<h3 class="point-title" {...p.edit.title}>{p.data.title}</h3>
+							<p class="point-text">
+								{lines(p.data.text).map((l, j) => (j === 0 ? <>{l}</> : <><br />{l}</>))}
+							</p>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+
+	{
+		steps.length > 0 && (
+			<section class="first" aria-labelledby="first-title">
+				<div class="wrap first-inner">
+					<figure class="first-photo">
+						<img
+							src="/images/session-room.webp"
+							alt="Maren sitting in an armchair with an open notebook, listening to a client whose back is to the camera, in a warm room with a lamp and plants"
+							width="1448"
+							height="1086"
+							loading="lazy"
+						/>
+					</figure>
+					<div class="first-copy">
+						<p class="eyebrow">A first session</p>
+						<h2 id="first-title" class="display">What starting out looks like.</h2>
+						<ol class="steps">
+							{steps.map((s, i) => (
+								<li class="step">
+									<span class="step-num" aria-hidden="true">{i + 1}</span>
+									<div>
+										<h3 class="step-title" {...s.edit.title}>{s.data.title}{s.data.when_label && <span class="step-when">{s.data.when_label}</span>}</h3>
+										<p class="step-text">{s.data.text}</p>
+									</div>
+								</li>
+							))}
+						</ol>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		areas.length > 0 && (
+			<section class="areas" aria-labelledby="areas-title">
+				<div class="wrap areas-inner">
+					<div class="areas-main">
+						<p class="eyebrow">Areas I work with</p>
+						<h2 id="areas-title" class="display">What people come to talk about.</h2>
+						<ul class="area-list">
+							{areas.map((a) => (
+								<li>
+									<h3 {...a.edit.title}>{a.data.title}</h3>
+									<p>{a.data.text}</p>
+								</li>
+							))}
+						</ul>
+					</div>
+					<aside class="fees" aria-labelledby="fees-title">
+						<h2 id="fees-title" class="fees-title">Sessions and fees</h2>
+						<dl class="fee-rows">
+							<div>
+								<dt>Intro call</dt>
+								<dd>{practice.intro_length ?? "15 minutes"}, free</dd>
+							</div>
+							<div>
+								<dt>Individual session</dt>
+								<dd>{practice.session_length ?? "50 minutes"}</dd>
+							</div>
+							<div>
+								<dt>Fee per session</dt>
+								<dd>{practice.fee_label ?? "On request"}</dd>
+							</div>
+							<div>
+								<dt>Where</dt>
+								<dd>In person in Larkfield, or online by video</dd>
+							</div>
+						</dl>
+						<p class="fee-note">The fee is confirmed on the intro call, before you book anything.</p>
+					</aside>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		faqs.length > 0 && (
+			<section class="faq-teaser" aria-labelledby="faq-title">
+				<div class="wrap faq-teaser-inner">
+					<div class="faq-teaser-copy">
+						<p class="eyebrow">FAQs</p>
+						<h2 id="faq-title" class="display">Questions people ask first.</h2>
+						<a class="text-link" href="/faqs"><span>All questions</span><Arrow /></a>
+					</div>
+					<FaqList items={faqs} />
+				</div>
+			</section>
+		)
+	}
+
+	<ContactBand practice={practice} />
+</Base>

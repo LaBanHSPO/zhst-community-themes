@@ -1,0 +1,23 @@
+---
+import type { Faq } from "../../emdash-env";
+
+interface Props {
+	items: { data: Faq; edit?: Record<string, any> }[];
+	open?: boolean;
+}
+const { items, open = false } = Astro.props;
+---
+
+<div class="faq-list">
+	{
+		items.map((f, i) => (
+			<details class="faq" open={open && i === 0}>
+				<summary>
+					<span class="faq-q" {...f.edit?.title}>{f.data.title}</span>
+					<span class="faq-mark" aria-hidden="true"></span>
+				</summary>
+				<p class="faq-a">{f.data.answer}</p>
+			</details>
+		))
+	}
+</div>

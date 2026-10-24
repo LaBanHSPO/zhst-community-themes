@@ -1,0 +1,24 @@
+---
+interface Props {
+	name?: string | null;
+}
+const { name } = Astro.props;
+---
+
+<svg class="icon" width="40" height="40" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.300" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+	{
+		name === "heart" ? (
+			<path d="M18 29.500C9 23.500 5.500 19 5.500 14.200 5.500 10.700 8.200 8 11.600 8c2.600 0 5 1.500 6.400 4 1.400-2.500 3.800-4 6.400-4 3.400 0 6.100 2.700 6.100 6.200 0 4.800-3.500 9.300-12.500 15.300Z" />
+		) : name === "sun" ? (
+			<>
+				<circle cx="18" cy="18" r="5.500" />
+				<path d="M18 3.500v4M18 28.500v4M3.500 18h4M28.500 18h4M7.800 7.800l2.800 2.800M25.400 25.400l2.800 2.800M28.200 7.800l-2.800 2.800M10.600 25.400l-2.800 2.800" />
+			</>
+		) : (
+			<>
+				<path d="M27.500 7C14.500 8 8.500 15.500 9.500 24.500c.8 3 3.600 4.400 6.800 3.900C25 26.500 29 18 27.500 7Z" />
+				<path d="M8 30c3-6.500 8-12.500 14-17" />
+			</>
+		)
+	}
+</svg>

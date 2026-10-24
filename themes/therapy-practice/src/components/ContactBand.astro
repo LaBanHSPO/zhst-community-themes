@@ -1,0 +1,30 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref } from "../lib/practice";
+import type { PracticeData } from "../lib/practice";
+
+interface Props {
+	practice: PracticeData;
+}
+const { practice } = Astro.props;
+---
+
+<section class="band" aria-labelledby="band-title">
+	<div class="wrap band-inner">
+		<div class="band-copy">
+			<p class="eyebrow">Get in touch</p>
+			<h2 id="band-title" class="display">Start with a free intro call.</h2>
+			<p class="band-text">
+				Leave your name, email and the times that suit you. Maren replies within two working days to arrange a 15-minute call. There is no
+				obligation to book more.
+			</p>
+		</div>
+		<div class="band-actions">
+			<a class="btn btn-light" href="/contact"><span>Get in touch</span><Arrow /></a>
+			<p class="band-contact">
+				{practice.email && <a href={`mailto:${practice.email}`}>{practice.email}</a>}
+				{practice.phone && <a href={telHref(practice.phone)}>{practice.phone}</a>}
+			</p>
+		</div>
+	</div>
+</section>
