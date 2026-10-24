@@ -1,0 +1,59 @@
+---
+import Base from "../../layouts/Base.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import PageHead from "../../components/PageHead.astro";
+import WorkCard from "../../components/WorkCard.astro";
+import { TYPES, getProfile, getWork } from "../../lib/site";
+
+const [workResult, profileResult] = await Promise.all([getWork(), getProfile()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(workResult.cacheHint);
+	Astro.cache.set(profileResult.cacheHint);
+}
+const all = workResult.entries;
+
+// One filter link per type that has at least one case study, in a fixed order.
+const types = TYPES.filter((t) => all.some((w) => w.data.type === t.slug));
+// ?type=<slug> narrows the list to one type.
+const active = types.find((t) => t.slug === Astro.url.searchParams.get("type"));
+const items = active ? all.filter((w) => w.data.type === active.slug) : all;
+---
+
+<Base
+	title={active ? `${active.label} work` : "Work"}
+	description="Case studies from Prose: apps, platforms and design systems for real people. Filter by type."
+	current="/work"
+>
+	<PageHead
+		id="work-title"
+		eyebrow="Selected work"
+		title={active ? `${active.label} work.` : "Products for real people."}
+		intro="Each case study covers the problem, how we worked, what shipped and what we learned."
+	/>
+
+	<section class="list-section" aria-labelledby="work-title">
+		<div class="wrap">
+			{
+				types.length > 1 && (
+					<nav class="filter" aria-label="Filter by type">
+						<a href="/work" aria-current={active ? undefined : "true"}>All</a>
+						{types.map((t) => (
+							<a href={`/work?type=${t.slug}`} aria-current={active?.slug === t.slug ? "true" : undefined}>{t.label}</a>
+						))}
+					</nav>
+				)
+			}
+			{
+				items.length > 0 ? (
+					<ul class="work-grid">
+						{items.map((w, i) => <li><WorkCard work={w} eager={i < 3} /></li>)}
+					</ul>
+				) : (
+					<p class="empty-note">Nothing here yet. New case studies are on their way.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<ContactBand profile={profileResult.profile} />
+</Base>

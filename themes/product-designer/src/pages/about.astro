@@ -1,0 +1,49 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getProfile, photoAlt, photoSrc } from "../lib/site";
+
+const { entry: page, cacheHint } = await getEmDashEntry("pages", "about");
+if (!page) return Astro.rewrite("/404");
+const profileResult = await getProfile();
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(profileResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+const seo = getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" });
+const d = page.data;
+const cover = photoSrc(d.image, d.photo);
+const { profile } = profileResult;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.intro}
+	canonical={seo.canonical}
+	content={{ collection: "pages", id: d.id, slug: "about" }}
+	current="/about"
+>
+	<PageHead eyebrow={d.eyebrow} title={d.title} intro={d.intro} edit={{ ...page.edit.title }} />
+	<div class="page-body about-body">
+		<div class="wrap about-grid">
+			<div class="prose">
+				<PortableText value={d.content} />
+				<p class="page-cta"><a class="btn btn-dark" href="/contact"><span>Let's talk</span><Arrow /></a></p>
+			</div>
+			<aside class="about-aside">
+				{cover && <img src={cover} alt={photoAlt(d.image, d.photo, "")} width="585" height="945" loading="eager" />}
+				<dl class="about-facts">
+					<div><dt>Based in</dt><dd>{profile.base}</dd></div>
+					<div><dt>Email</dt><dd><a href={`mailto:${profile.email}`}>{profile.email}</a></dd></div>
+					<div><dt>Typical project</dt><dd>Two to nine months</dd></div>
+				</dl>
+			</aside>
+		</div>
+	</div>
+</Base>

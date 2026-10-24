@@ -1,0 +1,184 @@
+---
+import Base from "../layouts/Base.astro";
+import { getProfile, getServices, telHref } from "../lib/site";
+
+const [{ profile, cacheHint }, servicesResult] = await Promise.all([getProfile(), getServices()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(servicesResult.cacheHint);
+}
+
+const options = [
+	...servicesResult.entries.map((s) => ({ value: s.data.slug ?? s.data.id, label: s.data.title })),
+	{ value: "not-sure", label: "Not sure yet" },
+];
+// ?service=<slug> pre-selects a service (links from the home page).
+const wanted = Astro.url.searchParams.get("service");
+const selected = options.find((o) => o.value === wanted);
+---
+
+<Base title="Let's talk" description="Send Noor a project enquiry: choose what you need help with, say when you would like to start and add a budget range if you have one. Email and phone are always listed." current="/contact">
+	<div class="contact">
+		<section class="contact-panel" aria-labelledby="contact-title">
+			<p class="eyebrow">Let's talk</p>
+			<h1 id="contact-title" class="display display-xl">Tell me about the product.</h1>
+			<p class="lede">A few lines are enough. Noor replies within two working days to set up a thirty-minute call.</p>
+
+			<div class="notice" role="note">
+				<strong>Enquiries only.</strong>{" "}
+				{profile.contact_note ?? "Please leave out anything confidential."}
+			</div>
+
+			<form
+				class="contact-form"
+				data-contact-form
+				data-email={profile.email}
+				action={profile.email ? `mailto:${profile.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field">
+						<label for="c-name">Your name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field">
+						<label for="c-company">Company or team <span class="optional">(optional)</span></label>
+						<input id="c-company" name="company" type="text" autocomplete="organization" />
+					</div>
+					<div class="field">
+						<label for="c-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field full">
+						<label for="c-service">What do you need help with?</label>
+						<select id="c-service" name="service" required>
+							<option value="" selected={!selected}>Choose an option</option>
+							{options.map((o) => <option value={o.value} selected={selected?.value === o.value}>{o.label}</option>)}
+						</select>
+						<span class="field-error" data-error-for="c-service"></span>
+					</div>
+					<div class="field">
+						<label for="c-timeline">When would you like to start?</label>
+						<select id="c-timeline" name="timeline" required>
+							<option value="" selected>Choose an option</option>
+							<option>Within a month</option>
+							<option>In one to three months</option>
+							<option>Later this year</option>
+							<option>Just exploring</option>
+						</select>
+						<span class="field-error" data-error-for="c-timeline"></span>
+					</div>
+					<div class="field">
+						<label for="c-budget">Budget range <span class="optional">(optional)</span></label>
+						<select id="c-budget" name="budget">
+							<option value="" selected>Prefer not to say</option>
+							<option>Under $5,000</option>
+							<option>$5,000 to $15,000</option>
+							<option>$15,000 to $40,000</option>
+							<option>Over $40,000</option>
+						</select>
+					</div>
+					<div class="field full">
+						<label for="c-details">What are you building?</label>
+						<textarea id="c-details" name="details" rows="5" maxlength="600" placeholder="For example: we have a working prototype of a booking app and want help with the first-time experience." required></textarea>
+						<span class="field-error" data-error-for="c-details"></span>
+					</div>
+				</div>
+				<button class="btn btn-dark btn-block" type="submit"><span>Send enquiry</span></button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{profile.email && <>Write to <a href={`mailto:${profile.email}`}>{profile.email}</a> with your name, what you need help with and when you would like to start.</>}
+					</noscript>
+				</p>
+			</form>
+		</section>
+
+		<aside class="contact-aside">
+			<img src="/images/desk-notebook.webp" alt="A spiral notebook with wireframe sketches and a black pen on a wooden desk" width="1040" height="452" />
+			<div class="contact-details">
+				<h2>Prefer to write directly?</h2>
+				<p class="detail-line">
+					{profile.email && <a href={`mailto:${profile.email}`}>{profile.email}</a>}
+					{profile.phone && <a href={telHref(profile.phone)}>{profile.phone}</a>}
+					{profile.base && <span>{profile.base}</span>}
+				</p>
+				{profile.response && <p class="small">{profile.response}</p>}
+			</div>
+		</aside>
+	</div>
+</Base>
+
+<script>
+	// Compose an email to the designer; nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>("[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? input.tagName === "SELECT"
+							? "Please choose an option."
+							: "Please fill this in."
+						: input.getAttribute("type") === "email"
+							? "Please enter a valid email address."
+							: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online enquiries are not available right now. Please call instead.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const select = form.querySelector<HTMLSelectElement>("#c-service");
+			const serviceLabel = select?.selectedOptions[0]?.textContent ?? "";
+			const subject = `Project enquiry from ${get("name")}`;
+			const body = [
+				"Hello Noor,",
+				"",
+				"I would like to ask about working together.",
+				"",
+				`Needs help with: ${serviceLabel}`,
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				get("company") ? `Company or team: ${get("company")}` : "",
+				`Would like to start: ${get("timeline")}`,
+				get("budget") ? `Budget range: ${get("budget")}` : "",
+				"",
+				get("details"),
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this enquiry ready to send. It is only sent when you send that email. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

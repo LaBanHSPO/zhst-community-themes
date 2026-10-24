@@ -1,0 +1,84 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import NoteCard from "../../components/NoteCard.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { topicLabel, getProfile, getNotes, photoAlt, photoSrc } from "../../lib/site";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: note, cacheHint } = await getEmDashEntry("notes", slug);
+if (!note) return Astro.rewrite("/404");
+
+const [allResult, profileResult, settings] = await Promise.all([getNotes(), getProfile(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(profileResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(note, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = note.data;
+const cover = photoSrc(d.image, d.photo);
+const hasBody = Boolean(d.content && d.content.length > 0);
+const label = topicLabel(d.topic);
+const others = allResult.entries
+	.filter((n) => n.data.id !== d.id)
+	.sort((a, b) => Number(b.data.topic === d.topic) - Number(a.data.topic === d.topic))
+	.slice(0, 3);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "notes", id: d.id, slug }}
+	current="/notes"
+>
+	<header class="article-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/notes">Notes</a>
+				<span aria-hidden="true">/</span>
+				{d.topic && label ? <a href={`/notes?topic=${d.topic}`}>{label}</a> : <span aria-current="page">Note</span>}
+			</nav>
+			<h1 class="display display-xl" {...note.edit.title}>{d.title}</h1>
+			<p class="byline">
+				{d.date_label && <span>{d.date_label}</span>}
+				{d.read_minutes && <span>{d.read_minutes} min read</span>}
+				<span>By Noor Calder</span>
+			</p>
+			{cover && <div class="article-cover"><img src={cover} alt={photoAlt(d.image, d.photo, d.title)} fetchpriority="high" /></div>}
+		</div>
+	</header>
+
+	<section class="article-body">
+		<p class="article-summary">{d.summary}</p>
+		{hasBody && <div class="prose"><PortableText value={d.content} /></div>}
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="section more-posts" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="section-head">
+						<div>
+							<p class="eyebrow">Keep reading</p>
+							<h2 id="more-title" class="display display-lg">More notes.</h2>
+						</div>
+					</div>
+					<ul class="note-grid">
+						{others.map((n) => <li><NoteCard note={n} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<ContactBand profile={profileResult.profile} />
+</Base>

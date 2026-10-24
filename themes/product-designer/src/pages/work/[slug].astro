@@ -1,0 +1,135 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getProfile, getWork, photoAlt, photoSrc, typeLabel, workHref } from "../../lib/site";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: work, cacheHint } = await getEmDashEntry("work", slug);
+if (!work) return Astro.rewrite("/404");
+
+const [allResult, profileResult, settings] = await Promise.all([getWork(), getProfile(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(profileResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(work, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = work.data;
+const cover = photoSrc(d.image, d.photo);
+const shots = (d.gallery ?? [])
+	.map((g) => ({ src: photoSrc(g.image, g.photo), alt: photoAlt(g.image, g.photo, g.caption ?? ""), caption: g.caption }))
+	.filter((g): g is { src: string; alt: string; caption: string | undefined } => Boolean(g.src));
+const facts = [
+	{ label: "Product", value: `${d.title}, ${d.tagline.toLowerCase()}` },
+	{ label: "Role", value: d.role },
+	{ label: "Team", value: d.team },
+	{ label: "Timeline", value: d.timeline },
+	{ label: "Platform", value: d.platform },
+].filter((f) => f.value);
+const sections = [
+	{ label: "The problem", text: d.problem },
+	{ label: "How we worked", text: d.process },
+	{ label: "What shipped", text: d.shipped },
+	{ label: "What we learned", text: d.learned },
+].filter((s) => s.text);
+
+// Previous and next in sort order, wrapping around.
+const list = allResult.entries;
+const index = list.findIndex((w) => w.data.id === d.id);
+const prev = list.length > 1 ? list[(index - 1 + list.length) % list.length] : null;
+const next = list.length > 1 ? list[(index + 1) % list.length] : null;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "work", id: d.id, slug }}
+	current="/work"
+>
+	<header class="case-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/work">Work</a>
+				<span aria-hidden="true">/</span>
+				{d.type && <a href={`/work?type=${d.type}`}>{typeLabel(d.type)}</a>}
+				{d.type && <span aria-hidden="true">/</span>}
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<p class="eyebrow">{d.tagline}</p>
+			<h1 class="display display-xl" {...work.edit.title}>{d.title}</h1>
+			<p class="lede">{d.summary}</p>
+		</div>
+	</header>
+
+	<section class="case-lead">
+		<div class="wrap case-lead-grid">
+			{cover && <figure class="case-cover"><img src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="878" height="488" fetchpriority="high" /></figure>}
+			<dl class="facts">
+				{facts.map((f) => <div><dt>{f.label}</dt><dd>{f.value}</dd></div>)}
+			</dl>
+		</div>
+	</section>
+
+	<section class="case-body">
+		<div class="wrap">
+			{
+				sections.map((s) => (
+					<div class="case-section">
+						<h2>{s.label}</h2>
+						<p>{s.text}</p>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	{
+		shots.length > 0 && (
+			<section class="case-shots" aria-label={`Key screens from ${d.title}`}>
+				<div class="wrap">
+					<p class="eyebrow">Key screens</p>
+					<ul class="sequence">
+						{shots.map((s) => (
+							<li>
+								<figure>
+									<img src={s.src} alt={s.alt} loading="lazy" />
+									{s.caption && <figcaption>{s.caption}</figcaption>}
+								</figure>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		prev && next && (
+			<nav class="case-nav" aria-label="More case studies">
+				<div class="wrap case-nav-grid">
+					<a class="case-prev" href={workHref(prev.data)}>
+						<span class="case-nav-label"><Arrow class="flip" /> Previous</span>
+						<span class="case-nav-name">{prev.data.title}</span>
+						<span class="case-nav-sub">{prev.data.tagline}</span>
+					</a>
+					<a class="case-next" href={workHref(next.data)}>
+						<span class="case-nav-label">Next <Arrow /></span>
+						<span class="case-nav-name">{next.data.title}</span>
+						<span class="case-nav-sub">{next.data.tagline}</span>
+					</a>
+				</div>
+			</nav>
+		)
+	}
+
+	<ContactBand profile={profileResult.profile} />
+</Base>

@@ -1,0 +1,56 @@
+---
+import Base from "../../layouts/Base.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import PageHead from "../../components/PageHead.astro";
+import NoteCard from "../../components/NoteCard.astro";
+import { TOPICS, getNotes, getProfile } from "../../lib/site";
+
+const [notesResult, profileResult] = await Promise.all([getNotes(), getProfile()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(notesResult.cacheHint);
+	Astro.cache.set(profileResult.cacheHint);
+}
+const all = notesResult.entries;
+const topics = TOPICS.filter((t) => all.some((n) => n.data.topic === t.slug));
+const active = topics.find((t) => t.slug === Astro.url.searchParams.get("topic"));
+const notes = active ? all.filter((n) => n.data.topic === active.slug) : all;
+---
+
+<Base
+	title={active ? `${active.label} notes` : "Notes"}
+	description="Short notes from Prose on how product design gets done: process, research, craft and design systems."
+	current="/notes"
+>
+	<PageHead
+		id="notes-title"
+		eyebrow="Notes"
+		title={active ? `${active.label}.` : "Short notes on the work."}
+		intro="Things I have learned while designing, testing and shipping products. Pick a topic or read them all."
+	/>
+
+	<section class="list-section" aria-labelledby="notes-title">
+		<div class="wrap">
+			{
+				topics.length > 1 && (
+					<nav class="filter" aria-label="Filter by topic">
+						<a href="/notes" aria-current={active ? undefined : "true"}>All</a>
+						{topics.map((t) => (
+							<a href={`/notes?topic=${t.slug}`} aria-current={active?.slug === t.slug ? "true" : undefined}>{t.label}</a>
+						))}
+					</nav>
+				)
+			}
+			{
+				notes.length > 0 ? (
+					<ul class="note-grid">
+						{notes.map((n, i) => <li><NoteCard note={n} eager={i < 3} /></li>)}
+					</ul>
+				) : (
+					<p class="empty-note">Nothing here yet. New notes are on their way.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<ContactBand profile={profileResult.profile} />
+</Base>

@@ -1,0 +1,1661 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Product Designer",
+    "description": "A warm off-white portfolio theme for a solo product designer: a photo hero with a handwritten note, selected case studies with a type filter, how the work runs, services, notes and a project enquiry form, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "Prose",
+    "tagline": "Product Designer"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro line",
+          "type": "text"
+        },
+        {
+          "slug": "image",
+          "label": "Cover image (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover image path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "work",
+      "label": "Work",
+      "labelSingular": "Case study",
+      "urlPattern": "/work/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Product name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "type",
+          "label": "Type (work filter)",
+          "type": "select",
+          "required": true,
+          "indexed": true,
+          "defaultValue": "app",
+          "validation": {
+            "options": [
+              "app",
+              "platform",
+              "design-system"
+            ]
+          }
+        },
+        {
+          "slug": "tagline",
+          "label": "Short label under the name (e.g. Sustainability app)",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-sentence summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "role",
+          "label": "My role",
+          "type": "string"
+        },
+        {
+          "slug": "team",
+          "label": "Team",
+          "type": "string"
+        },
+        {
+          "slug": "timeline",
+          "label": "Timeline",
+          "type": "string"
+        },
+        {
+          "slug": "platform",
+          "label": "Platform",
+          "type": "string"
+        },
+        {
+          "slug": "problem",
+          "label": "The problem",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "process",
+          "label": "How we worked",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "shipped",
+          "label": "What shipped",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "learned",
+          "label": "What we learned",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover image (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover image path",
+          "type": "string"
+        },
+        {
+          "slug": "gallery",
+          "label": "Key screens",
+          "type": "repeater",
+          "validation": {
+            "maxItems": 20,
+            "subFields": [
+              {
+                "slug": "image",
+                "label": "Image (upload)",
+                "type": "image"
+              },
+              {
+                "slug": "photo",
+                "label": "Bundled image path",
+                "type": "string"
+              },
+              {
+                "slug": "caption",
+                "label": "Caption",
+                "type": "text"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "slug": "notes",
+      "label": "Notes",
+      "labelSingular": "Note",
+      "urlPattern": "/notes/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "Short summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "topic",
+          "label": "Topic (process, research, craft or systems)",
+          "type": "string"
+        },
+        {
+          "slug": "date_label",
+          "label": "Date shown (e.g. 14 October 2026)",
+          "type": "string"
+        },
+        {
+          "slug": "read_minutes",
+          "label": "Reading time in minutes",
+          "type": "integer"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order (newest first)",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover image (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover image path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Body",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "services",
+      "label": "What I can help with",
+      "labelSingular": "Service",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true
+        },
+        {
+          "slug": "includes",
+          "label": "What it covers (one item per line)",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "steps",
+      "label": "How I work",
+      "labelSingular": "Step",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "when_label",
+          "label": "Short label (e.g. Weeks one and two)",
+          "type": "string"
+        },
+        {
+          "slug": "text",
+          "label": "Text",
+          "type": "text"
+        },
+        {
+          "slug": "output",
+          "label": "What you get from this step",
+          "type": "string"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "profile",
+      "label": "Contact details",
+      "labelSingular": "Contact details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Designer name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "base",
+          "label": "Based in",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Email for enquiries",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "response",
+          "label": "Reply time (shown beside the form)",
+          "type": "text"
+        },
+        {
+          "slug": "contact_note",
+          "label": "Note shown above the form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Work",
+          "url": "/work"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        },
+        {
+          "type": "custom",
+          "label": "Notes",
+          "url": "/notes"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "Hello, I'm Noor.",
+          "eyebrow": "About",
+          "intro": "I'm a product designer. I help small teams turn complicated problems into simple, useful products.",
+          "photo": "/images/study-materials.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k79",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I work with teams of three to thirty people who are building something real and want a designer who stays close to the work. Most projects start with a vague problem and end with a product people use.",
+                  "_key": "s80"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k81",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How I work",
+                  "_key": "s82"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k83",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I like to start small. I find one person with the problem, draw what happens to them, and test the smallest thing that might help. That keeps projects honest and cheap to change.",
+                  "_key": "s84"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k85",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I write my own copy for prototypes, because words are part of the design. I draw on paper first, and I like to show rough work early.",
+                  "_key": "s86"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k87",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Where I'm based",
+                  "_key": "s88"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k89",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I live in Halden Bay and work with teams by video, or in person if you are within a couple of hours' travel. Most of my projects run for two to nine months.",
+                  "_key": "s90"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k91",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Tools I use",
+                  "_key": "s92"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k93",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Figma for interface design, prototypes and shared libraries",
+                  "_key": "s94"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k95",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Paper, pens and a lot of tape for early sketches",
+                  "_key": "s96"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k97",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A simple video call and a shared document for interviews and tests",
+                  "_key": "s98"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k99",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Spreadsheets for planning, and plain text for writing",
+                  "_key": "s100"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k101",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Your team's own tools whenever possible, so nothing new has to be set up",
+                  "_key": "s102"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k103",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About this site",
+                  "_key": "s104"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k105",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Noor is a fictional designer and the case studies on this site are sample content. Names, places and products are made up.",
+                  "_key": "s106"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "working-together",
+        "slug": "working-together",
+        "status": "published",
+        "data": {
+          "title": "Working together",
+          "eyebrow": "Terms",
+          "intro": "How projects start, what a typical week looks like and how I charge.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k107",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most projects begin with a thirty-minute call. We talk about the product, the team and the problem. I tell you honestly whether I am the right person to help.",
+                  "_key": "s108"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k109",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What a week looks like",
+                  "_key": "s110"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k111",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I spend two or three days a week on a typical project and keep the rest free for other work. We meet once a week for an hour, and I share rough work in a shared folder in between.",
+                  "_key": "s112"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k113",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Pricing",
+                  "_key": "s114"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k115",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I quote a fixed price for defined pieces of work, such as a research round or a prototype. For longer projects I charge by the week. The price is agreed before we start.",
+                  "_key": "s116"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k117",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Confidentiality",
+                  "_key": "s118"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k119",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I sign a simple agreement when asked. I never show client work in public without written permission.",
+                  "_key": "s120"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "work": [
+      {
+        "id": "terrana",
+        "slug": "terrana",
+        "status": "published",
+        "data": {
+          "title": "Terrana",
+          "type": "app",
+          "tagline": "Sustainability app",
+          "summary": "A household app that turns small daily choices into one simple picture of the month.",
+          "role": "Lead product designer",
+          "team": "Two designers, four engineers, one product manager",
+          "timeline": "Nine months, from first interviews to release",
+          "platform": "iOS and Android",
+          "problem": "People who wanted to waste less at home kept abandoning the tools they tried. Those tools asked for long logs, scored every day and made small habits look like failures. Most people stopped using them within a few weeks, and some felt worse about their habits than before.",
+          "process": "We began in kitchens and hallways, watching how households sort, shop and cook. Back in the studio I mapped the moments where people already made a choice and asked what a single tap could capture there. Early paper prototypes had no scores at all. We tested three versions of the home screen with people at their own front doors, then built the one that read fastest.",
+          "shipped": "A home screen with one number for the month, a short list of suggested next steps and a quiet map of progress over time. Logging takes one tap. Missing a day changes nothing and the app never says so.",
+          "learned": "People trusted the app more once it stopped scoring them. One clear number worked better than a dashboard of ten, and the suggested steps needed to be small enough to do the same evening.",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/terrana.webp",
+          "gallery": [
+            {
+              "photo": "/images/terrana-phone.webp",
+              "caption": "The month at a glance: one number, one picture, one place to log."
+            },
+            {
+              "photo": "/images/terrana-panel.webp",
+              "caption": "The first screen people see. It says what the app does in one short line."
+            }
+          ]
+        }
+      },
+      {
+        "id": "meno",
+        "slug": "meno",
+        "status": "published",
+        "data": {
+          "title": "Meno",
+          "type": "platform",
+          "tagline": "Wellbeing platform",
+          "summary": "A calm planning space for small teams who want fewer, better-protected hours of focus.",
+          "role": "Product designer, working with a research lead",
+          "team": "One designer, one researcher, five engineers",
+          "timeline": "Seven months",
+          "platform": "Web, with a lightweight mobile view",
+          "problem": "Teams at small companies were booking focus time and losing it to meetings within a day. Existing wellbeing tools sat apart from the calendar, so nobody opened them. Managers wanted to see how the week was going without watching individuals.",
+          "process": "I interviewed team members and managers separately, then sat in on planning meetings. The pattern was clear: people would protect time if protecting it took less effort than giving it up. We prototyped a week view where focus blocks were the main object, and tested it with four teams over two sprints.",
+          "shipped": "A week view built around focus blocks, a short daily check-in that takes under a minute, and a team page that shows themes across the group. Nothing on that page names a person.",
+          "learned": "The check-in only worked when it lived in the same place as the plan. We also learned to keep manager views deliberately plain, because richer charts made people less willing to answer honestly.",
+          "featured": true,
+          "position": 20,
+          "photo": "/images/meno.webp",
+          "gallery": [
+            {
+              "photo": "/images/meno-panel.webp",
+              "caption": "The opening screen. Today, Library and You are the only top-level places."
+            },
+            {
+              "photo": "/images/meno-arch.webp",
+              "caption": "The check-in illustration, drawn to feel like a pause rather than a task."
+            }
+          ]
+        }
+      },
+      {
+        "id": "orbit",
+        "slug": "orbit",
+        "status": "published",
+        "data": {
+          "title": "Orbit",
+          "type": "platform",
+          "tagline": "Creative platform",
+          "summary": "A shared home where small creative groups keep ideas, drafts and feedback together.",
+          "role": "Lead product designer",
+          "team": "Three designers, six engineers, one product manager",
+          "timeline": "Ten months",
+          "platform": "Web and desktop",
+          "problem": "Small creative groups scattered their work across chat threads, folders and email. Feedback arrived in four places and the latest draft was often a matter of memory. They wanted one place to keep things, and they did not want another tool that felt like an office.",
+          "process": "We interviewed illustrators, writers and sound designers about how a piece of work moves from idea to finished. I drew that path as a single line and placed every complaint on it. The dark interface came from watching people work late in low light. We tested the library and the feedback view with eight groups before we wrote any final copy.",
+          "shipped": "A library of ideas and drafts, a feedback view that keeps comments next to the exact part they refer to, and a profile page for each member. The interface is dark by default and has a light option.",
+          "learned": "Groups cared less about features than about where the latest version lived. Naming and ordering in the library mattered more than any single screen.",
+          "featured": true,
+          "position": 30,
+          "photo": "/images/orbit.webp",
+          "gallery": [
+            {
+              "photo": "/images/orbit-panel.webp",
+              "caption": "The welcome screen. Short copy, one dark surface, plenty of room."
+            },
+            {
+              "photo": "/images/orbit-planet.webp",
+              "caption": "The illustration used on the profile and library pages."
+            }
+          ]
+        }
+      },
+      {
+        "id": "flowra",
+        "slug": "flowra",
+        "status": "published",
+        "data": {
+          "title": "Flowra",
+          "type": "app",
+          "tagline": "Daily planning app",
+          "summary": "A planning app with three habits: plan the day, reflect briefly, and notice what changed.",
+          "role": "Product designer",
+          "team": "One designer, three engineers",
+          "timeline": "Five months",
+          "platform": "iOS, Android and web",
+          "problem": "Most planning apps grow into task managers. The people we spoke to wanted something smaller: a way to choose three things for the day and look back at the end without a long review.",
+          "process": "I wrote the three habits (plan, reflect, grow) on a wall and tested each one as a separate paper flow. The web page, the phone app and the welcome emails were designed together so the same sentence said the same thing everywhere.",
+          "shipped": "A phone app with a plan screen, a two-question reflection and a weekly view. A marketing page on the web uses the same layout and wording as the app, so people know what they are signing up for.",
+          "learned": "Limits helped. Capping the day at three items made people more honest about what mattered. Our first draft of the weekly view tried to show too much, and the version that shipped shows one sentence and one chart.",
+          "featured": false,
+          "position": 40,
+          "photo": "/images/flowra.webp",
+          "gallery": [
+            {
+              "photo": "/images/flowra-screen.webp",
+              "caption": "The web home page, laid out to match the phone app."
+            },
+            {
+              "photo": "/images/flowra-phone.webp",
+              "caption": "The phone app on the plan screen, with a small prompt after each day."
+            }
+          ]
+        }
+      },
+      {
+        "id": "motion",
+        "slug": "motion",
+        "status": "published",
+        "data": {
+          "title": "Motion",
+          "type": "app",
+          "tagline": "Fitness app",
+          "summary": "A training app for people who want to move more without keeping a scoreboard.",
+          "role": "Product designer",
+          "team": "Two designers, four engineers",
+          "timeline": "Six months",
+          "platform": "iOS and Android",
+          "problem": "Fitness apps tend to speak to people who already train. The people we met were busy, a little unsure and put off by streaks and rankings. They wanted a plan that fit around a day, not the other way round.",
+          "process": "We tested plan formats on paper with ten people, and then used a clickable prototype for two weeks of real mornings. I focused on the first minute of each session, because that is where most people decided whether to carry on.",
+          "shipped": "A plan that adjusts when a day is missed, short sessions that start with one clear instruction, and a progress line that shows direction instead of totals.",
+          "learned": "Plain language mattered. Replacing coaching phrases with simple instructions made sessions feel less like a test, and several testers said so without being asked.",
+          "featured": false,
+          "position": 50,
+          "photo": "/images/motion.webp",
+          "gallery": [
+            {
+              "photo": "/images/motion-phone.webp",
+              "caption": "The session screen: a short instruction and a progress line."
+            }
+          ]
+        }
+      },
+      {
+        "id": "harbor",
+        "slug": "harbor",
+        "status": "published",
+        "data": {
+          "title": "Harbor",
+          "type": "design-system",
+          "tagline": "Financial wellbeing system",
+          "summary": "A design system for a money-management product with a lot of charts and very little patience for jargon.",
+          "role": "Design systems lead",
+          "team": "Two designers, three engineers",
+          "timeline": "Eight months",
+          "platform": "Web and iOS",
+          "problem": "The product had grown screen by screen. Charts were drawn three different ways, the same number could be shown in four formats, and every new feature added another one-off component.",
+          "process": "I audited every screen and sorted the parts into things that should be shared and things that were truly special. Then we built the chart set first, because it was the most visible part, and moved outward to forms, tables and empty states.",
+          "shipped": "A component library with one chart style, one number format and a short guide to writing about money in plain words. Design and engineering share the same names for every part.",
+          "learned": "A system gets adopted when it removes work from the next feature. We kept the first release small and added parts only when a team asked for one.",
+          "featured": false,
+          "position": 60,
+          "photo": "/images/harbor.webp",
+          "gallery": [
+            {
+              "photo": "/images/harbor-chart.webp",
+              "caption": "The line chart, in its dark theme. One style is used for every trend in the product."
+            }
+          ]
+        }
+      },
+      {
+        "id": "lumina",
+        "slug": "lumina",
+        "status": "published",
+        "data": {
+          "title": "Lumina",
+          "type": "design-system",
+          "tagline": "Home wellness brand system",
+          "summary": "A design system that ties the materials of a small bedside light to the screens that control it.",
+          "role": "Design systems lead and product designer",
+          "team": "Two designers, one industrial designer, two engineers",
+          "timeline": "Eight months",
+          "platform": "iOS, Android and packaging",
+          "problem": "The brand sold a bedside light and a phone app, and the two did not look like they belonged together. The object was made of stone and wood. The app used default controls and bright colours.",
+          "process": "I started at the workshop, handling the samples and photographing the sketches. I took colours from the stone, the oak and the woven fabric, then drew type and spacing so the screens felt as calm as the object. A shared colour sheet became the basis for both the app and the printed box.",
+          "shipped": "A colour and material palette, a type scale, and a set of app controls with soft shapes and quiet motion. The same sheet was used to brief the packaging printer.",
+          "learned": "Working from real samples made decisions faster than working from mood boards. People in testing described the app as warm, and none of them asked for a brighter theme.",
+          "featured": false,
+          "position": 70,
+          "photo": "/images/lumina-bowl.webp",
+          "gallery": [
+            {
+              "photo": "/images/study-lamp.webp",
+              "caption": "The light on its stone base, the reference for the app's colours."
+            },
+            {
+              "photo": "/images/study-sketches.webp",
+              "caption": "Early sketches of the object, pinned next to the first screen layouts."
+            },
+            {
+              "photo": "/images/study-swatches.webp",
+              "caption": "Material samples used to pick the palette: stone, oak and woven fabric."
+            }
+          ]
+        }
+      }
+    ],
+    "notes": [
+      {
+        "id": "start-with-the-smallest-problem",
+        "slug": "start-with-the-smallest-problem",
+        "status": "published",
+        "data": {
+          "title": "Start with the smallest version of the problem",
+          "summary": "A big brief is easier to solve once you find the one person and one moment inside it.",
+          "topic": "process",
+          "date_label": "21 October 2026",
+          "read_minutes": 4,
+          "featured": true,
+          "position": 10,
+          "photo": "/images/study-lamp.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most briefs arrive at the size of a company goal. Make onboarding better. Help people stay. Cut support requests. These are fine goals and terrible starting points, because nobody can design for them directly.",
+                  "_key": "s2"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Find one person",
+                  "_key": "s4"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I ask who last had this problem, and what they were doing at the time. The answer is usually a specific person on a specific afternoon. If the team cannot name one, that is the first thing to learn.",
+                  "_key": "s6"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Find one moment",
+                  "_key": "s8"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Inside that afternoon there is a moment where things went wrong or nearly did. Draw that moment on its own. A single screen, a single sentence, a single decision.",
+                  "_key": "s10"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Once the small version works, the large version is a matter of repeating it. When it does not work, you have found out cheaply.",
+                  "_key": "s12"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "one-hour-usability-test",
+        "slug": "one-hour-usability-test",
+        "status": "published",
+        "data": {
+          "title": "How I run a one-hour usability test",
+          "summary": "Five people, a prototype and a plain script. Here is the order I use and what I leave out.",
+          "topic": "research",
+          "date_label": "9 October 2026",
+          "read_minutes": 5,
+          "featured": true,
+          "position": 20,
+          "photo": "/images/desk-notebook.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A good test needs very little. You need a prototype that is believable, a few tasks written in the person's own words, and a quiet room or a clear video call.",
+                  "_key": "s14"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The first ten minutes",
+                  "_key": "s16"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I begin by asking about their week, not the product. People relax when they are the expert. Then I tell them plainly that we are testing the design, not them, and that nothing they do can be wrong.",
+                  "_key": "s18"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The tasks",
+                  "_key": "s20"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I give three or four tasks, each one a real situation. Not 'find the settings page' but 'you want fewer reminders in the evening'. I stay quiet. If they ask me what to do, I ask what they would do.",
+                  "_key": "s22"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The last ten minutes",
+                  "_key": "s24"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I ask what they would tell a friend about it. The answer is often more useful than anything said during the tasks. Afterwards I write down the three biggest surprises before I look at any notes.",
+                  "_key": "s26"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "write-the-empty-state-first",
+        "slug": "write-the-empty-state-first",
+        "status": "published",
+        "data": {
+          "title": "Write the empty state first",
+          "summary": "The first screen anyone sees has no data in it. Design that screen before the full one.",
+          "topic": "craft",
+          "date_label": "28 September 2026",
+          "read_minutes": 3,
+          "featured": true,
+          "position": 30,
+          "photo": "/images/study-olive.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Every product has a version with nothing in it. No tasks, no messages, no history. It is also the version every new person meets first.",
+                  "_key": "s28"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What it needs to say",
+                  "_key": "s30"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Three things: what this place is for, what to do first, and that doing it is safe. A few short sentences and one clear button is usually enough.",
+                  "_key": "s32"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k33",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I now write that screen before I draw the full one. It forces a plain answer to what the product is for, and it often shows that the full screen is trying to do too much.",
+                  "_key": "s34"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k35",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What to leave out",
+                  "_key": "s36"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k37",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Leave out illustrations that explain nothing. Leave out tips that appear before a person has done anything. Leave out the word 'welcome' if the next line does not say something useful.",
+                  "_key": "s38"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "what-a-design-system-leaves-out",
+        "slug": "what-a-design-system-leaves-out",
+        "status": "published",
+        "data": {
+          "title": "What a design system should leave out",
+          "summary": "A system is useful when it is small enough to remember. Here is how I decide what stays out.",
+          "topic": "systems",
+          "date_label": "14 September 2026",
+          "read_minutes": 4,
+          "featured": false,
+          "position": 40,
+          "photo": "/images/study-swatches.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k39",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When a team starts a design system, it tends to begin with everything: every button size, every shade of grey, every spacing value. A year later nobody remembers what is in it.",
+                  "_key": "s40"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k41",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Start from repeated parts",
+                  "_key": "s42"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k43",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I only add a part once it has been needed in three different places. Before that it is a one-off, and one-offs are fine. Early on, copying is cheaper than agreeing.",
+                  "_key": "s44"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k45",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Write down the reason",
+                  "_key": "s46"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k47",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Each part gets one line that says why it exists. If the line is hard to write, the part is probably not ready. If two parts have the same line, one of them goes.",
+                  "_key": "s48"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k49",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Leave room",
+                  "_key": "s50"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k51",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A good system has gaps on purpose. Teams need to build something strange now and then, and the system should be able to learn from it afterwards.",
+                  "_key": "s52"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "sketch-before-pixels",
+        "slug": "sketch-before-pixels",
+        "status": "published",
+        "data": {
+          "title": "Sketch before pixels",
+          "summary": "Paper is slower to polish and faster to change. That is the whole reason to use it.",
+          "topic": "process",
+          "date_label": "30 August 2026",
+          "read_minutes": 3,
+          "featured": false,
+          "position": 50,
+          "photo": "/images/study-sketches.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k53",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I draw almost everything on paper first. This is not about being traditional. Paper makes it awkward to fuss over alignment, so I spend the time on the idea.",
+                  "_key": "s54"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k55",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Many small drawings",
+                  "_key": "s56"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k57",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I fill a page with thumbnails the size of a matchbox. Most are bad. The point is to find the two or three that deserve more time, and to get past the first obvious answer.",
+                  "_key": "s58"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k59",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Share them early",
+                  "_key": "s60"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k61",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Rough drawings invite comments on the idea. A polished mockup invites comments on the colour. I would rather talk about the idea.",
+                  "_key": "s62"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k63",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When a sketch holds up, it moves to the screen. By then I know what the screen is for.",
+                  "_key": "s64"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "colour-in-calm-interfaces",
+        "slug": "colour-in-calm-interfaces",
+        "status": "published",
+        "data": {
+          "title": "Notes on colour in calm interfaces",
+          "summary": "A short list of colour habits that keep a quiet interface from feeling flat.",
+          "topic": "craft",
+          "date_label": "12 August 2026",
+          "read_minutes": 4,
+          "featured": false,
+          "position": 60,
+          "photo": "/images/study-materials.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k65",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Calm does not mean pale. A quiet interface still needs contrast, or people cannot read it and the quiet turns into effort.",
+                  "_key": "s66"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k67",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Take colours from objects",
+                  "_key": "s68"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k69",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I like to pick a palette from real things: a stone, a leaf, a mug, a piece of oak. Colours that come from materials sit together without much fuss.",
+                  "_key": "s70"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k71",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Keep one dark",
+                  "_key": "s72"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k73",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A single near-black for text and buttons holds the page together. I avoid pure black. A slightly warm or slightly green dark feels softer and still passes contrast checks.",
+                  "_key": "s74"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k75",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Use accent colour for meaning",
+                  "_key": "s76"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k77",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If everything is green, nothing is. I keep the accent for the one thing a person should notice on each screen, and let the rest stay neutral.",
+                  "_key": "s78"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "services": [
+      {
+        "id": "product-strategy",
+        "slug": "product-strategy",
+        "status": "published",
+        "data": {
+          "title": "Product strategy",
+          "summary": "Work out what to build next and what to leave for later.",
+          "includes": "A short discovery with your team\nA written problem statement everyone agrees on\nTwo or three options with trade-offs\nA plan for the first release",
+          "position": 10
+        }
+      },
+      {
+        "id": "ux-ui-design",
+        "slug": "ux-ui-design",
+        "status": "published",
+        "data": {
+          "title": "UX and UI design",
+          "summary": "Design the screens and flows for a new product or a hard part of an existing one.",
+          "includes": "Flows, wireframes and a clickable prototype\nVisual design and handoff files\nTesting with real users before build\nSupport while the team builds",
+          "position": 20
+        }
+      },
+      {
+        "id": "design-systems",
+        "slug": "design-systems",
+        "status": "published",
+        "data": {
+          "title": "Design systems",
+          "summary": "Turn a pile of screens into a small, shared set of parts.",
+          "includes": "An audit of what exists today\nA first set of components and tokens\nWriting guidelines that people read\nA plan for who maintains it",
+          "position": 30
+        }
+      },
+      {
+        "id": "user-research",
+        "slug": "user-research",
+        "status": "published",
+        "data": {
+          "title": "User research",
+          "summary": "Find out what people actually do, so the team stops guessing.",
+          "includes": "Interviews and home or office visits\nUsability tests on prototypes\nA short report with clips and quotes\nA workshop to turn findings into decisions",
+          "position": 40
+        }
+      }
+    ],
+    "steps": [
+      {
+        "id": "discovery",
+        "slug": "discovery",
+        "status": "published",
+        "data": {
+          "title": "Discovery",
+          "when_label": "Weeks one and two",
+          "text": "I meet the team, read what exists and talk to the people who use the product. We agree on one clear problem to solve.",
+          "output": "A one-page problem statement",
+          "position": 10
+        }
+      },
+      {
+        "id": "prototyping",
+        "slug": "prototyping",
+        "status": "published",
+        "data": {
+          "title": "Prototyping",
+          "when_label": "Weeks three to five",
+          "text": "Sketches first, then a clickable prototype. We look at the rough versions together, so decisions happen early and cheaply.",
+          "output": "A prototype you can click through",
+          "position": 20
+        }
+      },
+      {
+        "id": "testing",
+        "slug": "testing",
+        "status": "published",
+        "data": {
+          "title": "Testing",
+          "when_label": "Week six",
+          "text": "We put the prototype in front of five to eight real users. I write up what happened in plain words, with short clips.",
+          "output": "A short list of what to change",
+          "position": 30
+        }
+      },
+      {
+        "id": "shipping",
+        "slug": "shipping",
+        "status": "published",
+        "data": {
+          "title": "Shipping",
+          "when_label": "Alongside the build",
+          "text": "I stay close to the engineers. I answer questions, adjust screens that turn out to be hard to build and check the result before it goes out.",
+          "output": "Final files and a checked release",
+          "position": 40
+        }
+      }
+    ],
+    "profile": [
+      {
+        "id": "noor",
+        "slug": "noor",
+        "status": "published",
+        "data": {
+          "title": "Noor Calder",
+          "base": "Halden Bay, and online",
+          "phone": "(555) 010-0172",
+          "email": "hello@prose.example",
+          "response": "Noor reads every message herself and replies within two working days.",
+          "contact_note": "Tell Noor a little about the product. A few lines are enough. Please leave out anything confidential."
+        }
+      }
+    ]
+  }
+}

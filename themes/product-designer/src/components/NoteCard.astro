@@ -1,0 +1,20 @@
+---
+import { noteHref, photoAlt, photoSrc, topicLabel } from "../lib/site";
+import type { Note } from "../lib/site";
+
+interface Props {
+	note: { data: Note };
+	eager?: boolean;
+}
+const { note, eager = false } = Astro.props;
+const d = note.data;
+const src = photoSrc(d.image, d.photo);
+const label = topicLabel(d.topic);
+---
+
+<a class="note-card" href={noteHref(d)}>
+	{src && <span class="note-thumb"><img src={src} alt={photoAlt(d.image, d.photo, d.title)} width="600" height="400" loading={eager ? "eager" : "lazy"} /></span>}
+	<span class="note-meta">{[label, d.date_label].filter(Boolean).join("  /  ")}</span>
+	<span class="note-title">{d.title}</span>
+	<span class="note-summary">{d.summary}</span>
+</a>

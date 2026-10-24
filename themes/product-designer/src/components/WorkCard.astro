@@ -1,0 +1,26 @@
+---
+import Arrow from "./Arrow.astro";
+import { photoAlt, photoSrc, workHref } from "../lib/site";
+import type { Work } from "../lib/site";
+
+interface Props {
+	work: { data: Work };
+	eager?: boolean;
+}
+const { work, eager = false } = Astro.props;
+const d = work.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<a class="work-card" href={workHref(d)}>
+	<span class="work-thumb">
+		{src && <img src={src} alt={photoAlt(d.image, d.photo, `${d.title}, ${d.tagline}`)} width="878" height="488" loading={eager ? "eager" : "lazy"} />}
+	</span>
+	<span class="work-meta">
+		<span class="work-text">
+			<span class="work-name">{d.title}</span>
+			<span class="work-sub">{d.tagline}</span>
+		</span>
+		<Arrow class="work-arrow" />
+	</span>
+</a>
