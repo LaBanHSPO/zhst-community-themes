@@ -1,0 +1,192 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import { dateRange, getRetreats, getVenue, mapHref, nightsLabel, rows, telHref } from "../lib/retreat";
+
+const [{ venue, cacheHint }, retreatsResult] = await Promise.all([getVenue(), getRetreats()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(retreatsResult.cacheHint);
+}
+const office = rows(venue.office);
+const upcoming = retreatsResult.upcoming;
+// ?retreat=<slug> pre-selects the retreat in the form.
+const wanted = Astro.url.searchParams.get("retreat");
+const selected = upcoming.find((r) => (r.entry.data.slug ?? r.entry.data.id) === wanted);
+---
+
+<Base title="Contact" description="Send an enquiry about a SageHaven retreat. Phone, email and office hours are listed on this page.">
+	<PageHead id="contact-title" eyebrow="Contact" title="Ask about a place." intro="Choose a retreat, tell us who is coming and how we can look after you. We reply within two working days." />
+	<section class="contact-section" aria-labelledby="contact-title">
+		<div class="wrap contact-grid">
+			<form
+				class="enquiry-form"
+				data-enquiry-form
+				data-email={venue.email}
+				action={venue.email ? `mailto:${venue.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field full">
+						<label for="c-retreat">Retreat</label>
+						<select id="c-retreat" name="retreat" required>
+							<option value="" selected={!selected}>Choose a retreat</option>
+							{
+								upcoming.map((r) => (
+									<option value={r.entry.data.title} selected={selected?.entry.data.id === r.entry.data.id}>
+										{r.entry.data.title} · {dateRange(r.start, r.end)} · {nightsLabel(r.entry.data.nights)}
+									</option>
+								))
+							}
+							<option value="Not sure yet">Not sure yet, please advise</option>
+						</select>
+						<span class="field-error" data-error-for="c-retreat"></span>
+					</div>
+					<div class="field">
+						<label for="c-guests">Guests</label>
+						<select id="c-guests" name="guests" required>
+							<option value="1">1 guest</option>
+							<option value="2">2 guests</option>
+							<option value="3">3 guests</option>
+							<option value="4">4 guests</option>
+							<option value="5">5 guests</option>
+							<option value="6">6 guests</option>
+						</select>
+					</div>
+					<div class="field">
+						<label for="c-room">Room</label>
+						<select id="c-room" name="room">
+							<option value="Single room">Single room</option>
+							<option value="Twin room, sharing">Twin room, sharing</option>
+							<option value="No preference">No preference</option>
+						</select>
+					</div>
+					<div class="field full">
+						<label for="c-diet">Dietary needs and allergies <span class="optional">(optional)</span></label>
+						<textarea id="c-diet" name="dietary" rows="3" placeholder="Allergies, intolerances, anything we should cook around"></textarea>
+					</div>
+					<div class="field">
+						<label for="c-name">Name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field full">
+						<label for="c-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field full">
+						<label for="c-notes">Anything else? <span class="optional">(optional)</span></label>
+						<textarea id="c-notes" name="notes" rows="3" placeholder="Your first retreat, mobility, travel from far away"></textarea>
+					</div>
+				</div>
+				<button class="btn btn-lg btn-block" type="submit">Send enquiry</button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{venue.email && <>Write to <a href={`mailto:${venue.email}`}>{venue.email}</a> with the retreat, number of guests and dietary needs.</>}
+					</noscript>
+				</p>
+			</form>
+
+			<aside class="contact-side">
+				<h2>Prefer to talk?</h2>
+				<p>
+					{venue.phone && <>Call <a href={telHref(venue.phone)}>{venue.phone}</a></>}
+					{venue.phone && venue.email && " or email "}
+					{!venue.phone && venue.email && "Email "}
+					{venue.email && <a href={`mailto:${venue.email}`}>{venue.email}</a>}.
+				</p>
+				{
+					(venue.street || venue.locality) && (
+						<p>
+							<a href={mapHref(venue)} target="_blank" rel="noopener noreferrer">{[venue.street, venue.locality].filter(Boolean).join(", ")}</a>
+						</p>
+					)
+				}
+				{
+					office.length > 0 && (
+						<>
+							<h3>Office hours</h3>
+							<dl class="side-hours">
+								{office.map((h) => <><dt>{h.left}</dt><dd>{h.right}</dd></>)}
+							</dl>
+						</>
+					)
+				}
+				{venue.enquiry_note && <p class="small">{venue.enquiry_note}</p>}
+				<img src="/images/cushion-mat.webp" alt="A meditation cushion on a woven mat on a sunlit timber deck" width="800" height="366" loading="lazy" />
+			</aside>
+		</div>
+	</section>
+</Base>
+
+<script>
+	// Compose an enquiry email; the retreat confirms it by reply. Nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-enquiry-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLSelectElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input[required], select[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? input.tagName === "SELECT"
+							? "Please choose an option."
+							: "Please fill this in."
+						: input.getAttribute("type") === "email"
+							? "Please enter a valid email address."
+							: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online enquiries are not available right now. Please call us.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const subject = `Retreat enquiry: ${get("retreat")}`;
+			const lines = [
+				"Hello,",
+				"",
+				"I would like to ask about a retreat:",
+				`Retreat: ${get("retreat")}`,
+				`Guests: ${get("guests")}`,
+				`Room: ${get("room")}`,
+				get("dietary") ? `Dietary needs: ${get("dietary")}` : "",
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				get("notes") ? `Notes: ${get("notes")}` : "",
+				"",
+				"I understand a place is held only once you confirm it by email.",
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this enquiry ready to send. It is only sent when you send that email, and we reply to it. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

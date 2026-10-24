@@ -1,0 +1,31 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import PostCard from "../../components/PostCard.astro";
+import EnquiryBand from "../../components/EnquiryBand.astro";
+import { getPosts, getVenue } from "../../lib/retreat";
+
+const [postsResult, venueResult] = await Promise.all([getPosts(), getVenue()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(postsResult.cacheHint);
+	Astro.cache.set(venueResult.cacheHint);
+}
+---
+
+<Base title="Journal" description="Notes from the retreat houses: practice, packing, silence and how we run a week.">
+	<PageHead id="journal-title" eyebrow="Journal" title="Notes from the houses." intro="Short reads on practice, silence and what to expect when you arrive." />
+	<section class="list-section" aria-labelledby="journal-title">
+		<div class="wrap">
+			{
+				postsResult.entries.length === 0 ? (
+					<p class="empty-note">The first entries are on their way. Come back soon.</p>
+				) : (
+					<ul class="card-grid">
+						{postsResult.entries.map((p) => <li><PostCard post={p.data} edit={{ ...p.edit.title }} /></li>)}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+	<EnquiryBand venue={venueResult.venue} />
+</Base>

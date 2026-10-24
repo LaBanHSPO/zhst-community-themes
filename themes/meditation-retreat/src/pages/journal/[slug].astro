@@ -1,0 +1,85 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PostCard from "../../components/PostCard.astro";
+import EnquiryBand from "../../components/EnquiryBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getPosts, getVenue, photoSrc } from "../../lib/retreat";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: post, cacheHint } = await getEmDashEntry("journal", slug);
+if (!post) return Astro.rewrite("/404");
+
+const [allResult, venueResult, settings] = await Promise.all([getPosts(), getVenue(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(venueResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(post, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = post.data;
+const cover = photoSrc(d.image, d.photo);
+const hasBody = Boolean(d.content && d.content.length > 0);
+const others = allResult.entries.filter((p) => p.data.id !== d.id).slice(0, 3);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "journal", id: d.id, slug }}
+	current="/journal"
+>
+	<header class="post-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/journal">Journal</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<p class="eyebrow">{[d.category, d.date_label].filter(Boolean).join(" / ")}</p>
+			<h1 class="display" {...post.edit.title}>{d.title}</h1>
+			<p class="lede">{d.summary}</p>
+		</div>
+	</header>
+
+	{cover && <figure class="post-figure"><img src={cover} alt="" width="1100" height="520" fetchpriority="high" /></figure>}
+
+	{
+		hasBody && (
+			<section class="post-body">
+				<div class="prose">
+					<PortableText value={d.content} />
+				</div>
+			</section>
+		)
+	}
+
+	{
+		others.length > 0 && (
+			<section class="band band-tint" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">More from the journal</p>
+							<h2 id="more-title" class="display">Keep reading.</h2>
+						</div>
+						<a class="link-arrow" href="/journal">All entries <Arrow /></a>
+					</div>
+					<ul class="card-grid card-grid-3">
+						{others.map((p) => <li><PostCard post={p.data} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<EnquiryBand venue={venueResult.venue} />
+</Base>

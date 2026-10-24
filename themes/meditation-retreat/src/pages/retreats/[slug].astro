@@ -1,0 +1,125 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import RetreatCard from "../../components/RetreatCard.astro";
+import EnquiryBand from "../../components/EnquiryBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { dateRange, dayKey, formatPrice, getRetreats, getVenue, lines, nightsLabel, photoSrc, regionLabel, rows, todayKey } from "../../lib/retreat";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: retreat, cacheHint } = await getEmDashEntry("retreats", slug);
+if (!retreat) return Astro.rewrite("/404");
+
+const [allResult, venueResult, settings] = await Promise.all([getRetreats(), getVenue(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(venueResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(retreat, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = retreat.data;
+const key = d.slug ?? d.id;
+const start = dayKey(d.start_date);
+const end = dayKey(d.end_date) || start;
+const isPast = end < todayKey();
+const src = photoSrc(d.image, d.photo);
+const includes = lines(d.includes);
+const rhythm = rows(d.rhythm);
+const related = allResult.upcoming.filter((r) => r.entry.data.id !== d.id && (r.entry.data.region === d.region || r.entry.data.nights === d.nights)).slice(0, 3);
+const hasBody = Boolean(d.content && d.content.length > 0);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "retreats", id: d.id, slug }}
+	current="/retreats"
+>
+	<section class="detail-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/retreats">Retreats</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class:list={["detail-grid", { "is-text-only": !src }]}>
+				<div class="detail-copy">
+					<p class="eyebrow">{regionLabel(d.region)}{isPast ? " / Past retreat" : ""}</p>
+					<h1 class="display" {...retreat.edit.title}>{d.title}</h1>
+					<p class="lede" {...retreat.edit.summary}>{d.summary}</p>
+					<dl class="facts">
+						<div><dt>Dates</dt><dd>{dateRange(start, end)}</dd></div>
+						<div><dt>Length</dt><dd>{nightsLabel(d.nights)}</dd></div>
+						<div><dt>Place</dt><dd>{d.location}</dd></div>
+						{d.capacity ? <div><dt>Places</dt><dd>{d.capacity} guests</dd></div> : null}
+						{!isPast && d.price_from ? <div><dt>Price</dt><dd>From {formatPrice(d.price_from)} per guest (sample price)</dd></div> : null}
+					</dl>
+					{
+						isPast ? (
+							<a class="btn btn-lg" href="/retreats">See upcoming retreats <Arrow /></a>
+						) : (
+							<a class="btn btn-lg" href={`/contact?retreat=${encodeURIComponent(key)}`}>Enquire about this retreat <Arrow /></a>
+						)
+					}
+				</div>
+				{src && <figure class="detail-photo"><img src={src} alt={d.image?.alt ?? ""} width="640" height="480" /></figure>}
+			</div>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="wrap detail-cols">
+			<div class="prose">
+				{d.intro && <p class="prose-lead">{d.intro}</p>}
+				{hasBody ? <PortableText value={d.content} /> : <p>{d.summary}</p>}
+			</div>
+			<aside class="side-stack">
+				{
+					includes.length > 0 && (
+						<div class="includes" aria-labelledby="inc-title">
+							<h2 id="inc-title">What is included</h2>
+							<ul class="ticks">{includes.map((b) => <li>{b}</li>)}</ul>
+						</div>
+					)
+				}
+				{
+					rhythm.length > 0 && (
+						<div class="includes" aria-labelledby="rhythm-title">
+							<h2 id="rhythm-title">Daily rhythm</h2>
+							<ul class="rhythm-list">{rhythm.map((r) => <li><span>{r.left}</span><span>{r.right}</span></li>)}</ul>
+						</div>
+					)
+				}
+			</aside>
+		</div>
+	</section>
+
+	{
+		related.length > 0 && (
+			<section class="band band-tint" aria-labelledby="related-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Other dates</p>
+							<h2 id="related-title" class="display">You might also look at</h2>
+						</div>
+						<a class="link-arrow" href="/retreats">All retreats <Arrow /></a>
+					</div>
+					<ul class="card-grid card-grid-3">
+						{related.map((r) => <li><RetreatCard row={r} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<EnquiryBand venue={venueResult.venue} retreat={isPast ? undefined : key} />
+</Base>

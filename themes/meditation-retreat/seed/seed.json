@@ -1,0 +1,1771 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Meditation Retreat",
+  "description": "A calm retreat theme with a full-bleed photo hero, upcoming and past retreats, a daily schedule, journal, story page and an enquiry form, seeded with synthetic sample content.",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "SageHaven",
+  "tagline": "Meditation Retreat"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Small label above the title (also used in the footer)",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "retreats",
+   "label": "Retreats",
+   "labelSingular": "Retreat",
+   "urlPattern": "/retreats/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Retreat name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "One-line description",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "region",
+     "label": "Region",
+     "type": "select",
+     "required": true,
+     "defaultValue": "lakes",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "lakes",
+       "mountains",
+       "forest",
+       "coast"
+      ]
+     }
+    },
+    {
+     "slug": "location",
+     "label": "Venue and place (e.g. Larkmere Lodge, Silverwater Valley)",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "start_date",
+     "label": "First day",
+     "type": "datetime",
+     "required": true,
+     "indexed": true
+    },
+    {
+     "slug": "end_date",
+     "label": "Last day",
+     "type": "datetime",
+     "required": true
+    },
+    {
+     "slug": "nights",
+     "label": "Nights",
+     "type": "integer",
+     "required": true
+    },
+    {
+     "slug": "capacity",
+     "label": "Places (guests)",
+     "type": "integer"
+    },
+    {
+     "slug": "price_from",
+     "label": "From price per guest, whole dollars",
+     "type": "integer"
+    },
+    {
+     "slug": "featured",
+     "label": "Show on the homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph (detail page)",
+     "type": "text"
+    },
+    {
+     "slug": "includes",
+     "label": "What is included (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "rhythm",
+     "label": "Daily rhythm (one per line, as Time|Activity)",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Retreat page content",
+     "type": "portableText",
+     "searchable": true
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "day_rhythm",
+   "label": "A day at the retreat",
+   "labelSingular": "Day moment",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Moment",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "time_label",
+     "label": "Time as shown (e.g. 6:30 am)",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "Short description",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "pillars",
+   "label": "Intro icons",
+   "labelSingular": "Intro icon",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Label",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "icon",
+     "label": "Icon",
+     "type": "select",
+     "required": true,
+     "defaultValue": "leaf",
+     "validation": {
+      "options": [
+       "leaf",
+       "mountains",
+       "lotus"
+      ]
+     }
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "journal",
+   "label": "Journal",
+   "labelSingular": "Journal entry",
+   "urlPattern": "/journal/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "category",
+     "label": "Category",
+     "type": "string"
+    },
+    {
+     "slug": "date_label",
+     "label": "Date as shown (e.g. 12 September 2026)",
+     "type": "string"
+    },
+    {
+     "slug": "summary",
+     "label": "Summary",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "featured",
+     "label": "Featured",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "venue",
+   "label": "Venue details",
+   "labelSingular": "Venue details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Retreat centre name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "street",
+     "label": "Street address",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "locality",
+     "label": "Town, state and ZIP",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "country",
+     "label": "Country",
+     "type": "string"
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Enquiry email",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "office",
+     "label": "Office hours (one per line, as Day|Hours)",
+     "type": "text"
+    },
+    {
+     "slug": "enquiry_note",
+     "label": "Note shown beside the enquiry form",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Retreats",
+     "url": "/retreats"
+    },
+    {
+     "type": "custom",
+     "label": "Our Story",
+     "url": "/about"
+    },
+    {
+     "type": "custom",
+     "label": "Journal",
+     "url": "/journal"
+    },
+    {
+     "type": "custom",
+     "label": "Contact",
+     "url": "/contact"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "A quiet place to stay a while.",
+     "eyebrow": "Our Story",
+     "intro": "SageHaven is a small group of houses in the hills, run as places to be quiet in. This page is about the places and how we use them.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k113",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "SageHaven began with an empty timber lodge on a lake and a question: what would people do with a few days and no obligations? We lent the lodge to friends for a weekend, put out cushions and rang a bell in the morning. Most of what we do now comes from what worked that weekend.",
+         "_key": "k114"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k115",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The places",
+         "_key": "k116"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k117",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We run retreats in four houses: Larkmere Lodge on the lake, Highfold Cabins on a ridge, Pinewhistle Hall in the woods and Gullcove House by the sea. Each is old, plain and warm. None has a television.",
+         "_key": "k118"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k119",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How we think about it",
+         "_key": "k120"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k121",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Meditation here means sitting still, walking slowly and paying attention. We teach it simply and we do not ask anyone to adopt a belief. Teachers are available during the day for questions, and every instruction is optional.",
+         "_key": "k122"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k123",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we do not do",
+         "_key": "k124"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k125",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We do not make claims about health. We do not sell supplements or run seminars.",
+         "_key": "k126"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k127",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Visiting",
+         "_key": "k128"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k129",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Browse the upcoming retreats and send an enquiry. We reply within two working days with availability, rooms and travel details.",
+         "_key": "k130"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "guest-guidelines",
+    "slug": "guest-guidelines",
+    "status": "published",
+    "data": {
+     "title": "Guest guidelines",
+     "eyebrow": "Guidelines",
+     "intro": "A few simple agreements that keep the house quiet for everyone.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k131",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Silence",
+         "_key": "k132"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k133",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "From the evening bell until after breakfast we ask for silence. On silent days it runs until supper. Notes are fine if something is urgent.",
+         "_key": "k134"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k135",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Phones",
+         "_key": "k136"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k137",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Phones go in the lockable box on arrival. A landline in the hall is available at any time.",
+         "_key": "k138"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k139",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Food",
+         "_key": "k140"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k141",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Meals are vegetarian. Tell us about allergies and dietary needs on the enquiry form. We cannot cook separate menus for preference alone.",
+         "_key": "k142"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k143",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Leaving early",
+         "_key": "k144"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k145",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You can leave at any time. Tell a teacher so we know you are safe and can arrange the transfer.",
+         "_key": "k146"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "retreats": [
+   {
+    "id": "beginners-long-weekend",
+    "slug": "beginners-long-weekend",
+    "status": "published",
+    "data": {
+     "title": "Beginners' Long Weekend",
+     "summary": "Three nights of simple sitting and walking, with every instruction explained.",
+     "region": "mountains",
+     "location": "Highfold Cabins, Alder Ridge",
+     "start_date": "2027-02-05T12:00:00.000Z",
+     "end_date": "2027-02-08T12:00:00.000Z",
+     "nights": 3,
+     "capacity": 12,
+     "price_from": 560,
+     "featured": true,
+     "position": 10,
+     "photo": "/images/lodge.webp",
+     "intro": "Never sat in silence before? This weekend is built for you. We explain each practice and keep the days short.",
+     "includes": "Three nights in a single or twin room\nThree vegetarian meals a day, with tea and fruit between\nTwo guided sits and one walk each day\nA quiet room for rest and reading\nBlankets, cushions and mats\nTransfer from Silverwater station on arrival day",
+     "rhythm": "6:30 am|Wake-up bell and a short sit\n7:30 am|Breakfast, eaten in silence\n9:00 am|Guided sit, then walking\n12:30 pm|Lunch and free time\n3:30 pm|Gentle stretching on the deck\n5:30 pm|Evening sit\n6:30 pm|Supper and quiet conversation\n9:00 pm|Lights low",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k1",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What the weekend is like",
+         "_key": "k2"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We arrive on Friday afternoon, settle into our rooms and meet over tea. From Saturday morning the day follows a steady rhythm of short sits, walking, meals and rest.",
+         "_key": "k4"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k5",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Instructions are given in plain words and repeated. You can sit on a cushion, a stool or a chair. Nobody is expected to hold a posture.",
+         "_key": "k6"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k7",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Who it suits",
+         "_key": "k8"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k9",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "People who are new to meditation, or who have tried apps at home and want to practise with others in a quiet place. Groups are small, so there is time to ask questions.",
+         "_key": "k10"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "still-water-weekend",
+    "slug": "still-water-weekend",
+    "status": "published",
+    "data": {
+     "title": "Still Water Weekend",
+     "summary": "Two nights on the lake shore with long silences, slow walks and cold-water swims for those who like them.",
+     "region": "lakes",
+     "location": "Larkmere Lodge, Silverwater Valley",
+     "start_date": "2027-03-12T12:00:00.000Z",
+     "end_date": "2027-03-14T12:00:00.000Z",
+     "nights": 2,
+     "capacity": 14,
+     "price_from": 420,
+     "featured": true,
+     "position": 20,
+     "photo": "/images/lake-deck.webp",
+     "intro": "A short stay beside the water. We keep talking to a minimum and let the lake set the pace.",
+     "includes": "Two nights in a single or twin room\nThree vegetarian meals a day, with tea and fruit between\nTwo guided sits and one walk each day\nA quiet room for rest and reading\nBlankets, cushions and mats\nTransfer from Silverwater station on arrival day",
+     "rhythm": "6:30 am|Wake-up bell and a short sit\n7:30 am|Breakfast, eaten in silence\n9:00 am|Guided sit, then walking\n12:30 pm|Lunch and free time\n3:30 pm|Gentle stretching on the deck\n5:30 pm|Evening sit\n6:30 pm|Supper and quiet conversation\n9:00 pm|Lights low",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k11",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The setting",
+         "_key": "k12"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k13",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Larkmere Lodge sits above a quiet bay with a timber deck facing east. Most sits happen there, weather allowing. When it rains we move inside to the long room with the stove.",
+         "_key": "k14"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k15",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The two days",
+         "_key": "k16"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k17",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Saturday starts at 6:30 with a short sit before breakfast. Between sessions there is time to walk the shore path, read or sleep. Sunday finishes with lunch at 1 pm.",
+         "_key": "k18"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "forest-reset-midweek",
+    "slug": "forest-reset-midweek",
+    "status": "published",
+    "data": {
+     "title": "Forest Reset Midweek",
+     "summary": "Four nights under tall pines, with a long morning walk and a day of silence in the middle.",
+     "region": "forest",
+     "location": "Pinewhistle Hall, Hollowpine Woods",
+     "start_date": "2027-04-20T12:00:00.000Z",
+     "end_date": "2027-04-24T12:00:00.000Z",
+     "nights": 4,
+     "capacity": 16,
+     "price_from": 890,
+     "featured": false,
+     "position": 30,
+     "photo": "/images/forest-shore.webp",
+     "intro": "Step out of the week for four nights. Pinewhistle Hall is a low timber house at the end of a forest track.",
+     "includes": "Four nights in a single or twin room\nThree vegetarian meals a day, with tea and fruit between\nTwo guided sits and one walk each day\nA quiet room for rest and reading\nBlankets, cushions and mats\nTransfer from Silverwater station on arrival day",
+     "rhythm": "6:30 am|Wake-up bell and a short sit\n7:30 am|Breakfast, eaten in silence\n9:00 am|Guided sit, then walking\n12:30 pm|Lunch and free time\n3:30 pm|Gentle stretching on the deck\n5:30 pm|Evening sit\n6:30 pm|Supper and quiet conversation\n9:00 pm|Lights low",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k19",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Days in the woods",
+         "_key": "k20"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k21",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The middle day is held in silence from waking until supper. The other days are lighter: guided sits in the morning and evening, and time to walk the marked trails in between.",
+         "_key": "k22"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k23",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Rooms and food",
+         "_key": "k24"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k25",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Rooms are plain and warm, with wool blankets and a window onto the trees. Meals are vegetarian and cooked in the house kitchen. Tell us about allergies when you enquire.",
+         "_key": "k26"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "mountain-quiet-week",
+    "slug": "mountain-quiet-week",
+    "status": "published",
+    "data": {
+     "title": "Mountain Quiet Week",
+     "summary": "Seven nights in timber cabins above the valley, with daily sitting, walking and one silent day.",
+     "region": "mountains",
+     "location": "Highfold Cabins, Alder Ridge",
+     "start_date": "2027-05-08T12:00:00.000Z",
+     "end_date": "2027-05-15T12:00:00.000Z",
+     "nights": 7,
+     "capacity": 12,
+     "price_from": 1480,
+     "featured": true,
+     "position": 40,
+     "photo": "/images/woman-back.webp",
+     "intro": "Our longest regular stay. A full week lets the first two days of restlessness pass.",
+     "includes": "Seven nights in a single or twin room\nThree vegetarian meals a day, with tea and fruit between\nTwo guided sits and one walk each day\nA quiet room for rest and reading\nBlankets, cushions and mats\nTransfer from Silverwater station on arrival day",
+     "rhythm": "6:30 am|Wake-up bell and a short sit\n7:30 am|Breakfast, eaten in silence\n9:00 am|Guided sit, then walking\n12:30 pm|Lunch and free time\n3:30 pm|Gentle stretching on the deck\n5:30 pm|Evening sit\n6:30 pm|Supper and quiet conversation\n9:00 pm|Lights low",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k27",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A full week",
+         "_key": "k28"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k29",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Highfold Cabins stand on a ridge with a view down the valley. Each day follows the same shape, so there is little to decide: sit, walk, eat, rest, sit again.",
+         "_key": "k30"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k31",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The silent day",
+         "_key": "k32"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k33",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "On day four we keep silence from the morning bell until supper. Teachers are available for a short private word if you need one.",
+         "_key": "k34"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k35",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Before you come",
+         "_key": "k36"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k37",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You will need walking shoes and warm layers. Mornings on the ridge are cool even in May.",
+         "_key": "k38"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "salt-air-silence",
+    "slug": "salt-air-silence",
+    "status": "published",
+    "data": {
+     "title": "Salt Air Silence",
+     "summary": "A June weekend by the sea. Sits in the sun room, long beach walks and a quiet evening around the fire.",
+     "region": "coast",
+     "location": "Gullcove House, Pale Harbour",
+     "start_date": "2027-06-18T12:00:00.000Z",
+     "end_date": "2027-06-20T12:00:00.000Z",
+     "nights": 2,
+     "capacity": 10,
+     "price_from": 480,
+     "featured": false,
+     "position": 50,
+     "photo": "/images/sunrise-lake.webp",
+     "intro": "Gullcove House has ten rooms, a sun room and a path down to a shingle beach.",
+     "includes": "Two nights in a single or twin room\nThree vegetarian meals a day, with tea and fruit between\nTwo guided sits and one walk each day\nA quiet room for rest and reading\nBlankets, cushions and mats\nTransfer from Silverwater station on arrival day",
+     "rhythm": "6:30 am|Wake-up bell and a short sit\n7:30 am|Breakfast, eaten in silence\n9:00 am|Guided sit, then walking\n12:30 pm|Lunch and free time\n3:30 pm|Gentle stretching on the deck\n5:30 pm|Evening sit\n6:30 pm|Supper and quiet conversation\n9:00 pm|Lights low",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k39",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "By the water",
+         "_key": "k40"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k41",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The tide sets the walking times, so the schedule shifts a little each day. Sits take place in the sun room, which faces the harbour mouth.",
+         "_key": "k42"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k43",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Small by design",
+         "_key": "k44"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k45",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Ten places keep the house quiet. Most guests come alone, and the weekend suits that well.",
+         "_key": "k46"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "slow-autumn-week",
+    "slug": "slow-autumn-week",
+    "status": "published",
+    "data": {
+     "title": "Slow Autumn Week",
+     "summary": "Seven nights at Larkmere Lodge while the larches turn, with a silent day and an afternoon of work in the garden.",
+     "region": "lakes",
+     "location": "Larkmere Lodge, Silverwater Valley",
+     "start_date": "2027-09-25T12:00:00.000Z",
+     "end_date": "2027-10-02T12:00:00.000Z",
+     "nights": 7,
+     "capacity": 14,
+     "price_from": 1540,
+     "featured": true,
+     "position": 60,
+     "photo": "/images/deck-sunrise.webp",
+     "intro": "A week at the lake in the best light of the year. Mornings are cold and clear, afternoons are warm on the deck.",
+     "includes": "Seven nights in a single or twin room\nThree vegetarian meals a day, with tea and fruit between\nTwo guided sits and one walk each day\nA quiet room for rest and reading\nBlankets, cushions and mats\nTransfer from Silverwater station on arrival day",
+     "rhythm": "6:30 am|Wake-up bell and a short sit\n7:30 am|Breakfast, eaten in silence\n9:00 am|Guided sit, then walking\n12:30 pm|Lunch and free time\n3:30 pm|Gentle stretching on the deck\n5:30 pm|Evening sit\n6:30 pm|Supper and quiet conversation\n9:00 pm|Lights low",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k47",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Autumn at the lake",
+         "_key": "k48"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k49",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The larches on the far shore turn gold in the last week of September. We walk round the bay on the third afternoon.",
+         "_key": "k50"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k51",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Garden hour",
+         "_key": "k52"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k53",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "On two afternoons we help in the lodge garden: lifting beetroot, cutting herbs, turning compost. Gloves and boots are provided.",
+         "_key": "k54"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "winter-stillness",
+    "slug": "winter-stillness",
+    "status": "published",
+    "data": {
+     "title": "Winter Stillness",
+     "summary": "Five nights in a warm house in the snow. Short days, long evenings and a lot of tea.",
+     "region": "forest",
+     "location": "Pinewhistle Hall, Hollowpine Woods",
+     "start_date": "2027-11-12T12:00:00.000Z",
+     "end_date": "2027-11-17T12:00:00.000Z",
+     "nights": 5,
+     "capacity": 14,
+     "price_from": 1090,
+     "featured": false,
+     "position": 70,
+     "photo": "/images/eaves-cushions.webp",
+     "intro": "Pinewhistle Hall in November: wood stove, early dark and very little to do.",
+     "includes": "Five nights in a single or twin room\nThree vegetarian meals a day, with tea and fruit between\nTwo guided sits and one walk each day\nA quiet room for rest and reading\nBlankets, cushions and mats\nTransfer from Silverwater station on arrival day",
+     "rhythm": "6:30 am|Wake-up bell and a short sit\n7:30 am|Breakfast, eaten in silence\n9:00 am|Guided sit, then walking\n12:30 pm|Lunch and free time\n3:30 pm|Gentle stretching on the deck\n5:30 pm|Evening sit\n6:30 pm|Supper and quiet conversation\n9:00 pm|Lights low",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k55",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A quiet season",
+         "_key": "k56"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k57",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Days are short, so sits are timed around the light. The evening sit is by candle and stove in the long room.",
+         "_key": "k58"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k59",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Getting here",
+         "_key": "k60"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k61",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If snow closes the track we collect you from the lower road in a four-wheel-drive vehicle. We confirm the plan the day before.",
+         "_key": "k62"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "spring-stillness-weekend",
+    "slug": "spring-stillness-weekend",
+    "status": "published",
+    "data": {
+     "title": "Spring Stillness Weekend",
+     "summary": "Two nights at the lake in April 2026. A past retreat, kept for reference.",
+     "region": "lakes",
+     "location": "Larkmere Lodge, Silverwater Valley",
+     "start_date": "2026-04-17T12:00:00.000Z",
+     "end_date": "2026-04-19T12:00:00.000Z",
+     "nights": 2,
+     "capacity": 14,
+     "price_from": 400,
+     "featured": false,
+     "position": 80,
+     "photo": "/images/lantern-olive.webp",
+     "intro": "This weekend has taken place. Dates for next spring are listed above.",
+     "includes": "Two nights in a single or twin room\nThree vegetarian meals a day, with tea and fruit between\nTwo guided sits and one walk each day\nA quiet room for rest and reading\nBlankets, cushions and mats\nTransfer from Silverwater station on arrival day",
+     "rhythm": "6:30 am|Wake-up bell and a short sit\n7:30 am|Breakfast, eaten in silence\n9:00 am|Guided sit, then walking\n12:30 pm|Lunch and free time\n3:30 pm|Gentle stretching on the deck\n5:30 pm|Evening sit\n6:30 pm|Supper and quiet conversation\n9:00 pm|Lights low",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k63",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we did",
+         "_key": "k64"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k65",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Two quiet days at Larkmere Lodge, with sits on the deck and a long walk to the north shore.",
+         "_key": "k66"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k67",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Notes from the weekend are in the journal.",
+         "_key": "k68"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "harvest-silence-week",
+    "slug": "harvest-silence-week",
+    "status": "published",
+    "data": {
+     "title": "Harvest Silence Week",
+     "summary": "Seven nights at Highfold Cabins in September 2026. A past retreat, kept for reference.",
+     "region": "mountains",
+     "location": "Highfold Cabins, Alder Ridge",
+     "start_date": "2026-09-12T12:00:00.000Z",
+     "end_date": "2026-09-19T12:00:00.000Z",
+     "nights": 7,
+     "capacity": 12,
+     "price_from": 1420,
+     "featured": false,
+     "position": 90,
+     "photo": "/images/porch-steps.webp",
+     "intro": "This week has taken place. See the upcoming list for the next mountain retreat.",
+     "includes": "Seven nights in a single or twin room\nThree vegetarian meals a day, with tea and fruit between\nTwo guided sits and one walk each day\nA quiet room for rest and reading\nBlankets, cushions and mats\nTransfer from Silverwater station on arrival day",
+     "rhythm": "6:30 am|Wake-up bell and a short sit\n7:30 am|Breakfast, eaten in silence\n9:00 am|Guided sit, then walking\n12:30 pm|Lunch and free time\n3:30 pm|Gentle stretching on the deck\n5:30 pm|Evening sit\n6:30 pm|Supper and quiet conversation\n9:00 pm|Lights low",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k69",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we did",
+         "_key": "k70"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k71",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A full week of sitting and walking, with a silent day on the fourth day and an afternoon of apple picking in the valley orchard.",
+         "_key": "k72"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "day_rhythm": [
+   {
+    "id": "wake",
+    "slug": "wake",
+    "status": "published",
+    "data": {
+     "title": "Wake-up bell",
+     "time_label": "6:30 am",
+     "text": "A soft bell, then a short sit before anyone speaks. Tea is waiting in the hall.",
+     "position": 10
+    }
+   },
+   {
+    "id": "breakfast",
+    "slug": "breakfast",
+    "status": "published",
+    "data": {
+     "title": "Breakfast in silence",
+     "time_label": "7:30 am",
+     "text": "Porridge, bread, fruit and eggs from the valley. We eat slowly and look out of the window.",
+     "position": 20
+    }
+   },
+   {
+    "id": "sit",
+    "slug": "sit",
+    "status": "published",
+    "data": {
+     "title": "Guided sit and walk",
+     "time_label": "9:00 am",
+     "text": "Thirty minutes sitting, ten minutes walking, repeated. A teacher gives short instructions.",
+     "position": 30
+    }
+   },
+   {
+    "id": "rest",
+    "slug": "rest",
+    "status": "published",
+    "data": {
+     "title": "Lunch and free time",
+     "time_label": "12:30 pm",
+     "text": "The long break. Nap, read, swim or walk the trail. No programme until the afternoon.",
+     "position": 40
+    }
+   },
+   {
+    "id": "deck",
+    "slug": "deck",
+    "status": "published",
+    "data": {
+     "title": "Stretching on the deck",
+     "time_label": "3:30 pm",
+     "text": "Gentle movement on mats in the afternoon light. Easy to do in your own clothes.",
+     "position": 50
+    }
+   },
+   {
+    "id": "evening",
+    "slug": "evening",
+    "status": "published",
+    "data": {
+     "title": "Evening sit",
+     "time_label": "5:30 pm",
+     "text": "The last group practice, then supper and quiet talk by the stove.",
+     "position": 60
+    }
+   }
+  ],
+  "pillars": [
+   {
+    "id": "restful",
+    "slug": "restful",
+    "status": "published",
+    "data": {
+     "title": "Restful Locations",
+     "icon": "leaf",
+     "position": 10
+    }
+   },
+   {
+    "id": "mindful",
+    "slug": "mindful",
+    "status": "published",
+    "data": {
+     "title": "Mindful Practices",
+     "icon": "mountains",
+     "position": 20
+    }
+   },
+   {
+    "id": "community",
+    "slug": "community",
+    "status": "published",
+    "data": {
+     "title": "Supportive Community",
+     "icon": "lotus",
+     "position": 30
+    }
+   }
+  ],
+  "journal": [
+   {
+    "id": "what-a-silent-morning-is-like",
+    "slug": "what-a-silent-morning-is-like",
+    "status": "published",
+    "data": {
+     "title": "What a silent morning is actually like",
+     "category": "Notes",
+     "date_label": "14 September 2026",
+     "summary": "The first hour without talking feels long. By the third day it feels ordinary. Here is how the mornings run.",
+     "featured": true,
+     "position": 10,
+     "photo": "/images/sunrise-lake.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k73",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "On the first morning at Larkmere Lodge most guests look slightly lost. The bell rings, tea is poured and nobody says anything. People look at their cups a lot.",
+         "_key": "k74"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k75",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The first day",
+         "_key": "k76"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k77",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You notice noise you had stopped hearing: your own thoughts, cutlery, the stove ticking as it cools. Some people find this uncomfortable. That is normal and it passes.",
+         "_key": "k78"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k79",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "By the third day",
+         "_key": "k80"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k81",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Breakfast takes longer because nobody is rushing. People start to nod at each other across the table. We have never needed more instructions than that.",
+         "_key": "k82"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "packing-for-a-quiet-week",
+    "slug": "packing-for-a-quiet-week",
+    "status": "published",
+    "data": {
+     "title": "Packing for a quiet week",
+     "category": "Practical",
+     "date_label": "2 August 2026",
+     "summary": "A short list of what to bring, and what to leave at home.",
+     "featured": false,
+     "position": 20,
+     "photo": "/images/bowl-towel.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k83",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You do not need special clothes. Loose trousers, a few warm layers and a pair of slippers cover most of it.",
+         "_key": "k84"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k85",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Bring",
+         "_key": "k86"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k87",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Walking shoes, a water bottle, a notebook, a torch for the path at night and any medication you take.",
+         "_key": "k88"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k89",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Leave at home",
+         "_key": "k90"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k91",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Work laptops, headphones and anything you plan to scroll. We keep a lockable box for phones and most guests are glad to use it. There is a landline in the hall for urgent calls.",
+         "_key": "k92"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "sitting-on-a-chair-is-fine",
+    "slug": "sitting-on-a-chair-is-fine",
+    "status": "published",
+    "data": {
+     "title": "Sitting on a chair is fine",
+     "category": "Practice",
+     "date_label": "19 June 2026",
+     "summary": "You do not need to cross your legs. Cushion, stool or chair: choose what lets you stay still.",
+     "featured": false,
+     "position": 30,
+     "photo": "/images/cushion-mat.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k93",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Many first-time guests arrive worried about posture. We keep a row of chairs in every sitting room and nobody comments on who uses them.",
+         "_key": "k94"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k95",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What matters",
+         "_key": "k96"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k97",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A steady back, hands resting somewhere comfortable and a position you can keep for twenty minutes. That is all we ask.",
+         "_key": "k98"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k99",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Try it at home",
+         "_key": "k100"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k101",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Pick a chair with a firm seat. Sit forward on the edge, feet flat. Set a timer for ten minutes and watch your breathing.",
+         "_key": "k102"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "why-we-keep-groups-small",
+    "slug": "why-we-keep-groups-small",
+    "status": "published",
+    "data": {
+     "title": "Why we keep groups small",
+     "category": "About us",
+     "date_label": "3 May 2026",
+     "summary": "Fourteen guests is the most we take. The reasons are practical.",
+     "featured": false,
+     "position": 40,
+     "photo": "/images/porch-steps.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k103",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A group of fourteen can eat at two long tables, sit in one room and walk the shore path without crowding.",
+         "_key": "k104"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k105",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What a small group changes",
+         "_key": "k106"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k107",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Teachers learn everyone's name on day one. Meals stay quiet because nobody is hiding. If someone is struggling, we notice by lunch.",
+         "_key": "k108"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k109",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The limit",
+         "_key": "k110"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k111",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We have been asked to take larger groups. We prefer to run an extra retreat.",
+         "_key": "k112"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "venue": [
+   {
+    "id": "venue",
+    "slug": "venue",
+    "status": "published",
+    "data": {
+     "title": "SageHaven Meditation Retreat",
+     "street": "Larkmere Road, Silverwater Valley",
+     "locality": "Hartwell, OR 97999",
+     "country": "United States",
+     "phone": "+1 503 555 0143",
+     "email": "stay@sagehaven.example",
+     "office": "Monday to Friday|9:00 am to 5:00 pm\nSaturday|10:00 am to 2:00 pm\nSunday|Closed",
+     "enquiry_note": "We reply within two working days. An enquiry is not a booking until we confirm it by email."
+    }
+   }
+  ]
+ }
+}

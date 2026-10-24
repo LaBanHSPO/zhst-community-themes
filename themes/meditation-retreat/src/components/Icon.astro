@@ -1,0 +1,27 @@
+---
+interface Props {
+	name: string;
+}
+const { name } = Astro.props;
+---
+
+{
+	name === "mountains" ? (
+		<svg viewBox="0 0 56 44" width="56" height="44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+			<path d="M2 42L22 8l9 15 7-9 16 28" />
+			<path d="M22 8l-4 8 4-2 3 4" />
+		</svg>
+	) : name === "lotus" ? (
+		<svg viewBox="0 0 56 44" width="56" height="44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+			<path d="M28 4c-5 5-8 10-8 16 0 6 4 11 8 14 4-3 8-8 8-14 0-6-3-11-8-16z" />
+			<path d="M28 34c-7 0-14-4-17-14-3 0-6 1-8 3 3 11 12 17 25 17" />
+			<path d="M28 34c7 0 14-4 17-14 3 0 6 1 8 3-3 11-12 17-25 17" />
+			<path d="M20 18c-4-2-8-2-11 0M36 18c4-2 8-2 11 0" />
+		</svg>
+	) : (
+		<svg viewBox="0 0 56 44" width="56" height="44" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+			<path d="M33 3C21 6 17 18 20 29c1 6 5 10 8 12 8-5 12-17 9-28-1-4-2-8-4-10z" />
+			<path d="M27 42c0-12 2-22 8-33" />
+		</svg>
+	)
+}

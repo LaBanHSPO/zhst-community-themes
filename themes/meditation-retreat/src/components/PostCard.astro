@@ -1,0 +1,18 @@
+---
+interface Props {
+	post: { id: string; slug: string | null; title: string; summary: string; category?: string; date_label?: string; photo?: string; image?: { src?: string } };
+	edit?: Record<string, unknown>;
+}
+const { post, edit = {} } = Astro.props;
+const src = post.image?.src || post.photo;
+---
+
+<a class="retreat-card post-card" href={`/journal/${post.slug ?? post.id}`}>
+	<span class="card-photo">{src && <img src={src} alt="" width="600" height="450" loading="lazy" />}</span>
+	<span class="card-meta">
+		<span>{post.category}</span>
+		{post.date_label && <><span aria-hidden="true">/</span><span>{post.date_label}</span></>}
+	</span>
+	<span class="card-title" {...edit}>{post.title}</span>
+	<span class="card-place">{post.summary}</span>
+</a>

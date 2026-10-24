@@ -1,0 +1,28 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref } from "../lib/retreat";
+import type { VenueData } from "../lib/retreat";
+
+interface Props {
+	venue: VenueData;
+	retreat?: string;
+}
+const { venue, retreat } = Astro.props;
+const href = retreat ? `/contact?retreat=${encodeURIComponent(retreat)}` : "/contact";
+---
+
+<section class="enquiry-band" aria-labelledby="enquiry-title">
+	<div class="enquiry-grid">
+		<div class="enquiry-copy">
+			<p class="eyebrow eyebrow-light">Ask about a place</p>
+			<h2 id="enquiry-title" class="display">Tell us when you would like to come.</h2>
+			<p>Send your dates, how many of you are coming and any dietary needs. We reply within two working days.</p>
+			<a class="btn btn-light" href={href}>Send an enquiry <Arrow /></a>
+			<p class="enquiry-lines">
+				{venue.phone && <a href={telHref(venue.phone)}>{venue.phone}</a>}
+				{venue.email && <a href={`mailto:${venue.email}`}>{venue.email}</a>}
+			</p>
+		</div>
+		<img class="enquiry-photo" src="/images/lantern-olive.webp" alt="A lit lantern beside a stone planter with an olive tree on a timber deck at sunset" width="520" height="500" loading="lazy" />
+	</div>
+</section>

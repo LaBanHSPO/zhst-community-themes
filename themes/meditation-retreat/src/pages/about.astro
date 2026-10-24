@@ -1,0 +1,33 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import EnquiryBand from "../components/EnquiryBand.astro";
+import { getVenue } from "../lib/retreat";
+
+const [{ entry: page, cacheHint }, venueResult] = await Promise.all([getEmDashEntry("pages", "about"), getVenue()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(venueResult.cacheHint);
+}
+const d = page?.data;
+---
+
+<Base title="Our Story" description={d?.intro ?? "About SageHaven Meditation Retreat."}>
+	<PageHead id="about-title" eyebrow={d?.eyebrow ?? "Our Story"} title={d?.title ?? "Our story"} intro={d?.intro} edit={{ ...page?.edit.title }} />
+	<section class="about-body">
+		<div class="wrap about-grid">
+			<div class="prose">
+				{d?.content ? <PortableText value={d.content} /> : <p>Our story is coming soon.</p>}
+				<p class="page-cta"><a class="btn" href="/retreats">Explore retreats <Arrow /></a></p>
+			</div>
+			<figure class="about-photo">
+				<img src="/images/porch-steps.webp" alt="A stone pillar, timber porch and steps with a day bed, looking out over a lake at sunset" width="548" height="600" loading="lazy" />
+				<img class="about-photo-small" src="/images/forest-shore.webp" alt="A pine forest running down to the shore of a misty lake" width="900" height="357" loading="lazy" />
+			</figure>
+		</div>
+	</section>
+	<EnquiryBand venue={venueResult.venue} />
+</Base>

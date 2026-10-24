@@ -1,0 +1,138 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import RetreatCard from "../components/RetreatCard.astro";
+import PostCard from "../components/PostCard.astro";
+import EnquiryBand from "../components/EnquiryBand.astro";
+import { getDayRhythm, getPillars, getPosts, getRetreats, getVenue } from "../lib/retreat";
+
+const [retreatsResult, rhythmResult, pillarsResult, postsResult, venueResult] = await Promise.all([
+	getRetreats(),
+	getDayRhythm(),
+	getPillars(),
+	getPosts(),
+	getVenue(),
+]);
+for (const r of [retreatsResult, rhythmResult, pillarsResult, postsResult, venueResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const flagged = retreatsResult.upcoming.filter((r) => r.entry.data.featured);
+const next = (flagged.length >= 3 ? flagged : retreatsResult.upcoming).slice(0, 3);
+const posts = postsResult.entries.slice(0, 3);
+---
+
+<Base
+	title="SageHaven Meditation Retreat"
+	description="Small group meditation retreats in quiet houses by a lake, on a ridge, in a forest and by the sea."
+	overlay
+>
+	<section class="hero">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A woman sits cross-legged on a wooden deck above a forested lake and mountains at sunrise, beside the eaves of a timber lodge"
+			width="1448"
+			height="687"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<h1>Pause. Breathe. <br />Begin again.</h1>
+			<p class="hero-sub">Meaningful retreats in extraordinary places, <br />for a calmer, more present you.</p>
+			<a class="btn btn-lg" href="/retreats">Explore retreats <Arrow /></a>
+		</div>
+		<p class="hero-caps hero-caps-left"><span class="caps-rule" aria-hidden="true"></span>Slower Days<br />Brighter Tomorrows</p>
+		<p class="hero-caps hero-caps-right">Nature<br />People<br />A Calmer You<span class="caps-rule" aria-hidden="true"></span></p>
+	</section>
+
+	<section class="intro" aria-labelledby="intro-title">
+		<div class="intro-copy">
+			<p class="eyebrow">A different kind of getaway</p>
+			<h2 id="intro-title" class="display">Reconnect with what <br />truly matters</h2>
+			<p class="intro-text">Immersive meditation retreats, nestled in nature, designed to help you slow down, reset and return home to yourself.</p>
+		</div>
+		<ul class="intro-icons">
+			{
+				pillarsResult.entries.map((p) => (
+					<li>
+						<span class="intro-icon"><Icon name={p.data.icon ?? "leaf"} /></span>
+						<span class="intro-label" {...p.edit.title}>{p.data.title}</span>
+					</li>
+				))
+			}
+		</ul>
+		<figure class="intro-photo">
+			<img src="/images/lodge.webp" alt="A timber lodge with large windows, a stone path and mountains behind" width="772" height="524" loading="lazy" />
+			<figcaption>A more mindful tomorrow</figcaption>
+		</figure>
+	</section>
+
+	{
+		next.length > 0 && (
+			<section class="band" aria-labelledby="next-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Coming up</p>
+							<h2 id="next-title" class="display">Dates with places left</h2>
+						</div>
+						<a class="link-arrow" href="/retreats">All retreats <Arrow /></a>
+					</div>
+					<ul class="card-grid card-grid-3">
+						{next.map((r) => <li><RetreatCard row={r} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		rhythmResult.entries.length > 0 && (
+			<section class="band band-tint" aria-labelledby="day-title">
+				<div class="wrap day-grid">
+					<figure class="day-photo">
+						<img src="/images/bowl-towel.webp" alt="A brass singing bowl and a rolled wool towel on a timber deck beside a meditation cushion" width="668" height="346" loading="lazy" />
+					</figure>
+					<div class="day-copy">
+						<p class="eyebrow">A day at the retreat</p>
+						<h2 id="day-title" class="display">Six plain moments</h2>
+						<ol class="day-list">
+							{
+								rhythmResult.entries.map((m) => (
+									<li>
+										<span class="day-time">{m.data.time_label}</span>
+										<span class="day-body">
+											<strong {...m.edit.title}>{m.data.title}</strong>
+											<span>{m.data.text}</span>
+										</span>
+									</li>
+								))
+							}
+						</ol>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		posts.length > 0 && (
+			<section class="band" aria-labelledby="journal-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Journal</p>
+							<h2 id="journal-title" class="display">Notes from the houses</h2>
+						</div>
+						<a class="link-arrow" href="/journal">All entries <Arrow /></a>
+					</div>
+					<ul class="card-grid card-grid-3">
+						{posts.map((p) => <li><PostCard post={p.data} edit={{ ...p.edit.title }} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<EnquiryBand venue={venueResult.venue} />
+</Base>

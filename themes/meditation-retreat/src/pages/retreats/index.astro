@@ -1,0 +1,78 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import RetreatCard from "../../components/RetreatCard.astro";
+import EnquiryBand from "../../components/EnquiryBand.astro";
+import { LENGTHS, REGIONS, getRetreats, getVenue } from "../../lib/retreat";
+
+const [retreatsResult, venueResult] = await Promise.all([getRetreats(), getVenue()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(retreatsResult.cacheHint);
+	Astro.cache.set(venueResult.cacheHint);
+}
+// ?region=lakes|mountains|forest|coast and ?length=weekend|midweek|week narrow the lists; unknown values show everything.
+const q = Astro.url.searchParams;
+const region = REGIONS.find((r) => r.slug === q.get("region"));
+const length = LENGTHS.find((l) => l.slug === q.get("length"));
+const keep = (r: (typeof retreatsResult.upcoming)[number]) =>
+	(!region || r.entry.data.region === region.slug) && (!length || length.test(Number(r.entry.data.nights ?? 0)));
+const upcoming = retreatsResult.upcoming.filter(keep);
+const past = retreatsResult.past.filter(keep);
+const href = (r?: string, l?: string) => {
+	const p = new URLSearchParams();
+	if (r) p.set("region", r);
+	if (l) p.set("length", l);
+	const s = p.toString();
+	return s ? `/retreats?${s}` : "/retreats";
+};
+const countRegion = (slug: string) => retreatsResult.upcoming.filter((r) => r.entry.data.region === slug).length;
+const countLength = (test: (n: number) => boolean) => retreatsResult.upcoming.filter((r) => test(Number(r.entry.data.nights ?? 0))).length;
+---
+
+<Base title="Retreats" description="Upcoming and past meditation retreats at SageHaven. Filter by region or length of stay.">
+	<PageHead
+		id="retreats-title"
+		eyebrow="Retreats"
+		title="Choose a place and a length."
+		intro="Weekends, midweeks and full weeks in four quiet houses. Every price is a sample starting price per guest."
+	/>
+	<section class="list-section" aria-labelledby="retreats-title">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter retreats">
+				<div class="filter-group">
+					<span class="filter-label">Region</span>
+					<a href={href(undefined, length?.slug)} aria-current={region ? undefined : "true"}>All</a>
+					{REGIONS.map((r) => <a href={href(r.slug, length?.slug)} aria-current={region?.slug === r.slug ? "true" : undefined}>{r.label} <span>{countRegion(r.slug)}</span></a>)}
+				</div>
+				<div class="filter-group">
+					<span class="filter-label">Length</span>
+					<a href={href(region?.slug)} aria-current={length ? undefined : "true"}>Any</a>
+					{LENGTHS.map((l) => <a href={href(region?.slug, l.slug)} aria-current={length?.slug === l.slug ? "true" : undefined}>{l.short} <span>{countLength(l.test)}</span></a>)}
+				</div>
+			</nav>
+
+			<h2 class="list-title">Upcoming</h2>
+			{
+				upcoming.length === 0 ? (
+					<p class="empty-note">No upcoming retreats match that choice. <a href="/retreats">Show all retreats</a>.</p>
+				) : (
+					<ul class="card-grid">
+						{upcoming.map((r) => <li><RetreatCard row={r} /></li>)}
+					</ul>
+				)
+			}
+
+			{
+				past.length > 0 && (
+					<>
+						<h2 class="list-title list-title-past">Past retreats</h2>
+						<ul class="card-grid">
+							{past.map((r) => <li><RetreatCard row={r} past /></li>)}
+						</ul>
+					</>
+				)
+			}
+		</div>
+	</section>
+	<EnquiryBand venue={venueResult.venue} />
+</Base>
