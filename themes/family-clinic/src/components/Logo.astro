@@ -1,0 +1,27 @@
+---
+import Mark from "./Mark.astro";
+/** Wordmark: two-leaf mark, the site title in serif, and the tagline in small tracked caps beneath. */
+interface Props {
+	title: string;
+	tagline?: string;
+	logo?: { url?: string; alt?: string } | null;
+	class?: string;
+}
+const { title, tagline, logo, class: className } = Astro.props;
+---
+
+<a class:list={["wordmark", className]} href="/" aria-label={`${title}, home`}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt || title} />
+		) : (
+			<>
+				<Mark />
+				<span class="wordmark-text">
+					<span class="wordmark-title">{title}</span>
+					{tagline && <span class="wordmark-tagline">{tagline}</span>}
+				</span>
+			</>
+		)
+	}
+</a>

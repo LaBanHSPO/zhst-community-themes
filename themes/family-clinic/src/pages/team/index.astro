@@ -1,0 +1,50 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PageHead from "../../components/PageHead.astro";
+import { getTeam, initials, photoAlt, photoSrc } from "../../lib/clinic";
+
+const { entries, cacheHint } = await getTeam();
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+---
+
+<Base
+	title="Our Team"
+	description="Meet the clinicians and front desk team at Havenbrook Family Clinic: physicians, pediatric and nurse practitioner care, and the people who answer the phone."
+>
+	<PageHead
+		eyebrow="Our Team"
+		title="The people you will see."
+		intro="A small team that knows your name. Here is who looks after patients and keeps the clinic running."
+	/>
+	<section class="listing">
+		<div class="wrap">
+			<ul class="team-grid">
+				{
+					entries.map((m) => {
+						const src = photoSrc(m.data.image, m.data.photo);
+						return (
+							<li class="member">
+								{src ? (
+									<img class="member-photo" src={src} alt={photoAlt(m.data.image, m.data.photo, m.data.title)} width="208" height="208" loading="lazy" />
+								) : (
+									<span class="member-photo member-initials" aria-hidden="true">{initials(m.data.title)}</span>
+								)}
+								<h2 class="member-name" {...m.edit.title}>{m.data.title}</h2>
+								<p class="member-role">{m.data.role}</p>
+								{m.data.bio && <p class="member-bio">{m.data.bio}</p>}
+							</li>
+						);
+					})
+				}
+			</ul>
+			<div class="help-band">
+				<div>
+					<h2 class="help-title">Say hello at your first visit.</h2>
+					<p>Request an appointment and we will match you with a clinician who suits your needs.</p>
+				</div>
+				<a class="btn btn-teal" href="/contact"><span>Book an appointment</span><Arrow /></a>
+			</div>
+		</div>
+	</section>
+</Base>

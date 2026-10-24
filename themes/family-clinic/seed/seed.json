@@ -1,0 +1,1376 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Family Clinic",
+  "description": "A bright family clinic theme: a full-bleed photo hero, care services, a team page, a patient information page and an appointment request page, seeded with synthetic sample content.",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "Havenbrook",
+  "tagline": "Family Clinic"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Small label above the title (also used in the footer)",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "services",
+   "label": "Care",
+   "labelSingular": "Service",
+   "urlPattern": "/care/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Service name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "One-line description",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "best_for",
+     "label": "Who it is for (short phrase)",
+     "type": "string"
+    },
+    {
+     "slug": "visit",
+     "label": "What a visit involves (one item per line)",
+     "type": "text"
+    },
+    {
+     "slug": "how_to_book",
+     "label": "How to book",
+     "type": "text"
+    },
+    {
+     "slug": "tile_text",
+     "label": "Text on the homepage card (a line break splits it into two lines)",
+     "type": "text"
+    },
+    {
+     "slug": "icon",
+     "label": "Icon (stethoscope, baby, family or heart)",
+     "type": "string"
+    },
+    {
+     "slug": "tint",
+     "label": "Circle colour (mint, blue, peach or lavender)",
+     "type": "string"
+    },
+    {
+     "slug": "featured",
+     "label": "Show on the homepage",
+     "type": "boolean"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    },
+    {
+     "slug": "content",
+     "label": "Description",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "team",
+   "label": "Team",
+   "labelSingular": "Team member",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "role",
+     "label": "Role (e.g. Family physician)",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "bio",
+     "label": "Short description",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "highlights",
+   "label": "Icon row",
+   "labelSingular": "Icon row item",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Label",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "icon",
+     "label": "Icon (people, heart or leaf)",
+     "type": "string"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "steps",
+   "label": "New-patient steps",
+   "labelSingular": "Step",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "Text",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "clinic",
+   "label": "Clinic details",
+   "labelSingular": "Clinic details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Clinic name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Email for appointment requests",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "address",
+     "label": "Address (one line per row)",
+     "type": "text"
+    },
+    {
+     "slug": "hours",
+     "label": "Opening hours (one per line, day and time split by a | sign)",
+     "type": "text"
+    },
+    {
+     "slug": "hours_note",
+     "label": "Note under the hours",
+     "type": "text"
+    },
+    {
+     "slug": "after_hours",
+     "label": "After-hours information",
+     "type": "text"
+    },
+    {
+     "slug": "form_note",
+     "label": "Note shown beside the request form",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Care",
+     "url": "/care"
+    },
+    {
+     "type": "custom",
+     "label": "Our Team",
+     "url": "/team"
+    },
+    {
+     "type": "custom",
+     "label": "For Patients",
+     "url": "/patients"
+    },
+    {
+     "type": "custom",
+     "label": "Contact",
+     "url": "/contact"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "patients",
+    "slug": "patients",
+    "status": "published",
+    "data": {
+     "title": "Information for patients",
+     "eyebrow": "For patients",
+     "intro": "What to do before your first visit, what to bring, and how we handle changes and after-hours questions.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k36",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "New patients",
+         "_key": "k36s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k37",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We welcome new patients of all ages. Send an appointment request from the contact page or call the front desk, and tell us if you are booking for yourself or for a family member. We will reply with a time and a link to the new-patient form.",
+         "_key": "k37s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k38",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Please fill in the form before you come. It covers your contact details, your medical history and the medicines you take, so more of your visit can be spent talking with your clinician.",
+         "_key": "k38s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k39",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to bring",
+         "_key": "k39s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k40",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Photo ID (for children, a parent or carer's ID)",
+         "_key": "k40s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k41",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Your insurance card, if you have one",
+         "_key": "k41s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k42",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A list of your medicines, vitamins and supplements",
+         "_key": "k42s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k43",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Any recent test results or letters from other providers",
+         "_key": "k43s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k44",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A list of questions, if you like to keep one",
+         "_key": "k44s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k45",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Opening hours",
+         "_key": "k45s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k46",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Our opening hours are shown on this page and on the contact page. The front desk answers the phone during opening hours.",
+         "_key": "k46s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k47",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Cancellations and changes",
+         "_key": "k47s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k48",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If you cannot come, please tell us at least 24 hours ahead by phone or email so another patient can have the time. If you are running late, call the front desk. We will see you if we can, or offer a new time.",
+         "_key": "k48s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k49",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "After-hours questions",
+         "_key": "k49s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k50",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "When the clinic is closed, leave a message on the clinic line and we will call back the next working day. For urgent care outside opening hours, contact your local urgent care service. In an emergency, call your local emergency number.",
+         "_key": "k50s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k51",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Insurance and payment",
+         "_key": "k51s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k52",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Tell us which plan you have when you book and we will confirm what is covered before your visit. If you do not have insurance, ask the front desk about self-pay options. This text is a placeholder: replace it with your own policy.",
+         "_key": "k52s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k53",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Your privacy",
+         "_key": "k53s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k54",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Please do not send medical details through the website form or by email. Share them in person or on the phone, where we can keep them with your record.",
+         "_key": "k54s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "privacy",
+    "slug": "privacy",
+    "status": "published",
+    "data": {
+     "title": "How we handle your request",
+     "eyebrow": "Good to know",
+     "intro": "A short note on what happens when you send an appointment request from this site.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k55",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The appointment request form on this site does not send anything by itself. When you press the button, your email app opens with a message already written. The request only reaches the clinic when you send that email.",
+         "_key": "k55s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k56",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The site does not store what you type. Please keep the message short: your name, how to reach you, the kind of visit and the days that suit you. Leave out symptoms, diagnoses and test results.",
+         "_key": "k56s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k57",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If you would rather not use email, call the front desk on the number shown on the contact page.",
+         "_key": "k57s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "services": [
+   {
+    "id": "primary-care",
+    "slug": "primary-care",
+    "status": "published",
+    "data": {
+     "tile_text": "Everyday care for\na healthier tomorrow.",
+     "title": "Primary Care",
+     "summary": "Everyday care for a healthier tomorrow.",
+     "best_for": "Adults and teens, from check-ups to ongoing concerns",
+     "icon": "stethoscope",
+     "tint": "mint",
+     "position": 10,
+     "photo": "/images/care-primary.webp",
+     "visit": "Check in at the front desk and wait in the lounge for a few minutes\nTalk with your clinician about your health and anything on your mind\nA physical exam, when your clinician thinks it is needed\nA written plan for tests, prescriptions or follow-up visits",
+     "how_to_book": "Send a request from the contact page or call the front desk. Tell us if you are new to the clinic so we can allow extra time.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Primary care is the first place to go with a health question. Our clinicians see adults and teens for routine check-ups, short-term illness, injuries that do not need an emergency room, and questions about long-term health.",
+         "_key": "k1s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k2",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we can help with",
+         "_key": "k2s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Yearly check-ups and health reviews",
+         "_key": "k3s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k4",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Colds, infections, rashes and minor injuries",
+         "_key": "k4s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k5",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Prescriptions and refills",
+         "_key": "k5s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k6",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Referrals to specialists when you need one",
+         "_key": "k6s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k7",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Advice on sleep, activity, food and stress",
+         "_key": "k7s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k8",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "k8s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k9",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Most visits take 20 to 30 minutes. A first visit is longer, usually 40 minutes, because we go through your history and your current medicines. Please bring a list of anything you take, including vitamins.",
+         "_key": "k9s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k10",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If your concern could be an emergency, do not wait for an appointment. Call your local emergency number.",
+         "_key": "k10s"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "featured": true
+    }
+   },
+   {
+    "id": "pediatric-care",
+    "slug": "pediatric-care",
+    "status": "published",
+    "data": {
+     "tile_text": "Growing up with\nexpert support.",
+     "title": "Pediatric Care",
+     "summary": "Growing up with expert support.",
+     "best_for": "Babies, children and teens",
+     "icon": "baby",
+     "tint": "blue",
+     "position": 20,
+     "photo": "/images/care-pediatric.webp",
+     "visit": "A weigh-in and measurements with the nurse\nA check on growth, sleep, eating and development\nTime for the parent or carer to ask questions\nAn up-to-date record of vaccines and what is due next",
+     "how_to_book": "Request a visit for your child on the contact page, or call the front desk. For babies under three months, please call so we can find the right slot.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k11",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Our pediatric visits are paced for children. Rooms are bright, the nurse explains each step before it happens, and parents and carers are in the room throughout.",
+         "_key": "k11s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k12",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Visits for every age",
+         "_key": "k12s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k13",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Newborn and baby check-ups",
+         "_key": "k13s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k14",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Well-child visits through the school years",
+         "_key": "k14s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k15",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Teen visits, with time to talk privately if your teen wants it",
+         "_key": "k15s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k16",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Visits for coughs, fevers, ear aches and other everyday illness",
+         "_key": "k16s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k17",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "School, camp and sports forms",
+         "_key": "k17s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k18",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Making a visit easier",
+         "_key": "k18s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k19",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Bring a favorite toy or book. If your child is nervous about check-ups, tell us when you book and we will plan a slower start.",
+         "_key": "k19s"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "featured": true
+    }
+   },
+   {
+    "id": "family-wellness",
+    "slug": "family-wellness",
+    "status": "published",
+    "data": {
+     "tile_text": "Preventive care\nfor every generation.",
+     "title": "Family Wellness",
+     "summary": "Preventive care for every generation.",
+     "best_for": "Families who want check-ups in one place",
+     "icon": "family",
+     "tint": "peach",
+     "position": 30,
+     "photo": "/images/care-family.webp",
+     "visit": "A review of each family member's check-ups and vaccines\nScreening tests that suit each person's age\nBack-to-back appointments for parents and children where the schedule allows\nA short summary you can keep at home",
+     "how_to_book": "Ask for a family block on the contact page, or call the front desk. Tell us how many people are coming and their ages.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k20",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Family wellness visits bring routine care together. We try to place parents and children in back-to-back appointments, so one trip to the clinic covers more than one person.",
+         "_key": "k20s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k21",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What is included",
+         "_key": "k21s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k22",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Check-ups for adults, teens and children",
+         "_key": "k22s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k23",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Vaccine and screening reviews for each person",
+         "_key": "k23s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k24",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Time to talk about family health history",
+         "_key": "k24s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k25",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Guidance on sleep, movement and food that fits your household",
+         "_key": "k25s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k26",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Planning ahead",
+         "_key": "k26s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k27",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Block bookings depend on clinician availability, so we suggest asking two to three weeks ahead. The front desk will confirm the times by email or phone.",
+         "_key": "k27s"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "featured": true
+    }
+   },
+   {
+    "id": "chronic-care",
+    "slug": "chronic-care",
+    "status": "published",
+    "data": {
+     "tile_text": "Ongoing support\nfor lasting health.",
+     "title": "Chronic Care",
+     "summary": "Ongoing support for lasting health.",
+     "best_for": "People living with a long-term condition, such as asthma, diabetes or high blood pressure",
+     "icon": "heart",
+     "tint": "lavender",
+     "position": 40,
+     "photo": "/images/care-chronic.webp",
+     "visit": "A regular review visit, usually every three to six months\nA medicine check, including anything prescribed elsewhere\nA look at recent test results with your clinician\nA written plan, and a contact for questions between visits",
+     "how_to_book": "Request a review visit on the contact page or call the front desk. If you already have test results from another provider, please bring them or ask them to send them to us.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k28",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Living with a long-term condition means regular check-ins. Our chronic care visits are set aside for that: unhurried time with the same small group of clinicians who know your history.",
+         "_key": "k28s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k29",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How chronic care visits work",
+         "_key": "k29s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k30",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Your clinician sets a review schedule with you",
+         "_key": "k30s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k31",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Each visit starts with what has changed since the last one",
+         "_key": "k31s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k32",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Medicines and test results are reviewed together",
+         "_key": "k32s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k33",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Referrals to specialists are arranged when they are needed",
+         "_key": "k33s"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k34",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Between visits",
+         "_key": "k34s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k35",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Non-urgent questions can be sent to the front desk by phone or email. Please do not send test results or symptoms by email. If you feel unwell in a way that worries you, call the clinic during opening hours or your local emergency number if it is an emergency.",
+         "_key": "k35s"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "featured": true
+    }
+   }
+  ],
+  "team": [
+   {
+    "id": "elena-marquez",
+    "slug": "elena-marquez",
+    "status": "published",
+    "data": {
+     "title": "Elena Marquez",
+     "role": "Family physician",
+     "bio": "Sees adults and teens for check-ups, ongoing conditions and same-week concerns.",
+     "position": 10,
+     "photo": "/images/team-elena.webp"
+    }
+   },
+   {
+    "id": "hannah-lindqvist",
+    "slug": "hannah-lindqvist",
+    "status": "published",
+    "data": {
+     "title": "Hannah Lindqvist",
+     "role": "Pediatrician",
+     "bio": "Sees babies, children and teens for check-ups and everyday illness.",
+     "position": 20,
+     "photo": "/images/team-hannah.webp"
+    }
+   },
+   {
+    "id": "samuel-adeyemi",
+    "slug": "samuel-adeyemi",
+    "status": "published",
+    "data": {
+     "title": "Samuel Adeyemi",
+     "role": "Pediatric nurse",
+     "bio": "Runs well-child visits and answers parents' questions about routines and vaccines.",
+     "position": 30,
+     "photo": "/images/team-samuel.webp"
+    }
+   },
+   {
+    "id": "mei-tanaka",
+    "slug": "mei-tanaka",
+    "status": "published",
+    "data": {
+     "title": "Mei Tanaka",
+     "role": "Nurse practitioner",
+     "bio": "Cares for patients of all ages and leads the chronic care review visits.",
+     "position": 40,
+     "photo": "/images/team-mei.webp"
+    }
+   },
+   {
+    "id": "tomas-reyes",
+    "slug": "tomas-reyes",
+    "status": "published",
+    "data": {
+     "title": "Tomas Reyes",
+     "role": "Front desk coordinator",
+     "bio": "Books appointments, answers the phone and helps new patients with their forms.",
+     "position": 50
+    }
+   },
+   {
+    "id": "ruth-okafor",
+    "slug": "ruth-okafor",
+    "status": "published",
+    "data": {
+     "title": "Ruth Okafor",
+     "role": "Practice manager",
+     "bio": "Looks after scheduling, billing questions and the day-to-day running of the clinic.",
+     "position": 60
+    }
+   }
+  ],
+  "highlights": [
+   {
+    "id": "all-ages",
+    "slug": "all-ages",
+    "status": "published",
+    "data": {
+     "title": "All ages welcome",
+     "icon": "people",
+     "position": 10
+    }
+   },
+   {
+    "id": "primary-prevention",
+    "slug": "primary-prevention",
+    "status": "published",
+    "data": {
+     "title": "Primary care & prevention",
+     "icon": "heart",
+     "position": 20
+    }
+   },
+   {
+    "id": "healthier-you",
+    "slug": "healthier-you",
+    "status": "published",
+    "data": {
+     "title": "A healthier brighter you",
+     "icon": "leaf",
+     "position": 30
+    }
+   }
+  ],
+  "steps": [
+   {
+    "id": "request",
+    "slug": "request",
+    "status": "published",
+    "data": {
+     "title": "Send a request",
+     "text": "Use the form or call the front desk. Tell us if you are new and which kind of visit you need.",
+     "position": 10
+    }
+   },
+   {
+    "id": "confirm",
+    "slug": "confirm",
+    "status": "published",
+    "data": {
+     "title": "We confirm a time",
+     "text": "The front desk replies within one working day with a time and a short list of what to bring.",
+     "position": 20
+    }
+   },
+   {
+    "id": "prepare",
+    "slug": "prepare",
+    "status": "published",
+    "data": {
+     "title": "Get your papers ready",
+     "text": "Fill in the new-patient form before you arrive. Bring photo ID, your insurance card and a list of your medicines.",
+     "position": 30
+    }
+   },
+   {
+    "id": "visit",
+    "slug": "visit",
+    "status": "published",
+    "data": {
+     "title": "Come in for your visit",
+     "text": "Arrive ten minutes early. A first visit usually lasts about 40 minutes.",
+     "position": 40
+    }
+   }
+  ],
+  "clinic": [
+   {
+    "id": "havenbrook",
+    "slug": "havenbrook",
+    "status": "published",
+    "data": {
+     "title": "Havenbrook Family Clinic",
+     "phone": "(555) 010-0172",
+     "email": "hello@havenbrookclinic.example",
+     "address": "214 Linden Row\nAshford Bay",
+     "hours": "Monday to Thursday | 8:00 am to 5:30 pm\nFriday | 8:00 am to 3:00 pm\nSaturday | 9:00 am to 12:00 pm, first and third of the month\nSunday | Closed",
+     "hours_note": "Opening hours are sample times for this demo clinic.",
+     "after_hours": "Outside opening hours, leave a message on the clinic line and we will call back the next working day. For urgent care when we are closed, contact your local urgent care service. In an emergency, call your local emergency number.",
+     "form_note": "This form is for appointment requests only. Please do not include medical details or test results, and do not use it for urgent issues. In an emergency, call your local emergency number."
+    }
+   }
+  ]
+ }
+}

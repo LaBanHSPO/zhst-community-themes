@@ -1,0 +1,52 @@
+---
+import { getEmDashEntry, getSeoMeta, decodeSlug, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getClinic, hoursRows, telHref } from "../lib/clinic";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: page, cacheHint } = await getEmDashEntry("pages", slug);
+if (!page) return Astro.rewrite("/404");
+const { clinic, cacheHint: clinicHint } = await getClinic();
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(clinicHint);
+}
+
+const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+const seo = getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const rows = hoursRows(clinic.hours);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? page.data.intro}
+	canonical={seo.canonical}
+	content={{ collection: "pages", id: page.data.id, slug }}
+>
+	<PageHead eyebrow={page.data.eyebrow} title={page.data.title} intro={page.data.intro} edit={{ ...page.edit.title }} />
+	<div class="page-body">
+		<div class="wrap page-body-grid">
+			<div>
+				<div class="prose">
+					<PortableText value={page.data.content} />
+				</div>
+				<p class="page-cta"><a class="btn btn-teal" href="/contact"><span>Book an appointment</span><Arrow /></a></p>
+			</div>
+			<aside class="side-card aside-hours" aria-labelledby="aside-title">
+				<h2 id="aside-title" class="side-title">Opening hours</h2>
+				<dl class="hours" style="margin-top:16px">
+					{rows.map((r) => <div><dt>{r.day}</dt><dd>{r.time}</dd></div>)}
+				</dl>
+				{clinic.phone && <p>Front desk: <a href={telHref(clinic.phone)}>{clinic.phone}</a></p>}
+				{clinic.after_hours && <p class="small">{clinic.after_hours}</p>}
+			</aside>
+		</div>
+	</div>
+</Base>

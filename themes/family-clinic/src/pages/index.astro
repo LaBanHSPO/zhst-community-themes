@@ -1,0 +1,108 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import VisitBand from "../components/VisitBand.astro";
+import { getClinic, getHighlights, getServices, getSteps, lines, serviceHref } from "../lib/clinic";
+
+const [highlightsResult, stepsResult, servicesResult, clinicResult] = await Promise.all([
+	getHighlights(),
+	getSteps(),
+	getServices(),
+	getClinic(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(highlightsResult.cacheHint);
+	Astro.cache.set(stepsResult.cacheHint);
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(clinicResult.cacheHint);
+}
+const highlights = highlightsResult.entries;
+const steps = stepsResult.entries;
+const services = (servicesResult.entries.some((s) => s.data.featured) ? servicesResult.entries.filter((s) => s.data.featured) : servicesResult.entries).slice(0, 4);
+---
+
+<Base
+	overlay
+	title="Care for every chapter"
+	description="Havenbrook Family Clinic offers primary care, pediatric care, family wellness and chronic care in one place. See our hours, meet the team and request an appointment."
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A mother and her young daughter hold hands with a smiling doctor in a white coat, while a nurse in blue scrubs looks on in a bright reception area with plants"
+			width="1448"
+			height="698"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<p class="hero-eyebrow">Healthier tomorrows, together</p>
+			<h1 id="hero-title" class="hero-title">Care for<br />every chapter.</h1>
+			<p class="hero-sub">Compassionate, personalized care <br />for every stage of life, from first visits <br />to lifelong wellness.</p>
+			<a class="btn btn-teal hero-btn" href="/contact"><span>Book an appointment</span><Arrow /></a>
+			<ul class="hero-icons">
+				{highlights.map((h) => (
+					<li>
+						<span class="hero-icon"><Icon name={h.data.icon} size={40} /></span>
+						<span class="hero-icon-label" {...h.edit.title}>{h.data.title}</span>
+					</li>
+				))}
+			</ul>
+		</div>
+	</section>
+
+	{
+		services.length > 0 && (
+			<section class="care" aria-labelledby="care-title">
+				<div class="care-inner">
+					<div class="care-head">
+						<div>
+							<p class="eyebrow eyebrow-green">Care for real life</p>
+							<h2 id="care-title" class="care-title">Whole-family care, all in one place.</h2>
+						</div>
+						<a class="care-link" href="/care"><span>Explore Our Services</span><Arrow /></a>
+					</div>
+					<ul class="care-grid">
+						{services.map((s) => (
+							<li>
+								<a class="tile" href={serviceHref(s.data)}>
+									<span class={`tile-icon tint-${s.data.tint || "mint"}`}><Icon name={s.data.icon} size={40} /></span>
+									<h3 class="tile-title" {...s.edit.title}>{s.data.title}</h3>
+									<p class="tile-text">{(lines(s.data.tile_text).length ? lines(s.data.tile_text) : [s.data.summary]).map((l, j) => (j === 0 ? <>{l}</> : <><br />{l}</>))}</p>
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		steps.length > 0 && (
+			<section class="steps-band" aria-labelledby="steps-title">
+				<div class="wrap">
+					<div class="steps-head">
+						<div>
+							<p class="eyebrow eyebrow-green">New to Havenbrook</p>
+							<h2 id="steps-title" class="display">Your first visit, step by step.</h2>
+						</div>
+						<a class="text-link" href="/patients"><span>What to bring</span><Arrow /></a>
+					</div>
+					<ol class="steps">
+						{steps.map((s, i) => (
+							<li class="step">
+								<span class="step-num" aria-hidden="true">{i + 1}</span>
+								<h3 class="step-title" {...s.edit.title}>{s.data.title}</h3>
+								<p class="step-text">{s.data.text}</p>
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	<VisitBand clinic={clinicResult.clinic} />
+</Base>

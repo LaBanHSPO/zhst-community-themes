@@ -1,0 +1,22 @@
+---
+import type { Service } from "../../emdash-env";
+import Arrow from "./Arrow.astro";
+import { photoAlt, photoSrc, serviceHref } from "../lib/clinic";
+
+interface Props {
+	service: { data: Service; edit?: Record<string, any> };
+}
+const { service } = Astro.props;
+const d = service.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<article class="care-card">
+	<a class="care-card-photo" href={serviceHref(d)} tabindex="-1" aria-hidden="true">
+		{src && <img src={src} alt={photoAlt(d.image, d.photo, "")} width="640" height="480" loading="lazy" />}
+	</a>
+	<h3 class="care-card-title" {...service.edit?.title}><a href={serviceHref(d)}>{d.title}</a></h3>
+	<p class="care-card-text">{d.summary}</p>
+	{d.best_for && <p class="care-card-for"><span>For</span> {d.best_for.charAt(0).toLowerCase() + d.best_for.slice(1)}</p>}
+	<p class="care-card-foot"><a class="text-link" href={serviceHref(d)}><span>About {d.title}</span><Arrow /></a></p>
+</article>

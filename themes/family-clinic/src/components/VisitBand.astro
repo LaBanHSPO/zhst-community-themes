@@ -1,0 +1,38 @@
+---
+import Arrow from "./Arrow.astro";
+import { hoursRows, lines, telHref } from "../lib/clinic";
+import type { ClinicData } from "../lib/clinic";
+
+interface Props {
+	clinic: ClinicData;
+}
+const { clinic } = Astro.props;
+const rows = hoursRows(clinic.hours);
+const address = lines(clinic.address);
+---
+
+<section class="visit" aria-labelledby="visit-title">
+	<div class="wrap visit-inner">
+		<img class="visit-photo" src="/images/reception.webp" alt="A family high-fives a doctor at a curved wooden reception desk, with a nurse and a receptionist smiling behind it" width="1448" height="1086" loading="lazy" />
+		<div class="visit-copy">
+			<p class="eyebrow">Visit us</p>
+			<h2 id="visit-title" class="display">Hours and where to find us.</h2>
+			<div class="visit-cols">
+				<div>
+					<h3 class="mini-title">Address</h3>
+					<p class="visit-address">{address.map((l, i) => (i === 0 ? <>{l}</> : <><br />{l}</>))}</p>
+					{clinic.phone && <p class="visit-line"><a href={telHref(clinic.phone)}>{clinic.phone}</a></p>}
+					{clinic.email && <p class="visit-line"><a href={`mailto:${clinic.email}`}>{clinic.email}</a></p>}
+				</div>
+				<div>
+					<h3 class="mini-title">Opening hours</h3>
+					<dl class="hours">
+						{rows.map((r) => <div><dt>{r.day}</dt><dd>{r.time}</dd></div>)}
+					</dl>
+				</div>
+			</div>
+			{clinic.hours_note && <p class="visit-note">{clinic.hours_note}</p>}
+			<p class="visit-actions"><a class="btn btn-teal" href="/contact"><span>Book an appointment</span><Arrow /></a></p>
+		</div>
+	</div>
+</section>

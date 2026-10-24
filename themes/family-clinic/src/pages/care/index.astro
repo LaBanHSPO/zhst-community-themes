@@ -1,0 +1,35 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PageHead from "../../components/PageHead.astro";
+import ServiceCard from "../../components/ServiceCard.astro";
+import { getServices } from "../../lib/clinic";
+
+const { entries, cacheHint } = await getServices();
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+---
+
+<Base
+	title="Care"
+	description="Primary care, pediatric care, family wellness and chronic care at Havenbrook Family Clinic: who each service is for, what a visit involves and how to book."
+>
+	<PageHead
+		eyebrow="Care"
+		title="Care for every stage of life."
+		intro="Four kinds of visit, one clinic. Each one explains who it is for, what happens when you come in and how to book."
+	/>
+	<section class="listing">
+		<div class="wrap">
+			<ul class="care-cards">
+				{entries.map((s) => <li><ServiceCard service={s} /></li>)}
+			</ul>
+			<div class="help-band">
+				<div>
+					<h2 class="help-title">Not sure which visit you need?</h2>
+					<p>Send a request and say what you have in mind. The front desk will suggest a visit type and a time.</p>
+				</div>
+				<a class="btn btn-teal" href="/contact"><span>Book an appointment</span><Arrow /></a>
+			</div>
+		</div>
+	</section>
+</Base>
