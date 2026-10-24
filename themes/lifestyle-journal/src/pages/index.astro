@@ -1,0 +1,145 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import StoryCard from "../components/StoryCard.astro";
+import { CATEGORIES, categoryHref, categoryLabel, getJournal, getStories, photoSrc, readLabel, storyHref } from "../lib/journal";
+
+const [storiesResult, journalResult] = await Promise.all([getStories(), getJournal()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(storiesResult.cacheHint);
+	Astro.cache.set(journalResult.cacheHint);
+}
+const all = storiesResult.entries;
+const featured = all.filter((s) => s.data.featured);
+const cards = (featured.length > 0 ? featured : all).slice(0, 3);
+const lead = all.find((s) => s.data.lead) ?? all[0];
+const leadSrc = lead ? photoSrc(lead.data.image, lead.data.photo) : undefined;
+const rows = CATEGORIES.map((c) => ({ ...c, items: all.filter((s) => s.data.category === c.slug) })).filter((c) => c.items.length > 0);
+const { journal } = journalResult;
+---
+
+<Base
+	title="The Lifestyle Journal"
+	description="A little inspiration for every day. Stories about home, wellbeing and travel, each with what to do, how long it takes and what it costs."
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero.webp"
+			alt="A sunlit wooden table by a window with a speckled ceramic mug, three stacked books, a glass vase of white flowers and a knitted throw"
+			width="1448"
+			height="618"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<p class="hero-eyebrow">Slower days. Richer moments.</p>
+			<h1 id="hero-title" class="hero-title">
+				<span>A little</span>
+				<span>inspiration</span>
+				<span>for every day.</span>
+			</h1>
+			<a class="btn" href="/stories"><span>Read the latest</span><Arrow /></a>
+			<p class="hero-links">
+				<a href="/">Home</a><span aria-hidden="true"> / </span><a href={categoryHref("wellbeing")}>Wellbeing</a><span aria-hidden="true"> / </span><a href={categoryHref("travel")}>Travel</a><span aria-hidden="true"> / </span><a href="/about">A more meaningful life</a>
+			</p>
+		</div>
+	</section>
+
+	<section class="section journal-section" aria-labelledby="journal-title">
+		<div class="wrap">
+			<div class="section-head">
+				<div>
+					<p class="eyebrow">From the journal</p>
+					<h2 id="journal-title" class="display section-title">Fresh stories for a more intentional life.</h2>
+				</div>
+				<a class="text-link" href="/stories"><span>View all</span><Arrow /></a>
+			</div>
+			{
+				cards.length === 0 ? (
+					<p class="empty">New stories are on their way.</p>
+				) : (
+					<div class="home-cards">
+						{cards.map((s, i) => <StoryCard story={s} variant="home" eager={i < 3} />)}
+					</div>
+				)
+			}
+		</div>
+	</section>
+
+	{
+		lead && (
+			<section class="lead" aria-labelledby="lead-title">
+				<div class="wrap lead-inner">
+					<a class="lead-media" href={storyHref(lead.data)} tabindex="-1" aria-hidden="true">
+						{leadSrc && <img src={leadSrc} alt="" width="1190" height="780" loading="lazy" />}
+					</a>
+					<div class="lead-copy">
+						<p class="eyebrow">Featured story</p>
+						<p class="lead-cat">{categoryLabel(lead.data.category)}{readLabel(lead.data) && ` · ${readLabel(lead.data)}`}</p>
+						<h2 id="lead-title" class="display display-md" {...lead.edit.title}><a href={storyHref(lead.data)}>{lead.data.title}</a></h2>
+						<p class="lede">{lead.data.summary}</p>
+						<p class="lead-actions"><a class="btn" href={storyHref(lead.data)}><span>Read the story</span><Arrow /></a></p>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		rows.length > 0 && (
+			<section class="rows" aria-labelledby="rows-title">
+				<div class="wrap">
+					<p class="eyebrow">Three rooms</p>
+					<h2 id="rows-title" class="display display-md">Start where you are.</h2>
+					<div class="rows-grid">
+						{rows.map((c) => (
+							<div class="row-col">
+								<h3><a href={categoryHref(c.slug)}>{c.label}</a></h3>
+								<p class="row-blurb">{c.blurb}</p>
+								<ul>
+									{c.items.slice(0, 3).map((s) => (
+										<li>
+											<a href={storyHref(s.data)}>
+												<span class="row-title">{s.data.title}</span>
+												<span class="row-meta">{readLabel(s.data)}</span>
+											</a>
+										</li>
+									))}
+								</ul>
+								<a class="text-link" href={categoryHref(c.slug)}><span>More in {c.label}</span><Arrow /></a>
+							</div>
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="editor" aria-labelledby="editor-title">
+		<div class="wrap editor-inner">
+			<img src="/images/vase-olive.webp" alt="A speckled ceramic vase with an olive branch on a wooden table" width="473" height="385" loading="lazy" />
+			<div>
+				<p class="eyebrow">From the editor</p>
+				<h2 id="editor-title" class="display display-md">Written at a kitchen table, one story a week.</h2>
+				<p class="lede">{journal.editor_note || "Most stories start as something I tried for a few weeks, with the details that mattered kept in."}</p>
+				<p class="editor-sign">{journal.editor ? `${journal.editor}, editor` : ""}</p>
+				<a class="text-link" href="/about"><span>About the journal</span><Arrow /></a>
+			</div>
+		</div>
+	</section>
+
+	<section class="letter" aria-labelledby="letter-title">
+		<div class="wrap letter-inner">
+			<div class="letter-copy">
+				<p class="eyebrow">By email</p>
+				<h2 id="letter-title" class="display display-md">One short letter on the first Sunday of the month.</h2>
+				<p class="lede">{journal.newsletter_note}</p>
+				<p class="letter-actions">
+					<a class="btn" href="/contact?topic=newsletter"><span>Ask to join</span><Arrow /></a>
+					{journal.email && <a class="text-link" href={`mailto:${journal.email}?subject=Monthly%20letter`}><span>{journal.email}</span></a>}
+				</p>
+			</div>
+			<img class="letter-photo" src="/images/linen-olive.webp" alt="A striped linen towel with an olive sprig beside an open book" width="860" height="566" loading="lazy" />
+		</div>
+	</section>
+</Base>

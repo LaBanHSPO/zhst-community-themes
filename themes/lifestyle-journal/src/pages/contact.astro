@@ -1,0 +1,121 @@
+---
+import Base from "../layouts/Base.astro";
+import { TOPICS, getJournal } from "../lib/journal";
+
+const { journal, cacheHint } = await getJournal();
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+// ?topic=<slug> pre-selects a topic (the homepage letter link uses newsletter).
+const wanted = Astro.url.searchParams.get("topic");
+const selected = TOPICS.find((t) => t.slug === wanted);
+---
+
+<Base title="Contact" description="Write to the editor: share a ritual or walk, ask about a story, or ask to join the monthly email letter." current="/contact">
+	<div class="wrap contact">
+		<section aria-labelledby="contact-title">
+			<p class="eyebrow">Contact</p>
+			<h1 id="contact-title" class="display">Write to the editor.</h1>
+			<p class="lede">{journal.contact_note || "Send a note and the editor will reply by email."}</p>
+
+			<form
+				class="contact-form"
+				data-contact-form
+				data-email={journal.email}
+				action={journal.email ? `mailto:${journal.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field">
+						<label for="c-name">Your name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field full">
+						<label for="c-topic">What is it about?</label>
+						<select id="c-topic" name="topic" required>
+							<option value="" selected={!selected}>Choose a topic</option>
+							{TOPICS.map((t) => <option value={t.label} selected={selected?.slug === t.slug}>{t.label}</option>)}
+						</select>
+						<span class="field-error" data-error-for="c-topic"></span>
+					</div>
+					<div class="field full">
+						<label for="c-message">Your message</label>
+						<textarea id="c-message" name="message" rows="6" placeholder="A few lines is plenty." required></textarea>
+						<span class="field-error" data-error-for="c-message"></span>
+					</div>
+				</div>
+				<button class="btn btn-block" type="submit"><span>Send message</span></button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{journal.email && <>Write to <a href={`mailto:${journal.email}`}>{journal.email}</a> instead.</>}
+					</noscript>
+				</p>
+			</form>
+		</section>
+
+		<aside class="contact-side" aria-label="Direct contact">
+			<h2>Prefer plain email?</h2>
+			<p class="contact-email">{journal.email && <a href={`mailto:${journal.email}`}>{journal.email}</a>}</p>
+			{journal.response && <span class="small">{journal.response}</span>}
+			{journal.editor && <span class="small">Replies come from {journal.editor}{journal.base ? `, writing from ${journal.base}` : ""}.</span>}
+			<img src="/images/latte-table.webp" alt="A latte on a cork coaster beside an open scrapbook on a wooden table" width="760" height="430" loading="lazy" />
+		</aside>
+	</div>
+</Base>
+
+<script>
+	// Compose an email to the editor. Nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>("[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? input.tagName === "SELECT"
+							? "Please choose an option."
+							: "Please fill this in."
+						: input.getAttribute("type") === "email"
+							? "Please enter a valid email address."
+							: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online messages are not available right now.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const subject = get("topic");
+			const lines = ["Hello,", "", get("message"), "", `Name: ${get("name")}`, `Email: ${get("email")}`];
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+			status.textContent = "Your email app should open with this message ready to send. It is only sent when you send that email. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

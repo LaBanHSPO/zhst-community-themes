@@ -1,0 +1,26 @@
+---
+import { categoryLabel, photoAlt, photoSrc, readLabel, storyHref } from "../lib/journal";
+import type { Story } from "../lib/journal";
+
+interface Props {
+	story: { data: Story; edit: Record<string, Record<string, unknown>> };
+	/** "home" matches the designed homepage card (title on fixed line breaks, no summary). */
+	variant?: "home" | "grid";
+	eager?: boolean;
+}
+const { story, variant = "grid", eager = false } = Astro.props;
+const d = story.data;
+const src = photoSrc(d.image, d.photo);
+const homeLines = variant === "home" && d.title_lines ? d.title_lines.split("\n").map((l) => l.trim()).filter(Boolean) : [];
+const meta = [d.date_label, readLabel(d)].filter(Boolean).join("  ·  ");
+---
+
+<a class:list={["card", `card-${variant}`]} href={storyHref(d)}>
+	{src && <img src={src} alt={photoAlt(d.image, d.photo, d.title)} width="441" height="225" loading={eager ? "eager" : "lazy"} />}
+	<span class="card-cat">{categoryLabel(d.category)}</span>
+	<span class="card-title" {...story.edit.title}>
+		{homeLines.length > 0 ? homeLines.map((l) => <span class="card-line">{l}</span>) : d.title}
+	</span>
+	{variant === "grid" && <span class="card-excerpt">{d.summary}</span>}
+	{variant === "grid" && meta && <span class="card-meta">{meta}</span>}
+</a>

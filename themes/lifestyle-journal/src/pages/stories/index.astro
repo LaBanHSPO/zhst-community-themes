@@ -1,0 +1,79 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import StoryCard from "../../components/StoryCard.astro";
+import { CATEGORIES, PAGE_SIZE, getStories } from "../../lib/journal";
+
+const storiesResult = await getStories();
+if (Astro.cache?.enabled) Astro.cache.set(storiesResult.cacheHint);
+const all = storiesResult.entries;
+
+// One filter link per category that has at least one story, in a fixed order. Unknown values show everything.
+const categories = CATEGORIES.filter((c) => all.some((s) => s.data.category === c.slug));
+const active = categories.find((c) => c.slug === Astro.url.searchParams.get("category"));
+const filtered = active ? all.filter((s) => s.data.category === active.slug) : all;
+
+const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+const requested = Number.parseInt(Astro.url.searchParams.get("page") ?? "1", 10);
+const page = Number.isFinite(requested) ? Math.min(Math.max(requested, 1), pageCount) : 1;
+const stories = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+const pageHref = (n: number) => {
+	const params = new URLSearchParams();
+	if (active) params.set("category", active.slug);
+	if (n > 1) params.set("page", String(n));
+	const qs = params.toString();
+	return qs ? `/stories?${qs}` : "/stories";
+};
+const title = active ? active.label : "Stories";
+---
+
+<Base
+	title={active ? `${active.label} stories` : "Stories"}
+	description="Stories about home, wellbeing and travel. Each one says what to do, how long it takes and what it costs."
+	current={active ? undefined : "/stories"}
+>
+	<PageHead
+		id="stories-title"
+		eyebrow={active ? "Stories" : "The journal"}
+		title={active ? `${title}, one small step at a time.` : "Fresh stories for a more intentional life."}
+		intro={active ? active.blurb : "Home habits, short routines and walks worth taking. Each story says what to do, how long it takes and roughly what it costs."}
+	/>
+
+	<section class="section archive" aria-labelledby="stories-title">
+		<div class="wrap">
+			{
+				categories.length > 1 && (
+					<nav class="filter" aria-label="Filter by category">
+						<a href="/stories" aria-current={active ? undefined : "true"}>All</a>
+						{categories.map((c) => (
+							<a href={`/stories?category=${c.slug}`} aria-current={active?.slug === c.slug ? "true" : undefined}>{c.label}</a>
+						))}
+					</nav>
+				)
+			}
+			{
+				stories.length > 0 ? (
+					<ul class="story-grid">
+						{stories.map((s, i) => <li><StoryCard story={s} eager={i < 3} /></li>)}
+					</ul>
+				) : (
+					<p class="empty">No stories here yet.</p>
+				)
+			}
+			{
+				pageCount > 1 && (
+					<nav class="pager" aria-label="Pagination">
+						{page > 1 ? <a class="pager-step" href={pageHref(page - 1)} rel="prev">Previous</a> : <span class="pager-step is-off">Previous</span>}
+						<ol>
+							{Array.from({ length: pageCount }, (_, i) => i + 1).map((n) => (
+								<li><a href={pageHref(n)} aria-current={n === page ? "page" : undefined} aria-label={`Page ${n}`}>{n}</a></li>
+							))}
+						</ol>
+						{page < pageCount ? <a class="pager-step" href={pageHref(page + 1)} rel="next">Next</a> : <span class="pager-step is-off">Next</span>}
+					</nav>
+				)
+			}
+		</div>
+	</section>
+</Base>

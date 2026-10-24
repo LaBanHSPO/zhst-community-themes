@@ -1,0 +1,1691 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Lifestyle Journal",
+  "description": "A warm editorial lifestyle blog theme with a homepage hero, story archive with categories and pagination, story pages with related reading, search, an about page and a contact page, seeded with synthetic sample content.",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "The Lifestyle Journal",
+  "tagline": "Slower days. Richer moments."
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Small label above the title (also used in the footer)",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph",
+     "type": "text"
+    },
+    {
+     "slug": "image",
+     "label": "Side photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled side photo path",
+     "type": "string"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "stories",
+   "label": "Stories",
+   "labelSingular": "Story",
+   "urlPattern": "/stories/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "category",
+     "label": "Category",
+     "type": "select",
+     "required": true,
+     "indexed": true,
+     "defaultValue": "living",
+     "validation": {
+      "options": [
+       "living",
+       "wellbeing",
+       "travel"
+      ]
+     }
+    },
+    {
+     "slug": "date_label",
+     "label": "Date (as shown, e.g. 12 March 2026)",
+     "type": "string"
+    },
+    {
+     "slug": "read_minutes",
+     "label": "Reading time (minutes)",
+     "type": "integer"
+    },
+    {
+     "slug": "summary",
+     "label": "Summary (card text and search)",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "title_lines",
+     "label": "Homepage card title with line breaks (optional, one line per row)",
+     "type": "text"
+    },
+    {
+     "slug": "featured",
+     "label": "Show in the homepage cards",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "lead",
+     "label": "Use as the large featured story on the homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Cover photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled cover photo path",
+     "type": "string"
+    },
+    {
+     "slug": "inline_photo",
+     "label": "Bundled photo inside the story (path)",
+     "type": "string"
+    },
+    {
+     "slug": "inline_caption",
+     "label": "Caption for the photo inside the story",
+     "type": "string"
+    },
+    {
+     "slug": "inline_alt",
+     "label": "Alt text for the photo inside the story",
+     "type": "string"
+    },
+    {
+     "slug": "content",
+     "label": "Story",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "journal",
+   "label": "Journal details",
+   "labelSingular": "Journal details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Name shown in the footer",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "editor",
+     "label": "Editor",
+     "type": "string"
+    },
+    {
+     "slug": "base",
+     "label": "Based in",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Contact email",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "response",
+     "label": "Reply time (shown beside the contact form)",
+     "type": "string"
+    },
+    {
+     "slug": "contact_note",
+     "label": "Note shown beside the contact form",
+     "type": "text"
+    },
+    {
+     "slug": "editor_note",
+     "label": "About-the-editor note on the homepage",
+     "type": "text"
+    },
+    {
+     "slug": "newsletter_note",
+     "label": "Newsletter note on the homepage",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Home",
+     "url": "/"
+    },
+    {
+     "type": "custom",
+     "label": "Stories",
+     "url": "/stories"
+    },
+    {
+     "type": "custom",
+     "label": "Living",
+     "url": "/stories?category=living"
+    },
+    {
+     "type": "custom",
+     "label": "Travel",
+     "url": "/stories?category=travel"
+    },
+    {
+     "type": "custom",
+     "label": "About",
+     "url": "/about"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "A small journal about ordinary days.",
+     "eyebrow": "About",
+     "intro": "The Lifestyle Journal is written by Mara Ellison from a kitchen table on the east coast. It is a place for home habits, walks and small routines that are easy to keep.",
+     "photo": "/images/vase-olive.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k81",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I started the journal as a notebook in 2022, because I kept forgetting the small things that worked: the lemon in the water jug, the early bus, the way to wash a linen towel. Writing them down turned out to be the habit that stuck.",
+         "_key": "k81s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k82",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What you will find here",
+         "_key": "k82s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k83",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Stories about living at home, looking after yourself and getting out for a day or a weekend. Each one says what to do, how long it takes and roughly what it costs. If something did not work for me, I say so.",
+         "_key": "k83s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k84",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How a story gets written",
+         "_key": "k84s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k85",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I try the thing first, usually for a few weeks. I write it up while it is fresh, keep the details that mattered, and cut the advice I would not follow myself. Stories go out on Sunday mornings, about one a week.",
+         "_key": "k85s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k86",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Write to me",
+         "_key": "k86s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k87",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If you have a ritual that works for you, a favourite walk or a question about something I wrote, send me an email. I read everything and answer when I can. The contact page has the address and a short form that opens your email app.",
+         "_key": "k87s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "reading-and-credits",
+    "slug": "reading-and-credits",
+    "status": "published",
+    "data": {
+     "title": "Reading notes and photo credits",
+     "eyebrow": "Credits",
+     "intro": "How the journal is written, and where the photographs come from.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k88",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Every story is written by Mara Ellison unless it says otherwise. Prices and opening hours are checked on the day of writing and can change, so confirm them before you go.",
+         "_key": "k88s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k89",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Photographs",
+         "_key": "k89s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k90",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The photographs in this demo are illustrations created for the Lifestyle Journal theme. The people, places, books and signs shown are fictional. Replace them with your own images from the admin.",
+         "_key": "k90s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k91",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Names and places",
+         "_key": "k91s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k92",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Carrow Head and Little Marrow are invented places. The theme is a template, so the stories are sample content you can overwrite.",
+         "_key": "k92s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "stories": [
+   {
+    "id": "simple-home-rituals",
+    "slug": "simple-home-rituals",
+    "status": "published",
+    "data": {
+     "title": "Simple home rituals that make a big difference",
+     "category": "living",
+     "date_label": "2 March 2026",
+     "read_minutes": 5,
+     "summary": "Three habits that each take under ten minutes, cost nothing, and leave the kitchen easier to walk into the next day.",
+     "featured": true,
+     "lead": false,
+     "position": 10,
+     "photo": "/images/lemons.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "None of these need a free weekend or a shopping trip. I kept the three that survived a busy month in our own kitchen, and dropped the ones that needed willpower.",
+         "_key": "k1s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k2",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The ten-minute reset after dinner",
+         "_key": "k2s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Set a timer for ten minutes when the plates come off the table. In that time: dishes washed or loaded, counters wiped, the tea towel hung over the oven rail to dry, the sink empty. When the timer goes, stop, even if a pan is soaking. The point is a kitchen that looks calm when you come down for the kettle.",
+         "_key": "k3s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k4",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "One shelf on Sundays",
+         "_key": "k4s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k5",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Before you shop, take five minutes to clear one shelf of the fridge, not all of it. Wipe it, check dates, and put anything wilting to use: soft herbs into a jar of water, tired vegetables into a pot of soup. Next Sunday does a different shelf. After a month the whole fridge has been done without a single big clean.",
+         "_key": "k5s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k6",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Keep one thing within reach",
+         "_key": "k6s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k7",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A wooden bowl of lemons on the counter does more for a room than most decorations. Lemons keep about a week at room temperature, so top it up when two are left. Cut one into your water jug in the morning and the smell of the kitchen changes.",
+         "_key": "k7s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k8",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Pick one and stay with it",
+         "_key": "k8s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k9",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Choose a single habit and do it for two weeks before adding another. Most people who try all three at once drop all three by Thursday.",
+         "_key": "k9s"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "title_lines": "Simple home rituals\nthat make a big difference",
+     "inline_photo": "/images/linen-olive.webp",
+     "inline_caption": "A linen tea towel hung over the oven rail dries in under an hour.",
+     "inline_alt": "A striped linen cloth with an olive sprig"
+    }
+   },
+   {
+    "id": "days-off-the-beaten-path",
+    "slug": "days-off-the-beaten-path",
+    "status": "published",
+    "data": {
+     "title": "Finding more good days off the beaten path",
+     "category": "travel",
+     "date_label": "20 February 2026",
+     "read_minutes": 7,
+     "summary": "How to plan a coastal walking weekend around the second path, the early bus and one fixed plan per day.",
+     "featured": true,
+     "lead": false,
+     "position": 20,
+     "photo": "/images/coast.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k10",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The best days of the trip I took last autumn were the ones I had not planned very hard. They did have a shape, though. Here is the shape.",
+         "_key": "k10s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k11",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Choose the second path",
+         "_key": "k11s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k12",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Every headland has a famous viewpoint with a car park. Look at the map for the next track along, usually a mile or two further, with no signs and half the people. On the Carrow Head walk that was the cliff track behind the old lifeboat shed, not the lighthouse loop.",
+         "_key": "k12s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k13",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Go early and check the tide table",
+         "_key": "k13s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k14",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Be on the path by nine. The light is flatter at midday and the paths fill up by eleven. Print or screenshot the tide table for the day: two of the best coves on that coast are only reachable at low water, and the sea comes back faster than you expect.",
+         "_key": "k14s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k15",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "One fixed thing per day",
+         "_key": "k15s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k16",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Book exactly one thing each day: a lunch table, a ferry, a small museum with opening hours. Leave everything else loose. A single fixed point keeps the day from drifting without making it feel like a timetable.",
+         "_key": "k16s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k17",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to carry",
+         "_key": "k17s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k18",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A litre and a half of water each, a flask, a paper map, a waterproof that packs small, and cash for the village shop. The last bus out of Carrow Head left at 5:40 when we were there. Check yours before you set off, not at the end of the walk.",
+         "_key": "k18s"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "title_lines": "Finding more good\ndays off the beaten path",
+     "inline_photo": "/images/latte-table.webp",
+     "inline_caption": "Coffee and notes at the end of the second day.",
+     "inline_alt": "A latte on a cork coaster beside an open book"
+    }
+   },
+   {
+    "id": "small-steps-for-a-brighter-tomorrow",
+    "slug": "small-steps-for-a-brighter-tomorrow",
+    "status": "published",
+    "data": {
+     "title": "Small steps for a brighter tomorrow",
+     "category": "wellbeing",
+     "date_label": "6 February 2026",
+     "read_minutes": 4,
+     "summary": "A four-minute notebook habit with three lines each night, and a rule for the days you skip.",
+     "featured": true,
+     "lead": false,
+     "position": 30,
+     "photo": "/images/notebook.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k19",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I tried several evening routines and kept the one that fit on a single page. It takes about four minutes with a plain notebook and whatever pen is nearest.",
+         "_key": "k19s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k20",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The three lines",
+         "_key": "k20s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k21",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Each night, write one thing that went fine today, one thing to move to tomorrow, and one small thing to look forward to. Short sentences are enough. 'The bus was on time.' 'Ring the dentist.' 'Soup for lunch.'",
+         "_key": "k21s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k22",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Make it easy to start",
+         "_key": "k22s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k23",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Keep the notebook and pen on your pillow or on top of your phone charger, so you meet them before you meet the screen. An A5 notebook with a lay-flat spine is easier to write in than a small one that keeps closing.",
+         "_key": "k23s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k24",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to do when you miss a night",
+         "_key": "k24s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k25",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Skip it. Do not write two days at once the next evening. The habit works because each entry is small, and catching up turns it into homework. After three weeks I started noticing the 'went fine' lines were longer than the 'move to tomorrow' ones.",
+         "_key": "k25s"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "title_lines": "Small steps for a\nbrighter tomorrow"
+    }
+   },
+   {
+    "id": "a-slow-morning-with-a-good-cup",
+    "slug": "a-slow-morning-with-a-good-cup",
+    "status": "published",
+    "data": {
+     "title": "A slow morning with a good cup",
+     "category": "living",
+     "date_label": "23 January 2026",
+     "read_minutes": 4,
+     "summary": "Set the cup out the night before, keep the phone in another room, and take twenty minutes before the day starts.",
+     "featured": false,
+     "lead": false,
+     "position": 40,
+     "photo": "/images/latte-table.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k26",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A slow morning does not need an early alarm. It needs the first twenty minutes to belong to you and a cup worth sitting with.",
+         "_key": "k26s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k27",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Set it up the night before",
+         "_key": "k27s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k28",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Fill the kettle, put the grinder and filter on the counter, and take a cup out of the cupboard. Nothing is hard in the morning when the last decision was made the evening before.",
+         "_key": "k28s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k29",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A simple pour-over",
+         "_key": "k29s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k30",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Use 15 grams of coffee for 250 grams of water, just off the boil. Wet the grounds, wait thirty seconds, then pour in slow circles. The whole thing takes about three minutes. A basic hand grinder costs around forty dollars and makes a bigger difference to the taste than the coffee itself.",
+         "_key": "k30s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k31",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Leave the phone charging elsewhere",
+         "_key": "k31s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k32",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Charge it in the hallway or the kitchen, not by the bed. If you need an alarm, buy a simple clock for ten dollars. Then sit at the window and finish the cup before you open anything. It does not need to be meditation. It is just a cup.",
+         "_key": "k32s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "keep-a-travel-scrapbook",
+    "slug": "keep-a-travel-scrapbook",
+    "status": "published",
+    "data": {
+     "title": "How to keep a travel scrapbook you will finish",
+     "category": "travel",
+     "date_label": "9 January 2026",
+     "read_minutes": 6,
+     "summary": "A small kit, a two-line evening habit and a three-evening plan to finish the book within two weeks of getting home.",
+     "featured": false,
+     "lead": true,
+     "position": 50,
+     "photo": "/images/open-book.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k33",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Most scrapbooks stall because they are saved for a quiet weekend that never arrives. This approach spreads the work across the trip and finishes it in three evenings after you are back.",
+         "_key": "k33s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k34",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The pocket kit",
+         "_key": "k34s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k35",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A glue stick, a roll of paper tape, a pencil, a flat envelope and a hardbound A5 book with heavy paper, around 120 gsm, so nothing wrinkles. The whole kit fits in a coat pocket.",
+         "_key": "k35s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k36",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Collect flat things",
+         "_key": "k36s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k37",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Tickets, receipts, a menu, a map folded in four, a leaf from the path. Put them in the envelope as you go. If you want to press a flower, check that it is not protected where you are, then keep it between book pages for two weeks.",
+         "_key": "k37s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k38",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Two lines each evening",
+         "_key": "k38s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k39",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Write the date, the place and two lines: one thing you saw, one thing you ate. Do it before dinner, while the day is still clear. Stick nothing in yet.",
+         "_key": "k39s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k40",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Three evenings at home",
+         "_key": "k40s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k41",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Evening one: sort the envelope into days. Evening two: print five or six photographs at postcard size and stick everything down. Evening three: add the captions from your notes. Done within two weeks, before the details fade.",
+         "_key": "k41s"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "inline_photo": "/images/scrapbook.webp",
+     "inline_caption": "One print per spread is plenty. Leave the white space.",
+     "inline_alt": "A scrapbook open beside a latte and an olive branch"
+    }
+   },
+   {
+    "id": "looking-after-linen-towels",
+    "slug": "looking-after-linen-towels",
+    "status": "published",
+    "data": {
+     "title": "Looking after linen towels so they last",
+     "category": "living",
+     "date_label": "12 December 2025",
+     "read_minutes": 5,
+     "summary": "Wash at 40, skip the softener, dry on a line and fold in thirds. A short routine for towels that get better with age.",
+     "featured": false,
+     "lead": false,
+     "position": 60,
+     "photo": "/images/linen-olive.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k42",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Linen feels rough for the first few washes and then turns soft. It also lasts for many years if you do a few small things.",
+         "_key": "k42s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k43",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Washing",
+         "_key": "k43s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k44",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Wash at 40 degrees on a normal cycle with a mild detergent. Skip fabric softener: it coats the fibres, makes the towel less absorbent and does nothing linen needs. Do not overfill the drum. Linen needs room to move.",
+         "_key": "k44s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k45",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Drying",
+         "_key": "k45s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k46",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Shake each towel out before you hang it and dry on a line if you can. If you use a tumble dryer, take the towels out while they are still slightly damp and finish them on the rail. Over-drying is what makes linen brittle.",
+         "_key": "k46s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k47",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Folding and storing",
+         "_key": "k47s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k48",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Fold in thirds lengthways, then in half. Store flat with a sprig of dried lavender or a cedar block if you have one. Do not iron unless you want a crisp tablecloth. Creases fall out on their own.",
+         "_key": "k48s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k49",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Small mends",
+         "_key": "k49s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k50",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "When a hem frays, a few stitches in matching thread fix it in ten minutes. Do it right away and a small mend does not turn into a hole.",
+         "_key": "k50s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "a-reading-corner-in-forty-minutes",
+    "slug": "a-reading-corner-in-forty-minutes",
+    "status": "published",
+    "data": {
+     "title": "A reading corner in forty minutes",
+     "category": "wellbeing",
+     "date_label": "28 November 2025",
+     "read_minutes": 5,
+     "summary": "A chair, a warm lamp, a small table and a stack of no more than three books. What each piece costs and why it works.",
+     "featured": false,
+     "lead": false,
+     "position": 70,
+     "photo": "/images/table-wide.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k51",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You do not need a spare room to read more. You need one spot that is always ready, and a reason to sit there for twenty minutes after dinner.",
+         "_key": "k51s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k52",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The chair and the light",
+         "_key": "k52s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k53",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Choose a chair you already own, with arms and a straight back. Put it near a window if you can. For evenings, a lamp with a warm bulb (look for 2700K on the box) at shoulder height costs about twenty-five dollars and is kinder to the eyes than the ceiling light.",
+         "_key": "k53s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k54",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A table at elbow height",
+         "_key": "k54s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k55",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A small side table or even a stool holds a mug and the current book. Keep a coaster on it so you never have to think about rings on the wood.",
+         "_key": "k55s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k56",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Three books at most",
+         "_key": "k56s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k57",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Stack the book you are reading, the next one, and one you can open anywhere. More than that and the corner becomes a pile. Return the rest to the shelf each Sunday.",
+         "_key": "k57s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k58",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The only rule",
+         "_key": "k58s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k59",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The phone stays in another room. Twenty minutes is plenty. After a month you will have finished more books than you did in the previous six.",
+         "_key": "k59s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "fresh-flowers-on-a-small-budget",
+    "slug": "fresh-flowers-on-a-small-budget",
+    "status": "published",
+    "data": {
+     "title": "Fresh flowers on a small budget",
+     "category": "living",
+     "date_label": "14 November 2025",
+     "read_minutes": 4,
+     "summary": "Buy one bunch, cut the stems at an angle, use a clean jar and change the water every two days.",
+     "featured": false,
+     "lead": false,
+     "position": 80,
+     "photo": "/images/flowers-sign.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k60",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Flowers do not need to be expensive to make a room feel lived in. A single jar of white blossom on the table does as much as an arrangement three times the price.",
+         "_key": "k60s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k61",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to buy",
+         "_key": "k61s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k62",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Choose one kind of flower, not a mixed bouquet. A market bunch of ten stems usually costs less than eight dollars. If the stems are tight, buds that are only just opening, the flowers will last longer. Supermarket herbs such as mint and parsley look good in a jar and smell better than flowers.",
+         "_key": "k62s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k63",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How to keep them",
+         "_key": "k63s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k64",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Cut about two centimetres off each stem at an angle, strip any leaves that would sit below the waterline, and use a jar you have washed. Change the water every two days. Keep them away from the fruit bowl, because ripening fruit gives off a gas that ages flowers faster.",
+         "_key": "k64s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k65",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How long they last",
+         "_key": "k65s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k66",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A jar of white blossom lasts about a week with this care. When a few stems start to droop, take them out and keep the best ones in a smaller glass for a few days longer.",
+         "_key": "k66s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "ninety-seconds-to-a-better-morning",
+    "slug": "ninety-seconds-to-a-better-morning",
+    "status": "published",
+    "data": {
+     "title": "Ninety seconds to a better morning",
+     "category": "wellbeing",
+     "date_label": "30 October 2025",
+     "read_minutes": 4,
+     "summary": "Make the bed, open the window and put a mug within reach. A short sequence that makes the room nicer to wake in.",
+     "featured": false,
+     "lead": false,
+     "position": 90,
+     "photo": "/images/bedside.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k67",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Making the bed takes ninety seconds and changes how the whole room feels. I used to skip it. Now I would not.",
+         "_key": "k67s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k68",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The sequence",
+         "_key": "k68s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k69",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Open the window first, even in winter, for ten minutes. Pull the duvet up and flatten it with your hand. Put one pillow in front of the other. Fold the throw over the foot of the bed. That is all.",
+         "_key": "k69s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k70",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Sheets",
+         "_key": "k70s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k71",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Wash sheets every week if you can, every two weeks at the outside. Two sets means one is always clean and you are never waiting for the dryer.",
+         "_key": "k71s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k72",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The mug",
+         "_key": "k72s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k73",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Put a mug on the bedside table the night before, with a tea bag or a spoon of coffee already in it. In the morning you only need the kettle. It is a tiny thing and it is the one people tell me they kept.",
+         "_key": "k73s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "a-coastal-village-in-february",
+    "slug": "a-coastal-village-in-february",
+    "status": "published",
+    "data": {
+     "title": "A coastal village in February",
+     "category": "travel",
+     "date_label": "16 October 2025",
+     "read_minutes": 6,
+     "summary": "What to expect from a seaside village in the off season: shorter opening hours, lower prices, and room to walk.",
+     "featured": false,
+     "lead": false,
+     "position": 100,
+     "photo": "/images/village.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k74",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We went to Little Marrow in the last week of February, mostly because the room was a third cheaper than in July. We stayed for the quiet.",
+         "_key": "k74s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k75",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What is closed",
+         "_key": "k75s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k76",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Most cafes shut on Mondays and Tuesdays. The pottery stayed open by appointment only. The one bakery opened at eight and sold out by eleven. Check opening hours the day before and have a plan for lunch.",
+         "_key": "k76s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k77",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to pack",
+         "_key": "k77s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k78",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A waterproof coat, a flask, a hat that stays on in wind, and boots that cope with mud. Pack one dry pair of socks in a bag in your rucksack. Use the hour before sunset for the beach, when the light is low and the sand is firm.",
+         "_key": "k78s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k79",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What you get in return",
+         "_key": "k79s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k80",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Empty paths, a fire in the pub, rooms with sea views at winter prices and a table by the window without booking. We walked eleven miles in three days and passed fewer than twenty people.",
+         "_key": "k80s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "journal": [
+   {
+    "id": "journal",
+    "slug": "journal",
+    "status": "published",
+    "data": {
+     "title": "The Lifestyle Journal",
+     "editor": "Mara Ellison",
+     "base": "the east coast",
+     "email": "hello@lifestyle-journal.example",
+     "response": "I read everything and reply within a week.",
+     "contact_note": "Tell me about a ritual that works for you, a walk worth sharing, or a question about a story. Messages are read by the editor.",
+     "editor_note": "I write the journal from a kitchen table by a window. Most stories start as something I tried for a few weeks, with the details that mattered kept in.",
+     "newsletter_note": "The best of the month's stories, one recipe and one walk, in a single email. Send a note and I will add you by hand."
+    }
+   }
+  ]
+ }
+}

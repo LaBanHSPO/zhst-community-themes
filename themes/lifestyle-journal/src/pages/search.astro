@@ -1,0 +1,65 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import StoryCard from "../components/StoryCard.astro";
+import { CATEGORIES, categoryHref, categoryLabel, getStories } from "../lib/journal";
+
+const storiesResult = await getStories();
+if (Astro.cache?.enabled) Astro.cache.set(storiesResult.cacheHint);
+
+// Server-side search over titles, summaries and category names. Every word has to match.
+const q = (Astro.url.searchParams.get("q") ?? "").trim().slice(0, 100);
+const words = q.toLowerCase().split(/\s+/).filter(Boolean);
+const results =
+	words.length === 0
+		? []
+		: storiesResult.entries.filter((s) => {
+				const hay = `${s.data.title} ${s.data.summary} ${categoryLabel(s.data.category)}`.toLowerCase();
+				return words.every((w) => hay.includes(w));
+			});
+---
+
+<Base
+	title={q ? `Search: ${q}` : "Search"}
+	description="Search the journal by title or topic."
+	current="/search"
+>
+	<PageHead id="search-title" eyebrow="Search" title="Find a story." intro="Search titles and summaries. Try a word such as linen, coast, notebook or flowers." />
+
+	<section class="section archive" aria-labelledby="search-title">
+		<div class="wrap">
+			<form class="search-form" role="search" action="/search" method="get">
+				<label for="q" class="eyebrow">Search the journal</label>
+				<div class="search-row">
+					<input id="q" name="q" type="search" value={q} placeholder="Search stories" autocomplete="off" />
+					<button class="btn" type="submit"><span>Search</span></button>
+				</div>
+			</form>
+			{
+				q && (
+					<p class="search-count" role="status">
+						{results.length === 0 ? `No stories match "${q}".` : `${results.length} ${results.length === 1 ? "story matches" : "stories match"} "${q}".`}
+					</p>
+				)
+			}
+			{
+				results.length > 0 && (
+					<ul class="story-grid">
+						{results.map((s, i) => <li><StoryCard story={s} eager={i < 3} /></li>)}
+					</ul>
+				)
+			}
+			{
+				results.length === 0 && (
+					<div class="search-help">
+						<p class="eyebrow">Browse instead</p>
+						<ul class="filter-list">
+							{CATEGORIES.map((c) => <li><a href={categoryHref(c.slug)}>{c.label}</a></li>)}
+							<li><a href="/stories">All stories</a></li>
+						</ul>
+					</div>
+				)
+			}
+		</div>
+	</section>
+</Base>

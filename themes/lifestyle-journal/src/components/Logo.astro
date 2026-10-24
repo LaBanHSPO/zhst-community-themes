@@ -1,0 +1,37 @@
+---
+/** Wordmark: olive sprig, a small "The" above the serif site title. */
+interface Props {
+	title: string;
+	logo?: { url?: string; alt?: string } | null;
+	class?: string;
+}
+const { title, logo, class: className } = Astro.props;
+const small = /^the\s+/i.test(title) ? title.match(/^the/i)![0] : "";
+const main = small ? title.replace(/^the\s+/i, "") : title;
+---
+
+<a class:list={["wordmark", className]} href="/" aria-label={`${title}, home`}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt || title} />
+		) : (
+			<>
+				<svg class="sprig" width="40" height="54" viewBox="0 0 40 54" aria-hidden="true" focusable="false">
+					<g fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M17 52C15 42 16 30 22 17c1.5-3.4 3.2-6.4 5-9" />
+						<path d="M16.4 44.5c-4.6-.4-8.4-3.4-9.6-8 4.4.1 8.3 3 9.6 8Z" fill="currentColor" fill-opacity=".85" />
+						<path d="M16.2 36.6c3.6-3.4 8.4-4.2 12.2-2.4-2.4 3.7-7.4 4.6-12.2 2.4Z" fill="currentColor" fill-opacity=".85" />
+						<path d="M17.6 29.4c-4.2-1.6-6.8-5.4-6.8-9.6 4.2 1.1 7 4.8 6.8 9.6Z" fill="currentColor" fill-opacity=".85" />
+						<path d="M19.6 22.6c3.4-3.6 8.2-4.6 12.2-3-2.2 4-7.2 5.2-12.2 3Z" fill="currentColor" fill-opacity=".85" />
+						<path d="M22 15.6c-3.2-2.4-4.6-6.4-3.6-10.2 3.6 2 5 6 3.6 10.2Z" fill="currentColor" fill-opacity=".85" />
+						<path d="M25.2 10.4c1.2-3.2 4.2-5.6 7.8-6-.2 3.8-3.4 6.6-7.8 6Z" fill="currentColor" fill-opacity=".85" />
+					</g>
+				</svg>
+				<span class="wordmark-text">
+					{small && <span class="wordmark-the">{small}</span>}
+					<span class="wordmark-title">{main}</span>
+				</span>
+			</>
+		)
+	}
+</a>

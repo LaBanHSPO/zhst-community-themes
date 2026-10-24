@@ -1,0 +1,41 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { photoAlt, photoSrc } from "../lib/journal";
+
+const [{ entry: page, cacheHint }, settings] = await Promise.all([getEmDashEntry("pages", "about"), getSiteSettings()]);
+if (!page) return Astro.rewrite("/404");
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" });
+const src = photoSrc(page.data.image, page.data.photo);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? page.data.intro}
+	canonical={seo.canonical}
+	content={{ collection: "pages", id: page.data.id, slug: "about" }}
+	current="/about"
+>
+	<PageHead eyebrow={page.data.eyebrow} title={page.data.title} intro={page.data.intro} edit={{ ...page.edit.title }} />
+	<div class="wrap about-grid">
+		<div class="prose">
+			<PortableText value={page.data.content} />
+			<p class="page-cta" style="width: auto; margin-top: 28px"><a class="btn" href="/contact"><span>Write to the editor</span><Arrow /></a></p>
+		</div>
+		{
+			src && (
+				<figure class="about-photo">
+					<img src={src} alt={photoAlt(page.data.image, page.data.photo, "A ceramic vase with an olive branch")} width="488" height="430" />
+					<figcaption>The kitchen table where most stories get written</figcaption>
+				</figure>
+			)
+		}
+	</div>
+</Base>

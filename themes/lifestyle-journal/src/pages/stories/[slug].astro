@@ -1,0 +1,94 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import StoryCard from "../../components/StoryCard.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { categoryHref, categoryLabel, getJournal, getStories, photoAlt, photoSrc, readLabel } from "../../lib/journal";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: story, cacheHint } = await getEmDashEntry("stories", slug);
+if (!story) return Astro.rewrite("/404");
+
+const [allResult, journalResult, settings] = await Promise.all([getStories(), getJournal(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(journalResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(story, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const d = story.data;
+const cover = photoSrc(d.image, d.photo);
+const blocks = d.content ?? [];
+// The in-story photo sits after the first section, before the second heading.
+const splitAt = d.inline_photo ? Math.max(blocks.findIndex((b, i) => i > 1 && b.style === "h2"), 0) : 0;
+const before = splitAt > 0 ? blocks.slice(0, splitAt) : blocks;
+const after = splitAt > 0 ? blocks.slice(splitAt) : [];
+const sameCategory = allResult.entries.filter((s) => s.data.id !== d.id && s.data.category === d.category);
+const others = [...sameCategory, ...allResult.entries.filter((s) => s.data.id !== d.id && s.data.category !== d.category)].slice(0, 3);
+const { journal } = journalResult;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "stories", id: d.id, slug }}
+	current="/stories"
+>
+	<header class="article-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/stories">Stories</a>
+				<span aria-hidden="true">/</span>
+				<a href={categoryHref(d.category)}>{categoryLabel(d.category)}</a>
+			</nav>
+			<h1 class="display" {...story.edit.title}>{d.title}</h1>
+			<p class="byline">
+				{journal.editor && <span>By {journal.editor}</span>}
+				{d.date_label && <span>{d.date_label}</span>}
+				{readLabel(d) && <span>{readLabel(d)}</span>}
+			</p>
+			{cover && <div class="article-cover"><img src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="1200" height="620" fetchpriority="high" /></div>}
+		</div>
+	</header>
+
+	<section class="article-body">
+		<p class="article-summary">{d.summary}</p>
+		{blocks.length > 0 && <div class="prose"><PortableText value={before} /></div>}
+		{
+			d.inline_photo && (
+				<figure class="article-photo">
+					<img src={d.inline_photo} alt={d.inline_alt || photoAlt(null, d.inline_photo, "")} width="1190" height="780" loading="lazy" />
+					{d.inline_caption && <figcaption>{d.inline_caption}</figcaption>}
+				</figure>
+			)
+		}
+		{after.length > 0 && <div class="prose"><PortableText value={after} /></div>}
+		<p class="article-end"><a class="text-link" href={categoryHref(d.category)}><span>More in {categoryLabel(d.category)}</span><Arrow /></a></p>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="more" aria-labelledby="more-title">
+				<div class="wrap">
+					<p class="eyebrow">Keep reading</p>
+					<h2 id="more-title" class="display display-md" style="margin-bottom: 36px">More stories.</h2>
+					<ul class="story-grid">
+						{others.map((s) => <li><StoryCard story={s} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+</Base>

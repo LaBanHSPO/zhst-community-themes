@@ -1,0 +1,183 @@
+---
+import { getEmDashCollection, getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import "@fontsource-variable/newsreader/opsz.css";
+import "@fontsource-variable/newsreader/opsz-italic.css";
+import "@fontsource-variable/hanken-grotesk/wght.css";
+import Logo from "../components/Logo.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { CATEGORIES, getJournal } from "../lib/journal";
+import "../styles/theme.css";
+
+interface Props {
+	title: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	/** Pass content reference for plugin page contributions on content pages */
+	content?: { collection: string; id: string; slug?: string | null };
+	/** Force which primary-menu URL is marked current. */
+	current?: string;
+}
+
+const { title, pageTitle, description, image, canonical, content, current } = Astro.props;
+const [settingsResult, menuResult, journalResult, pagesResult] = await Promise.all([
+	getSiteSettingsWithCacheHint(),
+	getMenuWithCacheHint("primary"),
+	getJournal(),
+	getEmDashCollection("pages", { limit: 20 }),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(settingsResult.cacheHint);
+	Astro.cache.set(menuResult.cacheHint);
+	Astro.cache.set(journalResult.cacheHint);
+	Astro.cache.set(pagesResult.cacheHint);
+}
+
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(settingsResult.data);
+const titleIncludesSiteName = title === siteTitle || title.endsWith(` | ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} | ${siteTitle}`;
+const pageDescription = description ?? `${siteTitle}. ${siteTagline}`;
+const navItems = menuResult.data?.items ?? [];
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const norm = (url: string) => url.replace(/\/$/, "") || "/";
+const { journal } = journalResult;
+
+// CMS pages that are not in the primary menu are linked from the footer.
+const menuPaths = new Set(navItems.map((i) => norm(i.url.split("?")[0])));
+const extraPages = pagesResult.entries
+	.map((p) => ({ url: `/${p.data.slug ?? p.data.id}`, label: p.data.eyebrow || p.data.title }))
+	.filter((p) => !menuPaths.has(p.url));
+
+// A menu item is current when its path matches and, for /stories, its ?category= matches too.
+const activeCategory = path === "/stories" ? Astro.url.searchParams.get("category") : null;
+const itemMatches = (url: string) => {
+	const [p, q = ""] = url.split("?");
+	if (norm(p) !== path) return false;
+	return (new URLSearchParams(q).get("category") ?? null) === activeCategory;
+};
+const currentUrl =
+	current ??
+	navItems.find((i) => itemMatches(i.url))?.url ??
+	navItems.find((i) => norm(i.url.split("?")[0]) === path && !i.url.includes("?"))?.url;
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description: pageDescription,
+	canonical,
+	image,
+	content,
+	siteName: siteTitle,
+});
+const year = new Intl.DateTimeFormat("en-GB", { year: "numeric", timeZone: "Asia/Saigon" }).format(new Date());
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{fullTitle}</title>
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<header class="site-head">
+			<div class="head-inner">
+				<Logo title={siteTitle} logo={siteLogo} class="head-logo" />
+				<nav class="nav" aria-label="Primary">
+					{
+						navItems.map((item) => (
+							<a
+								href={item.url}
+								target={item.target}
+								rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+								aria-current={item.url === currentUrl ? "page" : undefined}
+							>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+				<div class="head-tools">
+					<a class="search-link" href="/search" aria-label="Search the journal">
+						<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+							<circle cx="10.5" cy="10.5" r="7.2" fill="none" stroke="currentColor" stroke-width="1.4" />
+							<path d="M15.8 15.8L22 22" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+						</svg>
+					</a>
+					<details class="mobile-nav">
+						<summary aria-label="Menu">
+							<svg class="burger" width="22" height="14" viewBox="0 0 22 14" aria-hidden="true" focusable="false">
+								<path d="M0 1h22M0 7h22M0 13h22" stroke="currentColor" stroke-width="1.5" />
+							</svg>
+							<svg class="close" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+								<path d="M1 1l14 14M15 1L1 15" stroke="currentColor" stroke-width="1.5" />
+							</svg>
+						</summary>
+						<nav class="mobile-panel" aria-label="Primary (mobile)">
+							{
+								navItems.map((item) => (
+									<a href={item.url} aria-current={item.url === currentUrl ? "page" : undefined}>
+										{item.label}
+									</a>
+								))
+							}
+							<a href="/stories?category=wellbeing">Wellbeing</a>
+							<a href="/search">Search</a>
+							{journal.email && <a class="mobile-contact" href={`mailto:${journal.email}`}>{journal.email}</a>}
+						</nav>
+					</details>
+				</div>
+			</div>
+		</header>
+
+		<main id="main">
+			<slot />
+		</main>
+
+		<footer class="site-foot">
+			<div class="wrap foot-inner">
+				<div class="foot-brand">
+					<Logo title={siteTitle} logo={siteLogo} />
+					<p>Slow-living notes on home, wellbeing and travel, one story a week.</p>
+				</div>
+				<div>
+					<h2 class="eyebrow">Stories</h2>
+					<ul class="foot-links">
+						<li><a href="/stories">All stories</a></li>
+						{CATEGORIES.map((c) => <li><a href={`/stories?category=${c.slug}`}>{c.label}</a></li>)}
+						<li><a href="/search">Search</a></li>
+					</ul>
+				</div>
+				<div>
+					<h2 class="eyebrow">The journal</h2>
+					<ul class="foot-links">
+						<li><a href="/about">About</a></li>
+						<li><a href="/contact">Contact</a></li>
+						{extraPages.map((p) => <li><a href={p.url}>{p.label}</a></li>)}
+					</ul>
+				</div>
+				<div class="foot-contact">
+					<h2 class="eyebrow">Write to the editor</h2>
+					{journal.email && <a href={`mailto:${journal.email}`}>{journal.email}</a>}
+					{journal.response && <span>{journal.response}</span>}
+				</div>
+			</div>
+			<div class="wrap foot-bottom">
+				<span>© {year} {journal.title || siteTitle}</span>
+				<span>Built with EmDash</span>
+			</div>
+		</footer>
+
+		<EmDashBodyEnd page={pageCtx} />
+	</body>
+</html>
