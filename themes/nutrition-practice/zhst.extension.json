@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "id": "nutrition-practice",
+  "kind": "theme",
+  "name": "Nutrition Practice",
+  "type": "bio",
+  "emdash": "1.2.0",
+  "entry": "themes/nutrition-practice",
+  "capabilities": {
+    "pwa": false,
+    "publicItems": true,
+    "inquiry": true,
+    "booking": false,
+    "checkout": false,
+    "map": false,
+    "whatsapp": false
+  }
+}

@@ -1,0 +1,24 @@
+---
+import type { Service } from "../../emdash-env";
+import Arrow from "./Arrow.astro";
+import { serviceHref } from "../lib/practice";
+
+/** One line of the price list on the home page. */
+interface Props {
+	service: { data: Service; edit?: Record<string, any> };
+}
+const { service } = Astro.props;
+const d = service.data;
+---
+
+<li class="price-row">
+	<a href={serviceHref(d)}>
+		<span class="price-row-name" {...service.edit?.title}>{d.title}</span>
+		<span class="price-row-text">{d.summary}</span>
+		<span class="price-row-meta">
+			{d.length && <span>{d.length.split(",")[0]}</span>}
+			{d.price_label && <strong>{d.price_label}</strong>}
+		</span>
+		<Arrow />
+	</a>
+</li>

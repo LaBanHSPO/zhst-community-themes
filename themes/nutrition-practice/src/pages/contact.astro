@@ -1,0 +1,193 @@
+---
+import Base from "../layouts/Base.astro";
+import { getPractice, getServices, telHref } from "../lib/practice";
+
+const [{ practice, cacheHint }, servicesResult] = await Promise.all([getPractice(), getServices()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(servicesResult.cacheHint);
+}
+
+const options = [
+	...servicesResult.entries.map((s) => ({ value: s.data.slug ?? s.data.id, label: s.data.title })),
+	{ value: "not-sure", label: "Not sure yet" },
+];
+// ?service=<slug> pre-selects a service (links from the services pages).
+const wanted = Astro.url.searchParams.get("service");
+const selected = options.find((o) => o.value === wanted);
+---
+
+<Base title="Get started" description="Ask NourishWay for a nutrition consultation: choose a service, say what you would like help with and when suits you. This form is for requests only. Email and phone are always listed.">
+	<div class="contact">
+		<section class="contact-panel" aria-labelledby="contact-title">
+			<p class="eyebrow">Get started</p>
+			<h1 id="contact-title" class="display display-xl">Request a consultation.</h1>
+			<p class="lede">Choose what you are interested in and tell Nora what you would like help with. She replies within one to two working days to find a time.</p>
+
+			<div class="notice" role="note">
+				<strong>Requests only.</strong>{" "}
+				{practice.contact_note ?? "This form is for consultation requests only. Please leave out medical details."}
+				<span class="notice-strong">For urgent health problems, contact your doctor or your local emergency number.</span>
+			</div>
+
+			<form
+				class="contact-form"
+				data-contact-form
+				data-email={practice.email}
+				action={practice.email ? `mailto:${practice.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field">
+						<label for="c-name">Your name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field">
+						<label for="c-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field">
+						<label for="c-service">What are you interested in?</label>
+						<select id="c-service" name="service" required>
+							<option value="" selected={!selected}>Choose an option</option>
+							{options.map((o) => <option value={o.value} selected={selected?.value === o.value}>{o.label}</option>)}
+						</select>
+						<span class="field-error" data-error-for="c-service"></span>
+					</div>
+					<div class="field">
+						<label for="c-day">Preferred day <span class="optional">(optional)</span></label>
+						<select id="c-day" name="day">
+							<option value="">No preference</option>
+							<option>Monday</option>
+							<option>Tuesday</option>
+							<option>Wednesday</option>
+							<option>Thursday</option>
+							<option>Friday</option>
+						</select>
+					</div>
+					<div class="field">
+						<label for="c-time">Preferred time <span class="optional">(optional)</span></label>
+						<select id="c-time" name="time">
+							<option value="">No preference</option>
+							<option>Morning (9 to 12)</option>
+							<option>Afternoon (12 to 5)</option>
+							<option>Early evening (5 to 7)</option>
+						</select>
+					</div>
+					<div class="field full">
+						<label for="c-format">How would you like to meet? <span class="optional">(optional)</span></label>
+						<select id="c-format" name="format">
+							<option value="">No preference</option>
+							<option value="Video call">Video call</option>
+							<option value="In person in Fernhill">In person in Fernhill</option>
+						</select>
+					</div>
+					<div class="field full">
+						<label for="c-goals">What would you like help with?</label>
+						<textarea id="c-goals" name="goals" rows="5" maxlength="500" placeholder="For example: easier weeknight dinners, feeding two kids, or planning a week of lunches. Please leave out medical details." required></textarea>
+						<span class="field-error" data-error-for="c-goals"></span>
+					</div>
+				</div>
+				<button class="btn btn-green btn-block" type="submit"><span>Send consultation request</span></button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{practice.email && <>Write to <a href={`mailto:${practice.email}`}>{practice.email}</a> with your name, what you are interested in and the days that suit you.</>}
+					</noscript>
+				</p>
+			</form>
+		</section>
+
+		<aside class="contact-aside">
+			<img
+				src="/images/nutritionist-portrait.webp"
+				alt="Nora resting her chin on one hand at a kitchen counter with kale, carrots, radishes, a lemon and an avocado in front of her"
+				width="690"
+				height="1017"
+			/>
+			<div class="contact-details">
+				<h2>Prefer to write directly?</h2>
+				<p class="detail-line">
+					{practice.email && <a href={`mailto:${practice.email}`}>{practice.email}</a>}
+					{practice.phone && <a href={telHref(practice.phone)}>{practice.phone}</a>}
+					{practice.base && <span>{practice.base}</span>}
+				</p>
+				{practice.response && <p class="small">{practice.response}</p>}
+			</div>
+		</aside>
+	</div>
+</Base>
+
+<script>
+	// Compose an email to the practice; nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>("[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? input.tagName === "SELECT"
+							? "Please choose an option."
+							: "Please fill this in."
+						: input.getAttribute("type") === "email"
+							? "Please enter a valid email address."
+							: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online requests are not available right now. Please call instead.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const select = form.querySelector<HTMLSelectElement>("#c-service");
+			const serviceLabel = select?.selectedOptions[0]?.textContent ?? "";
+			const subject = `Consultation request: ${get("name")}`;
+			const body = [
+				"Hello Nora,",
+				"",
+				"I would like to request a consultation.",
+				"",
+				`Interested in: ${serviceLabel}`,
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				get("day") ? `Preferred day: ${get("day")}` : "",
+				get("time") ? `Preferred time: ${get("time")}` : "",
+				get("format") ? `Preferred format: ${get("format")}` : "",
+				"",
+				get("goals"),
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this request ready to send. It is only sent when you send that email. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

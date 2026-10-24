@@ -1,0 +1,2817 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Nutrition Practice",
+    "description": "A bright, warm nutritionist theme: a full-bleed photo hero with a handwritten note, three approach points, how working together goes, services, a resource library of articles, recipes and guides, an About page and a consultation request page, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "NourishWay",
+    "tagline": "Nutrition Practice"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro line",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "services",
+      "label": "Services",
+      "labelSingular": "Service",
+      "urlPattern": "/services/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Service name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "best_for",
+          "label": "Best for (short phrase)",
+          "type": "string"
+        },
+        {
+          "slug": "format",
+          "label": "Format (video, in person)",
+          "type": "string"
+        },
+        {
+          "slug": "length",
+          "label": "Length",
+          "type": "string"
+        },
+        {
+          "slug": "price_label",
+          "label": "Price shown (e.g. From $95)",
+          "type": "string"
+        },
+        {
+          "slug": "includes",
+          "label": "What is included (one item per line)",
+          "type": "text"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Description",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "resources",
+      "label": "Resources",
+      "labelSingular": "Resource",
+      "urlPattern": "/resources/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "Short summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "category",
+          "label": "Type (articles, recipes or guides)",
+          "type": "string"
+        },
+        {
+          "slug": "facts",
+          "label": "Quick facts (e.g. Serves 4. 35 minutes.)",
+          "type": "string"
+        },
+        {
+          "slug": "date_label",
+          "label": "Date shown (e.g. 14 October 2026)",
+          "type": "string"
+        },
+        {
+          "slug": "read_minutes",
+          "label": "Reading time in minutes",
+          "type": "integer"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order (newest first)",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Body",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "principles",
+      "label": "Approach",
+      "labelSingular": "Approach point",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Text (a line break splits it)",
+          "type": "text"
+        },
+        {
+          "slug": "icon",
+          "label": "Icon (leaf, bowl or heart)",
+          "type": "string"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "steps",
+      "label": "How it works",
+      "labelSingular": "Step",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "when_label",
+          "label": "When it happens (e.g. Week one)",
+          "type": "string"
+        },
+        {
+          "slug": "text",
+          "label": "Text",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "practice",
+      "label": "Practice details",
+      "labelSingular": "Practice details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Nutritionist name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "base",
+          "label": "Based in",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Email for requests",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "response",
+          "label": "Reply time (shown beside the form)",
+          "type": "text"
+        },
+        {
+          "slug": "contact_note",
+          "label": "Note shown above the form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        },
+        {
+          "type": "custom",
+          "label": "Services",
+          "url": "/services"
+        },
+        {
+          "type": "custom",
+          "label": "Resources",
+          "url": "/resources"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "Meet your nutritionist",
+          "eyebrow": "About",
+          "intro": "Hello, I'm Nora. I work with people on the everyday side of eating, one change at a time.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I started NourishWay because most of the food advice I came across was either too vague to use or too strict to last. People do not need a list of rules. They need someone to look at their actual week and help them make a few sensible changes.",
+                  "_key": "s2"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "That is how I work. In a first consultation I ask what you cook, what you buy and what gets in the way. Then we pick one or two small things to try, and we see how they go.",
+                  "_key": "s4"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How I work",
+                  "_key": "s6"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I do not count calories with clients, and I do not hand out meal plans that ask you to cook five new dishes a week. I look at the habits you already have and where a small change would help. We keep what works and drop what does not.",
+                  "_key": "s8"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sessions are relaxed and practical. Bring your shopping list, a photo of your fridge or a recipe you keep meaning to try. If it is part of your week, it is worth talking about.",
+                  "_key": "s10"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What I can and cannot help with",
+                  "_key": "s12"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I can help with everyday eating: planning meals, shopping, cooking for a family, eating more vegetables and fitting food around work or school. I do not diagnose or treat medical conditions, and nothing I say replaces advice from your doctor.",
+                  "_key": "s14"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you have a health condition, please check with your doctor or dietitian first. I am happy to work alongside what they recommend.",
+                  "_key": "s16"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Where we can meet",
+                  "_key": "s18"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sessions are by video call, or in person in Fernhill. Family sessions can take place at your home. Requests usually get a reply within one to two working days.",
+                  "_key": "s20"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "good-to-know",
+        "slug": "good-to-know",
+        "status": "published",
+        "data": {
+          "title": "What nutrition guidance is, and is not",
+          "eyebrow": "Good to know",
+          "intro": "A short, plain note on what to expect, and what to take to your doctor instead.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Nutrition guidance at NourishWay is about everyday food: what to buy, how to cook it and how to fit it around your week. It is a conversation with someone who listens, not a prescription.",
+                  "_key": "s22"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What it is",
+                  "_key": "s24"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Practical help with planning meals, shopping and cooking",
+                  "_key": "s26"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Ideas for feeding a household with different ages and tastes",
+                  "_key": "s28"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Small, specific changes that you choose and can adjust",
+                  "_key": "s30"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Regular check-ins so the plan keeps up with your life",
+                  "_key": "s32"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k33",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What it is not",
+                  "_key": "s34"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k35",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Medical advice, diagnosis or treatment",
+                  "_key": "s36"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k37",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A replacement for your doctor, dietitian or other health professional",
+                  "_key": "s38"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k39",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Help with eating disorders, which need specialist care",
+                  "_key": "s40"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k41",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A promise of any particular result on the scale or in a blood test",
+                  "_key": "s42"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k43",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When to see someone else first",
+                  "_key": "s44"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k45",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you are pregnant, are managing a health condition, take regular medication, or have been told to follow a particular eating plan, please talk to your doctor or dietitian before changing how you eat. If you are worried about your relationship with food, your doctor is a good first call.",
+                  "_key": "s46"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k47",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This website and the consultation request form are not for urgent health problems. In an emergency, call your local emergency number.",
+                  "_key": "s48"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "services": [
+      {
+        "id": "initial-consultation",
+        "slug": "initial-consultation",
+        "status": "published",
+        "data": {
+          "title": "Initial consultation",
+          "summary": "A first 60-minute conversation about how you eat now, what your week looks like and what you would like to change.",
+          "best_for": "Anyone starting out, or starting again",
+          "format": "Video call, or in person in Fernhill",
+          "length": "60 minutes, plus a short form beforehand",
+          "price_label": "From $95",
+          "includes": "A short intake form to fill in before we meet (about ten minutes)\nOne hour to talk through meals, shopping, cooking and your schedule\nA written summary of two or three next steps, sent within two working days\nOne follow-up question by email in the week after",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/nutritionist-counter.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k49",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The first consultation is where we get to know each other. You tell me what a normal week of eating looks like, including the rushed lunches and whatever you reach for at four o'clock. I ask questions, mostly about your routine, your budget and what you enjoy cooking.",
+                  "_key": "s50"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k51",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Before we meet",
+                  "_key": "s52"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k53",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "You get a short form by email. It asks who you cook for, how many meals you make at home and any foods you avoid. It also has space to say what you want from the sessions. Please leave out medical details.",
+                  "_key": "s54"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k55",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "During the hour",
+                  "_key": "s56"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k57",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We go through a typical day, then pick one or two things that seem worth changing. Nothing is a rule. By the end you should know what you will try first.",
+                  "_key": "s58"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k59",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Afterwards",
+                  "_key": "s60"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k61",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I send a summary of two or three next steps within two working days, and you can email one question in the week that follows. If you want to carry on, the next step is a follow-up session. There is no commitment to book more.",
+                  "_key": "s62"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "follow-up-sessions",
+        "slug": "follow-up-sessions",
+        "status": "published",
+        "data": {
+          "title": "Follow-up sessions",
+          "summary": "Short check-ins to look at what worked, what did not and what to try next.",
+          "best_for": "People who have had an initial consultation",
+          "format": "Video call or phone, or in person in Fernhill",
+          "length": "40 minutes, usually every two to four weeks",
+          "price_label": "From $65 per session",
+          "includes": "Time to go over the last few weeks: what you tried and what got in the way\nSmall changes to your plan, not a new plan each time\nRecipe, swap and shopping ideas that match the time you really have\nA short email with notes after each session",
+          "featured": true,
+          "position": 20,
+          "photo": "/images/resource-carafe.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k63",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most changes need a few tries before they fit. Follow-up sessions are where we look at how the last couple of weeks went and decide what to keep.",
+                  "_key": "s64"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k65",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What a session looks like",
+                  "_key": "s66"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k67",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "You start by telling me what you tried. We talk about what was easy, what was awkward and what you skipped. Then we change one or two things and leave the rest alone.",
+                  "_key": "s68"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k69",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How often",
+                  "_key": "s70"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k71",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most people book every two to four weeks at the start and then space the sessions out. You decide when you have had enough. Sessions are booked one at a time, so there is nothing to cancel.",
+                  "_key": "s72"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "family-nutrition",
+        "slug": "family-nutrition",
+        "status": "published",
+        "data": {
+          "title": "Family nutrition",
+          "summary": "Practical help for households feeding different ages and tastes, with meals everyone can sit down to.",
+          "best_for": "Parents and carers feeding a mixed table",
+          "format": "At your home in Fernhill, or by video",
+          "length": "75 minutes",
+          "price_label": "From $120",
+          "includes": "A conversation with the adults, with children welcome to join for part of it\nIdeas for lunchboxes, dinners and snacks that suit different ages\nA shopping list for one week of meals\nOne or two mealtime habits to try, such as keeping a new food on the table without pressure",
+          "featured": true,
+          "position": 30,
+          "photo": "/images/resource-veg.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k73",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Feeding a family means feeding several people with different appetites. This session looks at how your household eats now and finds a few changes that will not start an argument at dinner.",
+                  "_key": "s74"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k75",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we cover",
+                  "_key": "s76"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k77",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We go through the week: breakfasts on the run, packed lunches, the dinner that has to work for a toddler and a teenager. I will suggest swaps and shortcuts that use food you already buy.",
+                  "_key": "s78"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k79",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "At home or online",
+                  "_key": "s80"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k81",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you are in Fernhill I can visit, which lets us look at the fridge and cupboards together. Otherwise we can meet by video. Children are welcome to listen in, and can leave when they are bored.",
+                  "_key": "s82"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "meal-planning-support",
+        "slug": "meal-planning-support",
+        "status": "published",
+        "data": {
+          "title": "Meal planning support",
+          "summary": "Four weeks of help turning a few meals you like into a plan you can shop for and cook.",
+          "best_for": "People who want help with the weekly routine",
+          "format": "Video call, with plans shared by email",
+          "length": "4 weeks, with two 30-minute calls",
+          "price_label": "From $240",
+          "includes": "A call at the start to choose meals and set a shopping day\nFour weekly plans, each with a shopping list\nA short call in week three to adjust what is not working\nEmail questions answered during the four weeks",
+          "featured": false,
+          "position": 40,
+          "photo": "/images/resource-notebook.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k83",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Planning is the part of eating well that many people find hardest. This package is four weeks of support to build a simple routine: which meals, which shopping day and what to do when plans fall apart.",
+                  "_key": "s84"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k85",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How the four weeks run",
+                  "_key": "s86"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k87",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We start with a call to pick meals you already like and decide when you shop and cook. Each week I send a plan with a shopping list. In week three we have a second call to fix whatever is not working.",
+                  "_key": "s88"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k89",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What you keep",
+                  "_key": "s90"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k91",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "At the end you have four weeks of plans and lists, and a routine you can repeat. Many people reuse the same plans every month with small changes.",
+                  "_key": "s92"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "id": "a-plain-guide-to-reading-a-food-label",
+        "slug": "a-plain-guide-to-reading-a-food-label",
+        "status": "published",
+        "data": {
+          "title": "A plain guide to reading a food label",
+          "summary": "Four lines worth checking on a label, and a few you can skip without feeling guilty.",
+          "category": "articles",
+          "date_label": "14 October 2026",
+          "read_minutes": 4,
+          "featured": true,
+          "position": 10,
+          "photo": "/images/resource-carafe.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k93",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Labels are written by lawyers and marketing teams, not for tired people in a hurry. You do not need to read all of it. Four lines cover most of what I am asked about.",
+                  "_key": "s94"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k95",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Start with the ingredient list",
+                  "_key": "s96"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k97",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Ingredients are listed from most to least by weight. If the first three are things you would find in a kitchen, such as oats, tomatoes or milk, that is a good sign. A long list is not automatically bad. Bread can have eight ingredients and still be ordinary bread.",
+                  "_key": "s98"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k99",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Check the serving size",
+                  "_key": "s100"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k101",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Every number on the panel refers to the serving size at the top. A bag of crisps may list a serving as 28 grams, which is a small handful. If you eat the whole bag, multiply. This catches out more people than anything else on the label.",
+                  "_key": "s102"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k103",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Compare sugar and salt per 100 grams",
+                  "_key": "s104"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k105",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Many sauces, cereals and yogurts hold more sugar or salt than you would guess. Compare two products per 100 grams rather than per serving, since serving sizes differ between brands. You are after a rough sense, not a perfect score.",
+                  "_key": "s106"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k107",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Ignore the front of the pack",
+                  "_key": "s108"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k109",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Words like natural, light and wholesome are not measurements. The back of the pack is where the facts are.",
+                  "_key": "s110"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k111",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you would like help with this in your own cupboard, bring two or three labels to a consultation and we will go through them together.",
+                  "_key": "s112"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "kale-and-white-bean-soup",
+        "slug": "kale-and-white-bean-soup",
+        "status": "published",
+        "data": {
+          "title": "Kale and white bean soup",
+          "summary": "A thick, plain soup from one onion, two tins of beans and a bunch of kale. It is better the next day.",
+          "category": "recipes",
+          "facts": "Serves 4. About 35 minutes.",
+          "date_label": "8 October 2026",
+          "featured": true,
+          "position": 20,
+          "photo": "/images/resource-kale.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k113",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Ingredients",
+                  "_key": "s114"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k115",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "1 tablespoon olive oil",
+                  "_key": "s116"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k117",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "1 onion, chopped",
+                  "_key": "s118"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k119",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "1 carrot, diced",
+                  "_key": "s120"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k121",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "2 garlic cloves, sliced",
+                  "_key": "s122"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k123",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "1 litre vegetable stock",
+                  "_key": "s124"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k125",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "2 tins of white beans, drained",
+                  "_key": "s126"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k127",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "1 bunch of kale, stems removed and leaves torn",
+                  "_key": "s128"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k129",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Juice of half a lemon",
+                  "_key": "s130"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k131",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Salt and pepper",
+                  "_key": "s132"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k133",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Method",
+                  "_key": "s134"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k135",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Warm the oil in a large pot. Cook the onion and carrot for 8 minutes, until soft.",
+                  "_key": "s136"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "number",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k137",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Add the garlic for a minute, then the stock and the beans. Simmer for 15 minutes.",
+                  "_key": "s138"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "number",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k139",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Mash a few beans against the side of the pot to thicken the soup.",
+                  "_key": "s140"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "number",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k141",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Stir in the kale and cook for 5 minutes more.",
+                  "_key": "s142"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "number",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k143",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Add the lemon juice, then salt and pepper to taste.",
+                  "_key": "s144"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "number",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k145",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The soup keeps in the fridge for three days. Add a splash of water when you reheat it.",
+                  "_key": "s146"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "breakfast-does-not-have-to-be-a-big-deal",
+        "slug": "breakfast-does-not-have-to-be-a-big-deal",
+        "status": "published",
+        "data": {
+          "title": "Breakfast does not have to be a big deal",
+          "summary": "If a full breakfast is not realistic on a weekday, a smaller one that you will actually eat is a fine place to start.",
+          "category": "articles",
+          "date_label": "30 September 2026",
+          "read_minutes": 3,
+          "featured": true,
+          "position": 30,
+          "photo": "/images/resource-berries.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k147",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Plenty of people tell me they should eat a proper breakfast and never do. The word proper is the problem. It conjures up eggs, toast and fruit, which nobody has time for on a Tuesday.",
+                  "_key": "s148"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k149",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Pick something you will actually eat",
+                  "_key": "s150"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k151",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Breakfast can be a boiled egg and an apple, yogurt with oats stirred in, or last night's rice with a fried egg on top. What matters is that it happens often enough to become a habit, and that you like it.",
+                  "_key": "s152"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k153",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Make it the night before",
+                  "_key": "s154"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k155",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Overnight oats, a pot of chopped fruit and a bag of nuts all take five minutes in the evening. Morning you does not have to make any decisions.",
+                  "_key": "s156"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k157",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you are not hungry yet",
+                  "_key": "s158"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k159",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Some people are simply not hungry at seven. That is fine. Take something small for mid-morning, such as a banana or a cheese sandwich, and eat it when you do get hungry. Breakfast does not have to happen at home.",
+                  "_key": "s160"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k161",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Try two mornings a week and see how it goes. You can add a third later if it feels easy.",
+                  "_key": "s162"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "roasted-carrots-with-lemon-yogurt",
+        "slug": "roasted-carrots-with-lemon-yogurt",
+        "status": "published",
+        "data": {
+          "title": "Roasted carrots with lemon yogurt",
+          "summary": "Carrots roasted until the edges brown, on a cool, sharp yogurt. Good with rice, flatbread or a fried egg.",
+          "category": "recipes",
+          "facts": "Serves 2 as a side. 35 minutes.",
+          "date_label": "21 September 2026",
+          "featured": false,
+          "position": 40,
+          "photo": "/images/resource-veg.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k163",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Ingredients",
+                  "_key": "s164"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k165",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "500 g carrots, halved lengthways",
+                  "_key": "s166"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k167",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "1 tablespoon olive oil",
+                  "_key": "s168"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k169",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "1 teaspoon cumin seeds",
+                  "_key": "s170"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k171",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "150 g plain yogurt",
+                  "_key": "s172"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k173",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Zest and juice of half a lemon",
+                  "_key": "s174"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k175",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A small handful of parsley or coriander",
+                  "_key": "s176"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k177",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Salt",
+                  "_key": "s178"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k179",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Method",
+                  "_key": "s180"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k181",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Heat the oven to 220 C. Toss the carrots on a tray with the oil, cumin and a pinch of salt.",
+                  "_key": "s182"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "number",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k183",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Roast for 25 minutes, turning once, until browned at the edges.",
+                  "_key": "s184"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "number",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k185",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Stir the lemon zest, juice and a pinch of salt into the yogurt.",
+                  "_key": "s186"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "number",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k187",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Spread the yogurt on a plate, pile the carrots on top and scatter over the herbs.",
+                  "_key": "s188"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "number",
+              "level": 1
+            }
+          ]
+        }
+      },
+      {
+        "id": "eating-well-on-a-grocery-budget",
+        "slug": "eating-well-on-a-grocery-budget",
+        "status": "published",
+        "data": {
+          "title": "Eating well on a grocery budget",
+          "summary": "Frozen vegetables, tinned beans and a short list. Where the money is best spent and where it can stay in your pocket.",
+          "category": "articles",
+          "date_label": "12 September 2026",
+          "read_minutes": 4,
+          "featured": false,
+          "position": 50,
+          "photo": "/images/resource-bowl.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k189",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Use frozen and tinned",
+                  "_key": "s190"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k191",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Frozen peas, spinach and berries are picked and frozen quickly and keep for months, which means less ends up in the bin. Tinned beans, lentils, tomatoes and fish are cheap and stretch a meal.",
+                  "_key": "s192"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k193",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Buy fewer things you will use more often",
+                  "_key": "s194"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k195",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A trip with twelve items that all get used beats a trolley of twenty-five that half get thrown away. Write the list around three or four dinners, then add the breakfasts and lunches you already know you eat.",
+                  "_key": "s196"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k197",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Cook once, eat twice",
+                  "_key": "s198"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k199",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A pot of chilli or a tray of roast vegetables makes two meals. The second one costs only the reheating.",
+                  "_key": "s200"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k201",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Where it is fine to cut back",
+                  "_key": "s202"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k203",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Branded health products, pre-cut vegetables and snack bars usually cost more than the plain version. Whole oats, a block of cheese and a bag of carrots do the same job for less.",
+                  "_key": "s204"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k205",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you would like help building a list around your own budget, meal planning support is made for exactly that.",
+                  "_key": "s206"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "tomato-basil-and-chickpea-bowl",
+        "slug": "tomato-basil-and-chickpea-bowl",
+        "status": "published",
+        "data": {
+          "title": "Tomato, basil and chickpea bowl",
+          "summary": "A quick lunch from the cupboard and the fruit bowl, with ripe tomatoes doing most of the work.",
+          "category": "recipes",
+          "facts": "Serves 2. 15 minutes.",
+          "date_label": "3 September 2026",
+          "featured": false,
+          "position": 60,
+          "photo": "/images/resource-tomato.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k207",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Ingredients",
+                  "_key": "s208"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k209",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "1 tin of chickpeas, drained",
+                  "_key": "s210"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k211",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "300 g ripe tomatoes, chopped",
+                  "_key": "s212"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k213",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "1 small red onion, thinly sliced",
+                  "_key": "s214"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k215",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A handful of basil leaves",
+                  "_key": "s216"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k217",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "2 tablespoons olive oil",
+                  "_key": "s218"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k219",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "1 tablespoon red wine vinegar",
+                  "_key": "s220"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k221",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "1 avocado, sliced",
+                  "_key": "s222"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k223",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Salt and pepper",
+                  "_key": "s224"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k225",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Cooked rice or bread, to serve",
+                  "_key": "s226"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k227",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Method",
+                  "_key": "s228"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k229",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Soak the onion in the vinegar for 10 minutes while you chop everything else.",
+                  "_key": "s230"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "number",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k231",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Mix the chickpeas and tomatoes with the oil, a good pinch of salt and some pepper.",
+                  "_key": "s232"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "number",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k233",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Add the onion and vinegar, then tear in the basil.",
+                  "_key": "s234"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "number",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k235",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Serve over rice or with bread, with the avocado on top.",
+                  "_key": "s236"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "number",
+              "level": 1
+            }
+          ]
+        }
+      },
+      {
+        "id": "a-one-week-shopping-list-to-start-from",
+        "slug": "a-one-week-shopping-list-to-start-from",
+        "status": "published",
+        "data": {
+          "title": "A one-week shopping list to start from",
+          "summary": "A basic list for a week of simple meals, with swaps so you can change it to suit your household.",
+          "category": "guides",
+          "facts": "One page. Fits a household of two.",
+          "date_label": "20 August 2026",
+          "read_minutes": 3,
+          "featured": false,
+          "position": 70,
+          "photo": "/images/resource-notebook.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k237",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This is a starting list, not a prescription. Cross things off, swap them for what you like and double the amounts for a bigger household.",
+                  "_key": "s238"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k239",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Fresh",
+                  "_key": "s240"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k241",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Onions, garlic and a lemon",
+                  "_key": "s242"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k243",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Carrots, a head of broccoli and a bag of leafy greens",
+                  "_key": "s244"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k245",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Six tomatoes and two avocados",
+                  "_key": "s246"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k247",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Apples or bananas for the week",
+                  "_key": "s248"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k249",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A bunch of herbs, such as parsley or basil",
+                  "_key": "s250"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k251",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Fridge and freezer",
+                  "_key": "s252"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k253",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Plain yogurt and a block of cheese",
+                  "_key": "s254"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k255",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Six eggs",
+                  "_key": "s256"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k257",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A bag of frozen peas and a bag of frozen berries",
+                  "_key": "s258"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k259",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "One protein for two dinners, such as chicken thighs, fish or tofu",
+                  "_key": "s260"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k261",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Cupboard",
+                  "_key": "s262"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k263",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Rice or pasta",
+                  "_key": "s264"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k265",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Two tins of beans or chickpeas",
+                  "_key": "s266"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k267",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A tin of chopped tomatoes",
+                  "_key": "s268"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k269",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Oats",
+                  "_key": "s270"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k271",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Bread or wraps",
+                  "_key": "s272"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k273",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Swaps",
+                  "_key": "s274"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k275",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Use whatever greens are cheapest this week. Swap chicken for lentils on a meat-free night. Replace rice with potatoes or couscous if that is what you have.",
+                  "_key": "s276"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "stocking-a-simple-pantry",
+        "slug": "stocking-a-simple-pantry",
+        "status": "published",
+        "data": {
+          "title": "Stocking a simple pantry",
+          "summary": "Twelve cupboard items that turn into dinner when the fridge is nearly empty.",
+          "category": "guides",
+          "facts": "One page. Twelve items.",
+          "date_label": "6 August 2026",
+          "read_minutes": 3,
+          "featured": false,
+          "position": 80,
+          "photo": "/images/resource-berries.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k277",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A pantry does not need to be big. These twelve items cover a surprising number of meals, and most keep for months.",
+                  "_key": "s278"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k279",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The twelve",
+                  "_key": "s280"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k281",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Olive oil and a bottle of vinegar",
+                  "_key": "s282"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k283",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Salt, black pepper and one spice you like, such as cumin or paprika",
+                  "_key": "s284"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k285",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Rice and pasta",
+                  "_key": "s286"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k287",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Rolled oats",
+                  "_key": "s288"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k289",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Tinned chickpeas and tinned white beans",
+                  "_key": "s290"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k291",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Tinned tomatoes",
+                  "_key": "s292"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k293",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Tinned fish, such as sardines or tuna",
+                  "_key": "s294"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k295",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Dried lentils",
+                  "_key": "s296"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k297",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Stock cubes or powder",
+                  "_key": "s298"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k299",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Peanut butter or another nut butter",
+                  "_key": "s300"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k301",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Onions and garlic, which keep well in a cool, dry place",
+                  "_key": "s302"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k303",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Frozen vegetables, which count even though they live in the freezer",
+                  "_key": "s304"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k305",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Three dinners from the list",
+                  "_key": "s306"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k307",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Pasta with tinned tomatoes, garlic and a tin of sardines. Lentil soup with onion and stock. Rice with chickpeas, frozen peas and whatever spice you chose.",
+                  "_key": "s308"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "principles": [
+      {
+        "id": "personalized-guidance",
+        "slug": "personalized-guidance",
+        "status": "published",
+        "data": {
+          "title": "Personalized Guidance",
+          "text": "Nutrition plans tailored\nto your life.",
+          "icon": "leaf",
+          "position": 10
+        }
+      },
+      {
+        "id": "sustainable-habits",
+        "slug": "sustainable-habits",
+        "status": "published",
+        "data": {
+          "title": "Sustainable Habits",
+          "text": "Simple, realistic steps\nthat last.",
+          "icon": "bowl",
+          "position": 20
+        }
+      },
+      {
+        "id": "healthier-happier-you",
+        "slug": "healthier-happier-you",
+        "status": "published",
+        "data": {
+          "title": "A Healthier, Happier You",
+          "text": "Feel good in your everyday\nlife.",
+          "icon": "heart",
+          "position": 30
+        }
+      }
+    ],
+    "steps": [
+      {
+        "id": "first-consultation",
+        "slug": "first-consultation",
+        "status": "published",
+        "data": {
+          "title": "A first consultation",
+          "when_label": "Week one",
+          "text": "An hour to talk about how you eat now, who you cook for and what you would like to change. You fill in a short form first, so we spend the time talking.",
+          "position": 10
+        }
+      },
+      {
+        "id": "a-plan-that-fits",
+        "slug": "a-plan-that-fits",
+        "status": "published",
+        "data": {
+          "title": "A plan that fits",
+          "when_label": "Within two working days",
+          "text": "You get a short written summary with two or three changes to try. They are small and specific, like adding a vegetable to lunch, not a new way of eating.",
+          "position": 20
+        }
+      },
+      {
+        "id": "check-ins",
+        "slug": "check-ins",
+        "status": "published",
+        "data": {
+          "title": "Check-ins",
+          "when_label": "Every two to four weeks",
+          "text": "Forty minutes to look at what worked and what did not. We adjust the plan to fit your real weeks, and we stop when you feel you no longer need the sessions.",
+          "position": 30
+        }
+      }
+    ],
+    "practice": [
+      {
+        "id": "nora",
+        "slug": "nora",
+        "status": "published",
+        "data": {
+          "title": "Nora Bell",
+          "base": "Fernhill, and online",
+          "phone": "(555) 010-0172",
+          "email": "hello@nourishway.example",
+          "response": "Nora reads every request herself. Replies usually take one to two working days.",
+          "contact_note": "Tell Nora what you would like help with. This form is for consultation requests only, so please leave out medical details."
+        }
+      }
+    ]
+  }
+}

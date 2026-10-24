@@ -1,0 +1,59 @@
+---
+import Base from "../../layouts/Base.astro";
+import BookingBand from "../../components/BookingBand.astro";
+import PageHead from "../../components/PageHead.astro";
+import ResourceCard from "../../components/ResourceCard.astro";
+import { CATEGORIES, getPractice, getResources } from "../../lib/practice";
+
+const [resourcesResult, practiceResult] = await Promise.all([getResources(), getPractice()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(resourcesResult.cacheHint);
+	Astro.cache.set(practiceResult.cacheHint);
+}
+const all = resourcesResult.entries;
+
+// One filter link per type that has at least one entry, in a fixed order.
+const categories = CATEGORIES.filter((c) => all.some((r) => r.data.category === c.slug));
+// ?category=<slug> narrows the list to one type.
+const active = categories.find((c) => c.slug === Astro.url.searchParams.get("category"));
+const resources = active ? all.filter((r) => r.data.category === active.slug) : all;
+---
+
+<Base
+	title={active ? active.label : "Resources"}
+	description="Everyday nutrition articles, simple recipes and one-page guides from NourishWay. General information, not medical advice."
+	current="/resources"
+>
+	<PageHead
+		id="resources-title"
+		eyebrow="Resources"
+		title={active ? `${active.label} for everyday eating.` : "Recipes, articles and guides."}
+		intro="Plain, practical pieces on shopping, cooking and everyday eating. They are general information, not medical advice."
+	/>
+
+	<section class="list-section" aria-labelledby="resources-title">
+		<div class="wrap">
+			{
+				categories.length > 1 && (
+					<nav class="filter" aria-label="Filter by type">
+						<a href="/resources" aria-current={active ? undefined : "true"}>All</a>
+						{categories.map((c) => (
+							<a href={`/resources?category=${c.slug}`} aria-current={active?.slug === c.slug ? "true" : undefined}>{c.label}</a>
+						))}
+					</nav>
+				)
+			}
+			{
+				resources.length > 0 ? (
+					<ul class="res-grid">
+						{resources.map((r, i) => <li><ResourceCard resource={r} eager={i < 3} /></li>)}
+					</ul>
+				) : (
+					<p class="empty-note">Nothing here yet. New pieces are on their way.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<BookingBand practice={practiceResult.practice} />
+</Base>

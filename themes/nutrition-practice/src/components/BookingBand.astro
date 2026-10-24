@@ -1,0 +1,30 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref } from "../lib/practice";
+import type { PracticeData } from "../lib/practice";
+
+interface Props {
+	practice: PracticeData;
+}
+const { practice } = Astro.props;
+---
+
+<section class="booking" aria-labelledby="booking-title">
+	<div class="wrap booking-inner">
+		<div class="booking-copy">
+			<p class="eyebrow">Get started</p>
+			<h2 id="booking-title" class="display">Start with one conversation.</h2>
+			<p class="booking-text">
+				Send a consultation request and say what you would like help with. Nora replies within one to two working days to find a time.
+				No medical details needed, and no commitment to book more.
+			</p>
+		</div>
+		<div class="booking-actions">
+			<a class="btn btn-light" href="/contact"><span>Request a consultation</span><Arrow /></a>
+			<p class="booking-contact">
+				{practice.email && <a href={`mailto:${practice.email}`}>{practice.email}</a>}
+				{practice.phone && <a href={telHref(practice.phone)}>{practice.phone}</a>}
+			</p>
+		</div>
+	</div>
+</section>
