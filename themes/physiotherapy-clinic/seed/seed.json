@@ -1,0 +1,1044 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Physiotherapy Clinic",
+  "description": "A bright physiotherapy clinic theme: a photo hero, service columns, a first-visit guide, a services collection, an about page with team, and an appointment request page, seeded with synthetic sample content.",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "MoveWell",
+  "tagline": "Physiotherapy Clinic"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Eyebrow",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText"
+    }
+   ],
+   "urlPattern": "/{slug}"
+  },
+  {
+   "slug": "services",
+   "label": "Services",
+   "labelSingular": "Service",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "summary",
+     "label": "Summary",
+     "type": "text"
+    },
+    {
+     "slug": "best_for",
+     "label": "Who it is for",
+     "type": "string"
+    },
+    {
+     "slug": "length",
+     "label": "Typical length",
+     "type": "string"
+    },
+    {
+     "slug": "price",
+     "label": "Price",
+     "type": "string"
+    },
+    {
+     "slug": "visit",
+     "label": "What a session involves (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "how_to_book",
+     "label": "How to book",
+     "type": "text"
+    },
+    {
+     "slug": "tile_text",
+     "label": "Home tile text (two lines)",
+     "type": "text"
+    },
+    {
+     "slug": "icon",
+     "label": "Icon",
+     "type": "string"
+    },
+    {
+     "slug": "featured",
+     "label": "Show on home page",
+     "type": "boolean"
+    },
+    {
+     "slug": "position",
+     "label": "Order",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Image",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText"
+    }
+   ],
+   "urlPattern": "/services/{slug}"
+  },
+  {
+   "slug": "team",
+   "label": "Team",
+   "labelSingular": "Team member",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "role",
+     "label": "Role",
+     "type": "string"
+    },
+    {
+     "slug": "bio",
+     "label": "Bio",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Order",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Photo",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "steps",
+   "label": "First-visit steps",
+   "labelSingular": "Step",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "Text",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "clinic",
+   "label": "Clinic details",
+   "labelSingular": "Clinic details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Email",
+     "type": "string"
+    },
+    {
+     "slug": "address",
+     "label": "Address",
+     "type": "text"
+    },
+    {
+     "slug": "hours",
+     "label": "Hours (Day | time per line)",
+     "type": "text"
+    },
+    {
+     "slug": "hours_note",
+     "label": "Hours note",
+     "type": "text"
+    },
+    {
+     "slug": "conditions",
+     "label": "Common reasons for a visit (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "form_note",
+     "label": "Form note",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Home",
+     "url": "/"
+    },
+    {
+     "type": "custom",
+     "label": "Services",
+     "url": "/services"
+    },
+    {
+     "type": "custom",
+     "label": "About",
+     "url": "/about"
+    },
+    {
+     "type": "custom",
+     "label": "Contact",
+     "url": "/contact"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "A small clinic with one aim",
+     "eyebrow": "About",
+     "intro": "MoveWell is a physiotherapy clinic for people who want to move comfortably and keep doing what they enjoy.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k25",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How we work",
+         "_key": "k25s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k26",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Every visit starts with a conversation. We want to know what you do in a normal week and what you want to get back to, then we plan around that.",
+         "_key": "k26s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k27",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Sessions are one to one and last 45 minutes. You see the same physiotherapist each time, so you do not have to retell your story.",
+         "_key": "k27s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k28",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we do not do",
+         "_key": "k28s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k29",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We do not promise outcomes or sell long packages up front. We book a visit, see how you respond and plan the next step together. If physiotherapy is not what you need, we say so.",
+         "_key": "k29s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k30",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Where to find us",
+         "_key": "k30s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k31",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We are on Harbour Lane in Seaton Bay, a short walk from the bus stop. The treatment rooms are on the ground floor and have step-free access.",
+         "_key": "k31s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "first-visit",
+    "slug": "first-visit",
+    "status": "published",
+    "data": {
+     "title": "Your first visit",
+     "eyebrow": "First visit",
+     "intro": "What to wear, what to bring and what to expect when you come in for the first time.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k32",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Before you come",
+         "_key": "k32s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k33",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Wear clothes you can move in, such as shorts or loose trousers and a t-shirt. If your problem is in your shoulder, bring a vest top or sports top.",
+         "_key": "k33s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k34",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Bring a list of medicines you take, and any scan reports, discharge notes or letters from your doctor or surgeon.",
+         "_key": "k34s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k35",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "At the clinic",
+         "_key": "k35s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k36",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Please arrive five minutes early to fill in a short form. Your physiotherapist will start by asking about your history, then check how you move before any treatment.",
+         "_key": "k36s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k37",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Cancelling or changing",
+         "_key": "k37s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k38",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Tell us at least 24 hours ahead if you need to change a time. You can phone, or reply to your confirmation email.",
+         "_key": "k38s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "services": [
+   {
+    "id": "injury-rehabilitation",
+    "slug": "injury-rehabilitation",
+    "status": "published",
+    "data": {
+     "title": "Injury Rehabilitation",
+     "summary": "A plan to get you moving again after a sprain, strain or overuse injury.",
+     "best_for": "Adults with a recent or lingering injury",
+     "length": "45 minutes",
+     "price": "From $85 (sample price)",
+     "visit": "We talk through what happened and what you want to get back to\nA hands-on check of movement, strength and where it hurts\nTreatment and a few exercises to start with\nA written plan and when to book the next visit",
+     "how_to_book": "Send a request from the contact page and the front desk will reply with times. Leave medical details out of the form, you can talk them through at the visit.",
+     "tile_text": "Get back to the activities\nyou enjoy.",
+     "icon": "runner",
+     "featured": true,
+     "position": 10,
+     "photo": "/images/strength.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Injuries rarely need a long list of exercises. They need the right few, done in the right order, and a plan for building back up.",
+         "_key": "k1s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k2",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we look at",
+         "_key": "k2s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We start with the story: how it happened, what makes it worse and what you do in a normal week. Then we check how the area moves and how strong it is next to the other side.",
+         "_key": "k3s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k4",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What happens next",
+         "_key": "k4s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k5",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You leave with a short exercise plan and a clear idea of what to avoid for now. Follow-up visits are shorter and focus on changing the plan as you improve. Some injuries need a doctor's opinion first, and we will tell you if that is the case.",
+         "_key": "k5s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "mobility-flexibility",
+    "slug": "mobility-flexibility",
+    "status": "published",
+    "data": {
+     "title": "Mobility & Flexibility",
+     "summary": "Stretching, joint mobility and simple routines for stiffness that has built up over time.",
+     "best_for": "Adults who feel tight or stiff day to day",
+     "length": "45 minutes",
+     "price": "From $80 (sample price)",
+     "visit": "We ask where you feel stiff and when it is worst\nA movement screen of hips, back, shoulders and ankles\nHands-on work and guided stretches\nA routine of five to eight minutes you can do at home",
+     "how_to_book": "Send a request from the contact page and the front desk will reply with times. Leave medical details out of the form, you can talk them through at the visit.",
+     "tile_text": "Move more freely,\nevery day.",
+     "icon": "stretch",
+     "featured": true,
+     "position": 20,
+     "photo": "/images/mobility.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k6",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Stiffness often comes from doing the same things all day: sitting, driving, carrying the same bag on the same shoulder. This visit looks at how your joints move and where they could move more.",
+         "_key": "k6s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k7",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "In the room",
+         "_key": "k7s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k8",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Expect to move a lot. We try positions, note what feels tight and what is simply weak, and pick stretches that suit your body rather than a generic list.",
+         "_key": "k8s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k9",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "At home",
+         "_key": "k9s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k10",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The routine we give you is short on purpose. Five minutes you will actually do is worth more than twenty you skip.",
+         "_key": "k10s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "posture-movement",
+    "slug": "posture-movement",
+    "status": "published",
+    "data": {
+     "title": "Posture & Movement",
+     "summary": "A look at how you sit, stand and move, with small changes for desk and daily life.",
+     "best_for": "Desk workers, drivers and anyone with a sore neck or back",
+     "length": "45 minutes",
+     "price": "From $80 (sample price)",
+     "visit": "We talk through your day: desk, commute, hobbies, sleep\nWe watch you sit, stand, walk and lift\nHands-on treatment where it helps\nA few habit changes and exercises to practise",
+     "how_to_book": "Send a request from the contact page and the front desk will reply with times. Leave medical details out of the form, you can talk them through at the visit.",
+     "tile_text": "Build better habits\nfor a healthier you.",
+     "icon": "lotus",
+     "featured": true,
+     "position": 30,
+     "photo": "/images/posture.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k11",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "There is no single correct posture. What matters is that you change position often and that your body is ready for the positions you hold longest.",
+         "_key": "k11s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k12",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we change",
+         "_key": "k12s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k13",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Usually small things: screen height, how you lift, how long you stay in one spot. We write them down so you can try them at work and at home.",
+         "_key": "k13s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k14",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Follow-up",
+         "_key": "k14s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k15",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A second visit two to three weeks later lets us check what has stuck and adjust the plan.",
+         "_key": "k15s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "sports-physio",
+    "slug": "sports-physio",
+    "status": "published",
+    "data": {
+     "title": "Sports Physio",
+     "summary": "Assessment and treatment for training injuries, with a plan to build back safely.",
+     "best_for": "Runners, gym-goers and club players",
+     "length": "45 minutes",
+     "price": "From $90 (sample price)",
+     "visit": "We ask about your sport, training load and the injury\nTests for strength, balance and the movement that hurts\nTreatment and a modified training plan\nA step-by-step plan for returning to your sport",
+     "how_to_book": "Send a request from the contact page and the front desk will reply with times. Leave medical details out of the form, you can talk them through at the visit.",
+     "tile_text": "Back to training,\nstep by step.",
+     "icon": "bolt",
+     "featured": false,
+     "position": 40,
+     "photo": "/images/session.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k16",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Training injuries usually come from a mix of load, recovery and technique. We look at all three instead of resting the sore spot and hoping.",
+         "_key": "k16s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k17",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Bring",
+         "_key": "k17s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k18",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Wear what you train in and bring your shoes if the issue is running. A training diary or watch history is useful if you have one.",
+         "_key": "k18s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "post-surgery-rehab",
+    "slug": "post-surgery-rehab",
+    "status": "published",
+    "data": {
+     "title": "Post-Surgery Rehab",
+     "summary": "Guided rehabilitation after orthopaedic surgery, following your surgeon's instructions.",
+     "best_for": "People recovering from joint or soft tissue surgery",
+     "length": "45 minutes",
+     "price": "From $85 (sample price)",
+     "visit": "We read any notes or protocol from your surgeon\nWe check range of movement, swelling and strength\nTreatment and exercises suited to your stage\nA schedule of visits that matches your protocol",
+     "how_to_book": "Send a request from the contact page and the front desk will reply with times. Leave medical details out of the form, you can talk them through at the visit.",
+     "tile_text": "Guided steps after\nsurgery.",
+     "icon": "repair",
+     "featured": false,
+     "position": 50,
+     "photo": "/images/squat.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k19",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Rehabilitation after surgery follows your surgeon's protocol. Our job is to help you work through it safely and to tell the surgical team if something does not look right.",
+         "_key": "k19s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k20",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Before you book",
+         "_key": "k20s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k21",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Please bring any discharge notes or rehab protocol to the first visit. If you do not have them, ask your surgeon's office to send them.",
+         "_key": "k21s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "balance-and-strength",
+    "slug": "balance-and-strength",
+    "status": "published",
+    "data": {
+     "title": "Balance & Strength",
+     "summary": "One-to-one sessions that build leg strength and steadiness for everyday tasks.",
+     "best_for": "Older adults and anyone who feels unsteady on their feet",
+     "length": "45 minutes",
+     "price": "From $75 (sample price)",
+     "visit": "We talk about what feels difficult: stairs, getting up, walking outside\nSimple tests of balance, leg strength and walking\nGuided exercises with support nearby\nA home plan with options for harder and easier days",
+     "how_to_book": "Send a request from the contact page and the front desk will reply with times. Leave medical details out of the form, you can talk them through at the visit.",
+     "tile_text": "Steady on your feet.",
+     "icon": "dumbbell",
+     "featured": false,
+     "position": 60,
+     "photo": "/images/squat.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k22",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Staying strong enough to get out of a chair, climb stairs and carry shopping is something you can train at any age.",
+         "_key": "k22s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k23",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How we work",
+         "_key": "k23s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k24",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Exercises are chosen from what you want to do. We keep a chair or bar within reach at all times, and we progress slowly.",
+         "_key": "k24s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "team": [
+   {
+    "id": "priya-nair",
+    "slug": "priya-nair",
+    "status": "published",
+    "data": {
+     "title": "Priya Nair",
+     "role": "Lead physiotherapist",
+     "bio": "Sees people with joint and muscle injuries, and runs the balance and strength sessions.",
+     "position": 10,
+     "photo": "/images/team-priya.webp"
+    }
+   },
+   {
+    "id": "daniel-brooks",
+    "slug": "daniel-brooks",
+    "status": "published",
+    "data": {
+     "title": "Daniel Brooks",
+     "role": "Physiotherapist, sports and strength",
+     "bio": "Works with runners and gym-goers on training injuries and return-to-sport plans.",
+     "position": 20,
+     "photo": "/images/team-daniel.webp"
+    }
+   },
+   {
+    "id": "marta-kowalski",
+    "slug": "marta-kowalski",
+    "status": "published",
+    "data": {
+     "title": "Marta Kowalski",
+     "role": "Physiotherapist, post-surgery rehab",
+     "bio": "Guides people through rehabilitation after joint and soft tissue surgery.",
+     "position": 30,
+     "photo": "/images/team-marta.webp"
+    }
+   },
+   {
+    "id": "tom-ellery",
+    "slug": "tom-ellery",
+    "status": "published",
+    "data": {
+     "title": "Tom Ellery",
+     "role": "Clinic coordinator",
+     "bio": "Runs the front desk, answers calls and finds appointment times that work.",
+     "position": 40
+    }
+   }
+  ],
+  "steps": [
+   {
+    "id": "request",
+    "slug": "request",
+    "status": "published",
+    "data": {
+     "title": "Send a request",
+     "text": "Pick a service and the days that suit you. No medical details needed at this stage.",
+     "position": 10
+    }
+   },
+   {
+    "id": "reply",
+    "slug": "reply",
+    "status": "published",
+    "data": {
+     "title": "We reply with a time",
+     "text": "The front desk answers within one working day and tells you what to wear.",
+     "position": 20
+    }
+   },
+   {
+    "id": "talk",
+    "slug": "talk",
+    "status": "published",
+    "data": {
+     "title": "We talk first",
+     "text": "The first ten to fifteen minutes are for your story: what hurts, what you want to do again.",
+     "position": 30
+    }
+   },
+   {
+    "id": "move",
+    "slug": "move",
+    "status": "published",
+    "data": {
+     "title": "Then we move",
+     "text": "A hands-on check, some treatment and a short plan you leave with in writing.",
+     "position": 40
+    }
+   }
+  ],
+  "clinic": [
+   {
+    "id": "movewell",
+    "slug": "movewell",
+    "status": "published",
+    "data": {
+     "title": "MoveWell Physiotherapy Clinic",
+     "phone": "(555) 010-0148",
+     "email": "hello@movewell-clinic.example",
+     "address": "36 Harbour Lane\nSeaton Bay",
+     "hours": "Monday to Friday | 8:00 am to 6:00 pm\nSaturday | 8:30 am to 12:30 pm\nSunday | Closed",
+     "hours_note": "Opening hours and prices are sample details for this demo clinic.",
+     "conditions": "Lower back and neck pain\nKnee, hip and ankle pain\nShoulder stiffness and sprains\nTraining and sports injuries\nRecovery after surgery\nTendon pain such as tennis elbow\nBalance and strength for older adults\nStiffness from desk work",
+     "form_note": "This form is for appointment requests only. Please leave out medical details, scan results and anything urgent."
+    }
+   }
+  ]
+ }
+}

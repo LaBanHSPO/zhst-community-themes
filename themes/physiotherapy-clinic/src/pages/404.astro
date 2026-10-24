@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+---
+
+<Base title="Page not found">
+	<section class="notfound" aria-labelledby="nf-title">
+		<img class="notfound-photo" src="/images/posture.webp" alt="A model of the spine and pelvis beside an anatomy chart in a bright treatment room" width="418" height="480" />
+		<div class="notfound-copy">
+			<p class="eyebrow">Error 404</p>
+			<h1 id="nf-title" class="display display-xl">That page has <span class="accent">moved on.</span></h1>
+			<p class="lede">The address may have a typo, or the page may have been removed. These links will get you back on track.</p>
+			<div class="actions">
+				<a class="btn" href="/"><span>Back to home</span><Arrow /></a>
+				<a class="pill" href="/services">Services</a>
+				<a class="pill" href="/contact">Contact</a>
+			</div>
+		</div>
+	</section>
+</Base>

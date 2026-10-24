@@ -1,0 +1,44 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import Icon from "../../components/Icon.astro";
+import PageHead from "../../components/PageHead.astro";
+import VisitBand from "../../components/VisitBand.astro";
+import { getClinic, getServices, photoAlt, photoSrc, serviceHref } from "../../lib/clinic";
+
+const [servicesResult, clinicResult] = await Promise.all([getServices(), getClinic()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(clinicResult.cacheHint);
+}
+const services = servicesResult.entries;
+---
+
+<Base title="Services" description="Injury rehabilitation, mobility and flexibility, posture and movement, sports physiotherapy, post-surgery rehab and strength work at MoveWell. Who each is for, what a session involves and how long it takes.">
+	<PageHead eyebrow="Our services" title="Care for how you move." intro="Each service lists who it suits, what a session involves and roughly how long it takes. Prices are starting points and are confirmed when you book." />
+	<section class="svc-list">
+		<div class="wrap">
+			<ul class="svc-cards">
+				{
+					services.map((s) => {
+						const src = photoSrc(s.data.image, s.data.photo);
+						return (
+							<li>
+								<a class="svc-card" href={serviceHref(s.data)}>
+									{src ? <img src={src} alt={photoAlt(s.data.image, s.data.photo, s.data.title)} width="400" height="300" loading="lazy" /> : <span class="svc-card-icon"><Icon name={s.data.icon} size={56} /></span>}
+									<div class="svc-card-body">
+										<h2 class="svc-card-title" {...s.edit.title}>{s.data.title}</h2>
+										<p>{s.data.summary}</p>
+										<p class="svc-card-meta">{[s.data.length, s.data.price].filter(Boolean).join(" · ")}</p>
+										<span class="text-link"><span>Read more</span><Arrow /></span>
+									</div>
+								</a>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</div>
+	</section>
+	<VisitBand clinic={clinicResult.clinic} />
+</Base>

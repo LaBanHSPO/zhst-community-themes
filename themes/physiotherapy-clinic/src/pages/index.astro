@@ -1,0 +1,131 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import TeamGrid from "../components/TeamGrid.astro";
+import VisitBand from "../components/VisitBand.astro";
+import { getClinic, getServices, getSteps, getTeam, lines, serviceHref } from "../lib/clinic";
+
+const [servicesResult, stepsResult, teamResult, clinicResult] = await Promise.all([getServices(), getSteps(), getTeam(), getClinic()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(stepsResult.cacheHint);
+	Astro.cache.set(teamResult.cacheHint);
+	Astro.cache.set(clinicResult.cacheHint);
+}
+const all = servicesResult.entries;
+const services = (all.some((s) => s.data.featured) ? all.filter((s) => s.data.featured) : all).slice(0, 3);
+const steps = stepsResult.entries;
+const team = teamResult.entries.slice(0, 4);
+const conditions = lines(clinicResult.clinic.conditions);
+---
+
+<Base
+	title="Physiotherapy that helps you move"
+	description="MoveWell Physiotherapy Clinic offers injury rehabilitation, mobility and flexibility work, and posture and movement coaching. See what a first visit looks like and request an appointment."
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A physiotherapist in a navy polo guides an older woman through a squat with her arms held forward, in a bright clinic with a treatment table and an exercise ball behind them"
+			width="1448"
+			height="633"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<p class="hero-eyebrow">Stronger movement<br />Brighter days</p>
+			<h1 id="hero-title" class="hero-title">Move with<br />more <span class="accent">confidence.</span></h1>
+			<p class="hero-sub">Personalised physiotherapy to help you move better,{" "}<br class="br-d" />feel stronger and do more of what you love.</p>
+			<a class="btn hero-btn" href="/services"><span>Explore services</span><Arrow /></a>
+		</div>
+	</section>
+
+	{
+		services.length > 0 && (
+			<section class="svc" aria-labelledby="svc-title">
+				<div class="svc-inner">
+					<div class="svc-head">
+						<p class="eyebrow">Our services</p>
+						<h2 id="svc-title" class="svc-title">Care for<br />how you <span class="accent">move.</span></h2>
+						<p class="svc-text">From everyday movement to life's bigger goals,{" "}<br class="br-d" />we're here to support you at every step.</p>
+					</div>
+					<ul class="svc-cols">
+						{services.map((s) => (
+							<li>
+								<a class="svc-col" href={serviceHref(s.data)}>
+									<span class="svc-icon"><Icon name={s.data.icon} size={56} /></span>
+									<h3 class="svc-col-title" {...s.edit.title}>{s.data.title}</h3>
+									<p class="svc-col-text">{(lines(s.data.tile_text).length ? lines(s.data.tile_text) : [s.data.summary]).map((l, j) => (j === 0 ? <>{l}</> : <><br />{l}</>))}</p>
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		steps.length > 0 && (
+			<section class="first" aria-labelledby="first-title">
+				<div class="wrap first-inner">
+					<img class="first-photo" src="/images/session.webp" alt="A physiotherapist guides a woman through a kneeling arm-and-leg raise on a mat, with an exercise ball and a treatment table behind them" width="1448" height="1086" loading="lazy" />
+					<div class="first-copy">
+						<p class="eyebrow">Your first appointment</p>
+						<h2 id="first-title" class="display">What a first visit <span class="accent">looks like.</span></h2>
+						<ol class="steps">
+							{steps.map((s, i) => (
+								<li class="step">
+									<span class="step-num" aria-hidden="true">{i + 1}</span>
+									<div>
+										<h3 class="step-title" {...s.edit.title}>{s.data.title}</h3>
+										<p class="step-text">{s.data.text}</p>
+									</div>
+								</li>
+							))}
+						</ol>
+						<a class="text-link" href="/first-visit"><span>What to wear and bring</span><Arrow /></a>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		conditions.length > 0 && (
+			<section class="cond" aria-labelledby="cond-title">
+				<div class="wrap cond-inner">
+					<div class="cond-copy">
+						<p class="eyebrow">What we see</p>
+						<h2 id="cond-title" class="display">Common reasons<br />people <span class="accent">visit.</span></h2>
+						<p class="cond-text">If your reason is not on the list, send a request anyway. We will tell you honestly whether physiotherapy is the right next step.</p>
+						<ul class="cond-list">
+							{conditions.map((c) => <li>{c}</li>)}
+						</ul>
+					</div>
+					<img class="cond-photo" src="/images/squat.webp" alt="A physiotherapist steadies an older woman's hips as she squats with her arms held forward" width="718" height="633" loading="lazy" />
+				</div>
+			</section>
+		)
+	}
+
+	{
+		team.length > 0 && (
+			<section class="team-teaser" aria-labelledby="team-title">
+				<div class="wrap">
+					<div class="section-head">
+						<div>
+							<p class="eyebrow">The team</p>
+							<h2 id="team-title" class="display">The people you will <span class="accent">see.</span></h2>
+						</div>
+						<a class="text-link" href="/about"><span>About the clinic</span><Arrow /></a>
+					</div>
+					<TeamGrid members={team} compact />
+				</div>
+			</section>
+		)
+	}
+
+	<VisitBand clinic={clinicResult.clinic} />
+</Base>

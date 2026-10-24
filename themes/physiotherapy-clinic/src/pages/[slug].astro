@@ -1,0 +1,65 @@
+---
+import { getEmDashEntry, getSeoMeta, decodeSlug, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import TeamGrid from "../components/TeamGrid.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getClinic, getTeam, hoursRows, telHref } from "../lib/clinic";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: page, cacheHint } = await getEmDashEntry("pages", slug);
+if (!page) return Astro.rewrite("/404");
+const isAbout = slug === "about";
+const [{ clinic, cacheHint: clinicHint }, teamResult] = await Promise.all([getClinic(), isAbout ? getTeam() : Promise.resolve(null)]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(clinicHint);
+	if (teamResult) Astro.cache.set(teamResult.cacheHint);
+}
+
+const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+const seo = getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const rows = hoursRows(clinic.hours);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? page.data.intro}
+	canonical={seo.canonical}
+	content={{ collection: "pages", id: page.data.id, slug }}
+>
+	<PageHead eyebrow={page.data.eyebrow} title={page.data.title} intro={page.data.intro} edit={{ ...page.edit.title }} />
+	<div class="page-body">
+		<div class="wrap page-body-grid">
+			<div>
+				<div class="prose">
+					<PortableText value={page.data.content} />
+				</div>
+				<p class="page-cta"><a class="btn" href="/contact"><span>Book a visit</span><Arrow /></a></p>
+			</div>
+			<aside class="side-card" aria-labelledby="aside-title">
+				<h2 id="aside-title" class="side-title">Opening hours</h2>
+				<dl class="hours">
+					{rows.map((r) => <div><dt>{r.day}</dt><dd>{r.time}</dd></div>)}
+				</dl>
+				{clinic.phone && <p>Front desk: <a href={telHref(clinic.phone)}>{clinic.phone}</a></p>}
+			</aside>
+		</div>
+	</div>
+	{
+		teamResult && teamResult.entries.length > 0 && (
+			<section class="team-section" aria-labelledby="team-title">
+				<div class="wrap">
+					<p class="eyebrow">The team</p>
+					<h2 id="team-title" class="display">The people you will <span class="accent">see.</span></h2>
+					<TeamGrid members={teamResult.entries} />
+				</div>
+			</section>
+		)
+	}
+</Base>

@@ -1,0 +1,49 @@
+---
+interface Props {
+	name?: string | null;
+	size?: number;
+}
+const { name, size = 40 } = Astro.props;
+const attrs = { width: size, height: size, viewBox: "0 0 48 48", fill: "none", stroke: "currentColor", "stroke-width": 1.8, "stroke-linecap": "round", "stroke-linejoin": "round", "aria-hidden": "true", focusable: "false" } as const;
+---
+
+{
+	name === "runner" ? (
+		<svg {...attrs}>
+			<circle cx="29" cy="9" r="4" />
+			<path d="M20 20l7-3 4 5 5 2" />
+			<path d="M27 17l-4 8 7 5-2 11" />
+			<path d="M23 25l-6 9-8 3" />
+			<path d="M20 20l-6 3" />
+		</svg>
+	) : name === "stretch" ? (
+		<svg {...attrs}>
+			<circle cx="22" cy="7" r="3.800" />
+			<path d="M22 12c0 4 1 7-3 10-3 2-6 3-5 9l-1 11" />
+			<path d="M19 22c4 2 9 0 12-6" />
+			<path d="M16 17c-2 1-4 2-6 1" />
+			<path d="M20 28c4 4 7 5 8 12" />
+			<path d="M28 40h7" />
+		</svg>
+	) : name === "lotus" ? (
+		<svg {...attrs}>
+			<path d="M24 38C17 34 14 26 24 12c10 14 7 22 0 26Z" />
+			<path d="M24 38c-8 2-15-3-17-14 6-1 11 2 14 6" />
+			<path d="M24 38c8 2 15-3 17-14-6-1-11 2-14 6" />
+			<path d="M8 40c5 3 11 4 16 4s11-1 16-4" />
+		</svg>
+	) : name === "bolt" ? (
+		<svg {...attrs}>
+			<path d="M27 5L10 27h12l-3 16 19-23H26l1-15Z" />
+		</svg>
+	) : name === "dumbbell" ? (
+		<svg {...attrs}>
+			<path d="M15 14v20M33 14v20M9 19v10M39 19v10M15 24h18" />
+		</svg>
+	) : (
+		<svg {...attrs}>
+			<circle cx="24" cy="24" r="16" />
+			<path d="M24 15v18M15 24h18" />
+		</svg>
+	)
+}

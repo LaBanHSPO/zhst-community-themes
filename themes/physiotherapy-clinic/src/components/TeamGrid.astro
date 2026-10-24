@@ -1,0 +1,29 @@
+---
+import { initials, photoAlt, photoSrc } from "../lib/clinic";
+
+interface Props {
+	members: { id: string; data: Record<string, any>; edit?: any }[];
+	compact?: boolean;
+}
+const { members, compact = false } = Astro.props;
+---
+
+<ul class:list={["team-grid", { compact }]}>
+	{
+		members.map((m) => {
+			const src = photoSrc(m.data.image, m.data.photo);
+			return (
+				<li class="member">
+					{src ? (
+						<img class="member-photo" src={src} alt={photoAlt(m.data.image, m.data.photo, m.data.title)} width="310" height="340" loading="lazy" />
+					) : (
+						<span class="member-photo member-initials" aria-hidden="true">{initials(m.data.title)}</span>
+					)}
+					<h3 class="member-name" {...m.edit?.title}>{m.data.title}</h3>
+					<p class="member-role">{m.data.role}</p>
+					{!compact && m.data.bio && <p class="member-bio">{m.data.bio}</p>}
+				</li>
+			);
+		})
+	}
+</ul>

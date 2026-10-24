@@ -1,0 +1,30 @@
+---
+import Mark from "./Mark.astro";
+/** Wordmark: leaf-and-figure mark, the site title with its last word in green, and the tagline in tracked caps beneath. */
+interface Props {
+	title: string;
+	tagline?: string;
+	logo?: { url?: string; alt?: string } | null;
+	class?: string;
+}
+const { title, tagline, logo, class: className } = Astro.props;
+const m = title.match(/^(.+?)([A-Z][a-z]+)$/);
+const lead = m ? m[1] : title;
+const accent = m ? m[2] : "";
+---
+
+<a class:list={["wordmark", className]} href="/" aria-label={`${title}, home`}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt || title} />
+		) : (
+			<>
+				<Mark />
+				<span class="wordmark-text">
+					<span class="wordmark-title">{lead}{accent && <span class="accent">{accent}</span>}</span>
+					{tagline && <span class="wordmark-tagline">{tagline}</span>}
+				</span>
+			</>
+		)
+	}
+</a>
