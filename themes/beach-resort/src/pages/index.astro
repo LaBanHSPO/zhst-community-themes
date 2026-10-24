@@ -1,0 +1,181 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import SuiteCard from "../components/SuiteCard.astro";
+import { formatPrice, getCompany, getExperiences, getSuites, getVenues, photoSrc, rows, telHref } from "../lib/resort";
+
+const [suitesResult, experiencesResult, venuesResult, companyResult] = await Promise.all([
+	getSuites(),
+	getExperiences(),
+	getVenues(),
+	getCompany(),
+]);
+for (const r of [suitesResult, experiencesResult, venuesResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const suites = suitesResult.suites;
+const featured = suites.filter((s) => s.data.featured).slice(0, 4);
+const shownSuites = featured.length > 0 ? featured : suites.slice(0, 4);
+const experiences = experiencesResult.experiences.slice(0, 5);
+const venues = venuesResult.entries;
+const company = companyResult.company;
+const getting = rows(company.getting_here);
+const times = rows(company.stay_times);
+const lowest = suites.reduce<number | null>((min, s) => {
+	const p = s.data.price_from;
+	return typeof p === "number" && (min === null || p < min) ? p : min;
+}, null);
+---
+
+<Base
+	title="SandCove Beach Resort"
+	description="Forty-eight suites and villas on a quiet bay. Ocean and garden views, private pools, a beach bar and a restaurant, snorkelling and boat days. Ask about your dates by email."
+	overlay
+>
+	<section class="hero">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="An infinity pool on a stone terrace above a turquoise bay with a green headland, palms, a lounger with rolled towels and an open suite with a bed at the right"
+			width="1448"
+			height="721"
+			fetchpriority="high"
+		/>
+		<div class="hero-wash" aria-hidden="true"></div>
+		<div class="hero-copy">
+			<h1>Let the days <br />unfold.</h1>
+			<p class="hero-eyebrow">Ocean views. A brighter you.</p>
+			<a class="btn btn-hero" href="/stay">Discover your stay <Arrow /></a>
+		</div>
+		<p class="hero-note"><span class="note-words">Slower<br />Brighter<br />Together</span><span class="note-rule" aria-hidden="true"></span></p>
+	</section>
+
+	<section class="intro" aria-labelledby="intro-title">
+		<div class="intro-inner">
+			<div class="intro-copy">
+				<p class="eyebrow">Our suites<span class="eyebrow-rule" aria-hidden="true"></span></p>
+				<h2 id="intro-title" class="display">A calmer <br />kind of luxury.</h2>
+				<p class="intro-text">Elegant suites, open to the ocean breeze, <br class="br-wide" />designed for unhurried moments.</p>
+				<a class="link-underline" href="/stay">Explore our suites <Arrow /></a>
+			</div>
+			<figure class="intro-photo">
+				<img
+					src="/images/suite-ocean.webp"
+					alt="A bed with a teal throw faces open glass doors, a terrace and the bay beyond the palms"
+					width="689"
+					height="312"
+				/>
+			</figure>
+			<p class="intro-note">Rooms<br />for a more<br />beautiful<br />tomorrow<span class="note-rule" aria-hidden="true"></span></p>
+		</div>
+	</section>
+
+	<section class="band suites-band" aria-labelledby="suites-title">
+		<div class="band-inner">
+			<div class="band-head">
+				<div>
+					<p class="eyebrow">Stay<span class="eyebrow-rule" aria-hidden="true"></span></p>
+					<h2 id="suites-title" class="display">Four rooms to start with.</h2>
+				</div>
+				<a class="link-arrow" href="/stay">All rooms <Arrow /></a>
+			</div>
+			<ul class="scard-grid">
+				{shownSuites.map((s) => <li><SuiteCard suite={s} /></li>)}
+			</ul>
+			{lowest !== null && <p class="band-note">Rates start at {formatPrice(lowest)} a night for two (sample rates). The resort confirms availability and the exact rate by email.</p>}
+		</div>
+	</section>
+
+	<section class="dining" aria-labelledby="dining-title">
+		<div class="dining-inner">
+			<figure class="dining-photo">
+				<img
+					src="/images/lounger-hat.webp"
+					alt="A cushioned lounger beside the pool with a straw hat, rolled towels and a coconut drink"
+					width="748"
+					height="526"
+					loading="lazy"
+				/>
+			</figure>
+			<div class="dining-copy">
+				<p class="eyebrow">Dining<span class="eyebrow-rule" aria-hidden="true"></span></p>
+				<h2 id="dining-title" class="display">Breakfast, lunch and sunset, all on the sand side.</h2>
+				<ul class="venue-list">
+					{
+						venues.map((v) => {
+							const first = rows(v.data.hours)[0];
+							return (
+								<li>
+									<div>
+										<h3 {...v.edit.title}>{v.data.title}</h3>
+										<p class="venue-kind">{v.data.kind}</p>
+									</div>
+									<p class="venue-hours">{first ? `${first.left}: ${first.right}` : ""}</p>
+								</li>
+							);
+						})
+					}
+				</ul>
+				<a class="link-underline" href="/dining">Hours and sample menus <Arrow /></a>
+			</div>
+		</div>
+	</section>
+
+	<section class="band days-band" aria-labelledby="days-title">
+		<div class="band-inner">
+			<div class="band-head">
+				<div>
+					<p class="eyebrow">Experience<span class="eyebrow-rule" aria-hidden="true"></span></p>
+					<h2 id="days-title" class="display">On the bay and around it.</h2>
+				</div>
+				<a class="link-arrow" href="/experience">All activities <Arrow /></a>
+			</div>
+			<ul class="days-list">
+				{
+					experiences.map((e) => {
+						const src = photoSrc(e.data.image, e.data.photo);
+						return (
+							<li>
+								<a href={`/experience/${e.data.slug ?? e.data.id}`}>
+									{src && <img src={src} alt="" width="160" height="110" loading="lazy" />}
+									<span class="day-name" {...e.edit.title}>{e.data.title}</span>
+									<span class="day-meta">{e.data.duration}</span>
+									<span class="day-meta day-season">{e.data.season}</span>
+									<span class="day-price">{e.data.price_from ? `${formatPrice(e.data.price_from)} each` : "Included"}</span>
+								</a>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</div>
+	</section>
+
+	<section class="booking" aria-labelledby="booking-title">
+		<div class="booking-inner">
+			<div class="booking-copy">
+				<p class="eyebrow eyebrow-light">Book Your Stay<span class="eyebrow-rule" aria-hidden="true"></span></p>
+				<h2 id="booking-title" class="display">Send us your dates and the suite you like.</h2>
+				<p class="booking-text">We check availability and reply by email with the rate, usually within one working day. Sending a request does not hold a room or take a payment.</p>
+				<div class="booking-actions">
+					<a class="btn btn-light btn-lg" href="/contact">Book Your Stay <Arrow /></a>
+					<p class="booking-lines">
+						{company.phone && <a href={telHref(company.phone)}>{company.phone}</a>}
+						{company.email && <a href={`mailto:${company.email}`}>{company.email}</a>}
+					</p>
+				</div>
+				{times.length > 0 && (
+					<dl class="booking-times">
+						{times.map((t) => <div><dt>{t.left}</dt><dd>{t.right}</dd></div>)}
+					</dl>
+				)}
+			</div>
+			<div class="getting">
+				<h3>Getting here</h3>
+				<dl>
+					{getting.map((g) => <div><dt>{g.left}</dt><dd>{g.right}</dd></div>)}
+				</dl>
+			</div>
+		</div>
+	</section>
+</Base>

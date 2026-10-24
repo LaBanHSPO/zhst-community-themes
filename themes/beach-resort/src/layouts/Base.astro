@@ -1,0 +1,181 @@
+---
+import { getEmDashCollection, getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import "@fontsource-variable/newsreader/opsz.css";
+import "@fontsource-variable/newsreader/opsz-italic.css";
+import "@fontsource-variable/dm-sans";
+import Logo from "../components/Logo.astro";
+import Arrow from "../components/Arrow.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getCompany, mapHref, rows, telHref } from "../lib/resort";
+import "../styles/theme.css";
+
+interface Props {
+	title: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	/** Pass content reference for plugin page contributions on content pages */
+	content?: { collection: string; id: string; slug?: string | null };
+	/** Header sits transparently over the page's first (photographic) section on wide screens. */
+	overlay?: boolean;
+	/** Force which primary-menu URL is marked current. */
+	current?: string;
+}
+
+const { title, pageTitle, description, image, canonical, content, overlay = false, current } = Astro.props;
+const [settingsResult, menuResult, companyResult, pagesResult] = await Promise.all([
+	getSiteSettingsWithCacheHint(),
+	getMenuWithCacheHint("primary"),
+	getCompany(),
+	getEmDashCollection("pages", { limit: 20 }),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(settingsResult.cacheHint);
+	Astro.cache.set(menuResult.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+	Astro.cache.set(pagesResult.cacheHint);
+}
+
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(settingsResult.data);
+const titleIncludesSiteName = title.startsWith(siteTitle) || title.endsWith(` | ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} | ${siteTitle}`;
+const pageDescription = description ?? `${siteTitle}: ${siteTagline}`;
+const navItems = menuResult.data?.items ?? [];
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const norm = (url: string) => url.replace(/\/$/, "") || "/";
+const { company } = companyResult;
+const office = rows(company.office);
+const stayTimes = rows(company.stay_times);
+// CMS pages that are not in the primary menu are linked from the footer.
+const menuUrls = new Set(navItems.map((i) => norm(i.url)));
+const extraPages = pagesResult.entries
+	.map((p) => ({ url: `/${p.data.slug ?? p.data.id}`, label: p.data.eyebrow || p.data.title }))
+	.filter((p) => !menuUrls.has(p.url));
+
+const currentUrl =
+	current ??
+	navItems.find((i) => norm(i.url) === path)?.url ??
+	navItems.find((i) => norm(i.url) !== "/" && path.startsWith(`${norm(i.url)}/`))?.url;
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description: pageDescription,
+	canonical,
+	image,
+	content,
+	siteName: siteTitle,
+});
+const year = new Intl.DateTimeFormat("en-GB", { year: "numeric", timeZone: "Asia/Saigon" }).format(new Date());
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{fullTitle}</title>
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<header class:list={["site-head", { "is-overlay": overlay }]}>
+			<div class="head-inner">
+				<Logo title={siteTitle} sub={siteTagline} logo={siteLogo} class="head-logo" />
+				<nav class="nav" aria-label="Primary">
+					{
+						navItems.map((item) => (
+							<a
+								href={item.url}
+								target={item.target}
+								rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+								aria-current={item.url === currentUrl ? "page" : undefined}
+							>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+				<a class="btn head-cta" href="/contact">Book Your Stay</a>
+				<details class="mobile-nav">
+					<summary aria-label="Menu">
+						<svg class="burger" width="22" height="14" viewBox="0 0 22 14" aria-hidden="true" focusable="false">
+							<path d="M0 1h22M0 7h22M0 13h22" stroke="currentColor" stroke-width="1.6" />
+						</svg>
+						<svg class="close" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+							<path d="M1 1l14 14M15 1L1 15" stroke="currentColor" stroke-width="1.6" />
+						</svg>
+					</summary>
+					<nav class="mobile-panel" aria-label="Primary (mobile)">
+						{
+							navItems.map((item) => (
+								<a href={item.url} aria-current={item.url === currentUrl ? "page" : undefined}>
+									{item.label}
+								</a>
+							))
+						}
+						<a class="btn" href="/contact">Book Your Stay <Arrow /></a>
+						{company.phone && <a class="mobile-phone" href={telHref(company.phone)}>Call {company.phone}</a>}
+					</nav>
+				</details>
+			</div>
+		</header>
+
+		<main id="main">
+			<slot />
+		</main>
+
+		<footer class="site-foot">
+			<div class="foot-inner">
+				<div class="foot-brand">
+					<Logo title={siteTitle} sub={siteTagline} logo={siteLogo} light />
+					<p>Forty-eight suites and villas on a quiet bay. Two families started it in 2011 and it is still run by the same people.</p>
+				</div>
+				<div>
+					<h2>Explore</h2>
+					<ul class="foot-links">
+						{navItems.map((item) => <li><a href={item.url}>{item.label}</a></li>)}
+						{extraPages.map((p) => <li><a href={p.url}>{p.label}</a></li>)}
+						<li><a href="/contact">Book Your Stay</a></li>
+					</ul>
+				</div>
+				<div class="foot-visit">
+					<h2>Contact</h2>
+					{
+						(company.street || company.locality) && (
+							<address>
+								<a href={mapHref(company)} target="_blank" rel="noopener noreferrer">
+									{company.street && <>{company.street}<br /></>}
+									{company.locality}
+								</a>
+							</address>
+						)
+					}
+					{company.phone && <a href={telHref(company.phone)}>{company.phone}</a>}
+					{company.email && <a href={`mailto:${company.email}`}>{company.email}</a>}
+				</div>
+				<div>
+					<h2>Good to know</h2>
+					<dl class="foot-hours">
+						{stayTimes.slice(0, 2).map((h) => <><dt>{h.left}</dt><dd>{h.right}</dd></>)}
+						{office.slice(0, 1).map((h) => <><dt>Reservations</dt><dd>{h.right}</dd></>)}
+					</dl>
+				</div>
+			</div>
+			<div class="foot-bottom">
+				<span>© {year} {company.title || siteTitle}</span>
+				<span>Sample content is fictional. Built with EmDash</span>
+			</div>
+		</footer>
+
+		<EmDashBodyEnd page={pageCtx} />
+	</body>
+</html>

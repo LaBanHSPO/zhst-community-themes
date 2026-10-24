@@ -1,0 +1,73 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { dishes, getVenues, photoSrc, rows } from "../lib/resort";
+
+const { entry: page, cacheHint } = await getEmDashEntry("pages", "dining");
+if (!page) return Astro.rewrite("/404");
+const venuesResult = await getVenues();
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(venuesResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+const seo = getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/dining" });
+const venues = venuesResult.entries;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? page.data.intro}
+	canonical={seo.canonical}
+	content={{ collection: "pages", id: page.data.id, slug: "dining" }}
+>
+	<PageHead id="dining-title" eyebrow={page.data.eyebrow} title={page.data.title} intro={page.data.intro} edit={{ ...page.edit.title }} />
+	<section class="venues" aria-labelledby="dining-title">
+		<div class="wrap">
+			{
+				venues.map((v, i) => {
+					const src = photoSrc(v.data.image, v.data.photo);
+					const hours = rows(v.data.hours);
+					const menu = dishes(v.data.highlights);
+					return (
+						<article class:list={["venue", { "is-flip": i % 2 === 1 }]} id={v.data.slug ?? v.data.id}>
+							{src && <figure class="venue-photo"><img src={src} alt={v.data.image?.alt || v.data.photo_alt || ""} width="720" height="500" loading="lazy" /></figure>}
+							<div class="venue-body">
+								<p class="eyebrow">{v.data.kind}<span class="eyebrow-rule" aria-hidden="true"></span></p>
+								<h2 class="display" {...v.edit.title}>{v.data.title}</h2>
+								<p class="venue-sum">{v.data.summary}</p>
+								<dl class="hours">
+									{hours.map((h) => <div><dt>{h.left}</dt><dd>{h.right}</dd></div>)}
+								</dl>
+								{
+									menu.length > 0 && (
+										<>
+											<h3 class="menu-title">Sample menu highlights</h3>
+											<ul class="menu">
+												{menu.map((m) => <li><span class="menu-name">{m.name}</span>{m.price && <span class="menu-price">{m.price}</span>}<span class="menu-note">{m.note}</span></li>)}
+											</ul>
+										</>
+									)
+								}
+							</div>
+						</article>
+					);
+				})
+			}
+			<p class="menu-foot">Menus change with the catch and the season. Prices are sample prices.</p>
+		</div>
+	</section>
+	<div class="page-body">
+		<div class="wrap wrap-narrow">
+			<div class="prose">
+				<PortableText value={page.data.content} />
+			</div>
+			<p class="page-cta"><a class="btn" href="/contact">Book Your Stay <Arrow /></a></p>
+		</div>
+	</div>
+</Base>

@@ -1,0 +1,67 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import SuiteCard from "../../components/SuiteCard.astro";
+import { GUEST_OPTIONS, VIEWS, getSuites } from "../../lib/resort";
+
+const result = await getSuites();
+if (Astro.cache?.enabled) Astro.cache.set(result.cacheHint);
+// ?view=ocean|garden and ?guests=2|3|4|6 (sleeps at least that many) narrow the list and combine.
+// Unknown values show everything.
+const q = Astro.url.searchParams;
+const view = VIEWS.find((v) => v.slug === q.get("view"));
+const guestsParam = Number(q.get("guests"));
+const guests = GUEST_OPTIONS.find((g) => g === guestsParam);
+const all = result.suites;
+const list = all.filter((s) => (!view || s.data.view === view.slug) && (!guests || Number(s.data.max_guests) >= guests));
+const href = (v?: string, g?: number) => {
+	const p = new URLSearchParams();
+	if (v) p.set("view", v);
+	if (g) p.set("guests", String(g));
+	const s = p.toString();
+	return s ? `/stay?${s}` : "/stay";
+};
+const viewCount = (slug: string) => all.filter((s) => s.data.view === slug && (!guests || Number(s.data.max_guests) >= guests)).length;
+const guestCount = (n: number) => all.filter((s) => Number(s.data.max_guests) >= n && (!view || s.data.view === view.slug)).length;
+const heading = [view?.label, guests ? `sleeps ${guests} or more` : ""].filter(Boolean).join(", ");
+---
+
+<Base title="Stay" description="Forty-eight suites and villas, from a garden room for two to a three-bedroom beach house. Filter by view and group size, then ask about your dates.">
+	<PageHead
+		id="stay-title"
+		eyebrow="Stay"
+		title="Seven kinds of room, from a garden room for two to a house for six."
+		intro="Each has a terrace or patio. Rates are per night for the room, with breakfast not included, and are sample rates until you replace them."
+	/>
+	<section class="list-section" aria-labelledby="stay-title">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter suites">
+				<div class="filter-group">
+					<span class="filter-label">View</span>
+					<a href={href(undefined, guests)} aria-current={view ? undefined : "true"}>All</a>
+					{VIEWS.map((v) => <a href={href(v.slug, guests)} aria-current={view?.slug === v.slug ? "true" : undefined}>{v.label} <span>{viewCount(v.slug)}</span></a>)}
+				</div>
+				<div class="filter-group">
+					<span class="filter-label">Guests</span>
+					<a href={href(view?.slug)} aria-current={guests ? undefined : "true"}>Any</a>
+					{GUEST_OPTIONS.map((n) => <a href={href(view?.slug, n)} aria-current={guests === n ? "true" : undefined}>Sleeps {n}{n < 6 ? "+" : ""} <span>{guestCount(n)}</span></a>)}
+				</div>
+			</nav>
+
+			<p class="result-line" role="status">
+				{list.length} of {all.length} suites{heading ? `: ${heading}` : ""}
+				{(view || guests) && <> <a href="/stay">Clear filters</a></>}
+			</p>
+
+			{
+				list.length === 0 ? (
+					<p class="empty-note">No suite matches that combination. <a href="/stay">Show all suites</a> or <a href="/contact">tell us who is travelling</a>.</p>
+				) : (
+					<ul class="scard-grid scard-grid-list">
+						{list.map((s) => <li><SuiteCard suite={s} /></li>)}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+</Base>

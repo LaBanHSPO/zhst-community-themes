@@ -1,0 +1,41 @@
+---
+import type { MediaReference } from "../utils/site-identity";
+
+interface Props {
+	title: string;
+	sub?: string;
+	logo?: MediaReference | null;
+	class?: string;
+	light?: boolean;
+}
+const { title, sub, logo, class: className, light = false } = Astro.props;
+---
+
+<a class:list={["wordmark", { "is-light": light }, className]} href="/" aria-label={`${title}${sub ? ` ${sub}` : ""}, home`}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt ?? title} width="200" height="46" />
+		) : (
+			<>
+				<svg class="wordmark-mark" viewBox="0 0 60 36" width="58" height="35" aria-hidden="true" focusable="false">
+					<g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M30.5 30.5 C30 24 29.6 19 30.2 13.5" />
+						<path d="M30.2 13.5 C26 6.5 17 5.5 9.5 11.5" />
+						<path d="M30.2 13.5 C25 10 19 11 14.5 17.5" />
+						<path d="M30.2 13.5 C28 17 24.5 18.5 21 24" />
+						<path d="M30.2 13.5 C34.5 6.5 43 5.5 50.5 11.5" />
+						<path d="M30.2 13.5 C35.5 10 41.5 11 46 17.5" />
+						<path d="M30.2 13.5 C32.5 17 36 18.5 39.5 24" />
+						<path d="M30.2 13.5 C29.5 9 30.5 5.5 33 3" />
+						<path d="M2 33 C14 27.5 46 27.5 58 33" />
+						<path d="M12 34.5 C22 31 38 31 48 34.5" />
+					</g>
+				</svg>
+				<span class="wordmark-text">
+					<span class="wordmark-title">{title}</span>
+					{sub && <span class="wordmark-sub">{sub}</span>}
+				</span>
+			</>
+		)
+	}
+</a>

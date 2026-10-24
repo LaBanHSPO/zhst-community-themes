@@ -1,0 +1,14 @@
+---
+import { getEmDashEntry } from "emdash";
+import CmsPage from "../components/CmsPage.astro";
+
+const { entry: page, cacheHint } = await getEmDashEntry("pages", "about");
+if (!page) return Astro.rewrite("/404");
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+---
+
+<CmsPage slug="about" page={page}>
+	<figure class="about-photo">
+		<img src="/images/sky-palms.webp" alt="Tall palms against a warm evening sky above a green headland" width="900" height="420" loading="lazy" />
+	</figure>
+</CmsPage>

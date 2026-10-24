@@ -1,0 +1,1243 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "SandCove",
+    "description": "A beach resort theme with a full-bleed pool and bay hero, a suites collection filtered by view and group size, experiences, dining venues, an about page and an availability request form, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "SandCove",
+    "tagline": "Beach resort"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "suites",
+      "label": "Suites",
+      "labelSingular": "Suite",
+      "urlPattern": "/stay/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Suite name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "size_m2",
+          "label": "Size (square metres)",
+          "type": "integer",
+          "required": true
+        },
+        {
+          "slug": "bed",
+          "label": "Bed",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "max_guests",
+          "label": "Most guests",
+          "type": "integer",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "slug": "view",
+          "label": "View",
+          "type": "select",
+          "required": true,
+          "defaultValue": "ocean",
+          "validation": {
+            "options": [
+              "ocean",
+              "garden"
+            ]
+          },
+          "indexed": true
+        },
+        {
+          "slug": "private_pool",
+          "label": "Private pool",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "amenities",
+          "label": "Amenities (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "price_from",
+          "label": "From price per night, whole dollars (placeholder)",
+          "type": "integer"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph (detail page)",
+          "type": "text"
+        },
+        {
+          "slug": "good_for",
+          "label": "Good to know (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Extra suite page content",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "image",
+          "label": "Cover photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover photo path",
+          "type": "string"
+        },
+        {
+          "slug": "photo_alt",
+          "label": "Cover photo description",
+          "type": "string"
+        },
+        {
+          "slug": "gallery",
+          "label": "More photos (one per line, as path|description)",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "slug": "experiences",
+      "label": "Experiences",
+      "labelSingular": "Experience",
+      "urlPattern": "/experience/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Activity",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "category",
+          "label": "Kind",
+          "type": "select",
+          "required": true,
+          "defaultValue": "water",
+          "validation": {
+            "options": [
+              "water",
+              "land",
+              "wellness"
+            ]
+          },
+          "indexed": true
+        },
+        {
+          "slug": "duration",
+          "label": "Duration",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "season",
+          "label": "When it runs",
+          "type": "string"
+        },
+        {
+          "slug": "price_from",
+          "label": "Price per person, whole dollars, 0 for included (placeholder)",
+          "type": "integer"
+        },
+        {
+          "slug": "group_max",
+          "label": "Largest group",
+          "type": "integer"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph (detail page)",
+          "type": "text"
+        },
+        {
+          "slug": "schedule",
+          "label": "How it runs (one per line, as Time|What happens)",
+          "type": "text"
+        },
+        {
+          "slug": "bring",
+          "label": "What to bring (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "provided",
+          "label": "We provide (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Extra page content",
+          "type": "portableText",
+          "searchable": true
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "photo_alt",
+          "label": "Photo description",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "venues",
+      "label": "Dining venues",
+      "labelSingular": "Venue",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Venue",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "kind",
+          "label": "Kind",
+          "type": "string"
+        },
+        {
+          "slug": "summary",
+          "label": "Description",
+          "type": "text"
+        },
+        {
+          "slug": "hours",
+          "label": "Hours (one per line, as Day|Hours)",
+          "type": "text"
+        },
+        {
+          "slug": "highlights",
+          "label": "Menu highlights (one per line, as Dish|Description|Price, price optional)",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "photo_alt",
+          "label": "Photo description",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "company",
+      "label": "Resort details",
+      "labelSingular": "Resort details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Resort name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "street",
+          "label": "Street address",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "locality",
+          "label": "Town, state and ZIP",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "country",
+          "label": "Country",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Reservations email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "office",
+          "label": "Reservations desk hours (one per line, as Day|Hours)",
+          "type": "text"
+        },
+        {
+          "slug": "stay_times",
+          "label": "Check-in and check-out (one per line, as Label|Time)",
+          "type": "text"
+        },
+        {
+          "slug": "getting_here",
+          "label": "Getting here (one per line, as How|Detail)",
+          "type": "text"
+        },
+        {
+          "slug": "enquiry_note",
+          "label": "Note shown beside the request form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Stay",
+          "url": "/stay"
+        },
+        {
+          "type": "custom",
+          "label": "Experience",
+          "url": "/experience"
+        },
+        {
+          "type": "custom",
+          "label": "Dining",
+          "url": "/dining"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "A small resort that grew room by room.",
+          "eyebrow": "About",
+          "intro": "SandCove has 48 suites on a quiet bay. This page says how it started and what we do about the things guests ask us.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "SandCove began in 2011 as fourteen rooms on an old coconut grove. Two families built it, one that had run a fishing lodge and one that had run a restaurant. They kept the trees and put the rooms between them.",
+                  "_key": "k1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Over the next twelve years they added the garden suites, the pool villas and the spa. The beach house opened last. Some of the staff who painted the first rooms now run the front desk and the kitchen.",
+                  "_key": "k2s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we do about the environment",
+                  "_key": "k3s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k4",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We describe practices here, not certifications. We do not hold an eco label and we do not claim one.",
+                  "_key": "k4s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Rain from the roofs is stored in two tanks and waters the gardens.",
+                  "_key": "k5s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k6",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Water bottles are refillable glass in every room. We do not stock single-use plastic bottles.",
+                  "_key": "k6s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sheets and towels are changed every three days unless you ask for sooner.",
+                  "_key": "k7s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k8",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The fish on the menu comes from two local boats, named on the menu board.",
+                  "_key": "k8s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Garden trimmings and kitchen scraps go to the compost heap behind the staff building.",
+                  "_key": "k9s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k10",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The reef is shallow and fragile. Guides ask guests not to stand on it or touch it, and we sell sunscreen that is free of oxybenzone and octinoxate.",
+                  "_key": "k10s"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The people",
+                  "_key": "k11s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "About 60 people work at the resort in high season. Most live within thirty minutes. Our general manager, Marisol Teague, has been with SandCove since 2013. You will see her at breakfast most mornings.",
+                  "_key": "k12s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Visiting",
+                  "_key": "k13s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The resort is quiet by design. There is no nightclub and no loud music after 10 pm. Children are welcome, and the shallow pool and the family rooms are near each other.",
+                  "_key": "k14s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "dining",
+        "slug": "dining",
+        "status": "published",
+        "data": {
+          "title": "Three places to eat, all within a short walk.",
+          "eyebrow": "Dining",
+          "intro": "A restaurant, a beach bar and a long breakfast. Hours and sample dishes are below.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Allergies and special diets",
+                  "_key": "k15s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Tell us about allergies in your request, or at check-in. Every menu has vegetarian dishes and most can be made vegan. Gluten-free and dairy-free versions are available on request.",
+                  "_key": "k16s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The kitchen handles nuts, shellfish and sesame, so we cannot promise a space free of them. If an allergy is serious, speak to the chef before you order.",
+                  "_key": "k17s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "policies",
+        "slug": "policies",
+        "status": "published",
+        "data": {
+          "title": "Resort policies",
+          "eyebrow": "Policies",
+          "intro": "Sample text. Replace it with your own terms before the site goes live.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Check-in and check-out",
+                  "_key": "k18s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Check-in is from 3:00 pm and check-out is by 11:00 am. If your room is ready earlier, we will tell you. Luggage can be left at the front desk on arrival and departure days.",
+                  "_key": "k19s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k20",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Cancelling or changing a stay",
+                  "_key": "k20s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Dates can be changed or cancelled without charge up to 14 days before arrival. After that, the first night is charged. In December and January the notice period is 30 days.",
+                  "_key": "k21s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k22",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Children",
+                  "_key": "k22s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Children of all ages are welcome. Children under 12 stay free in an existing bed. Pools are not supervised by staff, and private pools are not fenced.",
+                  "_key": "k23s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k24",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Pets",
+                  "_key": "k24s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We cannot take pets. Service animals are welcome with advance notice.",
+                  "_key": "k25s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k26",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Payment",
+                  "_key": "k26s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A card is held at check-in. Nothing is charged by this website, and nothing is taken when you send a request. The rates shown here are sample rates.",
+                  "_key": "k27s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k28",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Quiet hours",
+                  "_key": "k28s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Please keep noise low between 10:00 pm and 7:00 am. The beach bar closes at sunset, or at 9:00 pm in summer.",
+                  "_key": "k29s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "suites": [
+      {
+        "id": "ocean-suite",
+        "slug": "ocean-suite",
+        "status": "published",
+        "data": {
+          "title": "Ocean Suite",
+          "summary": "A bright room with a king bed, floor-to-ceiling glass doors and a terrace facing the bay.",
+          "size_m2": 52,
+          "bed": "King",
+          "max_guests": 2,
+          "view": "ocean",
+          "private_pool": false,
+          "amenities": "Terrace with a daybed and two chairs\nRain shower and a soaking tub\nAir conditioning and ceiling fan\nEspresso machine and a kettle\nSheer curtains plus blackout drapes\nLinen robes and slippers\nDaily refill of reef-safe sunscreen",
+          "price_from": 390,
+          "featured": true,
+          "position": 10,
+          "intro": "The glass doors slide fully open, so the sea breeze moves through the room. The bed faces the water and the terrace has a daybed for the afternoon.",
+          "good_for": "Second floor of the main building, reached by stairs and a lift\nQuietest in the morning, with the sun on the terrace after 2 pm\nSleeps two adults. A cot can be added on request",
+          "photo": "/images/suite-ocean.webp",
+          "photo_alt": "A bed with a teal throw faces open glass doors, a terrace and the bay beyond the palms",
+          "gallery": "/images/beach-sunset.webp|A curved beach with rocks and turquoise water in the low evening sun\n/images/pool-bay.webp|A long infinity pool above the bay, with green leaves in the foreground"
+        }
+      },
+      {
+        "id": "terrace-suite",
+        "slug": "terrace-suite",
+        "status": "published",
+        "data": {
+          "title": "Terrace Suite",
+          "summary": "A larger suite with a sofa bed and a wide stone terrace for long breakfasts.",
+          "size_m2": 64,
+          "bed": "King and sofa bed",
+          "max_guests": 3,
+          "view": "ocean",
+          "private_pool": false,
+          "amenities": "Wide terrace with a lounger and dining table\nSofa bed made up on request\nRain shower and a separate bath\nAir conditioning and ceiling fan\nEspresso machine and a small fridge\nLinen robes and slippers",
+          "price_from": 480,
+          "featured": true,
+          "position": 20,
+          "intro": "The terrace runs the full width of the suite. Most guests have breakfast out there and keep the lounger for the afternoon.",
+          "good_for": "Ground floor, a few steps from the pool deck\nSleeps three. Children under 12 stay free in the sofa bed\nStep-free access from the path",
+          "photo": "/images/terrace.webp",
+          "photo_alt": "A cushioned wooden lounger on a stone terrace beside the pool, with rolled towels and a small plant",
+          "gallery": "/images/lounger-hat.webp|A cushioned lounger beside the pool with a straw hat, rolled towels and a coconut drink\n/images/pool-bay.webp|A long infinity pool above the bay, with green leaves in the foreground"
+        }
+      },
+      {
+        "id": "garden-room",
+        "slug": "garden-room",
+        "status": "published",
+        "data": {
+          "title": "Garden Room",
+          "summary": "A calm room for two on the garden side, a short walk from the pool and the beach.",
+          "size_m2": 38,
+          "bed": "Queen",
+          "max_guests": 2,
+          "view": "garden",
+          "private_pool": false,
+          "amenities": "Private patio with two chairs\nRain shower\nAir conditioning and ceiling fan\nKettle and tea\nBlackout curtains\nLinen robes",
+          "price_from": 260,
+          "featured": false,
+          "position": 30,
+          "intro": "The patio opens onto a planted path of ginger and palms. It is the most modest room at SandCove and the one that books first in the shoulder months.",
+          "good_for": "Garden side, about 150 steps to the beach\nSleeps two adults\nShower only, no bath",
+          "photo": "/images/sky-palms.webp",
+          "photo_alt": "Tall palms against a warm evening sky above a green headland",
+          "gallery": "/images/pool-bay.webp|A long infinity pool above the bay, with green leaves in the foreground"
+        }
+      },
+      {
+        "id": "garden-plunge-suite",
+        "slug": "garden-plunge-suite",
+        "status": "published",
+        "data": {
+          "title": "Garden Suite with Plunge Pool",
+          "summary": "A one-bedroom suite with its own plunge pool behind a screen of palms.",
+          "size_m2": 70,
+          "bed": "King",
+          "max_guests": 3,
+          "view": "garden",
+          "private_pool": true,
+          "amenities": "Private plunge pool, 3 m by 2.5 m\nOutdoor shower\nSofa bed made up on request\nAir conditioning and ceiling fan\nEspresso machine and a small fridge\nLinen robes and slippers",
+          "price_from": 560,
+          "featured": true,
+          "position": 40,
+          "intro": "The plunge pool is screened from the path and the neighbouring suites. It is shaded until about 11 am and warm by the afternoon.",
+          "good_for": "Garden side, with a short path to the beach\nSleeps three\nPool is not fenced. Please supervise children at all times",
+          "photo": "/images/lounger-hat.webp",
+          "photo_alt": "A cushioned lounger beside the pool with a straw hat, rolled towels and a coconut drink",
+          "gallery": "/images/sky-palms.webp|Tall palms against a warm evening sky above a green headland\n/images/pool-bay.webp|A long infinity pool above the bay, with green leaves in the foreground"
+        }
+      },
+      {
+        "id": "garden-family-room",
+        "slug": "garden-family-room",
+        "status": "published",
+        "data": {
+          "title": "Garden Family Room",
+          "summary": "Two queen beds, a shaded patio and space for four, close to the kids' pool.",
+          "size_m2": 56,
+          "bed": "Two queens",
+          "max_guests": 4,
+          "view": "garden",
+          "private_pool": false,
+          "amenities": "Two queen beds\nPatio with a table and four chairs\nBath and shower\nAir conditioning and ceiling fan\nSmall fridge and a kettle\nBeach bag and towels for each guest",
+          "price_from": 420,
+          "featured": false,
+          "position": 50,
+          "intro": "Built for a family of four. The room sits two doors from the shallow pool, and the patio table seats everyone.",
+          "good_for": "Garden side, next to the shallow pool\nSleeps four. Cots and high chairs on request\nRooms connect with the Garden Room on request",
+          "photo": "/images/pool-bay.webp",
+          "photo_alt": "A long infinity pool above the bay, with green leaves in the foreground",
+          "gallery": "/images/sky-palms.webp|Tall palms against a warm evening sky above a green headland\n/images/terrace.webp|A cushioned wooden lounger on a stone terrace beside the pool, with rolled towels and a small plant"
+        }
+      },
+      {
+        "id": "pool-villa",
+        "slug": "pool-villa",
+        "status": "published",
+        "data": {
+          "title": "Pool Villa",
+          "summary": "A detached villa with a private pool, a king bed and a twin room, facing the bay.",
+          "size_m2": 96,
+          "bed": "King and two twins",
+          "max_guests": 4,
+          "view": "ocean",
+          "private_pool": true,
+          "amenities": "Private pool, 8 m long\nOutdoor lounger and dining table\nTwo bedrooms\nRain shower and soaking tub\nAir conditioning and ceiling fans\nEspresso machine, fridge and a small bar\nLinen robes and slippers",
+          "price_from": 780,
+          "featured": true,
+          "position": 60,
+          "intro": "The pool is on the bay side of the villa and the living room opens to it. Both bedrooms have their own bathroom.",
+          "good_for": "Set apart on the headland path, with a buggy on call\nSleeps four\nPool is not fenced. Please supervise children at all times",
+          "photo": "/images/villa-sunset.webp",
+          "photo_alt": "A villa with a timber roof and stone pillar among palm trees, the bay glowing at sunset",
+          "gallery": "/images/sunset-pool.webp|An infinity pool at sunset with the bay, headland and palms behind it\n/images/lounger-hat.webp|A cushioned lounger beside the pool with a straw hat, rolled towels and a coconut drink"
+        }
+      },
+      {
+        "id": "beach-house",
+        "slug": "beach-house",
+        "status": "published",
+        "data": {
+          "title": "Beach House",
+          "summary": "Our largest house, with three bedrooms, a pool and a private path to the sand.",
+          "size_m2": 128,
+          "bed": "King and two twins, plus a sofa bed",
+          "max_guests": 6,
+          "view": "ocean",
+          "private_pool": true,
+          "amenities": "Private pool and terrace\nThree bedrooms, three bathrooms\nKitchenette with a fridge\nAir conditioning and ceiling fans\nOutdoor shower\nPrivate path to the beach",
+          "price_from": 1150,
+          "featured": false,
+          "position": 70,
+          "intro": "Three bedrooms around a shared terrace and pool, with a gate to the beach. It suits two families or a group of friends.",
+          "good_for": "Beachfront, at the quiet end of the bay\nSleeps six\nMinimum stay of four nights in peak months",
+          "photo": "/images/sunset-pool.webp",
+          "photo_alt": "An infinity pool at sunset with the bay, headland and palms behind it",
+          "gallery": "/images/villa-sunset.webp|A villa with a timber roof and stone pillar among palm trees, the bay glowing at sunset\n/images/beach-sunset.webp|A curved beach with rocks and turquoise water in the low evening sun"
+        }
+      }
+    ],
+    "experiences": [
+      {
+        "id": "reef-snorkelling",
+        "slug": "reef-snorkelling",
+        "status": "published",
+        "data": {
+          "title": "Reef snorkelling",
+          "summary": "A guided swim over the shallow reef at the north end of the bay.",
+          "category": "water",
+          "duration": "2 hours",
+          "season": "All year, clearest November to April",
+          "price_from": 55,
+          "group_max": 8,
+          "featured": true,
+          "position": 10,
+          "intro": "A guide swims with the group and points out fish, rays and turtles. The reef is shallow, so the water is rarely deeper than three metres.",
+          "schedule": "8:30 am|Meet at the beach hut, fit masks and fins\n9:00 am|Short briefing, then a boat ride of ten minutes\n9:20 am|Snorkel in two stops with a rest on the boat\n10:30 am|Back on the beach with fruit and water",
+          "bring": "Swimsuit\nTowel (we also keep a stack on the boat)\nReef-safe sunscreen or a rash vest",
+          "provided": "Mask, snorkel and fins\nLife vest if you want one\nWater and fruit afterwards",
+          "photo": "/images/beach-sunset.webp",
+          "photo_alt": "A curved beach with rocks and turquoise water in the low evening sun"
+        }
+      },
+      {
+        "id": "headland-boat-day",
+        "slug": "headland-boat-day",
+        "status": "published",
+        "data": {
+          "title": "Boat day to the headland",
+          "summary": "A six-hour trip along the coast with swim stops, a beach lunch and an afternoon back by four.",
+          "category": "water",
+          "duration": "6 hours",
+          "season": "October to May",
+          "price_from": 140,
+          "group_max": 10,
+          "featured": true,
+          "position": 20,
+          "intro": "A small wooden boat with a shade cover, a skipper and a host. We stop at two coves, one for a swim and one for lunch on the sand.",
+          "schedule": "10:00 am|Board at the resort jetty\n11:00 am|First cove, swim and paddleboards\n1:00 pm|Lunch on the beach, cooked by the Tidewater kitchen\n2:30 pm|Slow ride along the headland\n4:00 pm|Back at the jetty",
+          "bring": "Swimsuit and a hat\nTowel\nSunscreen\nA light shirt for the sun",
+          "provided": "Lunch and soft drinks\nSnorkel gear and paddleboards\nShade, seating and a dry bag for phones",
+          "photo": "/images/sky-palms.webp",
+          "photo_alt": "Tall palms against a warm evening sky above a green headland"
+        }
+      },
+      {
+        "id": "sunrise-kayak",
+        "slug": "sunrise-kayak",
+        "status": "published",
+        "data": {
+          "title": "Sunrise kayak",
+          "summary": "An easy paddle along the bay while the light comes up.",
+          "category": "water",
+          "duration": "90 minutes",
+          "season": "All year, weather allowing",
+          "price_from": 35,
+          "group_max": 10,
+          "featured": false,
+          "position": 30,
+          "intro": "Double and single kayaks, calm water and a guide in a lead boat. You are back before breakfast starts.",
+          "schedule": "5:45 am|Meet at the beach hut\n6:00 am|Paddle out along the shore\n7:00 am|Rest on the sand with tea\n7:15 am|Back at the hut",
+          "bring": "Swimsuit or quick-dry shorts\nA sun hat\nA change of shirt",
+          "provided": "Kayaks, paddles and life vests\nTea and a small snack",
+          "photo": "/images/sunset-pool.webp",
+          "photo_alt": "An infinity pool at sunset with the bay, headland and palms behind it"
+        }
+      },
+      {
+        "id": "spa-treatments",
+        "slug": "spa-treatments",
+        "status": "published",
+        "data": {
+          "title": "Spa treatments",
+          "summary": "Massage, facials and body scrubs in three small rooms above the garden.",
+          "category": "wellness",
+          "duration": "60 or 90 minutes",
+          "season": "Daily, 10 am to 7 pm",
+          "price_from": 120,
+          "group_max": 2,
+          "featured": false,
+          "position": 40,
+          "intro": "Treatments use coconut and sesame oil and are done by a team of six therapists. Couples can book a double room.",
+          "schedule": "Arrive 15 minutes early|Tea, a short form about allergies and health\nTreatment|Massage, facial or scrub\nAfterwards|A quiet room with fruit water",
+          "bring": "Nothing. Robes and slippers are provided",
+          "provided": "Robe, slippers and towels\nFruit water and tea",
+          "photo": "/images/towels-coconut.webp",
+          "photo_alt": "Rolled white towels, a straw hat and a coconut drink with a white flower on a cushioned lounger beside the pool"
+        }
+      },
+      {
+        "id": "morning-beach-yoga",
+        "slug": "morning-beach-yoga",
+        "status": "published",
+        "data": {
+          "title": "Morning beach yoga",
+          "summary": "A one-hour mixed class on the sand, for all levels.",
+          "category": "wellness",
+          "duration": "1 hour",
+          "season": "Daily at 7:00 am, free for guests",
+          "price_from": 0,
+          "group_max": 14,
+          "featured": false,
+          "position": 50,
+          "intro": "The class is slow and plain: stretching, balance and breathing. A teacher walks around and adjusts postures on request.",
+          "schedule": "6:50 am|Mats set out on the beach lawn\n7:00 am|Class begins\n8:00 am|Finish with tea at the bar",
+          "bring": "Loose clothes\nA small towel if you like",
+          "provided": "Mats and blocks\nTea afterwards",
+          "photo": "/images/terrace.webp",
+          "photo_alt": "A cushioned wooden lounger on a stone terrace beside the pool, with rolled towels and a small plant"
+        }
+      },
+      {
+        "id": "kitchen-morning",
+        "slug": "kitchen-morning",
+        "status": "published",
+        "data": {
+          "title": "Market and kitchen morning",
+          "summary": "Visit the Saturday fish market with our chef, then cook a lunch together.",
+          "category": "land",
+          "duration": "3 hours",
+          "season": "Saturdays, all year",
+          "price_from": 85,
+          "group_max": 8,
+          "featured": false,
+          "position": 60,
+          "intro": "The chef buys fish and vegetables at the market in Calder Bay, then cooks three dishes with the group in the Tidewater kitchen. You eat what you cook.",
+          "schedule": "8:00 am|Van leaves the front gate\n8:45 am|Market walk and shopping\n10:30 am|Cooking in the kitchen\n12:30 pm|Lunch on the terrace",
+          "bring": "Closed shoes for the kitchen\nAn appetite",
+          "provided": "Aprons and recipes by email\nLunch with a glass of wine or juice",
+          "photo": "/images/lounger-hat.webp",
+          "photo_alt": "A cushioned lounger beside the pool with a straw hat, rolled towels and a coconut drink"
+        }
+      }
+    ],
+    "venues": [
+      {
+        "id": "tidewater",
+        "slug": "tidewater",
+        "status": "published",
+        "data": {
+          "title": "Tidewater",
+          "kind": "Restaurant",
+          "summary": "The main restaurant, open to the terrace and the water. The menu follows what the two local boats bring in that morning.",
+          "hours": "Lunch|12:00 pm to 3:00 pm daily\nDinner|6:00 pm to 9:30 pm, Tuesday to Sunday\nMonday|Dinner at the Barefoot Bar",
+          "highlights": "Grilled snapper with lime and charred corn|Whole fish for two, off the grill|$38\nCoconut and prawn curry|Mild, with jasmine rice|$29\nSalt-baked beets with whipped feta|Pistachio and mint|$17\nMango and passion fruit tart|Served with coconut ice cream|$12",
+          "position": 10,
+          "featured": true,
+          "photo": "/images/sunset-pool.webp",
+          "photo_alt": "An infinity pool at sunset with the bay, headland and palms behind it"
+        }
+      },
+      {
+        "id": "barefoot-bar",
+        "slug": "barefoot-bar",
+        "status": "published",
+        "data": {
+          "title": "Barefoot Bar",
+          "kind": "Beach bar",
+          "summary": "A thatched bar on the sand with a short menu of snacks, cold drinks and a view of the sunset.",
+          "hours": "Daily|11:00 am until sunset\nMonday|Also serves a dinner menu from 6:00 pm",
+          "highlights": "Ginger and lime spritz|Fresh ginger, lime and soda|$10\nFish tacos|Two tacos with cabbage and chili mayonnaise|$16\nChilled cucumber soup|With yogurt and dill|$9\nFruit ice pops|Made in the kitchen, three flavours|$5",
+          "position": 20,
+          "featured": true,
+          "photo": "/images/beach-sunset.webp",
+          "photo_alt": "A curved beach with rocks and turquoise water in the low evening sun"
+        }
+      },
+      {
+        "id": "terrace-breakfast",
+        "slug": "terrace-breakfast",
+        "status": "published",
+        "data": {
+          "title": "Breakfast on the terrace",
+          "kind": "Breakfast",
+          "summary": "A long breakfast under the roof at the pool end, with a buffet and dishes cooked to order.",
+          "hours": "Daily|7:00 am to 10:30 am\nLate breakfast|Pastries and fruit until 11:30 am on request",
+          "highlights": "Tropical fruit plate|Papaya, pineapple, mango and lime|$14\nCoconut pancakes|With banana and palm syrup|$13\nEggs any way|With toast and grilled tomato|$12\nHouse granola|With yogurt and fresh fruit|$11",
+          "position": 30,
+          "featured": false,
+          "photo": "/images/terrace.webp",
+          "photo_alt": "A cushioned wooden lounger on a stone terrace beside the pool, with rolled towels and a small plant"
+        }
+      }
+    ],
+    "company": [
+      {
+        "id": "company",
+        "slug": "company",
+        "status": "published",
+        "data": {
+          "title": "SandCove Beach Resort",
+          "street": "14 Coral Ridge Road",
+          "locality": "Calder Bay, FL 30000",
+          "country": "United States",
+          "phone": "+1 305 555 0142",
+          "email": "reservations@sandcove.example",
+          "office": "Every day|8:00 am to 8:00 pm Eastern Time\nLate arrivals|Front desk open all night",
+          "stay_times": "Check-in|From 3:00 pm\nCheck-out|By 11:00 am\nEarly or late|Ask us, we will try",
+          "getting_here": "By air|Calder Bay Regional Airport is 35 minutes by road. Larger airports are two hours away.\nResort transfer|$60 per car each way (sample rate). Send your flight details 48 hours ahead.\nBy car|20 minutes from Calder Bay along the coast road. Parking is free and the gate is staffed.\nBy taxi|Fixed fare from the airport, about $70. Taxis wait at the arrivals door.",
+          "enquiry_note": "We confirm availability and the rate by email, usually within one working day. Sending a request does not hold a room or take a payment."
+        }
+      }
+    ]
+  }
+}

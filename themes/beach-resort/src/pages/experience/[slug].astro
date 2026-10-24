@@ -1,0 +1,134 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { categoryLabel, formatPrice, getExperiences, lines, photoSrc, rows } from "../../lib/resort";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: exp, cacheHint } = await getEmDashEntry("experiences", slug);
+if (!exp) return Astro.rewrite("/404");
+
+const [allResult, settings] = await Promise.all([getExperiences(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(exp, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = exp.data;
+const key = d.slug ?? d.id;
+const src = photoSrc(d.image, d.photo);
+const schedule = rows(d.schedule);
+const bring = lines(d.bring);
+const provided = lines(d.provided);
+const others = allResult.experiences.filter((e) => e.data.id !== d.id).slice(0, 3);
+const hasBody = Boolean(d.content && d.content.length > 0);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "experiences", id: d.id, slug }}
+	current="/experience"
+>
+	<section class="detail-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/experience">Experience</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class:list={["detail-grid", { "is-text-only": !src }]}>
+				<div class="detail-copy">
+					<p class="eyebrow">{categoryLabel(d.category)}<span class="eyebrow-rule" aria-hidden="true"></span></p>
+					<h1 class="display" {...exp.edit.title}>{d.title}</h1>
+					<p class="lede" {...exp.edit.summary}>{d.summary}</p>
+					<dl class="facts">
+						<div><dt>Duration</dt><dd>{d.duration}</dd></div>
+						{d.season ? <div><dt>When</dt><dd>{d.season}</dd></div> : null}
+						{d.group_max ? <div><dt>Group size</dt><dd>Up to {d.group_max} guests</dd></div> : null}
+						<div><dt>Price</dt><dd>{d.price_from ? `${formatPrice(d.price_from)} per person (sample price)` : "Included for resort guests"}</dd></div>
+					</dl>
+					<a class="btn btn-lg" href={`/contact?experience=${encodeURIComponent(key)}`}>Add to a stay request <Arrow /></a>
+				</div>
+				{src && <figure class="detail-photo"><img src={src} alt={d.image?.alt || d.photo_alt || ""} width="800" height="560" fetchpriority="high" /></figure>}
+			</div>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="wrap detail-cols">
+			<div class="prose">
+				{d.intro && <p class="lead-in" {...exp.edit.intro}>{d.intro}</p>}
+				{
+					schedule.length > 0 && (
+						<>
+							<h2>How it runs</h2>
+							<ol class="outline">{schedule.map((s) => <li><span class="outline-day">{s.left}</span><span>{s.right}</span></li>)}</ol>
+						</>
+					)
+				}
+				{
+					provided.length > 0 && (
+						<>
+							<h2>We provide</h2>
+							<ul class="check-list">{provided.map((p) => <li>{p}</li>)}</ul>
+						</>
+					)
+				}
+				{
+					bring.length > 0 && (
+						<>
+							<h2>What to bring</h2>
+							<ul class="check-list">{bring.map((b) => <li>{b}</li>)}</ul>
+						</>
+					)
+				}
+				{hasBody && <PortableText value={d.content} />}
+			</div>
+			<aside class="side-box" aria-labelledby="exp-ask">
+				<h2 id="exp-ask">Booking</h2>
+				<p>Activities are booked with your stay or at the activities desk after you arrive. Add this one to your request and we confirm it in the same email.</p>
+				<a class="btn btn-block" href={`/contact?experience=${encodeURIComponent(key)}`}>Book Your Stay <Arrow /></a>
+			</aside>
+		</div>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="band related" aria-labelledby="other-title">
+				<div class="band-inner">
+					<div class="band-head">
+						<h2 id="other-title" class="display">More to do</h2>
+						<a class="link-arrow" href="/experience">All activities <Arrow /></a>
+					</div>
+					<ul class="days-list">
+						{
+							others.map((e) => {
+								const s = photoSrc(e.data.image, e.data.photo);
+								return (
+									<li>
+										<a href={`/experience/${e.data.slug ?? e.data.id}`}>
+											{s && <img src={s} alt="" width="160" height="110" loading="lazy" />}
+											<span class="day-name">{e.data.title}</span>
+											<span class="day-meta">{e.data.duration}</span>
+											<span class="day-meta day-season">{e.data.season}</span>
+											<span class="day-price">{e.data.price_from ? `${formatPrice(e.data.price_from)} each` : "Included"}</span>
+										</a>
+									</li>
+								);
+							})
+						}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+</Base>

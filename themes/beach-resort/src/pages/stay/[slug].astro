@@ -1,0 +1,128 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import SuiteCard from "../../components/SuiteCard.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { formatPrice, getCompany, getSuites, lines, rows, suitePhotos, viewLabel } from "../../lib/resort";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: suite, cacheHint } = await getEmDashEntry("suites", slug);
+if (!suite) return Astro.rewrite("/404");
+
+const [allResult, companyResult, settings] = await Promise.all([getSuites(), getCompany(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(suite, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = suite.data;
+const key = d.slug ?? d.id;
+const photos = suitePhotos(suite);
+const amenities = lines(d.amenities);
+const good = lines(d.good_for);
+const times = rows(companyResult.company.stay_times);
+const related = allResult.suites
+	.filter((s) => s.data.id !== d.id && (s.data.view === d.view || s.data.private_pool === d.private_pool))
+	.slice(0, 3);
+const hasBody = Boolean(d.content && d.content.length > 0);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? photos[0]?.src}
+	content={{ collection: "suites", id: d.id, slug }}
+	current="/stay"
+>
+	<section class="detail-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/stay">Stay</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class:list={["detail-grid", { "is-text-only": photos.length === 0 }]}>
+				<div class="detail-copy">
+					<p class="eyebrow">{viewLabel(d.view)}{d.private_pool ? " · Private pool" : ""}<span class="eyebrow-rule" aria-hidden="true"></span></p>
+					<h1 class="display" {...suite.edit.title}>{d.title}</h1>
+					<p class="lede" {...suite.edit.summary}>{d.summary}</p>
+					<dl class="facts">
+						<div><dt>Size</dt><dd>{d.size_m2} m²</dd></div>
+						<div><dt>Bed</dt><dd>{d.bed}</dd></div>
+						<div><dt>Sleeps</dt><dd>Up to {d.max_guests} guests</dd></div>
+						<div><dt>View</dt><dd><a href={`/stay?view=${d.view}`}>{viewLabel(d.view)}</a></dd></div>
+						<div><dt>Private pool</dt><dd>{d.private_pool ? "Yes" : "No"}</dd></div>
+						{d.price_from ? <div><dt>Rate</dt><dd>From {formatPrice(d.price_from)} a night (sample rate)</dd></div> : null}
+					</dl>
+					<a class="btn btn-lg" href={`/contact?suite=${encodeURIComponent(key)}`}>Ask about this suite <Arrow /></a>
+				</div>
+				{photos[0] && <figure class="detail-photo"><img src={photos[0].src} alt={photos[0].alt} width="800" height="560" fetchpriority="high" /></figure>}
+			</div>
+		</div>
+	</section>
+
+	{
+		photos.length > 1 && (
+			<section class="sequence" aria-label={`More photos of ${d.title}`}>
+				<div class="wrap">
+					<ul class:list={["sequence-list", `n-${Math.min(photos.length - 1, 3)}`]}>
+						{photos.slice(1).map((p) => <li><img src={p.src} alt={p.alt} width="720" height="480" loading="lazy" /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="detail-body">
+		<div class="wrap detail-cols">
+			<div class="prose">
+				{d.intro && <p class="lead-in" {...suite.edit.intro}>{d.intro}</p>}
+				{
+					amenities.length > 0 && (
+						<>
+							<h2>In the suite</h2>
+							<ul class="check-list">{amenities.map((a) => <li>{a}</li>)}</ul>
+						</>
+					)
+				}
+				{
+					good.length > 0 && (
+						<>
+							<h2>Good to know</h2>
+							<ul class="check-list">{good.map((g) => <li>{g}</li>)}</ul>
+						</>
+					)
+				}
+				{hasBody && <PortableText value={d.content} />}
+			</div>
+			<aside class="side-box" aria-labelledby="ask-title">
+				<h2 id="ask-title">Ask about your dates</h2>
+				<p>Tell us the dates and who is coming. We reply by email with availability and the rate.</p>
+				<a class="btn btn-block" href={`/contact?suite=${encodeURIComponent(key)}`}>Book Your Stay <Arrow /></a>
+				{times.length > 0 && <dl class="side-times">{times.map((t) => <><dt>{t.left}</dt><dd>{t.right}</dd></>)}</dl>}
+			</aside>
+		</div>
+	</section>
+
+	{
+		related.length > 0 && (
+			<section class="band related" aria-labelledby="related-title">
+				<div class="band-inner">
+					<div class="band-head">
+						<h2 id="related-title" class="display">Other rooms to look at</h2>
+						<a class="link-arrow" href="/stay">All suites <Arrow /></a>
+					</div>
+					<ul class="scard-grid scard-grid-3">{related.map((s) => <li><SuiteCard suite={s} /></li>)}</ul>
+				</div>
+			</section>
+		)
+	}
+</Base>

@@ -1,0 +1,23 @@
+---
+import { formatPrice, photoSrc, viewLabel } from "../lib/resort";
+import type { SuiteEntry } from "../lib/resort";
+
+interface Props {
+	suite: SuiteEntry;
+}
+const { suite } = Astro.props;
+const d = suite.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<article class="scard">
+	<a class="scard-photo" href={`/stay/${d.slug ?? d.id}`} tabindex="-1" aria-hidden="true">
+		{src && <img src={src} alt="" width="640" height="440" loading="lazy" />}
+	</a>
+	<div class="scard-body">
+		<p class="scard-view">{viewLabel(d.view)}{d.private_pool ? " · Private pool" : ""}</p>
+		<h3 class="scard-title"><a href={`/stay/${d.slug ?? d.id}`} {...suite.edit.title}>{d.title}</a></h3>
+		<p class="scard-facts">{d.size_m2} m² · {d.bed} · Sleeps {d.max_guests}</p>
+		{d.price_from ? <p class="scard-price">From <b>{formatPrice(d.price_from)}</b> a night</p> : null}
+	</div>
+</article>

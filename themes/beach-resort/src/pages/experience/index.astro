@@ -1,0 +1,54 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import Arrow from "../../components/Arrow.astro";
+import { CATEGORIES, formatPrice, getExperiences, photoSrc } from "../../lib/resort";
+
+const result = await getExperiences();
+if (Astro.cache?.enabled) Astro.cache.set(result.cacheHint);
+const groups = CATEGORIES.map((c) => ({ ...c, items: result.experiences.filter((e) => e.data.category === c.slug) })).filter((g) => g.items.length > 0);
+---
+
+<Base title="Experience" description="Reef snorkelling, a boat day to the headland, sunrise kayaks, spa treatments, beach yoga and a market morning with the chef. Durations, seasons and sample prices.">
+	<PageHead
+		id="exp-title"
+		eyebrow="Experience"
+		title="Things to do on the bay, most of them before lunch."
+		intro="Each activity lists how long it takes, when it runs and what to bring. Prices are per person and are sample prices. Book them with your stay or at the activities desk."
+	/>
+	<section class="list-section" aria-labelledby="exp-title">
+		<div class="wrap">
+			{
+				groups.map((g) => (
+					<div class="exp-group">
+						<h2 class="group-title">{g.label}</h2>
+						<ul class="exp-list">
+							{
+								g.items.map((e) => {
+									const src = photoSrc(e.data.image, e.data.photo);
+									return (
+										<li>
+											<a class="exp-row" href={`/experience/${e.data.slug ?? e.data.id}`}>
+												{src && <img src={src} alt="" width="360" height="240" loading="lazy" />}
+												<span class="exp-main">
+													<span class="exp-name" {...e.edit.title}>{e.data.title}</span>
+													<span class="exp-sum">{e.data.summary}</span>
+												</span>
+												<span class="exp-facts">
+													<span>{e.data.duration}</span>
+													<span>{e.data.season}</span>
+													<span class="exp-price">{e.data.price_from ? `${formatPrice(e.data.price_from)} each` : "Included"}</span>
+												</span>
+												<Arrow class="exp-arrow" />
+											</a>
+										</li>
+									);
+								})
+							}
+						</ul>
+					</div>
+				))
+			}
+		</div>
+	</section>
+</Base>
