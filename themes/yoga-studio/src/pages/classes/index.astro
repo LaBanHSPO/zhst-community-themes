@@ -1,0 +1,54 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import Subnav from "../../components/Subnav.astro";
+import ClassCard from "../../components/ClassCard.astro";
+import VisitBand from "../../components/VisitBand.astro";
+import { LEVELS, getClasses, getStudio } from "../../lib/yoga";
+
+const [classesResult, studioResult] = await Promise.all([getClasses(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(classesResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+// ?level=beginner | all-levels | intermediate narrows the list; anything else shows every class.
+const wanted = Astro.url.searchParams.get("level");
+const level = LEVELS.find((l) => l.slug === wanted);
+const all = classesResult.entries;
+const shown = level ? all.filter((c) => c.data.level === level.slug) : all;
+const count = (slug: string) => all.filter((c) => c.data.level === slug).length;
+---
+
+<Base title="Classes" description="Yoga classes for every level at sādhana: flow, gentle, restorative, strength and breath.">
+	<PageHead
+		id="classes-title"
+		eyebrow="Classes"
+		title="Find a class that fits."
+		intro="Eight class types, from slow and supported to warm and strong. Every class welcomes questions, options and rest."
+	/>
+	<section class="list-section" aria-labelledby="classes-title">
+		<div class="wrap">
+			<Subnav current="classes" />
+			<nav class="filters" aria-label="Filter classes by level">
+				<a href="/classes" aria-current={level ? undefined : "true"}>All classes <span>{all.length}</span></a>
+				{
+					LEVELS.map((l) => (
+						<a href={`/classes?level=${l.slug}`} aria-current={level?.slug === l.slug ? "true" : undefined}>
+							{l.label} <span>{count(l.slug)}</span>
+						</a>
+					))
+				}
+			</nav>
+			{
+				shown.length === 0 ? (
+					<p class="empty-note">No classes match that level yet. <a href="/classes">See all classes</a>.</p>
+				) : (
+					<ul class="class-grid">
+						{shown.map((c) => <li><ClassCard cls={c.data} edit={{ ...c.edit.title }} /></li>)}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+	<VisitBand studio={studioResult.studio} />
+</Base>

@@ -1,0 +1,2395 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Yoga Studio",
+  "description": "A warm, sunlit yoga-studio theme: classes, weekly timetable, journal, about and a class booking request page",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "sādhana",
+  "tagline": "Yoga Studio"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Small label above the title (also used in the footer)",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "classes",
+   "label": "Classes",
+   "labelSingular": "Class",
+   "urlPattern": "/classes/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Class name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "One-line description",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "style",
+     "label": "Style",
+     "type": "select",
+     "required": true,
+     "defaultValue": "flow",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "flow",
+       "gentle",
+       "restorative",
+       "strength",
+       "breath"
+      ]
+     }
+    },
+    {
+     "slug": "level",
+     "label": "Level",
+     "type": "select",
+     "required": true,
+     "defaultValue": "all-levels",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "beginner",
+       "all-levels",
+       "intermediate"
+      ]
+     }
+    },
+    {
+     "slug": "duration",
+     "label": "Duration (e.g. 60 min)",
+     "type": "string"
+    },
+    {
+     "slug": "featured",
+     "label": "Show on the homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph (detail page)",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Class page content",
+     "type": "portableText",
+     "searchable": true
+    },
+    {
+     "slug": "bring",
+     "label": "What to bring (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "sessions",
+   "label": "Timetable",
+   "labelSingular": "Session",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Class name (as shown in the timetable)",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "class_slug",
+     "label": "Class page slug (links the session to its class)",
+     "type": "string"
+    },
+    {
+     "slug": "weekday",
+     "label": "Weekday",
+     "type": "select",
+     "required": true,
+     "defaultValue": "mon",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri",
+       "sat",
+       "sun"
+      ]
+     }
+    },
+    {
+     "slug": "start",
+     "label": "Start time, 24-hour (e.g. 18:30)",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "time_label",
+     "label": "Time as shown (e.g. 6:30 pm)",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "teacher",
+     "label": "Teacher (first name)",
+     "type": "string"
+    },
+    {
+     "slug": "room",
+     "label": "Room",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "pillars",
+   "label": "Pillars",
+   "labelSingular": "Pillar",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "Short text",
+     "type": "text"
+    },
+    {
+     "slug": "icon",
+     "label": "Icon",
+     "type": "select",
+     "defaultValue": "lotus",
+     "validation": {
+      "options": [
+       "lotus",
+       "sun",
+       "stones"
+      ]
+     }
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "passes",
+   "label": "Pricing",
+   "labelSingular": "Pass",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "price",
+     "label": "Price in dollars (whole number)",
+     "type": "integer"
+    },
+    {
+     "slug": "note",
+     "label": "Short note",
+     "type": "text"
+    },
+    {
+     "slug": "featured",
+     "label": "Highlight",
+     "type": "boolean"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "journal",
+   "label": "Journal",
+   "labelSingular": "Journal entry",
+   "urlPattern": "/journal/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "category",
+     "label": "Category",
+     "type": "string"
+    },
+    {
+     "slug": "date_label",
+     "label": "Date as shown (e.g. 12 September 2026)",
+     "type": "string"
+    },
+    {
+     "slug": "summary",
+     "label": "Summary",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "featured",
+     "label": "Feature on the homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "studio",
+   "label": "Studio details",
+   "labelSingular": "Studio details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Studio name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "street",
+     "label": "Street address",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "locality",
+     "label": "City, state and ZIP",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "country",
+     "label": "Country",
+     "type": "string"
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Booking email",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "hours",
+     "label": "Opening hours (one per line, as Day|Hours)",
+     "type": "text"
+    },
+    {
+     "slug": "booking_note",
+     "label": "Note shown beside the booking form",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Classes",
+     "url": "/classes"
+    },
+    {
+     "type": "custom",
+     "label": "About",
+     "url": "/about"
+    },
+    {
+     "type": "custom",
+     "label": "Journal",
+     "url": "/journal"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "A place to slow down.",
+     "eyebrow": "About",
+     "intro": "sādhana is a small, independent yoga studio. We teach thoughtful classes in a bright, welcoming space, for every body.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k151",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "sādhana is a Sanskrit word for a daily practice. We chose it because the idea is simple: a little time, most days, spent on something that makes you feel more at home in yourself.",
+         "_key": "s152"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k153",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We opened with two rooms, a handful of teachers and a belief that a studio should feel like a living room more than a gym. Mats are always available, nobody is expected to know the poses and everyone is welcome to rest.",
+         "_key": "s154"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k155",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How we teach",
+         "_key": "s156"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k157",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Plain language, clear options and no pressure",
+         "_key": "s158"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k159",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Classes for beginners through to experienced students",
+         "_key": "s160"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k161",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Small groups so teachers can see everyone",
+         "_key": "s162"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k163",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we do not do",
+         "_key": "s164"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k165",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We do not promise cures or results, and we do not ask you to push through discomfort. Yoga here is about attention, breath and movement. If you have a medical condition or an injury, please talk to your doctor and let your teacher know before class.",
+         "_key": "s166"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k167",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Our space",
+         "_key": "s168"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k169",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Two rooms, both with wooden floors and plenty of daylight: the Sun room and the Garden room. We keep a stack of blankets, bolsters and blocks in each.",
+         "_key": "s170"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "studio-etiquette",
+    "slug": "studio-etiquette",
+    "status": "published",
+    "data": {
+     "title": "Studio guide",
+     "eyebrow": "Good to know",
+     "intro": "A few small things that make class easier for everyone.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k171",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Arriving",
+         "_key": "s172"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k173",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Please arrive five to ten minutes early for your first class so we can show you around. Late arrivals may be asked to join the next class.",
+         "_key": "s174"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k175",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Cancelling",
+         "_key": "s176"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k177",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Let us know at least four hours before class if you cannot make it, so we can offer the place to someone else.",
+         "_key": "s178"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k179",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Phones and quiet",
+         "_key": "s180"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k181",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Please silence phones before you enter the room. Our rooms are shared quiet spaces.",
+         "_key": "s182"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k183",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Injuries and conditions",
+         "_key": "s184"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k185",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Tell your teacher about any injury or condition before class. We cannot give medical advice and encourage you to consult a doctor if you are unsure.",
+         "_key": "s186"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "classes": [
+   {
+    "id": "slow-flow-for-beginners",
+    "slug": "slow-flow-for-beginners",
+    "status": "published",
+    "data": {
+     "title": "Slow Flow for Beginners",
+     "summary": "A gentle introduction to linking movement and breath, with every pose explained.",
+     "style": "flow",
+     "level": "beginner",
+     "duration": "60 min",
+     "featured": true,
+     "position": 10,
+     "intro": "New to yoga, or coming back after a long break? We move slowly, name every pose and offer options throughout.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Slow Flow for Beginners is one of the regular classes at sādhana. Come a few minutes early to roll out a mat, say hello and ask for any props you would like.",
+         "_key": "s2"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k3",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "s4"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k5",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Unhurried pacing with time to settle into each shape",
+         "_key": "s6"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k7",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Clear, friendly instruction and plenty of options",
+         "_key": "s8"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k9",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Mats, blocks and straps are always available",
+         "_key": "s10"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k11",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You are always welcome to rest, change a pose or stay in a gentler version. Nothing in class is a test, and teachers will not ask you to do anything you do not want to do.",
+         "_key": "s12"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "bring": "A water bottle\nComfortable clothes you can stretch in\nA light layer for the final rest",
+     "photo": "/images/cobra-card.webp"
+    }
+   },
+   {
+    "id": "vinyasa-flow",
+    "slug": "vinyasa-flow",
+    "status": "published",
+    "data": {
+     "title": "Vinyasa Flow",
+     "summary": "A steady, breath-led sequence that builds warmth and rhythm from the first minute.",
+     "style": "flow",
+     "level": "all-levels",
+     "duration": "60 min",
+     "featured": true,
+     "position": 20,
+     "intro": "Movement linked to breath, with a clear arc from warm-up to a quiet finish. Choose the fuller version of a pose or a simpler one.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k13",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Vinyasa Flow is one of the regular classes at sādhana. Come a few minutes early to roll out a mat, say hello and ask for any props you would like.",
+         "_key": "s14"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k15",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "s16"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k17",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Flowing sequences that change from week to week",
+         "_key": "s18"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k19",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Options for every pose, from simpler to fuller",
+         "_key": "s20"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k21",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Finishes with a few minutes of stillness",
+         "_key": "s22"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k23",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You are always welcome to rest, change a pose or stay in a gentler version. Nothing in class is a test, and teachers will not ask you to do anything you do not want to do.",
+         "_key": "s24"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "bring": "A mat (or borrow one of ours)\nA water bottle\nA small towel if you like to warm up",
+     "photo": "/images/lunge-card.webp"
+    }
+   },
+   {
+    "id": "gentle-hatha",
+    "slug": "gentle-hatha",
+    "status": "published",
+    "data": {
+     "title": "Gentle Hatha",
+     "summary": "Longer holds and simple sequences that leave room to notice how you feel.",
+     "style": "gentle",
+     "level": "beginner",
+     "duration": "60 min",
+     "featured": true,
+     "position": 30,
+     "intro": "A calm, grounded class. We hold familiar poses for a few breaths, use props freely and finish with a longer rest.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k25",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Gentle Hatha is one of the regular classes at sādhana. Come a few minutes early to roll out a mat, say hello and ask for any props you would like.",
+         "_key": "s26"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k27",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "s28"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k29",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Slow, supported poses with props within reach",
+         "_key": "s30"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k31",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A relaxed pace with plenty of pauses",
+         "_key": "s32"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k33",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A longer rest to close the class",
+         "_key": "s34"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k35",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You are always welcome to rest, change a pose or stay in a gentler version. Nothing in class is a test, and teachers will not ask you to do anything you do not want to do.",
+         "_key": "s36"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "bring": "A water bottle\nSocks for the final rest if your feet get cold",
+     "photo": "/images/blocks-bolster.webp"
+    }
+   },
+   {
+    "id": "yin-and-restore",
+    "slug": "yin-and-restore",
+    "status": "published",
+    "data": {
+     "title": "Yin and Restore",
+     "summary": "Quiet, floor-based poses held for several minutes, with bolsters, blankets and low light.",
+     "style": "restorative",
+     "level": "all-levels",
+     "duration": "75 min",
+     "featured": true,
+     "position": 40,
+     "intro": "Settle in with cushions and blankets and let the shapes do the work. This class is about slowing down, not stretching hard.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k37",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Yin and Restore is one of the regular classes at sādhana. Come a few minutes early to roll out a mat, say hello and ask for any props you would like.",
+         "_key": "s38"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k39",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "s40"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k41",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Supported floor poses held for a few minutes each",
+         "_key": "s42"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k43",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Soft light and unhurried guidance",
+         "_key": "s44"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k45",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "All props provided",
+         "_key": "s46"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k47",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You are always welcome to rest, change a pose or stay in a gentler version. Nothing in class is a test, and teachers will not ask you to do anything you do not want to do.",
+         "_key": "s48"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "bring": "Warm socks\nA blanket if you like extra warmth (we have spares)",
+     "photo": "/images/props-floor.webp"
+    }
+   },
+   {
+    "id": "morning-mobility",
+    "slug": "morning-mobility",
+    "status": "published",
+    "data": {
+     "title": "Morning Mobility",
+     "summary": "Forty-five minutes of easy, rolling movement to start the day with a little more space.",
+     "style": "gentle",
+     "level": "all-levels",
+     "duration": "45 min",
+     "featured": false,
+     "position": 50,
+     "intro": "An early class built around joints, hips and shoulders: circles, reaches and simple flows that suit stiff mornings.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k49",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Morning Mobility is one of the regular classes at sādhana. Come a few minutes early to roll out a mat, say hello and ask for any props you would like.",
+         "_key": "s50"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k51",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "s52"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k53",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Easy, repeatable movements you can take home",
+         "_key": "s54"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k55",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "No complicated sequences to remember",
+         "_key": "s56"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k57",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Finishes with a short seated breath",
+         "_key": "s58"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k59",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You are always welcome to rest, change a pose or stay in a gentler version. Nothing in class is a test, and teachers will not ask you to do anything you do not want to do.",
+         "_key": "s60"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "bring": "A mat\nComfortable clothes\nA water bottle",
+     "photo": "/images/plants-window.webp"
+    }
+   },
+   {
+    "id": "strength-flow",
+    "slug": "strength-flow",
+    "status": "published",
+    "data": {
+     "title": "Strength Flow",
+     "summary": "A warmer, more dynamic class with longer holds, core work and balance challenges.",
+     "style": "strength",
+     "level": "intermediate",
+     "duration": "60 min",
+     "featured": false,
+     "position": 60,
+     "intro": "For students who already know the basics. Expect standing sequences, planks, balances and a steady build in effort.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k61",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Strength Flow is one of the regular classes at sādhana. Come a few minutes early to roll out a mat, say hello and ask for any props you would like.",
+         "_key": "s62"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k63",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "s64"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k65",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Longer holds in standing poses",
+         "_key": "s66"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k67",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Core and balance work woven into the flow",
+         "_key": "s68"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k69",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Suggested pose variations for every level",
+         "_key": "s70"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k71",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You are always welcome to rest, change a pose or stay in a gentler version. Nothing in class is a test, and teachers will not ask you to do anything you do not want to do.",
+         "_key": "s72"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "bring": "A non-slip mat\nA water bottle and small towel",
+     "photo": "/images/lunge-card.webp"
+    }
+   },
+   {
+    "id": "breath-and-stillness",
+    "slug": "breath-and-stillness",
+    "status": "published",
+    "data": {
+     "title": "Breath and Stillness",
+     "summary": "Guided breathing and a seated sit, with a little movement to arrive.",
+     "style": "breath",
+     "level": "all-levels",
+     "duration": "45 min",
+     "featured": true,
+     "position": 70,
+     "intro": "A short, quiet practice of simple breathing exercises and seated stillness. No experience needed and no special flexibility.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k73",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Breath and Stillness is one of the regular classes at sādhana. Come a few minutes early to roll out a mat, say hello and ask for any props you would like.",
+         "_key": "s74"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k75",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "s76"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k77",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Simple, guided breathing practices",
+         "_key": "s78"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k79",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Seated on a cushion or a chair, whichever you prefer",
+         "_key": "s80"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k81",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A few minutes of silence at the end",
+         "_key": "s82"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k83",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You are always welcome to rest, change a pose or stay in a gentler version. Nothing in class is a test, and teachers will not ask you to do anything you do not want to do.",
+         "_key": "s84"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "bring": "Comfortable, loose clothing\nA blanket for warmth (we have spares)",
+     "photo": "/images/niche-candle.webp"
+    }
+   },
+   {
+    "id": "sunset-unwind",
+    "slug": "sunset-unwind",
+    "status": "published",
+    "data": {
+     "title": "Sunset Unwind",
+     "summary": "A slow end-of-day class: gentle stretches, supported poses and a long final rest.",
+     "style": "restorative",
+     "level": "all-levels",
+     "duration": "60 min",
+     "featured": false,
+     "position": 80,
+     "intro": "Let the day go. We begin with easy movement, move to supported floor poses and finish with a long, quiet rest.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k85",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Sunset Unwind is one of the regular classes at sādhana. Come a few minutes early to roll out a mat, say hello and ask for any props you would like.",
+         "_key": "s86"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k87",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "s88"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k89",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Gentle stretches that ease the day away",
+         "_key": "s90"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k91",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Supported poses with bolsters and blankets",
+         "_key": "s92"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k93",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A long rest to finish",
+         "_key": "s94"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k95",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You are always welcome to rest, change a pose or stay in a gentler version. Nothing in class is a test, and teachers will not ask you to do anything you do not want to do.",
+         "_key": "s96"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "bring": "Socks\nA layer to stay warm in the final rest",
+     "photo": "/images/view-sea.webp"
+    }
+   }
+  ],
+  "sessions": [
+   {
+    "id": "mon-0645-morning-mobility",
+    "slug": "mon-0645-morning-mobility",
+    "status": "published",
+    "data": {
+     "title": "Morning Mobility",
+     "class_slug": "morning-mobility",
+     "weekday": "mon",
+     "start": "06:45",
+     "time_label": "6:45 am",
+     "teacher": "Maya",
+     "room": "Sun room"
+    }
+   },
+   {
+    "id": "mon-1215-gentle-hatha",
+    "slug": "mon-1215-gentle-hatha",
+    "status": "published",
+    "data": {
+     "title": "Gentle Hatha",
+     "class_slug": "gentle-hatha",
+     "weekday": "mon",
+     "start": "12:15",
+     "time_label": "12:15 pm",
+     "teacher": "Theo",
+     "room": "Sun room"
+    }
+   },
+   {
+    "id": "mon-1830-vinyasa-flow",
+    "slug": "mon-1830-vinyasa-flow",
+    "status": "published",
+    "data": {
+     "title": "Vinyasa Flow",
+     "class_slug": "vinyasa-flow",
+     "weekday": "mon",
+     "start": "18:30",
+     "time_label": "6:30 pm",
+     "teacher": "Isla",
+     "room": "Sun room"
+    }
+   },
+   {
+    "id": "tue-0700-slow-flow-for-beginners",
+    "slug": "tue-0700-slow-flow-for-beginners",
+    "status": "published",
+    "data": {
+     "title": "Slow Flow for Beginners",
+     "class_slug": "slow-flow-for-beginners",
+     "weekday": "tue",
+     "start": "07:00",
+     "time_label": "7:00 am",
+     "teacher": "Theo",
+     "room": "Sun room"
+    }
+   },
+   {
+    "id": "tue-1745-strength-flow",
+    "slug": "tue-1745-strength-flow",
+    "status": "published",
+    "data": {
+     "title": "Strength Flow",
+     "class_slug": "strength-flow",
+     "weekday": "tue",
+     "start": "17:45",
+     "time_label": "5:45 pm",
+     "teacher": "Jonas",
+     "room": "Sun room"
+    }
+   },
+   {
+    "id": "tue-1915-yin-and-restore",
+    "slug": "tue-1915-yin-and-restore",
+    "status": "published",
+    "data": {
+     "title": "Yin and Restore",
+     "class_slug": "yin-and-restore",
+     "weekday": "tue",
+     "start": "19:15",
+     "time_label": "7:15 pm",
+     "teacher": "Noor",
+     "room": "Garden room"
+    }
+   },
+   {
+    "id": "wed-0645-morning-mobility",
+    "slug": "wed-0645-morning-mobility",
+    "status": "published",
+    "data": {
+     "title": "Morning Mobility",
+     "class_slug": "morning-mobility",
+     "weekday": "wed",
+     "start": "06:45",
+     "time_label": "6:45 am",
+     "teacher": "Maya",
+     "room": "Sun room"
+    }
+   },
+   {
+    "id": "wed-1215-breath-and-stillness",
+    "slug": "wed-1215-breath-and-stillness",
+    "status": "published",
+    "data": {
+     "title": "Breath and Stillness",
+     "class_slug": "breath-and-stillness",
+     "weekday": "wed",
+     "start": "12:15",
+     "time_label": "12:15 pm",
+     "teacher": "Noor",
+     "room": "Garden room"
+    }
+   },
+   {
+    "id": "wed-1830-vinyasa-flow",
+    "slug": "wed-1830-vinyasa-flow",
+    "status": "published",
+    "data": {
+     "title": "Vinyasa Flow",
+     "class_slug": "vinyasa-flow",
+     "weekday": "wed",
+     "start": "18:30",
+     "time_label": "6:30 pm",
+     "teacher": "Priya",
+     "room": "Sun room"
+    }
+   },
+   {
+    "id": "thu-0700-gentle-hatha",
+    "slug": "thu-0700-gentle-hatha",
+    "status": "published",
+    "data": {
+     "title": "Gentle Hatha",
+     "class_slug": "gentle-hatha",
+     "weekday": "thu",
+     "start": "07:00",
+     "time_label": "7:00 am",
+     "teacher": "Theo",
+     "room": "Garden room"
+    }
+   },
+   {
+    "id": "thu-1745-slow-flow-for-beginners",
+    "slug": "thu-1745-slow-flow-for-beginners",
+    "status": "published",
+    "data": {
+     "title": "Slow Flow for Beginners",
+     "class_slug": "slow-flow-for-beginners",
+     "weekday": "thu",
+     "start": "17:45",
+     "time_label": "5:45 pm",
+     "teacher": "Isla",
+     "room": "Sun room"
+    }
+   },
+   {
+    "id": "thu-1915-sunset-unwind",
+    "slug": "thu-1915-sunset-unwind",
+    "status": "published",
+    "data": {
+     "title": "Sunset Unwind",
+     "class_slug": "sunset-unwind",
+     "weekday": "thu",
+     "start": "19:15",
+     "time_label": "7:15 pm",
+     "teacher": "Priya",
+     "room": "Garden room"
+    }
+   },
+   {
+    "id": "fri-0700-vinyasa-flow",
+    "slug": "fri-0700-vinyasa-flow",
+    "status": "published",
+    "data": {
+     "title": "Vinyasa Flow",
+     "class_slug": "vinyasa-flow",
+     "weekday": "fri",
+     "start": "07:00",
+     "time_label": "7:00 am",
+     "teacher": "Isla",
+     "room": "Sun room"
+    }
+   },
+   {
+    "id": "fri-1215-strength-flow",
+    "slug": "fri-1215-strength-flow",
+    "status": "published",
+    "data": {
+     "title": "Strength Flow",
+     "class_slug": "strength-flow",
+     "weekday": "fri",
+     "start": "12:15",
+     "time_label": "12:15 pm",
+     "teacher": "Jonas",
+     "room": "Sun room"
+    }
+   },
+   {
+    "id": "fri-1800-yin-and-restore",
+    "slug": "fri-1800-yin-and-restore",
+    "status": "published",
+    "data": {
+     "title": "Yin and Restore",
+     "class_slug": "yin-and-restore",
+     "weekday": "fri",
+     "start": "18:00",
+     "time_label": "6:00 pm",
+     "teacher": "Noor",
+     "room": "Garden room"
+    }
+   },
+   {
+    "id": "sat-0900-vinyasa-flow",
+    "slug": "sat-0900-vinyasa-flow",
+    "status": "published",
+    "data": {
+     "title": "Vinyasa Flow",
+     "class_slug": "vinyasa-flow",
+     "weekday": "sat",
+     "start": "09:00",
+     "time_label": "9:00 am",
+     "teacher": "Maya",
+     "room": "Sun room"
+    }
+   },
+   {
+    "id": "sat-1045-gentle-hatha",
+    "slug": "sat-1045-gentle-hatha",
+    "status": "published",
+    "data": {
+     "title": "Gentle Hatha",
+     "class_slug": "gentle-hatha",
+     "weekday": "sat",
+     "start": "10:45",
+     "time_label": "10:45 am",
+     "teacher": "Theo",
+     "room": "Sun room"
+    }
+   },
+   {
+    "id": "sat-1600-sunset-unwind",
+    "slug": "sat-1600-sunset-unwind",
+    "status": "published",
+    "data": {
+     "title": "Sunset Unwind",
+     "class_slug": "sunset-unwind",
+     "weekday": "sat",
+     "start": "16:00",
+     "time_label": "4:00 pm",
+     "teacher": "Priya",
+     "room": "Garden room"
+    }
+   },
+   {
+    "id": "sun-0930-slow-flow-for-beginners",
+    "slug": "sun-0930-slow-flow-for-beginners",
+    "status": "published",
+    "data": {
+     "title": "Slow Flow for Beginners",
+     "class_slug": "slow-flow-for-beginners",
+     "weekday": "sun",
+     "start": "09:30",
+     "time_label": "9:30 am",
+     "teacher": "Maya",
+     "room": "Sun room"
+    }
+   },
+   {
+    "id": "sun-1100-breath-and-stillness",
+    "slug": "sun-1100-breath-and-stillness",
+    "status": "published",
+    "data": {
+     "title": "Breath and Stillness",
+     "class_slug": "breath-and-stillness",
+     "weekday": "sun",
+     "start": "11:00",
+     "time_label": "11:00 am",
+     "teacher": "Noor",
+     "room": "Garden room"
+    }
+   },
+   {
+    "id": "sun-1700-yin-and-restore",
+    "slug": "sun-1700-yin-and-restore",
+    "status": "published",
+    "data": {
+     "title": "Yin and Restore",
+     "class_slug": "yin-and-restore",
+     "weekday": "sun",
+     "start": "17:00",
+     "time_label": "5:00 pm",
+     "teacher": "Priya",
+     "room": "Garden room"
+    }
+   }
+  ],
+  "pillars": [
+   {
+    "id": "move",
+    "slug": "move",
+    "status": "published",
+    "data": {
+     "title": "Move",
+     "text": "Feel stronger\nand more alive.",
+     "icon": "lotus",
+     "position": 10
+    }
+   },
+   {
+    "id": "breathe",
+    "slug": "breathe",
+    "status": "published",
+    "data": {
+     "title": "Breathe",
+     "text": "Find calm\nin the everyday.",
+     "icon": "sun",
+     "position": 20
+    }
+   },
+   {
+    "id": "belong",
+    "slug": "belong",
+    "status": "published",
+    "data": {
+     "title": "Belong",
+     "text": "A supportive\ncommunity awaits.",
+     "icon": "stones",
+     "position": 30
+    }
+   }
+  ],
+  "passes": [
+   {
+    "id": "intro-week",
+    "slug": "intro-week",
+    "status": "published",
+    "data": {
+     "title": "Intro week",
+     "price": 25,
+     "note": "New to sādhana? Unlimited classes for seven days from your first visit.",
+     "featured": false,
+     "position": 5
+    }
+   },
+   {
+    "id": "drop-in",
+    "slug": "drop-in",
+    "status": "published",
+    "data": {
+     "title": "Drop-in",
+     "price": 22,
+     "note": "One class, any style. Pay at the studio or reserve by request.",
+     "featured": false,
+     "position": 10
+    }
+   },
+   {
+    "id": "five-class-pack",
+    "slug": "five-class-pack",
+    "status": "published",
+    "data": {
+     "title": "5-class pack",
+     "price": 95,
+     "note": "Valid for three months. Share it with a friend if you like.",
+     "featured": false,
+     "position": 20
+    }
+   },
+   {
+    "id": "ten-class-pack",
+    "slug": "ten-class-pack",
+    "status": "published",
+    "data": {
+     "title": "10-class pack",
+     "price": 175,
+     "note": "Valid for five months. Our most popular way to practise regularly.",
+     "featured": true,
+     "position": 30
+    }
+   },
+   {
+    "id": "monthly-membership",
+    "slug": "monthly-membership",
+    "status": "published",
+    "data": {
+     "title": "Monthly membership",
+     "price": 120,
+     "note": "Come as often as you like. Pause or cancel with a week's notice.",
+     "featured": false,
+     "position": 40
+    }
+   }
+  ],
+  "journal": [
+   {
+    "id": "why-we-start-slowly",
+    "slug": "why-we-start-slowly",
+    "status": "published",
+    "data": {
+     "title": "Sunset Unwind",
+     "category": "Practice",
+     "date_label": "12 September 2026",
+     "summary": "Why every class at sādhana begins slowly, and what a few quiet minutes can do for the rest of the hour.",
+     "featured": true,
+     "position": 10,
+     "photo": "/images/blocks-bolster.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k97",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Walk into most studios and you will find the first few minutes are the busiest: mats unrolling, shoes coming off, a handful of people still arriving. We like to treat that stretch as part of class.",
+         "_key": "s98"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k99",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A soft landing",
+         "_key": "s100"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k101",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Each class starts with a short, seated pause. We ask nothing of you except to arrive. Some people close their eyes; others look out of the window. Both are fine.",
+         "_key": "s102"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k103",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Starting slowly also means the warm-up does real work. Moving gently at first lets you notice where you feel tight, where you feel strong and what you might want to change today.",
+         "_key": "s104"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "choosing-your-first-class",
+    "slug": "choosing-your-first-class",
+    "status": "published",
+    "data": {
+     "title": "Sunset Unwind",
+     "category": "Beginners",
+     "date_label": "28 August 2026",
+     "summary": "A friendly guide to picking a first class, what to wear and how to get the most out of it.",
+     "featured": true,
+     "position": 20,
+     "photo": "/images/cobra-card.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k105",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If this is your first time in a yoga studio, welcome. A few small decisions can make your first visit easier.",
+         "_key": "s106"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k107",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Start with a beginner class",
+         "_key": "s108"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k109",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Slow Flow for Beginners and Gentle Hatha are good places to begin. The pace is easy to follow and every pose comes with options.",
+         "_key": "s110"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k111",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to bring",
+         "_key": "s112"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k113",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A water bottle",
+         "_key": "s114"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k115",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Clothes you can move in",
+         "_key": "s116"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k117",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "An open mind. That is it.",
+         "_key": "s118"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k119",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We have mats, blocks, straps and blankets, so there is nothing to buy first.",
+         "_key": "s120"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "props-are-for-everyone",
+    "slug": "props-are-for-everyone",
+    "status": "published",
+    "data": {
+     "title": "Sunset Unwind",
+     "category": "Practice",
+     "date_label": "10 August 2026",
+     "summary": "Blocks, bolsters and blankets are not a sign of anything except that you want to be comfortable.",
+     "featured": false,
+     "position": 30,
+     "photo": "/images/props-floor.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k121",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "In our studio, props are for everyone. A cork block can bring the floor closer to your hands. A bolster can make a long rest feel generous.",
+         "_key": "s122"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k123",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A few of our favourites",
+         "_key": "s124"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k125",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Blocks under the hands in standing poses",
+         "_key": "s126"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k127",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A folded blanket beneath the hips when sitting",
+         "_key": "s128"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k129",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A bolster under the knees when lying down",
+         "_key": "s130"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k131",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Ask any teacher and they will happily show you a new way to use them.",
+         "_key": "s132"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "a-few-minutes-of-breathing",
+    "slug": "a-few-minutes-of-breathing",
+    "status": "published",
+    "data": {
+     "title": "Sunset Unwind",
+     "category": "Breath",
+     "date_label": "22 July 2026",
+     "summary": "Three simple ways to pause and breathe during an ordinary day, no mat required.",
+     "featured": false,
+     "position": 40,
+     "photo": "/images/plants-window.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k133",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You do not need a studio to take a breath. These are three small habits we share with new students.",
+         "_key": "s134"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k135",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Three small pauses",
+         "_key": "s136"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k137",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Before you open your laptop, take three slow breaths",
+         "_key": "s138"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k139",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Between meetings, let your shoulders drop",
+         "_key": "s140"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k141",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Before bed, breathe out a little longer than you breathe in",
+         "_key": "s142"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k143",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "None of this replaces anything. It is simply a quiet moment you can come back to.",
+         "_key": "s144"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "the-sun-room-and-the-garden-room",
+    "slug": "the-sun-room-and-the-garden-room",
+    "status": "published",
+    "data": {
+     "title": "Sunset Unwind",
+     "category": "The studio",
+     "date_label": "30 June 2026",
+     "summary": "A short tour of the two rooms we teach in, and how we decide which class goes where.",
+     "featured": false,
+     "position": 50,
+     "photo": "/images/view-sea.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k145",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We have two rooms. The Sun room is larger and faces the street, with tall windows and warm wooden floors. The Garden room is smaller, quieter and lit with lamps in the evening.",
+         "_key": "s146"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k147",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Which class where",
+         "_key": "s148"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k149",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Flowing classes tend to live in the Sun room; restorative and breath classes in the Garden room. If you would like a particular room, just ask.",
+         "_key": "s150"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "studio": [
+   {
+    "id": "studio",
+    "slug": "studio",
+    "status": "published",
+    "data": {
+     "title": "sādhana Yoga Studio",
+     "street": "22 Linden Row, Suite 1",
+     "locality": "Fernwood, OR 97301",
+     "country": "United States",
+     "phone": "+1 503 555 0172",
+     "email": "hello@sadhana-studio.example",
+     "hours": "Monday to Friday|6:30 am to 8:30 pm\nSaturday|8:30 am to 5:30 pm\nSunday|9:00 am to 6:00 pm",
+     "booking_note": "We reply within one working day. A request is not a booking until we confirm it by email or phone."
+    }
+   }
+  ]
+ }
+}

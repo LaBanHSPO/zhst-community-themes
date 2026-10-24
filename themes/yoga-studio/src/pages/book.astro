@@ -1,0 +1,247 @@
+---
+import Base from "../layouts/Base.astro";
+import { DAYS, LEVELS, formatPrice, getClasses, getPasses, getSessions, getStudio, hoursRows, levelLabel, mapHref, telHref } from "../lib/yoga";
+
+const [{ studio, cacheHint }, classesResult, sessionsResult, passesResult] = await Promise.all([getStudio(), getClasses(), getSessions(), getPasses()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(classesResult.cacheHint);
+	Astro.cache.set(sessionsResult.cacheHint);
+	Astro.cache.set(passesResult.cacheHint);
+}
+const hours = hoursRows(studio.hours);
+const classes = classesResult.entries;
+
+// ?class=<slug> pre-selects a class; ?day=<mon..sun> and ?time=<HH:MM> pre-fill the preferred slot.
+const q = Astro.url.searchParams;
+const selected = classes.find((c) => (c.data.slug ?? c.data.id) === q.get("class"));
+const wantedDay = DAYS.find((d) => d.slug === q.get("day"))?.slug ?? "";
+const wantedTime = q.get("time") ?? "";
+
+const timeSlots = new Map<string, string>();
+for (const s of sessionsResult.entries) timeSlots.set(String(s.data.start), s.data.time_label);
+const times = [...timeSlots.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+
+const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Saigon" }).format(new Date());
+---
+
+<Base title="Book a Class" description="Request a place in a class at sādhana. We confirm every request by email or phone.">
+	<div class="book">
+		<div class="book-photo">
+			<img src="/images/arch-lunge.webp" alt="A woman in a low lunge with her arms reaching up, in an arched studio at sunset" width="1448" height="1086" />
+		</div>
+		<section class="book-panel" aria-labelledby="book-title">
+			<p class="eyebrow">Book a Class</p>
+			<h1 id="book-title" class="display">Save your <em>place on the mat.</em></h1>
+			<p class="lede">
+				Choose a class and a time that suits you, and we will confirm by email or phone. A request is not a booking until we reply.
+			</p>
+
+			<form
+				class="book-form"
+				data-book-form
+				data-email={studio.email}
+				action={studio.email ? `mailto:${studio.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field full">
+						<label for="b-class">Class</label>
+						<select id="b-class" name="class" required>
+							<option value="" selected={!selected}>Choose a class</option>
+							{
+								LEVELS.map((lv) => {
+									const items = classes.filter((c) => c.data.level === lv.slug);
+									return (
+										items.length > 0 && (
+											<optgroup label={lv.label}>
+												{items.map((c) => (
+													<option value={c.data.title} selected={selected?.data.id === c.data.id}>
+														{[c.data.title, c.data.duration, levelLabel(c.data.level)].filter(Boolean).join(" · ")}
+													</option>
+												))}
+											</optgroup>
+										)
+									);
+								})
+							}
+							<option value="Not sure yet">Not sure yet, please advise</option>
+						</select>
+						<span class="field-error" id="b-class-err" data-error-for="b-class"></span>
+					</div>
+					<div class="field">
+						<label for="b-day">Preferred day</label>
+						<select id="b-day" name="day" required>
+							<option value="" selected={!wantedDay}>Choose a day</option>
+							{DAYS.map((d) => <option value={d.label} selected={d.slug === wantedDay}>{d.label}</option>)}
+							<option value="Any day">Any day</option>
+						</select>
+						<span class="field-error" id="b-day-err" data-error-for="b-day"></span>
+					</div>
+					<div class="field">
+						<label for="b-time">Preferred time</label>
+						<select id="b-time" name="time" required>
+							<option value="" selected={!wantedTime}>Choose a time</option>
+							{times.map(([start, label]) => <option value={label} selected={start === wantedTime}>{label}</option>)}
+							<option value="Any time">Any time</option>
+						</select>
+						<span class="field-error" id="b-time-err" data-error-for="b-time"></span>
+					</div>
+					<div class="field full">
+						<label for="b-date">Starting from <span class="optional">(optional)</span></label>
+						<input id="b-date" name="date" type="date" min={today} />
+					</div>
+					<div class="field">
+						<label for="b-name">Name</label>
+						<input id="b-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" id="b-name-err" data-error-for="b-name"></span>
+					</div>
+					<div class="field">
+						<label for="b-email">Email</label>
+						<input id="b-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" id="b-email-err" data-error-for="b-email"></span>
+					</div>
+					<div class="field full">
+						<label for="b-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="b-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field full check">
+						<input id="b-first" name="first" type="checkbox" value="yes" />
+						<label for="b-first">This is my first class at sādhana</label>
+					</div>
+					<div class="field full">
+						<label for="b-notes">Anything we should know? <span class="optional">(optional)</span></label>
+						<textarea id="b-notes" name="notes" rows="3" placeholder="An injury, a preferred room, a friend joining you…"></textarea>
+					</div>
+				</div>
+				<button class="btn btn-lg btn-block" type="submit">Request a place</button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{studio.email && <>Write to <a href={`mailto:${studio.email}`}>{studio.email}</a> with your class, day and time.</>}
+					</noscript>
+				</p>
+			</form>
+
+			<div class="book-contact">
+				<h2>Prefer to talk to us?</h2>
+				<p>
+					{studio.phone && <>Call <a href={telHref(studio.phone)}>{studio.phone}</a></>}
+					{studio.phone && studio.email && " or email "}
+					{!studio.phone && studio.email && "Email "}
+					{studio.email && <a href={`mailto:${studio.email}`}>{studio.email}</a>}.
+				</p>
+				{
+					(studio.street || studio.locality) && (
+						<p>
+							<a href={mapHref(studio)} target="_blank" rel="noopener noreferrer">{[studio.street, studio.locality].filter(Boolean).join(", ")}</a>
+						</p>
+					)
+				}
+				{
+					hours.length > 0 && (
+						<dl class="book-hours">
+							{hours.map((h) => (
+								<>
+									<dt>{h.day}</dt>
+									<dd>{h.time}</dd>
+								</>
+							))}
+						</dl>
+					)
+				}
+				{studio.booking_note && <p class="small">{studio.booking_note}</p>}
+			</div>
+		</section>
+	</div>
+
+	{
+		passesResult.entries.length > 0 && (
+			<section class="pricing" id="pricing" aria-labelledby="pricing-title">
+				<div class="wrap">
+					<p class="eyebrow">Pricing</p>
+					<h2 id="pricing-title" class="display">Simple ways to <em>practise.</em></h2>
+					<ul class="pass-grid">
+						{
+							passesResult.entries.map((p) => (
+								<li class:list={["pass", { "is-featured": p.data.featured }]}>
+									<h3 {...p.edit.title}>{p.data.title}</h3>
+									<p class="pass-price">{formatPrice(p.data.price)}</p>
+									<p class="pass-note">{p.data.note}</p>
+								</li>
+							))
+						}
+					</ul>
+					<p class="pricing-note">Prices are sample placeholders for this theme. Passes are bought at the studio once your first class is confirmed.</p>
+				</div>
+			</section>
+		)
+	}
+</Base>
+
+<script>
+	// Compose a booking-request email; the studio confirms it by reply. Nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-book-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLSelectElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input[required], select[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? input.tagName === "SELECT"
+							? "Please choose an option."
+							: "Please fill this in."
+						: input.getAttribute("type") === "email"
+							? "Please enter a valid email address."
+							: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online requests are not available right now. Please call the studio.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const subject = `Class request: ${get("class")}, ${get("day")} at ${get("time")}`;
+			const lines = [
+				"Hello,",
+				"",
+				"I would like to request a place in a class:",
+				`Class: ${get("class")}`,
+				`Preferred day: ${get("day")}`,
+				`Preferred time: ${get("time")}`,
+				get("date") ? `Starting from: ${get("date")}` : "",
+				`First class at sādhana: ${get("first") ? "yes" : "no"}`,
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				get("notes") ? `Notes: ${get("notes")}` : "",
+				"",
+				"I understand my place is confirmed only once you reply.",
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this request ready to send. It is only sent when you send that email, and we confirm by reply. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

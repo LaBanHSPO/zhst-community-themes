@@ -1,0 +1,24 @@
+---
+import { levelLabel, styleLabel } from "../lib/yoga";
+
+interface Props {
+	cls: { id: string; slug: string | null; title: string; summary: string; style?: string; level?: string; duration?: string; photo?: string; image?: { src?: string; alt?: string } };
+	edit?: Record<string, unknown>;
+}
+const { cls, edit = {} } = Astro.props;
+const src = cls.image?.src || cls.photo;
+---
+
+<a class="class-card" href={`/classes/${cls.slug ?? cls.id}`}>
+	<span class="class-photo">
+		{src ? <img src={src} alt="" width="600" height="420" loading="lazy" /> : <span class="class-photo-empty" aria-hidden="true"></span>}
+	</span>
+	<span class="class-meta">
+		<span>{styleLabel(cls.style)}</span>
+		<span aria-hidden="true">·</span>
+		<span>{levelLabel(cls.level)}</span>
+		{cls.duration && <><span aria-hidden="true">·</span><span>{cls.duration}</span></>}
+	</span>
+	<span class="class-title" {...edit}>{cls.title}</span>
+	<span class="class-summary">{cls.summary}</span>
+</a>

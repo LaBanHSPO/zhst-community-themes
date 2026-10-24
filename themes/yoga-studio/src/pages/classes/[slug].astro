@@ -1,0 +1,129 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import ClassCard from "../../components/ClassCard.astro";
+import VisitBand from "../../components/VisitBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { DAYS, getClasses, getSessions, getStudio, levelLabel, lines, photoSrc, styleLabel } from "../../lib/yoga";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: cls, cacheHint } = await getEmDashEntry("classes", slug);
+if (!cls) return Astro.rewrite("/404");
+
+const [allResult, sessionsResult, studioResult, settings] = await Promise.all([getClasses(), getSessions(), getStudio(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(sessionsResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(cls, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = cls.data;
+const key = d.slug ?? d.id;
+const src = photoSrc(d.image, d.photo);
+const bring = lines(d.bring);
+const sessions = sessionsResult.entries.filter((s) => s.data.class_slug === key);
+const related = allResult.entries.filter((c) => c.data.id !== d.id && (c.data.style === d.style || c.data.level === d.level)).slice(0, 3);
+const dayLabel = (slug: string) => DAYS.find((x) => x.slug === slug)?.label ?? slug;
+const hasBody = Boolean(d.content && d.content.length > 0);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "classes", id: d.id, slug }}
+	current="/classes"
+>
+	<section class="detail-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/classes">Classes</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class:list={["detail-grid", { "is-text-only": !src }]}>
+				<div class="detail-copy">
+					<p class="eyebrow">{styleLabel(d.style)}</p>
+					<h1 class="display" {...cls.edit.title}>{d.title}</h1>
+					<p class="lede" {...cls.edit.summary}>{d.summary}</p>
+					<dl class="facts">
+						<div><dt>Level</dt><dd>{levelLabel(d.level)}</dd></div>
+						{d.duration && <div><dt>Duration</dt><dd>{d.duration}</dd></div>}
+					</dl>
+					<a class="btn btn-lg" href={`/book?class=${encodeURIComponent(key)}`}>Book this class <Arrow /></a>
+				</div>
+				{
+					src && (
+						<figure class="detail-photo">
+							<img src={src} alt={d.image?.alt ?? ""} width="640" height="500" />
+						</figure>
+					)
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="wrap detail-cols">
+			<div class="prose">
+				{d.intro && <p class="prose-lead">{d.intro}</p>}
+				{hasBody ? <PortableText value={d.content} /> : <p>{d.summary}</p>}
+			</div>
+			<aside class="side-stack">
+				{
+					bring.length > 0 && (
+						<div class="includes" aria-labelledby="bring-title">
+							<h2 id="bring-title">What to bring</h2>
+							<ul class="ticks">{bring.map((b) => <li>{b}</li>)}</ul>
+						</div>
+					)
+				}
+				{
+					sessions.length > 0 && (
+						<div class="includes" aria-labelledby="when-title">
+							<h2 id="when-title">When it runs</h2>
+							<ul class="when-list">
+								{sessions.map((s) => (
+									<li>
+										<span>{dayLabel(s.data.weekday)}</span>
+										<span>{s.data.time_label}</span>
+										<a href={`/book?class=${encodeURIComponent(key)}&day=${s.data.weekday}&time=${encodeURIComponent(s.data.start)}`}>Request</a>
+									</li>
+								))}
+							</ul>
+						</div>
+					)
+				}
+			</aside>
+		</div>
+	</section>
+
+	{
+		related.length > 0 && (
+			<section class="band band-tint" aria-labelledby="related-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">More classes</p>
+							<h2 id="related-title" class="display">You might also like.</h2>
+						</div>
+						<a class="link-arrow" href="/classes">All classes <Arrow /></a>
+					</div>
+					<ul class="class-grid">
+						{related.map((c) => <li><ClassCard cls={c.data} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<VisitBand studio={studioResult.studio} />
+</Base>

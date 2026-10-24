@@ -1,0 +1,54 @@
+---
+import Arrow from "./Arrow.astro";
+import { hoursRows, mapHref, telHref } from "../lib/yoga";
+import type { StudioData } from "../lib/yoga";
+
+interface Props {
+	studio: StudioData;
+}
+const { studio } = Astro.props;
+const hours = hoursRows(studio.hours);
+---
+
+<section class="visit-band" aria-labelledby="visit-title">
+	<div class="wrap visit-grid">
+		<div class="visit-copy">
+			<p class="eyebrow eyebrow-light">Come and practise</p>
+			<h2 id="visit-title" class="display">Your mat is <em>waiting.</em></h2>
+			<p>Send a booking request and we will confirm your place by email or phone.</p>
+			<a class="btn btn-light btn-lg" href="/book">Book a Class <Arrow /></a>
+		</div>
+		<div class="visit-info">
+			{
+				(studio.street || studio.locality) && (
+					<div>
+						<h3>Find us</h3>
+						<address>
+							<a href={mapHref(studio)} target="_blank" rel="noopener noreferrer">
+								{studio.street && <>{studio.street}<br /></>}
+								{studio.locality}
+							</a>
+						</address>
+						{studio.phone && <a href={telHref(studio.phone)}>{studio.phone}</a>}
+						{studio.email && <a href={`mailto:${studio.email}`}>{studio.email}</a>}
+					</div>
+				)
+			}
+			{
+				hours.length > 0 && (
+					<div>
+						<h3>Studio hours</h3>
+						<dl>
+							{hours.map((h) => (
+								<>
+									<dt>{h.day}</dt>
+									<dd>{h.time}</dd>
+								</>
+							))}
+						</dl>
+					</div>
+				)
+			}
+		</div>
+	</div>
+</section>

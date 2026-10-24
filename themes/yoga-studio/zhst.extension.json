@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "yoga-studio",
+	"kind": "theme",
+	"name": "Yoga Studio",
+	"type": "company",
+	"emdash": "1.2.0",
+	"entry": "themes/yoga-studio",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

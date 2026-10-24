@@ -1,0 +1,31 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import PostCard from "../../components/PostCard.astro";
+import VisitBand from "../../components/VisitBand.astro";
+import { getPosts, getStudio } from "../../lib/yoga";
+
+const [postsResult, studioResult] = await Promise.all([getPosts(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(postsResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+---
+
+<Base title="Journal" description="Notes from the studio: practice, beginners, breath and life at sādhana.">
+	<PageHead id="journal-title" eyebrow="Journal" title="Notes from the studio." intro="Short, friendly reads on practice, breath and how we run our classes." />
+	<section class="list-section" aria-labelledby="journal-title">
+		<div class="wrap">
+			{
+				postsResult.entries.length === 0 ? (
+					<p class="empty-note">The first entries are on their way. Come back soon.</p>
+				) : (
+					<ul class="class-grid">
+						{postsResult.entries.map((p) => <li><PostCard post={p.data} edit={{ ...p.edit.title }} /></li>)}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+	<VisitBand studio={studioResult.studio} />
+</Base>

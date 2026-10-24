@@ -1,0 +1,56 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import PageHead from "../components/PageHead.astro";
+import VisitBand from "../components/VisitBand.astro";
+import { getPillars, getStudio, lines } from "../lib/yoga";
+
+const [{ entry: page, cacheHint }, pillarsResult, studioResult] = await Promise.all([getEmDashEntry("pages", "about"), getPillars(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(pillarsResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const d = page?.data;
+---
+
+<Base title="About" description={d?.intro ?? "About sādhana Yoga Studio."}>
+	<PageHead id="about-title" eyebrow={d?.eyebrow ?? "About"} title={d?.title ?? "About the studio"} intro={d?.intro} edit={{ ...page?.edit.title }} />
+	<section class="about-body">
+		<div class="wrap about-grid">
+			<div class="prose">
+				{d?.content ? <PortableText value={d.content} /> : <p>Studio details are coming soon.</p>}
+				<p class="page-cta"><a class="btn" href="/classes">Explore classes <Arrow /></a></p>
+			</div>
+			<figure class="about-photo">
+				<img src="/images/arch-lunge.webp" alt="A woman in a low lunge with arms reaching up, in an arched room looking out over the sea at sunset" width="1448" height="1086" loading="lazy" />
+				<img class="about-photo-small" src="/images/bench-towels.webp" alt="A ceramic vase and folded towels on a wooden bench" width="716" height="460" loading="lazy" />
+			</figure>
+		</div>
+	</section>
+	{
+		pillarsResult.entries.length > 0 && (
+			<section class="pillars pillars-about" aria-labelledby="values-title">
+				<div class="pillars-copy">
+					<p class="eyebrow">What we care about</p>
+					<h2 id="values-title" class="display">Move, breathe, <br />belong.</h2>
+				</div>
+				<ul class="pillar-list">
+					{
+						pillarsResult.entries.map((p) => (
+							<li class="pillar">
+								<span class="pillar-icon"><Icon name={p.data.icon ?? "lotus"} /></span>
+								<h3>{p.data.title}</h3>
+								<p>{lines(p.data.text).map((l, i) => <>{i > 0 && <br />}{l}</>)}</p>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+		)
+	}
+	<VisitBand studio={studioResult.studio} />
+</Base>

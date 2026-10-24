@@ -1,0 +1,26 @@
+---
+interface Props {
+	name: string;
+}
+const { name } = Astro.props;
+---
+
+{
+	name === "sun" ? (
+		<svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+			<circle cx="24" cy="24" r="8.5" />
+			<path d="M24 5v5M24 38v5M5 24h5M38 24h5M10.6 10.6l3.5 3.5M33.9 33.9l3.5 3.5M37.4 10.6l-3.5 3.5M14.1 33.9l-3.5 3.5" />
+		</svg>
+	) : name === "stones" ? (
+		<svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+			<ellipse cx="24" cy="10.500" rx="6.500" ry="4.500" />
+			<ellipse cx="24" cy="23" rx="11" ry="6" />
+			<ellipse cx="24" cy="36.500" rx="15.500" ry="6.500" />
+		</svg>
+	) : (
+		<svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+			<path d="M24 41c-5.500-4-9.500-9.500-9.500-16.500 0-5 3-9.500 9.500-15 6.500 5.500 9.500 10 9.500 15 0 7-4 12.500-9.500 16.500z" />
+			<path d="M24 41C16 40.500 8.500 34 7 24.500c4.500-.5 9 1.200 12.300 4.200M24 41c8-.500 15.500-7 17-16.500-4.500-.500-9 1.200-12.300 4.200" />
+		</svg>
+	)
+}

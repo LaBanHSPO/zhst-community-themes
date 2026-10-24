@@ -1,0 +1,146 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import ClassCard from "../components/ClassCard.astro";
+import VisitBand from "../components/VisitBand.astro";
+import { DAYS, formatPrice, getClasses, getPasses, getPillars, getSessions, getStudio, lines } from "../lib/yoga";
+
+const [classesResult, sessionsResult, pillarsResult, passesResult, studioResult] = await Promise.all([
+	getClasses(),
+	getSessions(),
+	getPillars(),
+	getPasses(),
+	getStudio(),
+]);
+for (const r of [classesResult, sessionsResult, pillarsResult, passesResult, studioResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const flagged = classesResult.entries.filter((c) => c.data.featured);
+const featured = (flagged.length > 0 ? flagged : classesResult.entries).slice(0, 4);
+const week = DAYS.map((d) => ({ day: d, sessions: sessionsResult.entries.filter((s) => s.data.weekday === d.slug) })).filter(
+	(d) => d.sessions.length > 0,
+);
+const intro = passesResult.entries.find((p) => p.data.id === "intro-week") ?? passesResult.entries[0];
+---
+
+<Base
+	title="sādhana Yoga Studio"
+	description="A bright, welcoming yoga studio: yoga, movement and a mindful community to help you feel more at home in yourself."
+	overlay
+>
+	<section class="hero">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A woman in a green set rests in cobra pose on a mat in a sunlit studio filled with plants, beside cork blocks and a bolster"
+			width="1448"
+			height="763"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<p class="hero-eyebrow">A calmer, brighter you</p>
+			<h1>Make room <br />to breathe.</h1>
+			<p class="hero-sub">Yoga, movement and a mindful community <br />to help you feel more at home in yourself.</p>
+			<a class="btn btn-lg" href="/classes">Explore classes <Arrow /></a>
+		</div>
+	</section>
+
+	<section class="pillars" aria-labelledby="pillars-title">
+		<div class="pillars-copy">
+			<p class="eyebrow">More than a workout</p>
+			<h2 id="pillars-title" class="display">A kinder <br />way forward.</h2>
+			<p class="lede">Thoughtfully crafted classes for every body, <br />in a welcoming space.</p>
+		</div>
+		<ul class="pillar-list">
+			{
+				pillarsResult.entries.map((p) => (
+					<li class="pillar">
+						<span class="pillar-icon"><Icon name={p.data.icon ?? "lotus"} /></span>
+						<h3 {...p.edit.title}>{p.data.title}</h3>
+						<p>{lines(p.data.text).map((l, i) => <>{i > 0 && <br />}{l}</>)}</p>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	{
+		featured.length > 0 && (
+			<section class="band" aria-labelledby="classes-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Find your class</p>
+							<h2 id="classes-title" class="display">Classes for <em>every day.</em></h2>
+						</div>
+						<a class="link-arrow" href="/classes">All classes <Arrow /></a>
+					</div>
+					<ul class="class-grid class-grid-4">
+						{featured.map((c) => <li><ClassCard cls={c.data} edit={{ ...c.edit.title }} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		week.length > 0 && (
+			<section class="band band-tint" aria-labelledby="week-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">This week</p>
+							<h2 id="week-title" class="display">Drop in <em>when it suits.</em></h2>
+						</div>
+						<a class="link-arrow" href="/schedule">Full timetable <Arrow /></a>
+					</div>
+					<ol class="week-glance">
+						{
+							week.map(({ day, sessions }) => (
+								<li>
+									<h3>{day.short}</h3>
+									<ul>
+										{sessions.map((s) => (
+											<li>
+												<span class="wg-time">{s.data.time_label}</span>
+												<a href={`/classes/${s.data.class_slug}`}>{s.data.title}</a>
+											</li>
+										))}
+									</ul>
+								</li>
+							))
+						}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		intro && (
+			<section class="offer" aria-labelledby="offer-title">
+				<div class="wrap offer-grid">
+					<figure class="offer-photo">
+						<img src="/images/lunge-card.webp" alt="A woman stretches into a high lunge beside an arched window overlooking the sea" width="880" height="670" loading="lazy" />
+					</figure>
+					<div class="offer-copy">
+						<p class="eyebrow">New to sādhana</p>
+						<h2 id="offer-title" class="display">Start with <em>an intro week.</em></h2>
+						<p class="lede">{intro.data.note}</p>
+						<p class="offer-price">
+							<strong>{formatPrice(intro.data.price)}</strong>
+							<span>sample price</span>
+						</p>
+						<p class="offer-links">
+							<a class="btn" href="/book">Book a Class <Arrow /></a>
+							<a class="link-arrow" href="/book#pricing">See all pricing <Arrow /></a>
+						</p>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<VisitBand studio={studioResult.studio} />
+</Base>
