@@ -1,0 +1,57 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import Subnav from "../../components/Subnav.astro";
+import ClassCard from "../../components/ClassCard.astro";
+import VisitBand from "../../components/VisitBand.astro";
+import { TYPES, getClasses, getStudio } from "../../lib/pilates";
+
+const [classesResult, studioResult] = await Promise.all([getClasses(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(classesResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+// ?type=mat | reformer | private narrows the list; anything else shows every class.
+const wanted = Astro.url.searchParams.get("type");
+const type = TYPES.find((t) => t.slug === wanted);
+const all = classesResult.entries;
+const shown = type ? all.filter((c) => c.data.type === type.slug) : all;
+const count = (slug: string) => all.filter((c) => c.data.type === slug).length;
+---
+
+<Base
+	title={type ? `${type.label} classes` : "Classes"}
+	description="Pilates classes for every level: mat, reformer and private sessions, with length, group size and what to bring."
+>
+	<PageHead
+		id="classes-title"
+		eyebrow="Classes"
+		title={type ? `${type.label} classes.` : "Find your class."}
+		intro={type ? type.blurb : "Mat, reformer and private sessions, all taught by Mara in small groups. Each class lists its level, length and what to bring."}
+	/>
+	<section class="list-section" aria-labelledby="classes-title">
+		<div class="wrap">
+			<Subnav current="classes" />
+			<nav class="filters" aria-label="Filter classes by type">
+				<a href="/classes" aria-current={type ? undefined : "true"}>All classes <span>{all.length}</span></a>
+				{
+					TYPES.map((t) => (
+						<a href={`/classes?type=${t.slug}`} aria-current={type?.slug === t.slug ? "true" : undefined}>
+							{t.label} <span>{count(t.slug)}</span>
+						</a>
+					))
+				}
+			</nav>
+			{
+				shown.length === 0 ? (
+					<p class="empty-note">No classes of that type yet. <a href="/classes">See all classes</a>.</p>
+				) : (
+					<ul class="class-grid">
+						{shown.map((c) => <li><ClassCard cls={c.data} edit={{ ...c.edit.title }} /></li>)}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+	<VisitBand studio={studioResult.studio} />
+</Base>

@@ -1,0 +1,11 @@
+---
+interface Props {
+	current: "classes" | "timetable";
+}
+const { current } = Astro.props;
+---
+
+<nav class="subnav" aria-label="Classes">
+	<a href="/classes" aria-current={current === "classes" ? "page" : undefined}>Class types</a>
+	<a href="/timetable" aria-current={current === "timetable" ? "page" : undefined}>Weekly timetable</a>
+</nav>

@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "pilates-trainer",
+	"kind": "theme",
+	"name": "Pilates Trainer",
+	"type": "bio",
+	"emdash": "1.2.0",
+	"entry": "themes/pilates-trainer",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

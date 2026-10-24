@@ -1,0 +1,1763 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Pilates Trainer",
+  "description": "A bright Pilates instructor theme: classes with filter, weekly timetable, pricing, about and a booking request page",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "Pilates Trainer",
+  "tagline": "Pilates classes in Marlow Bay"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Small label above the title (also used in the footer)",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "classes",
+   "label": "Classes",
+   "labelSingular": "Class",
+   "urlPattern": "/classes/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Class name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "One-line description",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "type",
+     "label": "Type",
+     "type": "select",
+     "required": true,
+     "defaultValue": "mat",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "mat",
+       "reformer",
+       "private"
+      ]
+     }
+    },
+    {
+     "slug": "level",
+     "label": "Level",
+     "type": "select",
+     "required": true,
+     "defaultValue": "all-levels",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "beginner",
+       "all-levels",
+       "intermediate"
+      ]
+     }
+    },
+    {
+     "slug": "length",
+     "label": "Length (e.g. 50 min)",
+     "type": "string"
+    },
+    {
+     "slug": "group",
+     "label": "Group size (e.g. Up to 8 people)",
+     "type": "string"
+    },
+    {
+     "slug": "featured",
+     "label": "Show on the homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph (detail page)",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "What to expect (class page content)",
+     "type": "portableText",
+     "searchable": true
+    },
+    {
+     "slug": "bring",
+     "label": "What to bring (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "sessions",
+   "label": "Timetable",
+   "labelSingular": "Session",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Class name (as shown in the timetable)",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "class_slug",
+     "label": "Class page slug (links the session to its class)",
+     "type": "string"
+    },
+    {
+     "slug": "weekday",
+     "label": "Weekday",
+     "type": "select",
+     "required": true,
+     "defaultValue": "mon",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "mon",
+       "tue",
+       "wed",
+       "thu",
+       "fri",
+       "sat",
+       "sun"
+      ]
+     }
+    },
+    {
+     "slug": "start",
+     "label": "Start time, 24-hour (e.g. 18:00)",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "time_label",
+     "label": "Time as shown (e.g. 6:00 pm)",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "spaces",
+     "label": "Spaces left: a number, or ask",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "pillars",
+   "label": "Home columns",
+   "labelSingular": "Column",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "Short text",
+     "type": "text"
+    },
+    {
+     "slug": "icon",
+     "label": "Icon",
+     "type": "select",
+     "defaultValue": "mat",
+     "validation": {
+      "options": [
+       "mat",
+       "lotus",
+       "group"
+      ]
+     }
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "prices",
+   "label": "Pricing",
+   "labelSingular": "Price",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "category",
+     "label": "Group",
+     "type": "select",
+     "defaultValue": "drop-in",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "intro",
+       "drop-in",
+       "pack",
+       "private"
+      ]
+     }
+    },
+    {
+     "slug": "price",
+     "label": "Price in dollars (whole number)",
+     "type": "integer"
+    },
+    {
+     "slug": "unit",
+     "label": "What the price covers (e.g. 5 classes)",
+     "type": "string"
+    },
+    {
+     "slug": "note",
+     "label": "Short note",
+     "type": "text"
+    },
+    {
+     "slug": "featured",
+     "label": "Highlight",
+     "type": "boolean"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "studio",
+   "label": "Studio details",
+   "labelSingular": "Studio details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Studio name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "street",
+     "label": "Street address",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "locality",
+     "label": "City, state and ZIP",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "country",
+     "label": "Country",
+     "type": "string"
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Booking email",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "hours",
+     "label": "Opening hours (one per line, as Day|Hours)",
+     "type": "text"
+    },
+    {
+     "slug": "booking_note",
+     "label": "Note shown beside the booking form",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Classes",
+     "url": "/classes"
+    },
+    {
+     "type": "custom",
+     "label": "About",
+     "url": "/about"
+    },
+    {
+     "type": "custom",
+     "label": "Pricing",
+     "url": "/pricing"
+    },
+    {
+     "type": "custom",
+     "label": "Contact",
+     "url": "/contact"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "Hello, I'm Mara.",
+     "eyebrow": "About",
+     "intro": "I teach small Pilates classes and private sessions in a bright studio in Marlow Bay.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k81",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I teach mat classes and reformer classes in groups of up to eight, plus private sessions one to one. I keep groups small so I can see how everyone is moving and change an exercise when it is not working for you.",
+         "_key": "k82"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k83",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How I teach",
+         "_key": "k84"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k85",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Every class starts with a short check-in. I explain each exercise before we do it, and I give a lighter and a harder version so that people at different levels can share a room.",
+         "_key": "k86"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k87",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I name what we are doing, not just the count.",
+         "_key": "k88"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k89",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You can stop, rest or change an exercise at any time.",
+         "_key": "k90"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k91",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Mats, balls, bands and reformers are all provided.",
+         "_key": "k92"
+        }
+       ],
+       "markDefs": [],
+       "listItem": "bullet",
+       "level": 1
+      },
+      {
+       "_type": "block",
+       "_key": "k93",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Injuries, pregnancy and health conditions",
+         "_key": "k94"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k95",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Please tell me before class if you are pregnant, recovering from an injury or managing a health condition, and check with your doctor or physiotherapist first if you are unsure. I will adjust what I can, and I will tell you honestly when a class is not the right fit yet.",
+         "_key": "k96"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k97",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Training and qualifications",
+         "_key": "k98"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k99",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "PLACEHOLDER: replace this paragraph with your own training and certifications, for example your Pilates teacher training provider and any first aid certificate. Only list qualifications you hold and can show on request.",
+         "_key": "k100"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k101",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "About this sample",
+         "_key": "k102"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k103",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Mara is a fictional, AI-generated persona used for this theme's sample content. Replace the name, portrait and text with your own when you use the theme.",
+         "_key": "k104"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "studio-guide",
+    "slug": "studio-guide",
+    "status": "published",
+    "data": {
+     "title": "Studio guide",
+     "eyebrow": "Studio guide",
+     "intro": "The practical details: when to arrive, what to wear and how booking and cancelling work.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k105",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Arriving",
+         "_key": "k106"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k107",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Please arrive ten minutes before your first class so we can say hello, show you the changing area and set up your mat or reformer. The door is closed once class starts, so latecomers cannot join after the first five minutes.",
+         "_key": "k108"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k109",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to wear",
+         "_key": "k110"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k111",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Clothes that fit close to the body work best, because they let me see your alignment. Socks with grips are required on the reformer. Bare feet are fine on the mat.",
+         "_key": "k112"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k113",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Booking and cancelling",
+         "_key": "k114"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k115",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Send a request from the contact page and we reply within one working day. A request is not a booking until we confirm it. Please cancel at least 12 hours before class by email or phone so someone else can take your place.",
+         "_key": "k116"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k117",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Injuries and pregnancy",
+         "_key": "k118"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k119",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Tell your instructor before class, and check with your doctor or physiotherapist if you are unsure whether Pilates is right for you right now. We cannot give medical advice.",
+         "_key": "k120"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "classes": [
+   {
+    "id": "mat-basics",
+    "slug": "mat-basics",
+    "status": "published",
+    "data": {
+     "title": "Mat Basics",
+     "summary": "A slow, clear introduction to the core Pilates exercises on the mat.",
+     "type": "mat",
+     "level": "beginner",
+     "length": "50 min",
+     "group": "Up to 8 people",
+     "featured": true,
+     "position": 10,
+     "intro": "New to Pilates, or coming back after a break? We go through each exercise step by step and keep the pace easy.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k1",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "k2"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We start with a few minutes of breathing and gentle spine movement. Then we work through about ten basic exercises, with a short explanation of each one before we do it.",
+         "_key": "k4"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k5",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Mara walks around the room and offers a smaller or easier version when you need it. Class ends with a slow stretch and a minute lying down.",
+         "_key": "k6"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k7",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Who it suits",
+         "_key": "k8"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k9",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Anyone who has never done Pilates, or who wants to learn the basics properly before moving to faster classes. No fitness level is needed.",
+         "_key": "k10"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "bring": "Comfortable clothes you can move in\nGrip socks, or bare feet\nA water bottle",
+     "photo": "/images/arabesque-portrait.webp"
+    }
+   },
+   {
+    "id": "mat-flow",
+    "slug": "mat-flow",
+    "status": "published",
+    "data": {
+     "title": "Mat Flow",
+     "summary": "Mat exercises linked into a steady sequence, with options for every level.",
+     "type": "mat",
+     "level": "all-levels",
+     "length": "50 min",
+     "group": "Up to 8 people",
+     "featured": true,
+     "position": 20,
+     "intro": "A flowing class that moves from one exercise to the next without long pauses.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k11",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "k12"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k13",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "After a short warm-up we link exercises into a sequence and repeat it a few times, so you can feel it get easier. Each exercise has a lighter and a harder option.",
+         "_key": "k14"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k15",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The last ten minutes are slower: hips, shoulders and back, then a brief rest.",
+         "_key": "k16"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k17",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Who it suits",
+         "_key": "k18"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k19",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "People who have done a few classes and know the basic exercises. If you are new, tell Mara at the door and she will check in with you during class.",
+         "_key": "k20"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "bring": "Comfortable clothes you can move in\nGrip socks, or bare feet\nA small towel if you like",
+     "photo": "/images/mat-floor.webp"
+    }
+   },
+   {
+    "id": "mat-core",
+    "slug": "mat-core",
+    "status": "published",
+    "data": {
+     "title": "Mat Core",
+     "summary": "A focused 45 minutes of abdominal, hip and back work on the mat.",
+     "type": "mat",
+     "level": "intermediate",
+     "length": "45 min",
+     "group": "Up to 8 people",
+     "featured": false,
+     "position": 30,
+     "intro": "A shorter, steadier class for people who already know the classic mat exercises.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k21",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "k22"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k23",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We hold positions longer and add small props such as the ball and a light resistance band. Expect slow repetitions and a lot of attention to form.",
+         "_key": "k24"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k25",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "There is no jumping and no floor rolling. Rest is built in between sets.",
+         "_key": "k26"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k27",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Who it suits",
+         "_key": "k28"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k29",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Regular mat students. If you have not taken Mat Basics or Mat Flow first, please book one of those for your first visit.",
+         "_key": "k30"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "bring": "Comfortable clothes you can move in\nGrip socks, or bare feet\nA water bottle",
+     "photo": "/images/ball-blocks.webp"
+    }
+   },
+   {
+    "id": "reformer-foundations",
+    "slug": "reformer-foundations",
+    "status": "published",
+    "data": {
+     "title": "Reformer Foundations",
+     "summary": "Your first classes on the reformer: setup, springs and the basic exercises.",
+     "type": "reformer",
+     "level": "beginner",
+     "length": "55 min",
+     "group": "Up to 6 people",
+     "featured": true,
+     "position": 40,
+     "intro": "We spend the first class learning how the reformer works before we make it harder.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k31",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "k32"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k33",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Mara shows you how to set the springs, footbar and straps for your body. We then work through footwork, leg circles, arm work and a simple abdominal series.",
+         "_key": "k34"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k35",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Groups are small so you get help adjusting the machine. Plan to arrive ten minutes early the first time.",
+         "_key": "k36"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k37",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Who it suits",
+         "_key": "k38"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k39",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Anyone new to the reformer, including people who have done mat Pilates for years. We ask everyone to take Foundations at least once.",
+         "_key": "k40"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "bring": "Grip socks (required on the reformer)\nComfortable fitted clothes\nA water bottle",
+     "photo": "/images/reformer-corner.webp"
+    }
+   },
+   {
+    "id": "reformer-strength",
+    "slug": "reformer-strength",
+    "status": "published",
+    "data": {
+     "title": "Reformer Strength",
+     "summary": "Heavier springs, longer sequences and more standing and kneeling work.",
+     "type": "reformer",
+     "level": "intermediate",
+     "length": "55 min",
+     "group": "Up to 6 people",
+     "featured": false,
+     "position": 50,
+     "intro": "A steady, working class for people who are comfortable on the reformer.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k41",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "k42"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k43",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "After a short warm-up we work through a sequence for legs, back, shoulders and trunk. Springs are heavier than in Foundations and some exercises are done standing or kneeling on the carriage.",
+         "_key": "k44"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k45",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Mara gives changes for each exercise, so you can work at a level that suits you on the day.",
+         "_key": "k46"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k47",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Who it suits",
+         "_key": "k48"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k49",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "People who have taken Reformer Foundations and want a more challenging class.",
+         "_key": "k50"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "bring": "Grip socks (required on the reformer)\nComfortable fitted clothes\nA water bottle and small towel",
+     "photo": "/images/instructor-side-stretch.webp"
+    }
+   },
+   {
+    "id": "reformer-open",
+    "slug": "reformer-open",
+    "status": "published",
+    "data": {
+     "title": "Reformer Open",
+     "summary": "A mixed-level reformer class where everyone works at their own pace.",
+     "type": "reformer",
+     "level": "all-levels",
+     "length": "55 min",
+     "group": "Up to 6 people",
+     "featured": false,
+     "position": 60,
+     "intro": "Everyone in the room follows the same plan, and Mara gives each person a version that fits.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k51",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "k52"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k53",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The class follows one flowing sequence. Newer students use lighter springs and fewer repetitions, while regulars add steps. You can ask for a change at any time.",
+         "_key": "k54"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k55",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A good choice for a friend who has taken Foundations once and a friend who has taken it many times.",
+         "_key": "k56"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k57",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Who it suits",
+         "_key": "k58"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k59",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Anyone who has completed Reformer Foundations.",
+         "_key": "k60"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "bring": "Grip socks (required on the reformer)\nComfortable fitted clothes\nA water bottle",
+     "photo": "/images/arabesque-studio.webp"
+    }
+   },
+   {
+    "id": "private-session",
+    "slug": "private-session",
+    "status": "published",
+    "data": {
+     "title": "Private Session",
+     "summary": "One hour with Mara, planned around your body, your goals and your week.",
+     "type": "private",
+     "level": "all-levels",
+     "length": "55 min",
+     "group": "One to one",
+     "featured": true,
+     "position": 70,
+     "intro": "A private session on the mat or the reformer. We plan it together at the start and adjust as we go.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k61",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "k62"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k63",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We begin with a short chat about how you are moving, any injuries or limits, and what you would like to work on. Then Mara plans the hour around that.",
+         "_key": "k64"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k65",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Sessions can be on the mat, the reformer or a mix. Book a first session to try it, then decide whether you would like a regular slot.",
+         "_key": "k66"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k67",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Who it suits",
+         "_key": "k68"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k69",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "People who want more attention, are returning after an injury (with their doctor's agreement), or prefer to start without a group.",
+         "_key": "k70"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "bring": "Comfortable clothes you can move in\nGrip socks\nAny notes from your doctor or physio",
+     "photo": "/images/instructor-side-stretch.webp"
+    }
+   },
+   {
+    "id": "duet-session",
+    "slug": "duet-session",
+    "status": "published",
+    "data": {
+     "title": "Duet Session",
+     "summary": "A private session shared with a friend, partner or family member.",
+     "type": "private",
+     "level": "all-levels",
+     "length": "55 min",
+     "group": "Two people",
+     "featured": false,
+     "position": 80,
+     "intro": "The same one-to-one attention as a private session, for two people who would like to work together.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k71",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What to expect",
+         "_key": "k72"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k73",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Mara plans one sequence and adapts it for each person. You take turns on the reformer, or work side by side on the mat.",
+         "_key": "k74"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k75",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Please tell us about any injuries or health conditions for both people when you send the request.",
+         "_key": "k76"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k77",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Who it suits",
+         "_key": "k78"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k79",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Two people who would like to learn together. Both people should be at a similar level.",
+         "_key": "k80"
+        }
+       ],
+       "markDefs": []
+      }
+     ],
+     "bring": "Comfortable clothes you can move in\nGrip socks for both people",
+     "photo": "/images/ball-blocks.webp"
+    }
+   }
+  ],
+  "sessions": [
+   {
+    "id": "mon-0700-mat-flow",
+    "slug": "mon-0700-mat-flow",
+    "status": "published",
+    "data": {
+     "title": "Mat Flow",
+     "class_slug": "mat-flow",
+     "weekday": "mon",
+     "start": "07:00",
+     "time_label": "7:00 am",
+     "spaces": "6"
+    }
+   },
+   {
+    "id": "mon-1215-mat-basics",
+    "slug": "mon-1215-mat-basics",
+    "status": "published",
+    "data": {
+     "title": "Mat Basics",
+     "class_slug": "mat-basics",
+     "weekday": "mon",
+     "start": "12:15",
+     "time_label": "12:15 pm",
+     "spaces": "8"
+    }
+   },
+   {
+    "id": "mon-1800-reformer-foundations",
+    "slug": "mon-1800-reformer-foundations",
+    "status": "published",
+    "data": {
+     "title": "Reformer Foundations",
+     "class_slug": "reformer-foundations",
+     "weekday": "mon",
+     "start": "18:00",
+     "time_label": "6:00 pm",
+     "spaces": "3"
+    }
+   },
+   {
+    "id": "tue-0700-reformer-open",
+    "slug": "tue-0700-reformer-open",
+    "status": "published",
+    "data": {
+     "title": "Reformer Open",
+     "class_slug": "reformer-open",
+     "weekday": "tue",
+     "start": "07:00",
+     "time_label": "7:00 am",
+     "spaces": "ask"
+    }
+   },
+   {
+    "id": "tue-1745-mat-core",
+    "slug": "tue-1745-mat-core",
+    "status": "published",
+    "data": {
+     "title": "Mat Core",
+     "class_slug": "mat-core",
+     "weekday": "tue",
+     "start": "17:45",
+     "time_label": "5:45 pm",
+     "spaces": "5"
+    }
+   },
+   {
+    "id": "tue-1900-mat-flow",
+    "slug": "tue-1900-mat-flow",
+    "status": "published",
+    "data": {
+     "title": "Mat Flow",
+     "class_slug": "mat-flow",
+     "weekday": "tue",
+     "start": "19:00",
+     "time_label": "7:00 pm",
+     "spaces": "7"
+    }
+   },
+   {
+    "id": "wed-0930-reformer-foundations",
+    "slug": "wed-0930-reformer-foundations",
+    "status": "published",
+    "data": {
+     "title": "Reformer Foundations",
+     "class_slug": "reformer-foundations",
+     "weekday": "wed",
+     "start": "09:30",
+     "time_label": "9:30 am",
+     "spaces": "4"
+    }
+   },
+   {
+    "id": "wed-1215-mat-basics",
+    "slug": "wed-1215-mat-basics",
+    "status": "published",
+    "data": {
+     "title": "Mat Basics",
+     "class_slug": "mat-basics",
+     "weekday": "wed",
+     "start": "12:15",
+     "time_label": "12:15 pm",
+     "spaces": "8"
+    }
+   },
+   {
+    "id": "wed-1800-reformer-strength",
+    "slug": "wed-1800-reformer-strength",
+    "status": "published",
+    "data": {
+     "title": "Reformer Strength",
+     "class_slug": "reformer-strength",
+     "weekday": "wed",
+     "start": "18:00",
+     "time_label": "6:00 pm",
+     "spaces": "2"
+    }
+   },
+   {
+    "id": "thu-0700-mat-flow",
+    "slug": "thu-0700-mat-flow",
+    "status": "published",
+    "data": {
+     "title": "Mat Flow",
+     "class_slug": "mat-flow",
+     "weekday": "thu",
+     "start": "07:00",
+     "time_label": "7:00 am",
+     "spaces": "ask"
+    }
+   },
+   {
+    "id": "thu-1745-reformer-open",
+    "slug": "thu-1745-reformer-open",
+    "status": "published",
+    "data": {
+     "title": "Reformer Open",
+     "class_slug": "reformer-open",
+     "weekday": "thu",
+     "start": "17:45",
+     "time_label": "5:45 pm",
+     "spaces": "6"
+    }
+   },
+   {
+    "id": "fri-0930-mat-basics",
+    "slug": "fri-0930-mat-basics",
+    "status": "published",
+    "data": {
+     "title": "Mat Basics",
+     "class_slug": "mat-basics",
+     "weekday": "fri",
+     "start": "09:30",
+     "time_label": "9:30 am",
+     "spaces": "8"
+    }
+   },
+   {
+    "id": "fri-1215-reformer-strength",
+    "slug": "fri-1215-reformer-strength",
+    "status": "published",
+    "data": {
+     "title": "Reformer Strength",
+     "class_slug": "reformer-strength",
+     "weekday": "fri",
+     "start": "12:15",
+     "time_label": "12:15 pm",
+     "spaces": "3"
+    }
+   },
+   {
+    "id": "sat-0900-reformer-foundations",
+    "slug": "sat-0900-reformer-foundations",
+    "status": "published",
+    "data": {
+     "title": "Reformer Foundations",
+     "class_slug": "reformer-foundations",
+     "weekday": "sat",
+     "start": "09:00",
+     "time_label": "9:00 am",
+     "spaces": "5"
+    }
+   },
+   {
+    "id": "sat-1030-mat-flow",
+    "slug": "sat-1030-mat-flow",
+    "status": "published",
+    "data": {
+     "title": "Mat Flow",
+     "class_slug": "mat-flow",
+     "weekday": "sat",
+     "start": "10:30",
+     "time_label": "10:30 am",
+     "spaces": "ask"
+    }
+   },
+   {
+    "id": "sun-1000-mat-basics",
+    "slug": "sun-1000-mat-basics",
+    "status": "published",
+    "data": {
+     "title": "Mat Basics",
+     "class_slug": "mat-basics",
+     "weekday": "sun",
+     "start": "10:00",
+     "time_label": "10:00 am",
+     "spaces": "8"
+    }
+   }
+  ],
+  "pillars": [
+   {
+    "id": "classes",
+    "slug": "classes",
+    "status": "published",
+    "data": {
+     "title": "Pilates classes",
+     "text": "Small group classes\nfor every level.",
+     "icon": "mat",
+     "position": 10
+    }
+   },
+   {
+    "id": "movement",
+    "slug": "movement",
+    "status": "published",
+    "data": {
+     "title": "Mindful movement",
+     "text": "Build strength,\nbalance and confidence.",
+     "icon": "lotus",
+     "position": 20
+    }
+   },
+   {
+    "id": "space",
+    "slug": "space",
+    "status": "published",
+    "data": {
+     "title": "A welcoming space",
+     "text": "Move, connect\nand feel at home.",
+     "icon": "group",
+     "position": 30
+    }
+   }
+  ],
+  "prices": [
+   {
+    "id": "intro-offer",
+    "slug": "intro-offer",
+    "status": "published",
+    "data": {
+     "title": "Intro offer",
+     "category": "intro",
+     "price": 39,
+     "unit": "3 classes",
+     "note": "Three mat or reformer classes to use within 14 days of your first visit. For new students only.",
+     "featured": true,
+     "position": 10
+    }
+   },
+   {
+    "id": "mat-drop-in",
+    "slug": "mat-drop-in",
+    "status": "published",
+    "data": {
+     "title": "Mat drop-in",
+     "category": "drop-in",
+     "price": 22,
+     "unit": "1 class",
+     "note": "One mat class. Pay at the studio or when you book.",
+     "featured": false,
+     "position": 20
+    }
+   },
+   {
+    "id": "reformer-drop-in",
+    "slug": "reformer-drop-in",
+    "status": "published",
+    "data": {
+     "title": "Reformer drop-in",
+     "category": "drop-in",
+     "price": 34,
+     "unit": "1 class",
+     "note": "One reformer class. Foundations is required before your first Strength or Open class.",
+     "featured": false,
+     "position": 30
+    }
+   },
+   {
+    "id": "mat-5-pack",
+    "slug": "mat-5-pack",
+    "status": "published",
+    "data": {
+     "title": "Mat 5 pack",
+     "category": "pack",
+     "price": 100,
+     "unit": "5 classes",
+     "note": "Valid for 10 weeks from the first class. Works for any mat class.",
+     "featured": false,
+     "position": 40
+    }
+   },
+   {
+    "id": "mat-10-pack",
+    "slug": "mat-10-pack",
+    "status": "published",
+    "data": {
+     "title": "Mat 10 pack",
+     "category": "pack",
+     "price": 190,
+     "unit": "10 classes",
+     "note": "Valid for 20 weeks from the first class. Works for any mat class.",
+     "featured": false,
+     "position": 50
+    }
+   },
+   {
+    "id": "reformer-5-pack",
+    "slug": "reformer-5-pack",
+    "status": "published",
+    "data": {
+     "title": "Reformer 5 pack",
+     "category": "pack",
+     "price": 160,
+     "unit": "5 classes",
+     "note": "Valid for 10 weeks from the first class. Works for any reformer class.",
+     "featured": false,
+     "position": 60
+    }
+   },
+   {
+    "id": "reformer-10-pack",
+    "slug": "reformer-10-pack",
+    "status": "published",
+    "data": {
+     "title": "Reformer 10 pack",
+     "category": "pack",
+     "price": 300,
+     "unit": "10 classes",
+     "note": "Valid for 20 weeks from the first class. Works for any reformer class.",
+     "featured": false,
+     "position": 70
+    }
+   },
+   {
+    "id": "private-session",
+    "slug": "private-session",
+    "status": "published",
+    "data": {
+     "title": "Private session",
+     "category": "private",
+     "price": 95,
+     "unit": "55 min",
+     "note": "One to one with Mara, on the mat or the reformer.",
+     "featured": false,
+     "position": 80
+    }
+   },
+   {
+    "id": "duet-session",
+    "slug": "duet-session",
+    "status": "published",
+    "data": {
+     "title": "Duet session",
+     "category": "private",
+     "price": 130,
+     "unit": "55 min, 2 people",
+     "note": "A private session for two. The price is for both people.",
+     "featured": false,
+     "position": 90
+    }
+   }
+  ],
+  "studio": [
+   {
+    "id": "studio",
+    "slug": "studio",
+    "status": "published",
+    "data": {
+     "title": "Pilates Trainer Studio",
+     "street": "31 Fig Tree Lane",
+     "locality": "Marlow Bay, OR 97000",
+     "country": "United States",
+     "phone": "+1 503 555 0146",
+     "email": "hello@pilatestrainer.example",
+     "hours": "Monday to Friday|7:00 am to 7:45 pm\nSaturday|9:00 am to 12:00 pm\nSunday|10:00 am to 11:00 am",
+     "booking_note": "We reply within one working day. A request is not a booking until we confirm it by email or phone."
+    }
+   }
+  ]
+ }
+}

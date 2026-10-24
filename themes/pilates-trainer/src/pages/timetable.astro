@@ -1,0 +1,67 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import Subnav from "../components/Subnav.astro";
+import Arrow from "../components/Arrow.astro";
+import VisitBand from "../components/VisitBand.astro";
+import { DAYS, getSessions, getStudio, spacesLabel } from "../lib/pilates";
+
+const [sessionsResult, studioResult] = await Promise.all([getSessions(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(sessionsResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const week = DAYS.map((d) => ({ day: d, sessions: sessionsResult.entries.filter((s) => s.data.weekday === d.slug) }));
+---
+
+<Base title="Weekly timetable" description="The weekly Pilates timetable: day, time, class and how many spaces are left.">
+	<PageHead
+		id="timetable-title"
+		eyebrow="Timetable"
+		title="A week of classes."
+		intro="The same timetable every week. Spaces are updated by hand, so ask if a class shows no number."
+	/>
+	<section class="list-section" aria-labelledby="timetable-title">
+		<div class="wrap">
+			<Subnav current="timetable" />
+			{
+				sessionsResult.entries.length === 0 ? (
+					<p class="empty-note">The timetable is being updated. Please check back soon.</p>
+				) : (
+					<ol class="timetable">
+						{
+							week.map(({ day, sessions }) => (
+								<li class="tt-day">
+									<h2>
+										<span class="tt-long">{day.label}</span>
+										<span class="tt-short" aria-hidden="true">{day.short}</span>
+									</h2>
+									{
+										sessions.length === 0 ? (
+											<p class="tt-none">No classes</p>
+										) : (
+											<ul>
+												{sessions.map((s) => (
+													<li class="tt-slot" {...s.edit.title}>
+														<span class="tt-time">{s.data.time_label}</span>
+														<a class="tt-class" href={`/classes/${s.data.class_slug}`}>{s.data.title}</a>
+														<span class="tt-spaces">{spacesLabel(s.data.spaces)}</span>
+														<a class="tt-book" href={`/contact?class=${encodeURIComponent(s.data.class_slug ?? "")}&day=${s.data.weekday}&time=${encodeURIComponent(s.data.start)}`}>
+															Request <Arrow />
+														</a>
+													</li>
+												))}
+											</ul>
+										)
+									}
+								</li>
+							))
+						}
+					</ol>
+				)
+			}
+			<p class="tt-note">Times are local studio time. Space counts are sample figures. Holiday changes are posted on this page.</p>
+		</div>
+	</section>
+	<VisitBand studio={studioResult.studio} />
+</Base>

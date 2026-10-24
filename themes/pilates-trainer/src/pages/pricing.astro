@@ -1,0 +1,55 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import Arrow from "../components/Arrow.astro";
+import VisitBand from "../components/VisitBand.astro";
+import { PRICE_GROUPS, formatPrice, getPrices, getStudio } from "../lib/pilates";
+
+const [pricesResult, studioResult] = await Promise.all([getPrices(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(pricesResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const groups = PRICE_GROUPS.map((g) => ({ ...g, items: pricesResult.entries.filter((p) => p.data.category === g.slug) })).filter(
+	(g) => g.items.length > 0,
+);
+---
+
+<Base title="Pricing" description="Pilates class prices: intro offer, drop-in classes, class packs and private sessions. Sample prices.">
+	<PageHead
+		id="pricing-title"
+		eyebrow="Pricing"
+		title="Simple prices."
+		intro="Pay per class, or buy a pack and save a little. Packs can be shared between mat classes, or between reformer classes, but not between the two."
+	/>
+	<section class="list-section" aria-labelledby="pricing-title">
+		<div class="wrap">
+			<div class="price-groups">
+				{
+					groups.map((g) => (
+						<section class="price-group" aria-labelledby={`pg-${g.slug}`}>
+							<h2 id={`pg-${g.slug}`} class="eyebrow">{g.label}</h2>
+							<ul class="price-list">
+								{
+									g.items.map((p) => (
+										<li class:list={["price-row", { "is-featured": p.data.featured }]}>
+											<div class="price-name">
+												<h3 {...p.edit.title}>{p.data.title}</h3>
+												<p>{p.data.note}</p>
+											</div>
+											<p class="price-unit">{p.data.unit}</p>
+											<p class="price-amount">{formatPrice(p.data.price)}</p>
+										</li>
+									))
+								}
+							</ul>
+						</section>
+					))
+				}
+			</div>
+			<p class="pricing-note">Prices are sample placeholders for this theme. Replace them in the Pricing collection.</p>
+			<p class="page-cta"><a class="btn btn-lg" href="/contact">Request a place <Arrow /></a></p>
+		</div>
+	</section>
+	<VisitBand studio={studioResult.studio} />
+</Base>

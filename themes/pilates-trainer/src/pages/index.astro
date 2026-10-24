@@ -1,0 +1,174 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import VisitBand from "../components/VisitBand.astro";
+import { DAYS, TYPES, formatPrice, getClasses, getPillars, getPrices, getSessions, getStudio, lines, spacesLabel } from "../lib/pilates";
+
+const [classesResult, sessionsResult, pillarsResult, pricesResult, studioResult] = await Promise.all([
+	getClasses(),
+	getSessions(),
+	getPillars(),
+	getPrices(),
+	getStudio(),
+]);
+for (const r of [classesResult, sessionsResult, pillarsResult, pricesResult, studioResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const classes = classesResult.entries;
+const typeCards = TYPES.map((t) => {
+	const items = classes.filter((c) => c.data.type === t.slug);
+	const lead = items.find((c) => c.data.featured) ?? items[0];
+	return { ...t, count: items.length, lead };
+}).filter((t) => t.count > 0);
+const week = DAYS.map((d) => ({ day: d, sessions: sessionsResult.entries.filter((s) => s.data.weekday === d.slug) })).filter(
+	(d) => d.sessions.length > 0,
+);
+const prices = pricesResult.entries;
+const intro = prices.find((p) => p.data.id === "intro-offer") ?? prices[0];
+const dropIns = prices.filter((p) => p.data.category === "drop-in").map((p) => p.data.price ?? 0);
+const dropFrom = dropIns.length > 0 ? Math.min(...dropIns) : null;
+---
+
+<Base
+	title="Pilates Trainer"
+	description="Small group Pilates classes and private sessions in a bright studio: mat, reformer and one to one."
+	overlay
+>
+	<section class="hero">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A woman in an olive set stretches to one side on a mat in a sunlit studio with arched openings, a reformer, a ball and an olive tree in a pot"
+			width="1448"
+			height="714"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<p class="hero-eyebrow">Move well <span>Live brighter</span></p>
+			<h1><span class="h1-a">Strength in</span> <span class="h1-b">every movement.</span></h1>
+			<p class="hero-sub">Thoughtful Pilates classes to help you feel stronger, <br />more balanced and more you.</p>
+			<a class="btn btn-hero" href="/classes">Find your class <Arrow /></a>
+		</div>
+		<p class="hero-aside" aria-hidden="true">A<br />Stronger<br />Calmer<br />Kinder<br />You<span></span></p>
+	</section>
+
+	<section class="holistic" aria-labelledby="holistic-title">
+		<div class="holistic-copy">
+			<p class="eyebrow">A holistic approach</p>
+			<h2 id="holistic-title" class="display">Stronger habits. <br />Brighter days.</h2>
+			<p class="lede">Movement, mindfulness and community, <br />all in one place.</p>
+		</div>
+		<ul class="pillar-list">
+			{
+				pillarsResult.entries.map((p) => (
+					<li class="pillar">
+						<span class="pillar-icon"><Icon name={p.data.icon ?? "mat"} /></span>
+						<h3 {...p.edit.title}>{p.data.title}</h3>
+						<p>{lines(p.data.text).map((l, i) => <>{i > 0 && <br />}{l}</>)}</p>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	{
+		typeCards.length > 0 && (
+			<section class="types" aria-labelledby="types-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Class types</p>
+							<h2 id="types-title" class="display">Mat, reformer <br />or one to one.</h2>
+						</div>
+						<a class="link-arrow" href="/classes">All classes <Arrow /></a>
+					</div>
+					<ul class="type-list">
+						{
+							typeCards.map((t) => (
+								<li class="type-row">
+									<a class="type-photo" href={`/classes?type=${t.slug}`} tabindex="-1" aria-hidden="true">
+										{t.lead && <img src={t.lead.data.image?.src || t.lead.data.photo} alt="" width="440" height="300" loading="lazy" />}
+									</a>
+									<div class="type-copy">
+										<h3>{t.label}</h3>
+										<p>{t.blurb}</p>
+										<p class="type-facts">{t.lead?.data.group} <span aria-hidden="true">/</span> {t.lead?.data.length}</p>
+									</div>
+									<a class="link-arrow" href={`/classes?type=${t.slug}`}>
+										{t.count} {t.count === 1 ? "class" : "classes"} <Arrow />
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		week.length > 0 && (
+			<section class="band band-tint" aria-labelledby="week-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">This week</p>
+							<h2 id="week-title" class="display">The same timetable <br />every week.</h2>
+						</div>
+						<a class="link-arrow" href="/timetable">Full timetable <Arrow /></a>
+					</div>
+					<ol class="week-glance">
+						{
+							week.map(({ day, sessions }) => (
+								<li>
+									<h3>{day.short}</h3>
+									<ul>
+										{sessions.map((s) => (
+											<li>
+												<span class="wg-time">{s.data.time_label}</span>
+												<a href={`/classes/${s.data.class_slug}`}>{s.data.title}</a>
+												<span class="wg-spaces">{spacesLabel(s.data.spaces)}</span>
+											</li>
+										))}
+									</ul>
+								</li>
+							))
+						}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="first" aria-labelledby="first-title">
+		<div class="wrap first-grid">
+			<figure class="first-photo">
+				<img src="/images/ball-blocks.webp" alt="A cream exercise ball and two cork blocks beside a stone vase with olive branches" width="640" height="620" loading="lazy" />
+			</figure>
+			<div class="first-copy">
+				<p class="eyebrow">Your first class</p>
+				<h2 id="first-title" class="display">Arrive ten minutes <br />early. We do the rest.</h2>
+				<ul class="ticks">
+					<li>Mats, balls, bands and reformers are provided.</li>
+					<li>Wear close-fitting clothes. Grip socks are needed on the reformer, bare feet are fine on the mat.</li>
+					<li>Tell Mara before class about any injury, pregnancy or health condition.</li>
+				</ul>
+				{
+					intro && (
+						<p class="offer-price">
+							<strong>{formatPrice(intro.data.price)}</strong>
+							<span>{intro.data.unit} for new students, sample price. {dropFrom !== null && `Drop-in classes from ${formatPrice(dropFrom)}.`}</span>
+						</p>
+					)
+				}
+				<p class="offer-links">
+					<a class="btn" href="/contact">Request a place <Arrow /></a>
+					<a class="link-arrow" href="/pricing">See pricing <Arrow /></a>
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<VisitBand studio={studioResult.studio} />
+</Base>
