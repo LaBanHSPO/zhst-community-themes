@@ -1,0 +1,54 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PageHead from "../../components/PageHead.astro";
+import PlanBand from "../../components/PlanBand.astro";
+import { getCompany, getDestinations, getEscapes, nightsLabel, photoAlt, photoSrc } from "../../lib/family";
+
+const [destResult, escapesResult, companyResult] = await Promise.all([getDestinations(), getEscapes(), getCompany()]);
+for (const r of [destResult, escapesResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const escapesIn = (key: string) => escapesResult.entries.filter((e) => e.data.destination === key);
+---
+
+<Base title="Destinations" description="Five places we plan family trips: the Maldives, Southern Thailand, the Dalmatian Coast, the Greek Islands and Saint Lucia.">
+	<PageHead
+		id="dest-title"
+		eyebrow="Destinations"
+		title="Five places we know well."
+		intro="We plan trips in a few places and go back to them. Pick a place to see the escapes that go there and when to travel."
+	/>
+	<section class="list-section" aria-labelledby="dest-title">
+		<div class="wrap">
+			<ul class="dest-list">
+				{
+					destResult.entries.map((e) => {
+						const d = e.data;
+						const key = String(d.key ?? d.id);
+						const list = escapesIn(key);
+						const src = photoSrc(d.image, d.photo);
+						return (
+							<li class="dest-row">
+								{src && <img class="dest-photo" src={src} alt={photoAlt(d.image, d.photo)} width="560" height="400" loading="lazy" />}
+								<div class="dest-copy">
+									<p class="eyebrow">{d.country}</p>
+									<h2 class="display" {...e.edit.title}>{d.title}</h2>
+									<p class="dest-intro">{d.intro}</p>
+									{d.season && <p class="dest-season"><span>Best months</span> {d.season}</p>}
+									<ul class="dest-trips">
+										{list.map((t) => <li><a href={`/escapes/${t.data.slug ?? t.data.id}`}>{t.data.title}</a> <span>{nightsLabel(t.data.nights)}</span></li>)}
+									</ul>
+									<a class="link-arrow" href={`/escapes?destination=${key}`}>
+										{list.length} {list.length === 1 ? "escape" : "escapes"} in {d.title} <Arrow />
+									</a>
+								</div>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</div>
+	</section>
+	<PlanBand company={companyResult.company} />
+</Base>

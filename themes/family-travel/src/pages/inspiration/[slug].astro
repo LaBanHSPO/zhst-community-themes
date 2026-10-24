@@ -1,0 +1,84 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PostCard from "../../components/PostCard.astro";
+import PlanBand from "../../components/PlanBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getCompany, getPosts, photoAlt, photoSrc, topicLabel } from "../../lib/family";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: post, cacheHint } = await getEmDashEntry("inspiration", slug);
+if (!post) return Astro.rewrite("/404");
+
+const [allResult, companyResult, settings] = await Promise.all([getPosts(), getCompany(), getSiteSettings()]);
+for (const h of [cacheHint, allResult.cacheHint, companyResult.cacheHint]) {
+	if (Astro.cache?.enabled) Astro.cache.set(h);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(post, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = post.data;
+const cover = photoSrc(d.image, d.photo);
+const related = allResult.entries
+	.filter((p) => p.data.id !== d.id)
+	.sort((a, b) => Number(b.data.topic === d.topic) - Number(a.data.topic === d.topic))
+	.slice(0, 3);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "inspiration", id: d.id, slug }}
+	current="/inspiration"
+>
+	<header class="post-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/inspiration">Inspiration</a>
+				<span aria-hidden="true">/</span>
+				<a href={`/inspiration?topic=${d.topic}`}>{topicLabel(d.topic)}</a>
+			</nav>
+			<p class="eyebrow">{d.date_label} · {d.reading_time} min read</p>
+			<h1 class="display" {...post.edit.title}>{d.title}</h1>
+			<p class="lede">{d.summary}</p>
+		</div>
+	</header>
+	{
+		cover && (
+			<figure class="post-figure">
+				<img src={cover} alt={photoAlt(d.image, d.photo)} width="1100" height="520" fetchpriority="high" />
+			</figure>
+		)
+	}
+	<section class="post-body">
+		<div class="prose">
+			<PortableText value={d.content} />
+			<p class="page-cta"><a class="btn btn-coral" href="/contact">Plan Your Trip <Arrow /></a></p>
+		</div>
+	</section>
+	{
+		related.length > 0 && (
+			<section class="band band-sand" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">More notes</p>
+							<h2 id="more-title" class="display">Keep reading</h2>
+						</div>
+						<a class="link-arrow" href="/inspiration">All notes <Arrow /></a>
+					</div>
+					<ul class="card-grid card-grid-3">
+						{related.map((p) => <li><PostCard entry={p} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+	<PlanBand company={companyResult.company} />
+</Base>

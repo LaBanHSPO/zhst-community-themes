@@ -1,0 +1,52 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PageHead from "../../components/PageHead.astro";
+import PlanBand from "../../components/PlanBand.astro";
+import { getCompany, getEscapes, getStyles, lines, photoAlt, photoSrc } from "../../lib/family";
+
+const [stylesResult, escapesResult, companyResult] = await Promise.all([getStyles(), getEscapes(), getCompany()]);
+for (const r of [stylesResult, escapesResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const count = (key: string) => escapesResult.entries.filter((e) => e.data.style === key).length;
+---
+
+<Base title="Travel Styles" description="Beach, culture and nature: what each kind of family escape is like, what a normal day looks like and who it suits.">
+	<PageHead
+		id="styles-title"
+		eyebrow="Travel styles"
+		title="Three ways to spend a family week."
+		intro="Every escape is one of these. Here is what each is like, what a normal day looks like and who it suits."
+	/>
+	<section class="list-section" aria-labelledby="styles-title">
+		<div class="wrap">
+			<ul class="style-rows">
+				{
+					stylesResult.entries.map((s) => {
+						const d = s.data;
+						const src = photoSrc(d.image, d.photo);
+						const n = count(String(d.key));
+						return (
+							<li class="style-row">
+								{src && <img class="style-photo" src={src} alt={photoAlt(d.image, d.photo)} width="560" height="292" loading="lazy" />}
+								<div class="style-copy">
+									<p class="eyebrow">{lines(d.tags).join(" · ")}</p>
+									<h2 class="display" {...s.edit.title}>{d.title}</h2>
+									<p class="style-text">{d.text}</p>
+									<dl class="style-facts">
+										{d.day && <><dt>A normal day</dt><dd>{d.day}</dd></>}
+										{d.suits && <><dt>Suits families who</dt><dd>{d.suits}</dd></>}
+										{d.watch && <><dt>Worth knowing</dt><dd>{d.watch}</dd></>}
+									</dl>
+									<a class="link-arrow" href={`/escapes?style=${d.key}`}>{n} {n === 1 ? "escape" : "escapes"}: {d.title} <Arrow /></a>
+								</div>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</div>
+	</section>
+	<PlanBand company={companyResult.company} />
+</Base>

@@ -1,0 +1,1976 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Family Travel",
+  "description": "A bright family travel agency theme with a beach hero, escapes that filter by travel style and children's ages, destinations, inspiration posts, an about page and a mailto enquiry form, seeded with synthetic sample content.",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "FamilyWay",
+  "tagline": "Travel together"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Small label above the title (also used in the footer)",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "escapes",
+   "label": "Escapes",
+   "labelSingular": "Escape",
+   "urlPattern": "/escapes/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Escape name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "One-line description",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "style",
+     "label": "Travel style",
+     "type": "select",
+     "required": true,
+     "defaultValue": "beach",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "beach",
+       "culture",
+       "nature"
+      ]
+     }
+    },
+    {
+     "slug": "destination",
+     "label": "Destination (matches a destination entry)",
+     "type": "select",
+     "required": true,
+     "defaultValue": "greece",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "maldives",
+       "thailand",
+       "croatia",
+       "greece",
+       "saint-lucia"
+      ]
+     }
+    },
+    {
+     "slug": "place",
+     "label": "Where exactly (e.g. one island, one stretch of coast)",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "nights",
+     "label": "Nights",
+     "type": "integer",
+     "required": true
+    },
+    {
+     "slug": "ages",
+     "label": "Best ages, comma separated: under-5, 5-12, teens",
+     "type": "string",
+     "required": true,
+     "indexed": true
+    },
+    {
+     "slug": "pace",
+     "label": "Pace",
+     "type": "select",
+     "required": true,
+     "defaultValue": "steady",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "relaxed",
+       "steady",
+       "active"
+      ]
+     }
+    },
+    {
+     "slug": "price_from",
+     "label": "From price for a family of four, whole dollars (placeholder)",
+     "type": "integer"
+    },
+    {
+     "slug": "featured",
+     "label": "Show on the homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph (detail page)",
+     "type": "text"
+    },
+    {
+     "slug": "itinerary",
+     "label": "Day by day (one per line, as Day|What happens)",
+     "type": "text"
+    },
+    {
+     "slug": "includes",
+     "label": "What is included (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "family_notes",
+     "label": "Family details (one per line, as Label|Detail)",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Page content",
+     "type": "portableText",
+     "searchable": true
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "destinations",
+   "label": "Destinations",
+   "labelSingular": "Destination",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Destination name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "key",
+     "label": "Destination key (matches the escapes)",
+     "type": "select",
+     "required": true,
+     "defaultValue": "greece",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "maldives",
+       "thailand",
+       "croatia",
+       "greece",
+       "saint-lucia"
+      ]
+     }
+    },
+    {
+     "slug": "country",
+     "label": "Country",
+     "type": "string"
+    },
+    {
+     "slug": "season",
+     "label": "When we run escapes here",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Short description",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "styles",
+   "label": "Travel styles",
+   "labelSingular": "Travel style",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Name shown on the card",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "key",
+     "label": "Escapes filter it opens",
+     "type": "select",
+     "required": true,
+     "defaultValue": "beach",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "beach",
+       "culture",
+       "nature"
+      ]
+     }
+    },
+    {
+     "slug": "tags",
+     "label": "Three words under the name (one per line)",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "What this style means",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "day",
+     "label": "A typical day",
+     "type": "text"
+    },
+    {
+     "slug": "suits",
+     "label": "Suits families who",
+     "type": "text"
+    },
+    {
+     "slug": "watch",
+     "label": "Worth knowing",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "inspiration",
+   "label": "Inspiration",
+   "labelSingular": "Inspiration post",
+   "urlPattern": "/inspiration/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "Summary",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "topic",
+     "label": "Topic",
+     "type": "select",
+     "required": true,
+     "defaultValue": "planning",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "planning",
+       "packing",
+       "with-kids"
+      ]
+     }
+    },
+    {
+     "slug": "date_label",
+     "label": "Date shown (e.g. 12 March 2027)",
+     "type": "string"
+    },
+    {
+     "slug": "reading_time",
+     "label": "Reading time in minutes",
+     "type": "integer"
+    },
+    {
+     "slug": "featured",
+     "label": "Show on the homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "content",
+     "label": "Post",
+     "type": "portableText",
+     "searchable": true
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "comforts",
+   "label": "Family-friendly details",
+   "labelSingular": "Detail",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Detail",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "text",
+     "label": "Description",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "steps",
+   "label": "How planning works",
+   "labelSingular": "Step",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Step",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "text",
+     "label": "Description",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "team",
+   "label": "Team",
+   "labelSingular": "Team member",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "role",
+     "label": "Role",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "bio",
+     "label": "Two sentences about them",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "company",
+   "label": "Company details",
+   "labelSingular": "Company details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Company name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "street",
+     "label": "Street address",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "locality",
+     "label": "Town, state and ZIP",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "country",
+     "label": "Country",
+     "type": "string"
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Enquiry email",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "office",
+     "label": "Office hours (one per line, as Day|Hours)",
+     "type": "text"
+    },
+    {
+     "slug": "enquiry_note",
+     "label": "Note shown beside the enquiry form",
+     "type": "text"
+    },
+    {
+     "slug": "included",
+     "label": "Included in every escape (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "not_included",
+     "label": "Not included (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "licence_note",
+     "label": "Licences and insurance (owner to fill in)",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Destinations",
+     "url": "/destinations"
+    },
+    {
+     "type": "custom",
+     "label": "Travel Styles",
+     "url": "/styles"
+    },
+    {
+     "type": "custom",
+     "label": "Inspiration",
+     "url": "/inspiration"
+    },
+    {
+     "type": "custom",
+     "label": "About",
+     "url": "/about"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "A small team that plans family trips.",
+     "eyebrow": "About",
+     "intro": "FamilyWay is four people who plan one-week trips for families. This page says who we are and how we work.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k184",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We began with one family's trips to the sea, planned around naps, packed lunches and the three things that always went wrong. Friends asked for the same plans, and then their friends did. We now offer nine escapes in five places, each one something a member of the team has done or checked in person.",
+         "_key": "k185"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k186",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How we work",
+         "_key": "k187"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k188",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Every plan has the same shape: an easy first day, a few days with one thing planned, a spare day and a gentle last day. We keep transfers short, choose rooms that sleep four and book meals and rests into the day, so children are not tired and hungry at the same moment.",
+         "_key": "k189"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k190",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we ask of you",
+         "_key": "k191"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k192",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Tell us the ages of your children, what they are scared of, what they like and what they eat. The more plainly you say it, the better the plan will be. We would rather change a plan three times than send you somewhere that does not suit your family.",
+         "_key": "k193"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k194",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we do not do",
+         "_key": "k195"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k196",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We do not run group tours, sell hotel rooms by the night or take bookings online. Each trip is planned by email and confirmed by us in writing.",
+         "_key": "k197"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "good-to-know",
+    "slug": "good-to-know",
+    "status": "published",
+    "data": {
+     "title": "Good to know before you book.",
+     "eyebrow": "Good to know",
+     "intro": "Sample terms for the theme. Replace them with your own before you publish.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k198",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "This page is sample text so you can see how a CMS page looks. It is not legal advice and it is not a real set of terms.",
+         "_key": "k199"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k200",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Enquiries and confirmation",
+         "_key": "k201"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k202",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "An enquiry is not a booking. We confirm a trip by email, with the price, the dates and what is included. A deposit is requested only at that point.",
+         "_key": "k203"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k204",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Children and ages",
+         "_key": "k205"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k206",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Each escape lists the ages it suits best. If your child is outside that range, tell us. We can often adjust the plan, or we will say so honestly.",
+         "_key": "k207"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k208",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Travel insurance",
+         "_key": "k209"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k210",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We ask every family to buy travel insurance that covers cancellation and medical care before they pay a deposit.",
+         "_key": "k211"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k212",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Changes and cancellations",
+         "_key": "k213"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k214",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Replace this paragraph with your own policy: how much notice is needed, what is refunded and who to contact.",
+         "_key": "k215"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "escapes": [
+   {
+    "id": "lagoon-week",
+    "slug": "lagoon-week",
+    "status": "published",
+    "data": {
+     "title": "Lagoon Week",
+     "summary": "Seven nights on one small island with calm shallow water, a kids' snorkel hour and no schedule after lunch.",
+     "style": "beach",
+     "destination": "maldives",
+     "place": "One small lagoon island, reached by a 25 minute speedboat",
+     "nights": 7,
+     "ages": "5-12,teens",
+     "pace": "relaxed",
+     "price_from": 6900,
+     "featured": true,
+     "position": 10,
+     "photo": "/images/card-beach.webp",
+     "intro": "One island, one room, one beach. Water near the shore stays waist deep for a long way, so children can paddle and snorkel with an adult close by. There are no planned days. We book the island, the room and the boat, and you decide each morning what to do.",
+     "itinerary": "Day 1|Fly into the main airport and take a 25 minute speedboat to the island. Check in and walk the beach before dinner.\nDay 2|Free morning. Optional guided snorkel at the house reef at 3 pm, with child-size masks and vests.\nDays 3 to 4|Choose from paddleboards, a sandbank picnic by boat or a morning in the island's kids' room.\nDay 5|Half-day boat trip to see turtles from the surface. Back by 1 pm.\nDays 6 to 7|Open days. Last evening dinner on the sand, then boat and flights home on day 8 morning.",
+     "includes": "Seven nights in a family villa on the beach, breakfast and dinner\nReturn speedboat transfer from the main airport\nOne guided family snorkel and one boat trip\nChild-size masks, fins and swim vests\nA planner on call by email while you are away",
+     "family_notes": "Rooms|One villa with two bedrooms, or one room with a sofa bed and a cot on request.\nTransfers|One speedboat of 25 minutes. No seaplane and no domestic flights.\nWater|Children under 7 wear a vest in the water. The island has no lifeguard, so an adult stays close.\nPace|Relaxed. Nothing is booked before 9 am."
+    }
+   },
+   {
+    "id": "bay-and-boat-days",
+    "slug": "bay-and-boat-days",
+    "status": "published",
+    "data": {
+     "title": "Bay and Boat Days",
+     "summary": "Nine nights on a quiet southern bay, with a longtail boat to the next beach every second day.",
+     "style": "beach",
+     "destination": "thailand",
+     "place": "A small bay on the southern coast, ten minutes from a fishing town",
+     "nights": 9,
+     "ages": "under-5,5-12",
+     "pace": "relaxed",
+     "price_from": 4600,
+     "featured": true,
+     "position": 20,
+     "photo": "/images/sunset-boat.webp",
+     "intro": "A bay with a shallow beach, a short walk to a village and limestone islands a boat ride away. Half the days are spent on the beach in front of the room. The other half have one boat trip that ends by 2 pm, before the heat and before nap time.",
+     "itinerary": "Day 1|Airport pick-up by minivan (90 minutes). Dinner at the guesthouse, early night.\nDays 2 to 3|Beach days. Morning walk to the village market, afternoon swim.\nDay 4|Longtail boat to a sheltered island beach. Picnic lunch, back by 2 pm.\nDays 5 to 6|Beach days. Optional half-day cooking class for ages 6 and up.\nDays 7 to 9|One more boat day, one rest day and a late checkout on the last morning.",
+     "includes": "Nine nights in a family room with air conditioning, breakfast included\nAirport transfers in a private minivan with a child seat on request\nTwo private longtail boat trips with life vests for all ages\nA picnic lunch on each boat day\nA planner on call by email while you are away",
+     "family_notes": "Rooms|Family room sleeping four, or two connected rooms. Cots and high chairs are free to request.\nTransfers|One 90 minute road transfer each way. All other trips are by boat under an hour.\nHeat|Outings end by 2 pm. Rooms have shade and air conditioning for naps.\nPace|Relaxed. At most one outing a day."
+    }
+   },
+   {
+    "id": "pebble-coast-swim-week",
+    "slug": "pebble-coast-swim-week",
+    "status": "published",
+    "data": {
+     "title": "Pebble Coast Swim Week",
+     "summary": "Eight nights on a calm, clear stretch of coast, swimming from the rocks and cycling flat paths between villages.",
+     "style": "beach",
+     "destination": "croatia",
+     "place": "Two bases on the same stretch of coast, 40 minutes apart",
+     "nights": 8,
+     "ages": "5-12,teens",
+     "pace": "steady",
+     "price_from": 3800,
+     "featured": false,
+     "position": 30,
+     "photo": "/images/family-wading.webp",
+     "intro": "Clear water, small pebble beaches and a coast path that is mostly flat. We use two bases so you are not on the road each day: four nights in one village, four in the next. Water shoes are the one thing every family should pack.",
+     "itinerary": "Day 1|Meet at the airport car hire desk. Drive 70 minutes to the first village.\nDays 2 to 3|Swim from the rocks in the morning. Flat family bike ride along the coast path after lunch.\nDay 4|Sea kayak in a double kayak with an adult, one hour, with a local guide.\nDay 5|Move to the second village, a 40 minute drive. Swim before dinner.\nDays 6 to 8|Boat to a small island, a rest day and a last evening walk. Fly home on day 9.",
+     "includes": "Eight nights in two family apartments with a kitchen\nCompact car hire with child seats for the whole week\nFamily bike hire for two days\nOne guided double-kayak hour\nA planner on call by email while you are away",
+     "family_notes": "Rooms|Apartments sleep four with two bedrooms. A kitchen makes early dinners for younger children simple.\nTransfers|Two drives of 70 and 40 minutes. You drive. We send directions and a parking note for each village.\nWater|Pebble beaches are hard on bare feet. Water shoes are on the packing list.\nPace|Steady. One planned activity every second day."
+    }
+   },
+   {
+    "id": "gentle-island-week",
+    "slug": "gentle-island-week",
+    "status": "published",
+    "data": {
+     "title": "Gentle Island Week",
+     "summary": "Six nights in one harbour town with a sandy beach ten minutes from the room, built for a child who still naps.",
+     "style": "beach",
+     "destination": "greece",
+     "place": "One harbour town on a small island",
+     "nights": 6,
+     "ages": "under-5,5-12",
+     "pace": "relaxed",
+     "price_from": 4200,
+     "featured": false,
+     "position": 40,
+     "photo": "/images/beach-hats.webp",
+     "intro": "Everything is within a 10 minute walk or a short taxi: the beach, a bakery, a pharmacy and a playground by the harbour. We book a ground floor room with a shaded terrace so naps happen at the room, not on a beach chair.",
+     "itinerary": "Day 1|Ferry or short flight to the island, taxi to the room. Easy dinner at a harbour taverna that opens at 6 pm.\nDays 2 to 3|Morning on the sandy beach. Back to the room for lunch and a nap. Playground and ice cream before dinner.\nDay 4|Short boat ride to a quiet cove. Back at 1 pm.\nDay 5|Old town stroll with a stop at a pottery workshop that takes children.\nDay 6|Free day. We suggest the beach and an early dinner, then packing.",
+     "includes": "Six nights in a ground floor family room with a terrace\nFerry or flight tickets within Greece and taxi transfers\nOne short boat trip with life vests for all ages\nA beach umbrella and two loungers for the week\nA planner on call by email while you are away",
+     "family_notes": "Rooms|Ground floor, no stairs, shaded terrace. A travel cot is in the room before you arrive.\nTransfers|One ferry or short flight and a 15 minute taxi. No road trips.\nMeals|Tavernas that serve plain pasta, grilled fish or chicken and fruit from 6 pm.\nPace|Relaxed. Two short outings in total."
+    }
+   },
+   {
+    "id": "white-town-week",
+    "slug": "white-town-week",
+    "status": "published",
+    "data": {
+     "title": "White Town Week",
+     "summary": "Seven nights in a hillside town of stairs, rooftops and small museums, with a treasure hunt for children on day two.",
+     "style": "culture",
+     "destination": "greece",
+     "place": "One hillside town and two nearby villages",
+     "nights": 7,
+     "ages": "5-12,teens",
+     "pace": "steady",
+     "price_from": 4400,
+     "featured": true,
+     "position": 50,
+     "photo": "/images/card-culture.webp",
+     "intro": "A town with narrow steps, a small harbour and a lot to look at. Mornings are for walking and looking. Afternoons are for the pool or the beach. The treasure hunt is a printed sheet of twelve things to find, and it gets children through the old town without complaint.",
+     "itinerary": "Day 1|Arrive by ferry or air and walk up to the room. Dinner on the roof terrace.\nDay 2|Old town treasure hunt, 90 minutes, then a swim. A planner sends the sheet before you travel.\nDay 3|Pottery workshop for ages 6 and up, two hours. Free afternoon.\nDays 4 to 5|Day trip by bus to a village and a small archaeological museum with a children's room.\nDays 6 to 7|Beach day, then a sunset walk to the castle wall. Fly or ferry home on day 8.",
+     "includes": "Seven nights in a family suite with air conditioning, breakfast included\nFerry or flight tickets within Greece and transfers\nTreasure hunt sheet and pottery workshop for the whole family\nBus tickets for the village day trip\nA planner on call by email while you are away",
+     "family_notes": "Rooms|Family suite with one double bed and two singles, or an apartment with two rooms. Stairs are steep, so we say so before you book.\nTransfers|One ferry or flight and a taxi each way. Day trips are by public bus under 50 minutes.\nHeat|Walking is in the morning. Afternoons are free for the pool.\nPace|Steady. One planned outing a day."
+    }
+   },
+   {
+    "id": "old-town-treasure-hunts",
+    "slug": "old-town-treasure-hunts",
+    "status": "published",
+    "data": {
+     "title": "Old Town Treasure Hunts",
+     "summary": "Six nights in a walled coastal town, with a different hunt each day and the sea for the afternoon.",
+     "style": "culture",
+     "destination": "croatia",
+     "place": "One walled coastal town",
+     "nights": 6,
+     "ages": "5-12",
+     "pace": "steady",
+     "price_from": 3200,
+     "featured": false,
+     "position": 60,
+     "photo": "/images/family-shore.webp",
+     "intro": "A walled town is a good place to take a child who likes puzzles. We write three hunts of different lengths: stairs and doors, boats and flags, and a market. Each ends by 11 am so the afternoon is yours for the water.",
+     "itinerary": "Day 1|Airport transfer by private car (35 minutes). Walk the walls before dinner.\nDay 2|Stairs and doors hunt, 75 minutes, ending at a bakery.\nDay 3|Boats and flags hunt along the harbour, then a swim from the town beach.\nDay 4|Market hunt and a family cooking hour for ages 7 and up.\nDays 5 to 6|Half-day boat to a small island, then a free day and a late checkout.",
+     "includes": "Six nights in a family apartment inside or beside the old town\nPrivate car transfers from the airport\nThree printed hunts, written for ages 5 to 12\nOne family cooking hour and a half-day boat trip\nA planner on call by email while you are away",
+     "family_notes": "Rooms|Two-bedroom apartment with a kitchen. Some are up stairs, and we tell you how many.\nTransfers|One private car each way, 35 minutes.\nHeat|All hunts are in the morning, in shade where we can find it.\nPace|Steady. One short hunt a day."
+    }
+   },
+   {
+    "id": "temples-and-cooking-week",
+    "slug": "temples-and-cooking-week",
+    "status": "published",
+    "data": {
+     "title": "Temples and Cooking Week",
+     "summary": "Eight nights moving slowly from a river town to a beach, with two temple mornings and a cooking class children can join.",
+     "style": "culture",
+     "destination": "thailand",
+     "place": "A river town and a beach town, four hours apart by road",
+     "nights": 8,
+     "ages": "5-12,teens",
+     "pace": "steady",
+     "price_from": 4900,
+     "featured": false,
+     "position": 70,
+     "photo": "/images/beach-sunset.webp",
+     "intro": "Two bases, one drive in the middle. The first four nights are in a small town with temples and a morning market. The last four are by the sea. Temple visits are kept to 90 minutes and finish before the heat. Modest clothing for adults and children is on the packing list.",
+     "itinerary": "Day 1|Airport pick-up by private minivan (75 minutes). Quiet evening at the guesthouse.\nDay 2|Early market walk and a temple visit of 90 minutes. Swim at the guesthouse pool.\nDay 3|Family cooking class, three hours, with a meal at the end. Free afternoon.\nDay 4|Short boat ride on the river to a second temple. Pack for the drive.\nDays 5 to 8|Drive of four hours with two stops, then four beach days with one optional boat trip. Fly home on day 9.",
+     "includes": "Eight nights in family rooms with air conditioning, breakfast included\nPrivate minivan transfers with stops every 90 minutes\nTemple entry fees, one family cooking class and one boat trip\nLife vests for all ages on every boat\nA planner on call by email while you are away",
+     "family_notes": "Rooms|Family rooms for four or two connected rooms, with a pool at both bases.\nTransfers|One drive of four hours with two stops. Child seats on request.\nDress|Shoulders and knees covered inside temples. We send a short note for children.\nPace|Steady. Temple mornings are short and end before 11:30 am."
+    }
+   },
+   {
+    "id": "rainforest-and-bay-week",
+    "slug": "rainforest-and-bay-week",
+    "status": "published",
+    "data": {
+     "title": "Rainforest and Bay Week",
+     "summary": "Seven nights near a sheltered bay and a short forest trail, with a kids' chocolate workshop and calm-water snorkelling.",
+     "style": "nature",
+     "destination": "saint-lucia",
+     "place": "A small bay below forested hills, with a short hike to a waterfall",
+     "nights": 7,
+     "ages": "5-12,teens",
+     "pace": "active",
+     "price_from": 5200,
+     "featured": true,
+     "position": 80,
+     "photo": "/images/card-nature.webp",
+     "intro": "A green, hilly coast with warm, calm water. Hikes are short, one hour in and one hour out, on well-kept trails with a guide. Afternoons are for swimming or snorkelling in the bay. A chocolate workshop on day three suits children who are not walkers.",
+     "itinerary": "Day 1|Airport transfer by minibus (60 minutes). Swim before dinner.\nDay 2|Guided forest walk to a waterfall, one hour each way, with a swim at the pool at the top.\nDay 3|Chocolate workshop at a small estate, two hours. Free afternoon.\nDay 4|Calm-water snorkel in the bay with a guide, vests and child-size masks.\nDays 5 to 7|Choose a second hike, a kayak around the bay or a rest day. Transfer to the airport on day 8.",
+     "includes": "Seven nights in a family room or two-bedroom cottage, breakfast included\nAirport transfers by minibus with child seats on request\nOne guided waterfall walk, one snorkel and one chocolate workshop\nChild-size masks, fins and swim vests\nA planner on call by email while you are away",
+     "family_notes": "Rooms|Two-bedroom cottage with a kitchenette, or a family room. Most paths to the rooms are on a slope, and we say so.\nTransfers|One minibus of 60 minutes each way.\nWalks|Trails are short and have rails on the steep parts. Children carry a small water bottle.\nPace|Active. One planned outing most days and a spare day at the end."
+    }
+   },
+   {
+    "id": "limestone-kayak-week",
+    "slug": "limestone-kayak-week",
+    "status": "published",
+    "data": {
+     "title": "Limestone Kayak Week",
+     "summary": "Eight nights on a bay of limestone islands, with double-kayak mornings, cave swims at low tide and long afternoons.",
+     "style": "nature",
+     "destination": "thailand",
+     "place": "A bay of limestone islands, one base for the whole week",
+     "nights": 8,
+     "ages": "5-12,teens",
+     "pace": "active",
+     "price_from": 4700,
+     "featured": false,
+     "position": 90,
+     "photo": "/images/karst-bay.webp",
+     "intro": "Paddling is done in double kayaks, with one adult and one child in each. A guide leads a group of at most four families, and each paddle is two hours or less. The water is calm in the morning, which is when we go. The rest of each day is open.",
+     "itinerary": "Day 1|Airport pick-up by private minivan (80 minutes). Early dinner.\nDay 2|Beach day to learn the strokes in shallow water. Optional short paddle in the afternoon.\nDay 3|Morning paddle through a sheltered channel, with a swim stop.\nDays 4 to 6|Beach days with one cave paddle at low tide and one island picnic by boat.\nDays 7 to 8|Free days. Final night dinner by the water. Fly home on day 9.",
+     "includes": "Eight nights in a family room or two-bedroom bungalow, breakfast included\nAirport transfers in a private minivan\nThree guided double-kayak outings, with life vests and dry bags\nOne island picnic by boat\nA planner on call by email while you are away",
+     "family_notes": "Rooms|Two-bedroom bungalow near the beach, or a large family room. Cots and extra beds are free to request.\nTransfers|One road transfer of 80 minutes each way.\nWater|Everyone wears a vest on every outing. Children must be able to sit still in a boat for 30 minutes.\nPace|Active. A paddle most mornings, with afternoons open."
+    }
+   }
+  ],
+  "destinations": [
+   {
+    "id": "maldives",
+    "slug": "maldives",
+    "status": "published",
+    "data": {
+     "title": "The Maldives",
+     "key": "maldives",
+     "country": "Maldives",
+     "season": "November to April",
+     "position": 10,
+     "photo": "/images/card-beach.webp",
+     "intro": "Small lagoon islands where the water near the shore is shallow and warm. We choose islands that are reached by a short speedboat, so there is no long seaplane flight with children."
+    }
+   },
+   {
+    "id": "thailand",
+    "slug": "thailand",
+    "status": "published",
+    "data": {
+     "title": "Southern Thailand",
+     "key": "thailand",
+     "country": "Thailand",
+     "season": "November to March",
+     "position": 20,
+     "photo": "/images/karst-bay.webp",
+     "intro": "Quiet bays, limestone islands and small towns with markets and temples. Boats run in the morning when the water is calm, and the heat is kept for the pool."
+    }
+   },
+   {
+    "id": "croatia",
+    "slug": "croatia",
+    "status": "published",
+    "data": {
+     "title": "The Dalmatian Coast",
+     "key": "croatia",
+     "country": "Croatia",
+     "season": "May to September",
+     "position": 30,
+     "photo": "/images/family-wading.webp",
+     "intro": "Clear water, pebble beaches and walled towns made for hunts and puzzles. Roads are good and distances short, which suits families who like to drive."
+    }
+   },
+   {
+    "id": "greece",
+    "slug": "greece",
+    "status": "published",
+    "data": {
+     "title": "The Greek Islands",
+     "key": "greece",
+     "country": "Greece",
+     "season": "May to early October",
+     "position": 40,
+     "photo": "/images/card-culture.webp",
+     "intro": "Harbour towns, whitewashed lanes and sandy beaches on small islands. We use one island per trip, so there is one ferry in and one ferry out."
+    }
+   },
+   {
+    "id": "saint-lucia",
+    "slug": "saint-lucia",
+    "status": "published",
+    "data": {
+     "title": "Saint Lucia",
+     "key": "saint-lucia",
+     "country": "Saint Lucia",
+     "season": "December to April",
+     "position": 50,
+     "photo": "/images/card-nature.webp",
+     "intro": "Forested hills above sheltered bays. Short guided walks, calm-water snorkelling and a chocolate workshop for children who do not want to hike."
+    }
+   }
+  ],
+  "styles": [
+   {
+    "id": "beach",
+    "slug": "beach",
+    "status": "published",
+    "data": {
+     "title": "Tropical Beaches",
+     "key": "beach",
+     "tags": "Sun\nPlay\nUnwind",
+     "position": 10,
+     "photo": "/images/card-beach.webp",
+     "text": "Most of the day is on or near the water. There is one thing planned each morning at most, such as a boat to the next cove or an hour of snorkelling, and the rest of the day is open.",
+     "day": "Breakfast at the room, an hour on the beach, a swim, lunch in the shade and a rest. After four o'clock the beach is cooler and quieter, and that is when most families go back.",
+     "suits": "Families with children under 12 who want to stop moving for a week. Good for a first trip abroad.",
+     "watch": "Sun and water safety is the main thing. We list vests, shade and the nearest clinic for each place."
+    }
+   },
+   {
+    "id": "culture",
+    "slug": "culture",
+    "status": "published",
+    "data": {
+     "title": "Cultural Adventures",
+     "key": "culture",
+     "tags": "Explore\nLearn\nTogether",
+     "position": 20,
+     "photo": "/images/card-culture.webp",
+     "text": "Small towns, markets and workshops with a hands-on part for children: a hunt, a cooking hour or a pottery class. Walking is in the morning, and the afternoon is free for a pool or a beach.",
+     "day": "Out by 9 am, one visit of 90 minutes, a long lunch, then back to the room. Dinner is early. Nothing is booked after 5 pm.",
+     "suits": "Families with children of 6 and over who like to look at things and ask questions. Teens who like food and photos.",
+     "watch": "Old towns have steps. We say how many, and which rooms are on the ground floor."
+    }
+   },
+   {
+    "id": "nature",
+    "slug": "nature",
+    "status": "published",
+    "data": {
+     "title": "Nature Getaways",
+     "key": "nature",
+     "tags": "Hike\nSwim\nReconnect",
+     "position": 30,
+     "photo": "/images/card-nature.webp",
+     "text": "Short guided walks on good trails, calm-water paddling and snorkelling. Each outing is one or two hours, and there is a rest day built into every week.",
+     "day": "A guide meets you at 8 am, you walk or paddle for two hours at most, and the afternoon is a swim. Children carry a small water bottle and a snack.",
+     "suits": "Families with children of 6 and over who enjoy being outdoors. Teens who want to try a kayak or a waterfall swim.",
+     "watch": "Some trails are steep or slippery. We list the length, the climb and the surface, so you can pick."
+    }
+   }
+  ],
+  "inspiration": [
+   {
+    "id": "how-long-should-a-flight-day-be",
+    "slug": "how-long-should-a-flight-day-be",
+    "status": "published",
+    "data": {
+     "title": "How long should a family flight day be?",
+     "summary": "A rule we use when we plan travel days for families with children under ten.",
+     "topic": "planning",
+     "date_label": "12 March 2027",
+     "reading_time": 4,
+     "featured": true,
+     "position": 10,
+     "photo": "/images/sunset-boat.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k100",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We try to keep a travel day under twelve hours door to door when children are under eight, and under fourteen for older ones. That includes the drive to the airport, check-in, the flight, bags, the transfer and the walk to the room.",
+         "_key": "k101"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k102",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Choose the flight that lands before dark",
+         "_key": "k103"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k104",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A morning departure that lands in the afternoon gives you time for a swim and an early dinner. A late arrival means a tired child, a hungry child and a dark road. We would rather pay a little more for the earlier flight.",
+         "_key": "k105"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k106",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Book the transfer, not just the flight",
+         "_key": "k107"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k108",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The last hour is often the hardest. A private transfer with a child seat waiting is worth the money on a first night. We name the driver and send a number to call before you leave.",
+         "_key": "k109"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k110",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Pack for the first night in your hand luggage",
+         "_key": "k111"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k112",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Pyjamas, a toothbrush, a change of clothes, a light blanket and one familiar toy. If a bag is late, the first night still works.",
+         "_key": "k113"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "what-to-pack-for-a-beach-week-with-a-four-year-old",
+    "slug": "what-to-pack-for-a-beach-week-with-a-four-year-old",
+    "status": "published",
+    "data": {
+     "title": "What to pack for a beach week with a four-year-old",
+     "summary": "A short list of the things families tell us they were glad to have, and a few they could leave at home.",
+     "topic": "packing",
+     "date_label": "26 February 2027",
+     "reading_time": 5,
+     "featured": true,
+     "position": 20,
+     "photo": "/images/beach-basket.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k114",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Children under five do best with a small, predictable kit. Here is what we suggest, based on what families have told us after their trips.",
+         "_key": "k115"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k116",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Pack these",
+         "_key": "k117"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k118",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Two long-sleeved swim tops with sun protection, a hat with a chin strap, reef shoes or water shoes, a small tube of the sunscreen your child already uses, and a lightweight travel cot sheet if the room has a cot. A collapsible bucket and a small net take no space.",
+         "_key": "k119"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k120",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Leave these at home",
+         "_key": "k121"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k122",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A large beach toy set, a pushchair that does not fold small and more than two story books. Most rooms have a way to wash clothes, and a small wash line is more useful than extra outfits.",
+         "_key": "k123"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k124",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Keep one bag within reach",
+         "_key": "k125"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k126",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Snacks, water, a change of clothes, wipes and a plastic bag for wet things. Put it by the door of the room so it is easy to grab each morning.",
+         "_key": "k127"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "choosing-a-family-room",
+    "slug": "choosing-a-family-room",
+    "status": "published",
+    "data": {
+     "title": "Choosing a family room, not just a bigger room",
+     "summary": "What to ask before you book a room for four, and why a few details matter more than size.",
+     "topic": "planning",
+     "date_label": "9 February 2027",
+     "reading_time": 4,
+     "featured": true,
+     "position": 30,
+     "photo": "/images/beach-hats.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k128",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A room can be large and still not work for a family. We check these things before we suggest it.",
+         "_key": "k129"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k130",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Can everyone sleep in the dark?",
+         "_key": "k131"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k132",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If the room is one space, a child going to bed at seven will have parents sitting in the dark until nine. A room with a door, a terrace or a separate area helps. Ask whether there is a place to sit once the children are asleep.",
+         "_key": "k133"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k134",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Beds, not just beds in total",
+         "_key": "k135"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k136",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Four beds can mean two doubles or one double and a sofa bed. Ask what the sofa bed is like, and whether a cot or an extra bed is free or charged.",
+         "_key": "k137"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k138",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Stairs, balconies and pools",
+         "_key": "k139"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k140",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A balcony with wide rails is a risk for a toddler. A pool without a fence is a risk too. We list what is there, and we ask for a ground floor room when children are under five.",
+         "_key": "k141"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "eating-out-with-children-abroad",
+    "slug": "eating-out-with-children-abroad",
+    "status": "published",
+    "data": {
+     "title": "Eating out with children abroad: three habits that help",
+     "summary": "Small habits that make restaurant meals shorter and calmer on a trip.",
+     "topic": "with-kids",
+     "date_label": "23 January 2027",
+     "reading_time": 4,
+     "featured": false,
+     "position": 40,
+     "photo": "/images/family-wading.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k142",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Most restaurant stress comes from timing. These habits are simple, and they work in most countries.",
+         "_key": "k143"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k144",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Eat early, and eat where families eat",
+         "_key": "k145"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k146",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Many places abroad serve dinner from seven or eight. Look for a restaurant that opens at six, or eat the main meal at lunch. Ask your room host where local families go.",
+         "_key": "k147"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k148",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Order the children's food first",
+         "_key": "k149"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k150",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Ask the waiter to bring the children's plates first, or even a starter alone. A child with food in front of them is easier for the next twenty minutes.",
+         "_key": "k151"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k152",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Have something in the bag",
+         "_key": "k153"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k154",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A small pack of cards, a notebook with a pencil or a travel game costs nothing and weighs nothing. Keep it for the table only, so it stays interesting.",
+         "_key": "k155"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "a-museum-visit-that-works-for-ages-six-to-twelve",
+    "slug": "a-museum-visit-that-works-for-ages-six-to-twelve",
+    "status": "published",
+    "data": {
+     "title": "A museum visit that works for ages six to twelve",
+     "summary": "How to make a short museum visit something a child will remember and not just endure.",
+     "topic": "with-kids",
+     "date_label": "10 January 2027",
+     "reading_time": 4,
+     "featured": false,
+     "position": 50,
+     "photo": "/images/card-culture.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k156",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Plan for 75 minutes, not three hours. Children in this age range can pay attention for about that long when they have a task.",
+         "_key": "k157"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k158",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Give them a job",
+         "_key": "k159"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k160",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Ask each child to find five things: something older than a hundred years, something they would like to own and something that looks like an animal. At the end, each child shows the group their favourite.",
+         "_key": "k161"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k162",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Go early and pick two rooms",
+         "_key": "k163"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k164",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Read the plan of the museum on the way, and choose two rooms. Leave the rest. The first hour after opening is usually the quietest.",
+         "_key": "k165"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k166",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "End with something outside",
+         "_key": "k167"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k168",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A park, a harbour or an ice cream by the water gives children a reason to cooperate inside. Book the second half of the morning for it.",
+         "_key": "k169"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "a-simple-day-at-the-beach-routine",
+    "slug": "a-simple-day-at-the-beach-routine",
+    "status": "published",
+    "data": {
+     "title": "A simple day-at-the-beach routine for families",
+     "summary": "A daily routine for sun, water and shade that we give to families with young children.",
+     "topic": "with-kids",
+     "date_label": "18 December 2026",
+     "reading_time": 3,
+     "featured": false,
+     "position": 60,
+     "photo": "/images/beach-hats.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k170",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Children and a beach day work best with a rhythm. This is the routine we suggest.",
+         "_key": "k171"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k172",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Morning",
+         "_key": "k173"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k174",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Sun protection goes on at the room, before the beach, and goes on again after every swim. Aim to be on the sand by 8:30 and in the shade by 11.",
+         "_key": "k175"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k176",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Middle of the day",
+         "_key": "k177"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k178",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Lunch and a rest at the room, or in the deepest shade you can find. This is the hottest part of the day, and it is also when many children need a nap.",
+         "_key": "k179"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k180",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Late afternoon",
+         "_key": "k181"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k182",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "After four, the beach is cooler and the light is softer. This is a good hour for sandcastles, a short walk and an early dinner.",
+         "_key": "k183"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "comforts": [
+   {
+    "id": "pacing",
+    "slug": "pacing",
+    "status": "published",
+    "data": {
+     "title": "Kid-friendly pacing",
+     "text": "One planned thing a day at most, finished by early afternoon. Every trip has a spare day, and no day starts before 9 am.",
+     "position": 10
+    }
+   },
+   {
+    "id": "rooms",
+    "slug": "rooms",
+    "status": "published",
+    "data": {
+     "title": "Family rooms",
+     "text": "We book rooms that sleep four in one space, or two connected rooms. We check bed sizes, cots and balcony rails before you pay.",
+     "position": 20
+    }
+   },
+   {
+    "id": "transfers",
+    "slug": "transfers",
+    "status": "published",
+    "data": {
+     "title": "Short transfers",
+     "text": "Where we can, no single transfer is longer than 90 minutes when children are under eight. Child seats are booked and a driver's name is sent ahead.",
+     "position": 30
+    }
+   },
+   {
+    "id": "meals",
+    "slug": "meals",
+    "status": "published",
+    "data": {
+     "title": "Meals that work",
+     "text": "We note which places open for dinner at 6 pm, serve plain food and have high chairs. Breakfast is included in every escape.",
+     "position": 40
+    }
+   }
+  ],
+  "steps": [
+   {
+    "id": "tell-us",
+    "slug": "tell-us",
+    "status": "published",
+    "data": {
+     "title": "Tell us who is coming",
+     "text": "Send the ages of the children, the month you want to travel and a rough budget if you have one. We read each enquiry ourselves.",
+     "position": 10
+    }
+   },
+   {
+    "id": "shortlist",
+    "slug": "shortlist",
+    "status": "published",
+    "data": {
+     "title": "We suggest two or three escapes",
+     "text": "You get a short email with options, what each costs for your family and what a normal day looks like. No link to a search engine and no pressure.",
+     "position": 20
+    }
+   },
+   {
+    "id": "adjust",
+    "slug": "adjust",
+    "status": "published",
+    "data": {
+     "title": "Change what does not fit",
+     "text": "Swap a night, drop a boat trip, add a rest day. We rewrite the plan until it suits your family and your children's habits.",
+     "position": 30
+    }
+   },
+   {
+    "id": "confirm",
+    "slug": "confirm",
+    "status": "published",
+    "data": {
+     "title": "Confirm and get a travel pack",
+     "text": "When you say yes, we confirm by email, book everything and send a pack with maps, phone numbers, a packing list and a day-by-day plan.",
+     "position": 40
+    }
+   }
+  ],
+  "team": [
+   {
+    "id": "hannah-moreau",
+    "slug": "hannah-moreau",
+    "status": "published",
+    "data": {
+     "title": "Hannah Moreau",
+     "role": "Founder and trip planner",
+     "position": 10,
+     "bio": "Started FamilyWay after planning trips for her own family for ten years. Plans most of the Greek and Croatian escapes."
+    }
+   },
+   {
+    "id": "tomas-reyes",
+    "slug": "tomas-reyes",
+    "status": "published",
+    "data": {
+     "title": "Tomas Reyes",
+     "role": "Planner, beach and Caribbean escapes",
+     "position": 20,
+     "bio": "Writes the Maldives and Saint Lucia plans. Has a rule that no transfer goes over ninety minutes."
+    }
+   },
+   {
+    "id": "priya-nandakumar",
+    "slug": "priya-nandakumar",
+    "status": "published",
+    "data": {
+     "title": "Priya Nandakumar",
+     "role": "Planner, culture escapes",
+     "position": 30,
+     "bio": "Writes the treasure hunts and workshop days. Checks each visit with children of the right age before it goes on the site."
+    }
+   },
+   {
+    "id": "dale-okafor",
+    "slug": "dale-okafor",
+    "status": "published",
+    "data": {
+     "title": "Dale Okafor",
+     "role": "Operations and on-trip support",
+     "position": 40,
+     "bio": "Answers the phone while families are away. Keeps the list of local doctors, pharmacies and drivers up to date."
+    }
+   }
+  ],
+  "company": [
+   {
+    "id": "company",
+    "slug": "company",
+    "status": "published",
+    "data": {
+     "title": "FamilyWay Travel",
+     "street": "12 Harbour Row, Unit 3",
+     "locality": "Saltmere Bay, OR 97000",
+     "country": "United States",
+     "phone": "+1 541 555 0138",
+     "email": "hello@familyway.example",
+     "office": "Monday to Friday|9:00 am to 5:00 pm Pacific Time\nSaturday|10:00 am to 1:00 pm, phone only\nSunday|Closed",
+     "enquiry_note": "We reply within two working days. An enquiry is not a booking. Nothing is held or charged until we confirm it by email.",
+     "included": "Accommodation as listed on each escape, with breakfast\nTransfers and local transport listed on each escape\nThe outings listed on each escape, with child-size equipment and vests\nA planner who answers email and the phone while you are away\nA travel pack with maps, phone numbers and a packing list",
+     "not_included": "International flights, unless we quote them for you\nTravel insurance, which we ask every family to buy\nMost lunches and dinners\nPassport and visa costs\nTips and personal spending",
+     "licence_note": "Sample text. Replace this with your seller of travel registration number, the bonding or trust account you hold and the insurance you carry, as the rules in your country require. This theme does not claim any licence, membership or award."
+    }
+   }
+  ]
+ }
+}

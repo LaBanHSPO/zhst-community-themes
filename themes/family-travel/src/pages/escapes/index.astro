@@ -1,0 +1,91 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import EscapeCard from "../../components/EscapeCard.astro";
+import PlanBand from "../../components/PlanBand.astro";
+import { AGES, STYLES, ageSlugs, getCompany, getDestinations, getEscapes } from "../../lib/family";
+
+const [escapesResult, destResult, companyResult] = await Promise.all([getEscapes(), getDestinations(), getCompany()]);
+for (const r of [escapesResult, destResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+// ?style=beach|culture|nature, ?ages=under-5|5-12|teens and ?destination=<key> narrow the list and combine.
+// Unknown values show everything.
+const q = Astro.url.searchParams;
+const style = STYLES.find((s) => s.slug === q.get("style"));
+const ages = AGES.find((a) => a.slug === q.get("ages"));
+const dests = destResult.entries.map((d) => ({ slug: String(d.data.key), label: String(d.data.title) }));
+const dest = dests.find((d) => d.slug === q.get("destination"));
+const all = escapesResult.entries;
+const list = all.filter(
+	(e) =>
+		(!style || e.data.style === style.slug) &&
+		(!ages || ageSlugs(e.data.ages).includes(ages.slug)) &&
+		(!dest || e.data.destination === dest.slug),
+);
+const href = (s?: string, a?: string, d?: string) => {
+	const p = new URLSearchParams();
+	if (s) p.set("style", s);
+	if (a) p.set("ages", a);
+	if (d) p.set("destination", d);
+	const str = p.toString();
+	return str ? `/escapes?${str}` : "/escapes";
+};
+const countStyle = (slug: string) => all.filter((e) => e.data.style === slug).length;
+const countAges = (slug: string) => all.filter((e) => ageSlugs(e.data.ages).includes(slug)).length;
+const countDest = (slug: string) => all.filter((e) => e.data.destination === slug).length;
+const heading = [style?.label, ages?.label ?? "", dest ? `in ${dest.label}` : ""].filter(Boolean).join(", ");
+---
+
+<Base title="Escapes" description="Nine family trips of six to ten nights in five places. Filter by travel style, children's ages or destination.">
+	<PageHead
+		id="escapes-title"
+		eyebrow="Escapes"
+		title="Nine family trips, planned day by day."
+		intro="Each escape lists who it suits, how busy the days are and what a normal day looks like. Prices are samples for a family of four, before flights."
+	/>
+	<section class="list-section" aria-labelledby="escapes-title">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter escapes">
+				<div class="filter-group">
+					<span class="filter-label">Travel style</span>
+					<a href={href(undefined, ages?.slug, dest?.slug)} aria-current={style ? undefined : "true"}>All</a>
+					{STYLES.map((s) => <a href={href(s.slug, ages?.slug, dest?.slug)} aria-current={style?.slug === s.slug ? "true" : undefined}>{s.label} <span>{countStyle(s.slug)}</span></a>)}
+				</div>
+				<div class="filter-group">
+					<span class="filter-label">Children's ages</span>
+					<a href={href(style?.slug, undefined, dest?.slug)} aria-current={ages ? undefined : "true"}>Any</a>
+					{AGES.map((a) => <a href={href(style?.slug, a.slug, dest?.slug)} aria-current={ages?.slug === a.slug ? "true" : undefined}>{a.label} <span>{countAges(a.slug)}</span></a>)}
+				</div>
+				<div class="filter-group">
+					<span class="filter-label">Destination</span>
+					<a href={href(style?.slug, ages?.slug)} aria-current={dest ? undefined : "true"}>All</a>
+					{dests.map((d) => <a href={href(style?.slug, ages?.slug, d.slug)} aria-current={dest?.slug === d.slug ? "true" : undefined}>{d.label} <span>{countDest(d.slug)}</span></a>)}
+				</div>
+			</nav>
+
+			<p class="result-line" role="status">
+				{list.length} of {all.length} escapes{heading ? `: ${heading}` : ""}
+				{(style || ages || dest) && <> <a href="/escapes">Clear filters</a></>}
+			</p>
+
+			{
+				list.length === 0 ? (
+					<p class="empty-note">No escape matches that combination. <a href="/escapes">Show all escapes</a> or <a href="/contact">tell us what you are after</a>.</p>
+				) : (
+					<ul class="card-grid">
+						{list.map((e) => <li><EscapeCard entry={e} /></li>)}
+					</ul>
+				)
+			}
+
+			<aside class="scale-note" aria-label="Age guide">
+				<h2>How we group ages</h2>
+				<dl>
+					{AGES.map((a) => <><dt>{a.label}</dt><dd>{a.note}</dd></>)}
+				</dl>
+			</aside>
+		</div>
+	</section>
+	<PlanBand company={companyResult.company} />
+</Base>

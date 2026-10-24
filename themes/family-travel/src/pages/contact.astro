@@ -1,0 +1,212 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import { BUDGETS, getCompany, getEscapes, mapHref, nightsLabel, rows, telHref } from "../lib/family";
+
+const [{ company, cacheHint }, escapesResult] = await Promise.all([getCompany(), getEscapes()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(escapesResult.cacheHint);
+}
+const office = rows(company.office);
+const escapes = escapesResult.entries;
+// ?escape=<slug> pre-selects the escape in the form.
+const wanted = Astro.url.searchParams.get("escape");
+const selected = escapes.find((e) => (e.data.slug ?? e.data.id) === wanted);
+---
+
+<Base title="Plan Your Trip" description="Send an enquiry to FamilyWay Travel: which escape, when, who is coming and the children's ages. Phone, email and office hours are listed on this page.">
+	<PageHead
+		id="contact-title"
+		eyebrow="Plan your trip"
+		title="Tell us who is coming and when."
+		intro="Choose an escape if you have one in mind, say when you would like to go and give the children's ages. We reply within two working days."
+	/>
+	<section class="contact-section" aria-labelledby="contact-title">
+		<div class="wrap contact-grid">
+			<form
+				class="enquiry-form"
+				data-enquiry-form
+				data-email={company.email}
+				action={company.email ? `mailto:${company.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field full">
+						<label for="c-escape">Escape</label>
+						<select id="c-escape" name="escape" required>
+							<option value="" selected={!selected}>Choose an escape</option>
+							{
+								escapes.map((e) => (
+									<option value={e.data.title} selected={selected?.data.id === e.data.id}>
+										{e.data.title} ({nightsLabel(e.data.nights)})
+									</option>
+								))
+							}
+							<option value="Not sure yet">Not sure yet, please suggest some</option>
+						</select>
+						<span class="field-error" data-error-for="c-escape"></span>
+					</div>
+					<div class="field full">
+						<label for="c-when">When would you like to go?</label>
+						<input id="c-when" name="when" type="text" placeholder="A month, or dates, for example July 2027 or 10 to 17 August" required />
+						<span class="field-error" data-error-for="c-when"></span>
+					</div>
+					<div class="field">
+						<label for="c-adults">Adults</label>
+						<select id="c-adults" name="adults" required>
+							<option value="1">1 adult</option>
+							<option value="2" selected>2 adults</option>
+							<option value="3">3 adults</option>
+							<option value="4">4 adults</option>
+							<option value="5 or more">5 or more adults</option>
+						</select>
+					</div>
+					<div class="field">
+						<label for="c-children">Children</label>
+						<select id="c-children" name="children" required>
+							<option value="1">1 child</option>
+							<option value="2" selected>2 children</option>
+							<option value="3">3 children</option>
+							<option value="4">4 children</option>
+							<option value="5 or more">5 or more children</option>
+						</select>
+					</div>
+					<div class="field full">
+						<label for="c-ages">Children's ages</label>
+						<input id="c-ages" name="ages" type="text" placeholder="For example 3 and 7" required />
+						<span class="field-error" data-error-for="c-ages"></span>
+					</div>
+					<div class="field full">
+						<label for="c-budget">Budget for the trip, before flights <span class="optional">(optional)</span></label>
+						<select id="c-budget" name="budget">
+							{BUDGETS.map((b) => <option value={b} selected={b === "Not sure yet"}>{b}</option>)}
+						</select>
+					</div>
+					<div class="field full">
+						<label for="c-name">Name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field">
+						<label for="c-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field full">
+						<label for="c-notes">Anything else? <span class="optional">(optional)</span></label>
+						<textarea id="c-notes" name="notes" rows="4" placeholder="Naps, allergies, what the children enjoy, anything that worried you on past trips"></textarea>
+					</div>
+				</div>
+				<button class="btn btn-coral btn-lg btn-block" type="submit">Send enquiry</button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{company.email && <>Write to <a href={`mailto:${company.email}`}>{company.email}</a> with the escape, the month, the number of adults and the children's ages.</>}
+					</noscript>
+				</p>
+			</form>
+
+			<aside class="contact-side">
+				<h2>Prefer to talk?</h2>
+				<p>
+					{company.phone && <>Call <a href={telHref(company.phone)}>{company.phone}</a></>}
+					{company.phone && company.email && " or email "}
+					{!company.phone && company.email && "Email "}
+					{company.email && <a href={`mailto:${company.email}`}>{company.email}</a>}.
+				</p>
+				{
+					(company.street || company.locality) && (
+						<p>
+							<a href={mapHref(company)} target="_blank" rel="noopener noreferrer">{[company.street, company.locality].filter(Boolean).join(", ")}</a>
+						</p>
+					)
+				}
+				{
+					office.length > 0 && (
+						<>
+							<h3>Office hours</h3>
+							<dl class="side-hours">
+								{office.map((h) => <><dt>{h.left}</dt><dd>{h.right}</dd></>)}
+							</dl>
+						</>
+					)
+				}
+				{company.enquiry_note && <p class="small">{company.enquiry_note}</p>}
+				<img src="/images/family-shore.webp" alt="A family walking along the edge of the sea on a bright day, seen from behind" width="768" height="200" loading="lazy" />
+			</aside>
+		</div>
+	</section>
+</Base>
+
+<script>
+	// Validate, then compose an enquiry email. Nothing is sent by the site itself; the company replies to the email.
+	document.querySelectorAll<HTMLFormElement>("[data-enquiry-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLSelectElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input[required], select[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? input.tagName === "SELECT"
+							? "Please choose an option."
+							: "Please fill this in."
+						: input.getAttribute("type") === "email"
+							? "Please enter a valid email address."
+							: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online enquiries are not available right now. Please call us.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const subject = `Family trip enquiry: ${get("escape")}`;
+			const lines = [
+				"Hello,",
+				"",
+				"I would like to ask about a family trip:",
+				`Escape: ${get("escape")}`,
+				`When: ${get("when")}`,
+				`Adults: ${get("adults")}`,
+				`Children: ${get("children")}`,
+				`Children's ages: ${get("ages")}`,
+				get("budget") ? `Budget before flights: ${get("budget")}` : "",
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				get("notes") ? `Notes: ${get("notes")}` : "",
+				"",
+				"I understand nothing is held or charged until you confirm it by email.",
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this enquiry ready to send. It is only sent when you send that email, and we reply to it. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

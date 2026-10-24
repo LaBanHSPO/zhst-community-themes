@@ -1,0 +1,148 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import EscapeCard from "../../components/EscapeCard.astro";
+import PlanBand from "../../components/PlanBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import {
+	agesLabel,
+	formatPrice,
+	getCompany,
+	getDestinations,
+	getEscapes,
+	lines,
+	nightsLabel,
+	paceLabel,
+	photoAlt,
+	photoSrc,
+	rows,
+	styleLabel,
+} from "../../lib/family";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: escape, cacheHint } = await getEmDashEntry("escapes", slug);
+if (!escape) return Astro.rewrite("/404");
+
+const [allResult, destResult, companyResult, settings] = await Promise.all([getEscapes(), getDestinations(), getCompany(), getSiteSettings()]);
+for (const h of [cacheHint, allResult.cacheHint, destResult.cacheHint, companyResult.cacheHint]) {
+	if (Astro.cache?.enabled) Astro.cache.set(h);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(escape, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = escape.data;
+const key = d.slug ?? d.id;
+const src = photoSrc(d.image, d.photo);
+const destName = destResult.entries.find((x) => x.data.key === d.destination)?.data.title ?? "";
+const itinerary = rows(d.itinerary);
+const includes = lines(d.includes);
+const notes = rows(d.family_notes);
+const related = allResult.entries
+	.filter((e) => e.data.id !== d.id && (e.data.style === d.style || e.data.destination === d.destination))
+	.slice(0, 3);
+const hasBody = Boolean(d.content && d.content.length > 0);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "escapes", id: d.id, slug }}
+	current="/escapes"
+>
+	<section class="detail-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/escapes">Escapes</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class:list={["detail-grid", { "is-text-only": !src }]}>
+				<div class="detail-copy">
+					<p class="eyebrow">{styleLabel(d.style)}{destName ? ` · ${destName}` : ""}</p>
+					<h1 class="display" {...escape.edit.title}>{d.title}</h1>
+					<p class="lede" {...escape.edit.summary}>{d.summary}</p>
+					<dl class="facts">
+						<div><dt>Where</dt><dd>{d.place}</dd></div>
+						<div><dt>Length</dt><dd>{nightsLabel(d.nights)}</dd></div>
+						<div><dt>Best ages</dt><dd>{agesLabel(d.ages)}</dd></div>
+						<div><dt>Pace</dt><dd>{paceLabel(d.pace)}</dd></div>
+						{d.price_from ? <div><dt>Price</dt><dd>From {formatPrice(d.price_from)} for a family of four (sample price, before flights)</dd></div> : null}
+					</dl>
+					<a class="btn btn-coral btn-lg" href={`/contact?escape=${encodeURIComponent(key)}`}>Plan this escape <Arrow /></a>
+				</div>
+				{src && <figure class="detail-photo"><img src={src} alt={photoAlt(d.image, d.photo)} width="640" height="460" /></figure>}
+			</div>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="wrap detail-cols">
+			<div class="prose">
+				{d.intro && <p class="prose-lead">{d.intro}</p>}
+				{hasBody ? <PortableText value={d.content} /> : null}
+				{
+					itinerary.length > 0 && (
+						<>
+							<h2>Day by day</h2>
+							<ol class="itinerary">
+								{itinerary.map((r) => <li><span class="it-day">{r.left}</span><span class="it-text">{r.right}</span></li>)}
+							</ol>
+						</>
+					)
+				}
+			</div>
+			<aside class="side-stack">
+				{
+					notes.length > 0 && (
+						<div class="side-box" aria-labelledby="notes-title">
+							<h2 id="notes-title">Family details</h2>
+							<dl class="notes">
+								{notes.map((n) => <><dt>{n.left}</dt><dd>{n.right}</dd></>)}
+							</dl>
+						</div>
+					)
+				}
+				{
+					includes.length > 0 && (
+						<div class="side-box" aria-labelledby="inc-title">
+							<h2 id="inc-title">What is included</h2>
+							<ul class="ticks">{includes.map((b) => <li>{b}</li>)}</ul>
+						</div>
+					)
+				}
+				<div class="side-box side-cta">
+					<h2>Dates</h2>
+					<p class="small">We do not list fixed dates. Tell us the month and the children's ages, and we check availability and write back.</p>
+					<a class="btn btn-teal" href={`/contact?escape=${encodeURIComponent(key)}`}>Ask about dates <Arrow /></a>
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	{
+		related.length > 0 && (
+			<section class="band band-sand" aria-labelledby="related-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Similar escapes</p>
+							<h2 id="related-title" class="display">You might also look at</h2>
+						</div>
+						<a class="link-arrow" href="/escapes">All escapes <Arrow /></a>
+					</div>
+					<ul class="card-grid card-grid-3">
+						{related.map((e) => <li><EscapeCard entry={e} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<PlanBand company={companyResult.company} escape={key} />
+</Base>

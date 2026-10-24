@@ -1,0 +1,45 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import PostCard from "../../components/PostCard.astro";
+import PlanBand from "../../components/PlanBand.astro";
+import { TOPICS, getCompany, getPosts } from "../../lib/family";
+
+const [postsResult, companyResult] = await Promise.all([getPosts(), getCompany()]);
+for (const r of [postsResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+// ?topic=planning|packing|with-kids narrows the list. Unknown values show everything.
+const topic = TOPICS.find((t) => t.slug === Astro.url.searchParams.get("topic"));
+const all = postsResult.entries;
+const list = topic ? all.filter((p) => p.data.topic === topic.slug) : all;
+const count = (slug: string) => all.filter((p) => p.data.topic === slug).length;
+---
+
+<Base title="Inspiration" description="Practical notes on planning, packing and travelling with children, written by the team that plans the trips.">
+	<PageHead
+		id="insp-title"
+		eyebrow="Inspiration"
+		title="Practical notes for travelling with children."
+		intro="Short pieces on flight days, packing, rooms and meals. Nothing here is a sales pitch. We wrote down what we tell families on the phone."
+	/>
+	<section class="list-section" aria-labelledby="insp-title">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter notes by topic">
+				<div class="filter-group">
+					<span class="filter-label">Topic</span>
+					<a href="/inspiration" aria-current={topic ? undefined : "true"}>All <span>{all.length}</span></a>
+					{TOPICS.map((t) => <a href={`/inspiration?topic=${t.slug}`} aria-current={topic?.slug === t.slug ? "true" : undefined}>{t.label} <span>{count(t.slug)}</span></a>)}
+				</div>
+			</nav>
+			<p class="result-line" role="status">
+				{list.length} of {all.length} notes{topic ? `: ${topic.label.toLowerCase()}` : ""}
+				{topic && <> <a href="/inspiration">Clear filter</a></>}
+			</p>
+			<ul class="card-grid">
+				{list.map((p) => <li><PostCard entry={p} /></li>)}
+			</ul>
+		</div>
+	</section>
+	<PlanBand company={companyResult.company} />
+</Base>

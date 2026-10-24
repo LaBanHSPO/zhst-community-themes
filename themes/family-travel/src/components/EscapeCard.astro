@@ -1,0 +1,22 @@
+---
+import { agesLabel, formatPrice, nightsLabel, photoAlt, photoSrc, styleLabel } from "../lib/family";
+import type { EscapeEntry } from "../lib/family";
+
+interface Props {
+	entry: EscapeEntry;
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<a class="escape-card" href={`/escapes/${d.slug ?? d.id}`}>
+	<span class="card-photo">
+		{src && <img src={src} alt={photoAlt(d.image, d.photo)} width="640" height="460" loading="lazy" />}
+		<span class="card-tag">{styleLabel(d.style)}</span>
+	</span>
+	<span class="card-meta">{nightsLabel(d.nights)} <span aria-hidden="true">&middot;</span> {agesLabel(d.ages)}</span>
+	<span class="card-title" {...entry.edit.title}>{d.title}</span>
+	<span class="card-summary">{d.summary}</span>
+	{d.price_from ? <span class="card-price">From {formatPrice(d.price_from)} for a family of four</span> : null}
+</a>

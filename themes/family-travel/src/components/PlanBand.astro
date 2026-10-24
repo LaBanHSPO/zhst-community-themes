@@ -1,0 +1,30 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref } from "../lib/family";
+import type { CompanyData } from "../lib/family";
+
+interface Props {
+	company: CompanyData;
+	escape?: string;
+}
+const { company, escape } = Astro.props;
+const href = escape ? `/contact?escape=${encodeURIComponent(escape)}` : "/contact";
+---
+
+<section class="plan-band" aria-labelledby="plan-title">
+	<div class="plan-card">
+		<img class="plan-photo" src="/images/beach-sunset.webp" alt="" width="1448" height="1086" loading="lazy" />
+		<div class="plan-inner">
+			<p class="eyebrow">Plan your trip</p>
+			<h2 id="plan-title" class="display">Tell us who is coming and when.</h2>
+			<p class="plan-text">Send the ages of the children and the month you would like to go. We write back within two working days with two or three escapes.</p>
+			<div class="plan-actions">
+				<a class="btn btn-coral" href={href}>Plan your trip <Arrow /></a>
+				<p class="plan-lines">
+					{company.phone && <a href={telHref(company.phone)}>{company.phone}</a>}
+					{company.email && <a href={`mailto:${company.email}`}>{company.email}</a>}
+				</p>
+			</div>
+		</div>
+	</div>
+</section>

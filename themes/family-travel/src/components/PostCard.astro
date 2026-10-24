@@ -1,0 +1,20 @@
+---
+import { photoAlt, photoSrc, topicLabel } from "../lib/family";
+import type { PostEntry } from "../lib/family";
+
+interface Props {
+	entry: PostEntry;
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<a class="post-card" href={`/inspiration/${d.slug ?? d.id}`}>
+	<span class="card-photo">
+		{src && <img src={src} alt={photoAlt(d.image, d.photo)} width="640" height="420" loading="lazy" />}
+	</span>
+	<span class="card-meta">{topicLabel(d.topic)} <span aria-hidden="true">&middot;</span> {d.reading_time} min read</span>
+	<span class="card-title" {...entry.edit.title}>{d.title}</span>
+	<span class="card-summary">{d.summary}</span>
+</a>
