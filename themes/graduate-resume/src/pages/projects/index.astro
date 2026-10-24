@@ -1,0 +1,49 @@
+---
+import Base from "../../layouts/Base.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import PageHead from "../../components/PageHead.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { KINDS, getProfile, getProjects } from "../../lib/site";
+
+const [projectsResult, profileResult] = await Promise.all([getProjects(), getProfile()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(projectsResult.cacheHint);
+	Astro.cache.set(profileResult.cacheHint);
+}
+const all = projectsResult.entries;
+// ?kind=course|personal|team filters the list.
+const wanted = Astro.url.searchParams.get("kind");
+const active = KINDS.find((k) => k.value === wanted);
+const projects = active ? all.filter((p) => p.data.kind === active.value) : all;
+const count = (v: string) => all.filter((p) => p.data.kind === v).length;
+---
+
+<Base
+	title="Projects"
+	description="Course, personal and team projects by Maya Linden, a fictional recent graduate: the problem, what was built and what was learned."
+	current="/projects"
+>
+	<PageHead
+		eyebrow="Projects"
+		title="Ideas into real things."
+		intro="Six projects from my degree and spare time. Each one says what the problem was, what I built and what I learned, including what went wrong."
+	/>
+	<section class="projects-page">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter projects by kind">
+				<a href="/projects" aria-current={active ? undefined : "true"}>All <span>{all.length}</span></a>
+				{KINDS.map((k) => <a href={`/projects?kind=${k.value}`} aria-current={active?.value === k.value ? "true" : undefined}>{k.label} <span>{count(k.value)}</span></a>)}
+			</nav>
+			{
+				projects.length > 0 ? (
+					<ul class="project-grid project-grid-wide">
+						{projects.map((p, i) => <li><ProjectCard project={p} eager={i < 3} showKind /></li>)}
+					</ul>
+				) : (
+					<p class="empty">No projects of this kind yet.</p>
+				)
+			}
+		</div>
+	</section>
+	<ContactBand profile={profileResult.profile} />
+</Base>

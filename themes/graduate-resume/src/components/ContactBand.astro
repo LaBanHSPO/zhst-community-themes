@@ -1,0 +1,26 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref } from "../lib/site";
+import type { ProfileData } from "../lib/site";
+
+interface Props {
+	profile: ProfileData;
+}
+const { profile } = Astro.props;
+---
+
+<section class="band-contact" aria-labelledby="band-title">
+	<div class="band-contact-inner">
+		<div>
+			<h2 id="band-title" class="band-title">Hiring, or have a project in mind?</h2>
+			<p class="band-text">Send a few sentences about the role or the work. I reply within three working days.</p>
+		</div>
+		<div class="band-actions">
+			<a class="btn btn-light" href="/contact"><span>Let's talk</span><Arrow /></a>
+			<p class="band-links">
+				{profile.email && <a href={`mailto:${profile.email}`}>{profile.email}</a>}
+				{profile.phone && <a href={telHref(profile.phone)}>{profile.phone}</a>}
+			</p>
+		</div>
+	</div>
+</section>

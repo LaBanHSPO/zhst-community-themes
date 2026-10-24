@@ -1,0 +1,120 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getProfile, getProjects, gallery, kindLabel, lines, photoAlt, photoSrc } from "../../lib/site";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: project, cacheHint } = await getEmDashEntry("projects", slug);
+if (!project) return Astro.rewrite("/404");
+
+const [allResult, profileResult, settings] = await Promise.all([getProjects(), getProfile(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(profileResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(project, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = project.data;
+const cover = photoSrc(d.image, d.photo);
+const built = lines(d.built);
+const tools = lines(d.tools);
+const shots = gallery(d.gallery);
+const hasBody = Boolean(d.content && d.content.length > 0);
+const others = allResult.entries.filter((p) => p.data.id !== d.id && p.data.kind === d.kind).concat(allResult.entries.filter((p) => p.data.id !== d.id && p.data.kind !== d.kind)).slice(0, 3);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "projects", id: d.id, slug }}
+	current="/projects"
+>
+	<header class="project-head">
+		<div class="wrap project-head-grid">
+			<div class="project-head-copy">
+				<nav class="crumbs" aria-label="Breadcrumb">
+					<a href="/projects">Projects</a>
+					<span aria-hidden="true">/</span>
+					<span aria-current="page">{d.title}</span>
+				</nav>
+				<h1 class="display display-xl" {...project.edit.title}>{d.title}</h1>
+				<p class="lede">{d.summary}</p>
+				<dl class="facts">
+					{d.kind && <div><dt>Kind</dt><dd><a href={`/projects?kind=${d.kind}`}>{kindLabel(d.kind)}</a></dd></div>}
+					{d.year && <div><dt>Year</dt><dd>{d.year}</dd></div>}
+					{d.role && <div><dt>My role</dt><dd>{d.role}</dd></div>}
+					{tools.length > 0 && <div><dt>Tools</dt><dd>{tools.join(", ")}</dd></div>}
+				</dl>
+			</div>
+			{cover && <img class="project-cover" src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="640" height="560" fetchpriority="high" />}
+		</div>
+	</header>
+
+	<section class="project-body">
+		<div class="wrap project-body-grid">
+			<div class="project-block">
+				<h2 class="block-title">The problem</h2>
+				<p>{d.problem}</p>
+			</div>
+			<div class="project-block">
+				<h2 class="block-title">What I built</h2>
+				<ul class="did-list">{built.map((a) => <li>{a}</li>)}</ul>
+			</div>
+			{
+				shots.length > 0 && (
+					<ol class="shots" aria-label="Project images">
+						{shots.map((g) => (
+							<li>
+								<figure>
+									<img src={g.src} alt={photoAlt(null, g.src, g.caption)} loading="lazy" />
+									{g.caption && <figcaption>{g.caption}</figcaption>}
+								</figure>
+							</li>
+						))}
+					</ol>
+				)
+			}
+			<div class="project-block">
+				<h2 class="block-title">What I learned</h2>
+				<p>{d.learned}</p>
+			</div>
+			{
+				hasBody && (
+					<div class="project-block">
+						<h2 class="block-title">Notes</h2>
+						<div class="prose"><PortableText value={d.content} /></div>
+					</div>
+				)
+			}
+		</div>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="projects-teaser projects-more" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="section-head-row">
+						<h2 id="more-title" class="display">More projects</h2>
+						<a class="text-link" href="/projects"><span>All projects</span><Arrow /></a>
+					</div>
+					<ul class="project-grid">
+						{others.map((p) => <li><ProjectCard project={p} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<ContactBand profile={profileResult.profile} />
+</Base>

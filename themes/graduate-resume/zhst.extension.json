@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "id": "graduate-resume",
+  "kind": "theme",
+  "name": "Graduate Resume",
+  "type": "bio",
+  "emdash": "1.2.0",
+  "entry": "themes/graduate-resume",
+  "capabilities": {
+    "pwa": false,
+    "publicItems": true,
+    "inquiry": true,
+    "booking": false,
+    "checkout": false,
+    "map": false,
+    "whatsapp": false
+  }
+}

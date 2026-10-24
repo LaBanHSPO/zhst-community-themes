@@ -1,0 +1,782 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Graduate Resume",
+  "description": "An early-career resume theme: a friendly hero with a portrait, featured projects with a kind filter, education, skills and short experience, a print-friendly resume on the About page and an email contact form, seeded with synthetic sample content.",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "Graduate Resume",
+  "tagline": "Early-career resume and projects"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Small label above the title (also used in the footer)",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro line",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "projects",
+   "label": "Projects",
+   "labelSingular": "Project",
+   "urlPattern": "/projects/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Project name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "One-line summary (shown on cards)",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "kind",
+     "label": "Kind: course, personal or team",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "year",
+     "label": "Year",
+     "type": "string"
+    },
+    {
+     "slug": "role",
+     "label": "My role",
+     "type": "string"
+    },
+    {
+     "slug": "tools",
+     "label": "Tools (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "problem",
+     "label": "The problem",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "built",
+     "label": "What I built (one item per line)",
+     "type": "text"
+    },
+    {
+     "slug": "learned",
+     "label": "What I learned",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "gallery",
+     "label": "More images (one per line: path | caption)",
+     "type": "text"
+    },
+    {
+     "slug": "featured",
+     "label": "Show on the homepage",
+     "type": "boolean"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Cover image (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled cover image path",
+     "type": "string"
+    },
+    {
+     "slug": "content",
+     "label": "Notes (optional)",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "roles",
+   "label": "Experience",
+   "labelSingular": "Role",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Role",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "company",
+     "label": "Organisation",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "period",
+     "label": "Dates shown",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "kind",
+     "label": "Internship, part-time or volunteering",
+     "type": "string"
+    },
+    {
+     "slug": "summary",
+     "label": "One or two sentences",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order (newest first)",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "skills",
+   "label": "Skill groups",
+   "labelSingular": "Skill group",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Group name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "blurb",
+     "label": "One sentence about this area",
+     "type": "text"
+    },
+    {
+     "slug": "items",
+     "label": "Skills and tools (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "credentials",
+   "label": "Education",
+   "labelSingular": "Education entry",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Degree or course",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "kind",
+     "label": "Education or Certificate",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "org",
+     "label": "School",
+     "type": "string"
+    },
+    {
+     "slug": "years",
+     "label": "Years",
+     "type": "string"
+    },
+    {
+     "slug": "note",
+     "label": "Short note (modules, grade, focus)",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "profile",
+   "label": "Contact details",
+   "labelSingular": "Contact details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Full name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "headline",
+     "label": "Headline",
+     "type": "string"
+    },
+    {
+     "slug": "location",
+     "label": "Based in",
+     "type": "string"
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Email for enquiries",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "availability",
+     "label": "What I am looking for (shown beside the form and on the home page)",
+     "type": "text"
+    },
+    {
+     "slug": "profile_url",
+     "label": "Professional profile URL",
+     "type": "string"
+    },
+    {
+     "slug": "notes_url",
+     "label": "Portfolio or code URL",
+     "type": "string"
+    },
+    {
+     "slug": "summary",
+     "label": "Summary line for the printable resume",
+     "type": "text"
+    },
+    {
+     "slug": "contact_note",
+     "label": "Note shown above the form",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Home",
+     "url": "/"
+    },
+    {
+     "type": "custom",
+     "label": "Projects",
+     "url": "/projects"
+    },
+    {
+     "type": "custom",
+     "label": "About",
+     "url": "/about"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "Hello, I'm Maya.",
+     "eyebrow": "About",
+     "intro": "I just finished a degree in human-computer interaction. I like small problems that are easy to explain and hard to get right.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I grew up in a family that ran a small print shop, so I learned early that a good sign or form saves people time. That is what drew me to interaction design. At university I moved from sketching on paper to building working prototypes, and I enjoy both.",
+         "_key": "s1"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k2",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What I have done",
+         "_key": "s2"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Over four years I worked on three course projects, two team projects and a handful of personal ones. I spent a summer as a UX intern in a small studio, and I work two evenings a week at the university library help desk.",
+         "_key": "s3"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k4",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How I work",
+         "_key": "s4"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k5",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I start by asking people what they are trying to do. Then I make something rough, show it, and change it. I write things down so the team can follow what I decided and why.",
+         "_key": "s5"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k6",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What I am looking for",
+         "_key": "s6"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k7",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A junior UX, product design or front-end role in a small team. I would like a mentor, real users to talk to, and the chance to ship something within my first few months.",
+         "_key": "s7"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k8",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "About the photo",
+         "_key": "s8"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k9",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Maya Linden is a fictional person and the portrait on this site is AI-generated for the theme. If you use the theme for your own site, replace the photo, name and every detail in the admin.",
+         "_key": "s9"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "colophon",
+    "slug": "colophon",
+    "status": "published",
+    "data": {
+     "title": "About this site",
+     "eyebrow": "Colophon",
+     "intro": "How the sample site is built and what is made up.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k10",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "This is a sample site for an early-career resume. The name, university, employers and projects are fictional. Phone numbers use the 555-01xx range and email addresses use the .example domain.",
+         "_key": "s10"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k11",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The text is set in Newsreader and Inter. The handwritten notes use Zeyada. All fonts are free and self-hosted. The portrait and project images are AI-generated for the theme.",
+         "_key": "s11"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "projects": [
+   {
+    "id": "leafly",
+    "slug": "leafly",
+    "status": "published",
+    "data": {
+     "title": "Leafly",
+     "summary": "A minimal plant care app for healthier homes.",
+     "kind": "personal",
+     "year": "2026",
+     "role": "Designer and developer",
+     "tools": "Figma\nReact Native\nSQLite",
+     "problem": "My flatmates and I kept losing houseplants. Every care app I tried asked for a long setup and then sent reminders for plants we no longer owned. I wanted something that does one job: tell you which plant needs water today.",
+     "built": "Designed a home screen with three prompts only: water, light and thrive.\nBuilt the app in React Native with plants stored on the phone, no account needed.\nTested a paper version with four flatmates before writing any code.\nAdded a weekly view after two testers asked what they had missed.",
+     "learned": "Cutting features was harder than adding them. My first design had a plant encyclopedia and nobody opened it. I also learned how to ship a small app to a real device and fix the bugs people actually hit.",
+     "gallery": "/images/leafly-phone.webp | The home screen with the three daily prompts\n/images/leafly-plant.webp | A test plant used in the early photo diary",
+     "featured": true,
+     "position": 10,
+     "photo": "/images/leafly-card.webp"
+    }
+   },
+   {
+    "id": "roam",
+    "slug": "roam",
+    "status": "published",
+    "data": {
+     "title": "Roam",
+     "summary": "A travel journal for mindful explorers.",
+     "kind": "course",
+     "year": "2025",
+     "role": "Interaction design, solo project",
+     "tools": "Figma\nAstro\nCSS",
+     "problem": "The brief for my interaction design studio was to redesign a travel website for people who plan slowly. Most travel sites push deals and countdown timers, which is the opposite of what the people I interviewed wanted.",
+     "built": "Interviewed five friends and family members about how they plan and remember trips.\nDesigned a journal-style layout where photos come first and booking links come last.\nBuilt a three-page prototype in Astro and presented it to the class.",
+     "learned": "Interview notes are only useful if you write them up the same day. I also learned to ask people to show me their last trip photos instead of describing them.",
+     "gallery": "/images/roam-screen.webp | The landing screen of the prototype",
+     "featured": true,
+     "position": 20,
+     "photo": "/images/roam-card.webp"
+    }
+   },
+   {
+    "id": "nextstep",
+    "slug": "nextstep",
+    "status": "published",
+    "data": {
+     "title": "NextStep",
+     "summary": "A productivity toolkit for students.",
+     "kind": "team",
+     "year": "2026",
+     "role": "Researcher and front-end developer, team of four",
+     "tools": "Figma\nTypeScript\nNotion (for team planning)",
+     "problem": "Four of us in a final-year module were each using a different planner, and deadlines kept slipping through. We set out to build one shared place for a student to plan a term: a week view, a reading list and a short reflection at the end of each week.",
+     "built": "Ran a survey of 31 classmates and summarised it for the team in one page.\nBuilt the week view and the reflection form in TypeScript.\nWrote the user test script and ran three of the five test sessions.\nPresented the project to the module lead with the rest of the team.",
+     "learned": "Working in a team of four taught me to agree on small tasks and write them down. We had two weeks where we all worked on the same screen and overwrote each other's files, and after that we split the work by page.",
+     "gallery": "/images/nextstep-notebook.webp | The paper planner we started from\n/images/nextstep-mug.webp | The team's weekly reflection prompt",
+     "featured": true,
+     "position": 30,
+     "photo": "/images/nextstep-card.webp"
+    }
+   },
+   {
+    "id": "pocket-syllabus",
+    "slug": "pocket-syllabus",
+    "status": "published",
+    "data": {
+     "title": "Pocket Syllabus",
+     "summary": "A one-page view of every module, deadline and reading for the term.",
+     "kind": "course",
+     "year": "2025",
+     "role": "Designer, solo project",
+     "tools": "Figma\nPaper prototyping",
+     "problem": "Module handbooks are long PDFs. In a short survey of my course group, 9 of 12 people said they only opened theirs twice a term. The project asked: what is the smallest useful version of a syllabus?",
+     "built": "Collected the handbooks for six modules and listed every deadline in one spreadsheet.\nSketched four layouts on paper and tested them with eight classmates.\nMade a clickable Figma prototype of the layout most people picked.",
+     "learned": "People trust a page they can print. The paper version was used more than the screen version, which I did not expect.",
+     "gallery": "/images/desk-notebook.webp | A notebook page from the paper testing round",
+     "featured": false,
+     "position": 40,
+     "photo": "/images/desk-notebook.webp"
+    }
+   },
+   {
+    "id": "quiet-hours",
+    "slug": "quiet-hours",
+    "status": "published",
+    "data": {
+     "title": "Quiet Hours",
+     "summary": "A small timer that blocks distractions during a study session.",
+     "kind": "personal",
+     "year": "2025",
+     "role": "Designer and developer",
+     "tools": "JavaScript\nCSS\nA browser extension manifest",
+     "problem": "I study better in 50-minute blocks, but I kept opening other tabs. I wanted a timer that sits quietly in the browser and asks before it lets me leave.",
+     "built": "Built a browser extension with a timer, a break reminder and a short list of sites to pause.\nWrote a one-page guide for the three friends who tried it.\nFixed a bug where the timer kept running after the laptop went to sleep.",
+     "learned": "I learned how browser extensions are packaged and why small bugs, like the sleep one, matter more than new features.",
+     "gallery": "/images/nextstep-mug.webp | The mug on my desk that gave the project its name",
+     "featured": false,
+     "position": 50,
+     "photo": "/images/quiet-hours-card.webp"
+    }
+   },
+   {
+    "id": "greenway-walks",
+    "slug": "greenway-walks",
+    "status": "published",
+    "data": {
+     "title": "Greenway Walks",
+     "summary": "A map of short, step-free walks around campus.",
+     "kind": "team",
+     "year": "2025",
+     "role": "Researcher, team of three",
+     "tools": "Figma\nOpenStreetMap data\nGoogle Sheets",
+     "problem": "A classmate who uses a wheelchair told us that campus maps show buildings but not which paths are step-free or well lit. Our group set out to map ten short walks with that information.",
+     "built": "Walked and timed ten routes with our classmate and noted gradients, surfaces and lighting.\nDesigned a printable map and a phone view with the same information.\nShared the map with the student union for feedback.",
+     "learned": "Asking the person who needs the thing is faster than guessing. We changed three routes after one walk.",
+     "gallery": "/images/desk-leaves.webp | The courtyard route in late afternoon",
+     "featured": false,
+     "position": 60,
+     "photo": "/images/desk-leaves.webp"
+    }
+   }
+  ],
+  "roles": [
+   {
+    "id": "library-assistant",
+    "slug": "library-assistant",
+    "status": "published",
+    "data": {
+     "title": "Library assistant",
+     "company": "Harbourside University Library",
+     "period": "Sept 2025 – Present",
+     "kind": "Part-time",
+     "summary": "Two evenings a week at the help desk. I answer questions about borrowing, show people how to find articles and help fix printer jams.",
+     "position": 10
+    }
+   },
+   {
+    "id": "ux-intern",
+    "slug": "ux-intern",
+    "status": "published",
+    "data": {
+     "title": "UX intern",
+     "company": "Linden & Rowe Studio",
+     "period": "Jun – Aug 2025",
+     "kind": "Internship",
+     "summary": "Eight weeks in a small design studio. I helped with user interviews for a local charity website, tidied a component library and wrote up test findings.",
+     "position": 20
+    }
+   },
+   {
+    "id": "study-buddy-mentor",
+    "slug": "study-buddy-mentor",
+    "status": "published",
+    "data": {
+     "title": "Peer mentor",
+     "company": "Harbourside Computing Society",
+     "period": "2024 – 2025",
+     "kind": "Volunteering",
+     "summary": "Ran a weekly drop-in for first-year students who were stuck on their first programming assignments.",
+     "position": 30
+    }
+   },
+   {
+    "id": "cafe-shifts",
+    "slug": "cafe-shifts",
+    "status": "published",
+    "data": {
+     "title": "Weekend barista",
+     "company": "Pier Street Coffee",
+     "period": "2023 – 2024",
+     "kind": "Part-time",
+     "summary": "Weekend shifts alongside my first year. I learned to stay calm in a queue and to remember regular orders.",
+     "position": 40
+    }
+   }
+  ],
+  "skills": [
+   {
+    "id": "design",
+    "slug": "design",
+    "status": "published",
+    "data": {
+     "title": "Design",
+     "blurb": "Finding out what people need and showing it clearly.",
+     "items": "User interviews\nPaper prototyping\nWireframes in Figma\nUsability testing",
+     "position": 10
+    }
+   },
+   {
+    "id": "build",
+    "slug": "build",
+    "status": "published",
+    "data": {
+     "title": "Build",
+     "blurb": "Small web projects that I have actually shipped.",
+     "items": "HTML and CSS\nJavaScript and TypeScript\nReact\nAstro",
+     "position": 20
+    }
+   },
+   {
+    "id": "work",
+    "slug": "work",
+    "status": "published",
+    "data": {
+     "title": "Working with others",
+     "blurb": "Learned in group projects and at the library desk.",
+     "items": "Writing short project notes\nPresenting to a class\nGiving and taking feedback\nPlanning a week",
+     "position": 30
+    }
+   }
+  ],
+  "credentials": [
+   {
+    "id": "bsc-hci",
+    "slug": "bsc-hci",
+    "status": "published",
+    "data": {
+     "title": "BSc Human-Computer Interaction",
+     "kind": "Education",
+     "org": "Harbourside University (fictional)",
+     "years": "2022 – 2026",
+     "note": "Final-year focus: interaction design studio and a team software project. Expected grade: 2:1.",
+     "position": 10
+    }
+   },
+   {
+    "id": "ux-short-course",
+    "slug": "ux-short-course",
+    "status": "published",
+    "data": {
+     "title": "Introduction to Accessible Design (short course)",
+     "kind": "Certificate",
+     "org": "Open Learning Collective (fictional)",
+     "years": "2025",
+     "note": "Six weeks, evenings. Colour contrast, keyboard use and writing alt text.",
+     "position": 20
+    }
+   }
+  ],
+  "profile": [
+   {
+    "id": "maya",
+    "slug": "maya",
+    "status": "published",
+    "data": {
+     "title": "Maya Linden",
+     "headline": "Recent graduate in human-computer interaction",
+     "location": "Harbourside, and happy to relocate",
+     "phone": "(555) 010-0173",
+     "email": "maya@mayalinden.example",
+     "availability": "I am looking for a junior UX, product design or front-end role, ideally in a small team where I can learn from people with more experience. I can start in September 2026. I am also open to short projects.",
+     "profile_url": "https://profiles.example/maya-linden",
+     "notes_url": "https://code.example/maya-linden",
+     "summary": "Recent BSc graduate in Human-Computer Interaction. Four course and team projects, one internship and two years of part-time work. Looking for a junior UX or front-end role.",
+     "contact_note": "Tell me a little about the role, the team or the project. A few sentences are enough. I reply within three working days."
+    }
+   }
+  ]
+ }
+}

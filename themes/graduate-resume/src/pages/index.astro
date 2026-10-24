@@ -1,0 +1,152 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import ContactBand from "../components/ContactBand.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { getCredentials, getProfile, getProjects, getRoles, getSkills, lines } from "../lib/site";
+
+const [rolesResult, skillsResult, projectsResult, credentialsResult, profileResult] = await Promise.all([
+	getRoles(),
+	getSkills(),
+	getProjects(),
+	getCredentials(),
+	getProfile(),
+]);
+if (Astro.cache?.enabled) {
+	for (const r of [rolesResult, skillsResult, projectsResult, credentialsResult, profileResult]) Astro.cache.set(r.cacheHint);
+}
+const roles = rolesResult.entries;
+const skills = skillsResult.entries;
+const allProjects = projectsResult.entries;
+const featured = allProjects.filter((p) => p.data.featured);
+const projects = (featured.length > 0 ? featured : allProjects).slice(0, 3);
+const credentials = credentialsResult.entries;
+const { profile } = profileResult;
+---
+
+<Base
+	title="Ready for what comes next"
+	description="Maya Linden is a fictional recent graduate in human-computer interaction. Featured projects, education, skills, part-time and internship experience, and an email contact form."
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<div class="hero-art">
+			<img
+				class="hero-photo"
+				src="/images/hero-graduate.webp"
+				alt="Maya Linden, a smiling young woman with long dark hair in a dark sweater, holding a laptop, with a green leaf shape behind her"
+				width="716"
+				height="634"
+				fetchpriority="high"
+			/>
+			<p class="hand-note hand-note-left" aria-hidden="true"><span class="note-text">Curious<br />Creative<br />Committed</span><span class="note-stroke"></span></p>
+			<p class="hand-note hand-note-right" aria-hidden="true"><span class="note-text">Ideas<br />today<br />A kinder<br />tomorrow</span><span class="note-stroke"></span></p>
+		</div>
+		<div class="hero-copy">
+			<p class="hero-eyebrow">A brighter tomorrow, in progress</p>
+			<h1 id="hero-title" class="hero-title">Ready for what <br />comes <span class="underlined">next.<svg class="brush" viewBox="0 0 240 18" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M3 12 C 50 4, 120 6, 236 7 C 150 9, 80 11, 14 15" fill="currentColor" /></svg></span></h1>
+			<p class="hero-sub">
+				Recent graduate, lifelong learner, and problem-solver<br class="desk" /> building a more thoughtful, human-centered future<br class="desk" /> through design and technology.
+			</p>
+			<a class="btn btn-pill" href="/projects"><span>View my projects</span><Arrow /></a>
+		</div>
+	</section>
+
+	{
+		projects.length > 0 && (
+			<section class="projects-teaser" aria-labelledby="projects-title">
+				<div class="wrap">
+					<p class="eyebrow">Featured projects</p>
+					<div class="section-head-row">
+						<h2 id="projects-title" class="display">Ideas into real things.</h2>
+						<a class="text-link" href="/projects"><span>View all projects</span><Arrow /></a>
+					</div>
+					<ul class="project-grid">
+						{projects.map((p, i) => <li><ProjectCard project={p} eager={i < 3} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="study" aria-labelledby="study-title">
+		<div class="wrap study-grid">
+			<div>
+				<p class="eyebrow">Education</p>
+				<h2 id="study-title" class="display">What I studied.</h2>
+				<ul class="edu-list">
+					{
+						credentials.map((c) => (
+							<li class="edu">
+								<p class="edu-years">{c.data.years}</p>
+								<h3 class="edu-title" {...c.edit.title}>{c.data.title}</h3>
+								<p class="edu-org">{c.data.org}</p>
+								{c.data.note && <p class="edu-note">{c.data.note}</p>}
+							</li>
+						))
+					}
+				</ul>
+			</div>
+			<div>
+				<p class="eyebrow">Skills and tools</p>
+				<h2 class="display">What I use.</h2>
+				<ul class="skill-list">
+					{
+						skills.map((s) => (
+							<li class="skill-group">
+								<h3 class="skill-name" {...s.edit.title}>{s.data.title}</h3>
+								{s.data.blurb && <p class="skill-blurb">{s.data.blurb}</p>}
+								<ul class="chips">
+									{lines(s.data.items).map((item) => <li>{item}</li>)}
+								</ul>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience" aria-labelledby="exp-title">
+		<div class="wrap">
+			<p class="eyebrow">Experience so far</p>
+			<h2 id="exp-title" class="display">Internships, shifts and volunteering.</h2>
+			<ol class="exp-list">
+				{
+					roles.map((r) => (
+						<li class="exp-item">
+							<p class="exp-period">{r.data.period}</p>
+							<div>
+								<h3 class="exp-title" {...r.edit.title}>
+									{r.data.title}, <span>{r.data.company}</span>
+								</h3>
+								{r.data.kind && <p class="exp-kind">{r.data.kind}</p>}
+								<p class="exp-text">{r.data.summary}</p>
+							</div>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+	</section>
+
+	{
+		profile.availability && (
+			<section class="looking" aria-labelledby="look-title">
+				<div class="wrap looking-inner">
+					<div>
+						<p class="eyebrow">What I am looking for</p>
+						<h2 id="look-title" class="display">A first role where I can keep learning.</h2>
+					</div>
+					<div>
+						<p class="looking-text">{profile.availability}</p>
+						<p class="looking-links">
+							<a class="text-link" href="/about#resume"><span>Read my resume</span><Arrow /></a>
+						</p>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<ContactBand profile={profile} />
+</Base>
