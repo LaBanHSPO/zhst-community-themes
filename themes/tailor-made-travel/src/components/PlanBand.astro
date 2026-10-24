@@ -1,0 +1,30 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref } from "../lib/travel";
+import type { CompanyData } from "../lib/travel";
+
+interface Props {
+	company: CompanyData;
+	journey?: string;
+}
+const { company, journey } = Astro.props;
+const href = journey ? `/contact?journey=${encodeURIComponent(journey)}` : "/contact";
+---
+
+<section class="plan-band" aria-labelledby="plan-title">
+	<div class="plan-inner">
+		<div class="plan-copy">
+			<p class="eyebrow eyebrow-light">Start a plan</p>
+			<h2 id="plan-title" class="display">Tell us where you want to be, and when.</h2>
+			<p class="plan-text">Send a country, a month and who is coming. A designer writes back within two working days with questions, not a sales pitch.</p>
+			<div class="plan-actions">
+				<a class="btn btn-light" href={href}>Plan your journey <Arrow /></a>
+				<p class="plan-lines">
+					{company.phone && <a href={telHref(company.phone)}>{company.phone}</a>}
+					{company.email && <a href={`mailto:${company.email}`}>{company.email}</a>}
+				</p>
+			</div>
+		</div>
+		<img class="plan-photo" src="/images/postcards.webp" alt="Three printed travel postcards leaning against a stone ledge: a white-domed village, an overwater bungalow lagoon and a mountain over savannah" width="870" height="530" loading="lazy" />
+	</div>
+</section>

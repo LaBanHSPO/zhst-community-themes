@@ -1,0 +1,64 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import PlanBand from "../components/PlanBand.astro";
+import { REGIONS, countrySlug, daysLabel, getCompany, getDestinations, getJourneys, photoSrc } from "../lib/travel";
+
+const [destResult, journeysResult, companyResult] = await Promise.all([getDestinations(), getJourneys(), getCompany()]);
+for (const r of [destResult, journeysResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const journeysIn = (country: string) => journeysResult.journeys.filter((j) => countrySlug(j.entry.data.country) === countrySlug(country));
+const groups = REGIONS.map((r) => ({ region: r, items: destResult.entries.filter((e) => e.data.region === r.slug) })).filter((g) => g.items.length > 0);
+const total = journeysResult.journeys.length;
+---
+
+<Base title="Destinations" description="Five countries across Europe, Asia, Africa and the South Pacific. See the itineraries in each and the months we like best.">
+	<PageHead
+		id="dest-title"
+		eyebrow="Destinations"
+		title="Five countries we know well."
+		intro={`We plan trips where we have been and where we trust the people on the ground. ${total} sample itineraries so far, and we write new ones on request.`}
+	/>
+	<section class="list-section" aria-labelledby="dest-title">
+		<div class="wrap">
+			{
+				groups.map((g) => (
+					<div class="dest-group">
+						<div class="dest-group-head">
+							<h2 class="display">{g.region.label}</h2>
+							<a class="link-arrow" href={`/journeys?region=${g.region.slug}`}>All {g.region.label} itineraries <Arrow /></a>
+						</div>
+						<ul class="dest-list">
+							{
+								g.items.map((e) => {
+									const d = e.data;
+									const list = journeysIn(d.title);
+									const src = photoSrc(d.image, d.photo);
+									return (
+										<li class="dest-row">
+											{src && <img class="dest-photo" src={src} alt="" width="560" height="420" loading="lazy" />}
+											<div class="dest-copy">
+												<h3 class="dest-name" {...e.edit.title}>{d.title}</h3>
+												<p class="dest-intro">{d.intro}</p>
+												{d.season && <p class="dest-season"><span>Best months</span> {d.season}</p>}
+												<ul class="dest-trips">
+													{list.map((j) => <li><a href={`/journeys/${j.entry.data.slug ?? j.entry.data.id}`}>{j.entry.data.title}</a> <span>{daysLabel(j.entry.data.days)}</span></li>)}
+												</ul>
+												<a class="link-arrow" href={`/journeys?country=${countrySlug(d.title)}`}>
+													{list.length} {list.length === 1 ? "itinerary" : "itineraries"} in {d.title} <Arrow />
+												</a>
+											</div>
+										</li>
+									);
+								})
+							}
+						</ul>
+					</div>
+				))
+			}
+		</div>
+	</section>
+	<PlanBand company={companyResult.company} />
+</Base>

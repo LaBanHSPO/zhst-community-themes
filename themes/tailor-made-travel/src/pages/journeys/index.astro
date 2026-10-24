@@ -1,0 +1,88 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import JourneyCard from "../../components/JourneyCard.astro";
+import PlanBand from "../../components/PlanBand.astro";
+import { REGIONS, THEMES, countrySlug, getCompany, getJourneys } from "../../lib/travel";
+
+const [journeysResult, companyResult] = await Promise.all([getJourneys(), getCompany()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(journeysResult.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+}
+// ?theme=food|culture|nature|ocean|wellbeing, ?region=europe|asia|africa|pacific and ?country=<country-slug>
+// narrow the list and combine. Unknown values show everything.
+const q = Astro.url.searchParams;
+const theme = THEMES.find((t) => t.slug === q.get("theme"));
+const region = REGIONS.find((r) => r.slug === q.get("region"));
+const all = journeysResult.journeys;
+const countries = [...new Map(all.map((j) => [countrySlug(j.entry.data.country), j.entry.data.country])).entries()];
+const country = countries.find(([slug]) => slug === q.get("country"));
+const list = all.filter(
+	(j) =>
+		(!theme || j.themes.includes(theme.slug)) &&
+		(!region || j.entry.data.region === region.slug) &&
+		(!country || countrySlug(j.entry.data.country) === country[0]),
+);
+const href = (t?: string, r?: string, c?: string) => {
+	const p = new URLSearchParams();
+	if (t) p.set("theme", t);
+	if (r) p.set("region", r);
+	if (c) p.set("country", c);
+	const s = p.toString();
+	return s ? `/journeys?${s}` : "/journeys";
+};
+const themeCount = (slug: string) => all.filter((j) => j.themes.includes(slug)).length;
+const regionCount = (slug: string) => all.filter((j) => j.entry.data.region === slug).length;
+const heading = [theme?.label, region?.label, country?.[1]].filter(Boolean).join(", ");
+---
+
+<Base title="Journeys" description="Sample itineraries in Japan, Italy, Greece, Morocco and French Polynesia. Filter by theme or region, then ask us to adapt one.">
+	<PageHead
+		id="journeys-title"
+		eyebrow="Journeys"
+		title="Itineraries to start from."
+		intro="Each one is a worked example, with days, places and a from price. We change it to suit you, or start from nothing."
+	/>
+	<section class="list-section" aria-labelledby="journeys-title">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter itineraries">
+				<div class="filter-group">
+					<span class="filter-label">Theme</span>
+					<a href={href(undefined, region?.slug, country?.[0])} aria-current={theme ? undefined : "true"}>All</a>
+					{THEMES.map((t) => <a href={href(t.slug, region?.slug, country?.[0])} aria-current={theme?.slug === t.slug ? "true" : undefined}>{t.label} <span>{themeCount(t.slug)}</span></a>)}
+				</div>
+				<div class="filter-group">
+					<span class="filter-label">Region</span>
+					<a href={href(theme?.slug, undefined, country?.[0])} aria-current={region ? undefined : "true"}>All</a>
+					{REGIONS.map((r) => <a href={href(theme?.slug, r.slug, country?.[0])} aria-current={region?.slug === r.slug ? "true" : undefined}>{r.label} <span>{regionCount(r.slug)}</span></a>)}
+				</div>
+				{
+					country && (
+						<div class="filter-group">
+							<span class="filter-label">Country</span>
+							<a href={href(theme?.slug, region?.slug)}>All</a>
+							<a href={href(theme?.slug, region?.slug, country[0])} aria-current="true">{country[1]}</a>
+						</div>
+					)
+				}
+			</nav>
+
+			<p class="result-line" role="status">
+				{list.length} of {all.length} itineraries{heading ? `: ${heading}` : ""}
+				{(theme || region || country) && <> <a href="/journeys">Clear filters</a></>}
+			</p>
+
+			{
+				list.length === 0 ? (
+					<p class="empty-note">Nothing matches that combination yet. <a href="/journeys">Show all itineraries</a> or <a href="/contact">tell us what you are after</a>.</p>
+				) : (
+					<ul class="jcard-grid jcard-grid-list">
+						{list.map((j) => <li><JourneyCard row={j} /></li>)}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+	<PlanBand company={companyResult.company} />
+</Base>

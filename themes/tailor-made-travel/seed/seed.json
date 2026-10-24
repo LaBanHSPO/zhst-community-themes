@@ -1,0 +1,2011 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "TailorMade Travel",
+  "description": "A travel designer theme with a full-bleed Mediterranean hero, itineraries filtered by theme and region, destinations, experiences, inspiration posts, an about page and an enquiry form, seeded with synthetic sample content.",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "TailorMade",
+  "tagline": "Travel"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Small label above the title (also used in the footer)",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "journeys",
+   "label": "Journeys",
+   "labelSingular": "Journey",
+   "urlPattern": "/journeys/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Itinerary name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "One-line description",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "country",
+     "label": "Country (matches a destination)",
+     "type": "string",
+     "required": true,
+     "indexed": true
+    },
+    {
+     "slug": "region",
+     "label": "Region",
+     "type": "select",
+     "required": true,
+     "defaultValue": "europe",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "europe",
+       "asia",
+       "africa",
+       "pacific"
+      ]
+     }
+    },
+    {
+     "slug": "themes",
+     "label": "Theme keys, comma separated (food, culture, nature, ocean, wellbeing)",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "tags",
+     "label": "Words shown on the card, one per line (e.g. Culture)",
+     "type": "text"
+    },
+    {
+     "slug": "days",
+     "label": "Days",
+     "type": "integer",
+     "required": true
+    },
+    {
+     "slug": "season",
+     "label": "Best months",
+     "type": "string"
+    },
+    {
+     "slug": "price_from",
+     "label": "From price per person, whole dollars (placeholder)",
+     "type": "integer"
+    },
+    {
+     "slug": "featured",
+     "label": "Show on the homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph (detail page)",
+     "type": "text"
+    },
+    {
+     "slug": "itinerary",
+     "label": "Day by day (one per line, as Day|What happens)",
+     "type": "text"
+    },
+    {
+     "slug": "includes",
+     "label": "What is included (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Itinerary page content",
+     "type": "portableText",
+     "searchable": true
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "destinations",
+   "label": "Destinations",
+   "labelSingular": "Destination",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Country",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "region",
+     "label": "Region",
+     "type": "select",
+     "required": true,
+     "defaultValue": "europe",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "europe",
+       "asia",
+       "africa",
+       "pacific"
+      ]
+     }
+    },
+    {
+     "slug": "season",
+     "label": "Best months",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Short description",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "experiences",
+   "label": "Experiences",
+   "labelSingular": "Experience",
+   "urlPattern": "/experiences",
+   "supports": [
+    "drafts",
+    "revisions",
+    "search"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "theme",
+     "label": "Theme key (matches the itineraries)",
+     "type": "select",
+     "required": true,
+     "defaultValue": "food",
+     "indexed": true,
+     "validation": {
+      "options": [
+       "food",
+       "culture",
+       "nature",
+       "ocean",
+       "wellbeing"
+      ]
+     }
+    },
+    {
+     "slug": "summary",
+     "label": "Short description",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "ideas",
+     "label": "Examples, one per line",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "inspiration",
+   "label": "Inspiration",
+   "labelSingular": "Inspiration post",
+   "urlPattern": "/inspiration/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "excerpt",
+     "label": "Short summary",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "category",
+     "label": "Kind of post (e.g. Planning)",
+     "type": "string"
+    },
+    {
+     "slug": "published",
+     "label": "Date shown, YYYY-MM-DD",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "minutes",
+     "label": "Minutes to read",
+     "type": "integer"
+    },
+    {
+     "slug": "content",
+     "label": "Post",
+     "type": "portableText",
+     "searchable": true
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "steps",
+   "label": "Planning steps",
+   "labelSingular": "Step",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Step",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "What happens",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "team",
+   "label": "Team",
+   "labelSingular": "Team member",
+   "supports": [
+    "drafts",
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "role",
+     "label": "Role",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "bio",
+     "label": "Two sentences about them",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "company",
+   "label": "Company details",
+   "labelSingular": "Company details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Company name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "street",
+     "label": "Street address",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "locality",
+     "label": "Town, state and ZIP",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "country",
+     "label": "Country",
+     "type": "string"
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Enquiry email",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "office",
+     "label": "Office hours (one per line, as Day|Hours)",
+     "type": "text"
+    },
+    {
+     "slug": "enquiry_note",
+     "label": "Note shown beside the enquiry form",
+     "type": "text"
+    },
+    {
+     "slug": "included",
+     "label": "Usually included (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "not_included",
+     "label": "Not included (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "licence_note",
+     "label": "Licences, bonding and insurance (owner to fill in)",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Destinations",
+     "url": "/destinations"
+    },
+    {
+     "type": "custom",
+     "label": "Experiences",
+     "url": "/experiences"
+    },
+    {
+     "type": "custom",
+     "label": "About",
+     "url": "/about"
+    },
+    {
+     "type": "custom",
+     "label": "Inspiration",
+     "url": "/inspiration"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "A small studio that plans trips by hand.",
+     "eyebrow": "About",
+     "intro": "TailorMade Travel is five people who plan trips for individuals, couples and families. This page says who we are and how we work.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k162",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We began with one designer planning holidays for friends. Word spread and a few more people joined. Today there are five of us and we plan around forty trips a year. Each one has a named designer who sees it through.",
+         "_key": "k162s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k163",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How we work",
+         "_key": "k163s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k164",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We do not sell fixed tours. Every itinerary starts with a call, then a written draft, then changes until it fits. We book hotels, drivers and guides ourselves and check each plan against the real timetable.",
+         "_key": "k164s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k165",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You pay for the trip you agree. We do not take commission from hotels in a way that changes what we recommend, and we say so when we have a relationship with a place.",
+         "_key": "k165s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k166",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we do not do",
+         "_key": "k166s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k167",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We do not plan cruises, big group tours or trips for more than ten people. We do not offer last-minute deals. If we cannot do something well, we say so and suggest someone else.",
+         "_key": "k167s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "booking-terms",
+    "slug": "booking-terms",
+    "status": "published",
+    "data": {
+     "title": "Booking terms (sample text)",
+     "eyebrow": "Booking terms",
+     "intro": "Sample wording only. Replace it with your own deposit, payment and cancellation terms before you publish.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k168",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "This page is placeholder text so the site has a terms page. It is not a contract and no real company stands behind it.",
+         "_key": "k168s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k169",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Holding a plan",
+         "_key": "k169s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k170",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A plan is held once you confirm the written itinerary. Sample deposit: 25 percent of the trip price. Sample balance due: 60 days before travel.",
+         "_key": "k170s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k171",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Changes and cancellations",
+         "_key": "k171s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k172",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Sample wording: changes made more than 60 days before travel are free of our fee. Cancellations are refunded according to the supplier terms listed in your itinerary.",
+         "_key": "k172s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k173",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Insurance",
+         "_key": "k173s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k174",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Sample wording: we ask every traveller to hold travel and medical insurance and to show it to us before departure.",
+         "_key": "k174s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "journeys": [
+   {
+    "id": "tradition-and-tomorrow",
+    "slug": "tradition-and-tomorrow",
+    "status": "published",
+    "data": {
+     "title": "Tradition & Tomorrow",
+     "summary": "Ten days across Tokyo, Kyoto and the mountains between them, with food at the centre of most days.",
+     "country": "Japan",
+     "region": "asia",
+     "themes": "culture,food",
+     "tags": "Culture\nCuisine",
+     "days": 10,
+     "season": "March to May, October to November",
+     "price_from": 7400,
+     "featured": true,
+     "position": 10,
+     "photo": "/images/j-japan.webp",
+     "intro": "Two big cities, one old capital and a few quiet days in between. You eat well every day and you never queue for a train ticket.",
+     "itinerary": "Day 1|Arrive in Tokyo. A driver takes you to your hotel and we leave the evening open.\nDay 2|Morning walk through the older districts with a local guide. Afternoon free. Dinner at a counter restaurant we book for you.\nDay 3|A day of contrasts: a fish market breakfast, a small museum of crafts and an evening in a neighbourhood of tiny bars.\nDay 4|Train to the mountains. Time in a hot-spring town, with a traditional inn and a multi-course dinner.\nDay 5|A walk along the old post road, then on to Kyoto by afternoon.\nDay 6|Temples at opening time, before the crowds. A tea lesson in the afternoon.\nDay 7|A day trip to Nara for the deer park and the great wooden hall. Back for a cooking class.\nDay 8|Free morning. In the afternoon, a guided walk through the lanes of the old geisha district.\nDay 9|Osaka for the day: street food, a covered market and a late dinner.\nDay 10|Train to the airport. We arrange luggage forwarding if you have it.",
+     "includes": "Nine nights in hotels and one traditional inn, rooms chosen to suit you\nMost breakfasts, plus six lunches or dinners including the cooking class\nPrivate guide on days 2, 6 and 8, local guides on the other walking days\nRail passes and every transfer in the plan\nA phone number answered in English during your whole trip",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k100",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Who this suits",
+         "_key": "k100s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k101",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "People who like to walk, eat and look closely. Two first-time visitors, a couple returning after twenty years and a parent travelling with an adult daughter have all taken some version of this plan.",
+         "_key": "k101s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k102",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we change most often",
+         "_key": "k102s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k103",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Many people drop Osaka for a second night in the mountains. Others add a few days in Hiroshima or on a small island. Tell us how fast you like to move and we set the pace from there.",
+         "_key": "k103s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "la-dolce-vita",
+    "slug": "la-dolce-vita",
+    "status": "published",
+    "data": {
+     "title": "La Dolce Vita",
+     "summary": "Eight days of long lunches from Rome through Tuscany to a village on the Ligurian coast.",
+     "country": "Italy",
+     "region": "europe",
+     "themes": "food,ocean",
+     "tags": "Food\nCoast",
+     "days": 8,
+     "season": "April to June, September to October",
+     "price_from": 5600,
+     "featured": true,
+     "position": 20,
+     "photo": "/images/j-italy.webp",
+     "intro": "A slow route north by train and car. You cook, you taste and you spend most afternoons doing nothing in particular.",
+     "itinerary": "Day 1|Arrive in Rome. Evening walk to a neighbourhood trattoria where the owner knows us.\nDay 2|Market morning with a cook, then a pasta lesson. Afternoon free.\nDay 3|Drive to Tuscany with a stop at a family olive mill for lunch.\nDay 4|A morning in the hills: a walk between farms, a cheese tasting and a long table lunch.\nDay 5|Cross to the coast. Afternoon swim, evening in a harbour village.\nDay 6|A boat along the cliffs to a village you can only reach by water. Lunch there.\nDay 7|Free day. We suggest a coastal path, a nap or both.\nDay 8|Train to Genoa or Milan for your flight.",
+     "includes": "Seven nights in small hotels and a farmhouse\nBreakfast daily, five lunches or dinners\nCooking lesson, market visit and olive mill lunch\nDriver for the Tuscany days, train tickets for the rest\nA phone number answered in English during your whole trip",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k104",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Who this suits",
+         "_key": "k104s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k105",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "People who plan their day around the next meal. It is not a sightseeing marathon. We keep one big site per two days at most.",
+         "_key": "k105s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k106",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Good to know",
+         "_key": "k106s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k107",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Roads on the coast are narrow and we use drivers rather than hire cars. May and September are the easiest months for swimming without the August crowds.",
+         "_key": "k107s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "desert-and-discovery",
+    "slug": "desert-and-discovery",
+    "status": "published",
+    "data": {
+     "title": "Desert & Discovery",
+     "summary": "Nine days from Marrakech over the Atlas to the dunes, ending in the old medina of Fes.",
+     "country": "Morocco",
+     "region": "africa",
+     "themes": "nature,culture",
+     "tags": "Nature\nCulture",
+     "days": 9,
+     "season": "March to May, October to November",
+     "price_from": 4900,
+     "featured": true,
+     "position": 30,
+     "photo": "/images/j-morocco.webp",
+     "intro": "Cities, mountains and one night under a canvas roof in the sand. The days are varied and the drives are broken up by stops.",
+     "itinerary": "Day 1|Arrive in Marrakech. A riad room, then a short orientation walk and mint tea on a rooftop.\nDay 2|Morning in the medina with a guide. Afternoon free by the pool or in the gardens.\nDay 3|Drive over the High Atlas. Lunch in a mountain village, then the fortified village of Ait Benhaddou.\nDay 4|Through the Draa valley. A short walk among palm groves. Evening at a desert-edge guesthouse.\nDay 5|Camel ride at dusk to a camp in the dunes. Dinner and a fire. Sleep under canvas.\nDay 6|Sunrise over the dunes, then a long drive north through the cedar forests.\nDay 7|Arrive in Fes. Evening walk with a local guide.\nDay 8|A full day in the old medina: tanneries, a weaving workshop and a cooking class.\nDay 9|Transfer to the airport or train station.",
+     "includes": "Eight nights: riads, guesthouses and one night in a private desert camp\nBreakfast daily, seven dinners\nPrivate driver and a local guide in the cities\nCamel ride and camp night with a small crew\nA phone number answered in English during your whole trip",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k108",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Who this suits",
+         "_key": "k108s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k109",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "People who want contrast: busy markets, empty land and quiet evenings. The drives are long on days 3, 4 and 6, with stops each time.",
+         "_key": "k109s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k110",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Seasons",
+         "_key": "k110s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k111",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Summer is very hot in the south. We run this plan from March to May and from October to November, when nights in the dunes are cool and clear.",
+         "_key": "k111s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "islands-of-ease",
+    "slug": "islands-of-ease",
+    "status": "published",
+    "data": {
+     "title": "Islands of Ease",
+     "summary": "Ten days across three islands in the South Pacific: lagoons, a little hiking and a lot of rest.",
+     "country": "French Polynesia",
+     "region": "pacific",
+     "themes": "ocean,wellbeing",
+     "tags": "Ocean\nWellbeing",
+     "days": 10,
+     "season": "May to October",
+     "price_from": 9800,
+     "featured": true,
+     "position": 40,
+     "photo": "/images/j-polynesia.webp",
+     "intro": "Three islands, each different. One has mountains to walk, one has the best snorkelling and one is simply for resting.",
+     "itinerary": "Day 1|Arrive in Tahiti. Transfer to your hotel and a quiet evening.\nDay 2|Morning at the Papeete market, then a short flight to Moorea.\nDay 3|Hike to a lookout above the bay with a local guide. Afternoon free.\nDay 4|Kayak across the lagoon and snorkel with rays. Dinner on the beach.\nDay 5|Free day for a massage, a swim or a book.\nDay 6|Flight to Bora Bora. Overwater room for four nights.\nDay 7|A boat day around the lagoon with a stop on a private sandbar.\nDay 8|Morning dive or snorkel with a guide. Afternoon free.\nDay 9|Free. We suggest a slow bike ride around the island.\nDay 10|Flights home via Tahiti.",
+     "includes": "Nine nights: a small hotel in Tahiti, then overwater or beach rooms\nBreakfast daily, four dinners\nDomestic flights and all boat transfers\nGuided hike, lagoon day and snorkel sessions\nA phone number answered in English during your whole trip",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k112",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Who this suits",
+         "_key": "k112s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k113",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Couples, honeymooners and anyone who needs a proper rest. The pace is slow. There is one planned activity most days and nothing before 9 am.",
+         "_key": "k113s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k114",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Costs",
+         "_key": "k114s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k115",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "This is our most expensive itinerary because of the flights between islands. If budget matters, tell us early and we will look at two islands instead of three.",
+         "_key": "k115s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "cyclades-unhurried",
+    "slug": "cyclades-unhurried",
+    "status": "published",
+    "data": {
+     "title": "Cyclades, Unhurried",
+     "summary": "Eight days on three Greek islands with walks along old paths and long swims in between.",
+     "country": "Greece",
+     "region": "europe",
+     "themes": "ocean,culture,wellbeing",
+     "tags": "Ocean\nCulture\nWellbeing",
+     "days": 8,
+     "season": "May to June, September to October",
+     "price_from": 5200,
+     "featured": false,
+     "position": 50,
+     "photo": "/images/j-greece.webp",
+     "intro": "Small islands, one ferry a day and a lot of white walls. Good if you like to swim in the morning and walk in the evening.",
+     "itinerary": "Day 1|Arrive in Athens. Evening walk below the Acropolis.\nDay 2|Morning ferry to Paros. Afternoon on a quiet beach.\nDay 3|Walk the old marble road between two villages. Lunch at a family taverna.\nDay 4|Boat to a nearby island for a swim stop and a small museum.\nDay 5|Ferry to Santorini. Late afternoon walk to a viewpoint.\nDay 6|Walk the cliff path at sunrise. A winery visit in the afternoon.\nDay 7|Free day. We can add a sailing trip around the caldera.\nDay 8|Flight to Athens and onward.",
+     "includes": "Seven nights in small hotels with a sea or village view\nBreakfast daily, three dinners\nAll ferries, boat day and transfers\nTwo guided walks and a winery visit\nA phone number answered in English during your whole trip",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k116",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Who this suits",
+         "_key": "k116s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k117",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "People who want island time without a party scene. We pick villages away from the busiest harbours and walk at the cooler ends of the day.",
+         "_key": "k117s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k118",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "When we go",
+         "_key": "k118s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k119",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Late May and late September have warm sea and quieter paths. In July and August we move to smaller islands to avoid the crowds.",
+         "_key": "k119s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "cliffs-and-kitchens",
+    "slug": "cliffs-and-kitchens",
+    "status": "published",
+    "data": {
+     "title": "Cliffs & Kitchens",
+     "summary": "Seven days on the Amalfi coast in shoulder season, with lemon groves, cooking classes and short walks.",
+     "country": "Italy",
+     "region": "europe",
+     "themes": "food,ocean,wellbeing",
+     "tags": "Food\nCoast",
+     "days": 7,
+     "season": "April to May, October",
+     "price_from": 5900,
+     "featured": false,
+     "position": 60,
+     "photo": "/images/j-amalfi.webp",
+     "intro": "A base in one village, with day trips on foot and by boat. You unpack once and stay put.",
+     "itinerary": "Day 1|Arrive in Naples. Private transfer to the coast. Dinner at a family restaurant.\nDay 2|Morning walk down the old mule path to the sea. Afternoon free.\nDay 3|Cooking class in a lemon grove, followed by a long lunch.\nDay 4|Boat along the coast with a swim stop. Evening in a nearby village.\nDay 5|Day trip to the ruins at Paestum and a buffalo mozzarella farm.\nDay 6|Free. Optional spa afternoon or a short hike to a ridge viewpoint.\nDay 7|Transfer to Naples for flights home.",
+     "includes": "Six nights in one small hotel on the coast\nBreakfast daily, three dinners and two lunches\nCooking class, boat day and the Paestum trip\nAll transfers\nA phone number answered in English during your whole trip",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k120",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Who this suits",
+         "_key": "k120s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k121",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "People who prefer one base to a new bed every night. The coast is steep, so we choose a hotel with fewer stairs if you ask.",
+         "_key": "k121s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k122",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Shoulder season",
+         "_key": "k122s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k123",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We run this in spring and early autumn. The sea is cooler than in August but the lanes are quiet and rooms cost less.",
+         "_key": "k123s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "destinations": [
+   {
+    "id": "japan",
+    "slug": "japan",
+    "status": "published",
+    "data": {
+     "title": "Japan",
+     "region": "asia",
+     "season": "March to May, October to November",
+     "position": 10,
+     "photo": "/images/j-japan.webp",
+     "intro": "Cities, temples and mountain towns linked by fast, easy trains. Spring and autumn are the best months."
+    }
+   },
+   {
+    "id": "italy",
+    "slug": "italy",
+    "status": "published",
+    "data": {
+     "title": "Italy",
+     "region": "europe",
+     "season": "April to June, September to October",
+     "position": 20,
+     "photo": "/images/j-italy.webp",
+     "intro": "Coast, hills and food. We plan around meals and keep the driving short."
+    }
+   },
+   {
+    "id": "greece",
+    "slug": "greece",
+    "status": "published",
+    "data": {
+     "title": "Greece",
+     "region": "europe",
+     "season": "May to June, September to October",
+     "position": 30,
+     "photo": "/images/j-greece.webp",
+     "intro": "Small islands, old paths and warm water. Easy to combine with Athens."
+    }
+   },
+   {
+    "id": "morocco",
+    "slug": "morocco",
+    "status": "published",
+    "data": {
+     "title": "Morocco",
+     "region": "africa",
+     "season": "March to May, October to November",
+     "position": 40,
+     "photo": "/images/j-morocco.webp",
+     "intro": "Old medinas, high mountains and open desert. Best outside summer."
+    }
+   },
+   {
+    "id": "french-polynesia",
+    "slug": "french-polynesia",
+    "status": "published",
+    "data": {
+     "title": "French Polynesia",
+     "region": "pacific",
+     "season": "May to October",
+     "position": 50,
+     "photo": "/images/j-polynesia.webp",
+     "intro": "Lagoons, reefs and mountains on a few islands. A long flight, a slow pace."
+    }
+   }
+  ],
+  "experiences": [
+   {
+    "id": "food",
+    "slug": "food",
+    "status": "published",
+    "data": {
+     "title": "Food",
+     "theme": "food",
+     "position": 10,
+     "photo": "/images/j-italy.webp",
+     "summary": "Trips planned around what and where you eat, with time to cook, taste and linger.",
+     "ideas": "A market morning followed by a cooking lesson in a family kitchen\nLong lunches at farms, wineries and small harbour restaurants\nA guide who knows which bakery opens at six\nFood stops on the way instead of between sights"
+    }
+   },
+   {
+    "id": "culture",
+    "slug": "culture",
+    "status": "published",
+    "data": {
+     "title": "Culture",
+     "theme": "culture",
+     "position": 20,
+     "photo": "/images/j-japan.webp",
+     "summary": "Temples, workshops and old streets with guides who tell you what you are looking at.",
+     "ideas": "Temple visits at opening time, before the crowds\nA hands-on session with a weaver, potter or tea master\nSmall museums chosen over the big queues\nEvenings in neighbourhoods rather than at shows"
+    }
+   },
+   {
+    "id": "nature",
+    "slug": "nature",
+    "status": "published",
+    "data": {
+     "title": "Nature",
+     "theme": "nature",
+     "position": 30,
+     "photo": "/images/j-morocco.webp",
+     "summary": "Mountains, desert and coast, with walks that suit your legs and enough rest to enjoy them.",
+     "ideas": "Half-day walks on old paths and mule tracks\nA night in a camp far from any light\nSunrise starts and a long lunch when it gets hot\nA local guide for every walking day"
+    }
+   },
+   {
+    "id": "ocean",
+    "slug": "ocean",
+    "status": "published",
+    "data": {
+     "title": "Ocean",
+     "theme": "ocean",
+     "position": 40,
+     "photo": "/images/j-polynesia.webp",
+     "summary": "Boat days, snorkelling and quiet beaches, planned around the weather and the water.",
+     "ideas": "A private boat for a day, with swim stops\nSnorkelling with a guide in a lagoon or marine reserve\nKayaking in calm water at the start of the day\nA beach hotel where you can walk straight into the sea"
+    }
+   },
+   {
+    "id": "wellbeing",
+    "slug": "wellbeing",
+    "status": "published",
+    "data": {
+     "title": "Wellbeing",
+     "theme": "wellbeing",
+     "position": 50,
+     "photo": "/images/j-greece.webp",
+     "summary": "Slow days, good sleep and time outside, for travellers who need a proper rest.",
+     "ideas": "One planned activity a day and nothing before 9 am\nMassage, hot springs or a quiet spa afternoon\nEarly evening walks instead of full-day tours\nHotels with a quiet room and a place to sit outside"
+    }
+   }
+  ],
+  "inspiration": [
+   {
+    "id": "how-we-choose-the-first-stop",
+    "slug": "how-we-choose-the-first-stop",
+    "status": "published",
+    "data": {
+     "title": "How we choose the first stop",
+     "excerpt": "The first night sets the tone for a trip. This is how we decide where it should be.",
+     "category": "Planning",
+     "published": "2026-09-18",
+     "minutes": 4,
+     "photo": "/images/desk.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k124",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Most people ask us where to go. We start with a different question: where do you want to wake up on the second day?",
+         "_key": "k124s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k125",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A long flight leaves you tired and slow. The first stop should be easy. A short transfer, a room you can reach by noon and a place to walk without a map.",
+         "_key": "k125s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k126",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we look at",
+         "_key": "k126s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k127",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Arrival time matters more than the sights. A flight that lands at 7 am can start with a long breakfast. One that lands at midnight needs a quiet room and a late checkout.",
+         "_key": "k127s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k128",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We also look at the weather in the first two days. Rain on arrival is easier when you are near a good café than when you are at a hilltop temple.",
+         "_key": "k128s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k129",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "An example",
+         "_key": "k129s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k130",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "For a ten-day plan in Japan we often begin with two nights in Tokyo before moving on. It is a big city, but it is easy to get around, the food is good at every price and there is plenty to do on a first evening.",
+         "_key": "k130s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "a-week-on-the-ligurian-coast",
+    "slug": "a-week-on-the-ligurian-coast",
+    "status": "published",
+    "data": {
+     "title": "A week on the Ligurian coast",
+     "excerpt": "Notes from a research trip: where the paths are steep, where the boats run and where lunch is worth the wait.",
+     "category": "Field notes",
+     "published": "2026-09-02",
+     "minutes": 5,
+     "photo": "/images/j-amalfi.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k131",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We spent seven days in Liguria last spring to test a new plan. Here is what we wrote down.",
+         "_key": "k131s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k132",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Paths",
+         "_key": "k132s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k133",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The old mule paths between villages are shorter than they look on a map but steeper than most people expect. Two hours between villages usually means a long climb out of the second one.",
+         "_key": "k133s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k134",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We now give the numbers: distance, climb in metres and where to stop for water.",
+         "_key": "k134s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k135",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Boats",
+         "_key": "k135s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k136",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Boats run less often in April than in July. A morning boat may not have a return. We checked every timetable twice and wrote the last return time on each day of the plan.",
+         "_key": "k136s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k137",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Lunch",
+         "_key": "k137s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k138",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The best lunch of the week was in a village with one road in. It was also the only one that needed a booking a month ahead.",
+         "_key": "k138s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "packing-for-two-climates",
+    "slug": "packing-for-two-climates",
+    "status": "published",
+    "data": {
+     "title": "Packing for two climates in one trip",
+     "excerpt": "Cold mornings, hot afternoons and one day of rain. What we put in the bag and what we leave behind.",
+     "category": "Planning",
+     "published": "2026-08-20",
+     "minutes": 4,
+     "photo": "/images/journal.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k139",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Many of our trips cross a mountain range or move from a city to a coast. That means two climates and one bag.",
+         "_key": "k139s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k140",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What stays at home",
+         "_key": "k140s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k141",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Heavy shoes you will wear once. A third jacket. Anything that needs ironing. A big camera lens if you are travelling by train.",
+         "_key": "k141s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k142",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What goes in",
+         "_key": "k142s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k143",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "One light waterproof layer. Two shirts you can rinse and dry overnight. A sun hat that folds. Shoes you can walk six miles in on the first day.",
+         "_key": "k143s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k144",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We send a short packing list with each draft itinerary, written for the route and the month.",
+         "_key": "k144s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "the-month-matters-more-than-the-country",
+    "slug": "the-month-matters-more-than-the-country",
+    "status": "published",
+    "data": {
+     "title": "The month matters more than the country",
+     "excerpt": "Picking when you go can change a trip more than picking where.",
+     "category": "Planning",
+     "published": "2026-08-04",
+     "minutes": 5,
+     "photo": "/images/j-morocco.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k145",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Every country has a month when it is at its best and a month when it is not. We try to say so early.",
+         "_key": "k145s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k146",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Shoulder months",
+         "_key": "k146s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k147",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "April and October are often the sweet spot in southern Europe. The water is cooler, the crowds are smaller and prices are lower.",
+         "_key": "k147s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k148",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "When the weather decides",
+         "_key": "k148s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k149",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "In the South Pacific the dry season runs from May to October. In Morocco the south is too hot in July. In Japan the cherry blossom week is lovely and also the most crowded week of the year.",
+         "_key": "k149s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k150",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If your dates are fixed, tell us. We will say what to expect and what to do differently.",
+         "_key": "k150s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "planning-a-day-around-lunch",
+    "slug": "planning-a-day-around-lunch",
+    "status": "published",
+    "data": {
+     "title": "Planning a day around lunch",
+     "excerpt": "Why we often start with the meal and fit the day around it.",
+     "category": "Field notes",
+     "published": "2026-07-16",
+     "minutes": 3,
+     "photo": "/images/j-italy.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k151",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A good lunch needs time. When we plan a day, we often book the lunch first and fit the rest around it.",
+         "_key": "k151s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k152",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If lunch is at one o'clock in a village an hour away, the morning is for the drive and a short walk. The afternoon is for sitting still.",
+         "_key": "k152s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k153",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Why it works",
+         "_key": "k153s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k154",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You are not rushed. The guide is not looking at the clock. The meal is the main event, not a stop between sights.",
+         "_key": "k154s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k155",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "It also tells us which days can handle a second big activity. A long lunch day usually ends with a swim or a nap, not a museum.",
+         "_key": "k155s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "travelling-on-your-own",
+    "slug": "travelling-on-your-own",
+    "status": "published",
+    "data": {
+     "title": "Travelling on your own",
+     "excerpt": "What changes in a plan for one person, and what we add for the first evening.",
+     "category": "Planning",
+     "published": "2026-06-30",
+     "minutes": 4,
+     "photo": "/images/hat.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k156",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "About one in five of our trips is for a single traveller. The plan looks different from a plan for two.",
+         "_key": "k156s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k157",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we add",
+         "_key": "k157s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k158",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A guide for the first evening so you do not eat alone on arrival. Shared tables at cooking classes. A phone check on the second day.",
+         "_key": "k158s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k159",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we leave out",
+         "_key": "k159s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k160",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Single supplements are real, and some hotels charge more for one person. We say so in the draft and suggest smaller places where the difference is lower.",
+         "_key": "k160s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k161",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If you want company, we can tell you which trips tend to include other travellers on guided days. If you want quiet, we plan for that too.",
+         "_key": "k161s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "steps": [
+   {
+    "id": "a-call",
+    "slug": "a-call",
+    "status": "published",
+    "data": {
+     "title": "A call",
+     "text": "Thirty minutes by phone or video. We ask where you want to go, who is coming and what a good day looks like for you.",
+     "position": 10
+    }
+   },
+   {
+    "id": "a-first-draft",
+    "slug": "a-first-draft",
+    "status": "published",
+    "data": {
+     "title": "A first draft",
+     "text": "Within five working days you get a day-by-day outline with places to stay, transfers and a cost range.",
+     "position": 20
+    }
+   },
+   {
+    "id": "changes",
+    "slug": "changes",
+    "status": "published",
+    "data": {
+     "title": "Changes",
+     "text": "Swap a day, slow it down, add a cooking class. Most plans take two or three rounds before they feel right.",
+     "position": 30
+    }
+   },
+   {
+    "id": "travel",
+    "slug": "travel",
+    "status": "published",
+    "data": {
+     "title": "Travel",
+     "text": "We book it once you confirm. During the trip you have one number to call, answered by someone who knows your plan.",
+     "position": 40
+    }
+   }
+  ],
+  "team": [
+   {
+    "id": "clara-whitfield",
+    "slug": "clara-whitfield",
+    "status": "published",
+    "data": {
+     "title": "Clara Whitfield",
+     "role": "Founder and travel designer",
+     "bio": "Clara started TailorMade Travel after ten years of planning trips for friends. She designs most of the Europe and Pacific itineraries.",
+     "position": 10
+    }
+   },
+   {
+    "id": "mateo-ruiz",
+    "slug": "mateo-ruiz",
+    "status": "published",
+    "data": {
+     "title": "Mateo Ruiz",
+     "role": "Travel designer, Europe and Africa",
+     "bio": "Mateo grew up in Seville and has driven most of the roads on our Italy and Morocco plans. He answers most draft requests.",
+     "position": 20
+    }
+   },
+   {
+    "id": "priya-anand",
+    "slug": "priya-anand",
+    "status": "published",
+    "data": {
+     "title": "Priya Anand",
+     "role": "Travel designer, Asia",
+     "bio": "Priya lived in Kyoto for six years. She plans our Japan trips and checks every walking route herself.",
+     "position": 30
+    }
+   },
+   {
+    "id": "lena-hoffmann",
+    "slug": "lena-hoffmann",
+    "status": "published",
+    "data": {
+     "title": "Lena Hoffmann",
+     "role": "Operations",
+     "bio": "Lena books hotels, drivers and guides and checks each plan against timetables. She is the one who notices that the ferry does not run on Sundays.",
+     "position": 40
+    }
+   },
+   {
+    "id": "tom-eriksen",
+    "slug": "tom-eriksen",
+    "status": "published",
+    "data": {
+     "title": "Tom Eriksen",
+     "role": "Guest care",
+     "bio": "Tom answers the phone while you travel. He has a copy of your plan in front of him when he picks up.",
+     "position": 50
+    }
+   }
+  ],
+  "company": [
+   {
+    "id": "company",
+    "slug": "company",
+    "status": "published",
+    "data": {
+     "title": "TailorMade Travel",
+     "street": "27 Quayside Row, Suite 4",
+     "locality": "Harbour Point, CA 90000",
+     "country": "United States",
+     "phone": "+1 415 555 0134",
+     "email": "plan@tailormade-travel.example",
+     "office": "Monday to Friday|9:00 am to 6:00 pm Pacific Time\nSaturday|10:00 am to 2:00 pm\nSunday|Closed",
+     "enquiry_note": "We reply within two working days. An enquiry is not a booking, and nothing is charged until you confirm a written itinerary.",
+     "included": "Hotels or guesthouses as listed in each plan\nMost breakfasts and the meals named in the plan\nAll ground transfers, ferries and trains in the plan\nGuides on the days named in the plan\nA phone number answered during your trip",
+     "not_included": "International flights\nTravel and medical insurance\nVisas and entry fees\nMeals not named in the plan\nTips for guides and drivers",
+     "licence_note": "Placeholder for the owner: add your seller of travel registration, bonding or trust account details and insurance here before you publish this site. None are claimed in the sample content."
+    }
+   }
+  ]
+ }
+}

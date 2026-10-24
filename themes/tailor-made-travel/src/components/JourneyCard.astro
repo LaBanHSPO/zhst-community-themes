@@ -1,0 +1,30 @@
+---
+import { daysLabel, photoSrc } from "../lib/travel";
+import type { JourneyRow } from "../lib/travel";
+
+interface Props {
+	row: JourneyRow;
+}
+const { row } = Astro.props;
+const d = row.entry.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<a class="jcard" href={`/journeys/${d.slug ?? d.id}`}>
+	<span class="jcard-photo">
+		{src && <img src={src} alt="" width="632" height="312" loading="lazy" />}
+	</span>
+	<span class="jcard-body">
+		<span class="jcard-text">
+			<span class="jcard-country">{d.country}</span>
+			<span class="jcard-title" {...row.entry.edit.title}>{d.title}</span>
+			<span class="jcard-meta">
+				<span>{daysLabel(d.days)}</span>
+				{row.tags.map((t) => <><span class="dot" aria-hidden="true">·</span><span>{t}</span></>)}
+			</span>
+		</span>
+		<span class="jcard-go" aria-hidden="true">
+			<svg width="14" height="10" viewBox="0 0 16 12" focusable="false"><path d="M0 6h14.5M9.5 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+		</span>
+	</span>
+</a>

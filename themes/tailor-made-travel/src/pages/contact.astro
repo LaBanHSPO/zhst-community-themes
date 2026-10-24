@@ -1,0 +1,219 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import { THEMES, daysLabel, getCompany, getJourneys, mapHref, rows, telHref } from "../lib/travel";
+
+const [{ company, cacheHint }, journeysResult] = await Promise.all([getCompany(), getJourneys()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(journeysResult.cacheHint);
+}
+const office = rows(company.office);
+const journeys = journeysResult.journeys;
+// ?journey=<slug> pre-selects the itinerary, ?theme=<key> pre-ticks an interest.
+const wantedJourney = Astro.url.searchParams.get("journey");
+const wantedTheme = Astro.url.searchParams.get("theme");
+const selected = journeys.find((j) => (j.entry.data.slug ?? j.entry.data.id) === wantedJourney);
+const preTicked = new Set<string>([...(selected?.themes ?? []), ...(wantedTheme ? [wantedTheme] : [])]);
+---
+
+<Base title="Plan your journey" description="Send an enquiry to TailorMade Travel: where and when you want to travel, how many of you, and what you enjoy. Phone and email are listed on this page.">
+	<PageHead
+		id="contact-title"
+		eyebrow="Plan your journey"
+		title="Tell us where and when."
+		intro="Pick an itinerary to start from, or tell us a country and a month. A designer replies within two working days."
+	/>
+	<section class="contact-section" aria-labelledby="contact-title">
+		<div class="wrap contact-grid">
+			<form
+				class="enquiry-form"
+				data-enquiry-form
+				data-email={company.email}
+				action={company.email ? `mailto:${company.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field full">
+						<label for="c-journey">Itinerary to start from</label>
+						<select id="c-journey" name="journey" required>
+							<option value="" selected={!selected}>Choose one</option>
+							{
+								journeys.map((j) => (
+									<option value={j.entry.data.title} selected={selected?.entry.data.id === j.entry.data.id}>
+										{j.entry.data.title} · {j.entry.data.country} · {daysLabel(j.entry.data.days)}
+									</option>
+								))
+							}
+							<option value="Something else">Something else, I will describe it below</option>
+						</select>
+						<span class="field-error" data-error-for="c-journey"></span>
+					</div>
+					<div class="field">
+						<label for="c-when">Dates or month</label>
+						<input id="c-when" name="when" type="text" placeholder="e.g. mid-May 2027, flexible by a week" required />
+						<span class="field-error" data-error-for="c-when"></span>
+					</div>
+					<div class="field">
+						<label for="c-people">Travellers</label>
+						<select id="c-people" name="people" required>
+							<option value="1">1 person</option>
+							<option value="2" selected>2 people</option>
+							<option value="3">3 people</option>
+							<option value="4">4 people</option>
+							<option value="5 to 8">5 to 8 people</option>
+							<option value="More than 8">More than 8 people</option>
+						</select>
+					</div>
+					<div class="field full">
+						<label for="c-budget">Budget per person <span class="optional">(optional)</span></label>
+						<select id="c-budget" name="budget">
+							<option value="Not sure yet" selected>Not sure yet</option>
+							<option value="Under $4,000">Under $4,000</option>
+							<option value="$4,000 to $7,000">$4,000 to $7,000</option>
+							<option value="$7,000 to $10,000">$7,000 to $10,000</option>
+							<option value="Over $10,000">Over $10,000</option>
+						</select>
+						<span class="field-hint">Excludes international flights. It only helps us pick the right hotels.</span>
+					</div>
+					<fieldset class="field full interests">
+						<legend>What do you enjoy most? <span class="optional">(optional)</span></legend>
+						<div class="check-row">
+							{
+								THEMES.map((t) => (
+									<label class="check">
+										<input type="checkbox" name="interests" value={t.label} checked={preTicked.has(t.slug)} />
+										<span>{t.label}</span>
+									</label>
+								))
+							}
+						</div>
+					</fieldset>
+					<div class="field full">
+						<label for="c-name">Name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field">
+						<label for="c-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field full">
+						<label for="c-notes">Anything else? <span class="optional">(optional)</span></label>
+						<textarea id="c-notes" name="notes" rows="4" placeholder="Who is travelling, places you have loved before, mobility or dietary needs, an occasion we should know about"></textarea>
+					</div>
+				</div>
+				<button class="btn btn-lg btn-block" type="submit">Send enquiry</button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{company.email && <>Write to <a href={`mailto:${company.email}`}>{company.email}</a> with the itinerary, dates and number of travellers.</>}
+					</noscript>
+				</p>
+			</form>
+
+			<aside class="contact-side">
+				<h2>Prefer to talk?</h2>
+				<p>
+					{company.phone && <>Call <a href={telHref(company.phone)}>{company.phone}</a></>}
+					{company.phone && company.email && " or email "}
+					{!company.phone && company.email && "Email "}
+					{company.email && <a href={`mailto:${company.email}`}>{company.email}</a>}.
+				</p>
+				{
+					(company.street || company.locality) && (
+						<p>
+							<a href={mapHref(company)} target="_blank" rel="noopener noreferrer">{[company.street, company.locality].filter(Boolean).join(", ")}</a>
+						</p>
+					)
+				}
+				{
+					office.length > 0 && (
+						<>
+							<h3>Phone hours</h3>
+							<dl class="side-hours">
+								{office.map((h) => <><dt>{h.left}</dt><dd>{h.right}</dd></>)}
+							</dl>
+						</>
+					)
+				}
+				{company.enquiry_note && <p class="small">{company.enquiry_note}</p>}
+				<img src="/images/desk.webp" alt="A brass desk globe, printed postcards and a leather journal on a stone table by the sea" width="1448" height="1086" loading="lazy" />
+			</aside>
+		</div>
+	</section>
+</Base>
+
+<script>
+	// Validate, then compose an enquiry email. Nothing is sent by the site itself;
+	// the company confirms by reply.
+	document.querySelectorAll<HTMLFormElement>("[data-enquiry-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLSelectElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input[required], select[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? input.tagName === "SELECT"
+							? "Please choose an option."
+							: "Please fill this in."
+						: input.getAttribute("type") === "email"
+							? "Please enter a valid email address."
+							: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online enquiries are not available right now. Please call us.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const interests = f.getAll("interests").map(String).join(", ");
+			const subject = `Travel enquiry: ${get("journey")}`;
+			const lines = [
+				"Hello,",
+				"",
+				"I would like help planning a trip:",
+				`Starting from: ${get("journey")}`,
+				`Dates or month: ${get("when")}`,
+				`Travellers: ${get("people")}`,
+				get("budget") ? `Budget per person: ${get("budget")}` : "",
+				interests ? `Interests: ${interests}` : "",
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				get("notes") ? `Notes: ${get("notes")}` : "",
+				"",
+				"I understand this is an enquiry and nothing is booked until I confirm a written itinerary.",
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this enquiry ready to send. It is only sent when you send that email, and we reply to it. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

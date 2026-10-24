@@ -1,0 +1,49 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import PlanBand from "../components/PlanBand.astro";
+import { getCompany, getExperiences, getJourneys, lines, photoSrc } from "../lib/travel";
+
+const [expResult, journeysResult, companyResult] = await Promise.all([getExperiences(), getJourneys(), getCompany()]);
+for (const r of [expResult, journeysResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const countFor = (theme: string) => journeysResult.journeys.filter((j) => j.themes.includes(theme)).length;
+---
+
+<Base title="Experiences" description="Five themes we plan around: food, culture, nature, ocean and wellbeing. Each links to the itineraries built on it.">
+	<PageHead
+		id="exp-title"
+		eyebrow="Experiences"
+		title="What a good day looks like."
+		intro="We plan around five things people ask for most. Most trips mix two or three of them."
+	/>
+	<section class="list-section" aria-labelledby="exp-title">
+		<div class="wrap">
+			<ul class="exp-list">
+				{
+					expResult.entries.map((e) => {
+						const d = e.data;
+						const src = photoSrc(d.image, d.photo);
+						const n = countFor(d.theme);
+						return (
+							<li class="exp-row" id={d.theme}>
+								{src && <img class="exp-photo" src={src} alt="" width="632" height="312" loading="lazy" />}
+								<div class="exp-copy">
+									<h2 class="display" {...e.edit.title}>{d.title}</h2>
+									<p class="exp-summary">{d.summary}</p>
+									<ul class="plain-list">{lines(d.ideas).map((i) => <li>{i}</li>)}</ul>
+									<a class="link-arrow" href={`/journeys?theme=${d.theme}`}>
+										{n} {n === 1 ? "itinerary" : "itineraries"} with {d.title.toLowerCase()} <Arrow />
+									</a>
+								</div>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</div>
+	</section>
+	<PlanBand company={companyResult.company} />
+</Base>

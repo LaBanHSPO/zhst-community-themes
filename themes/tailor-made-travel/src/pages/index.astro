@@ -1,0 +1,146 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import JourneyCard from "../components/JourneyCard.astro";
+import PlanBand from "../components/PlanBand.astro";
+import { getCompany, getExperiences, getJourneys, getPosts, getSteps, longDate, photoSrc } from "../lib/travel";
+
+const [journeysResult, stepsResult, expResult, postsResult, companyResult] = await Promise.all([
+	getJourneys(),
+	getSteps(),
+	getExperiences(),
+	getPosts(),
+	getCompany(),
+]);
+for (const r of [journeysResult, stepsResult, expResult, postsResult, companyResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const all = journeysResult.journeys;
+const featured = all.filter((j) => j.entry.data.featured).slice(0, 4);
+const shown = featured.length > 0 ? featured : all.slice(0, 4);
+const countFor = (theme: string) => all.filter((j) => j.themes.includes(theme)).length;
+const posts = postsResult.entries.slice(0, 3);
+---
+
+<Base
+	title="TailorMade Travel"
+	description="A small studio that plans trips by hand. Tell us where you want to go and a designer writes you a day-by-day itinerary."
+	overlay
+>
+	<section class="hero">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A woman in a straw hat and linen dress sits on a whitewashed wall above a sea-filled caldera at sunset, with blue-domed white buildings and pink bougainvillea beside her"
+			width="1448"
+			height="628"
+			fetchpriority="high"
+		/>
+		<div class="hero-wash" aria-hidden="true"></div>
+		<div class="hero-copy">
+			<p class="hero-eyebrow">Extraordinary places<br />A more meaningful way</p>
+			<h1>Your journey, <br />thoughtfully made.</h1>
+			<a class="btn btn-lg" href="/contact">Plan your journey <Arrow /></a>
+		</div>
+		<p class="hero-note hero-note-l"><span class="note-rule" aria-hidden="true"></span>Bespoke travel<br />for a brighter you</p>
+		<p class="hero-note hero-note-r"><span class="note-rule" aria-hidden="true"></span>People<br />Places<br />A brighter tomorrow<span class="note-dash" aria-hidden="true"></span></p>
+	</section>
+
+	<section class="curated" aria-labelledby="curated-title">
+		<div class="curated-head">
+			<div class="curated-title">
+				<p class="eyebrow">Curated journeys</p>
+				<h2 id="curated-title" class="display">Extraordinary places, <br />personally yours.</h2>
+			</div>
+			<p class="curated-text">Tailor-made itineraries, crafted around what<br class="br-wide" /> moves you. From hidden gems to iconic destinations,<br class="br-wide" /> we design travel that feels uniquely yours.</p>
+			<a class="curated-link" href="/journeys"><span class="rule" aria-hidden="true"></span>Explore all journeys <Arrow /></a>
+		</div>
+		<ul class="jcard-grid">
+			{shown.map((j) => <li><JourneyCard row={j} /></li>)}
+		</ul>
+	</section>
+
+	<section class="themes" aria-labelledby="themes-title">
+		<div class="themes-inner">
+			<div class="themes-copy">
+				<p class="eyebrow">Experiences</p>
+				<h2 id="themes-title" class="display">Start from what you enjoy.</h2>
+				<p class="section-text">Most people can name one thing they want more of on a trip. Pick it and we show you the itineraries built around it.</p>
+				<ul class="theme-list">
+					{
+						expResult.entries.map((e) => {
+							const n = countFor(e.data.theme);
+							return (
+								<li>
+									<a href={`/journeys?theme=${e.data.theme}`}>
+										<span class="theme-name">{e.data.title}</span>
+										<span class="theme-count">{n} {n === 1 ? "itinerary" : "itineraries"}</span>
+										<Arrow />
+									</a>
+								</li>
+							);
+						})
+					}
+				</ul>
+			</div>
+			<figure class="themes-photo">
+				<img src="/images/globe.webp" alt="A cream-coloured desk globe with a brass stand and a gold chain looping across the continents" width="700" height="670" loading="lazy" />
+			</figure>
+		</div>
+	</section>
+
+	<section class="how" aria-labelledby="how-title">
+		<div class="how-inner">
+			<div class="how-head">
+				<p class="eyebrow">How planning works</p>
+				<h2 id="how-title" class="display">Four steps, one designer.</h2>
+			</div>
+			<ol class="how-list">
+				{
+					stepsResult.entries.map((s, i) => (
+						<li>
+							<span class="how-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+							<h3 {...s.edit.title}>{s.data.title}</h3>
+							<p>{s.data.text}</p>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+	</section>
+
+	{
+		posts.length > 0 && (
+			<section class="notes" aria-labelledby="notes-title">
+				<div class="notes-inner">
+					<div class="notes-head">
+						<div>
+							<p class="eyebrow">Inspiration</p>
+							<h2 id="notes-title" class="display">Notes from our desks.</h2>
+						</div>
+						<a class="curated-link" href="/inspiration"><span class="rule" aria-hidden="true"></span>All posts <Arrow /></a>
+					</div>
+					<ul class="post-grid">
+						{
+							posts.map((p) => {
+								const src = photoSrc(p.data.image, p.data.photo);
+								return (
+									<li>
+										<a class="post-card" href={`/inspiration/${p.data.slug ?? p.data.id}`}>
+											<span class="post-photo">{src && <img src={src} alt="" width="640" height="420" loading="lazy" />}</span>
+											<span class="post-meta">{p.data.category} · {longDate(p.data.published)}</span>
+											<span class="post-title" {...p.edit.title}>{p.data.title}</span>
+											<span class="post-excerpt">{p.data.excerpt}</span>
+										</a>
+									</li>
+								);
+							})
+						}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<PlanBand company={companyResult.company} />
+</Base>

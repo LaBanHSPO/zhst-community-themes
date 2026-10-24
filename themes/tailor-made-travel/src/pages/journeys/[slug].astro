@@ -1,0 +1,139 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import JourneyCard from "../../components/JourneyCard.astro";
+import PlanBand from "../../components/PlanBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { countrySlug, daysLabel, formatPrice, getCompany, getJourneys, lines, photoSrc, regionLabel, rows, themeLabel } from "../../lib/travel";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: journey, cacheHint } = await getEmDashEntry("journeys", slug);
+if (!journey) return Astro.rewrite("/404");
+
+const [allResult, companyResult, settings] = await Promise.all([getJourneys(), getCompany(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(journey, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = journey.data;
+const key = d.slug ?? d.id;
+const src = photoSrc(d.image, d.photo);
+const itinerary = rows(d.itinerary);
+const includes = lines(d.includes);
+const themes = (d.themes ?? "").split(",").map((t) => t.trim()).filter(Boolean);
+const notIncluded = lines(companyResult.company.not_included);
+const related = allResult.journeys
+	.filter((j) => j.entry.data.id !== d.id && (j.entry.data.country === d.country || j.themes.some((t) => themes.includes(t))))
+	.slice(0, 3);
+const hasBody = Boolean(d.content && d.content.length > 0);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? src}
+	content={{ collection: "journeys", id: d.id, slug }}
+	current="/journeys"
+>
+	<section class="detail-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/journeys">Journeys</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class:list={["detail-grid", { "is-text-only": !src }]}>
+				<div class="detail-copy">
+					<p class="eyebrow">{d.country} · {daysLabel(d.days)}</p>
+					<h1 class="display" {...journey.edit.title}>{d.title}</h1>
+					<p class="lede" {...journey.edit.summary}>{d.summary}</p>
+					<dl class="facts">
+						<div><dt>Country</dt><dd><a href={`/journeys?country=${countrySlug(d.country)}`}>{d.country}</a>, <a href={`/journeys?region=${d.region}`}>{regionLabel(d.region)}</a></dd></div>
+						<div><dt>Length</dt><dd>{daysLabel(d.days)}</dd></div>
+						{d.season ? <div><dt>Best months</dt><dd>{d.season}</dd></div> : null}
+						<div>
+							<dt>Themes</dt>
+							<dd>{themes.map((t, i) => <><a href={`/journeys?theme=${t}`}>{themeLabel(t)}</a>{i < themes.length - 1 ? ", " : ""}</>)}</dd>
+						</div>
+						{d.price_from ? <div><dt>Price</dt><dd>From {formatPrice(d.price_from)} per person (sample price)</dd></div> : null}
+					</dl>
+					<a class="btn btn-lg" href={`/contact?journey=${encodeURIComponent(key)}`}>Plan this trip <Arrow /></a>
+				</div>
+				{src && <figure class="detail-photo"><img src={src} alt={d.image?.alt ?? ""} width="640" height="480" /></figure>}
+			</div>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="wrap detail-cols">
+			<div class="prose">
+				{d.intro && <p class="prose-lead">{d.intro}</p>}
+				{hasBody ? <PortableText value={d.content} /> : <p>{d.summary}</p>}
+
+				{
+					itinerary.length > 0 && (
+						<>
+							<h2>Day by day</h2>
+							<ol class="itinerary">
+								{itinerary.map((r) => <li><span class="it-day">{r.left}</span><span class="it-text">{r.right}</span></li>)}
+							</ol>
+						</>
+					)
+				}
+			</div>
+			<aside class="side-stack">
+				{
+					includes.length > 0 && (
+						<div class="side-box" aria-labelledby="inc-title">
+							<h2 id="inc-title">What is included</h2>
+							<ul class="ticks">{includes.map((b) => <li>{b}</li>)}</ul>
+						</div>
+					)
+				}
+				{
+					notIncluded.length > 0 && (
+						<div class="side-box" aria-labelledby="exc-title">
+							<h2 id="exc-title">Not included</h2>
+							<ul class="plain-list">{notIncluded.map((b) => <li>{b}</li>)}</ul>
+						</div>
+					)
+				}
+				<div class="side-box side-ask">
+					<h2>Want it different?</h2>
+					<p class="small">Swap a day, add a few nights or change the month. Prices are samples until we write your own.</p>
+					<a class="link-arrow" href={`/contact?journey=${encodeURIComponent(key)}`}>Ask about this itinerary <Arrow /></a>
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	{
+		related.length > 0 && (
+			<section class="band" aria-labelledby="related-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Similar itineraries</p>
+							<h2 id="related-title" class="display">Also worth a look</h2>
+						</div>
+						<a class="link-arrow" href="/journeys">All journeys <Arrow /></a>
+					</div>
+					<ul class="jcard-grid jcard-grid-3">
+						{related.map((j) => <li><JourneyCard row={j} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<PlanBand company={companyResult.company} journey={key} />
+</Base>

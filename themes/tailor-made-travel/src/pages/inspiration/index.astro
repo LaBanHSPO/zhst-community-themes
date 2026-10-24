@@ -1,0 +1,59 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import PlanBand from "../../components/PlanBand.astro";
+import { getCompany, getPosts, longDate, photoSrc } from "../../lib/travel";
+
+const [postsResult, companyResult] = await Promise.all([getPosts(), getCompany()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(postsResult.cacheHint);
+	Astro.cache.set(companyResult.cacheHint);
+}
+const [first, ...rest] = postsResult.entries;
+const card = (p: (typeof postsResult.entries)[number]) => ({
+	href: `/inspiration/${p.data.slug ?? p.data.id}`,
+	src: photoSrc(p.data.image, p.data.photo),
+	meta: `${p.data.category} · ${longDate(p.data.published)} · ${p.data.minutes ?? 4} min read`,
+});
+---
+
+<Base title="Inspiration" description="Planning notes and field reports from the TailorMade designers: when to go, what to pack and how we build a day.">
+	<PageHead
+		id="insp-title"
+		eyebrow="Inspiration"
+		title="Notes from our desks."
+		intro="Planning advice and field reports from the people who design the trips. Sample posts, written for this theme."
+	/>
+	<section class="list-section" aria-labelledby="insp-title">
+		<div class="wrap">
+			{
+				first && (
+					<a class="post-feature" href={card(first).href}>
+						<span class="post-photo">{card(first).src && <img src={card(first).src} alt="" width="870" height="530" />}</span>
+						<span class="post-feature-copy">
+							<span class="post-meta">{card(first).meta}</span>
+							<span class="post-title post-title-lg" {...first.edit.title}>{first.data.title}</span>
+							<span class="post-excerpt">{first.data.excerpt}</span>
+							<span class="link-arrow">Read the post <svg class="arrow" width="16" height="12" viewBox="0 0 16 12" aria-hidden="true" focusable="false"><path d="M0 6h14.5M9.5 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+						</span>
+					</a>
+				)
+			}
+			<ul class="post-grid post-grid-list">
+				{
+					rest.map((p) => (
+						<li>
+							<a class="post-card" href={card(p).href}>
+								<span class="post-photo">{card(p).src && <img src={card(p).src} alt="" width="640" height="420" loading="lazy" />}</span>
+								<span class="post-meta">{card(p).meta}</span>
+								<span class="post-title" {...p.edit.title}>{p.data.title}</span>
+								<span class="post-excerpt">{p.data.excerpt}</span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+	<PlanBand company={companyResult.company} />
+</Base>
