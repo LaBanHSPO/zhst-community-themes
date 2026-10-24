@@ -1,0 +1,47 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import TeamCard from "../../components/TeamCard.astro";
+import { getTeam, list } from "../../lib/collective";
+
+const { entries, cacheHint } = await getTeam();
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const focuses = [...new Set(entries.flatMap((m) => list(m.data.focus)))].sort((a, b) => a.localeCompare(b));
+// ?focus=<name> filters the list; an unknown value shows everyone.
+const wanted = Astro.url.searchParams.get("focus");
+const active = focuses.find((f) => f.toLowerCase() === (wanted ?? "").toLowerCase());
+const members = active ? entries.filter((m) => list(m.data.focus).includes(active)) : entries;
+---
+
+<Base
+	title="Our Team"
+	description="Meet the counselors at Counseling Collective: their focus areas, languages, whether they meet in person or online, and when they have space. Filter by focus."
+>
+	<PageHead
+		eyebrow="Our Team"
+		title="Find the counselor who fits."
+		intro="Six counselors, each with different focus areas, languages and hours. Read a few introductions, then ask for the one you like the sound of. If you are unsure, we will suggest someone."
+	/>
+	<section class="listing" aria-label="Counselors">
+		<div class="wrap">
+			{
+				focuses.length > 0 && (
+					<nav class="filters" aria-label="Filter by focus">
+						<a href="/team" aria-current={active ? undefined : "true"}>Everyone</a>
+						{focuses.map((f) => <a href={`/team?focus=${encodeURIComponent(f)}`} aria-current={f === active ? "true" : undefined}>{f}</a>)}
+					</nav>
+				)
+			}
+			{
+				members.length > 0 ? (
+					<ul class="counselor-grid">
+						{members.map((m, i) => <li><TeamCard member={m} eager={i < 3} /></li>)}
+					</ul>
+				) : (
+					<p class="empty">No counselors list this focus yet.</p>
+				)
+			}
+			<p class="listing-foot">Not sure who to pick? <a href="/contact">Send us a request</a> and we will suggest one or two counselors.</p>
+		</div>
+	</section>
+</Base>

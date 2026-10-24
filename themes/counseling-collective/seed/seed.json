@@ -1,0 +1,1722 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "Counseling Collective",
+		"description": "A warm, cream-and-green theme for a counseling group practice: a full-bleed team photo hero, a team directory with focus filter, services, resources and a request-a-counselor page, seeded with synthetic sample content.",
+		"author": "ZeroHostCMS"
+	},
+	"settings": {
+		"title": "Counseling Collective",
+		"tagline": "People heal together"
+	},
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"urlPattern": "/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "eyebrow",
+					"label": "Small label above the title (also used in the footer)",
+					"type": "string"
+				},
+				{
+					"slug": "intro",
+					"label": "Intro paragraph",
+					"type": "text"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "team",
+			"label": "Our Team",
+			"labelSingular": "Counselor",
+			"urlPattern": "/team/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "role",
+					"label": "Role (for example Counselor)",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "focus",
+					"label": "Focus areas (comma separated; the filter on the team page is built from these)",
+					"type": "string",
+					"searchable": true
+				},
+				{
+					"slug": "languages",
+					"label": "Languages (comma separated)",
+					"type": "string"
+				},
+				{
+					"slug": "meets",
+					"label": "How they meet clients (In person, Online, or In person and online)",
+					"type": "string"
+				},
+				{
+					"slug": "availability",
+					"label": "Availability note",
+					"type": "text"
+				},
+				{
+					"slug": "intro",
+					"label": "Short introduction (shown on cards)",
+					"type": "text"
+				},
+				{
+					"slug": "registration",
+					"label": "Registration details (placeholder: add the professional body and number)",
+					"type": "text"
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Bundled photo path",
+					"type": "string"
+				},
+				{
+					"slug": "content",
+					"label": "About this counselor",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "services",
+			"label": "Services",
+			"labelSingular": "Service",
+			"urlPattern": "/services/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Service name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "summary",
+					"label": "One-line description",
+					"type": "text",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "tile_text",
+					"label": "Text on the homepage column (a line break splits it into two lines)",
+					"type": "text"
+				},
+				{
+					"slug": "who",
+					"label": "Who it is for",
+					"type": "string"
+				},
+				{
+					"slug": "format",
+					"label": "Format",
+					"type": "string"
+				},
+				{
+					"slug": "length",
+					"label": "Length of a session",
+					"type": "string"
+				},
+				{
+					"slug": "fee",
+					"label": "Fee (placeholder: replace with your own)",
+					"type": "string"
+				},
+				{
+					"slug": "includes",
+					"label": "What a session looks like (one item per line)",
+					"type": "text"
+				},
+				{
+					"slug": "icon",
+					"label": "Icon (people, leaf, sun, family or circle)",
+					"type": "string"
+				},
+				{
+					"slug": "featured",
+					"label": "Show on the homepage",
+					"type": "boolean"
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Bundled photo path",
+					"type": "string"
+				},
+				{
+					"slug": "content",
+					"label": "Description",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "posts",
+			"label": "Resources",
+			"labelSingular": "Resource",
+			"urlPattern": "/resources/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text"
+				},
+				{
+					"slug": "category",
+					"label": "Category (the filter on the resources page is built from these)",
+					"type": "string"
+				},
+				{
+					"slug": "posted",
+					"label": "Date posted (YYYY-MM-DD)",
+					"type": "string"
+				},
+				{
+					"slug": "read_time",
+					"label": "Reading time",
+					"type": "string"
+				},
+				{
+					"slug": "image",
+					"label": "Photo (upload)",
+					"type": "image"
+				},
+				{
+					"slug": "photo",
+					"label": "Bundled photo path",
+					"type": "string"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "steps",
+			"label": "Matching steps",
+			"labelSingular": "Matching step",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "text",
+					"label": "Text",
+					"type": "text"
+				},
+				{
+					"slug": "position",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "practice",
+			"label": "Practice details",
+			"labelSingular": "Practice",
+			"supports": [
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Practice name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "phone",
+					"label": "Phone",
+					"type": "string"
+				},
+				{
+					"slug": "email",
+					"label": "Email for requests",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "address",
+					"label": "Address (one line per row)",
+					"type": "text"
+				},
+				{
+					"slug": "hours",
+					"label": "Front desk hours (one per line, day and time split by a | sign)",
+					"type": "text"
+				},
+				{
+					"slug": "response",
+					"label": "How quickly you reply",
+					"type": "text"
+				},
+				{
+					"slug": "contact_note",
+					"label": "Note shown above the contact form",
+					"type": "text"
+				},
+				{
+					"slug": "fees_note",
+					"label": "Fees and sliding scale note (homepage)",
+					"type": "text"
+				},
+				{
+					"slug": "sliding_note",
+					"label": "Sliding scale note (homepage)",
+					"type": "text"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "About",
+					"url": "/about"
+				},
+				{
+					"type": "custom",
+					"label": "Our Team",
+					"url": "/team"
+				},
+				{
+					"type": "custom",
+					"label": "Services",
+					"url": "/services"
+				},
+				{
+					"type": "custom",
+					"label": "Resources",
+					"url": "/resources"
+				}
+			]
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "A practice built around people.",
+					"eyebrow": "About",
+					"intro": "Counseling Collective is a group practice of six counselors who share one office and one booking desk. This page explains how we work.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k1",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "How we work",
+									"_key": "k1s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k2",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "You choose a counselor, or ask us to suggest one, and then you meet one to one, as a couple or in a small group. Each counselor keeps their own notes and plans their own sessions. What we share is the building, the front desk and the way new clients are matched.",
+									"_key": "k2s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k3",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Sessions are held in person at the office on Orchard Row or online by video. Many people start online and come in later, or the other way round. Tell your counselor what suits you and change it when your week changes.",
+									"_key": "k3s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k4",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Why a group practice",
+									"_key": "k4s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k5",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "In a group practice you can ask to move to a different counselor without starting over with a new office. If your first match does not feel right, say so and we will suggest someone else. Nobody takes it personally, and it does not cost you a place in the queue.",
+									"_key": "k5s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k6",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Who we see",
+									"_key": "k6s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k7",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Adults, couples, and families with older children and teens. We do not offer emergency care or psychiatric assessment. If you are in crisis or at risk, contact your local emergency number or a crisis line now.",
+									"_key": "k7s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k8",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "About the names and photos",
+									"_key": "k8s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k9",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This is a demo site. The practice, the counselors, the address, the phone number and the fees are all fictional, and the portraits are AI-generated. Replace them with your own team before you publish.",
+									"_key": "k9s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			}
+		],
+		"team": [
+			{
+				"id": "marisol-vega",
+				"slug": "marisol-vega",
+				"status": "published",
+				"data": {
+					"title": "Marisol Vega",
+					"role": "Counselor",
+					"focus": "Anxiety, Life transitions",
+					"languages": "English, Spanish",
+					"meets": "In person and online",
+					"availability": "Tuesday to Friday, daytime and early evening",
+					"intro": "Works with adults who feel anxious about work, health or big decisions.",
+					"registration": "Placeholder: add this counselor's professional body and registration number here.",
+					"position": 10,
+					"photo": "/images/team-1.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k22",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Marisol works with adults who feel anxious about work, health or the choices in front of them. Her sessions are practical and unhurried, with time to talk through what is on your mind and some ideas to try between sessions if you want them.",
+									"_key": "k22s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k23",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "She sees clients in English and Spanish, in person at the Orchard Row office and online.",
+									"_key": "k23s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "daniel-okafor",
+				"slug": "daniel-okafor",
+				"status": "published",
+				"data": {
+					"title": "Daniel Okafor",
+					"role": "Counselor",
+					"focus": "Stress and burnout, Grief and loss",
+					"languages": "English, Igbo",
+					"meets": "In person",
+					"availability": "Monday to Thursday, afternoons and evenings",
+					"intro": "Sees people who are worn down by work or by a loss.",
+					"registration": "Placeholder: add this counselor's professional body and registration number here.",
+					"position": 20,
+					"photo": "/images/team-2.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k24",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Daniel sees people who are worn down by work, by caring for others or by a loss. He is direct, he listens first, and he is happy to say when he does not know the answer.",
+									"_key": "k24s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k25",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "He meets clients in person at the office, in the afternoon and evening.",
+									"_key": "k25s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "hannah-brooks",
+				"slug": "hannah-brooks",
+				"status": "published",
+				"data": {
+					"title": "Hannah Brooks",
+					"role": "Counselor",
+					"focus": "Relationships, Family",
+					"languages": "English",
+					"meets": "In person and online",
+					"availability": "Monday, Wednesday and Friday",
+					"intro": "Meets couples and parents who want to talk to each other more easily.",
+					"registration": "Placeholder: add this counselor's professional body and registration number here.",
+					"position": 30,
+					"photo": "/images/team-3.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k26",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Hannah meets couples, parents and families who want to get better at talking to each other. She keeps the conversation moving so that each person has a turn and nobody is left to fill the silence.",
+									"_key": "k26s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k27",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "She offers couples and family sessions in person, and individual sessions online.",
+									"_key": "k27s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "naomi-park",
+				"slug": "naomi-park",
+				"status": "published",
+				"data": {
+					"title": "Naomi Park",
+					"role": "Counselor",
+					"focus": "Anxiety, Stress and burnout",
+					"languages": "English, Korean",
+					"meets": "Online",
+					"availability": "Tuesday to Thursday, with some Saturday mornings",
+					"intro": "Offers online sessions for people who find it easier to talk from home.",
+					"registration": "Placeholder: add this counselor's professional body and registration number here.",
+					"position": 40,
+					"photo": "/images/team-4.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k28",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Naomi offers online sessions for people who find it easier to talk from home, or whose week leaves no time to travel. She works with anxiety and with the kind of tiredness that does not go away after a weekend.",
+									"_key": "k28s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k29",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "She sees clients in English and Korean.",
+									"_key": "k29s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "samir-haddad",
+				"slug": "samir-haddad",
+				"status": "published",
+				"data": {
+					"title": "Samir Haddad",
+					"role": "Counselor",
+					"focus": "Relationships, Life transitions",
+					"languages": "English, Arabic",
+					"meets": "In person and online",
+					"availability": "Evenings, Monday to Thursday",
+					"intro": "Sees individuals and couples around a change, a move or a new chapter at home.",
+					"registration": "Placeholder: add this counselor's professional body and registration number here.",
+					"position": 50,
+					"photo": "/images/team-5.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k30",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Samir sees individuals and couples who are going through a change: a move, a new baby, a new job or the end of something. His evening hours suit people who work during the day.",
+									"_key": "k30s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k31",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "He sees clients in English and Arabic, in person and online.",
+									"_key": "k31s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "tamara-wells",
+				"slug": "tamara-wells",
+				"status": "published",
+				"data": {
+					"title": "Tamara Wells",
+					"role": "Counselor",
+					"focus": "Grief and loss, Family",
+					"languages": "English",
+					"meets": "In person",
+					"availability": "Mornings, Tuesday to Friday",
+					"intro": "Leads the groups and meets people who are grieving or caring for family.",
+					"registration": "Placeholder: add this counselor's professional body and registration number here.",
+					"position": 60,
+					"photo": "/images/team-6.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k32",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Tamara leads the eight-week groups and also meets individuals who are grieving or caring for a family member. She likes a slow start, and her first session is mostly about what you would like it to be.",
+									"_key": "k32s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k33",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "She meets clients in person, in the morning.",
+									"_key": "k33s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			}
+		],
+		"services": [
+			{
+				"id": "individual-counseling",
+				"slug": "individual-counseling",
+				"status": "published",
+				"data": {
+					"title": "Individual Counseling",
+					"summary": "Space for what matters to you.",
+					"tile_text": "Space for what matters to you.",
+					"who": "Adults who want to talk things through with someone who has no stake in the answer",
+					"format": "One to one, in person or online",
+					"length": "50 minutes",
+					"fee": "Sample fee: $120 per session",
+					"includes": "A short check-in on how the week has been\nTime to talk about what you brought, at the pace you choose\nA few minutes at the end to agree what, if anything, to think about before next time",
+					"icon": "people",
+					"featured": true,
+					"position": 10,
+					"photo": "/images/room-arch.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k10",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Individual counseling is a regular appointment with one counselor. You decide what to talk about. Some people come with a specific problem, such as a decision at work or a hard conversation at home. Others come because everything feels a bit much and they are not sure why.",
+									"_key": "k10s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k11",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "The first session is mostly conversation about what brings you in and what you would like from counseling. You are not expected to have it worked out. If the counselor is not the right fit, you can ask us to suggest someone else.",
+									"_key": "k11s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k12",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Most people meet weekly or every two weeks. You can pause or stop whenever you like, and you do not need to book a block of sessions in advance.",
+									"_key": "k12s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "couples-counseling",
+				"slug": "couples-counseling",
+				"status": "published",
+				"data": {
+					"title": "Couples Counseling",
+					"summary": "Stronger connection starts here.",
+					"tile_text": "Stronger connection starts here.",
+					"who": "Partners who want help talking to each other, whatever the stage of the relationship",
+					"format": "Two people and one counselor, in person or online",
+					"length": "60 minutes",
+					"fee": "Sample fee: $150 per session",
+					"includes": "A first session where each of you says what you would like to be different\nTurn-taking exercises for the conversations that tend to go wrong\nTime at the end to agree on one small thing to try before next week",
+					"icon": "leaf",
+					"featured": true,
+					"position": 20,
+					"photo": "/images/room-right.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k13",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Couples counseling gives two people a set time to talk with a third person in the room. The counselor does not take sides and does not decide who is right. The aim is for each of you to be heard and for the two of you to find a way of talking that you can use at home.",
+									"_key": "k13s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k14",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Couples come at every stage: before moving in together, after a baby, after an argument that will not go away, or when things are fine but quiet. You do not both need to feel the same way about being there.",
+									"_key": "k14s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k15",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "If one of you would rather start alone, individual counseling is a good first step. If you are afraid of your partner, tell us in a call or a message and we will talk about other options before anything else.",
+									"_key": "k15s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "family-counseling",
+				"slug": "family-counseling",
+				"status": "published",
+				"data": {
+					"title": "Family Counseling",
+					"summary": "A shared place for the hard conversations at home.",
+					"tile_text": "A shared place for the hard\nconversations at home.",
+					"who": "Parents, teens and older children who want help talking to each other",
+					"format": "Two or more family members, in person",
+					"length": "60 minutes",
+					"fee": "Sample fee: $150 per session",
+					"includes": "A first session to hear what each person would like to change\nGround rules so that everyone gets a turn to speak\nAn agreed plan for the next few weeks, written down in plain words",
+					"icon": "family",
+					"featured": false,
+					"position": 30,
+					"photo": "/images/room-left.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k16",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Family counseling brings together the people who live in the same house, or who are closely involved in it. We usually start with the parents and the teen or older child in the same room, then decide together who should come next.",
+									"_key": "k16s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k17",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Children under 12 are better seen through a parent first. Ask us when you get in touch and we will explain how that works.",
+									"_key": "k17s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "life-transitions",
+				"slug": "life-transitions",
+				"status": "published",
+				"data": {
+					"title": "Life Transitions",
+					"summary": "Compassionate support for what's next.",
+					"tile_text": "Compassionate support\nfor what's next.",
+					"who": "Anyone facing a change, a loss or a decision that has made things feel uncertain",
+					"format": "One to one, in person or online",
+					"length": "50 minutes",
+					"fee": "Sample fee: $120 per session",
+					"includes": "A conversation about what is changing and what is not\nSpace for the feelings that come with it, including the unexpected ones\nA look at the next few weeks and what would make them easier",
+					"icon": "sun",
+					"featured": true,
+					"position": 40,
+					"photo": "/images/room-table.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k18",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "A change in work, a move, a new baby, retirement, the end of a relationship or the loss of someone close can leave you unsure where you stand. Life transitions counseling is for the weeks and months around a change like that.",
+									"_key": "k18s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k19",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Sessions are the same as individual counseling, with a focus on the change you are in. Some people come for a handful of sessions and some stay longer. It is up to you.",
+									"_key": "k19s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "group-sessions",
+				"slug": "group-sessions",
+				"status": "published",
+				"data": {
+					"title": "Group Sessions",
+					"summary": "Eight weekly evenings with a small circle of people.",
+					"tile_text": "Eight weekly evenings\nwith a small circle of people.",
+					"who": "Adults who would like to talk with others in a similar spot",
+					"format": "Six to eight people and two counselors, in person",
+					"length": "90 minutes, weekly for eight weeks",
+					"fee": "Sample fee: $45 per session",
+					"includes": "A short opening round where everyone says how they are\nOne topic for the evening, introduced by a counselor\nOpen conversation, with no pressure to speak\nA closing round and a reminder of the ground rules",
+					"icon": "circle",
+					"featured": false,
+					"position": 50,
+					"photo": "/images/room-session.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k20",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Groups meet weekly for eight weeks. Each group is led by two counselors and is limited to eight people. A group is not a class and nobody is asked to share more than they want to.",
+									"_key": "k20s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k21",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Topics change from term to term, for example managing stress, or finding your feet after a big change. Each term is announced on the services page and by email. Everything said in the group stays in the group, and we go over the ground rules in the first meeting.",
+									"_key": "k21s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			}
+		],
+		"posts": [
+			{
+				"id": "what-to-expect-from-a-first-session",
+				"slug": "what-to-expect-from-a-first-session",
+				"status": "published",
+				"data": {
+					"title": "What to expect from a first session",
+					"excerpt": "Nothing is expected of you except showing up. Here is what the 50 minutes usually look like.",
+					"category": "Starting counseling",
+					"posted": "2026-09-18",
+					"read_time": "4 min read",
+					"photo": "/images/room-session.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k34",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "The first session is mostly a conversation. Your counselor will ask what brings you in, what you have tried already and what you would like to be different. There are no wrong answers and you do not need to have prepared anything.",
+									"_key": "k34s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k35",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Before you arrive",
+									"_key": "k35s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k36",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Come a few minutes early if you are visiting the office. The waiting room has a kettle and a jug of water. If you are meeting online, test your camera and sound beforehand and find somewhere you will not be interrupted.",
+									"_key": "k36s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k37",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "During the session",
+									"_key": "k37s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k38",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Your counselor will explain how sessions work, how long they last and what stays private. They will also say when they would need to share something, for example if someone is at risk of serious harm. You can ask questions at any point.",
+									"_key": "k38s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k39",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "At the end",
+									"_key": "k39s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k40",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "In the last few minutes you will agree whether to meet again and when. You can decide the next day if you would rather not. Some people find it takes two or three sessions to know whether a counselor is right for them.",
+									"_key": "k40s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "how-we-match-you-with-a-counselor",
+				"slug": "how-we-match-you-with-a-counselor",
+				"status": "published",
+				"data": {
+					"title": "How we match you with a counselor",
+					"excerpt": "What we ask, what we do with the answers and how to ask for someone different.",
+					"category": "Starting counseling",
+					"posted": "2026-09-04",
+					"read_time": "3 min read",
+					"photo": "/images/room-arch.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k41",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "When you send a request we read it, then suggest one or two counselors. We look at what you are hoping for, the days and times that suit you, whether you would like to meet in person or online and any language you would prefer to speak.",
+									"_key": "k41s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k42",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What helps us",
+									"_key": "k42s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k43",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "A line or two about what you are looking for is plenty. You do not need to describe your situation in detail, and please do not put anything private in an email. You can say more when you meet.",
+									"_key": "k43s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k44",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "If it is not the right fit",
+									"_key": "k44s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k45",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Tell us. We will suggest someone else, and you do not have to explain why. A good match matters more than getting started quickly.",
+									"_key": "k45s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "online-or-in-person",
+				"slug": "online-or-in-person",
+				"status": "published",
+				"data": {
+					"title": "Online or in person: how to choose",
+					"excerpt": "Both work for most people. A few questions to help you decide.",
+					"category": "Starting counseling",
+					"posted": "2026-08-21",
+					"read_time": "3 min read",
+					"photo": "/images/room-table.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k46",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Counseling by video and counseling in a room are different experiences, and neither is better for everyone. Here are a few things to think about.",
+									"_key": "k46s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k47",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Online suits you if",
+									"_key": "k47s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k48",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Travel is hard, your hours are unpredictable or you feel more at ease in your own space. You will need a private spot, a steady connection and headphones if others are at home.",
+									"_key": "k48s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k49",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "In person suits you if",
+									"_key": "k49s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k50",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "You like to leave home for the hour, you do not have a private place to talk or you find screens tiring. Couples and families often prefer a shared room.",
+									"_key": "k50s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k51",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "You can change",
+									"_key": "k51s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k52",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Most counselors here offer both. Start one way and switch if it is not working.",
+									"_key": "k52s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "talking-to-a-partner-about-couples-counseling",
+				"slug": "talking-to-a-partner-about-couples-counseling",
+				"status": "published",
+				"data": {
+					"title": "Talking to a partner about couples counseling",
+					"excerpt": "How to raise it without it sounding like a complaint.",
+					"category": "Relationships",
+					"posted": "2026-08-07",
+					"read_time": "4 min read",
+					"photo": "/images/room-right.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k53",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Suggesting couples counseling can feel like saying the relationship is in trouble. It does not have to. Many couples come because they want to talk better, not because something has broken.",
+									"_key": "k53s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k54",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Choose the moment",
+									"_key": "k54s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k55",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Not in the middle of an argument and not late at night. A walk or a weekend morning works better.",
+									"_key": "k55s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k56",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Say what you would like, not what is wrong",
+									"_key": "k56s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k57",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "\"I would like us to find it easier to talk about money\" lands differently from \"you never listen\". Keep it to one sentence.",
+									"_key": "k57s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k58",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Let them think",
+									"_key": "k58s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k59",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Your partner may need a day or a week. You can offer to start with a call to ask questions, or to look at the team page together.",
+									"_key": "k59s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "a-ten-minute-reset",
+				"slug": "a-ten-minute-reset",
+				"status": "published",
+				"data": {
+					"title": "A ten minute reset for a hard day",
+					"excerpt": "A small routine to try when everything has piled up. It is not treatment.",
+					"category": "Everyday wellbeing",
+					"posted": "2026-07-24",
+					"read_time": "3 min read",
+					"photo": "/images/lounge-detail.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k60",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "This is not a replacement for counseling, and it will not fix a hard week. It is a short routine some of our counselors suggest for the end of a long day.",
+									"_key": "k60s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k61",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Minutes one to three",
+									"_key": "k61s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k62",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Put your phone in another room. Make a hot drink and drink it sitting down.",
+									"_key": "k62s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k63",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Minutes four to seven",
+									"_key": "k63s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k64",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Write down everything still on your mind. Do not sort it. Then draw a line under the list.",
+									"_key": "k64s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k65",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Minutes eight to ten",
+									"_key": "k65s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k66",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Pick the one thing that has to happen tomorrow and write it on a separate piece of paper. The rest can wait.",
+									"_key": "k66s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			},
+			{
+				"id": "supporting-a-friend",
+				"slug": "supporting-a-friend",
+				"status": "published",
+				"data": {
+					"title": "Supporting a friend who is having a hard time",
+					"excerpt": "What helps, what does not and when to suggest talking to someone.",
+					"category": "Relationships",
+					"posted": "2026-07-10",
+					"read_time": "4 min read",
+					"photo": "/images/room-left.webp",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "k67",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "When a friend is struggling it is easy to rush into advice. Often the most useful thing is to listen for longer than feels comfortable.",
+									"_key": "k67s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k68",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What tends to help",
+									"_key": "k68s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k69",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Ask how they are and wait. Say what you have noticed without judging it. Offer something concrete, like a walk on Thursday or dinner on Sunday.",
+									"_key": "k69s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k70",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What tends not to",
+									"_key": "k70s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k71",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Telling them it could be worse, fixing it for them or making it about your own experience.",
+									"_key": "k71s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k72",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Mentioning counseling",
+									"_key": "k72s"
+								}
+							],
+							"markDefs": []
+						},
+						{
+							"_type": "block",
+							"_key": "k73",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "You can say that you have heard it helps to talk to someone and that you would happily help them look for a counselor. If you are worried about their safety, encourage them to contact a crisis line or emergency services now.",
+									"_key": "k73s"
+								}
+							],
+							"markDefs": []
+						}
+					]
+				}
+			}
+		],
+		"steps": [
+			{
+				"id": "tell-us",
+				"slug": "tell-us",
+				"status": "published",
+				"data": {
+					"title": "Tell us what you are looking for",
+					"text": "Send a short request with the days that suit you and whether you would like to meet in person or online. Leave out the details. They can wait until you meet.",
+					"position": 10
+				}
+			},
+			{
+				"id": "we-suggest",
+				"slug": "we-suggest",
+				"status": "published",
+				"data": {
+					"title": "We suggest one or two counselors",
+					"text": "We reply within two working days with names, a few lines about each and the times they have free.",
+					"position": 20
+				}
+			},
+			{
+				"id": "first-session",
+				"slug": "first-session",
+				"status": "published",
+				"data": {
+					"title": "Book a first session",
+					"text": "Pick the counselor you like the sound of. If it does not feel right after the first meeting, we will suggest someone else.",
+					"position": 30
+				}
+			}
+		],
+		"practice": [
+			{
+				"id": "orchard-row",
+				"slug": "orchard-row",
+				"status": "published",
+				"data": {
+					"title": "Counseling Collective",
+					"phone": "(555) 010-0148",
+					"email": "hello@counselingcollective.example",
+					"address": "38 Orchard Row, Suite 2\nWillowmere",
+					"hours": "Monday to Thursday | 9:00 am to 7:00 pm\nFriday | 9:00 am to 3:00 pm\nSaturday | By appointment\nSunday | Closed",
+					"response": "We reply to requests within two working days.",
+					"contact_note": "Please do not share detailed personal information by email or in this form. Say who you would like to see and when suits you, and we will take it from there.",
+					"fees_note": "Individual sessions run 50 minutes. The sample fee is $120. Couples and family sessions run 60 minutes at $150. All figures are placeholders for you to replace.",
+					"sliding_note": "A few reduced-fee places are held each month for people who would otherwise not be able to come. Ask when you get in touch. You do not need to explain why."
+				}
+			}
+		]
+	}
+}

@@ -1,0 +1,20 @@
+---
+import { list, photoAlt, photoSrc, teamHref } from "../lib/collective";
+
+interface Props {
+	member: { data: Record<string, any>; edit?: Record<string, any> };
+	eager?: boolean;
+}
+const { member, eager = false } = Astro.props;
+const d = member.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<a class="counselor" href={teamHref(d as { slug: string | null; id: string })}>
+	<span class="counselor-photo">
+		{src && <img src={src} alt={photoAlt(d.image, d.photo, d.title)} width="320" height="400" loading={eager ? "eager" : "lazy"} />}
+	</span>
+	<span class="mono-label">{d.meets}</span>
+	<strong class="counselor-name" {...member.edit?.title}>{d.title}</strong>
+	<span class="counselor-focus">{list(d.focus).join(", ")}</span>
+</a>

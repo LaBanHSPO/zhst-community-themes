@@ -1,0 +1,189 @@
+---
+import Base from "../layouts/Base.astro";
+import { getPractice, getServices, getTeam, hoursRows, lines, telHref } from "../lib/collective";
+
+const [practiceResult, teamResult, servicesResult] = await Promise.all([getPractice(), getTeam(), getServices()]);
+for (const r of [practiceResult, teamResult, servicesResult]) {
+	if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+}
+const { practice } = practiceResult;
+const team = teamResult.entries;
+const services = servicesResult.entries;
+const rows = hoursRows(practice.hours);
+const address = lines(practice.address);
+
+// ?counselor=<slug> and ?service=<slug> pre-select the lists (links from team and service pages).
+const wantedCounselor = Astro.url.searchParams.get("counselor");
+const wantedService = Astro.url.searchParams.get("service");
+const keyOf = (d: { slug: string | null; id: string }) => d.slug ?? d.id;
+const counselorChoice = team.find((m) => keyOf(m.data) === wantedCounselor);
+const serviceChoice = services.find((s) => keyOf(s.data) === wantedService);
+const formats = [
+	{ value: "No preference", label: "No preference" },
+	{ value: "In person at the office", label: "In person at the office" },
+	{ value: "Online by video", label: "Online by video" },
+];
+---
+
+<Base
+	title="Contact"
+	description="Ask Counseling Collective for a first session: choose a counselor and service, say when you are free and whether you prefer in person or online. Email, phone and address are always listed. Please do not share detailed personal information."
+>
+	<div class="contact">
+		<section class="contact-panel" aria-labelledby="contact-title">
+			<p class="mono-label">Contact</p>
+			<h1 id="contact-title" class="display display-xl">Find your counselor.</h1>
+			<p class="lede">Choose someone from the team or leave it to us. Tell us when you are free. {practice.response ?? ""}</p>
+
+			<div class="notice" role="note">
+				<strong>Please keep it brief.</strong>{" "}
+				{practice.contact_note ?? "Please do not share detailed personal information by email or in this form."}
+			</div>
+			<div class="notice notice-crisis" role="note">
+				<strong>If you are in crisis or at risk,</strong> contact your local emergency number or a crisis line now. The practice can't respond urgently.
+			</div>
+
+			<form
+				class="contact-form"
+				data-contact-form
+				data-email={practice.email}
+				action={practice.email ? `mailto:${practice.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field">
+						<label for="c-name">Your name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field">
+						<label for="c-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field">
+						<label for="c-format">In person or online?</label>
+						<select id="c-format" name="format">
+							{formats.map((o) => <option value={o.value}>{o.label}</option>)}
+						</select>
+					</div>
+					<div class="field">
+						<label for="c-counselor">Counselor</label>
+						<select id="c-counselor" name="counselor">
+							<option value="No preference, please suggest someone">No preference, please suggest someone</option>
+							{team.map((m) => <option value={m.data.title} selected={counselorChoice?.data.id === m.data.id}>{m.data.title}</option>)}
+						</select>
+					</div>
+					<div class="field">
+						<label for="c-service">Service</label>
+						<select id="c-service" name="service">
+							<option value="Not sure yet">Not sure yet</option>
+							{services.map((s) => <option value={s.data.title} selected={serviceChoice?.data.id === s.data.id}>{s.data.title}</option>)}
+						</select>
+					</div>
+					<div class="field full">
+						<label for="c-times">Preferred days and times</label>
+						<input id="c-times" name="times" type="text" placeholder="For example: weekday evenings, or Tuesday and Thursday mornings" required />
+						<span class="field-error" data-error-for="c-times"></span>
+					</div>
+					<div class="field full">
+						<label for="c-note">Anything we should know? <span class="optional">(optional)</span></label>
+						<textarea id="c-note" name="note" rows="4" maxlength="300" placeholder="A sentence is plenty, for example a language you prefer. Please leave out personal detail."></textarea>
+					</div>
+				</div>
+				<button class="btn btn-green btn-block" type="submit"><span>Send my request</span></button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{practice.email && <>Write to <a href={`mailto:${practice.email}`}>{practice.email}</a> with your name, the counselor you would like and the times that suit you.</>}
+					</noscript>
+				</p>
+			</form>
+		</section>
+
+		<aside class="contact-aside">
+			<img src="/images/room-arch.webp" alt="A counselor in a beige jacket gestures as she talks, seated in a cream armchair in front of a green arch and an olive tree" width="540" height="500" />
+			<div class="contact-details">
+				<h2>Prefer to write or call?</h2>
+				<p class="detail-line">
+					{practice.email && <a href={`mailto:${practice.email}`}>{practice.email}</a>}
+					{practice.phone && <a href={telHref(practice.phone)}>{practice.phone}</a>}
+					{address.length > 0 && <span>{address.map((l, i) => (i === 0 ? <>{l}</> : <><br />{l}</>))}</span>}
+				</p>
+				<h3 class="mini-title">Front desk hours</h3>
+				<dl class="hours">
+					{rows.map((r) => <div><dt>{r.day}</dt><dd>{r.time}</dd></div>)}
+				</dl>
+				{practice.response && <p class="small">{practice.response}</p>}
+			</div>
+		</aside>
+	</div>
+</Base>
+
+<script>
+	// Compose an email to the practice; nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>("[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? "Please fill this in."
+						: input.getAttribute("type") === "email"
+							? "Please enter a valid email address."
+							: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online requests are not available right now. Please call instead.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const subject = `Request to find a counselor: ${get("name")}`;
+			const body = [
+				"Hello,",
+				"",
+				"I would like to ask for a first session.",
+				"",
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				`Counselor: ${get("counselor")}`,
+				`Service: ${get("service")}`,
+				`In person or online: ${get("format")}`,
+				`Preferred days and times: ${get("times")}`,
+				"",
+				get("note") ? `Note: ${get("note")}` : "",
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this request ready to send. It is only sent when you send that email. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

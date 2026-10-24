@@ -1,0 +1,108 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getServices, lines, photoAlt, photoSrc, serviceHref } from "../../lib/collective";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: service, cacheHint } = await getEmDashEntry("services", slug);
+if (!service) return Astro.rewrite("/404");
+
+const [allResult, settings] = await Promise.all([getServices(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(service, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = service.data;
+const cover = photoSrc(d.image, d.photo);
+const key = d.slug ?? d.id;
+const others = allResult.entries.filter((s) => s.data.id !== d.id);
+const hasBody = Boolean(d.content && d.content.length > 0);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "services", id: d.id, slug }}
+	current="/services"
+>
+	<header class="detail-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/services">Services</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class="detail-grid">
+				<div class="detail-copy">
+					<p class="mono-label">Service</p>
+					<h1 class="display display-xl" {...service.edit.title}>{d.title}</h1>
+					<p class="lede">{d.summary}</p>
+					<dl class="facts">
+						{d.who && <div><dt>Who it is for</dt><dd>{d.who}</dd></div>}
+						{d.format && <div><dt>Format</dt><dd>{d.format}</dd></div>}
+						{d.length && <div><dt>Length</dt><dd>{d.length}</dd></div>}
+						{d.fee && <div><dt>Fee</dt><dd>{d.fee}</dd></div>}
+					</dl>
+					<p class="detail-actions">
+						<a class="btn btn-green" href={`/contact?service=${encodeURIComponent(key)}`}><span>Ask about this service</span><Arrow /></a>
+					</p>
+				</div>
+				{cover && <img class="detail-cover" src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="800" height="680" fetchpriority="high" />}
+			</div>
+		</div>
+	</header>
+
+	<section class="detail-body">
+		<div class="wrap detail-body-grid">
+			<div class="prose">
+				{hasBody ? <PortableText value={d.content} /> : <p>{d.summary}</p>}
+			</div>
+			{
+				lines(d.includes).length > 0 && (
+					<aside class="side-card" aria-labelledby="inc-title">
+						<h2 id="inc-title" class="side-title">What a session looks like</h2>
+						<ol class="inc-list">
+							{lines(d.includes).map((i) => <li>{i}</li>)}
+						</ol>
+					</aside>
+				)
+			}
+		</div>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="section more-band" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="section-head">
+						<div>
+							<p class="mono-label">More services</p>
+							<h2 id="more-title" class="section-title">Other ways to work<br />with us.</h2>
+						</div>
+						<a class="text-link" href="/services"><span>All services</span><Arrow /></a>
+					</div>
+					<ul class="more-list">
+						{others.map((s) => (
+							<li>
+								<a href={serviceHref(s.data)}>
+									<strong>{s.data.title}</strong>
+									<span>{s.data.summary}</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+</Base>

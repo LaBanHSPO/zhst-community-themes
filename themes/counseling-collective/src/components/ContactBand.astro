@@ -1,0 +1,37 @@
+---
+import Arrow from "./Arrow.astro";
+import { lines, telHref } from "../lib/collective";
+import type { PracticeData } from "../lib/collective";
+
+interface Props {
+	practice: PracticeData;
+	title?: string;
+	text?: string;
+}
+const {
+	practice,
+	title = "Ready when you are.",
+	text = "Tell us a little about what you are looking for and when suits you. We reply within two working days.",
+} = Astro.props;
+const address = lines(practice.address);
+---
+
+<section class="band" aria-labelledby="band-title">
+	<div class="band-inner">
+		<div class="band-copy">
+			<p class="mono-label mono-label-light">Get in touch</p>
+			<h2 id="band-title" class="band-title">{title}</h2>
+			<p class="band-text">{text}</p>
+			<p class="band-actions">
+				<a class="btn btn-light" href="/team"><span>Find your counselor</span><Arrow /></a>
+				<a class="band-link" href="/contact">Send a request</a>
+			</p>
+		</div>
+		<div class="band-side">
+			{practice.phone && <p><span class="mono-label mono-label-light">Phone</span><a href={telHref(practice.phone)}>{practice.phone}</a></p>}
+			{practice.email && <p><span class="mono-label mono-label-light">Email</span><a href={`mailto:${practice.email}`}>{practice.email}</a></p>}
+			{address.length > 0 && <p><span class="mono-label mono-label-light">Office</span>{address.map((l, i) => (i === 0 ? <>{l}</> : <><br />{l}</>))}</p>}
+			<p class="band-crisis">If you are in crisis or at risk, contact your local emergency number or a crisis line now. We cannot respond urgently.</p>
+		</div>
+	</div>
+</section>
