@@ -1,0 +1,140 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import ReleaseCard from "../../components/ReleaseCard.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { audioSrc, getArtist, getReleases, lines, photoAlt, photoSrc } from "../../lib/artist";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: release, cacheHint } = await getEmDashEntry("releases", slug);
+if (!release) return Astro.rewrite("/404");
+
+const [allResult, artistResult, settings] = await Promise.all([getReleases(), getArtist(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(artistResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(release, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = release.data;
+const cover = photoSrc(d.cover, d.cover_photo);
+const tracks = d.tracks ?? [];
+const hasAudio = tracks.some((t) => audioSrc(t));
+const hasBody = Boolean(d.content && d.content.length > 0);
+const credits = lines(d.credits);
+const others = allResult.entries.filter((r) => r.data.id !== d.id).slice(0, 3);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.tagline}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "releases", id: d.id, slug }}
+	current="/music"
+>
+	<header class="release-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/music">Music</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class="release-head-grid">
+				<div class="release-head-cover">
+					{cover && <img src={cover} alt={photoAlt(d.cover, d.cover_photo, `Cover of ${d.title}`)} width="688" height="628" fetchpriority="high" />}
+				</div>
+				<div class="release-head-copy">
+					<p class="eyebrow">{[d.kind, d.year].filter(Boolean).join(" · ")}</p>
+					<h1 class="display display-xl" {...release.edit.title}>{d.title}</h1>
+					<p class="release-tagline">{d.tagline}</p>
+					{d.summary && <p class="release-summary">{d.summary}</p>}
+					{
+						tracks.length > 0 && (
+							<a class="play-link" href="#tracks">
+								<span class="play-circle" aria-hidden="true">
+									<svg width="14" height="16" viewBox="0 0 14 16"><path d="M1 0.5v15l12.5-7.500z" fill="currentColor" /></svg>
+								</span>
+								<span>{hasAudio ? "Listen now" : "See the tracklist"}</span>
+							</a>
+						)
+					}
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<section class="release-section" id="tracks" aria-labelledby="tracks-title">
+		<div class="wrap release-section-grid">
+			<h2 id="tracks-title" class="release-section-label eyebrow">Tracklist</h2>
+			<div>
+				{
+					tracks.length > 0 ? (
+						<ol class="tracklist">
+							{tracks.map((t, i) => {
+								const src = audioSrc(t);
+								return (
+									<li class="tracklist-row" id={`track-${i + 1}`}>
+										<span class="track-no">{String(i + 1).padStart(2, "0")}</span>
+										<span class="track-title">{t.title}</span>
+										<span class="track-time">{t.duration}</span>
+										{src ? (
+											<audio class="track-audio" controls preload="none" src={src} aria-label={`Play ${t.title}`}></audio>
+										) : (
+											<span class="track-note">No audio attached</span>
+										)}
+									</li>
+								);
+							})}
+						</ol>
+					) : (
+						<p class="empty-note">The tracklist will be added soon.</p>
+					)
+				}
+				{!hasAudio && tracks.length > 0 && <p class="small tracklist-foot">Audio files can be attached to each track in the CMS; until then this page lists the songs and their lengths.</p>}
+			</div>
+		</div>
+	</section>
+
+	{
+		hasBody && (
+			<section class="release-section" aria-labelledby="notes-title">
+				<div class="wrap release-section-grid">
+					<h2 id="notes-title" class="release-section-label eyebrow">Liner notes</h2>
+					<div class="prose">
+						<PortableText value={d.content} />
+						{credits.length > 0 && <p class="credits">{credits.join(" ")}</p>}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		others.length > 0 && (
+			<section class="band band-tint" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">More music</p>
+							<h2 id="more-title" class="display">Keep listening.</h2>
+						</div>
+						<a class="text-link" href="/music"><span>All music</span><Arrow /></a>
+					</div>
+					<ul class="release-grid">
+						{others.map((r) => <li><ReleaseCard release={r.data} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<ContactBand artist={artistResult.artist} />
+</Base>

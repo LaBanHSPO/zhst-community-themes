@@ -1,0 +1,61 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import ContactBand from "../components/ContactBand.astro";
+import PageHead from "../components/PageHead.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getArtist } from "../lib/artist";
+
+const [{ entry: page, cacheHint }, artistResult, settings] = await Promise.all([
+	getEmDashEntry("pages", "about"),
+	getArtist(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	if (cacheHint) Astro.cache.set(cacheHint);
+	Astro.cache.set(artistResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page ? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" }) : null;
+const hasBody = Boolean(page?.data.content && page.data.content.length > 0);
+---
+
+<Base
+	title={seo?.title ?? "About"}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? page?.data.intro ?? "About nova, a solo singer-songwriter."}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<PageHead
+		id="about-title"
+		eyebrow={page?.data.eyebrow ?? "About"}
+		title={page?.data.title ?? "Songs for brighter days."}
+		intro={page?.data.intro}
+		edit={page ? { ...page.edit.title } : {}}
+	/>
+
+	<section class="about-story">
+		<figure class="about-photo">
+			<img
+				src="/images/hero-home.webp"
+				alt="nova leaning on an acoustic guitar beside a lamp-lit window, looking at the camera"
+				width="1448"
+				height="681"
+				loading="lazy"
+			/>
+			<figcaption>nova, in the Lantern Room, Larkfield</figcaption>
+		</figure>
+		<div class="prose">
+			{hasBody ? <PortableText value={page!.data.content} /> : <p>The story is coming soon.</p>}
+			<p class="about-links">
+				<a class="btn btn-outline" href="/music"><span>Listen to the music</span><Arrow /></a>
+				<a class="text-link" href="/tour"><span>See the tour</span><Arrow /></a>
+			</p>
+		</div>
+	</section>
+
+	<ContactBand artist={artistResult.artist} />
+</Base>

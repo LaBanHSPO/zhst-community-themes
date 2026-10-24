@@ -1,0 +1,50 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import ShowRow from "../components/ShowRow.astro";
+import ContactBand from "../components/ContactBand.astro";
+import { getArtist, getShows, splitShows } from "../lib/artist";
+
+const [showsResult, artistResult] = await Promise.all([getShows(), getArtist()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(showsResult.cacheHint);
+	Astro.cache.set(artistResult.cacheHint);
+}
+// Upcoming vs past is decided against today's date on every request.
+const { upcoming, past } = splitShows(showsResult.entries);
+---
+
+<Base title="Tour" description="Upcoming and past shows by nova: dates, cities, venues and ticket links.">
+	<PageHead
+		id="tour-title"
+		eyebrow="Tour"
+		title="Come and sit a while."
+		intro="Small rooms, close to the stage. Dates are added here first."
+	/>
+	<section class="tour" aria-labelledby="upcoming-title">
+		<div class="wrap">
+			<h2 id="upcoming-title" class="tour-label eyebrow">Upcoming</h2>
+			{
+				upcoming.length > 0 ? (
+					<ul class="show-list">
+						{upcoming.map((s) => <ShowRow show={s.data} edit={{ ...s.edit.title }} />)}
+					</ul>
+				) : (
+					<p class="empty-note">No shows are announced right now. Check back soon, or <a href="/contact?topic=booking">ask about booking a night</a>.</p>
+				)
+			}
+			{
+				past.length > 0 && (
+					<>
+						<h2 class="tour-label tour-label-past eyebrow">Past shows</h2>
+						<ul class="show-list">
+							{past.map((s) => <ShowRow show={s.data} past />)}
+						</ul>
+					</>
+				)
+			}
+			<p class="tour-foot small">Want nova in your town? <a href="/contact?topic=booking">Write to the booking desk</a>.</p>
+		</div>
+	</section>
+	<ContactBand artist={artistResult.artist} />
+</Base>

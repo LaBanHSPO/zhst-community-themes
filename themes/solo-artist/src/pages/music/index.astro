@@ -1,0 +1,37 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import ReleaseCard from "../../components/ReleaseCard.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import { getArtist, getReleases } from "../../lib/artist";
+
+const [releasesResult, artistResult] = await Promise.all([getReleases(), getArtist()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(releasesResult.cacheHint);
+	Astro.cache.set(artistResult.cacheHint);
+}
+const releases = releasesResult.entries;
+---
+
+<Base title="Music" description="Every release by nova: the EP Higher Ground, the single Moon Room, the album Still Here and Lamp Light Sessions, with tracklists.">
+	<PageHead
+		id="music-title"
+		eyebrow="Music"
+		title="Songs for brighter days."
+		intro="Singles, EPs and albums, newest first. Open a release for the full tracklist."
+	/>
+	<section class="music-list" aria-labelledby="music-title">
+		<div class="wrap">
+			{
+				releases.length === 0 ? (
+					<p class="empty-note">New music is on its way. In the meantime, say hello.</p>
+				) : (
+					<ul class="release-grid release-grid-wide">
+						{releases.map((r) => <li><ReleaseCard release={r.data} edit={{ ...r.edit.title }} /></li>)}
+					</ul>
+				)
+			}
+		</div>
+	</section>
+	<ContactBand artist={artistResult.artist} />
+</Base>

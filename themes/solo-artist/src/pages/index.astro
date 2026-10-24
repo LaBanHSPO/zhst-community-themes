@@ -1,0 +1,146 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import ContactBand from "../components/ContactBand.astro";
+import ReleaseCard from "../components/ReleaseCard.astro";
+import ShowRow from "../components/ShowRow.astro";
+import { getArtist, getReleases, getShows, photoAlt, photoSrc, pickFeatured, releaseHref, splitShows } from "../lib/artist";
+
+const [releasesResult, showsResult, artistResult] = await Promise.all([getReleases(), getShows(), getArtist()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(releasesResult.cacheHint);
+	Astro.cache.set(showsResult.cacheHint);
+	Astro.cache.set(artistResult.cacheHint);
+}
+const releases = releasesResult.entries;
+const featured = pickFeatured(releases);
+const latestLink = featured ? releaseHref(featured.data) : "/music";
+const cover = featured ? photoSrc(featured.data.cover, featured.data.cover_photo) : undefined;
+const tracks = featured?.data.tracks ?? [];
+const earlier = releases.filter((r) => r.data.id !== featured?.data.id).slice(0, 3);
+const { upcoming } = splitShows(showsResult.entries);
+const nextShows = upcoming.slice(0, 3);
+---
+
+<Base
+	title="Find your next favorite sound"
+	description="nova is a solo singer-songwriter. Listen to the new EP Higher Ground, see the next shows and get in touch about booking and press."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="nova leaning on an acoustic guitar beside a lamp-lit window, looking at the camera"
+			width="1448"
+			height="681"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<h1 id="hero-title" class="hero-title">Find your next<br />favorite sound.</h1>
+			<p class="hero-sub">Songs for brighter days,<br />quieter nights, and everything in between.</p>
+			<a class="btn btn-cream" href="/music"><span>Listen now</span><Arrow /></a>
+		</div>
+		<p class="hand hand-top" aria-hidden="true">Music<br />Feels<br />Like<br />Home<span class="hand-stroke"></span></p>
+		<p class="hand hand-bottom" aria-hidden="true">Same<br />People<br />New<br />Songs<br /><span class="hand-sign">~ nova</span></p>
+	</section>
+
+	{
+		featured && (
+			<section class="latest" aria-labelledby="latest-title">
+				<div class="latest-grid">
+					<div class="latest-copy">
+						<p class="eyebrow">Latest release</p>
+						<h2 id="latest-title" class="latest-title" {...featured.edit.title}>{featured.data.title}</h2>
+						<p class="latest-sub">{featured.data.tagline}</p>
+						<a class="play-link" href={latestLink}>
+							<span class="play-circle" aria-hidden="true">
+								<svg width="14" height="16" viewBox="0 0 14 16"><path d="M1 0.5v15l12.5-7.500z" fill="currentColor" /></svg>
+							</span>
+							<span>Listen now</span>
+						</a>
+					</div>
+					<a class="latest-cover" href={latestLink} aria-label={`Open ${featured.data.title}`}>
+						{cover && <img src={cover} alt={photoAlt(featured.data.cover, featured.data.cover_photo, `Cover of ${featured.data.title}`)} width="688" height="628" />}
+					</a>
+					<ol class="tracks">
+						{tracks.map((t, i) => (
+							<li class:list={["track", { "is-first": i === 0 }]}>
+								<a href={`${latestLink}#track-${i + 1}`}>
+									<span class="track-mark" aria-hidden="true">{i === 0 ? "▶" : ""}</span>
+									<span class="track-no">{String(i + 1).padStart(2, "0")}</span>
+									<span class="track-title">{t.title}</span>
+									<span class="track-time">{t.duration}</span>
+								</a>
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		earlier.length > 0 && (
+			<section class="band" aria-labelledby="music-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow">Music</p>
+							<h2 id="music-title" class="display">Earlier songs.</h2>
+						</div>
+						<a class="text-link" href="/music"><span>All music</span><Arrow /></a>
+					</div>
+					<ul class="release-grid">
+						{earlier.map((r) => <li><ReleaseCard release={r.data} edit={{ ...r.edit.title }} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="band band-tint" aria-labelledby="shows-title">
+		<div class="wrap">
+			<div class="band-head">
+				<div>
+					<p class="eyebrow">On tour</p>
+					<h2 id="shows-title" class="display">Upcoming shows.</h2>
+				</div>
+				<a class="text-link" href="/tour"><span>All dates</span><Arrow /></a>
+			</div>
+			{
+				nextShows.length > 0 ? (
+					<ul class="show-list">
+						{nextShows.map((s) => <ShowRow show={s.data} edit={{ ...s.edit.title }} />)}
+					</ul>
+				) : (
+					<p class="empty-note">No shows are announced right now. New dates are posted here first.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<section class="story" aria-labelledby="story-title">
+		<div class="story-grid">
+			<img
+				class="story-photo"
+				src="/images/portrait-moon.webp"
+				alt="nova sitting on a rug in front of a glowing full moon, one arm resting on her knee"
+				width="760"
+				height="940"
+				loading="lazy"
+			/>
+			<div class="story-copy">
+				<p class="eyebrow">The story</p>
+				<h2 id="story-title" class="display">Small songs, written late.</h2>
+				<p>
+					nova writes songs the way some people keep a diary: quietly, usually late, and mostly for herself. A few of them turned out to be for other people too.
+				</p>
+				<p class="story-hand hand" aria-hidden="true">Same people, new songs.</p>
+				<a class="btn btn-outline" href="/about"><span>Read her story</span><Arrow /></a>
+			</div>
+		</div>
+	</section>
+
+	<ContactBand artist={artistResult.artist} />
+</Base>

@@ -1,0 +1,20 @@
+---
+import { photoAlt, photoSrc, releaseHref } from "../lib/artist";
+import type { Release } from "../lib/artist";
+
+interface Props {
+	release: Release;
+	edit?: Record<string, unknown>;
+}
+const { release, edit = {} } = Astro.props;
+const src = photoSrc(release.cover, release.cover_photo);
+---
+
+<a class="release-card" href={releaseHref(release)}>
+	<span class="release-card-cover">
+		{src && <img src={src} alt={photoAlt(release.cover, release.cover_photo, `Cover of ${release.title}`)} width="640" height="640" loading="lazy" />}
+	</span>
+	<span class="release-card-meta">{[release.kind, release.year].filter(Boolean).join(" · ")}</span>
+	<span class="release-card-title" {...edit}>{release.title}</span>
+	<span class="release-card-line">{release.tagline}</span>
+</a>

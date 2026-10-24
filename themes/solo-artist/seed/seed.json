@@ -1,0 +1,884 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Solo Artist",
+    "description": "A moody, cinematic solo-artist theme: homepage with the latest release and tracklist, a music collection with release pages and optional audio players, a tour collection split into upcoming and past shows, an about page and a booking and press contact page, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "nova",
+    "tagline": "Solo Artist"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "releases",
+      "label": "Music",
+      "labelSingular": "Release",
+      "urlPattern": "/music/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "kind",
+          "label": "Type",
+          "type": "select",
+          "defaultValue": "Single",
+          "validation": {
+            "options": [
+              "Single",
+              "EP",
+              "Album"
+            ]
+          }
+        },
+        {
+          "slug": "year",
+          "label": "Year",
+          "type": "string"
+        },
+        {
+          "slug": "tagline",
+          "label": "One-line description (shown under the title)",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "Short description (plain paragraph)",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "featured",
+          "label": "Latest release (shown on the homepage)",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order (newest first)",
+          "type": "integer"
+        },
+        {
+          "slug": "cover",
+          "label": "Cover (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "cover_photo",
+          "label": "Bundled cover path",
+          "type": "string"
+        },
+        {
+          "slug": "tracks",
+          "label": "Tracklist",
+          "type": "repeater",
+          "validation": {
+            "maxItems": 40,
+            "subFields": [
+              {
+                "slug": "title",
+                "label": "Track title",
+                "type": "string"
+              },
+              {
+                "slug": "duration",
+                "label": "Length (e.g. 3:24)",
+                "type": "string"
+              },
+              {
+                "slug": "audio",
+                "label": "Audio file (optional; leave empty if there is no audio)",
+                "type": "file"
+              }
+            ]
+          }
+        },
+        {
+          "slug": "credits",
+          "label": "Credits (plain text)",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Liner notes",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "shows",
+      "label": "Tour",
+      "labelSingular": "Show",
+      "urlPattern": "/tour",
+      "supports": [
+        "drafts",
+        "revisions",
+        "search"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Show name (e.g. City, venue)",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "city",
+          "label": "City",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "venue",
+          "label": "Venue",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "show_date",
+          "label": "Date",
+          "type": "datetime",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "slug": "doors",
+          "label": "Time (e.g. Doors 7:00 pm)",
+          "type": "string"
+        },
+        {
+          "slug": "show_status",
+          "label": "Status",
+          "type": "select",
+          "defaultValue": "on-sale",
+          "validation": {
+            "options": [
+              "on-sale",
+              "sold-out",
+              "cancelled"
+            ]
+          }
+        },
+        {
+          "slug": "ticket_url",
+          "label": "Ticket link (optional)",
+          "type": "url"
+        },
+        {
+          "slug": "note",
+          "label": "Note (optional)",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "slug": "artist",
+      "label": "Artist details",
+      "labelSingular": "Artist details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Artist name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "base",
+          "label": "Based in",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone (booking office)",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Contact email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "response",
+          "label": "Reply time (shown beside the contact form)",
+          "type": "string"
+        },
+        {
+          "slug": "contact_note",
+          "label": "Note shown beside the contact form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Music",
+          "url": "/music"
+        },
+        {
+          "type": "custom",
+          "label": "Tour",
+          "url": "/tour"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "Songs for brighter days.",
+          "eyebrow": "About",
+          "intro": "nova writes small, warm songs about staying, leaving and coming home again.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I write songs the way some people keep a diary: quietly, usually late, and mostly for myself. A few of them turned out to be for other people too, which is the nicest surprise I have had so far.",
+                  "_key": "k7s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k8",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I grew up near the sea, in a house where the radio was always on in the kitchen. I learned guitar on my grandfather's old acoustic, the one with the scratch along the side, and I still play it on every record.",
+                  "_key": "k8s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How the songs get made",
+                  "_key": "k9s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k10",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most songs start as a voice memo on a phone, a line sung to nobody on a staircase or a bus. I keep them for months, sometimes years, until a few of them find each other. Then I take them to a small studio in Larkfield and record as close to live as I can.",
+                  "_key": "k10s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Out and about",
+                  "_key": "k11s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I play small rooms: libraries, chapels, converted barns, the back rooms of friendly pubs. If you would like to bring a show to your town, or want to write about the music, the contact page has what you need.",
+                  "_key": "k12s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "press-kit",
+        "slug": "press-kit",
+        "status": "published",
+        "data": {
+          "title": "Press and booking notes",
+          "eyebrow": "Press kit",
+          "intro": "Everything a venue, promoter or writer usually asks for first.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Short bio",
+                  "_key": "k13s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "nova is a singer-songwriter from the north coast. Her songs are built from acoustic guitar, close vocals and a lot of room tone, and she has released four records since 2022: Lamp Light Sessions, Still Here, Moon Room and Higher Ground.",
+                  "_key": "k14s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The live show",
+                  "_key": "k15s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Solo with guitar, or with a piano player and a cellist for the longer rooms. A full set runs about seventy minutes. She needs one microphone, one DI, a stool and a good lamp.",
+                  "_key": "k16s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Booking and press",
+                  "_key": "k17s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Booking and press enquiries go through the contact page. Use the topic menu to choose Booking or Press so the message reaches the right desk. Replies usually take two to three working days.",
+                  "_key": "k18s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "releases": [
+      {
+        "id": "higher-ground",
+        "slug": "higher-ground",
+        "status": "published",
+        "data": {
+          "title": "Higher Ground",
+          "kind": "EP",
+          "year": "2026",
+          "tagline": "A new chapter. Familiar feelings. Brighter horizons.",
+          "summary": "Five songs written over one slow winter and recorded in a single week: acoustic guitar, a borrowed piano and a room full of lamps.",
+          "featured": true,
+          "position": 1,
+          "cover_photo": "/images/cover-higher-ground.webp",
+          "tracks": [
+            {
+              "title": "Higher Ground",
+              "duration": "3:24"
+            },
+            {
+              "title": "Let It Stay",
+              "duration": "4:01"
+            },
+            {
+              "title": "Older Now",
+              "duration": "3:38"
+            },
+            {
+              "title": "Same Sky",
+              "duration": "4:12"
+            },
+            {
+              "title": "Brighter Than Before",
+              "duration": "3:27"
+            }
+          ],
+          "credits": "Written and performed by nova. Recorded live at the Lantern Room, Larkfield. Mixed by Tomas Reyes. Mastered by Iris Calder.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Higher Ground is a record about staying where the light is. The songs were written after a long winter of small things going right: a friend who stayed on the phone, a window that finally opened, a chorus that arrived on a bus.",
+                  "_key": "k1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We recorded it in five days with the lamps on and the doors open. Most of what you hear is the first or second take, including the creak of the stool on Older Now.",
+                  "_key": "k2s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "moon-room",
+        "slug": "moon-room",
+        "status": "published",
+        "data": {
+          "title": "Moon Room",
+          "kind": "Single",
+          "year": "2025",
+          "tagline": "A slow, late-night song for the people who stay up.",
+          "summary": "A two-song single: the studio take of Moon Room and a stripped piano version recorded in one pass after midnight.",
+          "featured": false,
+          "position": 2,
+          "cover_photo": "/images/cover-moon-room.webp",
+          "tracks": [
+            {
+              "title": "Moon Room",
+              "duration": "3:46"
+            },
+            {
+              "title": "Moon Room (Piano Version)",
+              "duration": "3:12"
+            }
+          ],
+          "credits": "Written and performed by nova. Piano version recorded at the Lantern Room, Larkfield.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Moon Room began as a voice memo recorded on the stairs. The studio version keeps that hush; the piano version keeps the stairs.",
+                  "_key": "k3s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "still-here",
+        "slug": "still-here",
+        "status": "published",
+        "data": {
+          "title": "Still Here",
+          "kind": "Album",
+          "year": "2024",
+          "tagline": "Eight songs about staying put and finding the quiet good in it.",
+          "summary": "The debut album: kitchen-radio melodies, long guitar intros and a handful of songs that were never meant to be heard by anyone.",
+          "featured": false,
+          "position": 3,
+          "cover_photo": "/images/cover-still-here.webp",
+          "tracks": [
+            {
+              "title": "Still Here",
+              "duration": "3:51"
+            },
+            {
+              "title": "Paper Lanterns",
+              "duration": "3:29"
+            },
+            {
+              "title": "Slow Light",
+              "duration": "4:07"
+            },
+            {
+              "title": "Kitchen Radio",
+              "duration": "2:58"
+            },
+            {
+              "title": "Only the Weather",
+              "duration": "3:44"
+            },
+            {
+              "title": "Where the Road Bends",
+              "duration": "4:20"
+            },
+            {
+              "title": "Hum",
+              "duration": "2:41"
+            },
+            {
+              "title": "Carry Me Home",
+              "duration": "4:33"
+            }
+          ],
+          "credits": "Written and performed by nova. Produced by Tomas Reyes. Recorded at the Lantern Room, Larkfield.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k4",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Still Here is a record made at home, in a house with thin walls and good neighbours. It is the sound of one voice, one guitar and a lot of tea.",
+                  "_key": "k4s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The album was written over two years and recorded in three weeks. Carry Me Home is the oldest song on it; Hum is the newest.",
+                  "_key": "k5s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "lamp-light-sessions",
+        "slug": "lamp-light-sessions",
+        "status": "published",
+        "data": {
+          "title": "Lamp Light Sessions",
+          "kind": "EP",
+          "year": "2022",
+          "tagline": "Four first songs, recorded by one lamp in one room.",
+          "summary": "The first four songs, recorded live in a spare room with a single microphone and a lamp for company.",
+          "featured": false,
+          "position": 4,
+          "cover_photo": "/images/cover-lamp-light.webp",
+          "tracks": [
+            {
+              "title": "Lamp Light",
+              "duration": "3:15"
+            },
+            {
+              "title": "Second Coffee",
+              "duration": "3:02"
+            },
+            {
+              "title": "Window Seat",
+              "duration": "3:48"
+            },
+            {
+              "title": "Goodnight, Neighbour",
+              "duration": "4:05"
+            }
+          ],
+          "credits": "Written and performed by nova. Recorded in one evening.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k6",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "These four songs were recorded one evening in a spare room. They were never meant to be a release; a few friends asked for copies and it grew from there.",
+                  "_key": "k6s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "shows": [
+      {
+        "id": "larkfield-copper-lantern",
+        "slug": "larkfield-copper-lantern",
+        "status": "published",
+        "data": {
+          "title": "Larkfield, The Copper Lantern",
+          "city": "Larkfield",
+          "venue": "The Copper Lantern",
+          "show_date": "2026-11-12T12:00:00.000Z",
+          "doors": "Doors 7:00 pm",
+          "show_status": "on-sale",
+          "ticket_url": "https://tickets.example/nova/larkfield"
+        }
+      },
+      {
+        "id": "port-alder-fernhill",
+        "slug": "port-alder-fernhill",
+        "status": "published",
+        "data": {
+          "title": "Port Alder, Fernhill Theatre",
+          "city": "Port Alder",
+          "venue": "Fernhill Theatre",
+          "show_date": "2026-11-20T12:00:00.000Z",
+          "doors": "Doors 7:30 pm",
+          "show_status": "on-sale",
+          "ticket_url": "https://tickets.example/nova/port-alder"
+        }
+      },
+      {
+        "id": "westmere-old-mill",
+        "slug": "westmere-old-mill",
+        "status": "published",
+        "data": {
+          "title": "Westmere, The Old Mill Room",
+          "city": "Westmere",
+          "venue": "The Old Mill Room",
+          "show_date": "2026-12-05T12:00:00.000Z",
+          "doors": "Doors 7:00 pm",
+          "show_status": "sold-out",
+          "note": "A second night may be added; follow the tour page for news."
+        }
+      },
+      {
+        "id": "kestrel-hill-greenhouse",
+        "slug": "kestrel-hill-greenhouse",
+        "status": "published",
+        "data": {
+          "title": "Kestrel Hill, Greenhouse Hall",
+          "city": "Kestrel Hill",
+          "venue": "Greenhouse Hall",
+          "show_date": "2026-12-18T12:00:00.000Z",
+          "doors": "Doors 6:30 pm",
+          "show_status": "on-sale",
+          "ticket_url": "https://tickets.example/nova/kestrel-hill"
+        }
+      },
+      {
+        "id": "dunmere-chapel-arts",
+        "slug": "dunmere-chapel-arts",
+        "status": "published",
+        "data": {
+          "title": "Dunmere, Chapel Arts",
+          "city": "Dunmere",
+          "venue": "Chapel Arts",
+          "show_date": "2027-01-23T12:00:00.000Z",
+          "doors": "Doors 7:00 pm",
+          "show_status": "cancelled",
+          "note": "This show has been cancelled. Tickets are refunded by the venue."
+        }
+      },
+      {
+        "id": "ashby-cross-corner-house",
+        "slug": "ashby-cross-corner-house",
+        "status": "published",
+        "data": {
+          "title": "Ashby Cross, Corner House Studio",
+          "city": "Ashby Cross",
+          "venue": "Corner House Studio",
+          "show_date": "2027-02-06T12:00:00.000Z",
+          "doors": "Doors 7:30 pm",
+          "show_status": "on-sale",
+          "ticket_url": "https://tickets.example/nova/ashby-cross"
+        }
+      },
+      {
+        "id": "brindle-quay-salt-warehouse",
+        "slug": "brindle-quay-salt-warehouse",
+        "status": "published",
+        "data": {
+          "title": "Brindle Quay, Salt Warehouse",
+          "city": "Brindle Quay",
+          "venue": "Salt Warehouse",
+          "show_date": "2027-03-13T12:00:00.000Z",
+          "doors": "Doors 7:00 pm",
+          "show_status": "on-sale",
+          "ticket_url": "https://tickets.example/nova/brindle-quay"
+        }
+      },
+      {
+        "id": "marlow-bay-lamplighter",
+        "slug": "marlow-bay-lamplighter",
+        "status": "published",
+        "data": {
+          "title": "Marlow Bay, The Lamplighter",
+          "city": "Marlow Bay",
+          "venue": "The Lamplighter",
+          "show_date": "2026-09-19T12:00:00.000Z",
+          "doors": "Doors 7:00 pm",
+          "show_status": "on-sale"
+        }
+      },
+      {
+        "id": "oakridge-riverside-pavilion",
+        "slug": "oakridge-riverside-pavilion",
+        "status": "published",
+        "data": {
+          "title": "Oakridge, Riverside Pavilion",
+          "city": "Oakridge",
+          "venue": "Riverside Pavilion",
+          "show_date": "2026-08-08T12:00:00.000Z",
+          "doors": "Doors 5:00 pm",
+          "show_status": "on-sale"
+        }
+      },
+      {
+        "id": "thornbury-glass-barn",
+        "slug": "thornbury-glass-barn",
+        "status": "published",
+        "data": {
+          "title": "Thornbury, The Glass Barn",
+          "city": "Thornbury",
+          "venue": "The Glass Barn",
+          "show_date": "2026-06-27T12:00:00.000Z",
+          "doors": "Doors 7:00 pm",
+          "show_status": "cancelled",
+          "note": "Cancelled because of storm damage to the venue."
+        }
+      },
+      {
+        "id": "larkfield-folk-cellar",
+        "slug": "larkfield-folk-cellar",
+        "status": "published",
+        "data": {
+          "title": "Larkfield, Folk Cellar",
+          "city": "Larkfield",
+          "venue": "Folk Cellar",
+          "show_date": "2026-05-16T12:00:00.000Z",
+          "doors": "Doors 8:00 pm",
+          "show_status": "on-sale"
+        }
+      }
+    ],
+    "artist": [
+      {
+        "id": "nova",
+        "slug": "nova",
+        "status": "published",
+        "data": {
+          "title": "nova",
+          "base": "the north coast",
+          "phone": "(555) 010-0172",
+          "email": "hello@novamusic.example",
+          "response": "Every message is read by nova's small team. Replies usually take two to three working days.",
+          "contact_note": "Choose a topic so your message reaches the right desk: booking a show, press and interviews, or anything else."
+        }
+      }
+    ]
+  }
+}

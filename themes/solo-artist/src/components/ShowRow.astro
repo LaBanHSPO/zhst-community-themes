@@ -1,0 +1,41 @@
+---
+import { showParts, STATUS_LABEL } from "../lib/artist";
+import type { Show } from "../lib/artist";
+
+interface Props {
+	show: Show;
+	past?: boolean;
+	edit?: Record<string, unknown>;
+}
+const { show, past = false, edit = {} } = Astro.props;
+const when = showParts(show);
+const status = show.show_status ?? "on-sale";
+---
+
+<li class:list={["show", { "is-past": past, "is-cancelled": status === "cancelled" }]}>
+	<time class="show-date" datetime={when.iso}>
+		<span class="show-day">{when.day}</span>
+		<span class="show-month">{when.month}</span>
+		<span class="show-year">{when.year}</span>
+	</time>
+	<div class="show-where">
+		<h3 class="show-city" {...edit}>{show.city}</h3>
+		<p class="show-venue">{show.venue}{show.doors ? ` · ${show.doors}` : ""}</p>
+		{show.note && <p class="show-note">{show.note}</p>}
+	</div>
+	<div class="show-action">
+		{
+			status === "cancelled" ? (
+				<span class="tag tag-cancelled">Cancelled</span>
+			) : past ? (
+				<span class="tag tag-past">Played</span>
+			) : status === "sold-out" ? (
+				<span class="tag tag-sold">Sold out</span>
+			) : show.ticket_url ? (
+				<a class="btn btn-small" href={show.ticket_url} target="_blank" rel="noopener noreferrer"><span>Tickets</span></a>
+			) : (
+				<span class="tag">{STATUS_LABEL[status] ?? "On sale"}</span>
+			)
+		}
+	</div>
+</li>
