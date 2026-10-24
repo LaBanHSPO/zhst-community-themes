@@ -1,0 +1,48 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import InquiryBand from "../../components/InquiryBand.astro";
+import { getStudio, getWeddings, photoAlt, photoSrc, weddingHref, weddingMeta } from "../../lib/planner";
+
+const [weddingsResult, studioResult] = await Promise.all([getWeddings(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(weddingsResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const weddings = weddingsResult.entries;
+---
+
+<Base title="Our work" description="Weddings planned by Evermore: lakeside terraces, olive groves and sunset ceremonies, with the places, seasons and styles behind each day.">
+	<PageHead
+		id="work-title"
+		eyebrow="Our work"
+		title="Days we have been lucky to plan."
+		intro="A few of the weddings we have planned, from island elopements to long-table celebrations. Open one to see the story and the photographs. Names and venues are fictional sample content."
+	/>
+
+	<section class="work" aria-labelledby="work-title">
+		{
+			weddings.length === 0 ? (
+				<p class="empty-note">New weddings are on their way. In the meantime, send us a note and say hello.</p>
+			) : (
+				<ul class="wedding-grid">
+					{weddings.map((w) => {
+						const src = photoSrc(w.data.image, w.data.photo);
+						return (
+							<li>
+								<a class="wedding-card" href={weddingHref(w.data)}>
+									{src && <img src={src} alt={photoAlt(w.data.image, w.data.photo, w.data.title)} width="520" height="650" loading="lazy" />}
+									<span class="wedding-card-name" {...w.edit.title}>{w.data.title}</span>
+									<span class="wedding-card-meta">{weddingMeta(w.data)}</span>
+									{w.data.style && <span class="wedding-card-style">{w.data.style}</span>}
+								</a>
+							</li>
+						);
+					})}
+				</ul>
+			)
+		}
+	</section>
+
+	<InquiryBand studio={studioResult.studio} />
+</Base>

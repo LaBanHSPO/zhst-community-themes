@@ -1,0 +1,178 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import Icon from "../components/Icon.astro";
+import InquiryBand from "../components/InquiryBand.astro";
+import {
+	getPrinciples,
+	getServices,
+	getSteps,
+	getStudio,
+	getWeddings,
+	photoAlt,
+	photoSrc,
+	serviceHref,
+	weddingHref,
+	weddingMeta,
+} from "../lib/planner";
+
+const [servicesResult, weddingsResult, principlesResult, stepsResult, studioResult] = await Promise.all([
+	getServices(),
+	getWeddings(),
+	getPrinciples(),
+	getSteps(),
+	getStudio(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(weddingsResult.cacheHint);
+	Astro.cache.set(principlesResult.cacheHint);
+	Astro.cache.set(stepsResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const services = servicesResult.entries.slice(0, 4);
+const allWeddings = weddingsResult.entries;
+const featured = allWeddings.filter((w) => w.data.featured);
+const weddings = (featured.length > 0 ? featured : allWeddings).slice(0, 3);
+const principles = principlesResult.entries;
+const steps = stepsResult.entries;
+const heroAlt = "A flower arch on a lakeside stone terrace, with rows of wooden chairs and mountains beyond";
+---
+
+<Base
+	title="Wedding planner"
+	description="Evermore plans calm, personal weddings: full planning, partial planning, day-of coordination and destination weddings. Browse our work and plan your day."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<picture>
+			<source media="(max-width: 899px)" srcset="/images/hero-home-mobile.webp" width="1448" height="597" />
+			<img class="hero-photo" src="/images/hero-home.webp" alt={heroAlt} width="1448" height="681" fetchpriority="high" />
+		</picture>
+		<div class="hero-copy">
+			<p class="eyebrow">
+				<span class="eyebrow-line">Extraordinary days<span class="eyebrow-rule" aria-hidden="true"></span></span>
+				<span class="eyebrow-line">Begin here</span>
+			</p>
+			<h1 id="hero-title" class="hero-title">Beautifully planned.<br /><span class="l2">Deeply felt.</span></h1>
+			<p class="hero-sub">
+				Thoughtful planning, stunning settings and<br class="br-lg" /> unforgettable moments — for a day that<br class="br-lg" /> feels authentically you.
+			</p>
+			<a class="btn" href="/contact"><span>Plan your day</span><Arrow /></a>
+		</div>
+	</section>
+
+	<section class="approach" aria-labelledby="approach-title">
+		<div class="approach-copy">
+			<p class="eyebrow"><span class="eyebrow-line">Our approach<span class="eyebrow-rule" aria-hidden="true"></span></span></p>
+			<h2 id="approach-title" class="display">More than a day.<br />A story worth living.</h2>
+			<p class="approach-text">
+				We design intentional, personal celebrations<br class="br-lg" /> that bring your vision to life with beauty,<br class="br-lg" /> calm and care.
+			</p>
+			{
+				principles.length > 0 && (
+					<ul class="pillars">
+						{principles.map((p) => (
+							<li class="pillar">
+								<Icon name={p.data.icon} />
+								<h3 {...p.edit.title}>{p.data.title}</h3>
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</div>
+		<div class="approach-photo">
+			<img
+				src="/images/approach-roses.webp"
+				alt="Blush and ivory roses on tulle beside a card reading 'A more beautiful together' and two gold rings in a dish"
+				width="846"
+				height="397"
+				loading="lazy"
+			/>
+		</div>
+	</section>
+
+	{
+		services.length > 0 && (
+			<section class="band" aria-labelledby="services-title">
+				<div class="band-inner">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow"><span class="eyebrow-line">Services<span class="eyebrow-rule" aria-hidden="true"></span></span></p>
+							<h2 id="services-title" class="display">Four ways to plan with us.</h2>
+						</div>
+						<a class="text-link" href="/services"><span>All services</span><Arrow /></a>
+					</div>
+					<ul class="service-cards">
+						{services.map((s) => {
+							const src = photoSrc(s.data.image, s.data.photo);
+							return (
+								<li>
+									<a class="service-card" href={serviceHref(s.data)}>
+										{src && <img src={src} alt={photoAlt(s.data.image, s.data.photo, s.data.title)} width="400" height="500" loading="lazy" />}
+										<span class="service-card-name" {...s.edit.title}>{s.data.title}</span>
+										<span class="service-card-text">{s.data.summary}</span>
+										{s.data.price_label && <span class="service-card-price">{s.data.price_label}</span>}
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		weddings.length > 0 && (
+			<section class="band band-deep" aria-labelledby="work-title">
+				<div class="band-inner">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow"><span class="eyebrow-line">Our work<span class="eyebrow-rule" aria-hidden="true"></span></span></p>
+							<h2 id="work-title" class="display">Days we have been lucky to plan.</h2>
+						</div>
+						<a class="text-link" href="/work"><span>All weddings</span><Arrow /></a>
+					</div>
+					<ul class="wedding-cards">
+						{weddings.map((w) => {
+							const src = photoSrc(w.data.image, w.data.photo);
+							return (
+								<li>
+									<a class="wedding-card" href={weddingHref(w.data)}>
+										{src && <img src={src} alt={photoAlt(w.data.image, w.data.photo, w.data.title)} width="520" height="650" loading="lazy" />}
+										<span class="wedding-card-name" {...w.edit.title}>{w.data.title}</span>
+										<span class="wedding-card-meta">{weddingMeta(w.data)}</span>
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		steps.length > 0 && (
+			<section class="band" aria-labelledby="process-title">
+				<div class="band-inner">
+					<p class="eyebrow"><span class="eyebrow-line">How it works<span class="eyebrow-rule" aria-hidden="true"></span></span></p>
+					<h2 id="process-title" class="display">From a first hello to the last dance.</h2>
+					<ol class="steps">
+						{steps.map((s, i) => (
+							<li>
+								<span class="step-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+								<h3 {...s.edit.title}>{s.data.title}</h3>
+								{s.data.text && <p>{s.data.text}</p>}
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	<InquiryBand studio={studioResult.studio} />
+</Base>

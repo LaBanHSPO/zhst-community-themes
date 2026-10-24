@@ -1,0 +1,1411 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Wedding Planner",
+    "description": "A light, romantic wedding-planner theme: planning services, a portfolio of weddings, an about page and a plan-your-day inquiry page, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "Evermore",
+    "tagline": "Wedding Planner"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "services",
+      "label": "Services",
+      "labelSingular": "Service",
+      "urlPattern": "/services/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Service name",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line description",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "best_for",
+          "label": "Best for (short phrase)",
+          "type": "string"
+        },
+        {
+          "slug": "price_label",
+          "label": "Price shown (e.g. From $4,800, or On request)",
+          "type": "string"
+        },
+        {
+          "slug": "includes",
+          "label": "What is included (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Description",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "weddings",
+      "label": "Our work",
+      "labelSingular": "Wedding",
+      "urlPattern": "/work/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Couple (e.g. Marta & Julien)",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "place",
+          "label": "Venue and region",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "season",
+          "label": "Season and year (e.g. Late September 2025)",
+          "type": "string"
+        },
+        {
+          "slug": "style",
+          "label": "Style (e.g. Lakeside garden)",
+          "type": "string"
+        },
+        {
+          "slug": "guests",
+          "label": "Guests (e.g. 84 guests)",
+          "type": "string"
+        },
+        {
+          "slug": "summary",
+          "label": "One-line summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover photo path",
+          "type": "string"
+        },
+        {
+          "slug": "gallery",
+          "label": "Photo sequence",
+          "type": "repeater",
+          "validation": {
+            "maxItems": 40,
+            "subFields": [
+              {
+                "slug": "image",
+                "label": "Photo (upload)",
+                "type": "image"
+              },
+              {
+                "slug": "photo",
+                "label": "Bundled photo path",
+                "type": "string"
+              },
+              {
+                "slug": "caption",
+                "label": "Caption",
+                "type": "text"
+              }
+            ]
+          }
+        },
+        {
+          "slug": "content",
+          "label": "The story",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "principles",
+      "label": "Approach",
+      "labelSingular": "Approach point",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Text",
+          "type": "text"
+        },
+        {
+          "slug": "icon",
+          "label": "Icon (sprig, flower or heart)",
+          "type": "string"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "steps",
+      "label": "Planning steps",
+      "labelSingular": "Step",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Text",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "studio",
+      "label": "Studio details",
+      "labelSingular": "Studio details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Studio name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "base",
+          "label": "Based in",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Inquiry email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "response",
+          "label": "Reply time (shown beside the form)",
+          "type": "string"
+        },
+        {
+          "slug": "inquiry_note",
+          "label": "Note shown beside the form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "Services",
+          "url": "/services"
+        },
+        {
+          "type": "custom",
+          "label": "Our Work",
+          "url": "/work"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "Weddings planned with calm and care.",
+          "eyebrow": "About",
+          "intro": "Evermore is a small wedding planning studio working around Lake Cesano, the Tuscan hills and wherever else a couple would like to be married.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k38",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We started Evermore because we believe a wedding should feel like the two of you, not like a template. Our work is quiet, thorough and unhurried, and we take on a limited number of weddings each year so that every couple gets our full attention.",
+                  "_key": "k38s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k39",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most of our weddings take place outdoors, on terraces, in gardens and beside water, with a lot of flowers and a lot of light. Whether the celebration is for twelve guests or a hundred and twenty, the approach is the same: understand what matters, build a plan that holds, and then take care of the details.",
+                  "_key": "k39s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k40",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How we work",
+                  "_key": "k40s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k41",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We begin with a conversation, not a form. We learn about you, your families and the day you imagine, then propose a concept, a budget and a plan. From there we handle suppliers, timelines and guest details, and stay beside you right through to the last dance.",
+                  "_key": "k41s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k42",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We answer every message personally, usually within two working days.",
+                  "_key": "k42s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k43",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Where we work",
+                  "_key": "k43s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k44",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Our home region is northern Italy, around the lakes and the hills of Tuscany and Umbria. We also plan destination weddings further afield and bring our own team with us.",
+                  "_key": "k44s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "planning-terms",
+        "slug": "planning-terms",
+        "status": "published",
+        "data": {
+          "title": "Planning terms",
+          "eyebrow": "Good to know",
+          "intro": "A few things that help every wedding run smoothly.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k45",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Booking",
+                  "_key": "k45s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k46",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "An inquiry is not a booking. We reply by email, talk through your plans and, if we are a good fit, confirm with a short written agreement and a deposit.",
+                  "_key": "k46s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k47",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Payments",
+                  "_key": "k47s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k48",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Planning fees are paid in instalments, with the balance due before the wedding. Supplier payments are made by you directly unless we have agreed otherwise in writing.",
+                  "_key": "k48s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k49",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Changes and postponements",
+                  "_key": "k49s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k50",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Plans change. If you need to move your date, tell us as early as you can and we will do everything possible to protect your suppliers and deposits.",
+                  "_key": "k50s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "services": [
+      {
+        "id": "full-planning",
+        "slug": "full-planning",
+        "status": "published",
+        "data": {
+          "title": "Full Planning",
+          "summary": "Everything from the first conversation to the last dance, so you can simply be there.",
+          "best_for": "Couples who want one calm partner for the whole journey",
+          "price_label": "From $9,500",
+          "includes": "Design concept and mood board\nVenue search and site visits\nVendor selection and contracts\nBudget and timeline management\nGuest experience and accommodation planning\nRehearsal and full wedding-day direction",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/arch-lakeside.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Full planning is the way most of our couples work with us. We begin with a long, unhurried conversation about what you want the day to feel like, then turn that into a concept, a budget and a plan you can see.",
+                  "_key": "k1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k2",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How it works",
+                  "_key": "k2s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We find the venue, introduce you to florists, caterers, musicians and photographers we trust, negotiate the contracts, and keep every date and payment in one shared timeline. You make the decisions that matter; we handle everything that follows from them.",
+                  "_key": "k3s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k4",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "On the day itself we run the schedule, brief every supplier and stay close to you and your families, so nothing needs your attention except the moment in front of you.",
+                  "_key": "k4s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "partial-planning",
+        "slug": "partial-planning",
+        "status": "published",
+        "data": {
+          "title": "Partial Planning",
+          "summary": "Expert guidance and structure for couples who have started and want a steady hand for the rest.",
+          "best_for": "Couples who have a venue or a few suppliers already",
+          "price_label": "From $4,800",
+          "includes": "Planning review and priority list\nBudget and timeline reset\nUp to six supplier introductions\nDesign direction for décor and flowers\nMonthly planning calls\nWedding-day coordination",
+          "featured": true,
+          "position": 20,
+          "photo": "/images/chairs-blooms.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Partial planning suits couples who have already made some big choices and want help with the rest. We begin by reviewing what is booked, what is missing and where the plan feels shaky.",
+                  "_key": "k5s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k6",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Where we step in",
+                  "_key": "k6s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Together we agree which parts you would like us to take on: design, supplier introductions, the order of the day or the final month. We keep the scope clear so you know exactly what you are getting.",
+                  "_key": "k7s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "day-of-coordination",
+        "slug": "day-of-coordination",
+        "status": "published",
+        "data": {
+          "title": "Day-of Coordination",
+          "summary": "A calm, experienced team who take over the plan you have made and run the day.",
+          "best_for": "Couples who have planned it all and want to be guests at their own wedding",
+          "price_label": "From $2,200",
+          "includes": "Two planning check-ins in the final two months\nSupplier confirmation and arrival schedule\nWedding-day timeline and run sheet\nRehearsal direction\nTeam of two on the day, up to 10 hours\nPack-down and return of hired items",
+          "featured": false,
+          "position": 30,
+          "photo": "/images/aisle-lanterns.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k8",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "You have done the planning. We make sure it happens exactly as you imagined. Starting about two months before the wedding, we review every detail, speak to every supplier and build a run sheet that everyone can follow.",
+                  "_key": "k8s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "On the day",
+                  "_key": "k9s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k10",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We arrive before anyone else and leave after everyone else. We set up, cue the ceremony, manage the timeline, solve the small problems quietly and keep you free to enjoy the day.",
+                  "_key": "k10s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "destination-weddings",
+        "slug": "destination-weddings",
+        "status": "published",
+        "data": {
+          "title": "Destination Weddings",
+          "summary": "Celebrations in the places that matter to you, planned with local knowledge and a travelling team.",
+          "best_for": "Couples marrying away from home, with guests travelling in",
+          "price_label": "On request",
+          "includes": "Location scouting and venue shortlist\nLocal supplier network and contracts\nLegal and paperwork guidance\nGuest travel and welcome planning\nMulti-day schedule, from welcome drinks to farewell brunch\nOn-site team for the whole weekend",
+          "featured": true,
+          "position": 40,
+          "photo": "/images/sunset-ceremony.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A destination wedding asks more of everyone, so we plan it as a whole weekend rather than a single day. We scout locations with you, build a trusted local team and look after your guests from the moment they book their flights.",
+                  "_key": "k11s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Every proposal is bespoke",
+                  "_key": "k12s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Because location, season, guest numbers and length of stay change everything, destination weddings are quoted individually. Tell us where you are dreaming of and we will reply with ideas and a proposal.",
+                  "_key": "k13s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "weddings": [
+      {
+        "id": "marta-and-julien",
+        "slug": "marta-and-julien",
+        "status": "published",
+        "data": {
+          "title": "Marta & Julien",
+          "place": "Villa Serenella, Lake Cesano",
+          "season": "Late September 2025",
+          "style": "Lakeside garden",
+          "guests": "84 guests",
+          "summary": "A flower-arch ceremony on the stone terrace, with the whole lake as a backdrop.",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/arch-lakeside.webp",
+          "gallery": [
+            {
+              "photo": "/images/arch-lake.webp",
+              "caption": "The terrace before the first guests arrived."
+            },
+            {
+              "photo": "/images/chairs-blooms.webp",
+              "caption": "Wild garden flowers along every row."
+            },
+            {
+              "photo": "/images/approach-roses.webp",
+              "caption": "Roses, tulle and the rings, ready for the ceremony."
+            },
+            {
+              "photo": "/images/rings-card.webp",
+              "caption": "A handwritten card for each place setting."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Marta and Julien wanted a day that felt generous but never grand. They chose Villa Serenella for its stone terrace above the water and asked for flowers that looked as if they had grown there.",
+                  "_key": "k14s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We built the ceremony around a single arch of garden roses, white blooms and olive branches, and lined the aisle with loose, wild arrangements. Seating was arranged in a gentle curve so every guest could see the lake.",
+                  "_key": "k15s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we planned",
+                  "_key": "k16s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Venue search, design and florals, supplier contracts, guest accommodation for 60 visiting guests, a welcome aperitivo the evening before and full direction on the day.",
+                  "_key": "k17s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "priya-and-daniel",
+        "slug": "priya-and-daniel",
+        "status": "published",
+        "data": {
+          "title": "Priya & Daniel",
+          "place": "Casa degli Ulivi, Tuscan hills",
+          "season": "Early June 2025",
+          "style": "Olive grove dinner",
+          "guests": "60 guests",
+          "summary": "A long table beneath old olive trees and an aisle lit by hundreds of candles.",
+          "featured": true,
+          "position": 20,
+          "photo": "/images/olive-terrace.webp",
+          "gallery": [
+            {
+              "photo": "/images/aisle-lanterns.webp",
+              "caption": "Lanterns lit along the aisle as the sun dropped."
+            },
+            {
+              "photo": "/images/guest-book.webp",
+              "caption": "The guest book table, with a ribbon from the bouquet."
+            },
+            {
+              "photo": "/images/arch-sunset.webp",
+              "caption": "Silk drapes on the arch moved with the evening breeze."
+            },
+            {
+              "photo": "/images/bouquet-ribbon.webp",
+              "caption": "Blush roses, white hydrangea and olive leaves."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Priya and Daniel's families came from three countries, and the brief was simple: make everyone feel at home. Casa degli Ulivi, with its terrace and its olive grove, did most of the work.",
+                  "_key": "k18s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We designed the day around one long dinner table, soft linen and candlelight, and a ceremony at golden hour. A bilingual welcome and a short printed programme helped every generation feel included.",
+                  "_key": "k19s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k20",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we planned",
+                  "_key": "k20s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Partial planning from six months out: design direction, caterer and florist introductions, a revised budget and timeline, and two coordinators on the day.",
+                  "_key": "k21s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "anouk-and-tomas",
+        "slug": "anouk-and-tomas",
+        "status": "published",
+        "data": {
+          "title": "Anouk & Tomas",
+          "place": "Terrazza Belmare, Costa Lunare",
+          "season": "Mid October 2024",
+          "style": "Sunset terrace",
+          "guests": "40 guests",
+          "summary": "Forty guests, a draped arch and a ceremony timed to the last of the light.",
+          "featured": true,
+          "position": 30,
+          "photo": "/images/sunset-ceremony.webp",
+          "gallery": [
+            {
+              "photo": "/images/arch-sunset.webp",
+              "caption": "The arch, dressed in silk and blush garden roses."
+            },
+            {
+              "photo": "/images/sea-sunset.webp",
+              "caption": "Sunset over the bay, seen from the aisle."
+            },
+            {
+              "photo": "/images/guest-book.webp",
+              "caption": "Rings and a guest book on the signing table."
+            },
+            {
+              "photo": "/images/aisle-lanterns.webp",
+              "caption": "Brass lanterns marked the way to the dinner terrace."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k22",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Anouk and Tomas flew in with their closest friends and family for a three-day celebration. The ceremony took place at sunset on a stone terrace above the sea.",
+                  "_key": "k22s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We timed everything to the light: guests seated twenty minutes before sunset, vows as the sky turned peach, lanterns lit as the first stars appeared.",
+                  "_key": "k23s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k24",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we planned",
+                  "_key": "k24s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A destination wedding weekend: venue scouting, local suppliers, guest travel guidance, a welcome dinner, the ceremony and a farewell lunch.",
+                  "_key": "k25s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "hana-and-elliot",
+        "slug": "hana-and-elliot",
+        "status": "published",
+        "data": {
+          "title": "Hana & Elliot",
+          "place": "Palazzo Rivaluna, Lake Cesano",
+          "season": "Early May 2025",
+          "style": "Palazzo and cypress",
+          "guests": "120 guests",
+          "summary": "A grand setting kept warm: green, white and blush, with every detail made by hand.",
+          "featured": false,
+          "position": 40,
+          "photo": "/images/arch-lake.webp",
+          "gallery": [
+            {
+              "photo": "/images/arch-lakeside.webp",
+              "caption": "Cypress trees framed the arch from the aisle."
+            },
+            {
+              "photo": "/images/chairs-blooms.webp",
+              "caption": "Rows of wooden chairs dressed with garden flowers."
+            },
+            {
+              "photo": "/images/approach-roses.webp",
+              "caption": "Roses and tulle on the welcome table."
+            },
+            {
+              "photo": "/images/rings-card.webp",
+              "caption": "Handwritten cards for the family table."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k26",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Palazzo Rivaluna is a big setting, and Hana and Elliot wanted it to feel personal. We kept the palette to green, white and blush and let the terrace do the talking.",
+                  "_key": "k26s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Every guest found a handwritten card at their seat and a small posy to take home. The ceremony was short, the dinner was long and the dancing lasted until the lanterns burnt low.",
+                  "_key": "k27s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k28",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we planned",
+                  "_key": "k28s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Full planning over twelve months, including venue, florals, stationery, music and a welcome day for 120 guests.",
+                  "_key": "k29s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "sofia-and-rafael",
+        "slug": "sofia-and-rafael",
+        "status": "published",
+        "data": {
+          "title": "Sofia & Rafael",
+          "place": "Borgo Alta Luce, Umbrian hills",
+          "season": "Late August 2024",
+          "style": "Courtyard feast",
+          "guests": "96 guests",
+          "summary": "A farmhouse courtyard, long tables and the kind of dinner nobody wanted to leave.",
+          "featured": false,
+          "position": 50,
+          "photo": "/images/chairs-blooms.webp",
+          "gallery": [
+            {
+              "photo": "/images/olive-terrace.webp",
+              "caption": "An old olive tree shaded the ceremony."
+            },
+            {
+              "photo": "/images/aisle-lanterns.webp",
+              "caption": "Lanterns waited for dusk along the courtyard."
+            },
+            {
+              "photo": "/images/guest-book.webp",
+              "caption": "The signing table, simply dressed."
+            },
+            {
+              "photo": "/images/bouquet-ribbon.webp",
+              "caption": "A loose bouquet with a silk ribbon."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k30",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sofia and Rafael wanted a feast. The courtyard at Borgo Alta Luce, with its stone walls and long tables, suited them perfectly.",
+                  "_key": "k30s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We planned the menu around the region, set the tables in two long rows and let the evening unfold with toasts, music and the occasional impromptu dance.",
+                  "_key": "k31s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k32",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we planned",
+                  "_key": "k32s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k33",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Partial planning: design direction, supplier introductions and two coordinators on the day.",
+                  "_key": "k33s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "lea-and-oliver",
+        "slug": "lea-and-oliver",
+        "status": "published",
+        "data": {
+          "title": "Léa & Oliver",
+          "place": "Isola Piccola, Lake Cesano",
+          "season": "April 2025",
+          "style": "Island elopement",
+          "guests": "12 guests",
+          "summary": "Twelve guests, a small boat and a ceremony on a terrace with no one else in sight.",
+          "featured": false,
+          "position": 60,
+          "photo": "/images/bouquet-ribbon.webp",
+          "gallery": [
+            {
+              "photo": "/images/sea-sunset.webp",
+              "caption": "The crossing, in the last light of the day."
+            },
+            {
+              "photo": "/images/guest-book.webp",
+              "caption": "The vows book and rings."
+            },
+            {
+              "photo": "/images/arch-sunset.webp",
+              "caption": "A small arch of olive branches and silk."
+            },
+            {
+              "photo": "/images/arch-lake.webp",
+              "caption": "The terrace after the ceremony."
+            }
+          ],
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k34",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Léa and Oliver wanted the smallest possible wedding in the most beautiful place they could find. We found a private island terrace, a boat for twelve and a florist willing to work with what the island offered.",
+                  "_key": "k34s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k35",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The day was relaxed and quiet, with a ceremony at sunset and dinner for everyone at one table.",
+                  "_key": "k35s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k36",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we planned",
+                  "_key": "k36s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k37",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A destination elopement: location scouting, permits, boat transfers, flowers, a private dinner and a full-day coordinator.",
+                  "_key": "k37s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "principles": [
+      {
+        "id": "thoughtful-planning",
+        "slug": "thoughtful-planning",
+        "status": "published",
+        "data": {
+          "title": "Thoughtful Planning",
+          "text": "Clear timelines, honest budgets and a plan you can read at a glance.",
+          "icon": "sprig",
+          "position": 10
+        }
+      },
+      {
+        "id": "inspired-design",
+        "slug": "inspired-design",
+        "status": "published",
+        "data": {
+          "title": "Inspired Design",
+          "text": "Flowers, light and setting chosen to look like you and the place.",
+          "icon": "flower",
+          "position": 20
+        }
+      },
+      {
+        "id": "personal-experience",
+        "slug": "personal-experience",
+        "status": "published",
+        "data": {
+          "title": "A Truly Personal Experience",
+          "text": "Small details that make guests feel looked after and families feel heard.",
+          "icon": "heart",
+          "position": 30
+        }
+      }
+    ],
+    "steps": [
+      {
+        "id": "conversation",
+        "slug": "conversation",
+        "status": "published",
+        "data": {
+          "title": "A conversation",
+          "text": "We talk about your day, your guests and what matters most. No obligation, no hard sell.",
+          "position": 10
+        }
+      },
+      {
+        "id": "concept",
+        "slug": "concept",
+        "status": "published",
+        "data": {
+          "title": "A concept",
+          "text": "A mood board, a budget and a proposal that shows what we would do and what it would cost.",
+          "position": 20
+        }
+      },
+      {
+        "id": "plan",
+        "slug": "plan",
+        "status": "published",
+        "data": {
+          "title": "A plan",
+          "text": "Venue, suppliers, timeline and guest details, all in one shared place that you can follow.",
+          "position": 30
+        }
+      },
+      {
+        "id": "day",
+        "slug": "day",
+        "status": "published",
+        "data": {
+          "title": "Your day",
+          "text": "We run everything, so you and your families can simply be there.",
+          "position": 40
+        }
+      }
+    ],
+    "studio": [
+      {
+        "id": "studio",
+        "slug": "studio",
+        "status": "published",
+        "data": {
+          "title": "Evermore Wedding Planner",
+          "base": "Lake Cesano, northern Italy",
+          "phone": "+39 02 555 0143",
+          "email": "hello@evermore-planner.example",
+          "response": "We reply within two working days.",
+          "inquiry_note": "Tell us about your day and we will reply personally. An inquiry is not a booking; we confirm the date by email once we have spoken."
+        }
+      }
+    ]
+  }
+}

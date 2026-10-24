@@ -1,0 +1,137 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import InquiryBand from "../../components/InquiryBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getStudio, getWeddings, photoAlt, photoSrc, weddingHref, weddingMeta } from "../../lib/planner";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: wedding, cacheHint } = await getEmDashEntry("weddings", slug);
+if (!wedding) return Astro.rewrite("/404");
+
+const [allResult, studioResult, settings] = await Promise.all([getWeddings(), getStudio(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(wedding, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const cover = photoSrc(wedding.data.image, wedding.data.photo);
+const photos = (wedding.data.gallery ?? [])
+	.map((g) => ({ src: photoSrc(g.image, g.photo), alt: photoAlt(g.image, g.photo, g.caption ?? ""), caption: g.caption }))
+	.filter((g): g is { src: string; alt: string; caption: string | undefined } => Boolean(g.src));
+const hasBody = Boolean(wedding.data.content && wedding.data.content.length > 0);
+const others = allResult.entries.filter((w) => w.data.id !== wedding.data.id).slice(0, 3);
+const facts = [
+	["Venue", wedding.data.place],
+	["Season", wedding.data.season],
+	["Style", wedding.data.style],
+	["Guests", wedding.data.guests],
+].filter(([, v]) => Boolean(v));
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? wedding.data.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "weddings", id: wedding.data.id, slug }}
+	current="/work"
+>
+	<header class="detail-head">
+		<nav class="crumbs" aria-label="Breadcrumb">
+			<a href="/work">Our work</a>
+			<span aria-hidden="true">/</span>
+			<span aria-current="page">{wedding.data.title}</span>
+		</nav>
+		<div class="detail-grid">
+			<div class="detail-copy">
+				<p class="eyebrow"><span class="eyebrow-line">{weddingMeta(wedding.data)}</span></p>
+				<h1 class="display display-xl" {...wedding.edit.title}>{wedding.data.title}</h1>
+				<p class="lede">{wedding.data.summary}</p>
+				{
+					facts.length > 0 && (
+						<dl class="facts">
+							{facts.map(([k, v]) => (
+								<div>
+									<dt>{k}</dt>
+									<dd>{v}</dd>
+								</div>
+							))}
+						</dl>
+					)
+				}
+			</div>
+			{cover && <img class="detail-cover" src={cover} alt={photoAlt(wedding.data.image, wedding.data.photo, wedding.data.title)} width="700" height="800" fetchpriority="high" />}
+		</div>
+	</header>
+
+	{
+		hasBody && (
+			<section class="story-body">
+				<div class="prose">
+					<PortableText value={wedding.data.content} />
+				</div>
+			</section>
+		)
+	}
+
+	{
+		photos.length > 0 && (
+			<section class="photo-sequence" aria-label={`Photographs from ${wedding.data.title}`}>
+				<ul class="photo-grid">
+					{photos.map((p) => (
+						<li>
+							<figure>
+								<img src={p.src} alt={p.alt} width="800" height="800" loading="lazy" />
+								{p.caption && <figcaption>{p.caption}</figcaption>}
+							</figure>
+						</li>
+					))}
+				</ul>
+			</section>
+		)
+	}
+
+	{
+		others.length > 0 && (
+			<section class="band band-deep" aria-labelledby="more-title">
+				<div class="band-inner">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow"><span class="eyebrow-line">More weddings<span class="eyebrow-rule" aria-hidden="true"></span></span></p>
+							<h2 id="more-title" class="display">Keep exploring.</h2>
+						</div>
+						<a class="text-link" href="/work"><span>All weddings</span><Arrow /></a>
+					</div>
+					<ul class="wedding-cards">
+						{others.map((w) => {
+							const src = photoSrc(w.data.image, w.data.photo);
+							return (
+								<li>
+									<a class="wedding-card" href={weddingHref(w.data)}>
+										{src && <img src={src} alt={photoAlt(w.data.image, w.data.photo, w.data.title)} width="520" height="650" loading="lazy" />}
+										<span class="wedding-card-name">{w.data.title}</span>
+										<span class="wedding-card-meta">{weddingMeta(w.data)}</span>
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<InquiryBand studio={studioResult.studio} />
+</Base>

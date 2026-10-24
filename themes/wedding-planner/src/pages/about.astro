@@ -1,0 +1,79 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import PageHead from "../components/PageHead.astro";
+import InquiryBand from "../components/InquiryBand.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getPrinciples, getStudio } from "../lib/planner";
+
+const [{ entry: page, cacheHint }, principlesResult, studioResult, settings] = await Promise.all([
+	getEmDashEntry("pages", "about"),
+	getPrinciples(),
+	getStudio(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	if (cacheHint) Astro.cache.set(cacheHint);
+	Astro.cache.set(principlesResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page ? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" }) : null;
+const principles = principlesResult.entries;
+const hasBody = Boolean(page?.data.content && page.data.content.length > 0);
+---
+
+<Base
+	title={seo?.title ?? "About"}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? page?.data.intro ?? "About Evermore, a small wedding planning studio."}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<PageHead
+		id="about-title"
+		eyebrow={page?.data.eyebrow ?? "About"}
+		title={page?.data.title ?? "Weddings planned with calm and care."}
+		intro={page?.data.intro}
+		edit={page ? { ...page.edit.title } : {}}
+	/>
+
+	<section class="about-story">
+		<figure class="about-photo">
+			<img
+				src="/images/olive-terrace.webp"
+				alt="An old olive tree beside a stone terrace with flowers, chairs and the sea behind"
+				width="780"
+				height="858"
+				loading="lazy"
+			/>
+		</figure>
+		<div class="prose">
+			{hasBody ? <PortableText value={page!.data.content} /> : <p>Our story is coming soon.</p>}
+		</div>
+	</section>
+
+	{
+		principles.length > 0 && (
+			<section class="band band-deep" aria-labelledby="values-title">
+				<div class="band-inner">
+					<p class="eyebrow"><span class="eyebrow-line">What to expect<span class="eyebrow-rule" aria-hidden="true"></span></span></p>
+					<h2 id="values-title" class="display">Care in every detail.</h2>
+					<ul class="values">
+						{principles.map((p) => (
+							<li>
+								<Icon name={p.data.icon} />
+								<h3 {...p.edit.title}>{p.data.title}</h3>
+								{p.data.text && <p>{p.data.text}</p>}
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<InquiryBand studio={studioResult.studio} />
+</Base>
