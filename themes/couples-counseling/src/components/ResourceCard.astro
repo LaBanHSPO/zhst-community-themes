@@ -1,0 +1,24 @@
+---
+import type { Resource } from "../../emdash-env";
+import { categoryLabel, photoSrc, resourceHref } from "../lib/practice";
+
+interface Props {
+	resource: { data: Resource; edit?: Record<string, any> };
+	eager?: boolean;
+}
+const { resource, eager = false } = Astro.props;
+const d = resource.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<article class="res-card">
+	<a class="res-card-photo" href={resourceHref(d)} tabindex="-1" aria-hidden="true">
+		{src && <img src={src} alt="" width="640" height="480" loading={eager ? "eager" : "lazy"} />}
+	</a>
+	<p class="res-card-meta">
+		{d.category && <span class="tag">{categoryLabel(d.category) || d.category}</span>}
+		{d.read_minutes ? <span>{d.read_minutes} min read</span> : null}
+	</p>
+	<h3 class="res-card-title" {...resource.edit?.title}><a href={resourceHref(d)}>{d.title}</a></h3>
+	<p class="res-card-text">{d.summary}</p>
+</article>

@@ -1,0 +1,135 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import BookingBand from "../components/BookingBand.astro";
+import Fees from "../components/Fees.astro";
+import Icon from "../components/Icon.astro";
+import ResourceCard from "../components/ResourceCard.astro";
+import { getFees, getPractice, getPrinciples, getResources, getSteps, getTopics, lines, photoAltByName } from "../lib/practice";
+
+const [principlesResult, stepsResult, topicsResult, feesResult, resourcesResult, practiceResult] = await Promise.all([
+	getPrinciples(),
+	getSteps(),
+	getTopics(),
+	getFees(),
+	getResources(),
+	getPractice(),
+]);
+if (Astro.cache?.enabled) {
+	for (const r of [principlesResult, stepsResult, topicsResult, feesResult, resourcesResult, practiceResult]) Astro.cache.set(r.cacheHint);
+}
+const principles = principlesResult.entries;
+const steps = stepsResult.entries;
+const topics = topicsResult.entries;
+const resources = (resourcesResult.entries.some((r) => r.data.featured) ? resourcesResult.entries.filter((r) => r.data.featured) : resourcesResult.entries).slice(0, 3);
+const tints = ["sage", "rose", "stone"];
+---
+
+<Base
+	title="Make space for connection"
+	description="TogetherWell is a small counseling practice for couples, in person in Millbrook and online. See how sessions work, what couples often bring and what it costs, then book a free 15-minute intro call."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img class="hero-photo" src="/images/hero-home.webp" alt={photoAltByName("hero-home")} width="1448" height="784" fetchpriority="high" />
+		<div class="hero-copy">
+			<h1 id="hero-title" class="hero-title">Make space<br />for connection.</h1>
+			<p class="hero-sub">A calmer, kinder path forward,<br /> together.</p>
+			<a class="btn btn-sage" href="/approach"><span>Explore counseling</span><Arrow /></a>
+		</div>
+		<p class="hand hand-hero" aria-hidden="true">Same<br />Team<br />Brighter<br />Days</p>
+		<span class="hand-line" aria-hidden="true"></span>
+	</section>
+
+	<section class="approach" aria-labelledby="approach-title">
+		<div class="approach-inner">
+			<div class="approach-copy">
+				<p class="approach-eyebrow">Our approach</p>
+				<h2 id="approach-title" class="approach-title">Real conversations.<br />A stronger us.</h2>
+				<p class="approach-text">A supportive space to understand each other, navigate challenges, and build a more connected life together.</p>
+			</div>
+			<ul class="pillars">
+				{
+					principles.map((p, i) => (
+						<li class="pillar">
+							<span class={`pillar-icon tint-${tints[i % tints.length]}`}><Icon name={p.data.icon} /></span>
+							<h3 class="pillar-title" {...p.edit.title}>{p.data.title}</h3>
+							<p class="pillar-text">
+								{lines(p.data.text).map((l, j) => (j === 0 ? <>{l}</> : <><br />{l}</>))}
+							</p>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+		<img class="branch" src="/images/branch.webp" alt="" width="168" height="296" loading="lazy" />
+	</section>
+
+	{
+		steps.length > 0 && (
+			<section class="process" aria-labelledby="process-title">
+				<div class="wrap process-inner">
+					<figure class="process-photo">
+						<img src="/images/room-table.webp" alt={photoAltByName("room-table")} width="660" height="480" loading="lazy" />
+					</figure>
+					<div class="process-copy">
+						<p class="eyebrow">How sessions work</p>
+						<h2 id="process-title" class="display">Three steps, and you set the pace.</h2>
+						<ol class="process-steps">
+							{steps.map((s, i) => (
+								<li class="process-step">
+									<span class="process-num" aria-hidden="true">{i + 1}</span>
+									<div>
+										{s.data.when_label && <p class="process-when">{s.data.when_label}</p>}
+										<h3 class="process-title" {...s.edit.title}>{s.data.title}</h3>
+										<p class="process-text">{s.data.text}</p>
+									</div>
+								</li>
+							))}
+						</ol>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		topics.length > 0 && (
+			<section class="bring" aria-labelledby="bring-title">
+				<div class="wrap bring-inner">
+					<div class="bring-copy">
+						<p class="eyebrow">What couples bring</p>
+						<h2 id="bring-title" class="display">You do not need a crisis to ask for help.</h2>
+						<p class="bring-text">These are some of the things couples tell us in the first call. Yours may be on the list, or it may be something else entirely.</p>
+					</div>
+					<ul class="bring-list">
+						{topics.map((t) => <li {...t.edit.title}>{t.data.title}</li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<Fees fees={feesResult.entries} note={practiceResult.practice.session_note} />
+
+	{
+		resources.length > 0 && (
+			<section class="teaser" aria-labelledby="resources-title">
+				<div class="wrap">
+					<div class="section-head section-head-row">
+						<div>
+							<p class="eyebrow">Resources</p>
+							<h2 id="resources-title" class="display">Short reads for between sessions.</h2>
+						</div>
+						<a class="text-link" href="/resources"><span>All resources</span><Arrow /></a>
+					</div>
+					<ul class="card-grid">
+						{resources.map((r) => <li><ResourceCard resource={r} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<BookingBand practice={practiceResult.practice} />
+</Base>

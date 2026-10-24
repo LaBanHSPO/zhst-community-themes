@@ -1,0 +1,1804 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Couples Counseling",
+    "description": "A warm, quiet theme for a couples counseling practice: a full-bleed photo hero with a handwritten note, three approach points, how sessions work, what couples bring, sample fees, a short library of articles with topic filter, Approach and About pages with a counselor team, and an intro-call request page. Seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "TogetherWell",
+    "tagline": "Couples Counseling"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro line",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ],
+      "urlPattern": "/{slug}"
+    },
+    {
+      "slug": "resources",
+      "label": "Resources",
+      "labelSingular": "Resource",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "Short summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "category",
+          "label": "Topic (communication, conflict, everyday or counseling)",
+          "type": "string"
+        },
+        {
+          "slug": "date_label",
+          "label": "Date shown (e.g. 14 October 2026)",
+          "type": "string"
+        },
+        {
+          "slug": "read_minutes",
+          "label": "Reading time in minutes",
+          "type": "integer"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order (newest first)",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Body",
+          "type": "portableText",
+          "searchable": true
+        }
+      ],
+      "urlPattern": "/resources/{slug}"
+    },
+    {
+      "slug": "principles",
+      "label": "Approach",
+      "labelSingular": "Approach point",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Text (a line break splits it)",
+          "type": "text"
+        },
+        {
+          "slug": "icon",
+          "label": "Icon (leaf, heart or people)",
+          "type": "string"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "steps",
+      "label": "How sessions work",
+      "labelSingular": "Step",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "when_label",
+          "label": "When it happens (e.g. Session one)",
+          "type": "string"
+        },
+        {
+          "slug": "text",
+          "label": "Text",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "topics",
+      "label": "What couples bring",
+      "labelSingular": "Topic",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Topic",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "fees",
+      "label": "Fees",
+      "labelSingular": "Fee",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Session type",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "detail",
+          "label": "Length and who attends",
+          "type": "string"
+        },
+        {
+          "slug": "price_label",
+          "label": "Price shown (e.g. From $120)",
+          "type": "string"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "counselors",
+      "label": "Counselors",
+      "labelSingular": "Counselor",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "role",
+          "label": "Role",
+          "type": "string"
+        },
+        {
+          "slug": "bio",
+          "label": "Short bio",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "practice",
+      "label": "Practice details",
+      "labelSingular": "Practice details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Practice name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "base",
+          "label": "Based in",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Email for requests",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "response",
+          "label": "Reply time (shown beside the form)",
+          "type": "text"
+        },
+        {
+          "slug": "contact_note",
+          "label": "Note shown above the form",
+          "type": "text"
+        },
+        {
+          "slug": "session_note",
+          "label": "Note under the fees",
+          "type": "text"
+        },
+        {
+          "slug": "registration_note",
+          "label": "Registration and training details (shown on About)",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "Approach",
+          "url": "/approach"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        },
+        {
+          "type": "custom",
+          "label": "Resources",
+          "url": "/resources"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "A small practice for couples.",
+          "eyebrow": "About",
+          "intro": "TogetherWell is a team of three counselors. We help couples talk to each other more clearly and more kindly.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "People come to us at different points. Some are in the middle of an argument that has been running for years. Some are about to have a baby. Some have simply noticed that they only talk about the schedule.",
+                  "_key": "k2"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We do not take sides and we do not decide who is right. We ask each of you what you would like to be different, and we help you find ways of saying it that the other person can hear.",
+                  "_key": "k4"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How we work",
+                  "_key": "k6"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sessions last fifty minutes. We start with a short intro call so you can see whether we suit you before you book anything. After that, most couples meet every one to two weeks. We usually suggest one small thing to try between sessions, and we ask how it went at the start of the next one.",
+                  "_key": "k8"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "approach",
+        "slug": "approach",
+        "status": "published",
+        "data": {
+          "title": "Real conversations, at your pace.",
+          "eyebrow": "Our approach",
+          "intro": "Counseling here means two chairs, one hour of attention and nobody keeping score. This page explains how sessions work in practice.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "In person and online",
+                  "_key": "k10"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "In person sessions take place at our rooms in Millbrook. There are two armchairs, a low table and a box of tissues. Online sessions use a video link we send you the day before. For those you need a private room, a laptop or tablet, and a connection that holds for fifty minutes. Both options cost the same.",
+                  "_key": "k12"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Joint and individual sessions",
+                  "_key": "k14"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most sessions are joint, with both of you in the room. Sometimes it helps to meet one of you on your own for a session, for example when one person finds it hard to speak with the other present. We agree this with you both before it happens, and as a rule we do not keep secrets from one partner on behalf of the other.",
+                  "_key": "k16"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Confidentiality, in plain terms",
+                  "_key": "k18"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What you tell us stays with us. We do not share it with family, employers or friends. If someone is at risk of serious harm, or if the law requires us to pass on information, we may have to. We go through this with you in the first session, in writing, before you sign anything.",
+                  "_key": "k20"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "This is sample wording. Replace it with your own policy and the rules where you work.",
+                  "_key": "k22"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What counseling is not",
+                  "_key": "k24"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Counseling is not a way to get a verdict, and we cannot promise how things will turn out. It is also not emergency help. If either of you is unsafe or in crisis, contact your local emergency number or a crisis line now.",
+                  "_key": "k26"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "resources": [
+      {
+        "id": "starting-a-hard-conversation-without-starting-a-fight",
+        "slug": "starting-a-hard-conversation-without-starting-a-fight",
+        "status": "published",
+        "data": {
+          "title": "Starting a hard conversation without starting a fight",
+          "summary": "How the first thirty seconds set the tone, and a few openers that tend to go better than others.",
+          "category": "communication",
+          "date_label": "14 October 2026",
+          "read_minutes": 5,
+          "featured": true,
+          "position": 10,
+          "photo": "/images/room-table.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most arguments are decided in the first thirty seconds. If you open with \"You never\" or \"Why do you always\", the other person starts defending themselves and stops listening to what comes next.",
+                  "_key": "k28"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Pick the moment",
+                  "_key": "k30"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Do not start when one of you is tired, hungry or halfway out of the door. Ask instead: \"Is now an okay time to talk about something that has been on my mind?\" If the answer is no, agree on a time that day or the next. Then keep to it.",
+                  "_key": "k32"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k33",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Start with what you feel and need",
+                  "_key": "k34"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k35",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Compare \"You left the kitchen in a state again\" with \"I felt stressed walking into the kitchen tonight, and I would like us to agree on who does what.\" The second one is longer, but it gives your partner something to respond to other than the accusation.",
+                  "_key": "k36"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k37",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Say one thing at a time",
+                  "_key": "k38"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k39",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A hard conversation tends to collect old complaints along the way. Try to keep to a single topic. If another one comes up, write it down and come back to it another day.",
+                  "_key": "k40"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k41",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When it still goes badly",
+                  "_key": "k42"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k43",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "That happens, and it does not mean you did it wrong. Stop, take a break, and try again later. If the same conversation goes badly every time, that is a good moment to ask for help.",
+                  "_key": "k44"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "why-the-same-argument-keeps-coming-back",
+        "slug": "why-the-same-argument-keeps-coming-back",
+        "status": "published",
+        "data": {
+          "title": "Why the same argument keeps coming back",
+          "summary": "Many repeated arguments are about something underneath the topic. Here is how to spot it.",
+          "category": "conflict",
+          "date_label": "7 October 2026",
+          "read_minutes": 6,
+          "featured": true,
+          "position": 20,
+          "photo": "/images/room-chair.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k45",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A lot of couples can describe their argument in a sentence: the dishes, the in-laws, the phone at dinner. Then it comes round again a month later, in almost the same words.",
+                  "_key": "k46"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k47",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The topic is often not the point",
+                  "_key": "k48"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k49",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "An argument about who forgot to call the plumber may really be about feeling that you carry all the planning alone. An argument about a weekend with friends may be about feeling second to everyone else. The surface topic is easy to name, so that is the one you keep fighting about.",
+                  "_key": "k50"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k51",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Look at the pattern, not only the subject",
+                  "_key": "k52"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k53",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Ask yourselves who usually raises the problem and who usually pulls away. When one person pushes and the other withdraws, each makes the other's habit stronger. The more one pushes, the more the other goes quiet, and the quiet makes the first person push harder.",
+                  "_key": "k54"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k55",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A question to try",
+                  "_key": "k56"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k57",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Next time, before you answer, ask: \"What is this really about for you?\" Then listen to the whole reply without fixing anything. You may not agree afterwards, but you will at least be arguing about the same thing.",
+                  "_key": "k58"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "a-ten-minute-check-in-you-can-keep-up",
+        "slug": "a-ten-minute-check-in-you-can-keep-up",
+        "status": "published",
+        "data": {
+          "title": "A ten-minute check-in you can keep up",
+          "summary": "A short weekly conversation that is not about logistics, with a simple order to follow.",
+          "category": "everyday",
+          "date_label": "30 September 2026",
+          "read_minutes": 4,
+          "featured": true,
+          "position": 30,
+          "photo": "/images/still-life.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k59",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Many couples talk every day and still do not talk to each other. The conversation is about the school run, the shopping list and who is picking up the parcel.",
+                  "_key": "k60"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k61",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What a check-in is",
+                  "_key": "k62"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k63",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A check-in is ten minutes, once a week, at the same time. Phones go in another room. Make tea if it helps. It does not replace the daily talk about logistics. It sits beside it.",
+                  "_key": "k64"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k65",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A simple order",
+                  "_key": "k66"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k67",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Each of you says one thing that went well this week, however small.",
+                  "_key": "k68"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k69",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Each of you says one thing that was hard, without blaming anyone for it.",
+                  "_key": "k70"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k71",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Each of you asks for one thing from the other in the week ahead.",
+                  "_key": "k72"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k73",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Rules that help",
+                  "_key": "k74"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k75",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Take turns and do not interrupt. If something big comes up, note it and give it its own time. Stop at ten minutes, even if it is going well. Ending on time makes it easier to do again next week.",
+                  "_key": "k76"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "what-to-expect-from-your-first-joint-session",
+        "slug": "what-to-expect-from-your-first-joint-session",
+        "status": "published",
+        "data": {
+          "title": "What to expect from your first joint session",
+          "summary": "Who talks, what we ask, and what you will not be asked to do.",
+          "category": "counseling",
+          "date_label": "23 September 2026",
+          "read_minutes": 4,
+          "featured": false,
+          "position": 40,
+          "photo": "/images/room-wide.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k77",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Walking into a counselor's room together can feel awkward, especially if one of you was less sure about coming. This is what usually happens, so there are fewer surprises.",
+                  "_key": "k78"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k79",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The first ten minutes",
+                  "_key": "k80"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k81",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We explain how the hour will go and go through confidentiality. Then we ask each of you, in turn, what brought you in. Each person speaks for a few minutes while the other listens.",
+                  "_key": "k82"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k83",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The middle",
+                  "_key": "k84"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k85",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We ask questions about what a good week looks like, what has changed lately, and what is already working. We are not looking for a culprit. We are trying to get a picture of how the two of you get along when things are going well, as well as when they are not.",
+                  "_key": "k86"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k87",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The end",
+                  "_key": "k88"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k89",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We leave a few minutes to agree on one small thing to try before the next session, and to talk about whether you want to book another.",
+                  "_key": "k90"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k91",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What you will not be asked to do",
+                  "_key": "k92"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k93",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "You will not be asked to share something you are not ready to share, to role-play, or to say you are sorry on the spot.",
+                  "_key": "k94"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "taking-a-break-in-the-middle-of-an-argument",
+        "slug": "taking-a-break-in-the-middle-of-an-argument",
+        "status": "published",
+        "data": {
+          "title": "Taking a break in the middle of an argument",
+          "summary": "Why stepping away can help, and how to do it so it does not feel like walking out.",
+          "category": "conflict",
+          "date_label": "16 September 2026",
+          "read_minutes": 4,
+          "featured": false,
+          "position": 50,
+          "photo": "/images/room-throw.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k95",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When an argument gets loud, most people stop being able to take in what the other person is saying. Your heart rate goes up, your thoughts narrow, and the next thing you say is rarely the best one.",
+                  "_key": "k96"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k97",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Agree on it beforehand",
+                  "_key": "k98"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k99",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A break works when you have both agreed to it on a calm day. Decide on a word or a sentence you can use, such as \"I need a pause, and I will be back in twenty minutes.\" The second half matters. Without it, a break feels like being left.",
+                  "_key": "k100"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k101",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Spend the time properly",
+                  "_key": "k102"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k103",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Twenty minutes is usually enough. Go for a walk, wash up, or sit somewhere quiet. Try not to spend it rehearsing what you will say next. When you come back, start by saying one thing you understood about the other person's point.",
+                  "_key": "k104"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k105",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If one of you needs longer",
+                  "_key": "k106"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k107",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Say so, and name a time to return to the topic that day. If that keeps being difficult, bring it to a session.",
+                  "_key": "k108"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "sharing-the-load-at-home",
+        "slug": "sharing-the-load-at-home",
+        "status": "published",
+        "data": {
+          "title": "Sharing the load at home",
+          "summary": "A way to talk about housework and planning that starts with what is actually being done.",
+          "category": "everyday",
+          "date_label": "9 September 2026",
+          "read_minutes": 5,
+          "featured": false,
+          "position": 60,
+          "photo": "/images/room-olive.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k109",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Who does what at home causes more rows than most couples expect. Often neither person is being unreasonable. Each is simply counting a different list.",
+                  "_key": "k110"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k111",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Write down everything",
+                  "_key": "k112"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k113",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sit down together and write out every task, including the invisible ones: remembering birthdays, booking the dentist, knowing when the bins go out. Do not assign anything yet. Just look at the list.",
+                  "_key": "k114"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k115",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Notice who holds the planning",
+                  "_key": "k116"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k117",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Doing a task and remembering that it needs doing are two separate jobs. If one of you does most of the remembering, that person is carrying more than the list shows.",
+                  "_key": "k118"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k119",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Divide by ownership",
+                  "_key": "k120"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k121",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Instead of asking for help with each task, give each other whole areas to own from start to finish. The person who owns the area decides how it is done, and does not have to be reminded.",
+                  "_key": "k122"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k123",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Review it",
+                  "_key": "k124"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k125",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Look at the arrangement again after a month. What worked at the start may not suit you later, especially when work or family changes.",
+                  "_key": "k126"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "setting-up-a-room-at-home-for-online-sessions",
+        "slug": "setting-up-a-room-at-home-for-online-sessions",
+        "status": "published",
+        "data": {
+          "title": "Setting up a room at home for online sessions",
+          "summary": "Privacy, seating and a few practical points before your first video session.",
+          "category": "counseling",
+          "date_label": "2 September 2026",
+          "read_minutes": 3,
+          "featured": false,
+          "position": 70,
+          "photo": "/images/room-print.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k127",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Online sessions work well for many couples, as long as the setup is comfortable and private. A few small things make a difference.",
+                  "_key": "k128"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k129",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Privacy first",
+                  "_key": "k130"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k131",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Choose a room where nobody can overhear you. If you share a home, think about using headphones, or playing quiet music or a fan outside the door. Tell the people you live with that you are not to be interrupted.",
+                  "_key": "k132"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k133",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sit together if you can",
+                  "_key": "k134"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k135",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you are in the same place, sit side by side on a sofa or two chairs, with the screen at about eye level. Prop a laptop on a pile of books if you need to. That way we can see you both clearly.",
+                  "_key": "k136"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k137",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you are in different places",
+                  "_key": "k138"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k139",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "That is fine too. Each of you joins from your own device and room. Please let us know beforehand so we can plan for it.",
+                  "_key": "k140"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k141",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Before you start",
+                  "_key": "k142"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k143",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Close other programs, plug in the laptop, and keep a glass of water close by. If the connection drops, we will phone you on the number you gave us.",
+                  "_key": "k144"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "listening-when-you-disagree",
+        "slug": "listening-when-you-disagree",
+        "status": "published",
+        "data": {
+          "title": "Listening when you disagree",
+          "summary": "A small exercise: say back what you heard before you answer.",
+          "category": "communication",
+          "date_label": "26 August 2026",
+          "read_minutes": 4,
+          "featured": false,
+          "position": 80,
+          "photo": "/images/couple-sofa.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k145",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When we disagree, most of us listen for the part we want to answer. We hear the first sentence, start preparing a reply, and miss the rest.",
+                  "_key": "k146"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k147",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Say it back",
+                  "_key": "k148"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k149",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Try this the next time you disagree. Before you reply, say back what you heard: \"So you are saying that you felt left out on Saturday. Is that right?\" Your partner can correct you. Then it is their turn to ask what you think.",
+                  "_key": "k150"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k151",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Why it helps",
+                  "_key": "k152"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k153",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "It slows things down. It also tells the other person you were listening, which on its own takes some of the heat out of the conversation.",
+                  "_key": "k154"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k155",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What it does not mean",
+                  "_key": "k156"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k157",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Saying back what you heard does not mean you agree. You can repeat your partner's view accurately and still hold a different one.",
+                  "_key": "k158"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k159",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Start with something small",
+                  "_key": "k160"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k161",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "It is easier to practise on a minor disagreement, such as where to go on Saturday, than in the middle of a big one.",
+                  "_key": "k162"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "principles": [
+      {
+        "id": "feel-heard",
+        "slug": "feel-heard",
+        "status": "published",
+        "data": {
+          "title": "Feel Heard",
+          "text": "Create space for what\nmatters most.",
+          "icon": "leaf",
+          "position": 10
+        }
+      },
+      {
+        "id": "move-forward",
+        "slug": "move-forward",
+        "status": "published",
+        "data": {
+          "title": "Move Forward",
+          "text": "Find new ways to\nconnect.",
+          "icon": "heart",
+          "position": 20
+        }
+      },
+      {
+        "id": "stronger-together",
+        "slug": "stronger-together",
+        "status": "published",
+        "data": {
+          "title": "Stronger Together",
+          "text": "Build a healthier\nhappier tomorrow.",
+          "icon": "people",
+          "position": 30
+        }
+      }
+    ],
+    "steps": [
+      {
+        "id": "intro-call",
+        "slug": "intro-call",
+        "status": "published",
+        "data": {
+          "title": "A free intro call",
+          "when_label": "Before you book",
+          "text": "A 15-minute call by phone or video. You tell us what has been hard lately, and we explain how we work. Nobody is asked to commit to anything on the call.",
+          "position": 10
+        }
+      },
+      {
+        "id": "first-joint-session",
+        "slug": "first-joint-session",
+        "status": "published",
+        "data": {
+          "title": "The first joint session",
+          "when_label": "Session one",
+          "text": "Fifty minutes with both of you. We ask what brought you in, what each of you wants to change and what already works. You leave with one small thing to try at home.",
+          "position": 20
+        }
+      },
+      {
+        "id": "ongoing-sessions",
+        "slug": "ongoing-sessions",
+        "status": "published",
+        "data": {
+          "title": "Ongoing sessions",
+          "when_label": "After that",
+          "text": "Most couples meet every one to two weeks. Some sessions are joint and some are one-to-one. You agree the plan with us as you go, and you can pause or stop whenever you like.",
+          "position": 30
+        }
+      }
+    ],
+    "topics": [
+      {
+        "id": "topic-1",
+        "slug": "topic-1",
+        "status": "published",
+        "data": {
+          "title": "Arguments that keep going round the same loop",
+          "position": 10
+        }
+      },
+      {
+        "id": "topic-2",
+        "slug": "topic-2",
+        "status": "published",
+        "data": {
+          "title": "Feeling more like housemates than partners",
+          "position": 20
+        }
+      },
+      {
+        "id": "topic-3",
+        "slug": "topic-3",
+        "status": "published",
+        "data": {
+          "title": "Becoming parents, or a child leaving home",
+          "position": 30
+        }
+      },
+      {
+        "id": "topic-4",
+        "slug": "topic-4",
+        "status": "published",
+        "data": {
+          "title": "Money, and how each of you handles it",
+          "position": 40
+        }
+      },
+      {
+        "id": "topic-5",
+        "slug": "topic-5",
+        "status": "published",
+        "data": {
+          "title": "Rebuilding trust after something went wrong",
+          "position": 50
+        }
+      },
+      {
+        "id": "topic-6",
+        "slug": "topic-6",
+        "status": "published",
+        "data": {
+          "title": "Different needs for time together and time alone",
+          "position": 60
+        }
+      },
+      {
+        "id": "topic-7",
+        "slug": "topic-7",
+        "status": "published",
+        "data": {
+          "title": "A move, a new job or caring for a parent",
+          "position": 70
+        }
+      },
+      {
+        "id": "topic-8",
+        "slug": "topic-8",
+        "status": "published",
+        "data": {
+          "title": "Deciding together whether to stay or part",
+          "position": 80
+        }
+      }
+    ],
+    "fees": [
+      {
+        "id": "intro-call",
+        "slug": "intro-call",
+        "status": "published",
+        "data": {
+          "title": "Intro call",
+          "detail": "15 minutes, by phone or video",
+          "price_label": "Free",
+          "position": 10
+        }
+      },
+      {
+        "id": "joint-session",
+        "slug": "joint-session",
+        "status": "published",
+        "data": {
+          "title": "Joint session",
+          "detail": "50 minutes, both partners",
+          "price_label": "From $120 (sample)",
+          "position": 20
+        }
+      },
+      {
+        "id": "one-to-one-session",
+        "slug": "one-to-one-session",
+        "status": "published",
+        "data": {
+          "title": "One-to-one session",
+          "detail": "50 minutes, one partner",
+          "price_label": "From $90 (sample)",
+          "position": 30
+        }
+      }
+    ],
+    "counselors": [
+      {
+        "id": "maren-holt",
+        "slug": "maren-holt",
+        "status": "published",
+        "data": {
+          "title": "Maren Holt",
+          "role": "Couples counselor",
+          "bio": "Works with couples at any stage, from a first rough patch to a long marriage. Meets clients in person in Millbrook and online.",
+          "position": 10
+        }
+      },
+      {
+        "id": "idris-calloway",
+        "slug": "idris-calloway",
+        "status": "published",
+        "data": {
+          "title": "Idris Calloway",
+          "role": "Couples counselor",
+          "bio": "Sees many couples who are becoming parents or have just moved. In person on Tuesdays and Thursdays, online on other days.",
+          "position": 20
+        }
+      },
+      {
+        "id": "sunniva-okafor",
+        "slug": "sunniva-okafor",
+        "status": "published",
+        "data": {
+          "title": "Sunniva Okafor",
+          "role": "Counselor, joint and one-to-one sessions",
+          "bio": "Meets partners one-to-one alongside joint sessions, and takes the Saturday online slots.",
+          "position": 30
+        }
+      }
+    ],
+    "practice": [
+      {
+        "id": "togetherwell",
+        "slug": "togetherwell",
+        "status": "published",
+        "data": {
+          "title": "TogetherWell",
+          "base": "Millbrook, and online",
+          "phone": "(555) 010-0148",
+          "email": "hello@togetherwell.example",
+          "response": "We read every request ourselves and reply within two working days to find a time for the intro call.",
+          "contact_note": "Please do not share detailed personal information by email. Names and times are enough. We talk through the rest on the call.",
+          "session_note": "These are sample fees. Replace them with your own, and add anything else you offer, such as reduced-fee places.",
+          "registration_note": "Add each counselor's real registration body, registration number and training here before you publish. This theme does not include any."
+        }
+      }
+    ]
+  }
+}

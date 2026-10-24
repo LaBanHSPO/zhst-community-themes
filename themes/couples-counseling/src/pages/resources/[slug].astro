@@ -1,0 +1,83 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import BookingBand from "../../components/BookingBand.astro";
+import ResourceCard from "../../components/ResourceCard.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { categoryLabel, getPractice, getResources, photoAlt, photoSrc } from "../../lib/practice";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: resource, cacheHint } = await getEmDashEntry("resources", slug);
+if (!resource) return Astro.rewrite("/404");
+
+const [allResult, practiceResult, settings] = await Promise.all([getResources(), getPractice(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(practiceResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(resource, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = resource.data;
+const cover = photoSrc(d.image, d.photo);
+const hasBody = Boolean(d.content && d.content.length > 0);
+const label = categoryLabel(d.category);
+const others = allResult.entries
+	.filter((r) => r.data.id !== d.id)
+	.sort((a, b) => Number(b.data.category === d.category) - Number(a.data.category === d.category))
+	.slice(0, 3);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "resources", id: d.id, slug }}
+	current="/resources"
+>
+	<header class="article-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/resources">Resources</a>
+				<span aria-hidden="true">/</span>
+				{d.category && label ? <a href={`/resources?category=${d.category}`}>{label}</a> : <span aria-current="page">Resource</span>}
+			</nav>
+			<h1 class="display" {...resource.edit.title}>{d.title}</h1>
+			<p class="byline">
+				{d.date_label && <span>{d.date_label}</span>}
+				{d.read_minutes && <span>{d.read_minutes} min read</span>}
+				<span>By the TogetherWell team</span>
+			</p>
+			{cover && <div class="article-cover"><img src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="1200" height="600" fetchpriority="high" /></div>}
+		</div>
+	</header>
+
+	<section class="article-body">
+		<p class="article-summary">{d.summary}</p>
+		{hasBody && <div class="prose"><PortableText value={d.content} /></div>}
+		<p class="article-note">General information, not counseling for your situation. If either of you is unsafe or in crisis, contact your local emergency number or a crisis line now.</p>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="more-posts" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="section-head">
+						<p class="eyebrow">Keep reading</p>
+						<h2 id="more-title" class="display">More short reads.</h2>
+					</div>
+					<ul class="card-grid">
+						{others.map((r) => <li><ResourceCard resource={r} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<BookingBand practice={practiceResult.practice} />
+</Base>

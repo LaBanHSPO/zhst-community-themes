@@ -1,0 +1,35 @@
+---
+import type { Fee } from "../../emdash-env";
+
+interface Props {
+	fees: { data: Fee; edit?: Record<string, any> }[];
+	note?: string | null;
+	title?: string;
+}
+const { fees, note, title = "Fees and session length" } = Astro.props;
+---
+
+{
+	fees.length > 0 && (
+		<section class="fees" aria-labelledby="fees-title">
+			<div class="wrap fees-inner">
+				<div class="fees-copy">
+					<p class="eyebrow">Fees</p>
+					<h2 id="fees-title" class="display">{title}</h2>
+					{note && <p class="fees-note">{note}</p>}
+				</div>
+				<dl class="fee-rows">
+					{fees.map((f) => (
+						<div class="fee-row">
+							<div>
+								<dt {...f.edit?.title}>{f.data.title}</dt>
+								{f.data.detail && <dd class="fee-detail">{f.data.detail}</dd>}
+							</div>
+							<dd class="fee-price">{f.data.price_label}</dd>
+						</div>
+					))}
+				</dl>
+			</div>
+		</section>
+	)
+}

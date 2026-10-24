@@ -1,0 +1,90 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import BookingBand from "../components/BookingBand.astro";
+import PageHead from "../components/PageHead.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getCounselors, getPractice, initials, photoAltByName } from "../lib/practice";
+
+const [{ entry: page, cacheHint }, practiceResult, counselorsResult, settings] = await Promise.all([
+	getEmDashEntry("pages", "about"),
+	getPractice(),
+	getCounselors(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	if (cacheHint) Astro.cache.set(cacheHint);
+	Astro.cache.set(practiceResult.cacheHint);
+	Astro.cache.set(counselorsResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page ? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" }) : null;
+const hasBody = Boolean(page?.data.content && page.data.content.length > 0);
+const counselors = counselorsResult.entries;
+const { practice } = practiceResult;
+---
+
+<Base
+	title={seo?.title ?? "About"}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? page?.data.intro ?? "TogetherWell is a small counseling practice for couples, with three counselors."}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<PageHead
+		id="about-title"
+		eyebrow={page?.data.eyebrow ?? "About"}
+		title={page?.data.title ?? "A small practice for couples."}
+		intro={page?.data.intro}
+		edit={page ? { ...page.edit.title } : {}}
+	/>
+
+	<section class="about-story">
+		<div class="wrap about-grid">
+			<div class="prose">
+				{hasBody ? <PortableText value={page!.data.content} /> : <p>Our story is coming soon.</p>}
+			</div>
+			<figure class="about-photo">
+				<img src="/images/room-olive.webp" alt={photoAltByName("room-olive")} width="648" height="560" loading="lazy" />
+				<figcaption>Our rooms in Millbrook. Names and details on this page are sample content.</figcaption>
+			</figure>
+		</div>
+	</section>
+
+	{
+		counselors.length > 0 && (
+			<section class="team" aria-labelledby="team-title">
+				<div class="wrap">
+					<div class="section-head">
+						<p class="eyebrow">Our counselors</p>
+						<h2 id="team-title" class="display">Three counselors, one way of working.</h2>
+						<p class="section-intro">You can ask for a particular counselor when you get in touch. We will tell you honestly if that person has a waiting list.</p>
+					</div>
+					<ul class="team-grid">
+						{counselors.map((c) => (
+							<li class="counselor">
+								<span class="initials" aria-hidden="true">{initials(c.data.title)}</span>
+								<h3 class="counselor-name" {...c.edit.title}>{c.data.title}</h3>
+								{c.data.role && <p class="counselor-role">{c.data.role}</p>}
+								{c.data.bio && <p class="counselor-bio">{c.data.bio}</p>}
+							</li>
+						))}
+					</ul>
+					<aside class="placeholder-card" aria-label="Placeholder for registration details">
+						<p class="placeholder-label">Placeholder for the practice owner</p>
+						<p class="placeholder-title">Registration and training</p>
+						<p>{practice.registration_note ?? "Add each counselor's real registration details here before you publish."}</p>
+					</aside>
+					<p class="about-links">
+						<a class="btn btn-sage" href="/contact"><span>Book an intro call</span><Arrow /></a>
+						<a class="text-link" href="/approach"><span>How we work</span><Arrow /></a>
+					</p>
+				</div>
+			</section>
+		)
+	}
+
+	<BookingBand practice={practice} />
+</Base>
