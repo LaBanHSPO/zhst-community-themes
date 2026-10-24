@@ -1,0 +1,31 @@
+---
+import Arrow from "./Arrow.astro";
+import { telHref } from "../lib/site";
+import type { SpeakerData } from "../lib/site";
+
+interface Props {
+	speaker: SpeakerData;
+	talk?: string;
+}
+const { speaker, talk } = Astro.props;
+---
+
+<section class="band" aria-labelledby="band-title">
+	<div class="band-inner">
+		<div class="band-copy">
+			<p class="eyebrow">Book Caleb</p>
+			<h2 id="band-title" class="display">Planning an event?</h2>
+			<p class="band-text">
+				Tell us the date, the place and who will be in the room. A rough month is fine. You will hear back within two working days, with
+				availability and a suggested talk.
+			</p>
+		</div>
+		<div class="band-actions">
+			<a class="btn btn-sand" href={talk ? `/contact?talk=${talk}` : "/contact"}><span>Send an enquiry</span><Arrow /></a>
+			<p class="band-contact">
+				{speaker.email && <a href={`mailto:${speaker.email}`}>{speaker.email}</a>}
+				{speaker.phone && <a href={telHref(speaker.phone)}>{speaker.phone}</a>}
+			</p>
+		</div>
+	</div>
+</section>

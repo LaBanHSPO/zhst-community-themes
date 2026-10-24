@@ -1,0 +1,162 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import BookingBand from "../components/BookingBand.astro";
+import EventRow from "../components/EventRow.astro";
+import JournalCard from "../components/JournalCard.astro";
+import TalkCard from "../components/TalkCard.astro";
+import { getEvents, getFormats, getJournal, getSpeaker, getTalks } from "../lib/site";
+
+const [talksResult, formatsResult, eventsResult, journalResult, speakerResult] = await Promise.all([
+	getTalks(),
+	getFormats(),
+	getEvents(),
+	getJournal(),
+	getSpeaker(),
+]);
+if (Astro.cache?.enabled) {
+	for (const r of [talksResult, formatsResult, eventsResult, journalResult, speakerResult]) Astro.cache.set(r.cacheHint);
+}
+const allTalks = talksResult.entries;
+const featured = allTalks.filter((t) => t.data.featured);
+const cards = (featured.length > 0 ? featured : allTalks).slice(0, 3);
+const formats = formatsResult.entries;
+const upcoming = eventsResult.upcoming.slice(0, 4);
+const talkFor = (slug: string | null | undefined) => {
+	const t = allTalks.find((x) => (x.data.slug ?? x.data.id) === slug);
+	return t ? { slug: t.data.slug, id: t.data.id, title: t.data.title } : null;
+};
+const postsAll = journalResult.entries;
+const posts = (postsAll.some((p) => p.data.featured) ? postsAll.filter((p) => p.data.featured) : postsAll).slice(0, 3);
+---
+
+<Base
+	title="Ideas that move the room"
+	description="Caleb Rivers is a fictional speaker. Keynotes, workshops and conversations on leadership, people and teams. See the talks, upcoming dates, the speaker kit and how to book."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="Caleb Rivers, a speaker in a dark blazer and headset microphone, smiling with his arms open on a dark stage under a spotlight"
+			width="2172"
+			height="924"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<p class="hero-eyebrow">Bolder ideas. Brighter people.</p>
+			<h1 id="hero-title" class="hero-title">Ideas that<br />move the room.</h1>
+			<p class="hero-sub">Keynotes and conversations that spark new thinking, <br />stronger teams, and a more human future.</p>
+			<a class="btn btn-sand" href="/talks"><span>Explore talks</span><Arrow /></a>
+		</div>
+		<p class="hand hand-hero" aria-hidden="true">Braver<br /><span class="in1">People</span><br /><span class="in2">Brighter</span><br /><span class="in3">Tomorrows</span><span class="hand-stroke"></span></p>
+		<p class="hero-caps" aria-hidden="true">People<br />Ideas<br />Action<br />A brighter<br />tomorrow</p>
+	</section>
+
+	<section class="signature" aria-labelledby="sig-title">
+		<div class="sig-head">
+			<div>
+				<p class="eyebrow">Signature talks</p>
+				<h2 id="sig-title" class="sig-title">Fresh perspectives<br />for what’s next.</h2>
+			</div>
+			<p class="sig-intro">Practical ideas, real stories, and a fresh take on the <br />challenges shaping our work and lives.</p>
+			<a class="sig-link" href="/talks"><span class="sig-rule" aria-hidden="true"></span><span>Explore all talks</span><Arrow /></a>
+		</div>
+		<ul class="talk-cards">
+			{cards.map((t, i) => <li><TalkCard talk={t} eager={i < 3} /></li>)}
+		</ul>
+	</section>
+
+	{
+		formats.length > 0 && (
+			<section class="formats" aria-labelledby="formats-title">
+				<div class="wrap">
+					<div class="formats-head">
+						<p class="eyebrow">In the room</p>
+						<h2 id="formats-title" class="display">Four ways to book Caleb.</h2>
+						<p class="formats-note">Most events use one of these. If yours does not fit, say so in the enquiry.</p>
+					</div>
+					<ul class="format-list">
+						{formats.map((f) => (
+							<li class="format">
+								<p class="format-length">{f.data.length}</p>
+								<h3 class="format-title" {...f.edit.title}>{f.data.title}</h3>
+								<p class="format-text">{f.data.text}</p>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		upcoming.length > 0 && (
+			<section class="dates" aria-labelledby="dates-title">
+				<div class="wrap">
+					<div class="section-head section-head-row">
+						<div>
+							<p class="eyebrow">On the calendar</p>
+							<h2 id="dates-title" class="display">Where Caleb speaks next.</h2>
+						</div>
+						<a class="text-link" href="/talks#calendar"><span>All dates</span><Arrow /></a>
+					</div>
+					<ul class="event-list">
+						{upcoming.map((e) => (
+							<EventRow
+								day={e.day}
+								title={e.entry.data.title}
+								venue={e.entry.data.venue}
+								city={e.entry.data.city}
+								kind={e.entry.data.kind}
+								note={e.entry.data.note}
+								talk={talkFor(e.entry.data.talk)}
+							/>
+						))}
+					</ul>
+					<p class="dates-note">Sample dates for this demo. Replace them in the CMS.</p>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="kit" aria-labelledby="kit-title">
+		<div class="wrap kit-inner">
+			<div class="kit-copy">
+				<p class="eyebrow">For organisers</p>
+				<h2 id="kit-title" class="display">Everything you need for the programme.</h2>
+				<p class="kit-text">
+					Short and long bios, an introduction to read aloud, three photos you can download and the technical basics for the stage or the
+					video call.
+				</p>
+				<a class="btn btn-ink" href="/speaker-kit"><span>Open the speaker kit</span><Arrow /></a>
+			</div>
+			<ul class="kit-shots">
+				<li><img src="/images/headshot-portrait.webp" alt="Caleb Rivers in a dark blazer with a headset microphone, smiling and looking up" width="960" height="1196" loading="lazy" /></li>
+				<li><img src="/images/headshot-wide.webp" alt="Caleb Rivers on a dark stage with his arms open, a spotlight behind him" width="1350" height="924" loading="lazy" /></li>
+			</ul>
+		</div>
+	</section>
+
+	{
+		posts.length > 0 && (
+			<section class="journal-teaser" aria-labelledby="journal-title">
+				<div class="wrap">
+					<div class="section-head section-head-row">
+						<div>
+							<p class="eyebrow">Journal</p>
+							<h2 id="journal-title" class="display">Notes from the road.</h2>
+						</div>
+						<a class="text-link" href="/journal"><span>All posts</span><Arrow /></a>
+					</div>
+					<ul class="post-grid">
+						{posts.map((p) => <li><JournalCard post={p} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<BookingBand speaker={speakerResult.speaker} />
+</Base>

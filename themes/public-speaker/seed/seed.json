@@ -1,0 +1,1962 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Public Speaker",
+    "description": "A dark stage-style theme for a public speaker: full-bleed photo hero with a handwritten note, signature talk cards, speaking formats, upcoming and past dates, a speaker kit with downloadable photos, a journal and a booking enquiry form, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "Caleb Rivers",
+    "tagline": "Speaker • Ideas • Brighter People"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro line",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "talks",
+      "label": "Talks",
+      "labelSingular": "Talk",
+      "urlPattern": "/talks/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Talk title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "One-line summary (shown on cards)",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "topic",
+          "label": "Topic (leadership, human-potential or culture)",
+          "type": "string"
+        },
+        {
+          "slug": "leaves",
+          "label": "What the audience leaves with (one item per line)",
+          "type": "text"
+        },
+        {
+          "slug": "formats",
+          "label": "Formats and lengths (one per line, e.g. Keynote: 40 or 60 minutes)",
+          "type": "text"
+        },
+        {
+          "slug": "audiences",
+          "label": "Suitable audiences (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Description",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "formats",
+      "label": "Formats",
+      "labelSingular": "Format",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Format name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "length",
+          "label": "Typical length",
+          "type": "string"
+        },
+        {
+          "slug": "text",
+          "label": "What it looks like",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "events",
+      "label": "Speaking dates",
+      "labelSingular": "Date",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Event name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "event_date",
+          "label": "Date",
+          "type": "datetime",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "slug": "venue",
+          "label": "Venue",
+          "type": "string"
+        },
+        {
+          "slug": "city",
+          "label": "City, or Online",
+          "type": "string"
+        },
+        {
+          "slug": "kind",
+          "label": "Format (Keynote, Workshop, Panel or Virtual)",
+          "type": "string"
+        },
+        {
+          "slug": "talk",
+          "label": "Talk slug",
+          "type": "string"
+        },
+        {
+          "slug": "note",
+          "label": "Short note",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "journal",
+      "label": "Journal",
+      "labelSingular": "Post",
+      "urlPattern": "/journal/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "Short summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "date_label",
+          "label": "Date shown (e.g. 14 October 2026)",
+          "type": "string"
+        },
+        {
+          "slug": "read_minutes",
+          "label": "Reading time in minutes",
+          "type": "integer"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order (newest first)",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Body",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "speaker",
+      "label": "Contact details",
+      "labelSingular": "Contact details",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Speaker name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "base",
+          "label": "Based in",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Email for booking enquiries",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "response",
+          "label": "Reply time (shown beside the form)",
+          "type": "text"
+        },
+        {
+          "slug": "contact_note",
+          "label": "Note shown above the form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Talks",
+          "url": "/talks"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        },
+        {
+          "type": "custom",
+          "label": "Journal",
+          "url": "/journal"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "Hello, I'm Caleb.",
+          "eyebrow": "About",
+          "intro": "I give talks about leadership, people and work. I try to make them useful the next morning.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k54",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Caleb gives talks and runs workshops about leadership, human potential and the way people work together. He speaks to leadership teams, managers and professional groups.",
+                  "_key": "s54"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k55",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How Caleb works",
+                  "_key": "s55"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k56",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Before an event he asks the organiser a few plain questions: who is in the room, what they have heard recently, and what should be different a month later. He writes the talk around the answers.",
+                  "_key": "s56"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k57",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "On the day he arrives early, checks the sound and the stage, and talks to a few people before he speaks. Afterwards he stays for questions and sends the organiser a one-page note.",
+                  "_key": "s57"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k58",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What he speaks about",
+                  "_key": "s58"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k59",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Leadership: deciding without full information, and telling the truth about a plan.",
+                  "_key": "s59"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k60",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Human potential: attention, judgement and what stays with people when tools change.",
+                  "_key": "s60"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k61",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Culture: meetings, disagreement and belonging on small teams.",
+                  "_key": "s61"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k62",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A note about this site",
+                  "_key": "s62"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k63",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Caleb Rivers is a fictional speaker. This site is a theme demo, and the portrait is AI-generated. The talks, events, journal posts and contact details are sample content you can replace in the CMS.",
+                  "_key": "s63"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "speaker-kit",
+        "slug": "speaker-kit",
+        "status": "published",
+        "data": {
+          "title": "Speaker kit",
+          "eyebrow": "For organisers",
+          "intro": "Bios, an introduction to read aloud, photos to download and the technical basics.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k64",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Short bio",
+                  "_key": "s64"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k65",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Caleb Rivers speaks and runs workshops on leadership, human potential and teams. His talks are plain, specific and short on slides. He works with organisations of all sizes, in person and online.",
+                  "_key": "s65"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k66",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Long bio",
+                  "_key": "s66"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k67",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Caleb Rivers gives talks and workshops about how people lead, decide and work together. He starts every project by asking the organiser who will be in the room and what should be different a month afterwards, then writes the talk around the answers.",
+                  "_key": "s67"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k68",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "His keynotes run from 20 to 60 minutes. His workshops run from 90 minutes to a full day and are built around the group's own examples. He is also available to moderate panels and to join them.",
+                  "_key": "s68"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k69",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Caleb Rivers is a fictional speaker created for this theme. Replace this text with your own bio.",
+                  "_key": "s69"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k70",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "To read aloud",
+                  "_key": "s70"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k71",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Please welcome Caleb Rivers. Caleb talks about making decisions when the facts are not all in, and about the habits that help teams do good work together. He will speak for forty minutes and then take questions.",
+                  "_key": "s71"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k72",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Tech rider basics",
+                  "_key": "s72"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k73",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "One headset or handheld microphone, tested before doors open.",
+                  "_key": "s73"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k74",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A laptop connection (HDMI or USB-C) and a screen showing 16:9 slides. Caleb brings his own clicker.",
+                  "_key": "s74"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k75",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A sound check of 20 to 30 minutes on the stage, with the person who will run the room.",
+                  "_key": "s75"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k76",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Stage lighting that lets the audience see his face.",
+                  "_key": "s76"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k77",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A microphone for questions from the floor, or a way to read written questions.",
+                  "_key": "s77"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k78",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A glass of water on a table or stool.",
+                  "_key": "s78"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k79",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Virtual sessions",
+                  "_key": "s79"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k80",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A wired network connection on the speaker's side and a test call a few days before.",
+                  "_key": "s80"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k81",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The camera at eye level. Recording and sharing only by written agreement.",
+                  "_key": "s81"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k82",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Files",
+                  "_key": "s82"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k83",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The images on this page are free to use for event promotion. Please do not edit or crop the faces. Ask if you need a different size.",
+                  "_key": "s83"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "booking-notes",
+        "slug": "booking-notes",
+        "status": "published",
+        "data": {
+          "title": "Booking notes",
+          "eyebrow": "Booking notes",
+          "intro": "What to send, how fees work and what happens if plans change.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k84",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A few plain notes about booking. These are samples, so replace them with your own terms.",
+                  "_key": "s84"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k85",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What to send first",
+                  "_key": "s85"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k86",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The date, the place, the size of the audience and what the event is about. Caleb replies within two working days with availability and a suggested talk.",
+                  "_key": "s86"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k87",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Fees and travel",
+                  "_key": "s87"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k88",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Fees depend on the format, the length and the travel involved. Caleb sends a written quote after the first call. Travel and accommodation are agreed separately.",
+                  "_key": "s88"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k89",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Changes and cancellation",
+                  "_key": "s89"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k90",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If the date moves, tell Caleb as early as you can. He will try to find a new date. The quote lists the exact terms for cancellation.",
+                  "_key": "s90"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k91",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Recording",
+                  "_key": "s91"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k92",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Recordings are made only by written agreement, and the agreement says where the recording may be shown.",
+                  "_key": "s92"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "talks": [
+      {
+        "id": "braver-leadership",
+        "slug": "braver-leadership",
+        "status": "published",
+        "data": {
+          "title": "Braver Leadership",
+          "summary": "Courage, clarity and progress in uncertain times.",
+          "topic": "leadership",
+          "leaves": "A one-page way to name the decision you have been putting off\nThree questions to ask before you announce a plan\nA plain sentence for saying \"I don't know yet\" without losing the room\nOne small thing to do in the first week back at work",
+          "formats": "Keynote: 40 or 60 minutes\nWorkshop: half day, about three hours\nFireside conversation: 45 minutes",
+          "audiences": "Senior leaders and executive teams\nNew managers\nIndustry and association conferences",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/talk-leadership.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most leaders are asked to decide before the facts are in. This talk is about doing that without pretending to be sure, and without waiting until the moment has passed.",
+                  "_key": "s1"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k2",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What the talk covers",
+                  "_key": "s2"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Caleb starts with the decisions people avoid and why they feel heavier than they are. He then walks through how to say what you know, what you do not, and what you will check by when. The stories are small and ordinary: a delayed launch, a hard conversation, a plan that had to change in week two.",
+                  "_key": "s3"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k4",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The last ten minutes are practical. Everyone writes down one decision, one person to tell, and one date.",
+                  "_key": "s4"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Good to know",
+                  "_key": "s5"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k6",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The keynote works with any group size. The workshop is best with 12 to 40 people, seated at tables.",
+                  "_key": "s6"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "a-more-human-future",
+        "slug": "a-more-human-future",
+        "status": "published",
+        "data": {
+          "title": "A More Human Future",
+          "summary": "Technology, empathy and what really matters.",
+          "topic": "human-potential",
+          "leaves": "A short list of work that stays with people, whatever tools arrive\nTwo questions to ask before a team adopts a new tool\nA way to protect attention in a day full of messages",
+          "formats": "Keynote: 40 or 60 minutes\nPanel or moderated conversation: 45 to 75 minutes\nVirtual session: 30 to 45 minutes",
+          "audiences": "Company all-hands and leadership offsites\nProfessional associations\nSchools, colleges and public-sector teams",
+          "featured": true,
+          "position": 20,
+          "photo": "/images/talk-human.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "New tools change what work looks like. They do not change who has to listen, judge and care. This talk looks at where people stay at the centre and how to make that a decision rather than an accident.",
+                  "_key": "s7"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k8",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What the talk covers",
+                  "_key": "s8"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Caleb talks about attention, trust and judgement as skills that need practice. He gives examples from teams that slowed down one process on purpose, and from teams that sped one up and then regretted it.",
+                  "_key": "s9"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k10",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "He does not predict the future or sell a product. The talk ends with a short list of questions a team can use at its next planning meeting.",
+                  "_key": "s10"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Good to know",
+                  "_key": "s11"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Slides are light and the talk is delivered without notes. It works well as a closing keynote.",
+                  "_key": "s12"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "teams-that-thrive",
+        "slug": "teams-that-thrive",
+        "status": "published",
+        "data": {
+          "title": "Teams That Thrive",
+          "summary": "Belonging, creativity and lasting impact.",
+          "topic": "culture",
+          "leaves": "A simple check on whether people feel able to disagree\nTwo meeting habits that make quiet people easier to hear\nA one-hour exercise to repeat with your own team",
+          "formats": "Keynote: 40 or 60 minutes\nWorkshop: 90 minutes to a full day\nVirtual session: 45 to 60 minutes",
+          "audiences": "Teams of 10 to 150 people\nDepartment leads and people managers\nOffsites and team days",
+          "featured": true,
+          "position": 30,
+          "photo": "/images/talk-culture.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Teams do their best work when people can say what they think and still belong. This talk is about the small habits that make that likely, and the ones that quietly work against it.",
+                  "_key": "s13"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What the talk covers",
+                  "_key": "s14"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Caleb looks at how meetings are run, how disagreement is handled and how credit is shared. Each part comes with something the audience can try the following week.",
+                  "_key": "s15"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Good to know",
+                  "_key": "s16"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The workshop version uses the team's own examples. Organisers are asked for two or three real situations beforehand, with names removed.",
+                  "_key": "s17"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "the-next-small-step",
+        "slug": "the-next-small-step",
+        "status": "published",
+        "data": {
+          "title": "The Next Small Step",
+          "summary": "How to start when the whole plan is not clear yet.",
+          "topic": "leadership",
+          "leaves": "A way to choose a first step that is easy to undo\nA habit for reviewing a plan every Friday in ten minutes",
+          "formats": "Keynote: 30 or 40 minutes\nWorkshop: 2 hours",
+          "audiences": "Founders and small business owners\nProject and programme managers",
+          "featured": false,
+          "position": 40,
+          "photo": "/images/talk-summit.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Big plans stall because the first step is too big. This talk is about picking a step small enough to take on Monday and clear enough to learn from.",
+                  "_key": "s18"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What the talk covers",
+                  "_key": "s19"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k20",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Caleb shows how to turn a vague goal into a first step, a check date and a person who will ask how it went. The examples come from projects that started with a single phone call or a one-page note.",
+                  "_key": "s20"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "work-that-grows-slowly",
+        "slug": "work-that-grows-slowly",
+        "status": "published",
+        "data": {
+          "title": "Work That Grows Slowly",
+          "summary": "Patience, practice and why good work takes longer than planned.",
+          "topic": "human-potential",
+          "leaves": "A realistic way to estimate how long learning takes\nPermission to stop measuring everything weekly",
+          "formats": "Keynote: 30 or 40 minutes\nVirtual session: 30 minutes",
+          "audiences": "Teams in education and training\nCreative and research groups",
+          "featured": false,
+          "position": 50,
+          "photo": "/images/talk-seedling.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most things worth doing take longer than the plan says. This talk is about staying with slow work without losing heart, and about telling stakeholders the truth about timing.",
+                  "_key": "s21"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k22",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What the talk covers",
+                  "_key": "s22"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Caleb talks about practice, repetition and the long flat stretch in the middle of any project. He suggests a few ways to show progress that do not depend on a number going up each week.",
+                  "_key": "s23"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "meetings-worth-having",
+        "slug": "meetings-worth-having",
+        "status": "published",
+        "data": {
+          "title": "Meetings Worth Having",
+          "summary": "Better conversations at work, starting with the next meeting.",
+          "topic": "culture",
+          "leaves": "A five-line meeting note that replaces long minutes\nA rule for who speaks first, and why it matters",
+          "formats": "Workshop: 90 minutes\nKeynote: 30 minutes\nVirtual session: 45 minutes",
+          "audiences": "Managers and team leads\nOperations and project teams",
+          "featured": false,
+          "position": 60,
+          "photo": "/images/talk-group.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k24",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most people sit in more meetings than they would choose. This session is about making each one shorter, clearer and fairer.",
+                  "_key": "s24"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What the talk covers",
+                  "_key": "s25"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k26",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Caleb brings a short checklist: a purpose in one sentence, a named person to decide, and a note sent within the hour. The workshop version runs a real meeting from the group's own calendar.",
+                  "_key": "s26"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "formats": [
+      {
+        "id": "keynote",
+        "slug": "keynote",
+        "status": "published",
+        "data": {
+          "title": "Keynote",
+          "length": "20 to 60 minutes",
+          "text": "One talk on stage, with time for questions. Slides are light and usually fewer than twenty. Caleb arrives early for a sound check and stays afterwards for conversation.",
+          "position": 10
+        }
+      },
+      {
+        "id": "workshop",
+        "slug": "workshop",
+        "status": "published",
+        "data": {
+          "title": "Workshop",
+          "length": "90 minutes to a full day",
+          "text": "Small groups work on their own examples at tables. Each person leaves with a written next step. Best with 12 to 40 people.",
+          "position": 20
+        }
+      },
+      {
+        "id": "panel",
+        "slug": "panel",
+        "status": "published",
+        "data": {
+          "title": "Panel and moderation",
+          "length": "45 to 75 minutes",
+          "text": "Caleb moderates or joins as a panelist. He asks organisers for the questions in advance and keeps to time.",
+          "position": 30
+        }
+      },
+      {
+        "id": "virtual",
+        "slug": "virtual",
+        "status": "published",
+        "data": {
+          "title": "Virtual",
+          "length": "30 to 60 minutes",
+          "text": "A live session on your video platform. Shorter segments, polls only if you ask for them, and a recording only by agreement.",
+          "position": 40
+        }
+      }
+    ],
+    "events": [
+      {
+        "id": "northfold-leadership-day",
+        "slug": "northfold-leadership-day",
+        "status": "published",
+        "data": {
+          "title": "Northfold Leadership Day",
+          "event_date": "2027-02-18T12:00:00.000Z",
+          "venue": "Harbour Hall",
+          "city": "Ashby Cove",
+          "kind": "Keynote",
+          "talk": "braver-leadership",
+          "note": "Open to registered attendees."
+        }
+      },
+      {
+        "id": "people-and-tools-forum",
+        "slug": "people-and-tools-forum",
+        "status": "published",
+        "data": {
+          "title": "People and Tools Forum",
+          "event_date": "2027-03-25T12:00:00.000Z",
+          "venue": "Live session",
+          "city": "Online",
+          "kind": "Virtual",
+          "talk": "a-more-human-future",
+          "note": "Free to register."
+        }
+      },
+      {
+        "id": "marlowe-teams-summit",
+        "slug": "marlowe-teams-summit",
+        "status": "published",
+        "data": {
+          "title": "Marlowe Valley Teams Summit",
+          "event_date": "2027-05-12T12:00:00.000Z",
+          "venue": "Millrace Theatre",
+          "city": "Marlowe Valley",
+          "kind": "Keynote",
+          "talk": "teams-that-thrive",
+          "note": "Workshop the same afternoon."
+        }
+      },
+      {
+        "id": "fernhill-managers-meetup",
+        "slug": "fernhill-managers-meetup",
+        "status": "published",
+        "data": {
+          "title": "Fernhill Managers Meetup",
+          "event_date": "2027-06-30T12:00:00.000Z",
+          "venue": "Fernhill Library Hall",
+          "city": "Fernhill",
+          "kind": "Panel",
+          "talk": "meetings-worth-having",
+          "note": "Moderated panel."
+        }
+      },
+      {
+        "id": "stonebridge-open-conference",
+        "slug": "stonebridge-open-conference",
+        "status": "published",
+        "data": {
+          "title": "Stonebridge Open Conference",
+          "event_date": "2027-09-16T12:00:00.000Z",
+          "venue": "Stonebridge Exchange",
+          "city": "Stonebridge",
+          "kind": "Keynote",
+          "talk": "the-next-small-step",
+          "note": ""
+        }
+      },
+      {
+        "id": "ashby-founders-breakfast",
+        "slug": "ashby-founders-breakfast",
+        "status": "published",
+        "data": {
+          "title": "Ashby Cove Founders Breakfast",
+          "event_date": "2026-03-05T12:00:00.000Z",
+          "venue": "The Quay Room",
+          "city": "Ashby Cove",
+          "kind": "Keynote",
+          "talk": "the-next-small-step",
+          "note": ""
+        }
+      },
+      {
+        "id": "kestrel-team-day",
+        "slug": "kestrel-team-day",
+        "status": "published",
+        "data": {
+          "title": "Kestrel Road Team Day",
+          "event_date": "2026-05-21T12:00:00.000Z",
+          "venue": "Kestrel Road Studio",
+          "city": "Marlowe Valley",
+          "kind": "Workshop",
+          "talk": "teams-that-thrive",
+          "note": "Private event."
+        }
+      },
+      {
+        "id": "linden-education-forum",
+        "slug": "linden-education-forum",
+        "status": "published",
+        "data": {
+          "title": "Linden Park Education Forum",
+          "event_date": "2026-09-10T12:00:00.000Z",
+          "venue": "Linden Park College",
+          "city": "Linden Park",
+          "kind": "Panel",
+          "talk": "work-that-grows-slowly",
+          "note": ""
+        }
+      }
+    ],
+    "journal": [
+      {
+        "id": "what-i-ask-a-room-first",
+        "slug": "what-i-ask-a-room-first",
+        "status": "published",
+        "data": {
+          "title": "What I ask a room in the first two minutes",
+          "summary": "A short question at the start tells me more than any briefing note.",
+          "date_label": "14 October 2026",
+          "read_minutes": 4,
+          "featured": true,
+          "position": 10,
+          "photo": "/images/journal-audience.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Before I say anything about my topic, I ask the room a plain question. It is usually something like: who here has put off a decision this month? Hands go up. People look around and smile.",
+                  "_key": "s27"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k28",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Why it works",
+                  "_key": "s28"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "It tells me who is in front of me. It also tells the audience that this will not be a lecture. Most of the talk is easier to give once people have shown, in a small way, that they are involved.",
+                  "_key": "s29"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k30",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What I do with the answer",
+                  "_key": "s30"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I use the answers to adjust the second half. If most hands go up, I spend more time on how to decide. If few do, I spend more time on how to tell others.",
+                  "_key": "s31"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k32",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The question is always short, always about work and never personal.",
+                  "_key": "s32"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "why-i-cut-my-slides-in-half",
+        "slug": "why-i-cut-my-slides-in-half",
+        "status": "published",
+        "data": {
+          "title": "Why I cut my slides in half",
+          "summary": "Fewer slides meant more eye contact and better questions.",
+          "date_label": "29 September 2026",
+          "read_minutes": 5,
+          "featured": true,
+          "position": 20,
+          "photo": "/images/journal-spotlight.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k33",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A year ago my keynote had forty slides. Last month it had eighteen. The talk is the same length and says the same things. It is easier to listen to.",
+                  "_key": "s33"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k34",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What I removed",
+                  "_key": "s34"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k35",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Slides that only repeated what I was saying. Slides with more than one idea. Slides that were there because I was afraid of losing my place.",
+                  "_key": "s35"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k36",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What I kept",
+                  "_key": "s36"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k37",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "One image for each story. One sentence for each main point. A blank slide when I want people to look at me instead.",
+                  "_key": "s37"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k38",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you give talks, try this once: print your slides, and cross out every one you could say without. Then see what is left.",
+                  "_key": "s38"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "preparing-for-a-room-that-did-not-choose-to-be-there",
+        "slug": "preparing-for-a-room-that-did-not-choose-to-be-there",
+        "status": "published",
+        "data": {
+          "title": "Preparing for a room that did not choose to be there",
+          "summary": "Some audiences are required to attend. Here is how I plan for them.",
+          "date_label": "12 September 2026",
+          "read_minutes": 5,
+          "featured": true,
+          "position": 30,
+          "photo": "/images/talk-culture.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k39",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "At some events nobody picked the session. They were told to be there. That changes how I open.",
+                  "_key": "s39"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k40",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Start with their afternoon",
+                  "_key": "s40"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k41",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I begin with something that matches what people already have on their minds: a full inbox, a long drive home, a deadline on Friday. I say it out loud. It takes thirty seconds and the room relaxes.",
+                  "_key": "s41"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k42",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Make it short and useful",
+                  "_key": "s42"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k43",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I cut anything that needs warming up. Every ten minutes there is something people can use or write down. If I get to the end and they have one thing to try, I count it as a good day.",
+                  "_key": "s43"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "a-small-test-for-a-big-idea",
+        "slug": "a-small-test-for-a-big-idea",
+        "status": "published",
+        "data": {
+          "title": "A small test for a big idea",
+          "summary": "How to find out in a week whether an idea is worth a quarter.",
+          "date_label": "25 August 2026",
+          "read_minutes": 4,
+          "featured": false,
+          "position": 40,
+          "photo": "/images/talk-seedling.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k44",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When someone tells me about a big idea, I ask what they could learn by Friday.",
+                  "_key": "s44"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k45",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Pick the smallest real test",
+                  "_key": "s45"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k46",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Talk to three customers. Draw the page on paper and show it to a colleague. Run the process by hand for one week before you build anything.",
+                  "_key": "s46"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k47",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Decide in advance",
+                  "_key": "s47"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k48",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Write down what result would make you carry on and what would make you stop. People who do this usually stop earlier and with less regret.",
+                  "_key": "s48"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "what-a-workshop-leaves-behind",
+        "slug": "what-a-workshop-leaves-behind",
+        "status": "published",
+        "data": {
+          "title": "What a workshop leaves behind",
+          "summary": "The best workshops end with a note on someone's desk, not a feeling in the room.",
+          "date_label": "3 August 2026",
+          "read_minutes": 4,
+          "featured": false,
+          "position": 50,
+          "photo": "/images/talk-group.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k49",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A good workshop feels energetic. A useful one leaves something behind.",
+                  "_key": "s49"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k50",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The one-page note",
+                  "_key": "s50"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k51",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "At the end of each workshop I ask everyone to write one page: the decision, the person they will tell, the date. They keep the original and photograph a copy for me.",
+                  "_key": "s51"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k52",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The follow-up",
+                  "_key": "s52"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k53",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Two weeks later I send one email to the organiser asking what happened. I do not ask for praise. I ask what got done, and what got in the way.",
+                  "_key": "s53"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "speaker": [
+      {
+        "id": "caleb",
+        "slug": "caleb",
+        "status": "published",
+        "data": {
+          "title": "Caleb Rivers",
+          "base": "Ashby Cove, and online",
+          "phone": "(555) 010-0171",
+          "email": "bookings@calebrivers.example",
+          "response": "Caleb's team replies to every enquiry within two working days.",
+          "contact_note": "Send the date, place and audience size if you have them. A rough month is fine. Fees are quoted in writing after a short call."
+        }
+      }
+    ]
+  }
+}

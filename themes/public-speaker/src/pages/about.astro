@@ -1,0 +1,64 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import BookingBand from "../components/BookingBand.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getSpeaker } from "../lib/site";
+
+const [{ entry: page, cacheHint }, speakerResult, settings] = await Promise.all([
+	getEmDashEntry("pages", "about"),
+	getSpeaker(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	if (cacheHint) Astro.cache.set(cacheHint);
+	Astro.cache.set(speakerResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page ? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" }) : null;
+const hasBody = Boolean(page?.data.content && page.data.content.length > 0);
+---
+
+<Base
+	title={seo?.title ?? "About"}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? page?.data.intro ?? "About Caleb Rivers, a fictional speaker on leadership, people and teams."}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<header class="about-head">
+		<div class="wrap about-head-grid">
+			<div class="about-head-copy">
+				<p class="eyebrow">{page?.data.eyebrow ?? "About"}</p>
+				<h1 id="about-title" class="display display-xl" {...(page ? page.edit.title : {})}>{page?.data.title ?? "Hello, I'm Caleb."}</h1>
+				{page?.data.intro && <p class="lede">{page.data.intro}</p>}
+				<p class="about-links">
+					<a class="btn btn-sand" href="/contact"><span>Book Caleb</span><Arrow /></a>
+					<a class="text-link" href="/talks"><span>Explore talks</span><Arrow /></a>
+				</p>
+			</div>
+			<figure class="about-photo">
+				<img
+					src="/images/headshot-portrait.webp"
+					alt="Caleb Rivers in a dark blazer with a headset microphone, smiling and looking up"
+					width="960"
+					height="1196"
+					fetchpriority="high"
+				/>
+				<figcaption>Caleb Rivers is a fictional speaker, shown with an AI-generated portrait made for this theme.</figcaption>
+			</figure>
+		</div>
+	</header>
+
+	<section class="about-story">
+		<div class="wrap">
+			<div class="prose">
+				{hasBody ? <PortableText value={page!.data.content} /> : <p>Caleb's story is coming soon.</p>}
+			</div>
+		</div>
+	</section>
+
+	<BookingBand speaker={speakerResult.speaker} />
+</Base>

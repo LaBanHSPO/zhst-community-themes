@@ -1,0 +1,100 @@
+---
+import Base from "../../layouts/Base.astro";
+import BookingBand from "../../components/BookingBand.astro";
+import EventRow from "../../components/EventRow.astro";
+import PageHead from "../../components/PageHead.astro";
+import TalkCard from "../../components/TalkCard.astro";
+import { TOPICS, getEvents, getSpeaker, getTalks } from "../../lib/site";
+
+const [talksResult, eventsResult, speakerResult] = await Promise.all([getTalks(), getEvents(), getSpeaker()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(talksResult.cacheHint);
+	Astro.cache.set(eventsResult.cacheHint);
+	Astro.cache.set(speakerResult.cacheHint);
+}
+const all = talksResult.entries;
+
+// One filter link per topic that has at least one talk, in a fixed order.
+const topics = TOPICS.filter((c) => all.some((t) => t.data.topic === c.slug));
+// ?topic=<slug> narrows the list to one topic.
+const active = topics.find((c) => c.slug === Astro.url.searchParams.get("topic"));
+const talks = active ? all.filter((t) => t.data.topic === active.slug) : all;
+const { upcoming, past } = eventsResult;
+const talkFor = (slug: string | null | undefined) => {
+	const t = all.find((x) => (x.data.slug ?? x.data.id) === slug);
+	return t ? { slug: t.data.slug, id: t.data.id, title: t.data.title } : null;
+};
+---
+
+<Base
+	title={active ? `${active.label} talks` : "Talks"}
+	description="Talks by Caleb Rivers on leadership, human potential and culture. Each one lists what the audience leaves with, the formats and lengths, and who it suits. Filter by topic."
+	current="/talks"
+>
+	<PageHead
+		id="talks-title"
+		eyebrow="Talks"
+		title={active ? `${active.label}.` : "Fresh perspectives for what’s next."}
+		intro="Talks on leadership, human potential and culture. Each can be given as a keynote, a workshop or a conversation."
+	/>
+
+	<section class="list-section" aria-labelledby="talks-title">
+		<div class="wrap">
+			{
+				topics.length > 1 && (
+					<nav class="filter" aria-label="Filter by topic">
+						<a href="/talks" aria-current={active ? undefined : "true"}>All</a>
+						{topics.map((c) => (
+							<a href={`/talks?topic=${c.slug}`} aria-current={active?.slug === c.slug ? "true" : undefined}>{c.label}</a>
+						))}
+					</nav>
+				)
+			}
+			{
+				talks.length > 0 ? (
+					<ul class="talk-grid">
+						{talks.map((t, i) => <li><TalkCard talk={t} eager={i < 3} /></li>)}
+					</ul>
+				) : (
+					<p class="empty-note">Nothing here yet. New talks are on their way.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<section class="calendar" id="calendar" aria-labelledby="calendar-title">
+		<div class="wrap">
+			<div class="section-head">
+				<p class="eyebrow">On the calendar</p>
+				<h2 id="calendar-title" class="display">Dates, upcoming and past.</h2>
+				<p class="section-note">Sample dates for this demo. Replace them in the CMS and past events move down on their own.</p>
+			</div>
+			<h3 class="calendar-label">Upcoming</h3>
+			{
+				upcoming.length > 0 ? (
+					<ul class="event-list">
+						{upcoming.map((e) => (
+							<EventRow day={e.day} title={e.entry.data.title} venue={e.entry.data.venue} city={e.entry.data.city} kind={e.entry.data.kind} note={e.entry.data.note} talk={talkFor(e.entry.data.talk)} />
+						))}
+					</ul>
+				) : (
+					<p class="empty-note">No dates are listed right now. Ask about an event for your team.</p>
+				)
+			}
+			{
+				past.length > 0 && (
+					<>
+						<h3 class="calendar-label calendar-label-past">Past</h3>
+						<ul class="event-list">
+							{past.map((e) => (
+								<EventRow past day={e.day} title={e.entry.data.title} venue={e.entry.data.venue} city={e.entry.data.city} kind={e.entry.data.kind} note={e.entry.data.note} talk={talkFor(e.entry.data.talk)} />
+							))}
+						</ul>
+					</>
+				)
+			}
+		</div>
+	</section>
+
+	<BookingBand speaker={speakerResult.speaker} />
+</Base>

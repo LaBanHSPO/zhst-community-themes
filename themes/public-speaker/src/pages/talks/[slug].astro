@@ -1,0 +1,112 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import BookingBand from "../../components/BookingBand.astro";
+import TalkCard from "../../components/TalkCard.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getSpeaker, getTalks, lines, photoAlt, photoSrc, topicLabel } from "../../lib/site";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: talk, cacheHint } = await getEmDashEntry("talks", slug);
+if (!talk) return Astro.rewrite("/404");
+
+const [allResult, speakerResult, settings] = await Promise.all([getTalks(), getSpeaker(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(speakerResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(talk, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = talk.data;
+const cover = photoSrc(d.image, d.photo);
+const hasBody = Boolean(d.content && d.content.length > 0);
+const label = topicLabel(d.topic);
+const leaves = lines(d.leaves);
+const formats = lines(d.formats);
+const audiences = lines(d.audiences);
+const others = allResult.entries
+	.filter((t) => t.data.id !== d.id)
+	.sort((a, b) => Number(b.data.topic === d.topic) - Number(a.data.topic === d.topic))
+	.slice(0, 3);
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "talks", id: d.id, slug }}
+	current="/talks"
+>
+	<header class="talk-hero">
+		{cover && <img class="talk-hero-photo" src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="1120" height="640" fetchpriority="high" />}
+		<div class="talk-hero-copy wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/talks">Talks</a>
+				<span aria-hidden="true">/</span>
+				{d.topic && label ? <a href={`/talks?topic=${d.topic}`}>{label}</a> : <span aria-current="page">Talk</span>}
+			</nav>
+			<h1 class="talk-hero-title" {...talk.edit.title}>{d.title}</h1>
+			<p class="talk-hero-summary">{d.summary}</p>
+			<a class="btn btn-sand" href={`/contact?talk=${slug}`}><span>Book this talk</span><Arrow /></a>
+		</div>
+	</header>
+
+	<section class="talk-body">
+		<div class="wrap talk-body-grid">
+			<div class="talk-main">
+				{hasBody && <div class="prose"><PortableText value={d.content} /></div>}
+			</div>
+			<aside class="talk-facts" aria-label="Talk details">
+				{
+					leaves.length > 0 && (
+						<div class="fact-block">
+							<h2 class="fact-title">What the audience leaves with</h2>
+							<ul class="checks">{leaves.map((l) => <li>{l}</li>)}</ul>
+						</div>
+					)
+				}
+				{
+					formats.length > 0 && (
+						<div class="fact-block">
+							<h2 class="fact-title">Formats and lengths</h2>
+							<ul class="plain">{formats.map((l) => <li>{l}</li>)}</ul>
+						</div>
+					)
+				}
+				{
+					audiences.length > 0 && (
+						<div class="fact-block">
+							<h2 class="fact-title">Suitable audiences</h2>
+							<ul class="plain">{audiences.map((l) => <li>{l}</li>)}</ul>
+						</div>
+					)
+				}
+			</aside>
+		</div>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="more-band" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="section-head">
+						<p class="eyebrow">More talks</p>
+						<h2 id="more-title" class="display">Other talks.</h2>
+					</div>
+					<ul class="talk-grid">
+						{others.map((t) => <li><TalkCard talk={t} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<BookingBand speaker={speakerResult.speaker} talk={slug} />
+</Base>

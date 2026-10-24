@@ -1,0 +1,164 @@
+---
+import { getEmDashCollection, getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
+import { createPublicPageContext } from "emdash/page";
+import "@fontsource-variable/newsreader/opsz.css";
+import "@fontsource-variable/inter";
+import "@fontsource/homemade-apple";
+import Logo from "../components/Logo.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getSpeaker, telHref } from "../lib/site";
+import "../styles/theme.css";
+
+interface Props {
+	title: string;
+	pageTitle?: string | null;
+	description?: string | null;
+	image?: string | null;
+	canonical?: string | null;
+	/** Pass content reference for plugin page contributions on content pages */
+	content?: { collection: string; id: string; slug?: string | null };
+	/** Force which primary-menu URL is marked current. */
+	current?: string;
+	/** Lay the header over the top of the page (the home hero photo runs underneath it). */
+	overlay?: boolean;
+}
+
+const { title, pageTitle, description, image, canonical, content, current, overlay = false } = Astro.props;
+const [settingsResult, menuResult, speakerResult, pagesResult] = await Promise.all([
+	getSiteSettingsWithCacheHint(),
+	getMenuWithCacheHint("primary"),
+	getSpeaker(),
+	getEmDashCollection("pages", { limit: 20 }),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(settingsResult.cacheHint);
+	Astro.cache.set(menuResult.cacheHint);
+	Astro.cache.set(speakerResult.cacheHint);
+	Astro.cache.set(pagesResult.cacheHint);
+}
+
+const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(settingsResult.data);
+const titleIncludesSiteName = title === siteTitle || title.endsWith(` | ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} | ${siteTitle}`;
+const pageDescription = description ?? `${siteTitle}. ${siteTagline}`;
+const navItems = menuResult.data?.items ?? [];
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const norm = (url: string) => url.replace(/\/$/, "") || "/";
+const { speaker } = speakerResult;
+// CMS pages that are not in the primary menu are linked from the footer.
+const menuUrls = new Set(navItems.map((i) => norm(i.url)));
+const extraPages = pagesResult.entries
+	.map((p) => ({ url: `/${p.data.slug ?? p.data.id}`, label: p.data.eyebrow || p.data.title }))
+	.filter((p) => !menuUrls.has(p.url) && p.url !== "/about");
+
+const currentUrl =
+	current ??
+	navItems.find((i) => norm(i.url) === path)?.url ??
+	navItems.find((i) => norm(i.url) !== "/" && path.startsWith(`${norm(i.url)}/`))?.url;
+
+const pageCtx = createPublicPageContext({
+	Astro,
+	kind: content ? "content" : "custom",
+	pageType: "website",
+	title: fullTitle,
+	pageTitle: pageTitle ?? title,
+	description: pageDescription,
+	canonical,
+	image,
+	content,
+	siteName: siteTitle,
+});
+const year = new Intl.DateTimeFormat("en-GB", { year: "numeric", timeZone: "Asia/Saigon" }).format(new Date());
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{fullTitle}</title>
+		<EmDashHead page={pageCtx} />
+	</head>
+	<body>
+		<EmDashBodyStart page={pageCtx} />
+		<a class="skip-link" href="#main">Skip to content</a>
+
+		<header class:list={["site-head", { "is-overlay": overlay }]}>
+			<div class="head-inner">
+				<Logo title={siteTitle} tagline={siteTagline} logo={siteLogo} class="head-logo" />
+				<nav class="nav" aria-label="Primary">
+					{
+						navItems.map((item) => (
+							<a
+								href={item.url}
+								target={item.target}
+								rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+								aria-current={item.url === currentUrl ? "page" : undefined}
+							>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+				<a class="head-cta" href="/talks">Explore talks</a>
+				<details class="mobile-nav">
+					<summary aria-label="Menu">
+						<svg class="burger" width="22" height="14" viewBox="0 0 22 14" aria-hidden="true" focusable="false">
+							<path d="M0 1h22M0 7h22M0 13h22" stroke="currentColor" stroke-width="1.5" />
+						</svg>
+						<svg class="close" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+							<path d="M1 1l14 14M15 1L1 15" stroke="currentColor" stroke-width="1.5" />
+						</svg>
+					</summary>
+					<nav class="mobile-panel" aria-label="Primary (mobile)">
+						{
+							navItems.map((item) => (
+								<a href={item.url} aria-current={item.url === currentUrl ? "page" : undefined}>
+									{item.label}
+								</a>
+							))
+						}
+						<a href="/speaker-kit">Speaker kit</a>
+						<a class="mobile-cta" href="/contact">Book Caleb</a>
+						{speaker.email && <a class="mobile-phone" href={`mailto:${speaker.email}`}>{speaker.email}</a>}
+					</nav>
+				</details>
+			</div>
+		</header>
+
+		<main id="main">
+			<slot />
+		</main>
+
+		<footer class="site-foot">
+			<div class="foot-inner">
+				<div class="foot-brand">
+					<Logo title={siteTitle} tagline={siteTagline} logo={siteLogo} />
+					<p>Talks and workshops on leadership, people and teams. Based in Ashby Cove, speaking in person and online.</p>
+				</div>
+				<div>
+					<h2>Explore</h2>
+					<ul class="foot-links">
+						{navItems.map((item) => <li><a href={item.url}>{item.label}</a></li>)}
+						<li><a href="/speaker-kit">Speaker kit</a></li>
+						<li><a href="/contact">Book Caleb</a></li>
+						{extraPages.filter((p) => p.url !== "/speaker-kit").map((p) => <li><a href={p.url}>{p.label}</a></li>)}
+					</ul>
+				</div>
+				<div class="foot-contact">
+					<h2>Contact</h2>
+					{speaker.email && <a href={`mailto:${speaker.email}`}>{speaker.email}</a>}
+					{speaker.phone && <a href={telHref(speaker.phone)}>{speaker.phone}</a>}
+					{speaker.base && <span>{speaker.base}</span>}
+				</div>
+			</div>
+			<div class="foot-bottom">
+				<span>© {year} {siteTitle}</span>
+				<span>Built with EmDash</span>
+			</div>
+		</footer>
+
+		<EmDashBodyEnd page={pageCtx} />
+	</body>
+</html>

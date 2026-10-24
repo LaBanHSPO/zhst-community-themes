@@ -1,0 +1,196 @@
+---
+import Base from "../layouts/Base.astro";
+import { getSpeaker, getTalks, telHref } from "../lib/site";
+
+const [{ speaker, cacheHint }, talksResult] = await Promise.all([getSpeaker(), getTalks()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(talksResult.cacheHint);
+}
+
+const options = [
+	...talksResult.entries.map((t) => ({ value: t.data.slug ?? t.data.id, label: t.data.title })),
+	{ value: "not-sure", label: "Not sure yet, help me choose" },
+];
+// ?talk=<slug> pre-selects a talk (links from the talk pages).
+const wanted = Astro.url.searchParams.get("talk");
+const selected = options.find((o) => o.value === wanted);
+---
+
+<Base title="Book Caleb" description="Send a booking enquiry to Caleb Rivers: choose a talk, give the event date, the place or Virtual, the audience size and an optional budget range. Email and phone are always listed.">
+	<div class="contact">
+		<section class="contact-panel" aria-labelledby="contact-title">
+			<p class="eyebrow">Book Caleb</p>
+			<h1 id="contact-title" class="display display-xl">Tell us about your event.</h1>
+			<p class="lede">A rough month is fine if the date is not fixed. You will hear back within two working days.</p>
+
+			<div class="notice" role="note">
+				<strong>Enquiries only.</strong>{" "}
+				{speaker.contact_note ?? "Send the date, place and audience size if you have them. Fees are quoted in writing after a short call."}
+			</div>
+
+			<form
+				class="contact-form"
+				data-contact-form
+				data-email={speaker.email}
+				action={speaker.email ? `mailto:${speaker.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field">
+						<label for="c-name">Your name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field">
+						<label for="c-org">Organisation or event <span class="optional">(optional)</span></label>
+						<input id="c-org" name="org" type="text" autocomplete="organization" />
+					</div>
+					<div class="field">
+						<label for="c-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field full">
+						<label for="c-talk">Which talk are you interested in?</label>
+						<select id="c-talk" name="talk" required>
+							<option value="" selected={!selected}>Choose an option</option>
+							{options.map((o) => <option value={o.value} selected={selected?.value === o.value}>{o.label}</option>)}
+						</select>
+						<span class="field-error" data-error-for="c-talk"></span>
+					</div>
+					<div class="field">
+						<label for="c-date">Event date</label>
+						<input id="c-date" name="date" type="text" placeholder="12 May 2027 or spring 2027" required />
+						<span class="field-error" data-error-for="c-date"></span>
+					</div>
+					<div class="field">
+						<label for="c-place">City, or Virtual</label>
+						<input id="c-place" name="place" type="text" placeholder="Marlowe Valley or Virtual" required />
+						<span class="field-error" data-error-for="c-place"></span>
+					</div>
+					<div class="field">
+						<label for="c-size">Audience size</label>
+						<select id="c-size" name="size" required>
+							<option value="" selected>Choose an option</option>
+							<option>Under 25 people</option>
+							<option>25 to 100 people</option>
+							<option>100 to 300 people</option>
+							<option>More than 300 people</option>
+						</select>
+						<span class="field-error" data-error-for="c-size"></span>
+					</div>
+					<div class="field">
+						<label for="c-budget">Budget range <span class="optional">(optional)</span></label>
+						<select id="c-budget" name="budget">
+							<option value="" selected>Prefer to discuss</option>
+							<option>Under $2,000</option>
+							<option>$2,000 to $5,000</option>
+							<option>$5,000 to $10,000</option>
+							<option>More than $10,000</option>
+						</select>
+					</div>
+					<div class="field full">
+						<label for="c-notes">Anything else we should know?</label>
+						<textarea id="c-notes" name="notes" rows="5" maxlength="600" placeholder="For example: the theme of the day, who speaks before and after, or what you would like people to do afterwards."></textarea>
+					</div>
+				</div>
+				<button class="btn btn-sand btn-block" type="submit"><span>Send enquiry</span></button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{speaker.email && <>Write to <a href={`mailto:${speaker.email}`}>{speaker.email}</a> with the date, place, audience size and the talk you are interested in.</>}
+					</noscript>
+				</p>
+			</form>
+		</section>
+
+		<aside class="contact-aside">
+			<img src="/images/headshot-portrait.webp" alt="Caleb Rivers in a dark blazer with a headset microphone, smiling and looking up" width="960" height="1196" />
+			<div class="contact-details">
+				<h2>Prefer to write directly?</h2>
+				<p class="detail-line">
+					{speaker.email && <a href={`mailto:${speaker.email}`}>{speaker.email}</a>}
+					{speaker.phone && <a href={telHref(speaker.phone)}>{speaker.phone}</a>}
+					{speaker.base && <span>{speaker.base}</span>}
+				</p>
+				{speaker.response && <p class="small">{speaker.response}</p>}
+				<p class="small"><a href="/speaker-kit">Speaker kit for organisers</a></p>
+			</div>
+		</aside>
+	</div>
+</Base>
+
+<script>
+	// Compose an email to the speaker's team; nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>("[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? input.tagName === "SELECT"
+							? "Please choose an option."
+							: "Please fill this in."
+						: input.getAttribute("type") === "email"
+							? "Please enter a valid email address."
+							: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online requests are not available right now. Please call instead.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const select = form.querySelector<HTMLSelectElement>("#c-talk");
+			const talkLabel = select?.selectedOptions[0]?.textContent ?? "";
+			const subject = `Booking enquiry from ${get("name")}`;
+			const body = [
+				"Hello,",
+				"",
+				"I would like to ask about booking Caleb.",
+				"",
+				`Talk: ${talkLabel}`,
+				`Event date: ${get("date")}`,
+				`Location: ${get("place")}`,
+				`Audience size: ${get("size")}`,
+				get("budget") ? `Budget range: ${get("budget")}` : "",
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				get("org") ? `Organisation or event: ${get("org")}` : "",
+				"",
+				get("notes"),
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this enquiry ready to send. It is only sent when you send that email. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

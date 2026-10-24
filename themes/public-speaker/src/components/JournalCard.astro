@@ -1,0 +1,24 @@
+---
+import { journalHref, photoAlt, photoSrc } from "../lib/site";
+import type { Journal } from "../../emdash-env";
+
+interface Props {
+	post: { data: Journal; edit?: Record<string, any> };
+	eager?: boolean;
+}
+const { post, eager = false } = Astro.props;
+const d = post.data;
+const src = photoSrc(d.image, d.photo);
+---
+
+<article class="post-card">
+	<a class="post-card-photo" href={journalHref(d)} tabindex="-1" aria-hidden="true">
+		{src && <img src={src} alt={photoAlt(d.image, d.photo, d.title)} width="640" height="400" loading={eager ? "eager" : "lazy"} />}
+	</a>
+	<p class="post-card-meta">
+		{d.date_label && <span>{d.date_label}</span>}
+		{d.read_minutes && <span>{d.read_minutes} min read</span>}
+	</p>
+	<h3 class="post-card-title"><a href={journalHref(d)} {...post.edit?.title}>{d.title}</a></h3>
+	<p class="post-card-text">{d.summary}</p>
+</article>

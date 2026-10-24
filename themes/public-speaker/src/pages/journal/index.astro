@@ -1,0 +1,43 @@
+---
+import Base from "../../layouts/Base.astro";
+import BookingBand from "../../components/BookingBand.astro";
+import JournalCard from "../../components/JournalCard.astro";
+import PageHead from "../../components/PageHead.astro";
+import { getJournal, getSpeaker } from "../../lib/site";
+
+const [journalResult, speakerResult] = await Promise.all([getJournal(), getSpeaker()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(journalResult.cacheHint);
+	Astro.cache.set(speakerResult.cacheHint);
+}
+const posts = journalResult.entries;
+---
+
+<Base
+	title="Journal"
+	description="Short notes from Caleb Rivers on preparing talks, running workshops and what he learns from the rooms he speaks in."
+	current="/journal"
+>
+	<PageHead
+		id="journal-title"
+		eyebrow="Journal"
+		title="Notes from the road."
+		intro="Short posts on preparing a talk, running a workshop and what the room teaches."
+	/>
+
+	<section class="list-section" aria-labelledby="journal-title">
+		<div class="wrap">
+			{
+				posts.length > 0 ? (
+					<ul class="post-grid">
+						{posts.map((p, i) => <li><JournalCard post={p} eager={i < 3} /></li>)}
+					</ul>
+				) : (
+					<p class="empty-note">Nothing here yet. New posts are on their way.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<BookingBand speaker={speakerResult.speaker} />
+</Base>

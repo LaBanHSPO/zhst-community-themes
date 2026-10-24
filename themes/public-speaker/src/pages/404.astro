@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+---
+
+<Base title="Page not found">
+	<section class="notfound" aria-labelledby="nf-title">
+		<img class="notfound-photo" src="/images/journal-spotlight.webp" alt="" width="726" height="726" />
+		<div class="notfound-copy">
+			<p class="eyebrow">Error 404</p>
+			<h1 id="nf-title" class="notfound-title">That page is not on the programme.</h1>
+			<p class="notfound-text">The page you are looking for has moved or never existed. Here are a few places to pick things back up.</p>
+			<div class="actions">
+				<a class="btn btn-sand" href="/"><span>Back to home</span><Arrow /></a>
+				<a class="pill" href="/talks">Talks</a>
+				<a class="pill" href="/journal">Journal</a>
+			</div>
+		</div>
+	</section>
+</Base>
