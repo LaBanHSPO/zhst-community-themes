@@ -1,0 +1,114 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import Base from "../../layouts/Base.astro";
+import MailBand from "../../components/MailBand.astro";
+import PostBody from "../../components/PostBody.astro";
+import RecipeCard from "../../components/RecipeCard.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getCook, getRecipes, getStories, photoAlt, photoSrc, storyHref, storyMeta } from "../../lib/food";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: story, cacheHint } = await getEmDashEntry("stories", slug);
+if (!story) return Astro.rewrite("/404");
+
+const [allResult, recipesResult, cookResult, settings] = await Promise.all([getStories(), getRecipes(), getCook(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(recipesResult.cacheHint);
+	Astro.cache.set(cookResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(story, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const d = story.data;
+const cover = photoSrc(d.image, d.photo);
+const hasBody = Boolean(d.content && d.content.length > 0);
+const all = allResult.entries;
+const index = all.findIndex((s) => s.data.id === d.id);
+const newer = index > 0 ? all[index - 1] : undefined;
+const older = index >= 0 && index < all.length - 1 ? all[index + 1] : undefined;
+const mentioned = d.recipe ? recipesResult.entries.find((r) => (r.data.slug ?? r.data.id) === d.recipe) : undefined;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "stories", id: d.id, slug }}
+	current="/stories"
+>
+	<header class="post-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/stories">Stories</a>
+			</nav>
+			<p class="eyebrow"><span class="rule" aria-hidden="true"></span>{storyMeta(d)}</p>
+			<h1 class="display display-xl" {...story.edit.title}>{d.title}</h1>
+			<p class="lede">{d.summary}</p>
+		</div>
+	</header>
+
+	{
+		cover && (
+			<figure class="post-figure">
+				<img src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="1100" height="520" fetchpriority="high" />
+			</figure>
+		)
+	}
+
+	{
+		hasBody && (
+			<section class="post-body">
+				<div class="prose">
+					<PostBody value={d.content} />
+				</div>
+			</section>
+		)
+	}
+
+	{
+		mentioned && (
+			<section class="post-recipe" aria-labelledby="post-recipe-title">
+				<div class="wrap post-recipe-inner">
+					<h2 id="post-recipe-title" class="eyebrow"><span class="rule" aria-hidden="true"></span>The recipe from this story</h2>
+					<div class="post-recipe-card"><RecipeCard recipe={mentioned.data} /></div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		(newer || older) && (
+			<nav class="post-nav" aria-label="More stories in order">
+				<div class="wrap post-nav-inner">
+					{newer ? (
+						<a class="post-nav-link" href={storyHref(newer.data)} rel="prev">
+							<span class="eyebrow">Newer story</span>
+							<span class="post-nav-title">{newer.data.title}</span>
+						</a>
+					) : (
+						<span />
+					)}
+					{older ? (
+						<a class="post-nav-link post-nav-next" href={storyHref(older.data)} rel="next">
+							<span class="eyebrow">Older story</span>
+							<span class="post-nav-title">{older.data.title}</span>
+						</a>
+					) : (
+						<span />
+					)}
+				</div>
+			</nav>
+		)
+	}
+
+	<MailBand cook={cookResult.cook} />
+</Base>

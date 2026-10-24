@@ -1,0 +1,20 @@
+---
+import { photoAlt, photoSrc, storyHref, storyMeta } from "../lib/food";
+import type { Story } from "../lib/food";
+
+interface Props {
+	story: Story;
+	edit?: Record<string, unknown>;
+}
+const { story, edit = {} } = Astro.props;
+const src = photoSrc(story.image, story.photo);
+---
+
+<a class="story-card" href={storyHref(story)}>
+	{src && <img src={src} alt={photoAlt(story.image, story.photo, story.title)} width="420" height="280" loading="lazy" />}
+	<span class="story-card-body">
+		<span class="story-card-meta">{storyMeta(story)}</span>
+		<span class="story-card-title" {...edit}>{story.title}</span>
+		<span class="story-card-summary">{story.summary}</span>
+	</span>
+</a>

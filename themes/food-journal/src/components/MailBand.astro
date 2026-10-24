@@ -1,0 +1,35 @@
+---
+import Arrow from "./Arrow.astro";
+import type { CookData } from "../lib/food";
+
+interface Props {
+	cook: CookData;
+}
+const { cook } = Astro.props;
+const subject = encodeURIComponent("Please send me new recipes");
+---
+
+<section class="mail-band" aria-labelledby="mail-band-title">
+	<div class="wrap mail-band-inner">
+		<div>
+			<p class="eyebrow eyebrow-light"><span class="rule" aria-hidden="true"></span>New recipes by email</p>
+			<h2 id="mail-band-title" class="display display-light">One new recipe, now and then.</h2>
+			<p class="mail-band-copy">
+				There is no sign-up service. Send me a short email and I will add you to a list I keep by hand. I write
+				about twice a month, with one recipe and a few lines on how it went.
+			</p>
+		</div>
+		<div class="mail-band-actions">
+			{
+				cook.email && (
+					<a class="btn btn-solid" href={`mailto:${cook.email}?subject=${subject}`}>
+						<span>Email me to join</span>
+						<Arrow />
+					</a>
+				)
+			}
+			{cook.email && <p class="mail-band-address"><a href={`mailto:${cook.email}`}>{cook.email}</a></p>}
+			<p class="mail-band-more"><a href="/contact?topic=newsletter">Or use the contact page</a></p>
+		</div>
+	</div>
+</section>

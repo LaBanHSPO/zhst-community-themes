@@ -1,0 +1,35 @@
+---
+import { PortableText } from "emdash/ui";
+
+/** Renders Portable Text, turning image blocks into captioned figures and passing the rest through. */
+interface Props {
+	value: any[] | null | undefined;
+}
+const { value } = Astro.props;
+
+type Chunk = { kind: "text"; blocks: any[] } | { kind: "image"; block: any };
+const chunks: Chunk[] = [];
+for (const block of value ?? []) {
+	if (block?._type === "image") {
+		chunks.push({ kind: "image", block });
+	} else {
+		const last = chunks[chunks.length - 1];
+		if (last?.kind === "text") last.blocks.push(block);
+		else chunks.push({ kind: "text", blocks: [block] });
+	}
+}
+const imageUrl = (b: any): string | undefined => b.asset?.url ?? b.url ?? b.src;
+---
+
+{
+	chunks.map((c) =>
+		c.kind === "text" ? (
+			<PortableText value={c.blocks} />
+		) : imageUrl(c.block) ? (
+			<figure class="post-photo">
+				<img src={imageUrl(c.block)} alt={c.block.alt ?? ""} width="1000" height="600" loading="lazy" />
+				{c.block.caption && <figcaption>{c.block.caption}</figcaption>}
+			</figure>
+		) : null,
+	)
+}

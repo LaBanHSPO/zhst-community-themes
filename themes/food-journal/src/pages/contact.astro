@@ -1,0 +1,155 @@
+---
+import Base from "../layouts/Base.astro";
+import { getCook, telHref } from "../lib/food";
+
+const { cook, cacheHint } = await getCook();
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const topics = [
+	{ value: "recipe", label: "A question about a recipe", subject: "A question about a recipe" },
+	{ value: "collaboration", label: "A story idea or collaboration", subject: "Story or collaboration idea" },
+	{ value: "newsletter", label: "New recipes by email", subject: "Please send me new recipes" },
+	{ value: "other", label: "Something else", subject: "A message for Food Journal" },
+];
+// ?topic=<value> pre-selects a topic (links from the homepage and footer).
+const wanted = Astro.url.searchParams.get("topic");
+const selected = topics.find((t) => t.value === wanted);
+---
+
+<Base title="Contact" description="Write to Food Journal with a question about a recipe, a story idea or a request for new recipes by email. Every message is read by the cook.">
+	<div class="contact">
+		<aside class="contact-aside">
+			<img
+				src="/images/parmesan-board.webp"
+				alt="A wedge of parmesan on a wooden board with basil leaves and garlic"
+				width="448"
+				height="330"
+			/>
+			<div class="contact-details">
+				<h2>Prefer to write directly?</h2>
+				<p>
+					{cook.email && <a href={`mailto:${cook.email}`}>{cook.email}</a>}
+					{cook.phone && <a href={telHref(cook.phone)}>{cook.phone}</a>}
+				</p>
+				{cook.response && <p class="small">{cook.response}</p>}
+				{cook.contact_note && <p class="small">{cook.contact_note}</p>}
+			</div>
+		</aside>
+
+		<section class="contact-panel" aria-labelledby="contact-title">
+			<p class="eyebrow"><span class="rule" aria-hidden="true"></span>Contact</p>
+			<h1 id="contact-title" class="display display-xl">Write to me.</h1>
+			<p class="lede">
+				A question about a recipe, a story idea, or a request to get new recipes by email. Choose a topic and say a little about it.
+			</p>
+
+			<form
+				class="contact-form"
+				data-contact-form
+				data-email={cook.email}
+				action={cook.email ? `mailto:${cook.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field">
+						<label for="c-name">Your name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field full">
+						<label for="c-topic">Topic</label>
+						<select id="c-topic" name="topic" required>
+							<option value="" selected={!selected}>Choose a topic</option>
+							{topics.map((t) => <option value={t.value} data-subject={t.subject} selected={selected?.value === t.value}>{t.label}</option>)}
+						</select>
+						<span class="field-error" data-error-for="c-topic"></span>
+					</div>
+					<div class="field full">
+						<label for="c-post">Recipe or story <span class="optional">(optional)</span></label>
+						<input id="c-post" name="post" type="text" placeholder="e.g. Roasted Squash Salad" />
+					</div>
+					<div class="field full">
+						<label for="c-message">Your message</label>
+						<textarea id="c-message" name="message" rows="5" placeholder="What you cooked, what went wrong, or what you have in mind..." required></textarea>
+						<span class="field-error" data-error-for="c-message"></span>
+					</div>
+				</div>
+				<button class="btn btn-solid btn-block" type="submit"><span>Send message</span></button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{cook.email && <>Write to <a href={`mailto:${cook.email}`}>{cook.email}</a> and say what it is about.</>}
+					</noscript>
+				</p>
+			</form>
+		</section>
+	</div>
+</Base>
+
+<script>
+	// Compose an email to the writer; nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>("[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? input.tagName === "SELECT"
+							? "Please choose an option."
+							: "Please fill this in."
+						: input.getAttribute("type") === "email"
+							? "Please enter a valid email address."
+							: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online messages are not available right now. Please try again later.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const select = form.querySelector<HTMLSelectElement>("#c-topic");
+			const subjectLabel = select?.selectedOptions[0]?.dataset.subject ?? "A message for Food Journal";
+			const subject = `${subjectLabel}: ${get("name")}`;
+			const body = [
+				"Hello,",
+				"",
+				`Topic: ${select?.selectedOptions[0]?.textContent ?? ""}`,
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				get("post") ? `Recipe or story: ${get("post")}` : "",
+				"",
+				get("message"),
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this message ready to send. It is only sent when you send that email. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "food-journal",
+	"kind": "theme",
+	"name": "Food Journal",
+	"type": "bio",
+	"emdash": "1.2.0",
+	"entry": "themes/food-journal",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

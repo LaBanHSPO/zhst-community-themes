@@ -1,0 +1,73 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import RecipeCard from "../../components/RecipeCard.astro";
+import { COLLECTIONS, COURSES, collectionLabel, countWord, courseLabel, getRecipes, recipesHref } from "../../lib/food";
+
+const result = await getRecipes();
+if (Astro.cache?.enabled) Astro.cache.set(result.cacheHint);
+const all = result.entries;
+// ?collection=<value> and ?course=<value> narrow the list; unknown values are ignored.
+const params = Astro.url.searchParams;
+const collection = COLLECTIONS.find((c) => c.value === (params.get("collection") ?? "").toLowerCase());
+const course = COURSES.find((c) => c.value === (params.get("course") ?? "").toLowerCase());
+const recipes = all.filter(
+	(r) => (!collection || r.data.collection === collection.value) && (!course || r.data.course === course.value),
+);
+const inCollection = (value: string) => all.filter((r) => r.data.collection === value && (!course || r.data.course === course.value)).length;
+const inCourse = (value: string) => all.filter((r) => r.data.course === value && (!collection || r.data.collection === collection.value)).length;
+const heading = collection ? collection.label : "Cook something good.";
+const summary = [collection && collectionLabel(collection.value), course && courseLabel(course.value)].filter(Boolean).join(", ");
+---
+
+<Base
+	title={collection ? `${collection.label} recipes` : "Recipes"}
+	description="Home-tested recipes with ingredients, prep and cook times, servings and numbered steps. Filter by collection or by course."
+	current="/recipes"
+>
+	<PageHead
+		id="recipes-title"
+		eyebrow="Recipes"
+		title={heading}
+		intro={collection ? collection.blurb : "Every recipe is cooked at home before it is written down. Filter by collection or by course."}
+	/>
+
+	<section class="recipes-list" aria-labelledby="recipes-title">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter by collection">
+				<span class="filters-label">Collection</span>
+				<a class="chip" href={recipesHref({ course: course?.value })} aria-current={!collection ? "true" : undefined}>All</a>
+				{
+					COLLECTIONS.map((c) => (
+						<a class="chip" href={recipesHref({ collection: c.value, course: course?.value })} aria-current={collection?.value === c.value ? "true" : undefined}>
+							{c.label}<span>{inCollection(c.value)}</span>
+						</a>
+					))
+				}
+			</nav>
+			<nav class="filters" aria-label="Filter by course">
+				<span class="filters-label">Course</span>
+				<a class="chip" href={recipesHref({ collection: collection?.value })} aria-current={!course ? "true" : undefined}>All</a>
+				{
+					COURSES.map((c) => (
+						<a class="chip" href={recipesHref({ collection: collection?.value, course: c.value })} aria-current={course?.value === c.value ? "true" : undefined}>
+							{c.label}<span>{inCourse(c.value)}</span>
+						</a>
+					))
+				}
+			</nav>
+
+			<p class="list-count" role="status">{countWord(recipes.length, "recipe", "recipes")}{summary ? `: ${summary}` : ""}.</p>
+
+			{
+				recipes.length > 0 ? (
+					<ul class="recipe-grid recipe-grid-list">
+						{recipes.map((r, i) => <li><RecipeCard recipe={r.data} edit={{ ...r.edit.title }} facts eager={i < 4} /></li>)}
+					</ul>
+				) : (
+					<p class="empty-note">No recipes match yet. <a href="/recipes">See every recipe</a>.</p>
+				)
+			}
+		</div>
+	</section>
+</Base>

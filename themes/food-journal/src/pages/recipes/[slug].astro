@@ -1,0 +1,148 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import RecipeCard from "../../components/RecipeCard.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import {
+	collectionLabel,
+	courseName,
+	getCook,
+	getRecipes,
+	ingredientGroups,
+	lines,
+	minutesLabel,
+	photoAlt,
+	photoSrc,
+	recipeJsonLd,
+	recipesHref,
+	servingsLabel,
+	totalMinutes,
+} from "../../lib/food";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: recipe, cacheHint } = await getEmDashEntry("recipes", slug);
+if (!recipe) return Astro.rewrite("/404");
+
+const [allResult, cookResult, settings] = await Promise.all([getRecipes(), getCook(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(cookResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(recipe, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const d = recipe.data;
+const cover = photoSrc(d.image, d.photo);
+const groups = ingredientGroups(d.ingredients);
+const method = lines(d.method);
+const total = totalMinutes(d);
+const same = allResult.entries.filter((r) => r.data.id !== d.id && r.data.collection === d.collection);
+const rest = allResult.entries.filter((r) => r.data.id !== d.id && r.data.collection !== d.collection);
+const more = [...same, ...rest].slice(0, 4);
+const absolute = (src?: string) => (src ? new URL(src, Astro.url.origin).toString() : undefined);
+const jsonLd = recipeJsonLd(d, {
+	url: new URL(Astro.url.pathname, Astro.url.origin).toString(),
+	image: absolute(cover),
+	author: cookResult.cook.title || undefined,
+});
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "recipes", id: d.id, slug }}
+	current="/recipes"
+>
+	<script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+	<header class="recipe-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/recipes">Recipes</a>
+				{d.collection && <><span aria-hidden="true">/</span><a href={recipesHref({ collection: d.collection })}>{collectionLabel(d.collection)}</a></>}
+			</nav>
+			<div class="recipe-hero">
+				<div class="recipe-hero-copy">
+					<p class="eyebrow"><span class="rule" aria-hidden="true"></span>{collectionLabel(d.collection)}</p>
+					<h1 class="display display-xl" {...recipe.edit.title}>{d.title}</h1>
+					<p class="lede">{d.summary}</p>
+					<dl class="recipe-facts">
+						{d.prep_minutes ? <div><dt>Prep</dt><dd>{minutesLabel(d.prep_minutes)}</dd></div> : null}
+						{d.cook_minutes ? <div><dt>Cook</dt><dd>{minutesLabel(d.cook_minutes)}</dd></div> : null}
+						{total ? <div><dt>Total</dt><dd>{minutesLabel(total)}</dd></div> : null}
+						{d.servings ? <div><dt>{servingsLabel(d).split(" ")[0]}</dt><dd>{servingsLabel(d).split(" ").slice(1).join(" ")}</dd></div> : null}
+						{d.course ? <div><dt>Course</dt><dd><a href={recipesHref({ course: d.course })}>{courseName(d.course)}</a></dd></div> : null}
+					</dl>
+					<div class="recipe-actions">
+						<a class="btn btn-solid" href="#recipe"><span>Jump to recipe</span><Arrow /></a>
+						<button class="btn btn-line" type="button" data-print>Print recipe</button>
+					</div>
+				</div>
+				{cover && <img class="recipe-hero-photo" src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="620" height="480" fetchpriority="high" />}
+			</div>
+		</div>
+	</header>
+
+	<section class="recipe-body" id="recipe" aria-labelledby="recipe-print-title">
+		<div class="wrap">
+			<h2 id="recipe-print-title" class="print-title">{d.title}</h2>
+			<p class="print-facts">
+				{[d.prep_minutes ? `Prep ${minutesLabel(d.prep_minutes)}` : "", d.cook_minutes ? `Cook ${minutesLabel(d.cook_minutes)}` : "", servingsLabel(d)].filter(Boolean).join("  |  ")}
+			</p>
+			<div class="recipe-cols">
+				<div class="ingredients">
+					<h2>Ingredients</h2>
+					{
+						groups.map((g) => (
+							<>
+								{g.heading && <h3>{g.heading}</h3>}
+								<ul>{g.items.map((i) => <li>{i}</li>)}</ul>
+							</>
+						))
+					}
+				</div>
+				<div class="method">
+					<h2>Method</h2>
+					<ol>{method.map((s) => <li>{s}</li>)}</ol>
+					{d.notes && <div class="notes"><h3>Notes</h3><p>{d.notes}</p></div>}
+				</div>
+			</div>
+			<p class="print-credit">{siteTitle}: {Astro.url.href}</p>
+		</div>
+	</section>
+
+	{
+		more.length > 0 && (
+			<section class="band no-print" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="band-head">
+						<div>
+							<p class="eyebrow"><span class="rule" aria-hidden="true"></span>Keep cooking</p>
+							<h2 id="more-title" class="display">More from the kitchen.</h2>
+						</div>
+						<a class="text-link" href="/recipes"><span>All recipes</span><Arrow /></a>
+					</div>
+					<ul class="recipe-grid">
+						{more.map((r) => <li><RecipeCard recipe={r.data} /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+</Base>
+
+<script>
+	document.querySelectorAll<HTMLButtonElement>("[data-print]").forEach((button) => {
+		button.addEventListener("click", () => window.print());
+	});
+</script>

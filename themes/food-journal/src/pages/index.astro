@@ -1,0 +1,147 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import MailBand from "../components/MailBand.astro";
+import RecipeCard from "../components/RecipeCard.astro";
+import {
+	COLLECTIONS,
+	countWord,
+	getCook,
+	getRecipes,
+	getSeason,
+	getStories,
+	recipeHref,
+	recipesHref,
+	storyHref,
+	storyMeta,
+} from "../lib/food";
+
+const [recipesResult, storiesResult, seasonResult, cookResult] = await Promise.all([
+	getRecipes(),
+	getStories(),
+	getSeason(),
+	getCook(),
+]);
+for (const r of [recipesResult, storiesResult, seasonResult, cookResult]) if (Astro.cache?.enabled) Astro.cache.set(r.cacheHint);
+const recipes = recipesResult.entries;
+const picked = recipes.filter((r) => r.data.featured);
+const featured = (picked.length > 0 ? picked : recipes).slice(0, 4);
+const story = storiesResult.entries.find((s) => s.data.featured) ?? storiesResult.entries[0];
+const season = seasonResult.entries;
+const bySlug = new Map(recipes.map((r) => [r.data.slug ?? r.data.id, r]));
+const count = (value: string) => recipes.filter((r) => r.data.collection === value).length;
+---
+
+<Base
+	title="Simple, seasonal recipes"
+	description="Food Journal shares simple, seasonal recipes and real food stories for everyday life, with ingredients, times and clear steps."
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A speckled bowl of spaghetti with roasted cherry tomatoes, basil and parmesan on a dark wooden table beside a bowl of salt and a striped linen cloth"
+			width="1448"
+			height="555"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<p class="hero-eyebrow">Recipes for a brighter table</p>
+			<h1 id="hero-title" class="hero-title">Made to<br />be shared.</h1>
+			<p class="hero-sub">Simple, seasonal recipes and real food <br />stories for everyday life.</p>
+			<a class="hero-cta" href="/recipes"><span>Find a recipe</span><Arrow /></a>
+		</div>
+		<p class="hand hero-note" aria-hidden="true">Good<br />Food<br />Brings<br />People<br />Together<svg class="hero-heart" width="26" height="24" viewBox="0 0 26 24" focusable="false"><path d="M13 22C5 15 2 11 2 7.500 2 4.500 4.300 2.500 7 2.500c2.500 0 4.600 1.700 6 4 1.400-2.300 3.500-4 6-4 2.700 0 5 2 5 5 0 3.500-3 7.500-11 14.500z" fill="none" stroke="currentColor" stroke-width="1.300" stroke-linejoin="round" /></svg></p>
+	</section>
+
+	{
+		featured.length > 0 && (
+			<section class="featured" aria-labelledby="featured-title">
+				<div class="wrap">
+					<div class="featured-head">
+						<h2 id="featured-title" class="eyebrow"><span class="rule" aria-hidden="true"></span>Featured recipes</h2>
+						<a class="text-link" href="/recipes"><span>View all recipes</span><Arrow /></a>
+					</div>
+					<ul class="recipe-grid">
+						{featured.map((r) => <li><RecipeCard recipe={r.data} edit={{ ...r.edit.title }} eager /></li>)}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="band" aria-labelledby="collections-title">
+		<div class="wrap">
+			<div class="band-head">
+				<div>
+					<p class="eyebrow"><span class="rule" aria-hidden="true"></span>Browse by collection</p>
+					<h2 id="collections-title" class="display">Start with what you feel like eating.</h2>
+				</div>
+				<a class="text-link" href="/recipes"><span>All recipes</span><Arrow /></a>
+			</div>
+			<ul class="collection-grid">
+				{
+					COLLECTIONS.map((c) => (
+						<li>
+							<a class="collection-tile" href={recipesHref({ collection: c.value })}>
+								<img src={c.photo} alt="" width="310" height="240" loading="lazy" />
+								<span class="collection-tile-text">
+									<span class="collection-tile-name">{c.label}</span>
+									<span class="collection-tile-blurb">{c.blurb}</span>
+									<span class="collection-tile-count">{countWord(count(c.value), "recipe", "recipes")}</span>
+								</span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+
+	{
+		story && (
+			<section class="story-feature" aria-labelledby="story-title">
+				<div class="wrap story-feature-inner">
+					<a class="story-feature-photo" href={storyHref(story.data)} tabindex="-1" aria-hidden="true">
+						<img src="/images/notebook-spread.webp" alt="" width="1300" height="750" loading="lazy" />
+					</a>
+					<div class="story-feature-copy">
+						<p class="eyebrow"><span class="rule" aria-hidden="true"></span>From the stories</p>
+						<h2 id="story-title" class="display" {...story.edit.title}>{story.data.title}</h2>
+						<p class="story-feature-summary">{story.data.summary}</p>
+						<p class="story-feature-meta">{storyMeta(story.data)}</p>
+						<a class="text-link" href={storyHref(story.data)}><span>Read the story</span><Arrow /></a>
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		season.length > 0 && (
+			<section class="season" aria-labelledby="season-title">
+				<div class="wrap season-inner">
+					<div class="season-intro">
+						<p class="eyebrow"><span class="rule" aria-hidden="true"></span>In season</p>
+						<h2 id="season-title" class="display">At my market this month.</h2>
+						<p class="season-note">What I am buying in October, and the recipe it ends up in.</p>
+					</div>
+					<ul class="season-list">
+						{season.map((s) => {
+							const match = s.data.recipe ? bySlug.get(s.data.recipe) : undefined;
+							return (
+								<li>
+									<span class="season-item">{s.data.title}</span>
+									<span class="season-desc">{s.data.note}</span>
+									{match && <a class="season-link" href={recipeHref(match.data)}>{match.data.title}<Arrow /></a>}
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<MailBand cook={cookResult.cook} />
+</Base>

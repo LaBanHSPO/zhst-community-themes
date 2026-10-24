@@ -1,0 +1,31 @@
+---
+/** Wordmark: a basil-leaf mark, the site title in serif and the tagline in tiny tracked caps. */
+interface Props {
+	title: string;
+	tagline?: string;
+	logo?: { url?: string; alt?: string } | null;
+	class?: string;
+}
+const { title, tagline, logo, class: className } = Astro.props;
+---
+
+<a class:list={["wordmark", className]} href="/" aria-label={`${title}, home`}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt || title} />
+		) : (
+			<>
+				<svg class="wordmark-mark" width="38" height="36" viewBox="0 0 38 36" aria-hidden="true" focusable="false">
+					<path d="M16.500 25C5 24 1 15 2.500 3.500 14 5 19 14 16.500 25z" fill="currentColor" />
+					<path d="M20.500 24C20 13 26 4 36 2.500 37.500 13 31 23 20.500 24z" fill="currentColor" />
+					<path d="M18.500 36V24" fill="none" stroke="currentColor" stroke-width="2.400" stroke-linecap="round" />
+					<path d="M15 21C11 16 8 11 5.500 7M22 20c3-5 6-10 10-14" fill="none" stroke="#f6f4f1" stroke-width="1.100" stroke-linecap="round" />
+				</svg>
+				<span class="wordmark-text">
+					<span class="wordmark-title">{title}</span>
+					{tagline && <span class="wordmark-tagline">{tagline}</span>}
+				</span>
+			</>
+		)
+	}
+</a>

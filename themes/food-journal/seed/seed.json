@@ -1,0 +1,1261 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Food Journal",
+    "description": "A food blog theme: a dark food-photo hero, featured recipe cards, a recipes collection with collection and course filters, print-friendly recipe pages with structured data, stories, search, an about page and a contact page, seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "Food Journal",
+    "tagline": "Good food brighter days"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "urlPattern": "/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "recipes",
+      "label": "Recipes",
+      "labelSingular": "Recipe",
+      "urlPattern": "/recipes/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "summary",
+          "label": "Short description",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "collection",
+          "label": "Collection",
+          "type": "select",
+          "validation": {
+            "options": [
+              "fresh-seasonal",
+              "cozy-classics",
+              "weeknight-favorites",
+              "something-sweet"
+            ]
+          },
+          "required": true,
+          "defaultValue": "weeknight-favorites",
+          "indexed": true
+        },
+        {
+          "slug": "course",
+          "label": "Course",
+          "type": "select",
+          "validation": {
+            "options": [
+              "starter",
+              "main",
+              "side",
+              "dessert"
+            ]
+          },
+          "required": true,
+          "defaultValue": "main",
+          "indexed": true
+        },
+        {
+          "slug": "prep_minutes",
+          "label": "Prep time in minutes",
+          "type": "integer"
+        },
+        {
+          "slug": "cook_minutes",
+          "label": "Cook time in minutes",
+          "type": "integer"
+        },
+        {
+          "slug": "servings",
+          "label": "Servings (a number)",
+          "type": "integer"
+        },
+        {
+          "slug": "servings_unit",
+          "label": "What the number counts (servings, cookies, slices...)",
+          "type": "string",
+          "defaultValue": "servings"
+        },
+        {
+          "slug": "ingredients",
+          "label": "Ingredients (one per line; start a line with # for a group heading)",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "method",
+          "label": "Method steps (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "notes",
+          "label": "Notes",
+          "type": "text"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the home page",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "stories",
+      "label": "Stories",
+      "labelSingular": "Story",
+      "urlPattern": "/stories/{slug}",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "date_label",
+          "label": "Date (as shown, e.g. 14 October 2026)",
+          "type": "string"
+        },
+        {
+          "slug": "reading_time",
+          "label": "Reading time in minutes",
+          "type": "integer"
+        },
+        {
+          "slug": "summary",
+          "label": "One-line summary",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "recipe",
+          "label": "Recipe to link at the end (recipe slug)",
+          "type": "string"
+        },
+        {
+          "slug": "featured",
+          "label": "Feature on the home page",
+          "type": "boolean",
+          "indexed": true
+        },
+        {
+          "slug": "position",
+          "label": "Sort order (newest first)",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Cover photo (upload)",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled cover photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Story (add photos with the image block)",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    },
+    {
+      "slug": "season",
+      "label": "In season",
+      "labelSingular": "Seasonal item",
+      "supports": [
+        "drafts"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Ingredient",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "note",
+          "label": "What to look for",
+          "type": "text"
+        },
+        {
+          "slug": "recipe",
+          "label": "Recipe it ends up in (recipe slug)",
+          "type": "string"
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "cook",
+      "label": "Cook",
+      "labelSingular": "Cook",
+      "supports": [
+        "drafts"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "base",
+          "label": "Where the cooking happens",
+          "type": "string"
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "short_bio",
+          "label": "Short bio",
+          "type": "text"
+        },
+        {
+          "slug": "response",
+          "label": "Reply time note",
+          "type": "text"
+        },
+        {
+          "slug": "contact_note",
+          "label": "Note beside the contact form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "Recipes",
+          "url": "/recipes"
+        },
+        {
+          "type": "custom",
+          "label": "Stories",
+          "url": "/stories"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "Hello, I'm Mara.",
+          "eyebrow": "About",
+          "intro": "I cook and write this journal from a small flat with a bright kitchen window.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k33",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I started writing recipes down because friends kept asking how I made things, and my answers always came out as vague as until it looks right. This journal is where the exact answers live.",
+                  "_key": "k33s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k34",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I am a home cook, not a trained chef. Every recipe here is cooked at least three times in my own kitchen, with ingredients from the shop at the end of my road, before it is written up. Oven temperatures are given for a standard oven and a fan oven. Times are what happened in my kitchen, so use your eyes as well as the clock.",
+                  "_key": "k34s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k35",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How I cook",
+                  "_key": "k35s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k36",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Mostly vegetables, a little meat, plenty of olive oil and lemon. I like food that can be made on a weeknight and shared on a weekend. I cook for two most days and for six when friends come over, so most recipes scale up easily.",
+                  "_key": "k36s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k37",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What you will find here",
+                  "_key": "k37s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k38",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Recipes in four collections: Fresh & Seasonal, Cozy Classics, Weeknight Favorites and Something Sweet. Short stories about the habits behind the cooking. And a small list of what is in season, which I update by hand.",
+                  "_key": "k38s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k39",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A note on allergies",
+                  "_key": "k39s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k40",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Ingredient lists are written for the recipe as I cook it. If you are cooking for someone with an allergy, check the labels of the products you buy. I cannot give advice on dietary needs.",
+                  "_key": "k40s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k41",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If you cook something from here and it goes wrong, write to me. I would like to fix the recipe.",
+                  "_key": "k41s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "recipes": [
+      {
+        "id": "roasted-squash-salad",
+        "slug": "roasted-squash-salad",
+        "status": "published",
+        "data": {
+          "title": "Roasted Squash Salad",
+          "summary": "Roasted butternut squash, kale, feta and pomegranate seeds with a lemon and honey dressing.",
+          "collection": "fresh-seasonal",
+          "course": "starter",
+          "prep_minutes": 20,
+          "cook_minutes": 35,
+          "servings": 4,
+          "servings_unit": "servings",
+          "ingredients": "1 butternut squash (about 900 g), peeled, deseeded and cut into 2 cm chunks\n3 tablespoons olive oil\n1 teaspoon ground cumin\nSalt and black pepper\n150 g kale, stalks removed, leaves torn\n100 g feta, crumbled\n4 tablespoons pomegranate seeds\n3 tablespoons pumpkin seeds\n# For the dressing\n3 tablespoons olive oil\n1 tablespoon lemon juice\n1 teaspoon honey\n1 teaspoon Dijon mustard",
+          "method": "Heat the oven to 220 C (200 C fan). Toss the squash with 3 tablespoons of oil, the cumin, 3/4 teaspoon of salt and a few grinds of pepper on a large tray. Spread it out in a single layer.\nRoast for 30 to 35 minutes, turning once, until the edges are browned and a knife slides in easily.\nWhile the squash roasts, toast the pumpkin seeds in a dry pan over medium heat for 3 minutes, until they start to pop. Tip them onto a plate.\nWhisk the dressing ingredients with a pinch of salt in a small jar.\nPut the kale in a large bowl with a spoonful of the dressing and rub it with your hands for a minute, until it softens and darkens.\nAdd the warm squash, feta, pomegranate seeds and pumpkin seeds. Toss gently with the rest of the dressing and serve at once.",
+          "notes": "The squash can be roasted a day ahead and warmed in the oven for 10 minutes. The dressing keeps in a jar in the fridge for 4 days. Dress the kale just before serving.",
+          "featured": true,
+          "position": 1,
+          "photo": "/images/card-squash-salad.webp"
+        }
+      },
+      {
+        "id": "carrot-ginger-soup",
+        "slug": "carrot-ginger-soup",
+        "status": "published",
+        "data": {
+          "title": "Carrot Ginger Soup",
+          "summary": "A smooth soup of carrots, onion and fresh ginger, finished with lemon and a spoon of yogurt.",
+          "collection": "cozy-classics",
+          "course": "starter",
+          "prep_minutes": 15,
+          "cook_minutes": 35,
+          "servings": 4,
+          "servings_unit": "servings",
+          "ingredients": "2 tablespoons olive oil\n1 large onion, chopped\n3 cloves garlic, minced\n5 cm piece fresh ginger, peeled and grated (about 2 tablespoons)\n1 teaspoon ground coriander\n800 g carrots, peeled and sliced into 1 cm coins\n1 litre vegetable stock\n1 tablespoon lemon juice\nSalt and black pepper\n# To serve\n4 tablespoons plain yogurt\n2 tablespoons chopped parsley\n1 tablespoon sunflower seeds, toasted",
+          "method": "Heat the oil in a large pot over medium heat. Add the onion and a pinch of salt and cook for 8 minutes, stirring now and then, until soft but not brown.\nAdd the garlic, ginger and coriander and stir for 1 minute.\nAdd the carrots and stock and bring to the boil. Lower the heat, cover and simmer for 20 minutes, until the carrots are very soft.\nBlend with a stick blender until smooth. If the soup is too thick, stir in up to 100 ml of hot water.\nStir in the lemon juice and taste. Add salt and pepper if it needs it.\nLadle into bowls and top each with a spoonful of yogurt, parsley and a few sunflower seeds.",
+          "notes": "The soup keeps for 4 days in the fridge and freezes well for up to 3 months. Add the yogurt and herbs only when serving.",
+          "featured": true,
+          "position": 2,
+          "photo": "/images/card-carrot-soup.webp"
+        }
+      },
+      {
+        "id": "lemon-herb-chicken",
+        "slug": "lemon-herb-chicken",
+        "status": "published",
+        "data": {
+          "title": "Lemon Herb Chicken",
+          "summary": "Chicken thighs roasted with lemon, garlic and soft herbs until the skin is deep gold.",
+          "collection": "weeknight-favorites",
+          "course": "main",
+          "prep_minutes": 15,
+          "cook_minutes": 35,
+          "servings": 4,
+          "servings_unit": "servings",
+          "ingredients": "8 bone-in, skin-on chicken thighs (about 1.2 kg)\n4 tablespoons olive oil\nZest of 2 lemons and juice of 1 lemon\n1 lemon, cut into thin slices\n4 cloves garlic, minced\n1 tablespoon fresh thyme leaves\n1 tablespoon finely chopped rosemary\n1 teaspoon salt\n1/2 teaspoon black pepper\n2 tablespoons chopped parsley, to finish",
+          "method": "Mix the oil, lemon zest and juice, garlic, thyme, rosemary, salt and pepper in a large bowl. Add the chicken and rub the mixture over every thigh. Leave for 30 minutes at room temperature, or up to 8 hours in the fridge.\nHeat the oven to 220 C (200 C fan).\nArrange the thighs skin side up in a single layer in a roasting tin. Tuck the lemon slices between them and pour in any marinade left in the bowl.\nRoast for 35 minutes, until the skin is deep golden and the juices run clear. A thermometer in the thickest part should read 75 C.\nRest for 5 minutes. Spoon the pan juices over the chicken and scatter with parsley.",
+          "notes": "Do not crowd the tin or the chicken will steam. For 12 thighs, use two tins and swap them on the oven shelves halfway through. The marinating time is not included in the prep time.",
+          "featured": true,
+          "position": 3,
+          "photo": "/images/card-lemon-chicken.webp"
+        }
+      },
+      {
+        "id": "olive-oil-chocolate-cookies",
+        "slug": "olive-oil-chocolate-cookies",
+        "status": "published",
+        "data": {
+          "title": "Olive Oil Chocolate Cookies",
+          "summary": "Soft dark chocolate cookies made with olive oil instead of butter, finished with flaky salt.",
+          "collection": "something-sweet",
+          "course": "dessert",
+          "prep_minutes": 15,
+          "cook_minutes": 12,
+          "servings": 16,
+          "servings_unit": "cookies",
+          "ingredients": "190 g plain flour\n40 g unsweetened cocoa powder\n1/2 teaspoon bicarbonate of soda\n3/4 teaspoon fine salt\n120 ml mild olive oil\n150 g light brown sugar\n50 g caster sugar\n1 large egg plus 1 egg yolk\n2 teaspoons vanilla extract\n150 g dark chocolate (70%), chopped\nFlaky sea salt, for the tops",
+          "method": "Whisk the flour, cocoa, bicarbonate of soda and fine salt in a bowl.\nIn a second bowl, whisk the oil with both sugars. Add the egg, yolk and vanilla and whisk for 1 minute, until glossy.\nFold the dry ingredients into the wet until no streaks of flour remain, then fold in the chocolate. The dough will be soft.\nCover and chill for 30 minutes. The chilling time is not included in the prep time.\nHeat the oven to 180 C (160 C fan) and line two trays with baking paper.\nScoop 16 balls of about 45 g each onto the trays, well apart. Press a few flakes of sea salt onto each one.\nBake for 11 to 12 minutes, until the edges are set and the middles still look soft.\nLeave on the tray for 10 minutes. They firm up as they cool.",
+          "notes": "The dough keeps for 3 days in the fridge. Baked cookies keep for 3 days in a tin.",
+          "featured": true,
+          "position": 4,
+          "photo": "/images/card-cookies.webp"
+        }
+      },
+      {
+        "id": "spaghetti-with-roasted-cherry-tomatoes",
+        "slug": "spaghetti-with-roasted-cherry-tomatoes",
+        "status": "published",
+        "data": {
+          "title": "Spaghetti with Roasted Cherry Tomatoes",
+          "summary": "Cherry tomatoes roasted until they collapse, tossed through spaghetti with basil and parmesan.",
+          "collection": "weeknight-favorites",
+          "course": "main",
+          "prep_minutes": 10,
+          "cook_minutes": 30,
+          "servings": 4,
+          "servings_unit": "servings",
+          "ingredients": "500 g cherry tomatoes, red and yellow if you can\n4 cloves garlic, left in their skins and lightly crushed\n4 tablespoons olive oil, divided\n1 teaspoon salt, plus more for the pasta water\n1/2 teaspoon chilli flakes (optional)\n400 g spaghetti\n1 large handful basil leaves\n40 g parmesan, finely grated, plus more to serve\nBlack pepper",
+          "method": "Heat the oven to 200 C (180 C fan). Put the tomatoes and garlic on a tray with 3 tablespoons of the oil, the salt and the chilli flakes. Toss and roast for 25 minutes, until the skins split and the tomatoes slump.\nWhile the tomatoes roast, cook the spaghetti in a large pot of well-salted boiling water for 1 minute less than the packet says. Scoop out a mug of the pasta water, then drain.\nSqueeze the soft garlic out of its skins into the tray and crush it roughly into the tomatoes with a fork. Scrape up every sticky bit from the tray.\nReturn the pasta to the pot over low heat. Add the tomatoes, the last tablespoon of oil, the parmesan and 60 ml of the pasta water. Toss for 1 minute, adding more water a splash at a time until the sauce is glossy.\nTear in the basil, add black pepper and serve with extra parmesan.",
+          "notes": "In winter, use a tin of whole tomatoes and follow the slow tomato sauce recipe instead. For a vegetarian version, check that your parmesan does not use animal rennet.",
+          "featured": false,
+          "position": 5,
+          "photo": "/images/spaghetti-bowl.webp"
+        }
+      },
+      {
+        "id": "quinoa-bowl-roasted-tomatoes-feta",
+        "slug": "quinoa-bowl-roasted-tomatoes-feta",
+        "status": "published",
+        "data": {
+          "title": "Quinoa Bowl with Roasted Tomatoes and Feta",
+          "summary": "Quinoa with charred tomatoes and courgette, feta, avocado and basil.",
+          "collection": "fresh-seasonal",
+          "course": "main",
+          "prep_minutes": 15,
+          "cook_minutes": 25,
+          "servings": 2,
+          "servings_unit": "servings",
+          "ingredients": "150 g quinoa, rinsed\n300 ml water\n250 g cherry tomatoes\n1 courgette, sliced into 1 cm rounds\n2 tablespoons olive oil, divided\n1 teaspoon smoked paprika\nJuice of 1/2 lemon\n1 avocado, sliced\n80 g feta, crumbled\n1 small handful basil leaves\nSalt and black pepper",
+          "method": "Heat the oven to 220 C (200 C fan). Toss the tomatoes and courgette with 1 tablespoon of the oil, the paprika and 1/2 teaspoon of salt. Spread them on a tray and roast for 20 to 25 minutes, turning the courgette once, until charred in places.\nPut the quinoa, water and 1/4 teaspoon of salt in a pan and bring to the boil. Cover, turn the heat to its lowest setting and cook for 12 minutes.\nTake the pan off the heat and leave it covered for 5 minutes. Fluff the quinoa with a fork and stir in the lemon juice and the remaining oil.\nDivide the quinoa between two bowls. Top with the roasted tomatoes and courgette, the avocado, feta and basil. Finish with black pepper.",
+          "notes": "The roasted vegetables and quinoa keep in the fridge for 3 days. Slice the avocado on the day you eat it.",
+          "featured": false,
+          "position": 6,
+          "photo": "/images/quinoa-bowl.webp"
+        }
+      },
+      {
+        "id": "penne-slow-tomato-sauce",
+        "slug": "penne-slow-tomato-sauce",
+        "status": "published",
+        "data": {
+          "title": "Penne with Slow Tomato Sauce",
+          "summary": "Penne in a tomato sauce simmered for 35 minutes with onion, garlic and oregano.",
+          "collection": "cozy-classics",
+          "course": "main",
+          "prep_minutes": 10,
+          "cook_minutes": 50,
+          "servings": 4,
+          "servings_unit": "servings",
+          "ingredients": "3 tablespoons olive oil\n1 onion, finely chopped\n3 cloves garlic, sliced\n2 tins (400 g each) whole peeled tomatoes\n1 teaspoon dried oregano\n1/2 teaspoon sugar\n1 teaspoon salt\n400 g penne\n30 g parmesan, grated\n6 basil leaves",
+          "method": "Heat the oil in a wide pan over medium-low heat. Add the onion and a pinch of salt and cook for 10 minutes, until soft and sweet but not brown.\nAdd the garlic and cook for 1 minute. Add the tomatoes, crushing them with the back of a spoon, then the oregano, sugar and salt.\nSimmer gently, uncovered, for 35 minutes, stirring now and then, until the sauce is thick and the oil shines at the edges.\nCook the penne in well-salted boiling water to the packet time. Keep a mug of the cooking water, then drain.\nToss the penne with the sauce and a splash of the cooking water. Stir in half the parmesan and tear in the basil. Serve with the rest of the parmesan.",
+          "notes": "The sauce freezes well for 3 months. Make a double batch and keep half.",
+          "featured": false,
+          "position": 7,
+          "photo": "/images/penne-basil.webp"
+        }
+      },
+      {
+        "id": "roasted-carrot-feta-salad",
+        "slug": "roasted-carrot-feta-salad",
+        "status": "published",
+        "data": {
+          "title": "Roasted Carrot and Feta Salad",
+          "summary": "Roasted carrots over salad leaves with feta and black olives, in a red wine vinegar dressing.",
+          "collection": "fresh-seasonal",
+          "course": "side",
+          "prep_minutes": 15,
+          "cook_minutes": 30,
+          "servings": 4,
+          "servings_unit": "servings",
+          "ingredients": "500 g carrots, scrubbed and cut on the diagonal into 2 cm pieces\n2 tablespoons olive oil\n1 teaspoon ground cumin\n1 teaspoon honey\nSalt and black pepper\n120 g mixed salad leaves\n60 g black olives, pitted and halved\n100 g feta, crumbled\n1 small handful parsley and mint leaves\n# For the dressing\n2 tablespoons olive oil\n1 tablespoon red wine vinegar\n1/2 teaspoon Dijon mustard",
+          "method": "Heat the oven to 220 C (200 C fan). Toss the carrots with the oil, cumin, honey and 1/2 teaspoon of salt. Spread them on a tray in a single layer.\nRoast for 25 to 30 minutes, turning once, until tender and browned at the edges.\nWhisk the dressing ingredients with a pinch of salt.\nToss the salad leaves, olives and herbs with the dressing in a large bowl and spread on a platter.\nTop with the warm carrots and the feta. Add black pepper and serve.",
+          "notes": "Swap the olives for toasted walnuts if you prefer. Roast the carrots in advance and warm them through before serving.",
+          "featured": false,
+          "position": 8,
+          "photo": "/images/herb-salad.webp"
+        }
+      },
+      {
+        "id": "chocolate-chip-cookies",
+        "slug": "chocolate-chip-cookies",
+        "status": "published",
+        "data": {
+          "title": "Chocolate Chip Cookies",
+          "summary": "Classic chocolate chip cookies with crisp edges and soft middles.",
+          "collection": "something-sweet",
+          "course": "dessert",
+          "prep_minutes": 15,
+          "cook_minutes": 12,
+          "servings": 18,
+          "servings_unit": "cookies",
+          "ingredients": "170 g unsalted butter, softened\n150 g light brown sugar\n100 g caster sugar\n1 large egg plus 1 egg yolk\n2 teaspoons vanilla extract\n280 g plain flour\n1 teaspoon bicarbonate of soda\n3/4 teaspoon fine salt\n200 g dark chocolate, chopped, or chocolate chips",
+          "method": "Heat the oven to 180 C (160 C fan) and line two trays with baking paper.\nBeat the butter and both sugars for 3 minutes, until pale and fluffy.\nBeat in the egg, yolk and vanilla.\nStir in the flour, bicarbonate of soda and salt until just combined, then fold in the chocolate.\nScoop 18 balls of about 55 g each onto the trays, 5 cm apart.\nBake for 11 to 13 minutes, until the edges are golden and the middles look pale and soft.\nLeave on the tray for 5 minutes, then move to a wire rack.",
+          "notes": "The dough can be shaped into balls and frozen. Bake from frozen for 2 minutes longer.",
+          "featured": false,
+          "position": 9,
+          "photo": "/images/cookie-rack.webp"
+        }
+      }
+    ],
+    "stories": [
+      {
+        "id": "one-notebook-one-rule",
+        "slug": "one-notebook-one-rule",
+        "status": "published",
+        "data": {
+          "title": "One notebook, one rule",
+          "date_label": "20 October 2026",
+          "reading_time": 4,
+          "summary": "Every recipe goes into a paper notebook first, and nothing is published until I have cooked it three times.",
+          "recipe": "spaghetti-with-roasted-cherry-tomatoes",
+          "featured": true,
+          "position": 1,
+          "photo": "/images/notebook-spread.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I keep one notebook for recipes. It has a green ribbon, a cracked spine and a tomato sauce stain on page 14. Every dish in this journal started as a few lines in that book.",
+                  "_key": "k1s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k2",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The rule is simple. A recipe is not finished until I have cooked it three times. The first time I write down what I did. The second time I follow the page exactly and mark every place where I guessed. The third time someone else cooks it from my notes, usually my sister, while I stand well back and say nothing.",
+                  "_key": "k2s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What the third cook finds",
+                  "_key": "k3s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k4",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "She always finds something. Medium heat means different things on different hobs. A handful of basil depends on whose hand it is. Until golden is not a time. Each of those turns into a number or a clear description in the final version.",
+                  "_key": "k4s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "image",
+              "_key": "k5",
+              "asset": {
+                "url": "/images/parmesan-board.webp"
+              },
+              "alt": "A wedge of parmesan on a wooden board with basil leaves and garlic",
+              "caption": "Checking the parmesan against the page."
+            },
+            {
+              "_type": "block",
+              "_key": "k6",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "It is slower than writing a recipe from memory. It also means that when you write to tell me a dish did not work, I can usually say what went differently, because I have been wrong in the same way.",
+                  "_key": "k6s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "a-pot-of-basil-and-a-bottle-of-oil",
+        "slug": "a-pot-of-basil-and-a-bottle-of-oil",
+        "status": "published",
+        "data": {
+          "title": "A pot of basil and a bottle of oil",
+          "date_label": "15 October 2026",
+          "reading_time": 3,
+          "summary": "Two things on my counter that change more dishes than any gadget does.",
+          "recipe": "olive-oil-chocolate-cookies",
+          "featured": false,
+          "position": 2,
+          "photo": "/images/basil-oil.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If I could keep only two things within reach of the stove, they would be a pot of basil and a bottle of good olive oil.",
+                  "_key": "k7s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k8",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The basil lives on the windowsill and gets watered every other morning. A shop-bought pot lasts me about three weeks if I pick from the top and leave the bottom leaves alone. When it starts to go woody I buy another and keep the old one for its stems, which go into tomato sauce.",
+                  "_key": "k8s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The oil",
+                  "_key": "k9s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k10",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I buy two kinds. A mild olive oil for cooking and baking, and a peppery one that only gets used at the end, drizzled over soup or a plate of beans. The mild one goes into the chocolate cookies. It sounds odd and it works, because the cocoa covers the fruitiness and the dough stays soft.",
+                  "_key": "k10s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Keep the bottle away from the hob. Heat and light make oil taste flat. Mine sits by the window in the shade of the basil, and I try to finish a bottle within two months.",
+                  "_key": "k11s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "roasting-tomatoes-until-they-give-up",
+        "slug": "roasting-tomatoes-until-they-give-up",
+        "status": "published",
+        "data": {
+          "title": "Roasting tomatoes until they give up",
+          "date_label": "11 October 2026",
+          "reading_time": 4,
+          "summary": "What to do with the last small, wrinkled cherry tomatoes of the season.",
+          "recipe": "spaghetti-with-roasted-cherry-tomatoes",
+          "featured": false,
+          "position": 3,
+          "photo": "/images/spaghetti-bowl.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Cherry tomatoes at the end of the season are small, wrinkled and sweeter than they look. This is when I roast them.",
+                  "_key": "k12s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Put them on a tray with a few garlic cloves, a good pour of oil and some salt. At 200 C the skins split after about 15 minutes and the juices start to caramelise on the tray. By 25 minutes the tomatoes have slumped and the kitchen smells like a good restaurant.",
+                  "_key": "k13s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Do not wash the tray first",
+                  "_key": "k14s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Scrape every sticky bit off the tray into the pasta. That is the sauce. The first time I made this I washed the tray before dinner and wondered why it tasted thin.",
+                  "_key": "k15s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Any cherry tomatoes work, but a mix of red and yellow looks better and tastes rounder. Out of season, a tin of whole tomatoes does the same job in the slow tomato sauce.",
+                  "_key": "k16s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "what-to-cook-in-october",
+        "slug": "what-to-cook-in-october",
+        "status": "published",
+        "data": {
+          "title": "What to cook in October",
+          "date_label": "7 October 2026",
+          "reading_time": 3,
+          "summary": "The market changes this month. Here is what I buy and what happens to it.",
+          "recipe": "roasted-squash-salad",
+          "featured": false,
+          "position": 4,
+          "photo": "/images/card-squash-salad.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "October is when the market changes. The tomatoes get smaller and sweeter, and the first squash and carrots arrive with soil still on them.",
+                  "_key": "k17s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Squash gets roasted until the edges catch, then goes into a salad with kale and feta. Carrots go into soup with a lot of ginger. Kale gets rubbed with lemon and a little dressing so that it softens, and needs no cooking at all.",
+                  "_key": "k18s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What I skip",
+                  "_key": "k19s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k20",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Anything pale and hard in a plastic tray. If the tomatoes smell of nothing, I buy a tin instead and make the slow sauce.",
+                  "_key": "k20s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The In season list on the home page has what is in my basket right now, and I change it when the market does.",
+                  "_key": "k21s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "cooking-for-six-on-a-wednesday",
+        "slug": "cooking-for-six-on-a-wednesday",
+        "status": "published",
+        "data": {
+          "title": "Cooking for six on a Wednesday",
+          "date_label": "2 October 2026",
+          "reading_time": 5,
+          "summary": "A midweek dinner with friends works if the main course goes in the oven and stays there.",
+          "recipe": "lemon-herb-chicken",
+          "featured": false,
+          "position": 5,
+          "photo": "/images/card-lemon-chicken.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k22",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A midweek dinner with friends sounds like a lot of work. It does not have to be, if the main course goes in the oven and stays there.",
+                  "_key": "k22s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "My rule is one tray, one salad and one pudding made the day before. The lemon herb chicken is the tray. The thighs marinate while I tidy, go into the oven when the first person rings the bell, and are ready about when everyone has found a chair.",
+                  "_key": "k23s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k24",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Scaling up",
+                  "_key": "k24s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "For six, use twelve thighs and two trays rather than one crowded one. Crowded thighs steam instead of browning. Swap the trays halfway through if your oven runs hotter at the back. The marinade scales by half again.",
+                  "_key": "k25s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k26",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Put the salad dressing in a jar and the cookies in a tin. When the doorbell rings, the only job left is to open the oven.",
+                  "_key": "k26s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "why-the-cookies-get-a-pinch-of-salt",
+        "slug": "why-the-cookies-get-a-pinch-of-salt",
+        "status": "published",
+        "data": {
+          "title": "Why the cookies get a pinch of salt",
+          "date_label": "25 September 2026",
+          "reading_time": 3,
+          "summary": "A short note on flaky salt, chilled dough and taking cookies out of the oven early.",
+          "recipe": "chocolate-chip-cookies",
+          "featured": false,
+          "position": 6,
+          "photo": "/images/card-cookies.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A pinch of flaky salt on a chocolate cookie does more than extra sugar ever could. It makes the chocolate taste darker and stops the cookie from tasting only sweet.",
+                  "_key": "k27s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k28",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Press the salt on just before baking. If you add it afterwards it bounces off. Use a few flakes per cookie, not a sprinkle.",
+                  "_key": "k28s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Chill the dough",
+                  "_key": "k29s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k30",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Thirty minutes in the fridge is enough for the olive oil dough. The oil needs time to firm up, otherwise the cookies spread into one another. The butter dough in the chocolate chip recipe is happier with an hour, but it will cope without.",
+                  "_key": "k30s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Take them out early",
+                  "_key": "k31s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k32",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The edges should look set and the middles a little underdone. They keep cooking on the hot tray. If they look done in the oven, they will be hard tomorrow.",
+                  "_key": "k32s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "season": [
+      {
+        "id": "butternut-squash",
+        "slug": "butternut-squash",
+        "status": "published",
+        "data": {
+          "title": "Butternut squash",
+          "note": "Heavy for its size, with a dry stalk.",
+          "recipe": "roasted-squash-salad",
+          "position": 1
+        }
+      },
+      {
+        "id": "carrots",
+        "slug": "carrots",
+        "status": "published",
+        "data": {
+          "title": "Carrots",
+          "note": "Firm ones with a little soil still on them.",
+          "recipe": "carrot-ginger-soup",
+          "position": 2
+        }
+      },
+      {
+        "id": "cherry-tomatoes",
+        "slug": "cherry-tomatoes",
+        "status": "published",
+        "data": {
+          "title": "Cherry tomatoes",
+          "note": "The last of them. Small, wrinkled and sweet.",
+          "recipe": "spaghetti-with-roasted-cherry-tomatoes",
+          "position": 3
+        }
+      },
+      {
+        "id": "courgettes",
+        "slug": "courgettes",
+        "status": "published",
+        "data": {
+          "title": "Courgettes",
+          "note": "The final slim, firm ones before they disappear.",
+          "recipe": "quinoa-bowl-roasted-tomatoes-feta",
+          "position": 4
+        }
+      },
+      {
+        "id": "lemons",
+        "slug": "lemons",
+        "status": "published",
+        "data": {
+          "title": "Lemons",
+          "note": "Unwaxed, if I am using the zest.",
+          "recipe": "lemon-herb-chicken",
+          "position": 5
+        }
+      }
+    ],
+    "cook": [
+      {
+        "id": "mara-ellison",
+        "slug": "mara-ellison",
+        "status": "published",
+        "data": {
+          "title": "Mara Ellison",
+          "base": "a small flat with a south-facing kitchen window",
+          "phone": "(555) 010-0143",
+          "email": "hello@foodjournal.example",
+          "short_bio": "I cook at home and write down what works: the quantities, the timings and the mistakes.",
+          "response": "I read every message myself and usually reply within a week.",
+          "contact_note": "Pick a topic so I know what you are writing about: a question about a recipe, a story idea, new recipes by email, or anything else."
+        }
+      }
+    ]
+  }
+}

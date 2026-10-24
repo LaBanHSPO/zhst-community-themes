@@ -1,0 +1,39 @@
+---
+import Arrow from "./Arrow.astro";
+import { collectionLabel, minutesLabel, photoAlt, photoSrc, recipeHref, servingsLabel, totalMinutes } from "../lib/food";
+import type { Recipe } from "../lib/food";
+
+interface Props {
+	recipe: Recipe;
+	edit?: Record<string, unknown>;
+	/** Show prep/cook time and servings under the tag (recipe lists). */
+	facts?: boolean;
+	eager?: boolean;
+}
+const { recipe, edit = {}, facts = false, eager = false } = Astro.props;
+const src = photoSrc(recipe.image, recipe.photo);
+const total = totalMinutes(recipe);
+---
+
+<a class="recipe-card" href={recipeHref(recipe)}>
+	<span class="recipe-card-photo">
+		{src && <img src={src} alt={photoAlt(recipe.image, recipe.photo, recipe.title)} width="310" height="240" loading={eager ? "eager" : "lazy"} />}
+	</span>
+	<span class="recipe-card-body">
+		<span class="recipe-card-text">
+			<span class="recipe-card-title" {...edit}>{recipe.title}</span>
+			<span class="recipe-card-tag">{collectionLabel(recipe.collection)}</span>
+		</span>
+		<Arrow class="recipe-card-arrow" />
+	</span>
+	{
+		facts && (
+			<span class="recipe-card-facts">
+				{recipe.prep_minutes ? <span>Prep {minutesLabel(recipe.prep_minutes)}</span> : null}
+				{recipe.cook_minutes ? <span>Cook {minutesLabel(recipe.cook_minutes)}</span> : null}
+				{total ? <span class="sr-only">Total {minutesLabel(total)}</span> : null}
+				{recipe.servings ? <span>{servingsLabel(recipe)}</span> : null}
+			</span>
+		)
+	}
+</a>

@@ -1,0 +1,58 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PageHead from "../../components/PageHead.astro";
+import StoryCard from "../../components/StoryCard.astro";
+import MailBand from "../../components/MailBand.astro";
+import { getCook, getStories } from "../../lib/food";
+
+const PAGE_SIZE = 6;
+const [storiesResult, cookResult] = await Promise.all([getStories(), getCook()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(storiesResult.cacheHint);
+	Astro.cache.set(cookResult.cacheHint);
+}
+const all = storiesResult.entries;
+const pages = Math.max(1, Math.ceil(all.length / PAGE_SIZE));
+const page = Math.min(pages, Math.max(1, Number.parseInt(Astro.url.searchParams.get("page") ?? "1", 10) || 1));
+const stories = all.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+const pageHref = (n: number) => (n > 1 ? `/stories?page=${n}` : "/stories");
+---
+
+<Base
+	title="Stories"
+	description="Short food stories from a home kitchen: pantry habits, cooking for a crowd and what to make as the season turns."
+	current="/stories"
+>
+	<PageHead
+		id="stories-title"
+		eyebrow="Stories"
+		title="Notes from the kitchen."
+		intro="Short pieces about how and why I cook what I cook, newest first."
+	/>
+
+	<section class="stories-list" aria-labelledby="stories-title">
+		<div class="wrap">
+			{
+				stories.length === 0 ? (
+					<p class="empty-note">No stories yet.</p>
+				) : (
+					<ul class="story-grid">
+						{stories.map((s) => <li><StoryCard story={s.data} edit={{ ...s.edit.title }} /></li>)}
+					</ul>
+				)
+			}
+			{
+				pages > 1 && (
+					<nav class="pager" aria-label="Pagination">
+						{page > 1 ? <a class="text-link text-link-back" href={pageHref(page - 1)}><Arrow /><span>Newer stories</span></a> : <span />}
+						<span class="pager-count">Page {page} of {pages}</span>
+						{page < pages ? <a class="text-link" href={pageHref(page + 1)}><span>Older stories</span><Arrow /></a> : <span />}
+					</nav>
+				)
+			}
+		</div>
+	</section>
+
+	<MailBand cook={cookResult.cook} />
+</Base>
