@@ -1,0 +1,26 @@
+---
+import { lines } from "../lib/site";
+import type { Experience } from "../lib/site";
+
+interface Props {
+	entries: { data: Experience; edit?: Record<string, any> }[];
+}
+const { entries } = Astro.props;
+---
+
+<ol class="timeline">
+	{
+		entries.map((e) => (
+			<li class="tl-item">
+				<p class="tl-years">{e.data.years}</p>
+				<div class="tl-body">
+					<h3 class="tl-title" {...(e.edit?.title ?? {})}>{e.data.title}</h3>
+					<p class="tl-org">{[e.data.organisation, e.data.place].filter(Boolean).join(", ")}</p>
+					<ul class="tl-bullets">
+						{lines(e.data.bullets).map((b) => <li>{b}</li>)}
+					</ul>
+				</div>
+			</li>
+		))
+	}
+</ol>

@@ -1,0 +1,26 @@
+---
+import Arrow from "./Arrow.astro";
+import type { StudioData } from "../lib/site";
+
+interface Props {
+	studio: StudioData;
+}
+const { studio } = Astro.props;
+---
+
+<section class="open-band no-print" aria-labelledby="open-title">
+	<div class="wrap open-inner">
+		<div>
+			<p class="eyebrow">Currently open to</p>
+			<h2 id="open-title" class="display display-md">Freelance projects and one full-time role.</h2>
+		</div>
+		<div class="open-copy">
+			{studio.availability && <p>{studio.availability}</p>}
+			<p class="open-actions">
+				<a class="pill" href="/contact?reason=freelance"><span>Start a project</span><Arrow /></a>
+				<a class="text-link" href="/contact?reason=role"><span>Ask about a role</span><Arrow /></a>
+			</p>
+			{studio.email && <p class="open-mail">Or write to <a href={`mailto:${studio.email}`}>{studio.email}</a></p>}
+		</div>
+	</div>
+</section>

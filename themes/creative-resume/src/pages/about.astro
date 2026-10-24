@@ -1,0 +1,177 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import ContactBand from "../components/ContactBand.astro";
+import PageHead from "../components/PageHead.astro";
+import Timeline from "../components/Timeline.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { disciplineLabel, getExperience, getProjects, getSkills, getStudio, lines, photoAlt, photoSrc } from "../lib/site";
+
+const [{ entry: page, cacheHint }, studioResult, settings, expResult, skillsResult, projectsResult] = await Promise.all([
+	getEmDashEntry("pages", "about"),
+	getStudio(),
+	getSiteSettings(),
+	getExperience(),
+	getSkills(),
+	getProjects(),
+]);
+if (Astro.cache?.enabled) {
+	if (cacheHint) Astro.cache.set(cacheHint);
+	for (const r of [studioResult, expResult, skillsResult, projectsResult]) Astro.cache.set(r.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page ? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" }) : null;
+const hasBody = Boolean(page?.data.content && page.data.content.length > 0);
+const photo = photoSrc(page?.data.image, page?.data.photo) ?? "/images/portrait-collage.webp";
+const { studio } = studioResult;
+const work = expResult.entries.filter((e) => e.data.kind !== "education");
+const education = expResult.entries.filter((e) => e.data.kind === "education");
+const skills = skillsResult.entries;
+const resumeProjects = projectsResult.entries.slice(0, 4);
+const contactLine = [studio.email, studio.phone, studio.base].filter(Boolean).join("  |  ");
+---
+
+<Base
+	title={seo?.title ?? "About"}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? page?.data.intro ?? "About Mara Ellison, a multidisciplinary designer."}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<PageHead
+		id="about-title"
+		eyebrow={page?.data.eyebrow ?? "About"}
+		title={page?.data.title ?? "Hello, I’m Mara."}
+		intro={page?.data.intro}
+		edit={page ? { ...page.edit.title } : {}}
+	/>
+
+	<section class="about-story no-print">
+		<div class="wrap about-grid">
+			<figure class="about-photo">
+				<img
+					src={photo}
+					alt={photoAlt(page?.data.image, page?.data.photo, "Mara resting her chin on one hand, with a terracotta circle and torn grey paper behind her")}
+					width="960"
+					height="1050"
+					loading="lazy"
+				/>
+			</figure>
+			<div class="prose">
+				{hasBody ? <PortableText value={page!.data.content} /> : <p>More about Mara is coming soon.</p>}
+				<p class="about-link"><a class="text-link" href="/work"><span>See the work</span><Arrow /></a></p>
+			</div>
+		</div>
+	</section>
+
+	<section class="experience no-print" aria-labelledby="exp-title">
+		<div class="wrap split">
+			<div class="split-head">
+				<p class="eyebrow">Experience</p>
+				<h2 id="exp-title" class="display display-lg">Where I’ve<br />worked</h2>
+				<p class="split-note">Studios and teams, newest first.</p>
+			</div>
+			<Timeline entries={work} />
+		</div>
+	</section>
+
+	{
+		education.length > 0 && (
+			<section class="experience education no-print" aria-labelledby="edu-title">
+				<div class="wrap split">
+					<div class="split-head">
+						<p class="eyebrow">Education &amp; courses</p>
+						<h2 id="edu-title" class="display display-lg">Where I<br />learned</h2>
+						<p class="split-note">Placeholder entries. Edit them in the admin under Experience and education.</p>
+					</div>
+					<Timeline entries={education} />
+				</div>
+			</section>
+		)
+	}
+
+	<section class="skills no-print" aria-labelledby="skills-title">
+		<div class="wrap split">
+			<div class="split-head">
+				<p class="eyebrow">Skills &amp; tools</p>
+				<h2 id="skills-title" class="display display-lg">What I use<br />every week</h2>
+			</div>
+			<div class="skill-groups">
+				{skills.map((s) => (
+					<div class="skill-group">
+						<h3 {...s.edit.title}>{s.data.title}</h3>
+						<ul>{lines(s.data.items).map((item) => <li>{item}</li>)}</ul>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="resume" id="resume" aria-labelledby="resume-title">
+		<div class="wrap">
+			<div class="resume-head no-print">
+				<div>
+					<p class="eyebrow">Resume</p>
+					<h2 id="resume-title" class="display display-lg">One page,<br />ready to save</h2>
+				</div>
+				<div class="resume-actions">
+					<p>Print this page or choose Save as PDF in the print dialog. Only the sheet below is printed.</p>
+					<button class="pill" type="button" data-print><span>Print or save as PDF</span><Arrow /></button>
+				</div>
+			</div>
+
+			<article class="resume-sheet" aria-label="Resume of Mara Ellison">
+				<header class="rs-head">
+					<h2 class="rs-name">{studio.title || "Mara Ellison"}</h2>
+					<p class="rs-role">Multidisciplinary designer</p>
+					<p class="rs-contact">{contactLine}</p>
+				</header>
+				{page?.data.intro && (
+					<section class="rs-section">
+						<h3>Summary</h3>
+						<p>{page.data.intro}</p>
+					</section>
+				)}
+				<section class="rs-section">
+					<h3>Experience</h3>
+					{work.map((e) => (
+						<div class="rs-entry">
+							<p class="rs-line"><span class="rs-edu"><strong>{e.data.title}</strong>, {e.data.organisation}</span><span>{e.data.years}</span></p>
+							<ul>{lines(e.data.bullets).map((b) => <li>{b}</li>)}</ul>
+						</div>
+					))}
+				</section>
+				{education.length > 0 && (
+					<section class="rs-section">
+						<h3>Education and courses</h3>
+						{education.map((e) => (
+							<p class="rs-line"><span class="rs-edu"><strong>{e.data.title}</strong>, {e.data.organisation}</span><span>{e.data.years}</span></p>
+						))}
+					</section>
+				)}
+				<section class="rs-section">
+					<h3>Skills and tools</h3>
+					{skills.map((s) => <p class="rs-skill"><strong>{s.data.title}:</strong> {lines(s.data.items).join(", ")}</p>)}
+				</section>
+				{resumeProjects.length > 0 && (
+					<section class="rs-section">
+						<h3>Selected projects</h3>
+						{resumeProjects.map((p) => (
+							<p class="rs-proj"><strong>{p.data.title}</strong> ({disciplineLabel(p.data.discipline)}, {p.data.year}). {p.data.summary}</p>
+						))}
+					</section>
+				)}
+			</article>
+		</div>
+	</section>
+
+	<ContactBand studio={studio} />
+</Base>
+
+<script>
+	document.querySelectorAll<HTMLButtonElement>("[data-print]").forEach((btn) => {
+		btn.addEventListener("click", () => window.print());
+	});
+</script>

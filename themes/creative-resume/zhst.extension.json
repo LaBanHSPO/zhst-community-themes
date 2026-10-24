@@ -1,0 +1,18 @@
+{
+	"schema": 1,
+	"id": "creative-resume",
+	"kind": "theme",
+	"name": "Creative Resume",
+	"type": "bio",
+	"emdash": "1.2.0",
+	"entry": "themes/creative-resume",
+	"capabilities": {
+		"pwa": false,
+		"publicItems": true,
+		"inquiry": true,
+		"booking": false,
+		"checkout": false,
+		"map": false,
+		"whatsapp": false
+	}
+}

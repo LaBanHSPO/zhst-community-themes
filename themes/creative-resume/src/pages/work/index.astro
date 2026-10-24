@@ -1,0 +1,59 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import ContactBand from "../../components/ContactBand.astro";
+import WorkCard from "../../components/WorkCard.astro";
+import { DISCIPLINES, getProjects, getStudio } from "../../lib/site";
+
+const [projectsResult, studioResult] = await Promise.all([getProjects(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(projectsResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const all = projectsResult.entries;
+
+// One filter link per discipline that has at least one project, in a fixed order.
+const disciplines = DISCIPLINES.filter((d) => all.some((p) => p.data.discipline === d.slug));
+// ?discipline=<slug> narrows the list to one discipline.
+const active = disciplines.find((d) => d.slug === Astro.url.searchParams.get("discipline"));
+const projects = active ? all.filter((p) => p.data.discipline === active.slug) : all;
+---
+
+<Base
+	title={active ? `${active.label} work` : "Work"}
+	description="Selected projects by Mara Ellison: brand and web design, product design, visual identity and editorial work. Filter by discipline."
+	current="/work"
+>
+	<PageHead
+		id="work-title"
+		eyebrow="Work"
+		title={active ? `${active.label}.` : "Selected projects."}
+		intro="Recent projects for small teams, makers and places. Pick a discipline or look at all of it."
+	/>
+
+	<section class="list-section" aria-labelledby="work-title">
+		<div class="wrap">
+			{
+				disciplines.length > 1 && (
+					<nav class="filter" aria-label="Filter by discipline">
+						<a href="/work" aria-current={active ? undefined : "true"}>All</a>
+						{disciplines.map((d) => (
+							<a href={`/work?discipline=${d.slug}`} aria-current={active?.slug === d.slug ? "true" : undefined}>{d.label}</a>
+						))}
+					</nav>
+				)
+			}
+			{
+				projects.length > 0 ? (
+					<ul class="work-grid">
+						{projects.map((p, i) => <li><WorkCard project={p} eager={i < 6} /></li>)}
+					</ul>
+				) : (
+					<p class="empty">No projects in this discipline yet.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<ContactBand studio={studioResult.studio} />
+</Base>

@@ -1,0 +1,20 @@
+---
+import { disciplineLabel, photoAlt, photoSrc, projectHref } from "../lib/site";
+import type { Project } from "../lib/site";
+
+interface Props {
+	project: { data: Project };
+	eager?: boolean;
+}
+const { project, eager = false } = Astro.props;
+const p = project.data;
+const src = photoSrc(p.image, p.photo);
+---
+
+<a class="work-card" href={projectHref(p)}>
+	<span class="work-card-media">
+		{src && <img src={src} alt={photoAlt(p.image, p.photo, p.title)} width="584" height="414" loading={eager ? "eager" : "lazy"} />}
+	</span>
+	<span class="work-card-title">{p.title}</span>
+	<span class="work-card-meta">{disciplineLabel(p.discipline)}</span>
+</a>

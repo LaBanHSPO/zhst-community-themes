@@ -1,0 +1,1051 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Creative Resume",
+  "description": "A warm, editorial resume theme for a designer: collage portrait hero, selected projects, a work archive with a discipline filter, an About page with a printable resume, an experience timeline, skills and a contact page with a reason selector, seeded with synthetic sample content.",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "CreativeResume",
+  "tagline": "Ideas for a brighter tomorrow"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Small label above the title",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro",
+     "type": "text"
+    },
+    {
+     "slug": "image",
+     "label": "Portrait (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled portrait path",
+     "type": "string"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "projects",
+   "label": "Work",
+   "labelSingular": "Project",
+   "urlPattern": "/work/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Project name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "discipline",
+     "label": "Discipline (work filter)",
+     "type": "select",
+     "required": true,
+     "indexed": true,
+     "defaultValue": "brand-web",
+     "validation": {
+      "options": [
+       "brand-web",
+       "product",
+       "identity",
+       "editorial"
+      ]
+     }
+    },
+    {
+     "slug": "client",
+     "label": "Client",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "year",
+     "label": "Year",
+     "type": "string"
+    },
+    {
+     "slug": "role",
+     "label": "My role",
+     "type": "string"
+    },
+    {
+     "slug": "summary",
+     "label": "One-line summary",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "brief",
+     "label": "The brief",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "did",
+     "label": "What I did",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "outcome",
+     "label": "How it turned out (no numbers needed)",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "featured",
+     "label": "Show in Selected Projects on the homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Cover image (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled cover image path",
+     "type": "string"
+    },
+    {
+     "slug": "gallery",
+     "label": "Image sequence",
+     "type": "repeater",
+     "validation": {
+      "maxItems": 40,
+      "subFields": [
+       {
+        "slug": "image",
+        "label": "Image (upload)",
+        "type": "image"
+       },
+       {
+        "slug": "photo",
+        "label": "Bundled image path",
+        "type": "string"
+       },
+       {
+        "slug": "caption",
+        "label": "Caption",
+        "type": "text"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "slug": "experience",
+   "label": "Experience and education",
+   "labelSingular": "Entry",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Role or course",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "organisation",
+     "label": "Studio or school",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "kind",
+     "label": "Kind",
+     "type": "select",
+     "required": true,
+     "indexed": true,
+     "defaultValue": "work",
+     "validation": {
+      "options": [
+       "work",
+       "education"
+      ]
+     }
+    },
+    {
+     "slug": "years",
+     "label": "Years shown",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "place",
+     "label": "Place",
+     "type": "string"
+    },
+    {
+     "slug": "bullets",
+     "label": "What I did (one line per bullet)",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "skills",
+   "label": "Skills and tools",
+   "labelSingular": "Skill group",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Group name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "items",
+     "label": "Items (one per line)",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "studio",
+   "label": "Contact details",
+   "labelSingular": "Contact details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "base",
+     "label": "Based in",
+     "type": "string"
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Email for messages",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "availability",
+     "label": "Currently open to",
+     "type": "text"
+    },
+    {
+     "slug": "response",
+     "label": "Reply time",
+     "type": "string"
+    },
+    {
+     "slug": "note",
+     "label": "Note shown beside the contact form",
+     "type": "text"
+    },
+    {
+     "slug": "links",
+     "label": "Profile links (one per line, as Label|URL)",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Home",
+     "url": "/"
+    },
+    {
+     "type": "custom",
+     "label": "Work",
+     "url": "/work"
+    },
+    {
+     "type": "custom",
+     "label": "About",
+     "url": "/about"
+    },
+    {
+     "type": "custom",
+     "label": "Contact",
+     "url": "/contact"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "Hello, I’m Mara.",
+     "eyebrow": "About",
+     "intro": "I’m a multidisciplinary designer in Port Alder. I work across brand identity, websites, product screens and print.",
+     "photo": "/images/portrait-collage.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I like projects where the logo, the website and the printed pieces all need to agree with each other. Most of my clients are small: a trust, a ceramics studio, a greenhouse run by neighbours. They usually need a few things at once and would rather talk to one designer than three.",
+         "_key": "k1s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k2",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How I got here",
+         "_key": "k2s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I started at a print shop, checking proofs and learning why a colour looks different on paper than on a screen. After that I spent three years designing screens for a scheduling app, then went independent in 2021. Since 2023 I have worked as a senior designer at a small studio and taken a few projects on the side.",
+         "_key": "k3s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k4",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How I work",
+         "_key": "k4s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k5",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I start with a short call and a list of questions. I show rough sketches early, because it is easier to correct a pencil line than a finished layout. I write down what is included and what it costs before I begin, and I hand over files you can edit without me.",
+         "_key": "k5s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k6",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Outside work",
+         "_key": "k6s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k7",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I walk the coast path most weekends, keep a notebook in my bag and collect paper samples I will never use. I also help at a community greenhouse on Saturdays.",
+         "_key": "k7s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k8",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Mara Ellison is a fictional, AI-generated persona used for this sample site. Replace the portrait, the text and the studios with your own.",
+         "_key": "k8s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "working-together",
+    "slug": "working-together",
+    "status": "published",
+    "data": {
+     "title": "Working together",
+     "eyebrow": "Freelance",
+     "intro": "How a freelance project runs, from the first message to the last file.",
+     "photo": "/images/notebook.webp",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k9",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "1. A short call",
+         "_key": "k9s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k10",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We talk for 30 minutes about what you need, who it is for and when you need it. I follow up the same day with a written summary and any questions I still have.",
+         "_key": "k10s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k11",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "2. Scope and fee in writing",
+         "_key": "k11s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k12",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You get a one-page proposal that lists what is included, the number of review rounds, the fee and the dates. Nothing starts until you have agreed to it.",
+         "_key": "k12s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k13",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "3. Sketches, then layouts",
+         "_key": "k13s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k14",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "I share rough sketches first, then move the chosen direction into layouts. You see work at least once a week while a project is running.",
+         "_key": "k14s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k15",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "4. Handover",
+         "_key": "k15s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k16",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "You receive the final files, a short guide to using them and the source files if you want to edit anything yourself. I am happy to answer questions for 30 days afterwards.",
+         "_key": "k16s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k17",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Rates and availability",
+         "_key": "k17s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k18",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Fees are quoted per project, not per hour. I am booking freelance projects from January 2027. For a full-time role, write to me through the contact page and choose that reason.",
+         "_key": "k18s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "projects": [
+   {
+    "id": "earthward",
+    "slug": "earthward",
+    "status": "published",
+    "data": {
+     "title": "Earthward",
+     "discipline": "brand-web",
+     "client": "Earthward Coastal Trust",
+     "year": "2026",
+     "role": "Lead designer, brand and website",
+     "summary": "A name, wordmark and website for a small trust that looks after a stretch of cliff path.",
+     "brief": "The trust had run for ten years on volunteers and a free website template. They wanted a name people could remember, a site that explained where donations went, and signs that hold up in wind and rain.",
+     "did": "I shortlisted names with the trustees, drew the wordmark and took the palette from the cliff itself: grey stone, sea haze and dry grass. I designed and built a three-page site, then drew the sign set for the car park and the viewpoint and printed a test panel at full size.",
+     "outcome": "Volunteers now give visitors one address instead of three. The trust uses the wordmark on its leaflets, and the first signs went up in spring.",
+     "featured": true,
+     "position": 10,
+     "photo": "/images/work-earthward.webp",
+     "gallery": [
+      {
+       "photo": "/images/print-mountain.webp",
+       "caption": "A trail marker study printed on cream stock to check the sun-faded look."
+      },
+      {
+       "photo": "/images/notebook.webp",
+       "caption": "Sketchbook with early wordmark drafts and the sign layouts."
+      },
+      {
+       "photo": "/images/plant.webp",
+       "caption": "Planting along the path, photographed for the website header."
+      }
+     ]
+    }
+   },
+   {
+    "id": "habitly",
+    "slug": "habitly",
+    "status": "published",
+    "data": {
+     "title": "Habitly",
+     "discipline": "product",
+     "client": "Habitly",
+     "year": "2026",
+     "role": "Product designer",
+     "summary": "A habit tracker built around one small action a day.",
+     "brief": "Habitly's first version asked people to set up five habits on day one. Most stopped by the second week. The team wanted a calmer app that people would still open in month three.",
+     "did": "I cut the sign-up to a single question and redesigned the home screen around one task for today. I drew the leaf progress mark, wrote the empty states and ran four short sessions with people who had abandoned other trackers.",
+     "outcome": "Testers described the new version as easy to keep up. The team shipped it in the autumn release and kept the one-action home screen.",
+     "featured": true,
+     "position": 20,
+     "photo": "/images/work-habitly.webp",
+     "gallery": [
+      {
+       "photo": "/images/plant.webp",
+       "caption": "The leaf mark started as a drawing of a houseplant on my desk."
+      },
+      {
+       "photo": "/images/print-leaf.webp",
+       "caption": "Printed leaf studies used to pick the final shape."
+      },
+      {
+       "photo": "/images/notebook.webp",
+       "caption": "Flow sketches from the first week of testing."
+      }
+     ]
+    }
+   },
+   {
+    "id": "forma",
+    "slug": "forma",
+    "status": "published",
+    "data": {
+     "title": "Forma",
+     "discipline": "identity",
+     "client": "Forma Ceramics",
+     "year": "2025",
+     "role": "Designer, identity and packaging",
+     "summary": "A visual identity for a two-person ceramics studio, from logo to shipping box.",
+     "brief": "Forma makes plain, heavy cups and bowls and sells them online and at two markets a year. Their template logo looked nothing like the pots, and their parcels arrived in unbranded brown boxes.",
+     "did": "I drew a simple arch mark from the shape of their kiln door and picked a clay-and-cream palette. I designed stamps, stickers, a packing card and a one-colour box print, and wrote a one-page guide so they could keep it consistent.",
+     "outcome": "The studio prints its own stamps now and uses the arch on market banners. Customers began to post parcel photos without being asked.",
+     "featured": true,
+     "position": 30,
+     "photo": "/images/work-forma.webp",
+     "gallery": [
+      {
+       "photo": "/images/stone-sphere.webp",
+       "caption": "A stone sphere on travertine, used as a stand-in for a glazed piece in packaging tests."
+      },
+      {
+       "photo": "/images/print-architecture.webp",
+       "caption": "An arch and shadow study that led to the final mark."
+      },
+      {
+       "photo": "/images/print-leaf.webp",
+       "caption": "Colour test on uncoated paper next to a clay sample."
+      }
+     ]
+    }
+   },
+   {
+    "id": "highline",
+    "slug": "highline",
+    "status": "published",
+    "data": {
+     "title": "Highline",
+     "discipline": "editorial",
+     "client": "Highline Walking Club",
+     "year": "2025",
+     "role": "Editorial designer",
+     "summary": "A 48-page trail guide for a walking club, printed in two colours.",
+     "brief": "The club wanted a guide members could keep in a rucksack. It had to carry route notes, small maps and a few essays, and cost little to print in short runs.",
+     "did": "I set the guide in two inks on cream stock, with a strict grid for route notes and a wide margin for members to write in. I redrew eleven maps from the club's hand sketches and laid out the essays.",
+     "outcome": "The club reprinted the guide twice in small runs and now sells it at trailheads.",
+     "featured": false,
+     "position": 40,
+     "photo": "/images/print-mountain.webp",
+     "gallery": [
+      {
+       "photo": "/images/notebook.webp",
+       "caption": "A field notebook used to test the margin width for handwritten notes."
+      },
+      {
+       "photo": "/images/print-portrait.webp",
+       "caption": "A contributor portrait printed as a two-colour duotone."
+      },
+      {
+       "photo": "/images/plant.webp",
+       "caption": "Cover photograph test shot."
+      }
+     ]
+    }
+   },
+   {
+    "id": "fernbank",
+    "slug": "fernbank",
+    "status": "published",
+    "data": {
+     "title": "Fernbank",
+     "discipline": "identity",
+     "client": "Fernbank Community Greenhouse",
+     "year": "2025",
+     "role": "Designer",
+     "summary": "A friendly identity and sign set for a community greenhouse.",
+     "brief": "Fernbank is run by neighbours and open on weekends. It needed a name on the gate, plant labels and a poster for the autumn plant swap, all made by people with no design software.",
+     "did": "I drew a leaf mark and a set of labels that can be printed on any office printer. I made poster templates and a short how-to so volunteers could produce their own.",
+     "outcome": "Volunteers now make the weekly posters themselves, and the labels have replaced the handwritten ones on the benches.",
+     "featured": false,
+     "position": 50,
+     "photo": "/images/print-leaf.webp",
+     "gallery": [
+      {
+       "photo": "/images/plant.webp",
+       "caption": "Plants on the bench the labels were designed for."
+      },
+      {
+       "photo": "/images/print-mountain.webp",
+       "caption": "Poster test on cream paper."
+      },
+      {
+       "photo": "/images/notebook.webp",
+       "caption": "Label sizes sketched out before printing."
+      }
+     ]
+    }
+   },
+   {
+    "id": "cantilever",
+    "slug": "cantilever",
+    "status": "published",
+    "data": {
+     "title": "Cantilever",
+     "discipline": "brand-web",
+     "client": "Cantilever Architects",
+     "year": "2024",
+     "role": "Designer, brand and website",
+     "summary": "A quiet website and project sheets for a small architecture practice.",
+     "brief": "The practice's old site buried its best work. They wanted each building to get a clear page and a printable sheet for planning meetings.",
+     "did": "I built a page template with large photographs and a short fact list for each project, and designed an A3 sheet that prints well in black and white. I also reworked their proposal cover.",
+     "outcome": "The partners send project links in place of PDFs, and the printed sheets are now the standard handout at planning meetings.",
+     "featured": false,
+     "position": 60,
+     "photo": "/images/print-architecture.webp",
+     "gallery": [
+      {
+       "photo": "/images/print-leaf.webp",
+       "caption": "Material and colour board for the site palette."
+      },
+      {
+       "photo": "/images/stone-sphere.webp",
+       "caption": "Stone sample photographed for the About page."
+      },
+      {
+       "photo": "/images/print-portrait.webp",
+       "caption": "Duotone portrait test for the team page."
+      }
+     ]
+    }
+   },
+   {
+    "id": "fieldnotes",
+    "slug": "fieldnotes",
+    "status": "published",
+    "data": {
+     "title": "Fieldnotes",
+     "discipline": "product",
+     "client": "Fieldnotes",
+     "year": "2024",
+     "role": "Product designer",
+     "summary": "A notes app for people who still carry a paper notebook.",
+     "brief": "Fieldnotes wanted a notes app that treats paper as a partner, not a rival. The main task was making it quick to photograph a page and add a title and a few tags.",
+     "did": "I designed the capture flow, the page list and the search screen, and drew a set of paper-texture backgrounds. I tested the capture flow with six people who keep notebooks.",
+     "outcome": "Testers found a page, titled it and moved on in a few taps. The team kept the capture flow as drawn.",
+     "featured": false,
+     "position": 70,
+     "photo": "/images/notebook.webp",
+     "gallery": [
+      {
+       "photo": "/images/print-architecture.webp",
+       "caption": "Printed screens pinned up during a design review."
+      },
+      {
+       "photo": "/images/plant.webp",
+       "caption": "Desk setup used for the capture photography."
+      },
+      {
+       "photo": "/images/print-mountain.webp",
+       "caption": "A page photographed by the app, used in the store screenshots."
+      }
+     ]
+    }
+   },
+   {
+    "id": "quarry",
+    "slug": "quarry",
+    "status": "published",
+    "data": {
+     "title": "Quarry",
+     "discipline": "identity",
+     "client": "Quarry Homewares",
+     "year": "2024",
+     "role": "Designer, identity and packaging",
+     "summary": "A name, mark and packaging for a maker of stone homewares.",
+     "brief": "Quarry carves small bowls and trays from offcuts. They needed an identity that suits heavy, quiet objects, and boxes that protect the stone without much plastic.",
+     "did": "I drew a plain square mark, set the name in a sturdy serif and designed a fold-flat box from recycled board. I photographed the first range against a dark green backdrop.",
+     "outcome": "The box has stayed the same since launch and the maker has added two sizes using the same template.",
+     "featured": false,
+     "position": 80,
+     "photo": "/images/stone-sphere.webp",
+     "gallery": [
+      {
+       "photo": "/images/print-architecture.webp",
+       "caption": "A shadow study that shaped the box print."
+      },
+      {
+       "photo": "/images/notebook.webp",
+       "caption": "Packaging sketches next to a sample box."
+      },
+      {
+       "photo": "/images/print-leaf.webp",
+       "caption": "Colour reference for the green backdrop."
+      }
+     ]
+    }
+   },
+   {
+    "id": "northlight",
+    "slug": "northlight",
+    "status": "published",
+    "data": {
+     "title": "Northlight",
+     "discipline": "editorial",
+     "client": "Northlight Quarterly",
+     "year": "2023",
+     "role": "Art director, one issue",
+     "summary": "Layouts and a portrait series for one issue of a small arts quarterly.",
+     "brief": "The editors wanted one issue to feel different from the last three. The theme was people who work with their hands, and the budget covered one photographer and two printing inks.",
+     "did": "I art directed a portrait series, set the cover and opening spread, and built a layout kit for the inside pages. I chose a terracotta spot colour to run through the issue.",
+     "outcome": "The editors kept the layout kit for later issues. The cover went on to be used as the quarterly's poster.",
+     "featured": false,
+     "position": 90,
+     "photo": "/images/print-portrait.webp",
+     "gallery": [
+      {
+       "photo": "/images/notebook.webp",
+       "caption": "Contact sheet notes from the portrait shoot."
+      },
+      {
+       "photo": "/images/stone-sphere.webp",
+       "caption": "Still life used for the contents page."
+      },
+      {
+       "photo": "/images/print-mountain.webp",
+       "caption": "Spot colour test on cream stock."
+      }
+     ]
+    }
+   }
+  ],
+  "experience": [
+   {
+    "id": "tidewater",
+    "slug": "tidewater",
+    "status": "published",
+    "data": {
+     "title": "Senior designer",
+     "organisation": "Tidewater Studio",
+     "kind": "work",
+     "years": "2023 to now",
+     "place": "Port Alder",
+     "bullets": "Lead design on brand and website projects from first sketch to launch.\nRun the weekly critique and mentor two junior designers.\nWrite the studio's guide for handing designs to developers.",
+     "position": 10
+    }
+   },
+   {
+    "id": "independent",
+    "slug": "independent",
+    "status": "published",
+    "data": {
+     "title": "Independent designer",
+     "organisation": "Mara Ellison Design",
+     "kind": "work",
+     "years": "2021 to 2023",
+     "place": "Remote",
+     "bullets": "Worked directly with small teams on identities, sites and printed guides.\nWrote every proposal, scope and invoice myself.\nBuilt a simple template kit that clients could reuse without me.",
+     "position": 20
+    }
+   },
+   {
+    "id": "lantern",
+    "slug": "lantern",
+    "status": "published",
+    "data": {
+     "title": "Product designer",
+     "organisation": "Lantern Labs",
+     "kind": "work",
+     "years": "2018 to 2021",
+     "place": "Port Alder",
+     "bullets": "Designed screens for a scheduling app used by clinics and studios.\nRan usability sessions and wrote up what we learned in plain language.\nMaintained the design system with two developers.",
+     "position": 30
+    }
+   },
+   {
+    "id": "pinewood",
+    "slug": "pinewood",
+    "status": "published",
+    "data": {
+     "title": "Junior designer",
+     "organisation": "Pinewood Print",
+     "kind": "work",
+     "years": "2016 to 2018",
+     "place": "Port Alder",
+     "bullets": "Prepared files for print and checked proofs with customers.\nDesigned catalogues, menus and wedding stationery.\nLearned paper, ink and why colour looks different on screen.",
+     "position": 40
+    }
+   },
+   {
+    "id": "edu-degree",
+    "slug": "edu-degree",
+    "status": "published",
+    "data": {
+     "title": "BA Graphic Design (placeholder)",
+     "organisation": "Your university here",
+     "kind": "education",
+     "years": "2012 to 2016",
+     "place": "",
+     "bullets": "Sample entry. Replace with your own degree, school and years.",
+     "position": 50
+    }
+   },
+   {
+    "id": "edu-course",
+    "slug": "edu-course",
+    "status": "published",
+    "data": {
+     "title": "Course or workshop (placeholder)",
+     "organisation": "Your provider here",
+     "kind": "education",
+     "years": "Year",
+     "place": "",
+     "bullets": "Sample entry. Add a short course, certificate or workshop you finished.",
+     "position": 60
+    }
+   }
+  ],
+  "skills": [
+   {
+    "id": "design",
+    "slug": "design",
+    "status": "published",
+    "data": {
+     "title": "Design",
+     "items": "Brand identity and logos\nLayout and typography\nIllustration and icon drawing\nDesign systems",
+     "position": 10
+    }
+   },
+   {
+    "id": "digital",
+    "slug": "digital",
+    "status": "published",
+    "data": {
+     "title": "Digital",
+     "items": "Figma\nPrototyping\nHTML and CSS basics\nAccessibility checks",
+     "position": 20
+    }
+   },
+   {
+    "id": "print",
+    "slug": "print",
+    "status": "published",
+    "data": {
+     "title": "Print and making",
+     "items": "InDesign\nPreparing files for print\nPhotography basics\nRunning workshops",
+     "position": 30
+    }
+   }
+  ],
+  "studio": [
+   {
+    "id": "studio",
+    "slug": "studio",
+    "status": "published",
+    "data": {
+     "title": "Mara Ellison",
+     "base": "Port Alder",
+     "phone": "+1 (415) 555-0142",
+     "email": "hello@maraellison.example",
+     "availability": "Booking freelance projects from January 2027. Also open to one full-time design role at a small team.",
+     "response": "Replies within two working days, Monday to Friday.",
+     "note": "A message is not a commitment. I confirm scope, dates and fee in writing before any project starts.",
+     "links": "Portfolio archive|https://archive.maraellison.example\nProfessional profile|https://profile.maraellison.example\nReading list|https://reading.maraellison.example"
+    }
+   }
+  ]
+ }
+}

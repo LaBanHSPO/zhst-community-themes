@@ -1,0 +1,22 @@
+---
+/** Wordmark: the site title in a serif, split at the second capital so "Resume" takes the accent colour. */
+interface Props {
+	title: string;
+	logo?: { url?: string; alt?: string } | null;
+	class?: string;
+}
+const { title, logo, class: className } = Astro.props;
+const at = title.search(/(?<=.)[A-Z]/);
+const first = at > 0 ? title.slice(0, at) : title;
+const second = at > 0 ? title.slice(at) : "";
+---
+
+<a class:list={["wordmark", className]} href="/" aria-label={`${title}, home`}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt || title} />
+		) : (
+			<span aria-hidden="true">{first}{second && <span class="wm-accent">{second}</span>}</span>
+		)
+	}
+</a>
