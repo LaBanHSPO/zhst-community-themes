@@ -1,0 +1,65 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import VenueCard from "../../components/VenueCard.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { getOffice, getVenues, slugify } from "../../lib/events";
+
+const [venuesResult, officeResult] = await Promise.all([getVenues(), getOffice()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(venuesResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const all = venuesResult.entries;
+const { office } = officeResult;
+
+// City filter: one link per city that has at least one venue, in order of first appearance.
+const cities = [...new Set(all.map((v) => v.data.city))].map((name) => ({ name, slug: slugify(name) }));
+const active = cities.find((c) => c.slug === Astro.url.searchParams.get("city"));
+const venues = active ? all.filter((v) => v.data.city === active.name) : all;
+---
+
+<Base
+	title={active ? `Venues in ${active.name}` : "Venues"}
+	description="Conference halls, reception rooms and meeting suites we know well, with capacities, spaces and features."
+	current="/venues"
+>
+	<PageHead
+		eyebrow="Venues"
+		title={active ? `Venues in ${active.name}.` : "Rooms that suit the occasion."}
+		intro="A short list of venues we have planned events in. Every one has been visited by our team, and we can arrange a site visit for you."
+	/>
+
+	<section class="section section-soft list-section" aria-label="Venues">
+		<div class="container">
+			{
+				cities.length > 1 && (
+					<nav class="filter" aria-label="Filter by city">
+						<a href="/venues" aria-current={active ? undefined : "true"}>All cities</a>
+						{cities.map((c) => (
+							<a href={`/venues?city=${c.slug}`} aria-current={active?.slug === c.slug ? "true" : undefined}>{c.name}</a>
+						))}
+					</nav>
+				)
+			}
+			{
+				venues.length > 0 ? (
+					<div class="venue-grid">
+						{venues.map((v) => (
+							<VenueCard venue={v} />
+						))}
+					</div>
+				) : (
+					<p class="empty">No venues in this city yet.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<CtaBand
+		office={office}
+		title="Not sure which room fits?"
+		text="Tell us the type of event, the number of guests and the city, and we will suggest two or three venues to visit."
+		query={active ? `city=${active.slug}` : undefined}
+	/>
+</Base>

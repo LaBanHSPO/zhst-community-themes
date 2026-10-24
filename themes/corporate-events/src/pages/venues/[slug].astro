@@ -1,0 +1,142 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import VenueCard from "../../components/VenueCard.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { getOffice, getVenues, lines, photoSrc, slugify, splitDetail } from "../../lib/events";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: venue, cacheHint } = await getEmDashEntry("venues", slug);
+if (!venue) return Astro.rewrite("/404");
+
+const [allResult, officeResult, settings] = await Promise.all([getVenues(), getOffice(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(venue, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const sameCity = allResult.entries.filter((v) => v.data.id !== venue.data.id && v.data.city === venue.data.city);
+const rest = allResult.entries.filter((v) => v.data.id !== venue.data.id && v.data.city !== venue.data.city);
+const others = [...sameCity, ...rest].slice(0, 3);
+const spaces = lines(venue.data.spaces).map(splitDetail);
+const features = lines(venue.data.features);
+const main = photoSrc(venue.data.image, venue.data.photo);
+const gallery = [venue.data.photo_2, venue.data.photo_3].filter(Boolean) as string[];
+const { office } = officeResult;
+const planQuery = `city=${slugify(venue.data.city)}&venue=${encodeURIComponent(venue.data.title)}`;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? venue.data.summary}
+	canonical={seo.canonical}
+	content={{ collection: "venues", id: venue.data.id, slug }}
+	current="/venues"
+>
+	<section class="detail-head">
+		<div class="container">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/venues">Venues</a>
+				<span aria-hidden="true">/</span>
+				<a href={`/venues?city=${slugify(venue.data.city)}`}>{venue.data.city}</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{venue.data.title}</span>
+			</nav>
+			<div class="detail-head-inner">
+				<div class="detail-copy">
+					<p class="venue-city">{venue.data.city}</p>
+					<h1 {...venue.edit.title}>{venue.data.title}</h1>
+					<p class="summary">{venue.data.capacity}</p>
+					<p class="lede">{venue.data.summary}</p>
+					<a class="btn btn-lg" href={`/contact?${planQuery}`}>Plan an event here <Arrow /></a>
+				</div>
+				<figure class="detail-photo">
+					{main && <img src={main} alt={venue.data.image?.alt ?? ""} />}
+				</figure>
+			</div>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="container detail-grid">
+			<div>
+				<div class="prose">
+					{
+						venue.data.content && venue.data.content.length > 0 ? (
+							<PortableText value={venue.data.content} />
+						) : (
+							<p>{venue.data.summary}</p>
+						)
+					}
+				</div>
+				{
+					spaces.length > 0 && (
+						<>
+							<h2 class="block-title">Spaces and capacities</h2>
+							<ul class="spaces">
+								{spaces.map((s) => (
+									<li>
+										<strong>{s.name}</strong>
+										{s.detail && <span>{s.detail}</span>}
+									</li>
+								))}
+							</ul>
+						</>
+					)
+				}
+				{
+					gallery.length > 0 && (
+						<div class="venue-gallery">
+							{gallery.map((g) => (
+								<img src={g} alt="" loading="lazy" decoding="async" />
+							))}
+						</div>
+					)
+				}
+			</div>
+			<aside class="detail-aside" aria-label="Venue features">
+				{
+					features.length > 0 && (
+						<>
+							<h2>Features</h2>
+							<ul class="ticks">
+								{features.map((f) => <li>{f}</li>)}
+							</ul>
+						</>
+					)
+				}
+				<a class="btn" href={`/contact?${planQuery}`}>Plan an event here <Arrow /></a>
+			</aside>
+		</div>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="section section-soft" aria-labelledby="other-title">
+				<div class="container">
+					<p class="eyebrow eyebrow-rule">More venues</p>
+					<h2 id="other-title" class="section-title">Other rooms to consider.</h2>
+					<div class="venue-grid">
+						{others.map((v) => (
+							<VenueCard venue={v} />
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} query={planQuery} />
+</Base>

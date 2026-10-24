@@ -1,0 +1,82 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import ServiceIcon from "../../components/ServiceIcon.astro";
+import PageHead from "../../components/PageHead.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { getOffice, getPrinciples, getServices, photoSrc } from "../../lib/events";
+
+const [servicesResult, stepsResult, officeResult] = await Promise.all([getServices(), getPrinciples("steps"), getOffice()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(stepsResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const services = servicesResult.entries;
+const steps = stepsResult.entries;
+const { office } = officeResult;
+---
+
+<Base title="Services" description="Conferences, corporate meetings, networking events, product launches and offsites planned by NexusEvents.">
+	<PageHead
+		eyebrow="Services"
+		title="Events planned from strategy to the final goodbye."
+		intro="Every event starts with what it is for. These are the kinds of event we plan and run most often, with what is included and the formats that work well."
+	/>
+
+	<section class="section section-soft">
+		<div class="container">
+			{
+				services.length > 0 ? (
+					<div class="service-list">
+						{services.map((s) => {
+							const src = photoSrc(s.data.image, s.data.photo);
+							return (
+								<article class="service-row">
+									<div class="service-row-body">
+										<ServiceIcon icon={s.data.icon} size={42} />
+										<h2 {...s.edit.title}>
+											<a href={`/services/${s.data.slug ?? s.data.id}`}>{s.data.title}</a>
+										</h2>
+										<p class="summary">{s.data.summary}</p>
+										{s.data.intro && <p class="intro-text">{s.data.intro}</p>}
+										<a class="link-arrow" href={`/services/${s.data.slug ?? s.data.id}`}>
+											What is included <Arrow />
+										</a>
+									</div>
+									<div class="service-row-photo">
+										{src && <img src={src} alt="" loading="lazy" decoding="async" />}
+									</div>
+								</article>
+							);
+						})}
+					</div>
+				) : (
+					<p class="empty">Services will appear here once they are added in the admin.</p>
+				)
+			}
+		</div>
+	</section>
+
+	{
+		steps.length > 0 && (
+			<section class="how" aria-labelledby="how-title">
+				<div class="container">
+					<p class="eyebrow eyebrow-rule">How we work</p>
+					<h2 id="how-title">One simple rhythm, shaped to your event.</h2>
+					<ol class="steps">
+						{steps.map((step, i) => (
+							<li>
+								<span class="step-num">{String(i + 1).padStart(2, "0")}</span>
+								<h3>{step.data.title}</h3>
+								{step.data.text && <p>{step.data.text}</p>}
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} />
+</Base>

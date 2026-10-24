@@ -1,0 +1,20 @@
+---
+import ServiceIcon from "./ServiceIcon.astro";
+import Arrow from "./Arrow.astro";
+import type { Service } from "../lib/events";
+
+interface Props {
+	service: { data: Service; edit: Record<string, unknown> };
+	/** Show a "Learn more" link under the summary. */
+	more?: boolean;
+}
+const { service, more = false } = Astro.props;
+const href = `/services/${service.data.slug ?? service.data.id}`;
+---
+
+<article class="svc-card">
+	<ServiceIcon icon={service.data.icon} size={52} />
+	<h3><a href={href}>{service.data.title}</a></h3>
+	<p>{service.data.summary}</p>
+	{more && <a class="link-arrow" href={href}>Learn more <Arrow /></a>}
+</article>

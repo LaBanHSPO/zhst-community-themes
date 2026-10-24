@@ -1,0 +1,37 @@
+---
+/** Wordmark: four-bar gold mark, "Nexus" in white and "Events" in sand, tagline in tracked caps. */
+interface Props {
+	title: string;
+	tagline?: string;
+	logo?: { url?: string; alt?: string } | null;
+	class?: string;
+	/** Dark text variant for light backgrounds. */
+	dark?: boolean;
+}
+const { title, tagline, logo, class: className, dark = false } = Astro.props;
+// "NexusEvents" is split at the second capital to colour the second half.
+const idx = title.slice(1).search(/[A-Z]/);
+const first = idx >= 0 ? title.slice(0, idx + 1) : title;
+const second = idx >= 0 ? title.slice(idx + 1) : "";
+---
+
+<a class:list={["wordmark", { "is-dark": dark }, className]} href="/" aria-label={`${title} — home`}>
+	{
+		logo?.url ? (
+			<img src={logo.url} alt={logo.alt || title} />
+		) : (
+			<>
+				<svg class="wordmark-mark" viewBox="0 0 28 48" width="28" height="48" aria-hidden="true" focusable="false">
+					<rect class="bar-a" x="0" y="14" width="4" height="24" rx="0.6" />
+					<rect class="bar-a" x="8" y="8" width="4" height="20" rx="0.6" />
+					<rect class="bar-b" x="16" y="0" width="4" height="48" rx="0.6" />
+					<rect class="bar-b" x="24" y="15" width="4" height="23" rx="0.6" />
+				</svg>
+				<span class="wordmark-text">
+					<span class="wordmark-title">{first}{second && <span class="gold">{second}</span>}</span>
+					{tagline && <span class="wordmark-tagline">{tagline}</span>}
+				</span>
+			</>
+		)
+	}
+</a>

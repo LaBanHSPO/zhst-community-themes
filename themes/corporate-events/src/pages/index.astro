@@ -1,0 +1,125 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+import VenueCard from "../components/VenueCard.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { getOffice, getPrinciples, getServices, getVenues } from "../lib/events";
+
+const [servicesResult, stepsResult, venuesResult, officeResult] = await Promise.all([
+	getServices(),
+	getPrinciples("steps"),
+	getVenues(),
+	getOffice(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(stepsResult.cacheHint);
+	Astro.cache.set(venuesResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const featured = servicesResult.entries.filter((s) => s.data.featured);
+const services = (featured.length ? featured : servicesResult.entries).slice(0, 3);
+const steps = stepsResult.entries;
+const featuredVenues = venuesResult.entries.filter((v) => v.data.featured);
+const venues = (featuredVenues.length ? featuredVenues : venuesResult.entries).slice(0, 3);
+const { office } = officeResult;
+---
+
+<Base
+	title="NexusEvents — Corporate Events"
+	description="Corporate event planners for conferences, meetings and networking events. Inspiring venues, seamless planning, meaningful connections."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A speaker in a navy suit addresses a seated conference audience on a stage lit in blue"
+			width="1448"
+			height="668"
+			fetchpriority="high"
+		/>
+		<div class="hero-fade" aria-hidden="true"></div>
+		<div class="container hero-inner">
+			<div class="hero-copy">
+				<h1 id="hero-title"><span>Events that</span> <span>bring people</span> <span>together.</span></h1>
+				<p class="hero-lede">Inspiring venues. Seamless planning.<br />Meaningful connections.</p>
+				<a class="btn btn-lg hero-cta" href="/contact">Start planning <Arrow /></a>
+			</div>
+		</div>
+	</section>
+
+	<section class="intro" aria-labelledby="intro-title">
+		<div class="container intro-inner">
+			<div class="intro-copy">
+				<p class="eyebrow eyebrow-rule">Corporate events, extraordinary impact</p>
+				<h2 id="intro-title">From strategy to unforgettable experiences.</h2>
+				{
+					services.length > 0 ? (
+						<div class="svc-row">
+							{services.map((s) => (
+								<ServiceCard service={s} />
+							))}
+						</div>
+					) : (
+						<p class="empty">Services will appear here once they are added in the admin.</p>
+					)
+				}
+			</div>
+			<figure class="intro-photo">
+				<img
+					src="/images/reception.webp"
+					alt="Guests in business dress talking at a reception in a glass-walled venue above a city skyline"
+					width="520"
+					height="314"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+		</div>
+	</section>
+
+	{
+		steps.length > 0 && (
+			<section class="how" aria-labelledby="how-title">
+				<div class="container">
+					<p class="eyebrow eyebrow-rule">How we work</p>
+					<h2 id="how-title">Four steps from first call to follow-up.</h2>
+					<ol class="steps">
+						{steps.map((step, i) => (
+							<li>
+								<span class="step-num">{String(i + 1).padStart(2, "0")}</span>
+								<h3 {...step.edit.title}>{step.data.title}</h3>
+								{step.data.text && <p>{step.data.text}</p>}
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		venues.length > 0 && (
+			<section class="venues-band" aria-labelledby="venues-title">
+				<div class="container">
+					<div class="section-head">
+						<div>
+							<p class="eyebrow eyebrow-rule">Venues</p>
+							<h2 id="venues-title">Rooms we know well.</h2>
+						</div>
+						<a class="link-arrow" href="/venues">All venues <Arrow /></a>
+					</div>
+					<div class="venue-grid">
+						{venues.map((v) => (
+							<VenueCard venue={v} />
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} />
+</Base>

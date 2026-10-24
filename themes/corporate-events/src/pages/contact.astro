@@ -1,0 +1,248 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import { getOffice, getServices, getVenues, mapHref, slugify, telHref } from "../lib/events";
+
+const [{ office, cacheHint }, servicesResult, venuesResult] = await Promise.all([getOffice(), getServices(), getVenues()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(venuesResult.cacheHint);
+}
+const types = [
+	...servicesResult.entries.map((s) => ({ slug: s.data.slug ?? s.data.id, label: s.data.title })),
+	{ slug: "something-else", label: "Something else" },
+];
+const cities = [...new Set(venuesResult.entries.map((v) => v.data.city))].map((name) => ({ slug: slugify(name), label: name }));
+const q = Astro.url.searchParams;
+const wantedType = q.get("type");
+const selectedType = types.find((t) => t.slug === wantedType || slugify(t.label) === wantedType)?.label;
+const wantedCity = q.get("city");
+const selectedCity = cities.find((c) => c.slug === wantedCity)?.label;
+const venueName = (q.get("venue") ?? "").slice(0, 120);
+const budgets = ["Under $25,000", "$25,000 to $75,000", "$75,000 to $150,000", "Over $150,000"];
+---
+
+<Base title="Start planning" description="Send a planning brief: event type, date, guests, city and budget range. A planner replies within two working days.">
+	<PageHead
+		eyebrow="Start planning"
+		title="Tell us about your event."
+		intro="Share what you know so far. Every field except your name, email and a few words about the event is optional, and a planner replies within two working days."
+	/>
+
+	<section class="contact-section">
+		<div class="container contact-grid">
+			<div class="contact-form">
+				<h2>Your planning brief</h2>
+				<p>Your brief is prepared in your own email app, so nothing is stored on this site. It is only sent when you send that email.</p>
+				<form
+					data-contact-form
+					data-email={office.email}
+					action={office.email ? `mailto:${office.email}` : undefined}
+					method="post"
+					enctype="text/plain"
+					novalidate
+				>
+					<div class="form-grid">
+						<div class="field">
+							<label for="c-name">Name</label>
+							<input id="c-name" name="name" type="text" autocomplete="name" required aria-describedby="c-name-err" />
+							<span class="field-error" id="c-name-err" data-error-for="c-name"></span>
+						</div>
+						<div class="field">
+							<label for="c-org">Organisation <span class="optional">(optional)</span></label>
+							<input id="c-org" name="organisation" type="text" autocomplete="organization" />
+						</div>
+						<div class="field">
+							<label for="c-email">Email</label>
+							<input id="c-email" name="email" type="email" autocomplete="email" required aria-describedby="c-email-err" />
+							<span class="field-error" id="c-email-err" data-error-for="c-email"></span>
+						</div>
+						<div class="field">
+							<label for="c-phone">Phone <span class="optional">(optional)</span></label>
+							<input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+						</div>
+						<div class="field full">
+							<label for="c-type">Type of event</label>
+							<select id="c-type" name="event_type">
+								{types.map((t) => <option selected={t.label === selectedType}>{t.label}</option>)}
+							</select>
+						</div>
+						<div class="field">
+							<label for="c-date">Preferred date <span class="optional">(optional)</span></label>
+							<input id="c-date" name="date" type="date" />
+						</div>
+						<div class="field">
+							<label for="c-guests">Number of guests <span class="optional">(optional)</span></label>
+							<input id="c-guests" name="attendees" type="number" min="1" inputmode="numeric" placeholder="e.g. 150" />
+						</div>
+						<div class="field">
+							<label for="c-city">City <span class="optional">(optional)</span></label>
+							<select id="c-city" name="city">
+								<option value="">Not sure yet</option>
+								{cities.map((c) => <option selected={c.label === selectedCity}>{c.label}</option>)}
+							</select>
+						</div>
+						<div class="field">
+							<label for="c-budget">Budget range <span class="optional">(optional)</span></label>
+							<select id="c-budget" name="budget">
+								<option value="">Prefer to discuss</option>
+								{budgets.map((b) => <option>{b}</option>)}
+							</select>
+						</div>
+						<div class="field full">
+							<label for="c-venue">Venue of interest <span class="optional">(optional)</span></label>
+							<input id="c-venue" name="venue" type="text" value={venueName} placeholder="A venue from our list, or your own" />
+						</div>
+						<div class="field full">
+							<label for="c-message">About the event</label>
+							<textarea
+								id="c-message"
+								name="message"
+								rows="5"
+								required
+								aria-describedby="c-message-err"
+								placeholder="What is the event for, who needs to be there and what would a good outcome look like?"
+							></textarea>
+							<span class="field-error" id="c-message-err" data-error-for="c-message"></span>
+						</div>
+					</div>
+					<button class="btn btn-lg" type="submit">Start planning <Arrow /></button>
+					<p class="form-status" role="status" aria-live="polite" data-status>
+						<noscript>
+							This form needs JavaScript to prepare your email.
+							{office.email && <>Write to <a href={`mailto:${office.email}`}>{office.email}</a> instead.</>}
+						</noscript>
+					</p>
+				</form>
+			</div>
+
+			<aside class="contact-aside" aria-label="Contact details">
+				<div class="contact-card">
+					<h2>Prefer to call or write?</h2>
+					<dl class="contact-list">
+						{
+							office.phone && (
+								<div>
+									<dt>Phone</dt>
+									<dd><a href={telHref(office.phone)}>{office.phone}</a></dd>
+								</div>
+							)
+						}
+						{
+							office.email && (
+								<div>
+									<dt>Email</dt>
+									<dd><a href={`mailto:${office.email}`}>{office.email}</a></dd>
+								</div>
+							)
+						}
+						{
+							(office.street || office.locality) && (
+								<div>
+									<dt>Planning desk</dt>
+									<dd>
+										<a href={mapHref(office)} target="_blank" rel="noopener noreferrer">
+											{office.street}{office.street && <br />}
+											{office.locality}{office.country && <>, {office.country}</>}
+										</a>
+									</dd>
+								</div>
+							)
+						}
+						{
+							office.hours && (
+								<div>
+									<dt>Hours</dt>
+									<dd>{office.hours}</dd>
+								</div>
+							)
+						}
+					</dl>
+				</div>
+				<div class="contact-card">
+					<h2>What happens next</h2>
+					<ol class="next-steps">
+						<li>{office.response_note || "We reply to every planning brief within two working days."}</li>
+						<li>We arrange a short call to understand the purpose, guests and timing.</li>
+						<li>We send a proposed concept, a venue short list and a working budget.</li>
+					</ol>
+				</div>
+				<figure class="contact-photo">
+					<img
+						src="/images/venue-hall.webp"
+						alt="A speaker on a stage in front of a seated audience in a modern conference hall"
+						width="572"
+						height="447"
+						loading="lazy"
+						decoding="async"
+					/>
+				</figure>
+			</aside>
+		</div>
+	</section>
+</Base>
+
+<script>
+	// Compose a planning brief in the visitor's own email app. Nothing is sent or stored by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLInputElement | HTMLTextAreaElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("input[required], textarea[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const valueMissing = input.value.trim() === "";
+				const message = valueMissing
+					? "Please fill this in."
+					: !input.validity.valid
+						? input.type === "email"
+							? "Please enter a valid email address."
+							: "Please check this field."
+						: "";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online briefs are not available right now. Please call the planning desk.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const subject = `Planning brief: ${get("event_type")}${get("organisation") ? ` (${get("organisation")})` : ""}`;
+			const detail = [
+				["Name", get("name")],
+				["Organisation", get("organisation")],
+				["Email", get("email")],
+				["Phone", get("phone")],
+				["Event type", get("event_type")],
+				["Preferred date", get("date")],
+				["Guests", get("attendees")],
+				["City", get("city")],
+				["Venue of interest", get("venue")],
+				["Budget range", get("budget")],
+			]
+				.filter(([, v]) => v)
+				.map(([k, v]) => `${k}: ${v}`);
+			const body = ["Hello,", "", get("message"), "", ...detail].join("\n");
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+			status.textContent =
+				"Your email app should open with this brief ready to send. It is only sent when you send that email. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

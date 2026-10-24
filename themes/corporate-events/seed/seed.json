@@ -1,0 +1,2025 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Corporate Events",
+  "description": "A deep-navy corporate event organiser theme: services, venues with a city filter, an about page and a planning brief contact form",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "NexusEvents",
+  "tagline": "Corporate Events"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Small label above the title",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "services",
+   "label": "Services",
+   "labelSingular": "Service",
+   "urlPattern": "/services/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Service name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "summary",
+     "label": "Card description (one short line)",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "icon",
+     "label": "Icon",
+     "type": "select",
+     "required": true,
+     "indexed": true,
+     "defaultValue": "people",
+     "validation": {
+      "options": [
+       "people",
+       "calendar",
+       "cocktail",
+       "spark",
+       "compass"
+      ]
+     }
+    },
+    {
+     "slug": "featured",
+     "label": "Show on the homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph on the service page",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Service page content",
+     "type": "portableText",
+     "searchable": true
+    },
+    {
+     "slug": "included",
+     "label": "What is included (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "formats",
+     "label": "Typical formats (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "venues",
+   "label": "Venues",
+   "labelSingular": "Venue",
+   "urlPattern": "/venues/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Venue name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "city",
+     "label": "City",
+     "type": "string",
+     "required": true,
+     "indexed": true,
+     "searchable": true
+    },
+    {
+     "slug": "capacity",
+     "label": "Capacity line (e.g. Up to 600 seated)",
+     "type": "string"
+    },
+    {
+     "slug": "summary",
+     "label": "Card description",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "featured",
+     "label": "Show on the homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "spaces",
+     "label": "Spaces (one per line, name - detail)",
+     "type": "text"
+    },
+    {
+     "slug": "features",
+     "label": "Features (one per line)",
+     "type": "text"
+    },
+    {
+     "slug": "content",
+     "label": "Venue page content",
+     "type": "portableText",
+     "searchable": true
+    },
+    {
+     "slug": "image",
+     "label": "Photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled photo path",
+     "type": "string"
+    },
+    {
+     "slug": "photo_2",
+     "label": "Second bundled photo path",
+     "type": "string"
+    },
+    {
+     "slug": "photo_3",
+     "label": "Third bundled photo path",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "slug": "principles",
+   "label": "Steps & values",
+   "labelSingular": "Step or value",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "text",
+     "label": "Text",
+     "type": "text"
+    },
+    {
+     "slug": "placement",
+     "label": "Where it appears",
+     "type": "select",
+     "required": true,
+     "indexed": true,
+     "defaultValue": "steps",
+     "validation": {
+      "options": [
+       "steps",
+       "values"
+      ]
+     }
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "people",
+   "label": "Team",
+   "labelSingular": "Team member",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "role",
+     "label": "Role",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "bio",
+     "label": "Short bio",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "office",
+   "label": "Office details",
+   "labelSingular": "Office details",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Company name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "street",
+     "label": "Street address",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "locality",
+     "label": "City and postcode",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "country",
+     "label": "Country",
+     "type": "string"
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Planning email",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "hours",
+     "label": "Office hours",
+     "type": "string"
+    },
+    {
+     "slug": "response_note",
+     "label": "Response note shown on the contact page",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Home",
+     "url": "/"
+    },
+    {
+     "type": "custom",
+     "label": "About",
+     "url": "/about"
+    },
+    {
+     "type": "custom",
+     "label": "Services",
+     "url": "/services"
+    },
+    {
+     "type": "custom",
+     "label": "Venues",
+     "url": "/venues"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "A planning team for events that matter.",
+     "eyebrow": "About NexusEvents",
+     "intro": "NexusEvents is a small team of event planners and producers. We organise conferences, meetings and networking events for organisations that want their time together to count.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b51",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We started NexusEvents because we kept seeing events that were well organised but poorly purposed. Our approach is simple: decide what the event is for, then plan everything else around it.",
+         "_key": "s51"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b52",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We keep the team small on purpose. The planner you meet at the start is the planner who runs your event, and we only take on as many events at a time as we can look after properly.",
+         "_key": "s52"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b53",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we do",
+         "_key": "s53"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b54",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We plan and run conferences, corporate meetings, networking events, product launches and offsites. We also help organisations choose venues, with a short list of rooms we know well.",
+         "_key": "s54"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b55",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How we work",
+         "_key": "s55"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b56",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We work in four steps: listen, shape, deliver and follow up. Each has a clear owner on our team and a clear output for yours.",
+         "_key": "s56"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "privacy",
+    "slug": "privacy",
+    "status": "published",
+    "data": {
+     "title": "Privacy",
+     "eyebrow": "Legal",
+     "intro": "What this site collects, and what it does not.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b57",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "This sample site does not use analytics or advertising cookies, and it stores nothing from the planning form. When you send a planning brief, your own email app opens with the message ready to send, and it is only sent when you send that email.",
+         "_key": "s57"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b58",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Information you send us",
+         "_key": "s58"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b59",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "If you email a planning brief we use it only to reply and to plan your event, and we keep it for as long as the work needs.",
+         "_key": "s59"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b60",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Questions",
+         "_key": "s60"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b61",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Write to planning@nexusevents.example and we will answer promptly.",
+         "_key": "s61"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "services": [
+   {
+    "id": "conferences",
+    "slug": "conferences",
+    "status": "published",
+    "data": {
+     "title": "Conferences",
+     "summary": "Big ideas. Real connections.",
+     "icon": "people",
+     "featured": true,
+     "position": 10,
+     "intro": "We plan multi-session conferences from first concept to final handshake: the programme, the room, the speakers and the people who need to be in it.",
+     "photo": "/images/ballroom-audience.webp",
+     "included": "Programme design and session running order\nVenue search, site visits and contracting support\nSpeaker briefing, rehearsal and green-room hosting\nRegistration, badges and arrivals desk\nStage, screens, sound and lighting management\nOn-site team for the full event, plus a short wrap-up report",
+     "formats": "Single-day summit for 150 to 400 guests\nTwo-day conference with parallel tracks\nAnnual member or partner conference\nHybrid keynote with a live room and an online audience",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Most conferences are won or lost long before the doors open. We start with the outcome you want people to leave with, then build the programme, room and pace around it.",
+         "_key": "s1"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b2",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How we work on it",
+         "_key": "s2"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The same planner who shapes your concept runs your event day, so nothing important is lost in a handover.",
+         "_key": "s3"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b4",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What is included",
+         "_key": "s4"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l1",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Programme design and session running order",
+         "_key": "ls1"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l2",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Venue search, site visits and contracting support",
+         "_key": "ls2"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l3",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Speaker briefing, rehearsal and green-room hosting",
+         "_key": "ls3"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l4",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Registration, badges and arrivals desk",
+         "_key": "ls4"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l5",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Stage, screens, sound and lighting management",
+         "_key": "ls5"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l6",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "On-site team for the full event, plus a short wrap-up report",
+         "_key": "ls6"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "corporate-meetings",
+    "slug": "corporate-meetings",
+    "status": "published",
+    "data": {
+     "title": "Corporate Meetings",
+     "summary": "Productive, seamless, on brand.",
+     "icon": "calendar",
+     "featured": true,
+     "position": 20,
+     "intro": "Board days, leadership off-sites, town halls and sales kick-offs, planned so the time in the room does real work.",
+     "photo": "/images/keynote-stage.webp",
+     "included": "Agenda and facilitation support\nRoom layout, catering and dietary management\nBranded signage, stage dressing and materials\nTravel and accommodation coordination\nMeeting technology checked and rehearsed\nA named contact on site from set-up to close",
+     "formats": "Leadership meeting for 12 to 40 people\nCompany-wide town hall\nAnnual sales or partner kick-off\nTraining day with breakout rooms",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b5",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A good meeting feels effortless to the people attending it. That takes quiet preparation: the right room, the right timings and technology that simply works.",
+         "_key": "s5"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b6",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How we work on it",
+         "_key": "s6"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b7",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We handle the logistics so your leaders can concentrate on the conversation.",
+         "_key": "s7"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b8",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What is included",
+         "_key": "s8"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l7",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Agenda and facilitation support",
+         "_key": "ls7"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l8",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Room layout, catering and dietary management",
+         "_key": "ls8"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l9",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Branded signage, stage dressing and materials",
+         "_key": "ls9"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l10",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Travel and accommodation coordination",
+         "_key": "ls10"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l11",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Meeting technology checked and rehearsed",
+         "_key": "ls11"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l12",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "A named contact on site from set-up to close",
+         "_key": "ls12"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "networking-events",
+    "slug": "networking-events",
+    "status": "published",
+    "data": {
+     "title": "Networking Events",
+     "summary": "People who move business forward.",
+     "icon": "cocktail",
+     "featured": true,
+     "position": 30,
+     "intro": "Receptions, dinners and mixers designed so guests actually meet the people they came to meet.",
+     "photo": "/images/reception.webp",
+     "included": "Guest-list and invitation management\nVenue styling, lighting and music\nCatering, drinks service and staffing\nConversation starters and hosted introductions\nCloakroom, arrivals welcome and guest flow\nFollow-up contact list prepared for your team",
+     "formats": "Evening reception for 80 to 300 guests\nSeated dinner with hosted tables\nRooftop or terrace mixer\nPartner and client appreciation evening",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b9",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Networking works when the room is easy to move through and guests have a reason to talk. We design the space, the timing and the introductions together.",
+         "_key": "s9"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b10",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How we work on it",
+         "_key": "s10"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b11",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Guests should leave with useful new contacts, and your team with a clear picture of who connected.",
+         "_key": "s11"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b12",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What is included",
+         "_key": "s12"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l13",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Guest-list and invitation management",
+         "_key": "ls13"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l14",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Venue styling, lighting and music",
+         "_key": "ls14"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l15",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Catering, drinks service and staffing",
+         "_key": "ls15"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l16",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Conversation starters and hosted introductions",
+         "_key": "ls16"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l17",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Cloakroom, arrivals welcome and guest flow",
+         "_key": "ls17"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l18",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Follow-up contact list prepared for your team",
+         "_key": "ls18"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "product-launches",
+    "slug": "product-launches",
+    "status": "published",
+    "data": {
+     "title": "Product Launches",
+     "summary": "Make the first impression count.",
+     "icon": "spark",
+     "featured": false,
+     "position": 40,
+     "intro": "Press days, customer reveals and internal launches, staged with a clear moment and a clean story.",
+     "photo": "/images/conference-stage.webp",
+     "included": "Launch concept and run of show\nStage build, reveal moment and show calling\nContent, demo stations and live feed support\nMedia and guest arrivals management\nPhotography and video brief\nRehearsal day on site",
+     "formats": "Stage reveal for 100 to 500 guests\nPress preview with demo stations\nCustomer launch evening\nInternal launch broadcast to several offices",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b13",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A launch has one chance to land. We work back from the moment you want people to remember and shape the room, the script and the timing around it.",
+         "_key": "s13"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b14",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How we work on it",
+         "_key": "s14"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b15",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Every cue is rehearsed on site, so the reveal looks calm even when the schedule is tight.",
+         "_key": "s15"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b16",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What is included",
+         "_key": "s16"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l19",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Launch concept and run of show",
+         "_key": "ls19"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l20",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Stage build, reveal moment and show calling",
+         "_key": "ls20"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l21",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Content, demo stations and live feed support",
+         "_key": "ls21"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l22",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Media and guest arrivals management",
+         "_key": "ls22"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l23",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Photography and video brief",
+         "_key": "ls23"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l24",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Rehearsal day on site",
+         "_key": "ls24"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "offsites",
+    "slug": "offsites",
+    "status": "published",
+    "data": {
+     "title": "Offsites",
+     "summary": "Time away that brings teams closer.",
+     "icon": "compass",
+     "featured": false,
+     "position": 50,
+     "intro": "Team days and retreats away from the office, built around a clear purpose and a good place to think.",
+     "photo": "/images/skyline-window.webp",
+     "included": "Destination and venue shortlist\nGroup travel and transfers\nWorkshop and activity programme\nTeam dinners and accommodation\nFacilitator and speaker booking\nOn-site host for the whole stay",
+     "formats": "One-day team offsite near the city\nTwo-night leadership retreat\nQuarterly planning retreat\nTeam celebration weekend",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b17",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Good offsites give people room to think and time to know each other. We plan the place, the programme and the pace so both can happen.",
+         "_key": "s17"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b18",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How we work on it",
+         "_key": "s18"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b19",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Our hosts stay with the group throughout, handling the details so you can take part.",
+         "_key": "s19"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b20",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What is included",
+         "_key": "s20"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l25",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Destination and venue shortlist",
+         "_key": "ls25"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l26",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Group travel and transfers",
+         "_key": "ls26"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l27",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Workshop and activity programme",
+         "_key": "ls27"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l28",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Team dinners and accommodation",
+         "_key": "ls28"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l29",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "Facilitator and speaker booking",
+         "_key": "ls29"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "l30",
+       "style": "normal",
+       "listItem": "bullet",
+       "level": 1,
+       "children": [
+        {
+         "_type": "span",
+         "text": "On-site host for the whole stay",
+         "_key": "ls30"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "venues": [
+   {
+    "id": "the-meridian-hall",
+    "slug": "the-meridian-hall",
+    "status": "published",
+    "data": {
+     "title": "The Meridian Hall",
+     "city": "Halden",
+     "capacity": "Up to 600 seated",
+     "summary": "A light-filled conference hall with a full stage, a balcony foyer and views across the harbour.",
+     "featured": true,
+     "position": 10,
+     "photo": "/images/ballroom-audience.webp",
+     "photo_2": "/images/conference-stage.webp",
+     "photo_3": "/images/keynote-stage.webp",
+     "spaces": "Main Hall - 600 seated theatre, 420 at round tables\nHarbour Foyer - 250 standing reception\nBoardroom One - 24 seated\nStudio Rooms - four breakout rooms for 30 to 50",
+     "features": "Stage, LED wall and full sound system\nNatural daylight with blackout option\nStep-free access throughout\nLoading bay for staging and exhibition build\nOn-site catering kitchen",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b21",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A light-filled conference hall with a full stage, a balcony foyer and views across the harbour. We know the room well and can walk you through the options on a site visit.",
+         "_key": "s21"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b22",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Good for",
+         "_key": "s22"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b23",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Conferences, corporate meetings and evening receptions, with a layout that can be changed between sessions.",
+         "_key": "s23"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b24",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Getting here",
+         "_key": "s24"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b25",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The venue is in Halden; our team will share arrival guidance and transfer options with your guests once the date is confirmed.",
+         "_key": "s25"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "quayside-rooms",
+    "slug": "quayside-rooms",
+    "status": "published",
+    "data": {
+     "title": "Quayside Rooms",
+     "city": "Port Merrow",
+     "capacity": "Up to 250 standing",
+     "summary": "Glass-walled reception rooms above the old quay, made for evening networking.",
+     "featured": true,
+     "position": 20,
+     "photo": "/images/reception.webp",
+     "photo_2": "/images/skyline-window.webp",
+     "photo_3": "/images/venue-hall.webp",
+     "spaces": "Skyline Room - 250 standing, 140 seated\nTerrace - 120 standing, seasonal\nLounge - 60 for private dinners",
+     "features": "Floor-to-ceiling windows and city views\nBar and catering service on the same floor\nLighting scenes for day and evening\nCoat check and welcome desk",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b26",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Glass-walled reception rooms above the old quay, made for evening networking. We know the room well and can walk you through the options on a site visit.",
+         "_key": "s26"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b27",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Good for",
+         "_key": "s27"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b28",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Conferences, corporate meetings and evening receptions, with a layout that can be changed between sessions.",
+         "_key": "s28"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b29",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Getting here",
+         "_key": "s29"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b30",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The venue is in Port Merrow; our team will share arrival guidance and transfer options with your guests once the date is confirmed.",
+         "_key": "s30"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "larchmont-conference-centre",
+    "slug": "larchmont-conference-centre",
+    "status": "published",
+    "data": {
+     "title": "Larchmont Conference Centre",
+     "city": "Eastbrook",
+     "capacity": "Up to 800 seated",
+     "summary": "A purpose-built centre for large conferences, with flexible halls and good transport links.",
+     "featured": true,
+     "position": 30,
+     "photo": "/images/conference-stage.webp",
+     "photo_2": "/images/ballroom-audience.webp",
+     "photo_3": "/images/speaker.webp",
+     "spaces": "Grand Hall - 800 seated theatre, divisible into three\nExhibition Gallery - 40 stands\nPlenary Rooms - six rooms for 60 to 120\nGreen Room and speaker lounge",
+     "features": "Divisible hall with acoustic walls\nRigging points and a 12 metre stage\nRegistration atrium for 400 arrivals\nTrain station a five minute walk away\nAccessible rooms and quiet space",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b31",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A purpose-built centre for large conferences, with flexible halls and good transport links. We know the room well and can walk you through the options on a site visit.",
+         "_key": "s31"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b32",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Good for",
+         "_key": "s32"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b33",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Conferences, corporate meetings and evening receptions, with a layout that can be changed between sessions.",
+         "_key": "s33"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b34",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Getting here",
+         "_key": "s34"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b35",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The venue is in Eastbrook; our team will share arrival guidance and transfer options with your guests once the date is confirmed.",
+         "_key": "s35"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "the-glasshouse",
+    "slug": "the-glasshouse",
+    "status": "published",
+    "data": {
+     "title": "The Glasshouse",
+     "city": "Halden",
+     "capacity": "Up to 180 seated",
+     "summary": "A planted atrium with a long table setting, suited to dinners and team celebrations.",
+     "featured": false,
+     "position": 40,
+     "photo": "/images/skyline-window.webp",
+     "photo_2": "/images/reception.webp",
+     "photo_3": "/images/venue-hall.webp",
+     "spaces": "Atrium - 180 seated, 300 standing\nGarden Room - 40 seated\nCourtyard - 80 standing",
+     "features": "Glass roof with evening lighting\nPlanting and seating included\nOpen kitchen for chef-led dinners\nQuiet side entrance for guests of honour",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b36",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A planted atrium with a long table setting, suited to dinners and team celebrations. We know the room well and can walk you through the options on a site visit.",
+         "_key": "s36"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b37",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Good for",
+         "_key": "s37"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b38",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Conferences, corporate meetings and evening receptions, with a layout that can be changed between sessions.",
+         "_key": "s38"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b39",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Getting here",
+         "_key": "s39"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b40",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The venue is in Halden; our team will share arrival guidance and transfer options with your guests once the date is confirmed.",
+         "_key": "s40"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "northgate-suite",
+    "slug": "northgate-suite",
+    "status": "published",
+    "data": {
+     "title": "Northgate Suite",
+     "city": "Eastbrook",
+     "capacity": "Up to 120 seated",
+     "summary": "A calm, well-equipped suite for leadership days, workshops and training.",
+     "featured": false,
+     "position": 50,
+     "photo": "/images/venue-hall.webp",
+     "photo_2": "/images/keynote-stage.webp",
+     "photo_3": "/images/speaker.webp",
+     "spaces": "Suite Hall - 120 seated, 70 cabaret\nWorkshop Rooms - three rooms for 12 to 30\nExecutive Room - 14 seated",
+     "features": "Fast fibre connection and meeting technology\nNatural light and adjustable blinds\nBreakout areas with writable walls\nParking and a bicycle store on site",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b41",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "A calm, well-equipped suite for leadership days, workshops and training. We know the room well and can walk you through the options on a site visit.",
+         "_key": "s41"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b42",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Good for",
+         "_key": "s42"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b43",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Conferences, corporate meetings and evening receptions, with a layout that can be changed between sessions.",
+         "_key": "s43"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b44",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Getting here",
+         "_key": "s44"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b45",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The venue is in Eastbrook; our team will share arrival guidance and transfer options with your guests once the date is confirmed.",
+         "_key": "s45"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "the-lantern-room",
+    "slug": "the-lantern-room",
+    "status": "published",
+    "data": {
+     "title": "The Lantern Room",
+     "city": "Port Merrow",
+     "capacity": "Up to 90 seated",
+     "summary": "An intimate stage room for launches, talks and small awards evenings.",
+     "featured": false,
+     "position": 60,
+     "photo": "/images/keynote-stage.webp",
+     "photo_2": "/images/conference-stage.webp",
+     "photo_3": "/images/reception.webp",
+     "spaces": "Stage Room - 90 seated, 150 standing\nWings - speaker preparation space\nBar Lounge - 60 standing",
+     "features": "Raised stage with rear projection\nWarm architectural lighting\nDedicated bar and servery\nLevel entrance from the street",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "b46",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "An intimate stage room for launches, talks and small awards evenings. We know the room well and can walk you through the options on a site visit.",
+         "_key": "s46"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b47",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Good for",
+         "_key": "s47"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b48",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Conferences, corporate meetings and evening receptions, with a layout that can be changed between sessions.",
+         "_key": "s48"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b49",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Getting here",
+         "_key": "s49"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "b50",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The venue is in Port Merrow; our team will share arrival guidance and transfer options with your guests once the date is confirmed.",
+         "_key": "s50"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "principles": [
+   {
+    "id": "step-1",
+    "slug": "step-1",
+    "status": "published",
+    "data": {
+     "title": "Listen",
+     "text": "We start with a conversation about what the event must achieve, who needs to be there and what success looks like afterwards.",
+     "placement": "steps",
+     "position": 10
+    }
+   },
+   {
+    "id": "step-2",
+    "slug": "step-2",
+    "status": "published",
+    "data": {
+     "title": "Shape",
+     "text": "We propose a concept, a short list of venues and a clear plan with dates, owners and a working budget.",
+     "placement": "steps",
+     "position": 20
+    }
+   },
+   {
+    "id": "step-3",
+    "slug": "step-3",
+    "status": "published",
+    "data": {
+     "title": "Deliver",
+     "text": "We manage suppliers, guests and schedule, and rehearse the key moments so the day runs calmly.",
+     "placement": "steps",
+     "position": 30
+    }
+   },
+   {
+    "id": "step-4",
+    "slug": "step-4",
+    "status": "published",
+    "data": {
+     "title": "Follow up",
+     "text": "After the event we share what worked, what to repeat and the contacts your team should follow up first.",
+     "placement": "steps",
+     "position": 40
+    }
+   },
+   {
+    "id": "value-1",
+    "slug": "value-1",
+    "status": "published",
+    "data": {
+     "title": "Purpose before logistics",
+     "text": "Every decision traces back to what the event is for.",
+     "placement": "values",
+     "position": 10
+    }
+   },
+   {
+    "id": "value-2",
+    "slug": "value-2",
+    "status": "published",
+    "data": {
+     "title": "Calm on the day",
+     "text": "Careful preparation lets the event feel unhurried.",
+     "placement": "values",
+     "position": 20
+    }
+   },
+   {
+    "id": "value-3",
+    "slug": "value-3",
+    "status": "published",
+    "data": {
+     "title": "One accountable planner",
+     "text": "The person who plans your event is the person who runs it.",
+     "placement": "values",
+     "position": 30
+    }
+   },
+   {
+    "id": "value-4",
+    "slug": "value-4",
+    "status": "published",
+    "data": {
+     "title": "Plain, honest advice",
+     "text": "We tell you what will work, and what will not.",
+     "placement": "values",
+     "position": 40
+    }
+   }
+  ],
+  "people": [
+   {
+    "id": "person-1",
+    "slug": "person-1",
+    "status": "published",
+    "data": {
+     "title": "Maren Aldous",
+     "role": "Planning Director",
+     "bio": "Leads the planning team and holds the overall vision for each programme.",
+     "position": 10
+    }
+   },
+   {
+    "id": "person-2",
+    "slug": "person-2",
+    "status": "published",
+    "data": {
+     "title": "Tobias Renner",
+     "role": "Head of Venues",
+     "bio": "Runs venue search, site visits and contracting.",
+     "position": 20
+    }
+   },
+   {
+    "id": "person-3",
+    "slug": "person-3",
+    "status": "published",
+    "data": {
+     "title": "Lena Okafor",
+     "role": "Senior Event Producer",
+     "bio": "Builds the run of show and runs the room on the day.",
+     "position": 30
+    }
+   },
+   {
+    "id": "person-4",
+    "slug": "person-4",
+    "status": "published",
+    "data": {
+     "title": "Idris Vale",
+     "role": "Guest Experience Lead",
+     "bio": "Looks after invitations, arrivals and the guest journey.",
+     "position": 40
+    }
+   }
+  ],
+  "office": [
+   {
+    "id": "office",
+    "slug": "office",
+    "status": "published",
+    "data": {
+     "title": "NexusEvents",
+     "street": "18 Quayside Row",
+     "locality": "Halden HD1 4QR",
+     "country": "Fictional Isles",
+     "phone": "+1 555-0142",
+     "email": "planning@nexusevents.example",
+     "hours": "Monday to Friday, 9:00 to 18:00",
+     "response_note": "We reply to every planning brief within two working days."
+    }
+   }
+  ]
+ }
+}

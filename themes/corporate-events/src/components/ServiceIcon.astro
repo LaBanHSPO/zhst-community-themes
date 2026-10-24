@@ -1,0 +1,43 @@
+---
+/** Thin gold line icons for the service types. */
+interface Props {
+	icon?: string | null;
+	size?: number;
+	class?: string;
+}
+const { icon = "people", size = 52, class: className } = Astro.props;
+---
+
+<svg class:list={["svc-icon", className]} viewBox="0 0 48 48" width={size} height={size} fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+	{
+		icon === "calendar" ? (
+			<>
+				<rect x="6" y="9" width="36" height="33" rx="2.5" />
+				<path d="M6 19h36M16 5v8M32 5v8" />
+			</>
+		) : icon === "cocktail" ? (
+			<>
+				<path d="M8 6h32L24 24 8 6z" />
+				<path d="M24 24v17M15 42h18M14 12h20" />
+			</>
+		) : icon === "spark" ? (
+			<>
+				<path d="M24 5l4.6 12.4L41 22l-12.4 4.6L24 39l-4.6-12.4L7 22l12.4-4.6L24 5z" />
+				<path d="M38 36v8M34 40h8" />
+			</>
+		) : icon === "compass" ? (
+			<>
+				<circle cx="24" cy="24" r="18" />
+				<path d="M31.5 16.5l-4.8 10.2-10.2 4.8 4.8-10.2 10.2-4.8z" />
+			</>
+		) : (
+			<>
+				<circle cx="24" cy="12" r="5.5" />
+				<circle cx="9" cy="18" r="3.6" />
+				<circle cx="39" cy="18" r="3.6" />
+				<path d="M13 40v-6c0-6 5-10 11-10s11 4 11 10v6" />
+				<path d="M3 36v-3.5c0-3 2-5.5 5-6.2M45 36v-3.5c0-3-2-5.5-5-6.2" />
+			</>
+		)
+	}
+</svg>

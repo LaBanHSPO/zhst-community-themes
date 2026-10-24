@@ -1,0 +1,99 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import PageHead from "../components/PageHead.astro";
+import CtaBand from "../components/CtaBand.astro";
+import { getOffice, getPeople, getPrinciples, initials } from "../lib/events";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+
+const { entry: page, cacheHint } = await getEmDashEntry("pages", "about");
+if (!page) return Astro.rewrite("/404");
+const [peopleResult, valuesResult, officeResult, settings] = await Promise.all([
+	getPeople(),
+	getPrinciples("values"),
+	getOffice(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(peopleResult.cacheHint);
+	Astro.cache.set(valuesResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" });
+const people = peopleResult.entries;
+const values = valuesResult.entries;
+const { office } = officeResult;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? page.data.intro}
+	canonical={seo.canonical}
+	content={{ collection: "pages", id: page.data.id, slug: "about" }}
+>
+	<PageHead eyebrow={page.data.eyebrow} title={page.data.title} intro={page.data.intro} />
+
+	<section class="about-story">
+		<div class="container about-grid">
+			<div class="prose">
+				<PortableText value={page.data.content} />
+			</div>
+			<figure class="about-photo">
+				<img
+					src="/images/ballroom-audience.webp"
+					alt="Guests seated at round tables in a ballroom, watching a speaker on a lit stage"
+					width="1448"
+					height="606"
+					loading="lazy"
+					decoding="async"
+				/>
+			</figure>
+		</div>
+	</section>
+
+	{
+		values.length > 0 && (
+			<section class="section section-soft" aria-labelledby="values-title">
+				<div class="container">
+					<p class="eyebrow eyebrow-rule">What we believe</p>
+					<h2 id="values-title" class="section-title">How we like to work.</h2>
+					<ul class="values">
+						{values.map((v) => (
+							<li>
+								<h3 {...v.edit.title}>{v.data.title}</h3>
+								{v.data.text && <p>{v.data.text}</p>}
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		people.length > 0 && (
+			<section class="section" aria-labelledby="team-title">
+				<div class="container">
+					<p class="eyebrow eyebrow-rule">The team</p>
+					<h2 id="team-title" class="section-title">The people who plan and run your event.</h2>
+					<ul class="team">
+						{people.map((p) => (
+							<li>
+								<span class="avatar" aria-hidden="true">{initials(p.data.title)}</span>
+								<h3 {...p.edit.title}>{p.data.title}</h3>
+								<p class="role">{p.data.role}</p>
+								{p.data.bio && <p class="bio">{p.data.bio}</p>}
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} />
+</Base>

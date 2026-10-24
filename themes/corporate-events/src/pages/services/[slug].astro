@@ -1,0 +1,122 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import ServiceIcon from "../../components/ServiceIcon.astro";
+import ServiceCard from "../../components/ServiceCard.astro";
+import CtaBand from "../../components/CtaBand.astro";
+import { getOffice, getServices, lines, photoSrc } from "../../lib/events";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: service, cacheHint } = await getEmDashEntry("services", slug);
+if (!service) return Astro.rewrite("/404");
+
+const [allResult, officeResult, settings] = await Promise.all([getServices(), getOffice(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(officeResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(service, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const others = allResult.entries.filter((s) => s.data.id !== service.data.id).slice(0, 3);
+const included = lines(service.data.included);
+const formats = lines(service.data.formats);
+const src = photoSrc(service.data.image, service.data.photo);
+const { office } = officeResult;
+const planHref = `/contact?type=${encodeURIComponent(service.data.slug ?? service.data.id)}`;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? service.data.summary}
+	canonical={seo.canonical}
+	content={{ collection: "services", id: service.data.id, slug }}
+	current="/services"
+>
+	<section class="detail-head">
+		<div class="container">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/services">Services</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{service.data.title}</span>
+			</nav>
+			<div class="detail-head-inner">
+				<div class="detail-copy">
+					<ServiceIcon icon={service.data.icon} size={52} />
+					<h1 {...service.edit.title}>{service.data.title}</h1>
+					<p class="summary" {...service.edit.summary}>{service.data.summary}</p>
+					{service.data.intro && <p class="lede">{service.data.intro}</p>}
+					<a class="btn btn-lg" href={planHref}>Start planning <Arrow /></a>
+				</div>
+				<figure class="detail-photo">
+					{src && <img src={src} alt={service.data.image?.alt ?? ""} />}
+				</figure>
+			</div>
+		</div>
+	</section>
+
+	<section class="detail-body">
+		<div class="container detail-grid">
+			<div class="prose">
+				{
+					service.data.content && service.data.content.length > 0 ? (
+						<PortableText value={service.data.content} />
+					) : (
+						<p>{service.data.summary}</p>
+					)
+				}
+			</div>
+			<aside class="detail-aside" aria-label="At a glance">
+				{
+					included.length > 0 && (
+						<>
+							<h2>What is included</h2>
+							<ul class="ticks">
+								{included.map((o) => <li>{o}</li>)}
+							</ul>
+						</>
+					)
+				}
+				{
+					formats.length > 0 && (
+						<>
+							<h2>Typical formats</h2>
+							<ul class="plain-list">
+								{formats.map((o) => <li>{o}</li>)}
+							</ul>
+						</>
+					)
+				}
+				<a class="btn" href={planHref}>Start planning <Arrow /></a>
+			</aside>
+		</div>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="section section-soft" aria-labelledby="other-title">
+				<div class="container">
+					<p class="eyebrow eyebrow-rule">More services</p>
+					<h2 id="other-title" class="section-title">Other events we plan.</h2>
+					<div class="svc-row svc-row-boxed">
+						{others.map((s) => (
+							<ServiceCard service={s} more />
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<CtaBand office={office} query={`type=${encodeURIComponent(service.data.slug ?? service.data.id)}`} />
+</Base>

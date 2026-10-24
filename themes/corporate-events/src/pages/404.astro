@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Page not found">
+	<section class="notfound">
+		<div class="container">
+			<svg class="notfound-mark" viewBox="0 0 28 48" aria-hidden="true" focusable="false">
+				<rect class="bar-a" x="0" y="14" width="4" height="24" rx="0.6" />
+				<rect class="bar-a" x="8" y="8" width="4" height="20" rx="0.6" />
+				<rect class="bar-b" x="16" y="0" width="4" height="48" rx="0.6" />
+				<rect class="bar-b" x="24" y="15" width="4" height="23" rx="0.6" />
+			</svg>
+			<span class="eyebrow eyebrow-light">404 · Page not found</span>
+			<h1>This room is not on the floor plan.</h1>
+			<p>The page you are looking for has moved or never existed. Let us get you back to the event.</p>
+			<div class="actions">
+				<a class="btn" href="/">Back to home</a>
+				<a class="btn btn-outline" href="/venues">Browse venues</a>
+			</div>
+		</div>
+	</section>
+</Base>

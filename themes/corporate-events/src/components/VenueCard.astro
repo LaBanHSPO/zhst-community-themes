@@ -1,0 +1,22 @@
+---
+import { photoSrc, type Venue } from "../lib/events";
+
+interface Props {
+	venue: { data: Venue; edit: Record<string, unknown> };
+}
+const { venue } = Astro.props;
+const href = `/venues/${venue.data.slug ?? venue.data.id}`;
+const src = photoSrc(venue.data.image, venue.data.photo);
+---
+
+<article class="venue-card">
+	<a class="venue-card-photo" href={href} tabindex="-1" aria-hidden="true">
+		{src && <img src={src} alt="" loading="lazy" decoding="async" />}
+	</a>
+	<div class="venue-card-body">
+		<p class="venue-city">{venue.data.city}</p>
+		<h3><a href={href}>{venue.data.title}</a></h3>
+		<p class="venue-cap">{venue.data.capacity}</p>
+		<p class="venue-sum">{venue.data.summary}</p>
+	</div>
+</article>
