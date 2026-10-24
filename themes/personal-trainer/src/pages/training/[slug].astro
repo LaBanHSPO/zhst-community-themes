@@ -1,0 +1,124 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getTraining, lines, photoAlt, photoSrc, trainingHref } from "../../lib/pt";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: item, cacheHint } = await getEmDashEntry("training", slug);
+if (!item) return Astro.rewrite("/404");
+
+const [allResult, settings] = await Promise.all([getTraining(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(item, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = item.data;
+const cover = photoSrc(d.image, d.photo);
+const hasBody = Boolean(d.content && d.content.length > 0);
+const steps = lines(d.session);
+const others = allResult.entries.filter((t) => t.data.id !== d.id).slice(0, 3);
+const startHref = `/contact?option=${encodeURIComponent(d.slug ?? d.id)}`;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "training", id: d.id, slug }}
+	current="/training"
+>
+	<header class="detail-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/training">Training</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class="detail-grid">
+				<div class="detail-copy">
+					<p class="label"><i class="rule" aria-hidden="true"></i>Training option</p>
+					<h1 class="display display-xl" {...item.edit.title}>{d.title}</h1>
+					<p class="lede">{d.summary}</p>
+					<dl class="facts">
+						{d.who_for && <div><dt>Who it is for</dt><dd>{d.who_for}</dd></div>}
+						{d.length && <div><dt>Length</dt><dd>{d.length}</dd></div>}
+						{d.where && <div><dt>Where</dt><dd>{d.where}</dd></div>}
+						{d.bring && <div><dt>What to bring</dt><dd>{d.bring}</dd></div>}
+					</dl>
+					<p class="detail-actions">
+						<a class="btn" href={startHref}><span>Book a free intro chat</span><Arrow /></a>
+					</p>
+				</div>
+				{cover && <img class="detail-cover" src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="800" height="690" fetchpriority="high" />}
+			</div>
+		</div>
+	</header>
+
+	<section class="detail-body">
+		<div class="wrap detail-body-grid">
+			<div>
+				{
+					steps.length > 0 && (
+						<>
+							<h2 class="block-title">What a session looks like</h2>
+							<ol class="session-steps">
+								{steps.map((s) => <li>{s}</li>)}
+							</ol>
+						</>
+					)
+				}
+				<div class="prose">
+					{hasBody ? <PortableText value={d.content} /> : <p>{d.summary}</p>}
+				</div>
+			</div>
+			<aside class="side-stack">
+				<div class="side-card side-card-dark">
+					<h2 class="side-title">How to start</h2>
+					<p>Book a free 20-minute intro chat. We talk about your goals and anything that hurts, then pick a first session.</p>
+					<p class="side-action"><a class="btn" href={startHref}><span>Book an intro chat</span><Arrow /></a></p>
+				</div>
+				<div class="side-card">
+					<h2 class="side-title">Prices</h2>
+					<p>Plans run from a single session to eight a month. Prices are listed on the pricing page.</p>
+					<p class="side-action"><a class="text-link" href="/pricing"><span>See pricing</span><Arrow /></a></p>
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="more-band" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="section-head">
+						<div>
+							<p class="label"><i class="rule" aria-hidden="true"></i>More training</p>
+							<h2 id="more-title" class="section-title">Other ways to train.</h2>
+						</div>
+						<a class="text-link" href="/training"><span>All options</span><Arrow /></a>
+					</div>
+					<ul class="more-list">
+						{others.map((t) => (
+							<li>
+								<a href={trainingHref(t.data)}>
+									<strong>{t.data.title}</strong>
+									<span>{t.data.summary}</span>
+									<em>{t.data.length}</em>
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+</Base>

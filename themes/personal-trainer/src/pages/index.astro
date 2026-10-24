@@ -1,0 +1,189 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import LineIcon from "../components/LineIcon.astro";
+import { getPlans, getSteps, getStudio, getTraining, hoursRows, lines, photoAlt, photoSrc, splitPrice, telHref, trainingHref } from "../lib/pt";
+
+const [trainingResult, plansResult, stepsResult, studioResult] = await Promise.all([getTraining(), getPlans(), getSteps(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(trainingResult.cacheHint);
+	Astro.cache.set(plansResult.cacheHint);
+	Astro.cache.set(stepsResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const allTraining = trainingResult.entries;
+const training = (allTraining.some((t) => t.data.featured) ? allTraining.filter((t) => t.data.featured) : allTraining).slice(0, 3);
+const plans = plansResult.entries.slice(0, 4);
+const steps = stepsResult.entries;
+const { studio } = studioResult;
+const hours = hoursRows(studio.hours);
+const address = lines(studio.address);
+---
+
+<Base
+	title="Stronger, one session at a time"
+	description="Movement is a personal training studio: one-to-one sessions, small groups and online coaching, with plain pricing and a free 20-minute intro chat."
+	overlay
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A smiling trainer in a black t-shirt with his arms crossed in a dark gym, a woman doing a kettlebell swing behind him"
+			width="1448"
+			height="758"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<p class="hero-tags"><i class="rule" aria-hidden="true"></i><span>Train</span><b>Move</b><span>Progress</span></p>
+			<h1 id="hero-title" class="hero-title">Stronger,<br />one session<br />at a time.</h1>
+			<p class="hero-sub">Personal training for a healthier,{" "}<br class="br-d" />stronger, more confident you.</p>
+			<a class="btn hero-btn" href="/training"><span>Explore training</span><Arrow /></a>
+		</div>
+	</section>
+
+	<section class="split" aria-labelledby="split-title">
+		<div class="split-copy">
+			<p id="split-title" class="label"><i class="rule" aria-hidden="true"></i>A training approach that fits you</p>
+			<ul class="pillars">
+				<li>
+					<span class="pillar-icon"><LineIcon name="dumbbell" size={32} /></span>
+					<h2>Personalised Plans</h2>
+					<p>Training built around{" "}<br class="br-d" />your goals and lifestyle.</p>
+				</li>
+				<li>
+					<span class="pillar-icon"><LineIcon name="chart" size={30} /></span>
+					<h2>Expert Guidance</h2>
+					<p>Support, structure and{" "}<br class="br-d" />accountability at every step.</p>
+				</li>
+				<li>
+					<span class="pillar-icon"><LineIcon name="heart" size={30} /></span>
+					<h2>Real Progress</h2>
+					<p>Build strength, energy{" "}<br class="br-d" />and confidence.</p>
+				</li>
+			</ul>
+		</div>
+		<div class="split-photo">
+			<img src="/images/dumbbells.webp" alt="Two black hex dumbbells and a black bottle on a dark gym floor" width="461" height="328" loading="eager" />
+		</div>
+	</section>
+
+	{
+		steps.length > 0 && (
+			<section class="how" aria-labelledby="how-title">
+				<div class="how-photo">
+					<img src="/images/rope.webp" alt="A woman in black training gear making waves with a battle rope in a gym" width="658" height="1086" loading="lazy" />
+				</div>
+				<div class="how-copy">
+					<p class="label label-light"><i class="rule" aria-hidden="true"></i>How it works</p>
+					<h2 id="how-title" class="section-title">From the first chat<br />to your first session.</h2>
+					<ol class="how-steps">
+						{steps.map((s, i) => (
+							<li>
+								<span class="how-num">{String(i + 1).padStart(2, "0")}</span>
+								<div>
+									<strong {...s.edit.title}>{s.data.title}</strong>
+									<span>{s.data.text}</span>
+								</div>
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		training.length > 0 && (
+			<section class="ways" aria-labelledby="ways-title">
+				<div class="wrap">
+					<div class="section-head">
+						<div>
+							<p class="label"><i class="rule" aria-hidden="true"></i>Ways to train</p>
+							<h2 id="ways-title" class="section-title">Pick the format<br />that fits your week.</h2>
+						</div>
+						<a class="text-link" href="/training"><span>All training options</span><Arrow /></a>
+					</div>
+					<ul class="tiles">
+						{training.map((t) => {
+							const src = photoSrc(t.data.image, t.data.photo);
+							return (
+								<li>
+									<a class="tile" href={trainingHref(t.data)}>
+										{src && <img src={src} alt={photoAlt(t.data.image, t.data.photo, t.data.title)} width="520" height="620" loading="lazy" />}
+										<span class="tile-body">
+											<span class="tile-meta">{t.data.length}</span>
+											<strong class="tile-title" {...t.edit.title}>{t.data.title}</strong>
+											<span class="tile-sum">{t.data.summary}</span>
+										</span>
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		plans.length > 0 && (
+			<section class="price-teaser" aria-labelledby="price-title">
+				<div class="wrap price-teaser-grid">
+					<div>
+						<p class="label"><i class="rule" aria-hidden="true"></i>Pricing</p>
+						<h2 id="price-title" class="section-title">What it costs.</h2>
+						<p class="price-text">Four plans, from a single session to eight a month. Prices shown are sample prices. Every plan starts with a free intro chat.</p>
+						<a class="text-link" href="/pricing"><span>See the plans</span><Arrow /></a>
+					</div>
+					<ul class="price-rows">
+						{plans.map((p) => {
+							const price = splitPrice(p.data.price);
+							return (
+								<li>
+									<a href="/pricing">
+										<strong {...p.edit.title}>{p.data.title}</strong>
+										<span class="price-sessions">{p.data.sessions}</span>
+										<span class="price-amount">{price.amount}<small>{price.unit}</small></span>
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="where" aria-labelledby="where-title">
+		<div class="wrap where-grid">
+			<div>
+				<p class="label label-light"><i class="rule" aria-hidden="true"></i>Location and hours</p>
+				<h2 id="where-title" class="section-title">Find the studio.</h2>
+				<p class="where-address">{address.map((l, i) => (i === 0 ? <>{l}</> : <><br />{l}</>))}</p>
+				<p class="where-lines">
+					{studio.phone && <a href={telHref(studio.phone)}>{studio.phone}</a>}
+					{studio.email && <a href={`mailto:${studio.email}`}>{studio.email}</a>}
+				</p>
+			</div>
+			<div>
+				<dl class="where-hours">
+					{hours.map((r) => <div><dt>{r.day}</dt><dd>{r.time}</dd></div>)}
+				</dl>
+				{studio.hours_note && <p class="where-note">{studio.hours_note}</p>}
+			</div>
+		</div>
+	</section>
+
+	<section class="start" aria-labelledby="start-title">
+		<div class="wrap start-inner">
+			<div>
+				<h2 id="start-title" class="section-title">Not sure where<br />to start?</h2>
+			</div>
+			<div class="start-copy">
+				<p>{studio.intro_note ?? "Book a free 20-minute intro chat. We talk about what you want to do and what you have tried."}</p>
+				<a class="btn btn-dark" href="/contact"><span>Book an intro chat</span><Arrow /></a>
+			</div>
+		</div>
+	</section>
+</Base>

@@ -1,0 +1,966 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Personal Trainer",
+    "description": "A dark gym theme for a personal trainer: a full-bleed photo hero in charcoal and lime, training options, pricing plans, an about page and a free intro chat form. Seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "Movement",
+    "tagline": "Personal Trainer"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "urlPattern": "/{slug}",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Eyebrow",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro",
+          "type": "text"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText"
+        }
+      ]
+    },
+    {
+      "slug": "training",
+      "label": "Training",
+      "labelSingular": "Training option",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "urlPattern": "/training/{slug}",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "summary",
+          "label": "Summary",
+          "type": "text"
+        },
+        {
+          "slug": "who_for",
+          "label": "Who it is for",
+          "type": "string"
+        },
+        {
+          "slug": "length",
+          "label": "Length",
+          "type": "string"
+        },
+        {
+          "slug": "where",
+          "label": "Where",
+          "type": "string"
+        },
+        {
+          "slug": "session",
+          "label": "What a session looks like (one step per line)",
+          "type": "text"
+        },
+        {
+          "slug": "bring",
+          "label": "What to bring",
+          "type": "string"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on home page",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Image",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText"
+        }
+      ]
+    },
+    {
+      "slug": "plans",
+      "label": "Pricing plans",
+      "labelSingular": "Pricing plan",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "price",
+          "label": "Price (a placeholder)",
+          "type": "string"
+        },
+        {
+          "slug": "sessions",
+          "label": "Sessions",
+          "type": "string"
+        },
+        {
+          "slug": "best_for",
+          "label": "Best for",
+          "type": "string"
+        },
+        {
+          "slug": "includes",
+          "label": "What is included (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "steps",
+      "label": "How it works",
+      "labelSingular": "Step",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Text",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "studio",
+      "label": "Studio",
+      "labelSingular": "Studio",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Business name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Email",
+          "type": "string"
+        },
+        {
+          "slug": "address",
+          "label": "Address (one line per row)",
+          "type": "text"
+        },
+        {
+          "slug": "hours",
+          "label": "Hours (one per line, day | time)",
+          "type": "text"
+        },
+        {
+          "slug": "hours_note",
+          "label": "Note under the hours",
+          "type": "text"
+        },
+        {
+          "slug": "intro_note",
+          "label": "Intro chat note",
+          "type": "text"
+        },
+        {
+          "slug": "health_note",
+          "label": "Health check note",
+          "type": "text"
+        },
+        {
+          "slug": "qualifications",
+          "label": "Qualifications placeholder",
+          "type": "text"
+        },
+        {
+          "slug": "pricing_notes",
+          "label": "Pricing notes (one per line)",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        },
+        {
+          "type": "custom",
+          "label": "Training",
+          "url": "/training"
+        },
+        {
+          "type": "custom",
+          "label": "Pricing",
+          "url": "/pricing"
+        },
+        {
+          "type": "custom",
+          "label": "Contact",
+          "url": "/contact"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "Training that fits around your week.",
+          "eyebrow": "About",
+          "intro": "Movement is a one-person training studio. This is a demo business with sample content.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Who you train with",
+                  "_key": "s2"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I am Eli, and I run Movement on my own. You train with me every session. There is no hand-off to a junior coach and no sales team.",
+                  "_key": "s4"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The trainer on this demo site is a fictional, AI-generated person. Replace the name, the photos and this story with your own.",
+                  "_key": "s6"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How I work",
+                  "_key": "s8"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sessions are built around what you can do today. I write down every weight and every rep, so next week starts from a real number instead of a guess. We change one thing at a time.",
+                  "_key": "s10"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "I do not promise results or timelines. People respond differently, and a good plan is one you can keep doing.",
+                  "_key": "s12"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What the first month looks like",
+                  "_key": "s14"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Week 1: a free intro chat, a short movement check and your first session.",
+                  "_key": "s16"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Weeks 2 and 3: one to three sessions a week, built around the same few lifts so you can feel what is changing.",
+                  "_key": "s18"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Week 4: we read the notes together and decide what to change.",
+                  "_key": "s20"
+                }
+              ],
+              "markDefs": [],
+              "listItem": "bullet",
+              "level": 1
+            },
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Who this is for",
+                  "_key": "s22"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Beginners, people coming back after a break, and people who train alone and want a second pair of eyes. If you want a competition coach, I will tell you and point you to someone who does that.",
+                  "_key": "s24"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "training": [
+      {
+        "id": "one-to-one-sessions",
+        "slug": "one-to-one-sessions",
+        "status": "published",
+        "data": {
+          "title": "One-to-one sessions",
+          "summary": "Private sessions with full attention on your form, your pace and your goals.",
+          "who_for": "Beginners, people returning after a break and anyone who wants a coach watching every set",
+          "length": "50 minutes",
+          "where": "Movement Studio",
+          "session": "Warm-up and a short movement check (10 minutes)\nMain strength work, with every weight written down (30 minutes)\nCool-down, stretching and notes for next time (10 minutes)",
+          "bring": "Trainers, a water bottle and a small towel",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/kneel.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What this is",
+                  "_key": "s26"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "One coach, one client, one hour of the studio. We start where you are, not where a template says you should be.",
+                  "_key": "s28"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most people train once or twice a week. Each session builds on the last one, and the notes are yours to keep.",
+                  "_key": "s30"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Good to know",
+                  "_key": "s32"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k33",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If something hurts in a way that feels wrong, we stop and change the exercise. Tell me before the session about injuries or anything your doctor has said.",
+                  "_key": "s34"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "small-group",
+        "slug": "small-group",
+        "status": "published",
+        "data": {
+          "title": "Small group training",
+          "summary": "Up to four people per class. Same coach, shared equipment, a lower cost per person.",
+          "who_for": "Friends, partners or colleagues who would rather train together",
+          "length": "55 minutes",
+          "where": "Movement Studio",
+          "session": "Group warm-up (10 minutes)\nCircuit of five stations, each one scaled to the person (35 minutes)\nShared cool-down and a quick plan for the next class (10 minutes)",
+          "bring": "Trainers, a water bottle and a small towel",
+          "featured": true,
+          "position": 20,
+          "photo": "/images/gym-pair.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k35",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What this is",
+                  "_key": "s36"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k37",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A class capped at four, so I can still see every rep. Everyone does the same circuit, with weights and options picked for them.",
+                  "_key": "s38"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k39",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Come with someone you know or join a class on your own. Classes run on set evenings and Saturday mornings.",
+                  "_key": "s40"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k41",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Good to know",
+                  "_key": "s42"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k43",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Group classes are not a place to learn a lift from scratch. If you are new to lifting, start with Strength for beginners or a few one-to-one sessions.",
+                  "_key": "s44"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "online-coaching",
+        "slug": "online-coaching",
+        "status": "published",
+        "data": {
+          "title": "Online coaching",
+          "summary": "A weekly training plan and a video check-in, for people who train at home or in their own gym.",
+          "who_for": "People who travel, work shifts or live too far from the studio",
+          "length": "20-minute weekly check-in",
+          "where": "Online",
+          "session": "The week's plan arrives on Monday, with a short video for each new exercise\nYou train on your own days and log what you lifted\nWe go through the log on a 20-minute video call and change the next week",
+          "bring": "A phone or laptop for the check-in, and whatever equipment you have",
+          "featured": true,
+          "position": 30,
+          "photo": "/images/trainer-arms.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k45",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What this is",
+                  "_key": "s46"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k47",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The same approach as the studio, without the commute. Plans are written for the equipment you actually have, from a pair of dumbbells to a full gym.",
+                  "_key": "s48"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k49",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Good to know",
+                  "_key": "s50"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k51",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Online coaching works best when you can describe how a movement feels. If you want someone to correct your form in the room, one-to-one sessions are a better fit.",
+                  "_key": "s52"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "strength-for-beginners",
+        "slug": "strength-for-beginners",
+        "status": "published",
+        "data": {
+          "title": "Strength for beginners",
+          "summary": "A short block that teaches the basic lifts: squat, hinge, push, pull and carry.",
+          "who_for": "People who have never lifted, or have not for years",
+          "length": "45 minutes, twice a week for eight weeks",
+          "where": "Movement Studio, groups of up to four",
+          "session": "Learn one lift at a time with light weights (15 minutes)\nPractise the lifts in a simple circuit (25 minutes)\nShort stretch and a note of the weights used (5 minutes)",
+          "bring": "Trainers and a water bottle. Weights are provided",
+          "featured": false,
+          "position": 40,
+          "photo": "/images/dumbbells.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k53",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What this is",
+                  "_key": "s54"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k55",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Eight weeks to learn the five patterns that most other training is built from. The weights start light on purpose.",
+                  "_key": "s56"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k57",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Good to know",
+                  "_key": "s58"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k59",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The block starts on set dates. Ask about the next start date when you book your intro chat.",
+                  "_key": "s60"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "conditioning-circuits",
+        "slug": "conditioning-circuits",
+        "status": "published",
+        "data": {
+          "title": "Conditioning circuits",
+          "summary": "Timed rounds on ropes, kettlebells and bodyweight moves for people who want more stamina as well as strength.",
+          "who_for": "People who already train once or twice a week and want something harder",
+          "length": "45 minutes",
+          "where": "Movement Studio, groups of up to four",
+          "session": "Warm-up with hip and shoulder drills (10 minutes)\nFive stations in timed rounds: battle ropes, kettlebell swings, carries, rows and a core move (30 minutes)\nWalk, breathe and stretch (5 minutes)",
+          "bring": "Trainers and a water bottle. Ropes and kettlebells are provided",
+          "featured": false,
+          "position": 50,
+          "photo": "/images/rope.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k61",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What this is",
+                  "_key": "s62"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k63",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Short, timed rounds with a rest between each one. Everyone works at their own weight and pace, and the stations are scaled to the person.",
+                  "_key": "s64"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k65",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Good to know",
+                  "_key": "s66"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k67",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "You should be comfortable with a basic hip hinge before you join. We check this in the intro chat or in a one-to-one session first.",
+                  "_key": "s68"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "plans": [
+      {
+        "id": "single-session",
+        "slug": "single-session",
+        "status": "published",
+        "data": {
+          "title": "Single session",
+          "price": "$65 per session (sample price)",
+          "sessions": "1 session, pay as you go",
+          "best_for": "Trying Movement out, or fitting in a session when you can",
+          "includes": "One 50-minute one-to-one session\nA written note of what you did\nNo commitment to book again",
+          "position": 10
+        }
+      },
+      {
+        "id": "four-a-month",
+        "slug": "four-a-month",
+        "status": "published",
+        "data": {
+          "title": "Four sessions a month",
+          "price": "$240 a month (sample price)",
+          "sessions": "4 one-to-one sessions a month",
+          "best_for": "One session a week",
+          "includes": "Four 50-minute one-to-one sessions\nA written plan for the month\nA 15-minute review in the last session of the month\nMessage support on weekdays",
+          "position": 20
+        }
+      },
+      {
+        "id": "eight-a-month",
+        "slug": "eight-a-month",
+        "status": "published",
+        "data": {
+          "title": "Eight sessions a month",
+          "price": "$440 a month (sample price)",
+          "sessions": "8 one-to-one sessions a month",
+          "best_for": "Two sessions a week",
+          "includes": "Eight 50-minute one-to-one sessions\nThe plan updated every two weeks\nA review at the end of each month\nMessage support on weekdays",
+          "position": 30
+        }
+      },
+      {
+        "id": "online-plan",
+        "slug": "online-plan",
+        "status": "published",
+        "data": {
+          "title": "Online coaching",
+          "price": "$120 a month (sample price)",
+          "sessions": "1 video check-in a week",
+          "best_for": "Training at home or in your own gym",
+          "includes": "A new training plan every Monday\nShort videos for new exercises\nA 20-minute video check-in each week\nMessage support on weekdays",
+          "position": 40
+        }
+      }
+    ],
+    "steps": [
+      {
+        "id": "intro-chat",
+        "slug": "intro-chat",
+        "status": "published",
+        "data": {
+          "title": "Free intro chat",
+          "text": "Twenty minutes by phone or in the studio. You tell me what you want to do, what you have tried and anything that hurts.",
+          "position": 10
+        }
+      },
+      {
+        "id": "your-plan",
+        "slug": "your-plan",
+        "status": "published",
+        "data": {
+          "title": "A plan you can follow",
+          "text": "I write a simple plan around your week: how many days, how long, and what each session covers.",
+          "position": 20
+        }
+      },
+      {
+        "id": "train",
+        "slug": "train",
+        "status": "published",
+        "data": {
+          "title": "Train",
+          "text": "Sessions start with a warm-up, then the main work, then a short cool-down. I write down what you lifted so the next one is a small step up.",
+          "position": 30
+        }
+      },
+      {
+        "id": "check-in",
+        "slug": "check-in",
+        "status": "published",
+        "data": {
+          "title": "Check in",
+          "text": "Every four weeks we read the notes together and change the plan if it is too easy or too much.",
+          "position": 40
+        }
+      }
+    ],
+    "studio": [
+      {
+        "id": "movement",
+        "slug": "movement",
+        "status": "published",
+        "data": {
+          "title": "Movement Personal Training",
+          "phone": "(555) 010-0142",
+          "email": "hello@movement-training.example",
+          "address": "Movement Studio\n22 Foundry Lane\nHarrow Point",
+          "hours": "Monday to Friday | 6:30 am to 8:00 pm\nSaturday | 8:00 am to 1:00 pm\nSunday | Closed",
+          "hours_note": "Sessions are by appointment. Hours, prices and the address are sample details for this demo.",
+          "intro_note": "The first chat is free and takes about 20 minutes. We talk about what you want to do, what you have tried and anything that hurts. Nothing is sold on the call.",
+          "health_note": "If you have a medical condition, are pregnant, are recovering from an injury or have not exercised in a long time, check with your doctor before starting a new programme. Please leave medical details out of this form.",
+          "qualifications": "Add your own qualifications here: certifications, registrations, first aid and insurance, with the year and the body that awarded them. The trainer on this demo site is fictional, so nothing is listed.",
+          "pricing_notes": "Prices are sample prices. Replace them with your own.\nPlans renew each month. Unused sessions do not carry over.\nA session can be moved up to 24 hours before it starts.\nSmall group classes are $30 per person per class (sample price).\nThe intro chat is free and carries no obligation."
+        }
+      }
+    ]
+  }
+}

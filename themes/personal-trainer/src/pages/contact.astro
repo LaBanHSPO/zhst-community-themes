@@ -1,0 +1,178 @@
+---
+import Base from "../layouts/Base.astro";
+import { getPlans, getStudio, getTraining, hoursRows, lines, telHref } from "../lib/pt";
+
+const [{ studio, cacheHint }, trainingResult, plansResult] = await Promise.all([getStudio(), getTraining(), getPlans()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(trainingResult.cacheHint);
+	Astro.cache.set(plansResult.cacheHint);
+}
+
+// ?option=<training slug>|not-sure pre-selects what to try; ?plan=<plan slug> pre-selects a plan.
+const options = [
+	...trainingResult.entries.map((t) => ({ value: t.data.slug ?? t.data.id, label: t.data.title })),
+	{ value: "not-sure", label: "Not sure yet" },
+];
+const option = options.find((o) => o.value === Astro.url.searchParams.get("option"));
+const planOptions = plansResult.entries.map((p) => ({ value: p.data.slug ?? p.data.id, label: p.data.title }));
+const plan = planOptions.find((o) => o.value === Astro.url.searchParams.get("plan"));
+const rows = hoursRows(studio.hours);
+const address = lines(studio.address);
+---
+
+<Base title="Contact" description="Book a free 20-minute intro chat with Movement: choose a training option, add your goals and when you are free, and your email app opens with the message ready to send. Phone, email, studio address and hours are always listed.">
+	<div class="contact">
+		<section class="contact-panel" aria-labelledby="contact-title">
+			<p class="label"><i class="rule" aria-hidden="true"></i>Contact</p>
+			<h1 id="contact-title" class="display display-xl">Book a free intro chat.</h1>
+			<p class="lede">{studio.intro_note ?? "The first chat is free and takes about 20 minutes."}</p>
+
+			<div class="notice" role="note">
+				<strong>Before you start.</strong>{" "}
+				{studio.health_note ?? "If you have a medical condition, check with your doctor before starting a new programme."}
+			</div>
+
+			<form
+				class="contact-form"
+				data-contact-form
+				data-email={studio.email}
+				action={studio.email ? `mailto:${studio.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field">
+						<label for="c-name">Your name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field">
+						<label for="c-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field">
+						<label for="c-option">What would you like to try?</label>
+						<select id="c-option" name="option" required>
+							<option value="" selected={!option}>Choose an option</option>
+							{options.map((o) => <option value={o.value} selected={option?.value === o.value}>{o.label}</option>)}
+						</select>
+						<span class="field-error" data-error-for="c-option"></span>
+					</div>
+					<div class="field full">
+						<label for="c-plan">Which plan are you interested in? <span class="optional">(optional)</span></label>
+						<select id="c-plan" name="plan">
+							<option value="" selected={!plan}>No preference</option>
+							{planOptions.map((o) => <option value={o.value} selected={plan?.value === o.value}>{o.label}</option>)}
+						</select>
+					</div>
+					<div class="field full">
+						<label for="c-goals">Your goals</label>
+						<textarea id="c-goals" name="goals" rows="4" maxlength="600" placeholder="For example: get stronger for hiking, or start training again after a break." required></textarea>
+						<span class="field-error" data-error-for="c-goals"></span>
+					</div>
+					<div class="field full">
+						<label for="c-availability">When are you usually free?</label>
+						<input id="c-availability" name="availability" type="text" placeholder="For example: weekday mornings and Saturdays" required />
+						<span class="field-error" data-error-for="c-availability"></span>
+					</div>
+				</div>
+				<button class="btn btn-block" type="submit"><span>Request an intro chat</span></button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{studio.email && <>Write to <a href={`mailto:${studio.email}`}>{studio.email}</a> with your name, your goals and when you are free.</>}
+					</noscript>
+				</p>
+			</form>
+		</section>
+
+		<aside class="contact-aside">
+			<img src="/images/rope.webp" alt="A woman in black training gear making waves with a battle rope in a gym" width="658" height="1086" />
+			<div class="contact-details">
+				<h2>Reach the studio</h2>
+				<p class="detail-line">
+					{studio.phone && <a href={telHref(studio.phone)}>{studio.phone}</a>}
+					{studio.email && <a href={`mailto:${studio.email}`}>{studio.email}</a>}
+					{address.length > 0 && <span>{address.join(", ")}</span>}
+				</p>
+				<h3>Hours</h3>
+				<dl class="hours">
+					{rows.map((r) => <div><dt>{r.day}</dt><dd>{r.time}</dd></div>)}
+				</dl>
+				{studio.hours_note && <p class="small">{studio.hours_note}</p>}
+			</div>
+		</aside>
+	</div>
+</Base>
+
+<script>
+	// Compose an email to the studio; nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>("input[required], select[required], textarea[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? input.tagName === "SELECT"
+							? "Please choose an option."
+							: "Please fill this in."
+						: input.getAttribute("type") === "email"
+							? "Please enter a valid email address."
+							: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online requests are not available right now. Please call instead.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const label = (id: string) => form.querySelector<HTMLSelectElement>(id)?.selectedOptions[0]?.textContent ?? "";
+			const subject = `Intro chat: ${label("#c-option")}, ${get("name")}`;
+			const body = [
+				"Hello,",
+				"",
+				"I would like to book a free intro chat.",
+				"",
+				`Interested in: ${label("#c-option")}`,
+				get("plan") ? `Plan: ${label("#c-plan")}` : "",
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				`Usually free: ${get("availability")}`,
+				"",
+				"Goals:",
+				get("goals"),
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this message ready to send. It is only sent when you send that email. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

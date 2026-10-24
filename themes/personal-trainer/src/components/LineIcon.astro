@@ -1,0 +1,31 @@
+---
+interface Props {
+	name: "dumbbell" | "chart" | "heart";
+	size?: number;
+}
+const { name, size = 30 } = Astro.props;
+---
+
+{
+	name === "dumbbell" && (
+		<svg width={size} height={size} viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.600" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+			<path d="M4 16h24M9 8.500v15M23 8.500v15M4.500 12v8M27.500 12v8" />
+		</svg>
+	)
+}
+{
+	name === "chart" && (
+		<svg width={size} height={size} viewBox="0 0 32 32" fill="currentColor" aria-hidden="true" focusable="false">
+			<rect x="5" y="19" width="6" height="8" rx="1.200" />
+			<rect x="13" y="13" width="6" height="14" rx="1.200" />
+			<rect x="21" y="6" width="6" height="21" rx="1.200" />
+		</svg>
+	)
+}
+{
+	name === "heart" && (
+		<svg width={size} height={size} viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.600" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+			<path d="M16 27S4.500 20 4.500 12.200A6.200 6.200 0 0 1 16 9a6.200 6.200 0 0 1 11.500 3.200C27.500 20 16 27 16 27z" />
+		</svg>
+	)
+}

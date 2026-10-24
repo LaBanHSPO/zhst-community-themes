@@ -1,0 +1,64 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import { getPlans, getStudio, lines, splitPrice } from "../lib/pt";
+
+const [plansResult, studioResult] = await Promise.all([getPlans(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(plansResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const plans = plansResult.entries;
+const notes = lines(studioResult.studio.pricing_notes);
+---
+
+<Base title="Pricing" description="Movement pricing: pay per session, four or eight sessions a month, or online coaching. What each plan includes and how to ask about it. Prices shown are sample prices.">
+	<PageHead eyebrow="Pricing" title="What each plan costs." intro="Pay per session or by the month. Every plan starts with a free intro chat, and nothing is sold on the call." />
+	<section class="plan-section">
+		<div class="wrap">
+			<ol class="plan-grid">
+				{
+					plans.map((p) => {
+						const price = splitPrice(p.data.price);
+						const includes = lines(p.data.includes);
+						return (
+							<li class="plan">
+								<h2 class="plan-name" {...p.edit.title}>{p.data.title}</h2>
+								<p class="plan-price"><span class="plan-amount">{price.amount}</span>{price.unit && <span class="plan-unit">{price.unit}</span>}</p>
+								{price.note && <p class="plan-note">{price.note}</p>}
+								<p class="plan-sessions">{p.data.sessions}</p>
+								<p class="plan-best"><em>Best for</em>{p.data.best_for}</p>
+								<ul class="check-list">
+									{includes.map((i) => <li>{i}</li>)}
+								</ul>
+								<a class="btn btn-block" href={`/contact?plan=${encodeURIComponent(p.data.slug ?? p.data.id)}`}><span>Ask about this plan</span><Arrow /></a>
+							</li>
+						);
+					})
+				}
+			</ol>
+			{
+				notes.length > 0 && (
+					<div class="notes">
+						<h2 class="block-title">Good to know</h2>
+						<ul class="note-list">
+							{notes.map((n) => <li>{n}</li>)}
+						</ul>
+					</div>
+				)
+			}
+		</div>
+	</section>
+	<section class="start" aria-labelledby="start-title">
+		<div class="wrap start-inner">
+			<div>
+				<h2 id="start-title" class="section-title">Want to talk it<br />through first?</h2>
+			</div>
+			<div class="start-copy">
+				<p>The intro chat is free and takes about 20 minutes. Bring your questions about the plans and what fits your week.</p>
+				<a class="btn btn-dark" href="/contact"><span>Book an intro chat</span><Arrow /></a>
+			</div>
+		</div>
+	</section>
+</Base>

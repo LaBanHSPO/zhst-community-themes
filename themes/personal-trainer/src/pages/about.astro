@@ -1,0 +1,41 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import { getStudio } from "../lib/pt";
+
+const [{ entry: page, cacheHint }, studioResult] = await Promise.all([getEmDashEntry("pages", "about"), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const d = page?.data;
+const { studio } = studioResult;
+---
+
+<Base title="About" description={d?.intro ?? "About Movement, a one-person personal training studio."}>
+	<PageHead id="about-title" eyebrow={d?.eyebrow ?? "About"} title={d?.title ?? "About the studio"} intro={d?.intro} edit={{ ...page?.edit.title }} />
+	<section class="about-body">
+		<div class="wrap about-grid">
+			<div>
+				<div class="prose">
+					{d?.content ? <PortableText value={d.content} /> : <p>Studio details are coming soon.</p>}
+				</div>
+				<div class="placeholder-box" role="note">
+					<p class="placeholder-tag">Placeholder: qualifications</p>
+					<p>{studio.qualifications ?? "Add your own qualifications here."}</p>
+				</div>
+				<p class="page-cta">
+					<a class="btn" href="/training"><span>Explore training</span><Arrow /></a>
+					<a class="text-link" href="/contact"><span>Book a free intro chat</span><Arrow /></a>
+				</p>
+			</div>
+			<figure class="about-photo">
+				<img src="/images/trainer-arms.webp" alt="A smiling trainer in a black t-shirt and a smartwatch with his arms crossed" width="590" height="668" loading="eager" />
+				<figcaption>Eli, the fictional trainer on this demo site. The photo is AI-generated.</figcaption>
+			</figure>
+		</div>
+	</section>
+</Base>
