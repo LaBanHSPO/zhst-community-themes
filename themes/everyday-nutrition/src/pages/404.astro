@@ -1,0 +1,21 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+---
+
+<Base title="Page not found">
+	<section class="notfound" aria-labelledby="nf-title">
+		<div>
+			<p class="eyebrow">Error 404</p>
+			<h1 id="nf-title" class="display">This page is not on the menu.</h1>
+			<p class="lede">The address may have a typo, or the page may have been removed. These links will get you back to the kitchen.</p>
+			<div class="actions">
+				<a class="btn" href="/"><span>Back to home</span><Arrow /></a>
+				<a class="chip" href="/recipes">Recipes</a>
+				<a class="chip" href="/coaching">Coaching</a>
+				<a class="chip" href="/contact">Contact</a>
+			</div>
+		</div>
+		<img src="/images/seeds-board.webp" alt="A small stone bowl of pumpkin seeds on a wooden board with fresh herbs" width="1040" height="900" />
+	</section>
+</Base>

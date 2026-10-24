@@ -1,0 +1,46 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import { MEALS, getRecipes, mealLabel, photoAlt, photoSrc, recipeHref } from "../../lib/nutri";
+
+const result = await getRecipes();
+if (Astro.cache?.enabled) Astro.cache.set(result.cacheHint);
+const all = result.entries;
+// ?meal=breakfast|lunch|dinner|snacks filters the list; an unknown value shows everything.
+const wanted = (Astro.url.searchParams.get("meal") ?? "").toLowerCase();
+const active = MEALS.find((m) => m.value === wanted);
+const recipes = active ? all.filter((r) => r.data.meal === active.value) : all;
+---
+
+<Base title="Recipes" description="Home-tested recipes for breakfast, lunch, dinner and snacks, with ingredients, times, servings and step-by-step method. Filter by meal type." current="/recipes">
+	<PageHead eyebrow="Recipes" title="Simple food, tested at home." intro="Every recipe is cooked in our test kitchen before it is written down. Filter by meal to see what suits the time of day." />
+	<section class="recipes-list" aria-label="Recipes">
+		<div class="wrap">
+			<nav class="filters" aria-label="Filter by meal">
+				<a href="/recipes" aria-current={active ? undefined : "true"}>All</a>
+				{MEALS.map((m) => <a href={`/recipes?meal=${m.value}`} aria-current={m.value === active?.value ? "true" : undefined}>{m.label}</a>)}
+			</nav>
+			{
+				recipes.length > 0 ? (
+					<ul class="recipe-grid">
+						{recipes.map((r, i) => {
+							const src = photoSrc(r.data.image, r.data.photo);
+							return (
+								<li>
+									<a class="recipe-card" href={recipeHref(r.data)}>
+										<span class="ph">{src && <img src={src} alt={photoAlt(r.data.image, r.data.photo, r.data.title)} width="520" height="440" loading={i < 3 ? "eager" : "lazy"} />}</span>
+										<span class="recipe-meta">{[mealLabel(r.data.meal), r.data.time].filter(Boolean).join(" / ")}</span>
+										<strong class="recipe-title" {...r.edit.title}>{r.data.title}</strong>
+										<span class="recipe-sum">{r.data.summary}</span>
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				) : (
+					<p class="empty">No recipes for this meal yet.</p>
+				)
+			}
+		</div>
+	</section>
+</Base>

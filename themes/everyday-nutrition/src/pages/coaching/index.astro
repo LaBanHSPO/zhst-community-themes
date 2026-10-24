@@ -1,0 +1,70 @@
+---
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import PageHead from "../../components/PageHead.astro";
+import { getPackages, getSteps, packageHref, photoSrc } from "../../lib/nutri";
+
+const [packagesResult, stepsResult] = await Promise.all([getPackages(), getSteps()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(packagesResult.cacheHint);
+	Astro.cache.set(stepsResult.cacheHint);
+}
+const packages = packagesResult.entries;
+const steps = stepsResult.entries;
+---
+
+<Base title="Coaching" description="Nutrition coaching packages by video call: format, length, what is included and a starting price. Choose a four-week start, a three-month support plan, a family plan or a single session.">
+	<PageHead eyebrow="Coaching" title="Four ways to work together." intro="Every package starts with a free 20-minute call and runs by video call. Prices are sample prices and are confirmed after that call." />
+	<section aria-label="Coaching packages">
+		<div class="wrap">
+			<ol class="pkg-cards">
+				{
+					packages.map((p) => {
+						const src = photoSrc(p.data.image, p.data.photo);
+						return (
+							<li class="pkg-card">
+								<a class="ph" href={packageHref(p.data)} tabindex="-1" aria-hidden="true">
+									{src && <img src={src} alt="" width="600" height="480" loading="lazy" />}
+								</a>
+								<div>
+									<h2 {...p.edit.title}><a href={packageHref(p.data)}>{p.data.title}</a></h2>
+									<p class="sum">{p.data.summary}</p>
+									<dl class="pkg-facts">
+										{p.data.length && <div><dt>Length</dt><dd>{p.data.length}</dd></div>}
+										{p.data.sessions && <div><dt>Calls and check-ins</dt><dd>{p.data.sessions}</dd></div>}
+										{p.data.price && <div><dt>Price</dt><dd>{p.data.price}</dd></div>}
+									</dl>
+									<div class="card-actions">
+										<a class="btn" href={`/contact?package=${encodeURIComponent(p.data.slug ?? p.data.id)}`}><span>Start your journey</span><Arrow /></a>
+										<a class="text-link" href={packageHref(p.data)}><span>Package details</span><Arrow /></a>
+									</div>
+								</div>
+							</li>
+						);
+					})
+				}
+			</ol>
+		</div>
+	</section>
+	{
+		steps.length > 0 && (
+			<section class="steps-band" aria-labelledby="steps-title">
+				<div class="wrap">
+					<p class="eyebrow">How it starts</p>
+					<h2 id="steps-title" class="section-title">What happens after you write to us.</h2>
+					<ol class="step-list">
+						{steps.map((s, i) => (
+							<li>
+								<span class="step-num" aria-hidden="true">{i + 1}</span>
+								<div>
+									<strong>{s.data.title}</strong>
+									<span class="t">{s.data.text}</span>
+								</div>
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+</Base>

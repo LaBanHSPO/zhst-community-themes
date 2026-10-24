@@ -1,0 +1,1171 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Everyday Nutrition",
+    "description": "A warm cream and forest green theme for a nutrition coaching practice: a full-bleed food photo hero, an approach page, coaching packages, a recipe collection filtered by meal, an about page and a start page. Seeded with synthetic sample content.",
+    "author": "ZeroHostCMS"
+  },
+  "settings": {
+    "title": "Everyday Nutrition",
+    "tagline": "Nutrition coaching"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "urlPattern": "/{slug}",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Eyebrow",
+          "type": "string"
+        },
+        {
+          "slug": "intro",
+          "label": "Intro",
+          "type": "text"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "photo_alt",
+          "label": "Photo description",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText"
+        }
+      ]
+    },
+    {
+      "slug": "packages",
+      "label": "Coaching packages",
+      "labelSingular": "Coaching package",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "urlPattern": "/coaching/{slug}",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "summary",
+          "label": "Summary",
+          "type": "text"
+        },
+        {
+          "slug": "format",
+          "label": "Format",
+          "type": "text"
+        },
+        {
+          "slug": "length",
+          "label": "Length",
+          "type": "string"
+        },
+        {
+          "slug": "sessions",
+          "label": "Sessions and check-ins",
+          "type": "string"
+        },
+        {
+          "slug": "price",
+          "label": "Price (a 'from' placeholder)",
+          "type": "string"
+        },
+        {
+          "slug": "includes",
+          "label": "What is included (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on home page",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Image",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText"
+        }
+      ]
+    },
+    {
+      "slug": "recipes",
+      "label": "Recipes",
+      "labelSingular": "Recipe",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "urlPattern": "/recipes/{slug}",
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "summary",
+          "label": "Short description",
+          "type": "text"
+        },
+        {
+          "slug": "meal",
+          "label": "Meal type",
+          "type": "select",
+          "required": true,
+          "defaultValue": "lunch",
+          "indexed": true,
+          "validation": {
+            "options": [
+              "breakfast",
+              "lunch",
+              "dinner",
+              "snacks"
+            ]
+          }
+        },
+        {
+          "slug": "time",
+          "label": "Time (for example 35 min)",
+          "type": "string"
+        },
+        {
+          "slug": "servings",
+          "label": "Servings",
+          "type": "string"
+        },
+        {
+          "slug": "ingredients",
+          "label": "Ingredients (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "method",
+          "label": "Method steps (one per line)",
+          "type": "text"
+        },
+        {
+          "slug": "tags",
+          "label": "Tags (comma separated)",
+          "type": "string"
+        },
+        {
+          "slug": "tip",
+          "label": "Cook's note",
+          "type": "text"
+        },
+        {
+          "slug": "featured",
+          "label": "Show on home page",
+          "type": "boolean"
+        },
+        {
+          "slug": "position",
+          "label": "Order",
+          "type": "integer"
+        },
+        {
+          "slug": "image",
+          "label": "Image",
+          "type": "image"
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "slug": "steps",
+      "label": "How coaching works",
+      "labelSingular": "Step",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "text",
+          "label": "Text",
+          "type": "text"
+        },
+        {
+          "slug": "position",
+          "label": "Order",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "slug": "studio",
+      "label": "Studio details",
+      "labelSingular": "Studio",
+      "supports": [
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Business name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string"
+        },
+        {
+          "slug": "email",
+          "label": "Email",
+          "type": "string"
+        },
+        {
+          "slug": "address",
+          "label": "Address (one line per row)",
+          "type": "text"
+        },
+        {
+          "slug": "hours",
+          "label": "Hours (one per line, 'Day | time')",
+          "type": "text"
+        },
+        {
+          "slug": "hours_note",
+          "label": "Note under the hours",
+          "type": "text"
+        },
+        {
+          "slug": "form_note",
+          "label": "Note above the form",
+          "type": "text"
+        }
+      ]
+    }
+  ],
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Approach",
+          "url": "/approach"
+        },
+        {
+          "type": "custom",
+          "label": "Coaching",
+          "url": "/coaching"
+        },
+        {
+          "type": "custom",
+          "label": "Recipes",
+          "url": "/recipes"
+        },
+        {
+          "type": "custom",
+          "label": "About",
+          "url": "/about"
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "approach",
+        "slug": "approach",
+        "status": "published",
+        "data": {
+          "title": "How we work with you.",
+          "eyebrow": "Approach",
+          "photo": "/images/kitchen-wide.webp",
+          "photo_alt": "A sunlit kitchen counter with a grain bowl, a bottle of olive oil, a lemon half and a pot of basil",
+          "intro": "Coaching here means regular, practical conversations about what you cook, buy and eat. Nothing is complicated, and nothing is on a clock.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What a session looks like",
+                  "_key": "k2s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Sessions run by video call and last 30 to 45 minutes. We start with what happened since last time: what you cooked, what you skipped, what was easy. Then we pick one or two things to try before the next call. You get a short written summary the same day.",
+                  "_key": "k4s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we work on together",
+                  "_key": "k6s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Most people come with a few specific questions. These are the topics that come up most often.",
+                  "_key": "k8s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Planning a week of meals around your work, family and budget, and writing a shopping list that matches it.",
+                  "_key": "k10s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k11",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Cooking a few basics well, such as a grain, a tray of roasted vegetables and a sauce, so that meals can be put together quickly.",
+                  "_key": "k12s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k13",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Making breakfast, lunch and snacks less of a scramble: what to keep in the fridge, what to batch cook on Sunday.",
+                  "_key": "k14s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k15",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Eating out, travelling and holidays without feeling that the plan has fallen apart.",
+                  "_key": "k16s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k17",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How we think about food",
+                  "_key": "k18s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k19",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We look at what you already eat and build from there. We do not ban foods, count points or ask you to weigh anything unless you want to. Recipes on this site are examples of the style: vegetables, grains, beans, some fish and meat, and plenty of flavour.",
+                  "_key": "k20s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k21",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What coaching is not",
+                  "_key": "k22s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k23",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We do not diagnose, treat or manage medical conditions, and we do not give advice on medication. If you have a medical condition, an allergy or you are pregnant, speak to your doctor or a registered dietitian first. We are happy to work alongside their advice.",
+                  "_key": "k24s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k25",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Getting started",
+                  "_key": "k26s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k27",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Send a request with the Start form. We reply within two working days to arrange a free 20-minute intro call, where you can ask questions before choosing a package.",
+                  "_key": "k28s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "published",
+        "data": {
+          "title": "A small practice built around home cooking.",
+          "eyebrow": "About",
+          "photo": "/images/card-recipes.webp",
+          "photo_alt": "Hands chopping kale on a wooden board with a chef's knife",
+          "intro": "Everyday Nutrition is a fictional coaching practice used to show this theme. The text below is sample content you can replace.",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k29",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "The practice",
+                  "_key": "k30s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k31",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We run coaching calls, publish recipes and keep a small test kitchen where every recipe on the site is cooked before it is written down. There is no shop and no supplement range. The work is conversations, plans and recipes.",
+                  "_key": "k32s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k33",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Who it is for",
+                  "_key": "k34s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k35",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "People who want to cook more often and eat with less stress: busy parents, people who work from home, students sharing a flat, and anyone whose week has no room for a complicated plan.",
+                  "_key": "k36s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k37",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What you will not find here",
+                  "_key": "k38s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k39",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "No before and after photos, no promises about weight or health, and no testimonials. This demo business lists no qualifications. If you use the theme for a real practice, add yours, along with any registration your country requires.",
+                  "_key": "k40s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k41",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Visit or call",
+                  "_key": "k42s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k43",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Calls happen online. The test kitchen is open for pre-booked sessions on Tuesdays. Contact details and hours are in the footer and on the Start page.",
+                  "_key": "k44s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "packages": [
+      {
+        "id": "food-foundations",
+        "slug": "food-foundations",
+        "status": "published",
+        "data": {
+          "title": "Food Foundations",
+          "summary": "Four weeks to set up a weekly routine for shopping, cooking and eating that fits your schedule.",
+          "format": "Four weekly video calls of 45 minutes, a written meal plan template and a shopping list built around the meals you actually like.",
+          "length": "4 weeks",
+          "sessions": "One video call a week, message check-in between calls",
+          "price": "From $180 for the four weeks",
+          "includes": "Free 20-minute intro call\nReview of your usual week of food, shopping and cooking\nFour 45-minute video calls\nA weekly meal plan template you can reuse\nA shopping list for the first two weeks\nWritten summary after every call\nMessage support on weekdays",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/bowl-sweet-potato.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k45",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Food Foundations is the usual place to start. In the first call we look at your week as it is: when you shop, who you cook for, what gets eaten on the run. From there we build a plan you can repeat, then adjust it over the next three calls.",
+                  "_key": "k46s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k47",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "A typical month",
+                  "_key": "k48s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k49",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Week one is the review and a first plan. Week two is shopping and a batch-cooking session. Week three is fixing whatever did not work. Week four is a simple routine you can keep going without us.",
+                  "_key": "k50s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k51",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Good to know",
+                  "_key": "k52s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k53",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Everything is run by video call. The meal plan is a template for your own food, not a prescription, and coaching does not replace medical advice.",
+                  "_key": "k54s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "weekly-support",
+        "slug": "weekly-support",
+        "status": "published",
+        "data": {
+          "title": "Weekly Support",
+          "summary": "Three months of regular calls and messages while new habits settle in.",
+          "format": "A 30-minute call every two weeks and a message check-in each week. We set one small goal per fortnight and review it together.",
+          "length": "12 weeks",
+          "sessions": "Video call every two weeks, message check-in every week",
+          "price": "From $95 a month",
+          "includes": "Free 20-minute intro call\nSix 30-minute video calls\nWeekly message check-in\nOne small goal per fortnight\nRecipe suggestions matched to your kitchen and budget\nWritten summary after every call",
+          "featured": true,
+          "position": 20,
+          "photo": "/images/card-habits.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k55",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Weekly Support suits people who already know roughly what they want to change and would like someone to check in with. Each fortnight we pick one thing to practise, such as cooking dinner twice more a week or putting together lunches the night before.",
+                  "_key": "k56s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k57",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "How check-ins work",
+                  "_key": "k58s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k59",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Once a week you send a short message about how things went. We reply within one working day with a note or a question. There is no tracking app and no food diary unless you want one.",
+                  "_key": "k60s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k61",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Good to know",
+                  "_key": "k62s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k63",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Prices are sample prices. You can pause for a week if you are away. Coaching does not replace medical advice.",
+                  "_key": "k64s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "family-table",
+        "slug": "family-table",
+        "status": "published",
+        "data": {
+          "title": "Family Table",
+          "summary": "Six weeks of planning and cooking for a household, including children and fussy eaters.",
+          "format": "Three 45-minute video calls with everyone who cooks at home, a shared weekly plan and a bank of recipes that work for adults and children.",
+          "length": "6 weeks",
+          "sessions": "Three video calls, fortnightly",
+          "price": "From $240 for the six weeks",
+          "includes": "Free 20-minute intro call\nThree 45-minute video calls\nA shared weekly plan for the household\nLunchbox and after-school snack ideas\nTen recipes chosen with your family\nA swap list for foods someone dislikes\nMessage support on weekdays",
+          "featured": true,
+          "position": 30,
+          "photo": "/images/card-choices.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k65",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Family Table is for households where more than one person cooks, or where meals have to work for people with different tastes. We bring everyone into the calls so that the plan belongs to the whole house.",
+                  "_key": "k66s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k67",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "What we cover",
+                  "_key": "k68s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k69",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Dinners that can be changed slightly for different people, lunchboxes, weekend batch cooking and what to do when someone refuses what is on the plate.",
+                  "_key": "k70s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k71",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Good to know",
+                  "_key": "k72s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k73",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "We do not give advice on feeding infants or on medical diets. For those, speak to your doctor or a registered dietitian. Prices are sample prices.",
+                  "_key": "k74s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      },
+      {
+        "id": "single-session",
+        "slug": "single-session",
+        "status": "published",
+        "data": {
+          "title": "Single Session",
+          "summary": "One 60-minute call to look at a specific question and leave with a short written plan.",
+          "format": "One video call of 60 minutes and a one-page written summary sent the same day.",
+          "length": "One call",
+          "sessions": "One 60-minute video call",
+          "price": "From $70",
+          "includes": "60-minute video call\nOne-page written summary\nTwo weeks of message follow-up for questions",
+          "featured": false,
+          "position": 40,
+          "photo": "/images/oil-basil.webp",
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k75",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Not sure about a longer package? A single session is a good way to try the style. Bring one question, such as how to plan lunches for a busy week or how to eat better when travelling for work.",
+                  "_key": "k76s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k77",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Good to know",
+                  "_key": "k78s"
+                }
+              ],
+              "markDefs": []
+            },
+            {
+              "_type": "block",
+              "_key": "k79",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Prices are sample prices. If you would like to continue afterwards, the session fee is taken off the first month of Weekly Support.",
+                  "_key": "k80s"
+                }
+              ],
+              "markDefs": []
+            }
+          ]
+        }
+      }
+    ],
+    "recipes": [
+      {
+        "id": "sweet-potato-grain-bowl",
+        "slug": "sweet-potato-grain-bowl",
+        "status": "published",
+        "data": {
+          "title": "Roasted sweet potato grain bowl",
+          "summary": "Roasted sweet potato and chickpeas over quinoa with kale, avocado and radish.",
+          "meal": "lunch",
+          "time": "40 min",
+          "servings": "2",
+          "ingredients": "1 large sweet potato, cut into 2 cm cubes\n1 tin chickpeas, drained and dried\n1 tablespoon olive oil\n1 teaspoon smoked paprika\n150 g quinoa\n2 handfuls kale, stalks removed\n1 avocado, sliced\n4 radishes, thinly sliced\n2 tablespoons pumpkin seeds\nJuice of 1 lemon\nSalt and pepper",
+          "method": "Heat the oven to 220 C. Toss the sweet potato and chickpeas with the oil, paprika and a pinch of salt. Roast on a tray for 25 minutes, turning once.\nRinse the quinoa and simmer it in 300 ml water for 12 minutes. Cover and leave for 5 minutes, then fluff with a fork.\nMassage the kale with a squeeze of lemon and a pinch of salt for a minute until it softens.\nDivide the quinoa between two bowls. Add the kale, sweet potato, chickpeas, avocado and radish.\nFinish with pumpkin seeds, the rest of the lemon juice and black pepper.",
+          "tags": "Vegetarian, Vegan, Meal prep",
+          "tip": "The roasted vegetables and quinoa keep in the fridge for three days. Add the avocado on the day.",
+          "featured": true,
+          "position": 10,
+          "photo": "/images/bowl-sweet-potato.webp"
+        }
+      },
+      {
+        "id": "lentil-roasted-vegetable-salad",
+        "slug": "lentil-roasted-vegetable-salad",
+        "status": "published",
+        "data": {
+          "title": "Lentil and roasted vegetable salad",
+          "summary": "Green lentils with roasted courgette and peppers, herbs and a lemon dressing.",
+          "meal": "lunch",
+          "time": "35 min",
+          "servings": "4",
+          "ingredients": "250 g green or brown lentils\n2 courgettes, cut into chunks\n2 red peppers, cut into strips\n1 red onion, cut into wedges\n3 tablespoons olive oil\n1 lemon, juice and zest\n1 teaspoon Dijon mustard\nSmall bunch parsley, chopped\nSalt and pepper",
+          "method": "Heat the oven to 210 C. Spread the courgettes, peppers and onion on a tray with 2 tablespoons of the oil and a pinch of salt. Roast for 25 minutes.\nCook the lentils in plenty of simmering water for 20 minutes until tender but not mushy. Drain well.\nWhisk the remaining oil with the lemon juice, zest and mustard.\nToss the warm lentils with the dressing, then fold in the vegetables and parsley. Season to taste.",
+          "tags": "Vegetarian, Vegan, Meal prep",
+          "tip": "Tastes better the next day. Pack it cold for lunch.",
+          "featured": false,
+          "position": 20,
+          "photo": "/images/card-choices.webp"
+        }
+      },
+      {
+        "id": "chicken-kale-bowl",
+        "slug": "chicken-kale-bowl",
+        "status": "published",
+        "data": {
+          "title": "Chicken and kale bowl",
+          "summary": "Sliced chicken thighs with quinoa, kale, red cabbage and roasted sweet potato.",
+          "meal": "dinner",
+          "time": "45 min",
+          "servings": "2",
+          "ingredients": "3 skinless chicken thighs\n1 teaspoon ground cumin\n1 tablespoon olive oil\n1 small sweet potato, cubed\n120 g quinoa\n2 handfuls kale\nQuarter of a red cabbage, finely shredded\n1 avocado\nJuice of half a lemon\nSalt and pepper",
+          "method": "Rub the chicken with cumin, salt and half the oil. Leave it for 10 minutes while the oven heats to 220 C.\nRoast the sweet potato with the remaining oil for 25 minutes. Add the chicken to the tray after 5 minutes and cook until it is no longer pink inside, about 20 minutes.\nCook the quinoa in 240 ml simmering water for 12 minutes, then rest for 5 minutes.\nSteam or blanch the kale for 2 minutes. Slice the chicken.\nAssemble the bowls with quinoa, kale, cabbage, sweet potato, chicken and avocado. Squeeze over the lemon.",
+          "tags": "High protein, Dairy free",
+          "tip": "Check the thickest piece of chicken is cooked through before serving.",
+          "featured": true,
+          "position": 30,
+          "photo": "/images/bowl-chicken.webp"
+        }
+      },
+      {
+        "id": "lemon-garlic-kale",
+        "slug": "lemon-garlic-kale",
+        "status": "published",
+        "data": {
+          "title": "Lemon garlic kale",
+          "summary": "A quick side of kale with garlic, olive oil and lemon, ready in the time it takes to rest a roast.",
+          "meal": "dinner",
+          "time": "15 min",
+          "servings": "2",
+          "ingredients": "250 g curly kale\n2 tablespoons olive oil\n2 garlic cloves, sliced\nZest and juice of half a lemon\nPinch of chilli flakes\nSalt",
+          "method": "Strip the kale leaves from the stalks and tear them into pieces. Wash and shake dry.\nWarm the oil in a wide pan over medium heat. Add the garlic and chilli and cook for 30 seconds without letting the garlic brown.\nAdd the kale and a splash of water. Stir for 4 to 5 minutes until wilted and bright green.\nTake off the heat. Stir in the lemon zest and juice and season with salt.",
+          "tags": "Vegan, Side dish",
+          "tip": "Good under a fried egg for a quick lunch.",
+          "featured": false,
+          "position": 40,
+          "photo": "/images/card-recipes.webp"
+        }
+      },
+      {
+        "id": "avocado-tomato-toast",
+        "slug": "avocado-tomato-toast",
+        "status": "published",
+        "data": {
+          "title": "Avocado and tomato toast",
+          "summary": "Toasted sourdough with mashed avocado, tomatoes, seeds and a little lemon.",
+          "meal": "breakfast",
+          "time": "10 min",
+          "servings": "2",
+          "ingredients": "2 thick slices sourdough\n1 ripe avocado\n1 small handful cherry tomatoes, halved\n1 teaspoon lemon juice\n1 tablespoon mixed seeds\nOlive oil\nSalt and pepper",
+          "method": "Toast the bread until crisp.\nMash the avocado with the lemon juice, a pinch of salt and pepper.\nSpread it on the toast. Top with the tomatoes and seeds.\nAdd a thin drizzle of olive oil.",
+          "tags": "Vegetarian, Vegan, Quick",
+          "tip": "Add a soft-boiled egg if you want something more filling.",
+          "featured": false,
+          "position": 50,
+          "photo": "/images/avocado-board.webp"
+        }
+      },
+      {
+        "id": "seeded-oat-porridge",
+        "slug": "seeded-oat-porridge",
+        "status": "published",
+        "data": {
+          "title": "Seeded oat porridge",
+          "summary": "Creamy porridge with toasted pumpkin and sunflower seeds and sliced fruit.",
+          "meal": "breakfast",
+          "time": "15 min",
+          "servings": "2",
+          "ingredients": "100 g rolled oats\n400 ml milk or oat drink\n1 pinch salt\n2 tablespoons pumpkin seeds\n1 tablespoon sunflower seeds\n1 pear or apple, sliced\n1 teaspoon honey or maple syrup",
+          "method": "Toast the seeds in a dry pan for 2 minutes until they pop. Tip them onto a plate.\nPut the oats, milk and salt in a pan. Simmer for 6 to 8 minutes, stirring, until thick.\nSpoon into bowls. Top with the fruit, seeds and honey.",
+          "tags": "Vegetarian, Quick",
+          "tip": "Make a double batch of toasted seeds and keep them in a jar.",
+          "featured": false,
+          "position": 60,
+          "photo": "/images/seeds-board.webp"
+        }
+      },
+      {
+        "id": "white-bean-basil-dip",
+        "slug": "white-bean-basil-dip",
+        "status": "published",
+        "data": {
+          "title": "White bean and basil dip",
+          "summary": "A smooth dip of white beans, basil, lemon and olive oil, good with raw vegetables.",
+          "meal": "snacks",
+          "time": "10 min",
+          "servings": "6",
+          "ingredients": "1 tin white beans, drained\nLarge handful fresh basil\n1 small garlic clove\n3 tablespoons olive oil\nJuice of half a lemon\nSalt and pepper\nCarrot and cucumber sticks, to serve",
+          "method": "Put the beans, basil, garlic, oil and lemon juice in a food processor.\nBlend until smooth, adding a spoonful of water if it is too thick.\nSeason to taste and chill for 20 minutes before serving with the vegetable sticks.",
+          "tags": "Vegan, Dairy free, Quick",
+          "tip": "Keeps in the fridge for four days.",
+          "featured": false,
+          "position": 70,
+          "photo": "/images/oil-basil.webp"
+        }
+      },
+      {
+        "id": "tea-oat-bars",
+        "slug": "tea-oat-bars",
+        "status": "published",
+        "data": {
+          "title": "Oat and seed bars",
+          "summary": "Chewy oat bars with seeds and dried fruit, baked in one tin.",
+          "meal": "snacks",
+          "time": "40 min",
+          "servings": "12",
+          "ingredients": "200 g rolled oats\n80 g mixed seeds\n80 g dried apricots, chopped\n3 ripe bananas, mashed\n2 tablespoons peanut butter\n1 teaspoon cinnamon\nPinch of salt",
+          "method": "Heat the oven to 180 C and line a 20 cm square tin with baking paper.\nMix everything in a bowl until it holds together.\nPress firmly into the tin and bake for 25 minutes until golden at the edges.\nCool completely in the tin before cutting into 12 bars.",
+          "tags": "Vegetarian, Meal prep, Contains nuts",
+          "tip": "Wrap each bar and keep them in the fridge for up to five days.",
+          "featured": false,
+          "position": 80,
+          "photo": "/images/card-habits.webp"
+        }
+      }
+    ],
+    "steps": [
+      {
+        "id": "intro-call",
+        "slug": "intro-call",
+        "status": "published",
+        "data": {
+          "title": "Free intro call",
+          "text": "Twenty minutes to talk about your week, ask questions and decide if coaching is for you.",
+          "position": 10
+        }
+      },
+      {
+        "id": "first-plan",
+        "slug": "first-plan",
+        "status": "published",
+        "data": {
+          "title": "A plan for your week",
+          "text": "Together we write a simple weekly plan around your schedule, your kitchen and your budget.",
+          "position": 20
+        }
+      },
+      {
+        "id": "cook-and-check",
+        "slug": "cook-and-check",
+        "status": "published",
+        "data": {
+          "title": "Cook, then check in",
+          "text": "You try the plan. We talk about what worked and change what did not.",
+          "position": 30
+        }
+      },
+      {
+        "id": "keep-going",
+        "slug": "keep-going",
+        "status": "published",
+        "data": {
+          "title": "A routine you keep",
+          "text": "By the end you have a short list of meals, a shopping habit and notes you can use without us.",
+          "position": 40
+        }
+      }
+    ],
+    "studio": [
+      {
+        "id": "everyday-nutrition",
+        "slug": "everyday-nutrition",
+        "status": "published",
+        "data": {
+          "title": "Everyday Nutrition",
+          "phone": "(555) 010-0148",
+          "email": "hello@everyday-nutrition.example",
+          "address": "The Test Kitchen\n22 Alder Lane\nMarlow Hill",
+          "hours": "Monday to Thursday | 9:00 am to 4:00 pm\nFriday | 9:00 am to 12:00 pm",
+          "hours_note": "Coaching calls are online. The test kitchen is open for pre-booked sessions on Tuesdays. Hours, prices and the address are sample details for this demo.",
+          "form_note": "This form sends a request by email. Please leave out medical details and test results. Tell us about allergies and foods you avoid in the message box."
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,172 @@
+---
+import Base from "../layouts/Base.astro";
+import { getPackages, getStudio, hoursRows, lines, telHref } from "../lib/nutri";
+
+const [{ studio, cacheHint }, packagesResult] = await Promise.all([getStudio(), getPackages()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(packagesResult.cacheHint);
+}
+
+// ?package=<slug> pre-selects a coaching package.
+const packageOptions = [
+	...packagesResult.entries.map((p) => ({ value: p.data.slug ?? p.data.id, label: p.data.title })),
+	{ value: "not-sure", label: "Not sure yet" },
+];
+const chosen = packageOptions.find((o) => o.value === Astro.url.searchParams.get("package"));
+const rows = hoursRows(studio.hours);
+const address = lines(studio.address);
+---
+
+<Base title="Start your journey" description="Ask about a coaching package: choose a package, add your goals and the times that suit you, and your email app opens with the message ready to send. Phone, email and hours are always listed.">
+	<div class="contact">
+		<section aria-labelledby="contact-title">
+			<p class="eyebrow">Start here</p>
+			<h1 id="contact-title" class="display">Tell us about your week.</h1>
+			<p class="lede">Choose a package if you have one in mind, say what you would like to change and when you are free for a call. We reply within two working days.</p>
+
+			<div class="notice" role="note">
+				<strong>Requests only.</strong>{" "}
+				{studio.form_note ?? "This form sends a request by email. Please leave out medical details and test results."}
+			</div>
+
+			<form
+				class="contact-form"
+				data-contact-form
+				data-email={studio.email}
+				action={studio.email ? `mailto:${studio.email}` : undefined}
+				method="post"
+				enctype="text/plain"
+				novalidate
+			>
+				<div class="form-grid">
+					<div class="field">
+						<label for="c-name">Your name</label>
+						<input id="c-name" name="name" type="text" autocomplete="name" required />
+						<span class="field-error" data-error-for="c-name"></span>
+					</div>
+					<div class="field">
+						<label for="c-email">Email</label>
+						<input id="c-email" name="email" type="email" autocomplete="email" required />
+						<span class="field-error" data-error-for="c-email"></span>
+					</div>
+					<div class="field">
+						<label for="c-phone">Phone <span class="optional">(optional)</span></label>
+						<input id="c-phone" name="phone" type="tel" autocomplete="tel" />
+					</div>
+					<div class="field">
+						<label for="c-package">Coaching package</label>
+						<select id="c-package" name="package" required>
+							<option value="" selected={!chosen}>Choose an option</option>
+							{packageOptions.map((o) => <option value={o.value} selected={chosen?.value === o.value}>{o.label}</option>)}
+						</select>
+						<span class="field-error" data-error-for="c-package"></span>
+					</div>
+					<div class="field full">
+						<label for="c-goals">What would you like to change?</label>
+						<textarea id="c-goals" name="goals" rows="4" maxlength="600" placeholder="For example: cook dinner at home more often, or plan lunches for the office." required></textarea>
+						<span class="field-error" data-error-for="c-goals"></span>
+					</div>
+					<div class="field full">
+						<label for="c-times">Preferred times for a call</label>
+						<input id="c-times" name="times" type="text" placeholder="For example: weekday mornings, or Thursday after 5 pm" required />
+						<span class="field-error" data-error-for="c-times"></span>
+					</div>
+					<div class="field full">
+						<label for="c-message">Allergies, foods you avoid, anything else <span class="optional">(optional)</span></label>
+						<textarea id="c-message" name="message" rows="3" maxlength="400" placeholder="Please leave out medical details and test results."></textarea>
+					</div>
+				</div>
+				<button class="pill btn btn-block" type="submit"><span>Send your request</span></button>
+				<p class="form-status" role="status" aria-live="polite" data-status>
+					<noscript>
+						This form needs JavaScript to prepare your email.
+						{studio.email && <>Write to <a href={`mailto:${studio.email}`}>{studio.email}</a> with your name, the package you like and the times that suit you.</>}
+					</noscript>
+				</p>
+			</form>
+		</section>
+
+		<aside class="contact-aside">
+			<div class="photo"><img src="/images/oil-basil.webp" alt="A bottle of olive oil, half a lemon and a pot of basil in morning light" width="656" height="1440" /></div>
+			<div class="contact-details">
+				<h2>Reach us</h2>
+				<p class="detail-line">
+					{studio.phone && <a href={telHref(studio.phone)}>{studio.phone}</a>}
+					{studio.email && <a href={`mailto:${studio.email}`}>{studio.email}</a>}
+					{address.length > 0 && <span>{address.join(", ")}</span>}
+				</p>
+				<h3>Hours</h3>
+				<dl class="hours">
+					{rows.map((r) => <div><dt>{r.day}</dt><dd>{r.time}</dd></div>)}
+				</dl>
+				{studio.hours_note && <p class="small">{studio.hours_note}</p>}
+			</div>
+		</aside>
+	</div>
+</Base>
+
+<script>
+	// Compose an email to the studio; nothing is sent by the site itself.
+	document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form) => {
+		const status = form.querySelector<HTMLElement>("[data-status]");
+		if (!status) return;
+
+		const showErrors = (): boolean => {
+			let firstInvalid: HTMLElement | null = null;
+			form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>("input[required], select[required], textarea[required]").forEach((input) => {
+				const slot = form.querySelector<HTMLElement>(`[data-error-for="${input.id}"]`);
+				const message = input.validity.valid
+					? ""
+					: input.validity.valueMissing
+						? input.tagName === "SELECT"
+							? "Please choose an option."
+							: "Please fill this in."
+						: input.getAttribute("type") === "email"
+							? "Please enter a valid email address."
+							: "Please check this field.";
+				input.setAttribute("aria-invalid", message ? "true" : "false");
+				if (slot) slot.textContent = message;
+				if (message && !firstInvalid) firstInvalid = input;
+			});
+			if (firstInvalid) (firstInvalid as HTMLElement).focus();
+			return !firstInvalid;
+		};
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+			if (!showErrors()) return;
+			const email = form.dataset.email ?? "";
+			if (!email) {
+				status.textContent = "Online requests are not available right now. Please call instead.";
+				return;
+			}
+			const f = new FormData(form);
+			const get = (k: string) => String(f.get(k) ?? "").trim();
+			const label = (id: string) => form.querySelector<HTMLSelectElement>(id)?.selectedOptions[0]?.textContent ?? "";
+			const subject = `Coaching request: ${label("#c-package")}, ${get("name")}`;
+			const body = [
+				"Hello,",
+				"",
+				"I would like to ask about coaching.",
+				"",
+				`Package: ${label("#c-package")}`,
+				`Name: ${get("name")}`,
+				`Email: ${get("email")}`,
+				get("phone") ? `Phone: ${get("phone")}` : "",
+				`Preferred times: ${get("times")}`,
+				"",
+				"What I would like to change:",
+				get("goals"),
+				get("message") ? `Allergies and other notes: ${get("message")}` : "",
+			].filter((line, i, arr) => line !== "" || (arr[i - 1] !== "" && i > 0));
+			window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.join("\n"))}`;
+			status.textContent =
+				"Your email app should open with this message ready to send. It is only sent when you send that email. If nothing opened, write to ";
+			const a = document.createElement("a");
+			a.href = `mailto:${email}`;
+			a.textContent = email;
+			status.append(a, ".");
+		});
+	});
+</script>

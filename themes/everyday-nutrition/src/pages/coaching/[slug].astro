@@ -1,0 +1,116 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { getPackages, lines, packageHref, photoAlt, photoSrc } from "../../lib/nutri";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: pkg, cacheHint } = await getEmDashEntry("packages", slug);
+if (!pkg) return Astro.rewrite("/404");
+
+const [allResult, settings] = await Promise.all([getPackages(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(pkg, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname.replace(/\/$/, "") });
+const d = pkg.data;
+const cover = photoSrc(d.image, d.photo);
+const hasBody = Boolean(d.content && d.content.length > 0);
+const others = allResult.entries.filter((p) => p.data.id !== d.id).slice(0, 3);
+const startHref = `/contact?package=${encodeURIComponent(d.slug ?? d.id)}`;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "packages", id: d.id, slug }}
+	current="/coaching"
+>
+	<header class="detail-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/coaching">Coaching</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class="detail-grid">
+				<div>
+					<p class="eyebrow">Coaching package</p>
+					<h1 class="display" {...pkg.edit.title}>{d.title}</h1>
+					<p class="lede">{d.summary}</p>
+					<dl class="facts">
+						{d.length && <div><dt>Length</dt><dd>{d.length}</dd></div>}
+						{d.price && <div><dt>Price</dt><dd>{d.price}</dd></div>}
+						{d.sessions && <div style="grid-column:1/-1"><dt>Calls and check-ins</dt><dd>{d.sessions}</dd></div>}
+						{d.format && <div style="grid-column:1/-1"><dt>Format</dt><dd>{d.format}</dd></div>}
+					</dl>
+					<p class="detail-actions">
+						<a class="btn" href={startHref}><span>Start your journey</span><Arrow /></a>
+					</p>
+				</div>
+				{cover && <img class="detail-cover" src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="800" height="672" fetchpriority="high" />}
+			</div>
+		</div>
+	</header>
+
+	<section class="detail-body">
+		<div class="wrap detail-body-grid">
+			<div class="prose">
+				{hasBody ? <PortableText value={d.content} /> : <p>{d.summary}</p>}
+			</div>
+			<aside>
+				{
+					lines(d.includes).length > 0 && (
+						<div class="side-card">
+							<h2 class="side-title">What is included</h2>
+							<ul class="check-list">
+								{lines(d.includes).map((i) => <li>{i}</li>)}
+							</ul>
+						</div>
+					)
+				}
+				<div class="side-card side-card-dark">
+					<h2 class="side-title">How to start</h2>
+					<p>Send a few lines about your week with the form. We reply within two working days to set up a free 20-minute call.</p>
+					<a class="btn btn-light" href={startHref}><span>Start your journey</span><Arrow /></a>
+				</div>
+			</aside>
+		</div>
+	</section>
+
+	{
+		others.length > 0 && (
+			<section class="more-band" aria-labelledby="more-title">
+				<div class="wrap">
+					<div class="section-head">
+						<div>
+							<p class="eyebrow">More packages</p>
+							<h2 id="more-title" class="section-title">Other ways to work together.</h2>
+						</div>
+						<a class="text-link" href="/coaching"><span>All packages</span><Arrow /></a>
+					</div>
+					<ul class="more-list">
+						{others.map((p) => (
+							<li>
+								<a href={packageHref(p.data)}>
+									<strong>{p.data.title}</strong>
+									<span>{p.data.summary}</span>
+									<em>{p.data.price}</em>
+								</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+</Base>
