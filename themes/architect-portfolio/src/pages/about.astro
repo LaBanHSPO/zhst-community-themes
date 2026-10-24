@@ -1,0 +1,83 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import EnquiryBand from "../components/EnquiryBand.astro";
+import PageHead from "../components/PageHead.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getStudio, getTeam, photoAlt, photoSrc } from "../lib/site";
+
+const [{ entry: page, cacheHint }, studioResult, teamResult, settings] = await Promise.all([
+	getEmDashEntry("pages", "about"),
+	getStudio(),
+	getTeam(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	if (cacheHint) Astro.cache.set(cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+	Astro.cache.set(teamResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page ? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/about" }) : null;
+const hasBody = Boolean(page?.data.content && page.data.content.length > 0);
+const photo = photoSrc(page?.data.image, page?.data.photo) ?? "/images/site-model.webp";
+const team = teamResult.entries;
+---
+
+<Base
+	title={seo?.title ?? "About"}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? page?.data.intro ?? "About the ARCA architecture studio."}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<PageHead
+		id="about-title"
+		eyebrow={page?.data.eyebrow ?? "About"}
+		title={page?.data.title ?? "About the studio."}
+		intro={page?.data.intro}
+		edit={page ? { ...page.edit.title } : {}}
+	/>
+
+	<section class="about-story">
+		<div class="wrap about-grid">
+			<figure class="about-photo">
+				<img
+					src={photo}
+					alt={photoAlt(page?.data.image, page?.data.photo, "A pale concrete study model of a house on a stone base, with a small olive tree among model rocks")}
+					width="1152"
+					height="506"
+					loading="lazy"
+				/>
+			</figure>
+			<div class="prose">
+				{hasBody ? <PortableText value={page!.data.content} /> : <p>More about the studio is coming soon.</p>}
+				<p class="about-link"><a class="under-link" href="/projects"><span>See the projects</span><Arrow /></a></p>
+			</div>
+		</div>
+	</section>
+
+	{
+		team.length > 0 && (
+			<section class="team" aria-labelledby="team-title">
+				<div class="wrap">
+					<p class="eyebrow">The team</p>
+					<h2 id="team-title" class="section-title">Six people, one studio table.</h2>
+					<ul class="team-grid">
+						{team.map((m) => (
+							<li class="team-member">
+								<h3 class="team-name" {...m.edit.title}>{m.data.title}</h3>
+								<p class="team-role">{m.data.role}</p>
+								{m.data.note && <p class="team-note">{m.data.note}</p>}
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<EnquiryBand studio={studioResult.studio} />
+</Base>

@@ -1,0 +1,107 @@
+---
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import EnquiryBand from "../components/EnquiryBand.astro";
+import PageHead from "../components/PageHead.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { getServices, getSteps, getStudio, lines, photoAlt, photoSrc } from "../lib/site";
+
+const [{ entry: page, cacheHint }, stepsResult, servicesResult, studioResult, settings] = await Promise.all([
+	getEmDashEntry("pages", "approach"),
+	getSteps(),
+	getServices(),
+	getStudio(),
+	getSiteSettings(),
+]);
+if (Astro.cache?.enabled) {
+	if (cacheHint) Astro.cache.set(cacheHint);
+	Astro.cache.set(stepsResult.cacheHint);
+	Astro.cache.set(servicesResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = page ? getSeoMeta(page, { siteTitle, siteUrl: Astro.url.origin, path: "/approach" }) : null;
+const hasBody = Boolean(page?.data.content && page.data.content.length > 0);
+const photo = photoSrc(page?.data.image, page?.data.photo) ?? "/images/olive-steps.webp";
+const steps = stepsResult.entries;
+const services = servicesResult.entries;
+---
+
+<Base
+	title={seo?.title ?? "Approach"}
+	pageTitle={seo?.ogTitle}
+	description={seo?.description ?? page?.data.intro ?? "How the ARCA architecture studio works, phase by phase."}
+	canonical={seo?.canonical}
+	content={page ? { collection: "pages", id: page.data.id, slug: "approach" } : undefined}
+>
+	<PageHead
+		id="approach-title"
+		eyebrow={page?.data.eyebrow ?? "Approach"}
+		title={page?.data.title ?? "How we work."}
+		intro={page?.data.intro}
+		edit={page ? { ...page.edit.title } : {}}
+	/>
+
+	{
+		steps.length > 0 && (
+			<section class="phases" aria-label="Phases">
+				<div class="wrap">
+					<ol class="phase-list">
+						{steps.map((s, i) => (
+							<li class="phase">
+								<span class="phase-no" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+								<h2 class="phase-title" {...s.edit.title}>{s.data.title}</h2>
+								<p class="phase-text">{s.data.text}</p>
+								{s.data.duration && <p class="phase-length">Usually {s.data.duration.toLowerCase()}</p>}
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="about-story">
+		<div class="wrap about-grid">
+			<figure class="about-photo">
+				<img
+					src={photo}
+					alt={photoAlt(page?.data.image, page?.data.photo, "An olive tree beside a flight of stone steps between concrete walls")}
+					width="679"
+					height="669"
+					loading="lazy"
+				/>
+			</figure>
+			<div class="prose">
+				{hasBody ? <PortableText value={page!.data.content} /> : <p>More about our approach is coming soon.</p>}
+			</div>
+		</div>
+	</section>
+
+	{
+		services.length > 0 && (
+			<section class="services services-compact" aria-labelledby="services-title">
+				<div class="wrap">
+					<p class="eyebrow">Services</p>
+					<h2 id="services-title" class="section-title">What each service includes.</h2>
+					<ul class="service-list">
+						{services.map((s) => (
+							<li class="service">
+								<div class="service-main">
+									<h3 class="service-title" {...s.edit.title}>{s.data.title}</h3>
+									<p class="service-summary">{s.data.summary}</p>
+								</div>
+								<ul class="service-includes">
+									{lines(s.data.includes).map((item) => <li>{item}</li>)}
+								</ul>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<EnquiryBand studio={studioResult.studio} />
+</Base>

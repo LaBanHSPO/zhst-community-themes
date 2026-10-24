@@ -1,0 +1,170 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import EnquiryBand from "../components/EnquiryBand.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { getNews, getProjects, getServices, getSteps, getStudio, lines, projectsUrl } from "../lib/site";
+
+const [projectsResult, servicesResult, stepsResult, newsResult, studioResult] = await Promise.all([
+	getProjects(),
+	getServices(),
+	getSteps(),
+	getNews(),
+	getStudio(),
+]);
+if (Astro.cache?.enabled) {
+	for (const r of [projectsResult, servicesResult, stepsResult, newsResult, studioResult]) Astro.cache.set(r.cacheHint);
+}
+const allProjects = projectsResult.entries;
+const featured = allProjects.filter((p) => p.data.featured);
+const selected = (featured.length > 0 ? featured : allProjects).slice(0, 3);
+const services = servicesResult.entries;
+const steps = stepsResult.entries;
+const news = newsResult.entries.slice(0, 3);
+---
+
+<Base
+	title="Architecture for better living"
+	description="ARCA is a small architecture studio for houses, small public buildings, interiors and gardens. See featured projects, how the studio works, and send a project enquiry."
+>
+	<section class="hero" aria-labelledby="hero-title">
+		<img
+			class="hero-photo"
+			src="/images/hero-home.webp"
+			alt="A concrete house with a cantilevered roof and glass walls on a cliff above the sea at sunset, with an infinity pool and an olive tree"
+			width="2172"
+			height="948"
+			fetchpriority="high"
+		/>
+		<div class="hero-copy">
+			<h1 id="hero-title" class="hero-title">Spaces shaped<br />around people.</h1>
+			<p class="hero-sub">Thoughtful architecture for a more<br />human tomorrow.</p>
+			<a class="btn btn-hero" href="/projects"><span>Explore projects</span><Arrow /></a>
+		</div>
+		<p class="hero-caption" aria-hidden="true"><span>Places</span><span>People</span><span>Belong</span></p>
+	</section>
+
+	<section class="featured" aria-labelledby="featured-title">
+		<div class="featured-inner">
+			<div class="featured-head">
+				<div>
+					<p class="eyebrow">Featured projects</p>
+					<h2 id="featured-title" class="featured-title">Buildings for<br />brighter tomorrows.</h2>
+				</div>
+				<a class="under-link" href="/projects"><span>View all projects</span><Arrow /></a>
+			</div>
+			<ul class="featured-grid">
+				{selected.map((p, i) => <li><ProjectCard project={p} eager={i < 3} /></li>)}
+			</ul>
+		</div>
+	</section>
+
+	<section class="note" aria-labelledby="note-title">
+		<div class="wrap note-inner">
+			<figure class="note-photo">
+				<img
+					src="/images/site-model.webp"
+					alt="A pale concrete study model of a house on a stone base, with a small olive tree among model rocks"
+					width="1152"
+					height="506"
+					loading="lazy"
+				/>
+			</figure>
+			<div class="note-copy">
+				<p class="eyebrow">From the studio</p>
+				<h2 id="note-title" class="section-title">We start with a day on the site.</h2>
+				<p>We note where the morning sun lands, where the wind comes from and what you can see from a chair in each room. The drawings come after that, and a physical model comes before the drawings are finished.</p>
+				<p>Six people work here, and the person you meet at the first visit stays on the project until handover.</p>
+				<a class="under-link" href="/about"><span>About the studio</span><Arrow /></a>
+			</div>
+		</div>
+	</section>
+
+	{
+		steps.length > 0 && (
+			<section class="steps" aria-labelledby="steps-title">
+				<div class="wrap">
+					<div class="section-head">
+						<div>
+							<p class="eyebrow">Approach</p>
+							<h2 id="steps-title" class="section-title">Four steps, each one written down.</h2>
+						</div>
+						<a class="under-link" href="/approach"><span>How we work</span><Arrow /></a>
+					</div>
+					<ol class="step-list">
+						{steps.map((s, i) => (
+							<li class="step">
+								<span class="step-no" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+								<h3 class="step-title" {...s.edit.title}>{s.data.title}</h3>
+								<p class="step-text">{s.data.text}</p>
+								{s.data.duration && <p class="step-length">{s.data.duration}</p>}
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		services.length > 0 && (
+			<section class="services" aria-labelledby="services-title">
+				<div class="wrap services-inner">
+					<div class="services-intro">
+						<p class="eyebrow">Services</p>
+						<h2 id="services-title" class="section-title">What we take on.</h2>
+						<p class="services-note">Most projects use two or more of these. Each phase has its own written fee.</p>
+					</div>
+					<ul class="service-list">
+						{services.map((s) => (
+							<li class="service">
+								<div class="service-main">
+									<h3 class="service-title" {...s.edit.title}>{s.data.title}</h3>
+									<p class="service-summary">{s.data.summary}</p>
+								</div>
+								<ul class="service-includes">
+									{lines(s.data.includes).map((item) => <li>{item}</li>)}
+								</ul>
+								<p class="service-link">
+									{
+										s.data.project_type ? (
+											<a class="under-link" href={projectsUrl({ type: s.data.project_type })}><span>See projects</span><Arrow /></a>
+										) : (
+											<a class="under-link" href="/contact"><span>Ask about a plot</span><Arrow /></a>
+										)
+									}
+								</p>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		news.length > 0 && (
+			<section class="news" aria-labelledby="news-title">
+				<div class="wrap">
+					<div class="section-head">
+						<div>
+							<p class="eyebrow">Studio news</p>
+							<h2 id="news-title" class="section-title">Recent notes.</h2>
+						</div>
+					</div>
+					<ul class="news-list">
+						{news.map((n) => (
+							<li class="news-item">
+								<p class="news-meta">{[n.data.date_label, n.data.topic].filter(Boolean).join(" · ")}</p>
+								<h3 class="news-title" {...n.edit.title}>{n.data.title}</h3>
+								<p class="news-text">{n.data.summary}</p>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<EnquiryBand studio={studioResult.studio} />
+</Base>

@@ -1,0 +1,26 @@
+---
+import { photoAlt, photoSrc, projectHref, statusLabel, typeLabel } from "../lib/site";
+import type { Project } from "../lib/site";
+
+interface Props {
+	project: { data: Project };
+	eager?: boolean;
+	/** Adds year and status under the photo (project lists). */
+	meta?: boolean;
+}
+const { project, eager = false, meta = false } = Astro.props;
+const p = project.data;
+const src = photoSrc(p.image, p.photo);
+const metaLine = [p.year, statusLabel(p.build_status)].filter(Boolean).join(" · ");
+---
+
+<a class="project-card" href={projectHref(p)}>
+	<span class="project-card-media">
+		{src && <img src={src} alt={photoAlt(p.image, p.photo, p.title)} width="872" height="574" loading={eager ? "eager" : "lazy"} />}
+		<span class="project-card-text">
+			<span class="project-card-title">{p.title}</span>
+			<span class="project-card-meta">{typeLabel(p.project_type)}<i aria-hidden="true">/</i>{p.country}</span>
+		</span>
+	</span>
+	{meta && <span class="project-card-foot">{metaLine}</span>}
+</a>

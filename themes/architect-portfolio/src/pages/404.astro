@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+---
+
+<Base title="Page not found">
+	<section class="notfound" aria-labelledby="nf-title">
+		<div class="notfound-copy">
+			<p class="eyebrow">Error 404</p>
+			<h1 id="nf-title" class="display display-xl">This page is not on the plan.</h1>
+			<p class="lede">The page you are looking for has moved or never existed. These are good places to start again.</p>
+			<div class="actions">
+				<a class="btn" href="/"><span>Back to home</span><Arrow /></a>
+				<a class="btn btn-line" href="/projects">Projects</a>
+				<a class="btn btn-line" href="/contact">Contact</a>
+			</div>
+		</div>
+		<img class="notfound-photo" src="/images/olive-steps.webp" alt="" width="679" height="669" />
+	</section>
+</Base>

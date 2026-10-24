@@ -1,0 +1,44 @@
+---
+/** Wordmark: the site title in thin, widely tracked capitals (an A is drawn without a crossbar), a thin rule, then the tagline in tiny tracked capitals on two lines. */
+interface Props {
+	title: string;
+	tagline?: string;
+	logo?: { url?: string; alt?: string } | null;
+	class?: string;
+}
+const { title, tagline, logo, class: className } = Astro.props;
+const letters = [...title.toUpperCase()];
+const [firstWord, ...restWords] = (tagline ?? "").split(" ");
+const rest = restWords.join(" ");
+---
+
+<a class:list={["brand", className]} href="/" aria-label={`${title}, home`}>
+	{
+		logo?.url ? (
+			<img class="brand-img" src={logo.url} alt={logo.alt || title} />
+		) : (
+			<>
+				<span class="brand-mark" aria-hidden="true">
+					{letters.map((ch) =>
+						ch === "A" ? (
+							<svg class="brand-a" viewBox="0 0 22 28" width="22" height="28" focusable="false">
+								<path d="M1.200 27.500 11 1.500l9.800 26" fill="none" stroke="currentColor" stroke-width="1.200" stroke-linejoin="miter" />
+							</svg>
+						) : (
+							<span>{ch}</span>
+						),
+					)}
+				</span>
+				{tagline && <i class="brand-rule" aria-hidden="true" />}
+				{
+					tagline && (
+						<span class="brand-tag" aria-hidden="true">
+							<span>{firstWord}</span>
+							{rest && <span>{rest}</span>}
+						</span>
+					)
+				}
+			</>
+		)
+	}
+</a>

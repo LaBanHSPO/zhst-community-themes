@@ -1,0 +1,80 @@
+---
+import Base from "../../layouts/Base.astro";
+import PageHead from "../../components/PageHead.astro";
+import EnquiryBand from "../../components/EnquiryBand.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { STATUSES, TYPES, getProjects, getStudio, projectsUrl } from "../../lib/site";
+
+const [projectsResult, studioResult] = await Promise.all([getProjects(), getStudio()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(projectsResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const all = projectsResult.entries;
+
+// One filter link per type and per status that has at least one project, in a fixed order.
+const types = TYPES.filter((t) => all.some((p) => p.data.project_type === t.slug));
+const statuses = STATUSES.filter((s) => all.some((p) => p.data.build_status === s.slug));
+// ?type=<slug> and ?status=<slug> narrow the list; they combine.
+const activeType = types.find((t) => t.slug === Astro.url.searchParams.get("type"));
+const activeStatus = statuses.find((s) => s.slug === Astro.url.searchParams.get("status"));
+const projects = all.filter(
+	(p) => (!activeType || p.data.project_type === activeType.slug) && (!activeStatus || p.data.build_status === activeStatus.slug),
+);
+const heading = [activeStatus?.label, activeType?.label].filter(Boolean).join(" ");
+const countText = `${projects.length} ${projects.length === 1 ? "project" : "projects"}`;
+---
+
+<Base
+	title={heading ? `${heading} projects` : "Projects"}
+	description="Projects by the ARCA architecture studio: houses, cultural buildings, hospitality, interiors and landscape. Filter by type and by status."
+	current="/projects"
+>
+	<PageHead
+		id="projects-title"
+		eyebrow="Projects"
+		title={heading ? `${heading} projects.` : "Buildings, built and planned."}
+		intro="Houses, halls, lodges, interiors and gardens, in different stages. Filter by type or by status, or look at all of them."
+	/>
+
+	<section class="list-section" aria-labelledby="projects-title">
+		<div class="wrap">
+			<div class="filters">
+				{
+					types.length > 1 && (
+						<nav class="filter" aria-label="Filter by type">
+							<span class="filter-label">Type</span>
+							<a href={projectsUrl({ status: activeStatus?.slug })} aria-current={activeType ? undefined : "true"}>All</a>
+							{types.map((t) => (
+								<a href={projectsUrl({ type: t.slug, status: activeStatus?.slug })} aria-current={activeType?.slug === t.slug ? "true" : undefined}>{t.label}</a>
+							))}
+						</nav>
+					)
+				}
+				{
+					statuses.length > 1 && (
+						<nav class="filter" aria-label="Filter by status">
+							<span class="filter-label">Status</span>
+							<a href={projectsUrl({ type: activeType?.slug })} aria-current={activeStatus ? undefined : "true"}>All</a>
+							{statuses.map((s) => (
+								<a href={projectsUrl({ type: activeType?.slug, status: s.slug })} aria-current={activeStatus?.slug === s.slug ? "true" : undefined}>{s.label}</a>
+							))}
+						</nav>
+					)
+				}
+			</div>
+			<p class="result-count" role="status">{countText}</p>
+			{
+				projects.length > 0 ? (
+					<ul class="project-grid">
+						{projects.map((p, i) => <li><ProjectCard project={p} eager={i < 6} meta /></li>)}
+					</ul>
+				) : (
+					<p class="empty">No projects match these filters yet. <a href="/projects">Show all projects</a>.</p>
+				)
+			}
+		</div>
+	</section>
+
+	<EnquiryBand studio={studioResult.studio} type={activeType?.slug} />
+</Base>

@@ -1,0 +1,64 @@
+---
+import Base from "../layouts/Base.astro";
+import Arrow from "../components/Arrow.astro";
+import PageHead from "../components/PageHead.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { TYPES, getProjects, projectsUrl, statusLabel, typeLabel } from "../lib/site";
+
+const projectsResult = await getProjects();
+if (Astro.cache?.enabled) Astro.cache.set(projectsResult.cacheHint);
+const q = (Astro.url.searchParams.get("q") ?? "").trim().slice(0, 100);
+const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+// Every word must appear in the title, type, country or place.
+const hay = (p: (typeof projectsResult.entries)[number]) =>
+	[p.data.title, typeLabel(p.data.project_type), p.data.project_type, p.data.country, p.data.place, statusLabel(p.data.build_status)]
+		.join(" ")
+		.toLowerCase();
+const results = terms.length === 0 ? [] : projectsResult.entries.filter((p) => terms.every((t) => hay(p).includes(t)));
+const countByType = (slug: string) => projectsResult.entries.filter((p) => p.data.project_type === slug).length;
+---
+
+<Base title={q ? `Search: ${q}` : "Search"} description="Search ARCA projects by title, type, country or place." current="/search">
+	<PageHead id="search-title" eyebrow="Search" title="Find a project." />
+
+	<section class="search-panel" aria-labelledby="search-title">
+		<div class="wrap">
+			<form class="search-form" action="/search" method="get" role="search">
+				<label class="sr-only" for="q">Search projects by title, type, country or place</label>
+				<input id="q" name="q" type="search" value={q} placeholder="A title, a type, a country or a place" autocomplete="off" />
+				<button class="btn" type="submit"><span>Search</span><Arrow /></button>
+			</form>
+
+			{
+				q && (
+					<p class="result-count" role="status">
+						{results.length === 0
+							? `No projects match "${q}".`
+							: `${results.length} ${results.length === 1 ? "project" : "projects"} for "${q}".`}
+					</p>
+				)
+			}
+
+			{
+				results.length > 0 && (
+					<ul class="project-grid">
+						{results.map((p) => <li><ProjectCard project={p} meta /></li>)}
+					</ul>
+				)
+			}
+
+			{
+				(!q || results.length === 0) && (
+					<div class="search-hint">
+						<p class="eyebrow">{q ? "Try a type instead" : "Or browse by type"}</p>
+						<ul class="chips">
+							{TYPES.filter((t) => countByType(t.slug) > 0).map((t) => (
+								<li><a class="chip" href={projectsUrl({ type: t.slug })}>{t.label}<span>{countByType(t.slug)}</span></a></li>
+							))}
+						</ul>
+					</div>
+				)
+			}
+		</div>
+	</section>
+</Base>

@@ -1,0 +1,186 @@
+---
+import { decodeSlug, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import Base from "../../layouts/Base.astro";
+import Arrow from "../../components/Arrow.astro";
+import EnquiryBand from "../../components/EnquiryBand.astro";
+import { resolveStarterSiteIdentity } from "../../utils/site-identity";
+import { areaLabel, getProjects, getStudio, lines, photoAlt, photoSrc, projectHref, projectsUrl, statusLabel, typeLabel } from "../../lib/site";
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return Astro.rewrite("/404");
+
+const { entry: project, cacheHint } = await getEmDashEntry("projects", slug);
+if (!project) return Astro.rewrite("/404");
+
+const [allResult, studioResult, settings] = await Promise.all([getProjects(), getStudio(), getSiteSettings()]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	Astro.cache.set(allResult.cacheHint);
+	Astro.cache.set(studioResult.cacheHint);
+}
+const { siteTitle } = resolveStarterSiteIdentity(settings);
+const seo = getSeoMeta(project, {
+	siteTitle,
+	siteUrl: Astro.url.origin,
+	path: Astro.url.pathname.replace(/\/$/, ""),
+});
+const d = project.data;
+const cover = photoSrc(d.image, d.photo);
+const photos = (d.gallery ?? [])
+	.map((g) => ({ src: photoSrc(g.image, g.photo), alt: photoAlt(g.image, g.photo, g.caption ?? ""), caption: g.caption }))
+	.filter((g): g is { src: string; alt: string; caption: string | undefined } => Boolean(g.src));
+const team = lines(d.team).map((l) => {
+	const i = l.indexOf(":");
+	return i > 0 ? { role: l.slice(0, i).trim(), name: l.slice(i + 1).trim() } : { role: "", name: l };
+});
+const drawings = lines(d.drawings);
+const where = [d.place, d.country].filter(Boolean).join(", ");
+
+// Previous and next project in the full list, wrapping around at the ends.
+const list = allResult.entries;
+const at = list.findIndex((p) => p.data.id === d.id);
+const prev = list.length > 1 ? list[(at - 1 + list.length) % list.length] : undefined;
+const next = list.length > 1 ? list[(at + 1) % list.length] : undefined;
+---
+
+<Base
+	title={seo.title}
+	pageTitle={seo.ogTitle}
+	description={seo.description ?? d.summary}
+	canonical={seo.canonical}
+	image={seo.ogImage ?? cover}
+	content={{ collection: "projects", id: d.id, slug }}
+	current="/projects"
+>
+	<header class="project-head">
+		<div class="wrap">
+			<nav class="crumbs" aria-label="Breadcrumb">
+				<a href="/projects">Projects</a>
+				<span aria-hidden="true">/</span>
+				<a href={projectsUrl({ type: d.project_type })}>{typeLabel(d.project_type)}</a>
+				<span aria-hidden="true">/</span>
+				<span aria-current="page">{d.title}</span>
+			</nav>
+			<div class="project-head-grid">
+				<div>
+					<p class="eyebrow">{[typeLabel(d.project_type), d.country].filter(Boolean).join(" / ")}</p>
+					<h1 class="display display-xl" {...project.edit.title}>{d.title}</h1>
+				</div>
+				<p class="lede">{d.summary}</p>
+			</div>
+		</div>
+	</header>
+
+	{
+		cover && (
+			<div class="project-cover-wrap">
+				<figure class="project-cover">
+					<img src={cover} alt={photoAlt(d.image, d.photo, d.title)} width="872" height="574" fetchpriority="high" />
+				</figure>
+			</div>
+		)
+	}
+
+	<section class="project-text" aria-label="About the project">
+		<div class="wrap project-text-grid">
+			<dl class="facts">
+				<div><dt>Type</dt><dd><a href={projectsUrl({ type: d.project_type })}>{typeLabel(d.project_type)}</a></dd></div>
+				{where && <div><dt>Location</dt><dd>{where}</dd></div>}
+				{d.year && <div><dt>Year</dt><dd>{d.year}</dd></div>}
+				<div><dt>Status</dt><dd><a href={projectsUrl({ status: d.build_status })}>{statusLabel(d.build_status)}</a></dd></div>
+				{d.area && <div><dt>Floor area</dt><dd>{areaLabel(d.area)}</dd></div>}
+				{
+					team.length > 0 && (
+						<div>
+							<dt>Team</dt>
+							<dd>
+								<ul class="team-list">
+									{team.map((c) => <li>{c.role && <span>{c.role}</span>} {c.name}</li>)}
+								</ul>
+							</dd>
+						</div>
+					)
+				}
+			</dl>
+			<div class="project-story">
+				<h2 class="mini-title">About the project</h2>
+				<p>{d.description}</p>
+			</div>
+		</div>
+	</section>
+
+	{
+		photos.length > 0 && (
+			<section class="project-photos" aria-label={`Images from ${d.title}`}>
+				<div class="wrap">
+					<ul class="sequence">
+						{photos.map((p) => (
+							<li>
+								<figure>
+									<img src={p.src} alt={p.alt} width="1000" height="700" loading="lazy" />
+									{p.caption && <figcaption>{p.caption}</figcaption>}
+								</figure>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		drawings.length > 0 && (
+			<section class="drawings" aria-labelledby="drawings-title">
+				<div class="wrap">
+					<h2 id="drawings-title" class="mini-title">Drawings</h2>
+					<ul class="drawing-list">
+						{drawings.map((caption, i) => (
+							<li>
+								<figure>
+									<svg class="drawing-sheet" viewBox="0 0 320 220" role="img" aria-label={`Placeholder sheet for: ${caption}`}>
+										<rect x="0.500" y="0.500" width="319" height="219" fill="none" stroke="currentColor" stroke-width="1" />
+										<rect x="12.500" y="12.500" width="295" height="195" fill="none" stroke="currentColor" stroke-width="0.600" stroke-dasharray="3 4" />
+										{
+											i % 2 === 0 ? (
+												<path d="M56 150h208M56 150V66h116v32h92v52M112 66v84M172 98v52M218 98v52" fill="none" stroke="currentColor" stroke-width="0.800" />
+											) : (
+												<path d="M40 150h240M40 150v8h240v-8M70 150V92h150v-8h40v8M70 118h150M110 92v58M180 92v58M230 150v-34h30" fill="none" stroke="currentColor" stroke-width="0.800" />
+											)
+										}
+										<path d="M226 190h72v12h-72zM226 196h72" fill="none" stroke="currentColor" stroke-width="0.600" />
+									</svg>
+									<figcaption>{caption}. Available on request.</figcaption>
+								</figure>
+							</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="project-cta">
+		<div class="wrap">
+			<a class="btn" href={`/contact?type=${d.project_type ?? ""}`}><span>Start a similar project</span><Arrow /></a>
+		</div>
+	</section>
+
+	{
+		prev && next && (
+			<nav class="pager" aria-label="More projects">
+				<div class="wrap pager-inner">
+					<a class="pager-link pager-prev" href={projectHref(prev.data)} rel="prev">
+						<span class="pager-label">Previous project</span>
+						<span class="pager-title">{prev.data.title}</span>
+					</a>
+					<a class="pager-link pager-next" href={projectHref(next.data)} rel="next">
+						<span class="pager-label">Next project</span>
+						<span class="pager-title">{next.data.title}</span>
+					</a>
+				</div>
+			</nav>
+		)
+	}
+
+	<EnquiryBand studio={studioResult.studio} type={d.project_type} />
+</Base>

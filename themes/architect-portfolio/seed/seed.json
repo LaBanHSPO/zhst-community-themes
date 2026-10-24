@@ -1,0 +1,1261 @@
+{
+ "$schema": "https://emdashcms.com/seed.schema.json",
+ "version": "1",
+ "meta": {
+  "name": "Architect Portfolio",
+  "description": "A light, photo-led portfolio theme for a small architecture studio: full-bleed hero, featured projects, approach in four steps, services, studio notes, a project archive filtered by type and status, project pages with image sequence and drawings placeholder, search, and an enquiry page. Seeded with synthetic sample content.",
+  "author": "ZeroHostCMS"
+ },
+ "settings": {
+  "title": "ARCA",
+  "tagline": "Architecture for better living"
+ },
+ "collections": [
+  {
+   "slug": "pages",
+   "label": "Pages",
+   "labelSingular": "Page",
+   "urlPattern": "/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Title",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "eyebrow",
+     "label": "Small label above the title (also used in the footer)",
+     "type": "string"
+    },
+    {
+     "slug": "intro",
+     "label": "Intro paragraph",
+     "type": "text"
+    },
+    {
+     "slug": "image",
+     "label": "Side photo (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled side photo path",
+     "type": "string"
+    },
+    {
+     "slug": "content",
+     "label": "Content",
+     "type": "portableText",
+     "searchable": true
+    }
+   ]
+  },
+  {
+   "slug": "projects",
+   "label": "Projects",
+   "labelSingular": "Project",
+   "urlPattern": "/projects/{slug}",
+   "supports": [
+    "drafts",
+    "revisions",
+    "preview",
+    "search",
+    "seo"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Project name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "project_type",
+     "label": "Type (project filter)",
+     "type": "select",
+     "required": true,
+     "indexed": true,
+     "defaultValue": "residential",
+     "validation": {
+      "options": [
+       "residential",
+       "cultural",
+       "hospitality",
+       "interiors",
+       "landscape"
+      ]
+     }
+    },
+    {
+     "slug": "country",
+     "label": "Country",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "place",
+     "label": "Place or region",
+     "type": "string",
+     "searchable": true
+    },
+    {
+     "slug": "year",
+     "label": "Year",
+     "type": "string"
+    },
+    {
+     "slug": "build_status",
+     "label": "Status (project filter)",
+     "type": "select",
+     "required": true,
+     "indexed": true,
+     "defaultValue": "built",
+     "validation": {
+      "options": [
+       "built",
+       "in-progress",
+       "concept"
+      ]
+     }
+    },
+    {
+     "slug": "area",
+     "label": "Approximate floor area in square metres",
+     "type": "integer"
+    },
+    {
+     "slug": "team",
+     "label": "Team roles (one per line, as Role: Name or initials)",
+     "type": "text"
+    },
+    {
+     "slug": "summary",
+     "label": "One-line summary",
+     "type": "text",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "description",
+     "label": "Description",
+     "type": "text",
+     "searchable": true
+    },
+    {
+     "slug": "drawings",
+     "label": "Drawings placeholder (one caption per line)",
+     "type": "text"
+    },
+    {
+     "slug": "featured",
+     "label": "Show in Featured projects on the homepage",
+     "type": "boolean",
+     "indexed": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    },
+    {
+     "slug": "image",
+     "label": "Cover image (upload)",
+     "type": "image"
+    },
+    {
+     "slug": "photo",
+     "label": "Bundled cover image path",
+     "type": "string"
+    },
+    {
+     "slug": "gallery",
+     "label": "Image sequence",
+     "type": "repeater",
+     "validation": {
+      "maxItems": 40,
+      "subFields": [
+       {
+        "slug": "image",
+        "label": "Image (upload)",
+        "type": "image"
+       },
+       {
+        "slug": "photo",
+        "label": "Bundled image path",
+        "type": "string"
+       },
+       {
+        "slug": "caption",
+        "label": "Caption",
+        "type": "text"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "slug": "news",
+   "label": "Studio news",
+   "labelSingular": "News item",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Headline",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "date_label",
+     "label": "Date (as shown, e.g. 12 March 2026)",
+     "type": "string"
+    },
+    {
+     "slug": "topic",
+     "label": "Topic label (e.g. Process)",
+     "type": "string"
+    },
+    {
+     "slug": "summary",
+     "label": "Text",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "services",
+   "label": "Services",
+   "labelSingular": "Service",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Service name",
+     "type": "string",
+     "required": true,
+     "searchable": true
+    },
+    {
+     "slug": "project_type",
+     "label": "Matching project type (blank for none)",
+     "type": "select",
+     "validation": {
+      "options": [
+       "residential",
+       "cultural",
+       "hospitality",
+       "interiors",
+       "landscape"
+      ]
+     }
+    },
+    {
+     "slug": "summary",
+     "label": "One-line description",
+     "type": "text",
+     "required": true
+    },
+    {
+     "slug": "includes",
+     "label": "What is included (one item per line)",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "steps",
+   "label": "Approach steps",
+   "labelSingular": "Step",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Step name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "text",
+     "label": "Text",
+     "type": "text"
+    },
+    {
+     "slug": "duration",
+     "label": "Usual length",
+     "type": "string"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "team",
+   "label": "Team",
+   "labelSingular": "Team member",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Name (text or initials)",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "role",
+     "label": "Role",
+     "type": "string"
+    },
+    {
+     "slug": "note",
+     "label": "One line about the work",
+     "type": "text"
+    },
+    {
+     "slug": "position",
+     "label": "Sort order",
+     "type": "integer"
+    }
+   ]
+  },
+  {
+   "slug": "studio",
+   "label": "Studio details",
+   "labelSingular": "Studio",
+   "supports": [
+    "revisions"
+   ],
+   "fields": [
+    {
+     "slug": "title",
+     "label": "Studio name",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "address",
+     "label": "Address",
+     "type": "text"
+    },
+    {
+     "slug": "hours",
+     "label": "Office hours",
+     "type": "string"
+    },
+    {
+     "slug": "phone",
+     "label": "Phone",
+     "type": "string"
+    },
+    {
+     "slug": "email",
+     "label": "Enquiry email",
+     "type": "string",
+     "required": true
+    },
+    {
+     "slug": "response",
+     "label": "Reply time",
+     "type": "string"
+    },
+    {
+     "slug": "note",
+     "label": "Note shown beside the enquiry form",
+     "type": "text"
+    }
+   ]
+  }
+ ],
+ "menus": [
+  {
+   "name": "primary",
+   "label": "Primary Navigation",
+   "items": [
+    {
+     "type": "custom",
+     "label": "Projects",
+     "url": "/projects"
+    },
+    {
+     "type": "custom",
+     "label": "Approach",
+     "url": "/approach"
+    },
+    {
+     "type": "custom",
+     "label": "About",
+     "url": "/about"
+    }
+   ]
+  }
+ ],
+ "content": {
+  "pages": [
+   {
+    "id": "about",
+    "slug": "about",
+    "status": "published",
+    "data": {
+     "title": "A small studio that draws for the people who will use the building.",
+     "eyebrow": "About",
+     "photo": "/images/site-model.webp",
+     "intro": "ARCA is a six-person architecture studio working on houses, small public buildings, interiors and gardens. This page describes how we work and who does what.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k1",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We keep the studio small on purpose. Marta draws the first sketches of every project and stays involved until the building is handed over, so the person you meet at the first site visit is the person who signs off the drawings.",
+         "_key": "k1s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k2",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "How we work",
+         "_key": "k2s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k3",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Most of our work is one building at a time, for people who will live in it or run it. We start with a site visit and a written brief, build a physical model before the drawings are finished, and we visit the site often while it is being built.",
+         "_key": "k3s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k4",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We work in a handful of countries around the coast and in the mountains. Travel is part of the fee and is written down in the proposal, so there are no surprises.",
+         "_key": "k4s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k5",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What we do not do",
+         "_key": "k5s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k6",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We do not take on more projects than six people can follow properly. We do not promise a finish date before we have seen the site, the rules and the builder's programme. We do not use the photographs on this site as a promise of what your building will look like.",
+         "_key": "k6s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k7",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The people",
+         "_key": "k7s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k8",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The team is listed below with first names and roles. If you want to speak to one of us about a particular kind of project, the enquiry form lets you choose the type.",
+         "_key": "k8s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "approach",
+    "slug": "approach",
+    "status": "published",
+    "data": {
+     "title": "We design around the site, then check every step with you.",
+     "eyebrow": "Approach",
+     "photo": "/images/olive-steps.webp",
+     "intro": "Four phases, each with a written summary at the end. You can stop or change direction after any of them.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k9",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Sustainability, in plain terms",
+         "_key": "k9s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k10",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We do not hold or advertise a green certification. What we do on every project is simple and checkable, and we put it in the drawings so you and the builder can see it.",
+         "_key": "k10s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k11",
+       "style": "h3",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Sun and wind first",
+         "_key": "k11s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k12",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We set the building on the plot so that rooms get winter sun and summer shade, and so that most rooms have windows on two sides. Roof overhangs are sized from the sun angle on the plot, not copied from another job.",
+         "_key": "k12s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k13",
+       "style": "h3",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Heavy walls where days are hot",
+         "_key": "k13s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k14",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "In hot, dry places we use thick masonry or concrete walls that hold the night's cool into the afternoon. In cold places we put the insulation outside the structure and keep the timber dry.",
+         "_key": "k14s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k15",
+       "style": "h3",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Materials from nearby",
+         "_key": "k15s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k16",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We ask local builders and quarries what they can supply before we choose finishes, and we prefer stone, lime and timber that can be repaired rather than replaced. We list what each material is and where it comes from.",
+         "_key": "k16s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k17",
+       "style": "h3",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Water and planting",
+         "_key": "k17s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k18",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Gardens are planted with species already growing on the site or nearby. Rainwater from roofs is directed to planting beds or a tank where the rules allow it.",
+         "_key": "k18s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k19",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What you get at each phase",
+         "_key": "k19s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k20",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "After the site visit you get the one-page brief. After the concept phase you get the model and a short note comparing the layouts. After detailed design you get the drawings, the materials list and a cost check. At handover you get a care guide for the building.",
+         "_key": "k20s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   },
+   {
+    "id": "fees-and-scope",
+    "slug": "fees-and-scope",
+    "status": "published",
+    "data": {
+     "title": "How we charge, and what an enquiry means.",
+     "eyebrow": "Fees and scope",
+     "intro": "A short, plain note on how the studio prices work.",
+     "content": [
+      {
+       "_type": "block",
+       "_key": "k21",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "We agree a fixed fee in writing for each phase before it starts. If the brief changes, we tell you what that does to the fee before we go on.",
+         "_key": "k21s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k22",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Before a fee is agreed",
+         "_key": "k22s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k23",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The first conversation and the first site visit within the studio's home region are free. A visit that needs a flight or an overnight stay is charged at cost, and we say so first.",
+         "_key": "k23s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k24",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "What an enquiry is",
+         "_key": "k24s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k25",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Sending the enquiry form opens an email to the studio. It is not a booking and it does not commit either side to anything. We reply within three working days and may ask a few questions about the site.",
+         "_key": "k25s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k26",
+       "style": "h2",
+       "children": [
+        {
+         "_type": "span",
+         "text": "Budget ranges",
+         "_key": "k26s"
+        }
+       ],
+       "markDefs": []
+      },
+      {
+       "_type": "block",
+       "_key": "k27",
+       "style": "normal",
+       "children": [
+        {
+         "_type": "span",
+         "text": "The budget range on the form is optional. It helps us say early whether the project is the right size for a studio of our size. We will not hold it against you if you leave it blank.",
+         "_key": "k27s"
+        }
+       ],
+       "markDefs": []
+      }
+     ]
+    }
+   }
+  ],
+  "projects": [
+   {
+    "id": "cliff-house",
+    "slug": "cliff-house",
+    "status": "published",
+    "data": {
+     "title": "Cliff House",
+     "project_type": "residential",
+     "country": "Italy",
+     "place": "Punta Corallo",
+     "year": "2025",
+     "build_status": "built",
+     "area": 340,
+     "featured": true,
+     "position": 10,
+     "team": "Principal: M. R.\nProject architect: S. A.\nInteriors: L. K.\nStructure: Ferro & Dane Engineers",
+     "summary": "A family house on a rock ledge, one room deep so every room looks at the sea.",
+     "description": "The plot is a narrow ledge with a drop on one side and a road cut on the other. We put the house along the ledge, one room deep, with a rough stone wall facing the road and a long glass front facing the water. Each bedroom has a window on both sides, so the house cools itself with a cross breeze in summer. The deck is poured concrete, brushed by hand, and it keeps its shade under the roof edge until late afternoon.",
+     "drawings": "Ground floor plan, 1:100\nSection through the deck, 1:50",
+     "photo": "/images/cliff-house.webp",
+     "gallery": [
+      {
+       "photo": "/images/coast-rocks.webp",
+       "caption": "The view from the end of the deck, looking along the coast."
+      },
+      {
+       "photo": "/images/material-samples.webp",
+       "caption": "Stone, oak and plaster samples tried against the afternoon light before we ordered."
+      }
+     ]
+    }
+   },
+   {
+    "id": "olive-court",
+    "slug": "olive-court",
+    "status": "published",
+    "data": {
+     "title": "Olive Court",
+     "project_type": "cultural",
+     "country": "Greece",
+     "place": "Orino",
+     "year": "2024",
+     "build_status": "built",
+     "area": 620,
+     "featured": true,
+     "position": 20,
+     "team": "Principal: M. R.\nProject architect: D. P.\nLandscape: T. V.\nLocal builder: Kritos Construction",
+     "summary": "A small arts hall built around a single olive tree that was already on the site.",
+     "description": "The village asked for a hall for classes, small concerts and market days. The only fixed point on the site was an old olive tree, so we kept it and built the hall around it. Three concrete walls wrap a courtyard, a shallow pool sits at the foot of the tree, and the hall opens onto the courtyard through full-height sliding glass. In summer the doors stay open and the courtyard works as a foyer.",
+     "drawings": "Site plan, 1:200\nCourtyard section, 1:50",
+     "photo": "/images/olive-court.webp",
+     "gallery": [
+      {
+       "photo": "/images/concrete-shadow.webp",
+       "caption": "Afternoon shadows on the courtyard wall."
+      }
+     ]
+    }
+   },
+   {
+    "id": "forest-retreat",
+    "slug": "forest-retreat",
+    "status": "published",
+    "data": {
+     "title": "Forest Retreat",
+     "project_type": "hospitality",
+     "country": "Norway",
+     "place": "Vestmark",
+     "year": "2025",
+     "build_status": "built",
+     "area": 210,
+     "featured": true,
+     "position": 30,
+     "team": "Principal: M. R.\nProject architect: J. H.\nTimber frame: Nordvik Trebygg",
+     "summary": "Four guest rooms in a timber and concrete lodge set low among spruce trees.",
+     "description": "The lodge sits on a shelf of ground between two stands of spruce. A concrete base holds the plan level and keeps the timber off the damp ground. Above it, a larch-clad volume holds four guest rooms and a shared room with a long window to the valley. We kept the footprint small so that no mature trees had to be cut, and every room has a view of the mountain.",
+     "drawings": "Floor plan, 1:100\nLong elevation, 1:100",
+     "photo": "/images/forest-retreat.webp",
+     "gallery": [
+      {
+       "photo": "/images/timber-wall.webp",
+       "caption": "Larch slats against board-marked concrete at the entrance."
+      }
+     ]
+    }
+   },
+   {
+    "id": "terrace-house",
+    "slug": "terrace-house",
+    "status": "published",
+    "data": {
+     "title": "Terrace House",
+     "project_type": "residential",
+     "country": "Portugal",
+     "place": "Serra Azul",
+     "year": "2026",
+     "build_status": "in-progress",
+     "area": 410,
+     "position": 40,
+     "team": "Principal: M. R.\nProject architect: S. A.\nModel maker: B. N.",
+     "summary": "A house under one long concrete roof, with a lap pool that follows the edge of the hill.",
+     "description": "A deep concrete roof shades the living room and a wide terrace, and slim steel posts carry it so the glass can stay clear of structure. The pool runs along the cliff edge and acts as a cooling surface beside the terrace. The house is under construction. The photographs show the design as drawn and modelled.",
+     "drawings": "Roof plan, 1:100\nSection through the pool, 1:50",
+     "photo": "/images/terrace-house.webp",
+     "gallery": [
+      {
+       "photo": "/images/infinity-pool.webp",
+       "caption": "The pool edge and terrace, as designed."
+      },
+      {
+       "photo": "/images/site-model.webp",
+       "caption": "The 1:100 study model on its stone base."
+      }
+     ]
+    }
+   },
+   {
+    "id": "lake-pavilion",
+    "slug": "lake-pavilion",
+    "status": "published",
+    "data": {
+     "title": "Lake Pavilion",
+     "project_type": "hospitality",
+     "country": "Austria",
+     "place": "Alder Lake",
+     "year": "2026",
+     "build_status": "concept",
+     "area": 900,
+     "position": 50,
+     "team": "Principal: M. R.\nConcept design: D. P., B. N.",
+     "summary": "A concept for a small lakeside hotel pavilion with a cantilevered upper floor.",
+     "description": "A concept study for a family-run hotel on a lake shore. The upper floor of guest rooms cantilevers over a glazed lounge, and a water garden of boulders and reeds sits between the building and the lake. It is a design study only and has no site or client yet.",
+     "drawings": "Concept plan, 1:200\nLake elevation, 1:200",
+     "photo": "/images/lake-pavilion.webp",
+     "gallery": [
+      {
+       "photo": "/images/concrete-shadow.webp",
+       "caption": "A study of shadow on a board-marked concrete wall."
+      }
+     ]
+    }
+   },
+   {
+    "id": "stone-room",
+    "slug": "stone-room",
+    "status": "published",
+    "data": {
+     "title": "Stone Room",
+     "project_type": "interiors",
+     "country": "Spain",
+     "place": "Cala Seca",
+     "year": "2025",
+     "build_status": "built",
+     "area": 180,
+     "position": 60,
+     "team": "Principal: M. R.\nInteriors: L. K.\nStone work: Piedra Viva workshop",
+     "summary": "The interior of a seaside living room finished in limestone, oak and lime plaster.",
+     "description": "An existing living room with a low ceiling and one large opening to the water. We lowered nothing and added nothing to the structure. Instead we limited the finishes to three materials, honed limestone on the floor, oak joinery and lime plaster on the walls, so the view stays the main thing in the room.",
+     "drawings": "Furniture layout, 1:50\nJoinery elevation, 1:20",
+     "photo": "/images/stone-room.webp",
+     "gallery": [
+      {
+       "photo": "/images/material-samples.webp",
+       "caption": "The three finishes laid out on site."
+      },
+      {
+       "photo": "/images/olive-bowl.webp",
+       "caption": "A stone bowl made for the entrance table by a local mason."
+      }
+     ]
+    }
+   },
+   {
+    "id": "quarry-garden",
+    "slug": "quarry-garden",
+    "status": "published",
+    "data": {
+     "title": "Quarry Garden",
+     "project_type": "landscape",
+     "country": "Croatia",
+     "place": "Kamen Cove",
+     "year": "2026",
+     "build_status": "concept",
+     "area": 1800,
+     "position": 70,
+     "team": "Principal: M. R.\nLandscape: T. V.\nModel maker: B. N.",
+     "summary": "A garden terraced into a disused limestone quarry, planted with what already grows there.",
+     "description": "A concept for a guest garden in a former quarry. The cut faces stay as they are and become the garden walls. Terraces step down to a small house and a pool, and planting is limited to olives, rosemary and other species already growing on the hillside. The site area is approximate.",
+     "drawings": "Terrace plan, 1:200\nSection through the quarry, 1:100",
+     "photo": "/images/site-model.webp",
+     "gallery": [
+      {
+       "photo": "/images/coast-rocks.webp",
+       "caption": "The hillside above the cove, with the planting we would keep."
+      }
+     ]
+    }
+   },
+   {
+    "id": "harbour-hall",
+    "slug": "harbour-hall",
+    "status": "published",
+    "data": {
+     "title": "Harbour Hall",
+     "project_type": "cultural",
+     "country": "Spain",
+     "place": "Puerto Claro",
+     "year": "2026",
+     "build_status": "in-progress",
+     "area": 1150,
+     "position": 80,
+     "team": "Principal: M. R.\nProject architect: D. P.\nStructure: Ferro & Dane Engineers",
+     "summary": "A community hall and market courtyard behind the old fish quay.",
+     "description": "The town wanted a covered place for markets and meetings that stays usable in the heat. We drew a hall with deep walls and a courtyard planted with olive trees, with steps that double as seating. The building is under construction and is due to open next year.",
+     "drawings": "Ground plan, 1:200\nCourtyard section, 1:50",
+     "photo": "/images/olive-steps.webp",
+     "gallery": [
+      {
+       "photo": "/images/concrete-shadow.webp",
+       "caption": "A trial panel for the wall finish, in afternoon sun."
+      }
+     ]
+    }
+   }
+  ],
+  "news": [
+   {
+    "id": "model-workshop",
+    "slug": "model-workshop",
+    "status": "published",
+    "data": {
+     "title": "A new bench in the model workshop",
+     "date_label": "14 October 2026",
+     "topic": "Studio",
+     "position": 10,
+     "summary": "We added a hot-wire cutter and a second work bench, so the Terrace House and Quarry Garden models could be built side by side."
+    }
+   },
+   {
+    "id": "harbour-hall-slab",
+    "slug": "harbour-hall-slab",
+    "status": "published",
+    "data": {
+     "title": "Harbour Hall: first floor slab poured",
+     "date_label": "2 October 2026",
+     "topic": "On site",
+     "position": 20,
+     "summary": "The first floor slab went in over two days. Next is the courtyard wall, where we are testing three finishes on a trial panel."
+    }
+   },
+   {
+    "id": "open-studio",
+    "slug": "open-studio",
+    "status": "published",
+    "data": {
+     "title": "Open studio on the first Saturday of November",
+     "date_label": "26 September 2026",
+     "topic": "Studio",
+     "position": 30,
+     "summary": "Models and drawings will be out on the long table from 10:00 to 16:00. Anyone can drop in. Tea is on us."
+    }
+   }
+  ],
+  "services": [
+   {
+    "id": "architecture",
+    "slug": "architecture",
+    "status": "published",
+    "data": {
+     "title": "Architecture",
+     "project_type": "residential",
+     "position": 10,
+     "summary": "New houses, small public buildings and extensions, from first sketch to handover.",
+     "includes": "Site visit and written brief\nConcept design with a physical model\nPlanning drawings and permit support\nDetailed drawings for the builder\nSite visits during construction"
+    }
+   },
+   {
+    "id": "interiors",
+    "slug": "interiors",
+    "status": "published",
+    "data": {
+     "title": "Interiors",
+     "project_type": "interiors",
+     "position": 20,
+     "summary": "Layouts, joinery and finishes for homes and small hospitality spaces.",
+     "includes": "Room layouts and furniture plans\nMaterial boards with real samples\nJoinery drawings\nLighting plan\nSupervision of fit-out"
+    }
+   },
+   {
+    "id": "landscape",
+    "slug": "landscape",
+    "status": "published",
+    "data": {
+     "title": "Landscape",
+     "project_type": "landscape",
+     "position": 30,
+     "summary": "Terraces, courtyards and planting that suit the site and need little water.",
+     "includes": "Site and soil survey\nPlanting plan using local species\nWalls, steps and paving details\nWater and drainage plan\nFirst-year care notes"
+    }
+   },
+   {
+    "id": "feasibility",
+    "slug": "feasibility",
+    "status": "published",
+    "data": {
+     "title": "Feasibility",
+     "position": 40,
+     "summary": "A short study to find out what a plot can take before you buy or commit.",
+     "includes": "Site visit and photographs\nRules, access and services check\nThree massing sketches\nRough cost range and programme\nA written summary of risks"
+    }
+   }
+  ],
+  "steps": [
+   {
+    "id": "visit",
+    "slug": "visit",
+    "status": "published",
+    "data": {
+     "title": "Visit the site",
+     "position": 10,
+     "duration": "1 to 2 weeks",
+     "text": "We walk the plot at different times of day, check access and services, and note the sun, wind and views. You tell us how you live, and we write a one-page brief for you to correct."
+    }
+   },
+   {
+    "id": "concept",
+    "slug": "concept",
+    "status": "published",
+    "data": {
+     "title": "Concept and model",
+     "position": 20,
+     "duration": "4 to 6 weeks",
+     "text": "Two or three layouts as sketches, then one developed as a physical model. We bring the model to you rather than send images, because scale is easier to judge by hand."
+    }
+   },
+   {
+    "id": "design",
+    "slug": "design",
+    "status": "published",
+    "data": {
+     "title": "Detailed design",
+     "position": 30,
+     "duration": "2 to 4 months",
+     "text": "Drawings for the planning authority and the builder, a materials list with samples, and a cost check against the budget. Changes are cheap on paper, so we expect a few."
+    }
+   },
+   {
+    "id": "build",
+    "slug": "build",
+    "status": "published",
+    "data": {
+     "title": "Build and handover",
+     "position": 40,
+     "duration": "Depends on the building",
+     "text": "We visit the site regularly, answer the builder's questions and check the work against the drawings. At handover you get a short guide to how the building is meant to be looked after."
+    }
+   }
+  ],
+  "team": [
+   {
+    "id": "m-r",
+    "slug": "m-r",
+    "status": "published",
+    "data": {
+     "title": "Marta R.",
+     "role": "Principal architect",
+     "position": 10,
+     "note": "Leads every project and draws the first sketches."
+    }
+   },
+   {
+    "id": "d-p",
+    "slug": "d-p",
+    "status": "published",
+    "data": {
+     "title": "Daniel P.",
+     "role": "Project architect",
+     "position": 20,
+     "note": "Runs the detailed design and site visits for public buildings."
+    }
+   },
+   {
+    "id": "s-a",
+    "slug": "s-a",
+    "status": "published",
+    "data": {
+     "title": "Sofia A.",
+     "role": "Project architect",
+     "position": 30,
+     "note": "Works on houses, from permit drawings to handover."
+    }
+   },
+   {
+    "id": "l-k",
+    "slug": "l-k",
+    "status": "published",
+    "data": {
+     "title": "Lena K.",
+     "role": "Interiors",
+     "position": 40,
+     "note": "Plans rooms, joinery and finishes."
+    }
+   },
+   {
+    "id": "t-v",
+    "slug": "t-v",
+    "status": "published",
+    "data": {
+     "title": "Tomas V.",
+     "role": "Landscape architect",
+     "position": 50,
+     "note": "Plans planting, terraces and drainage."
+    }
+   },
+   {
+    "id": "b-n",
+    "slug": "b-n",
+    "status": "published",
+    "data": {
+     "title": "Bruno N.",
+     "role": "Model maker",
+     "position": 60,
+     "note": "Builds the study models in the workshop."
+    }
+   }
+  ],
+  "studio": [
+   {
+    "id": "studio",
+    "slug": "studio",
+    "status": "published",
+    "data": {
+     "title": "ARCA",
+     "address": "Studio 3, Salt Warehouse\nQuay Road, Ostra Harbour",
+     "hours": "Monday to Friday, 9:00 to 17:30",
+     "phone": "+1 (415) 555-0142",
+     "email": "studio@arca-architects.example",
+     "response": "We reply within three working days.",
+     "note": "An enquiry is not a booking. We confirm scope, dates and fee in writing before any work starts."
+    }
+   }
+  ]
+ }
+}
