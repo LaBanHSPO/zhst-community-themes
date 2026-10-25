@@ -9,7 +9,7 @@ const { title, logo, class: className } = Astro.props;
 const uid = `nx${Math.random().toString(36).slice(2, 8)}`;
 ---
 
-<a class:list={["wordmark", className]} href="/" aria-label={`${title} — home`}>
+<a class:list={["wordmark", className]} href="/" aria-label={`${title}, home`}>
 	{
 		logo?.url ? (
 			<img src={logo.url} alt={logo.alt || title} />

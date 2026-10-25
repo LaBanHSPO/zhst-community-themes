@@ -1,0 +1,397 @@
+{
+  "collections": [
+    {
+      "slug": "clinic",
+      "label": "Clinic details",
+      "labelSingular": "Clinic details",
+      "supports": [
+        "revisions"
+      ],
+      "hidden": false,
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Clinic name",
+          "type": "string",
+          "required": true,
+          "unique": false
+        },
+        {
+          "slug": "street",
+          "label": "Street address",
+          "type": "string",
+          "required": true,
+          "unique": false
+        },
+        {
+          "slug": "locality",
+          "label": "City, state and ZIP",
+          "type": "string",
+          "required": true,
+          "unique": false
+        },
+        {
+          "slug": "country",
+          "label": "Country",
+          "type": "string",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "phone",
+          "label": "Phone",
+          "type": "string",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "email",
+          "label": "Appointment requests email",
+          "type": "string",
+          "required": true,
+          "unique": false
+        },
+        {
+          "slug": "hours",
+          "label": "Opening hours (one per line, Day|Hours)",
+          "type": "text",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "emergency_note",
+          "label": "Emergency note",
+          "type": "text",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "response_note",
+          "label": "Note shown on the contact page",
+          "type": "text",
+          "required": false,
+          "unique": false
+        }
+      ]
+    },
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "hidden": false,
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "unique": false
+        },
+        {
+          "slug": "eyebrow",
+          "label": "Small label above the title (also used in the footer)",
+          "type": "string",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "required": false,
+          "unique": false
+        }
+      ]
+    },
+    {
+      "slug": "people",
+      "label": "Our Team",
+      "labelSingular": "Team member",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "hidden": false,
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Name",
+          "type": "string",
+          "required": true,
+          "unique": false
+        },
+        {
+          "slug": "role",
+          "label": "Role",
+          "type": "string",
+          "required": true,
+          "unique": false
+        },
+        {
+          "slug": "summary",
+          "label": "Short bio (cards and profile intro)",
+          "type": "text",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "content",
+          "label": "Profile",
+          "type": "portableText",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "image",
+          "label": "Portrait (upload)",
+          "type": "image",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled portrait path",
+          "type": "string",
+          "required": false,
+          "unique": false
+        }
+      ]
+    },
+    {
+      "slug": "points",
+      "label": "Icon points",
+      "labelSingular": "Icon point",
+      "supports": [
+        "revisions"
+      ],
+      "hidden": false,
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "unique": false
+        },
+        {
+          "slug": "text",
+          "label": "Short text",
+          "type": "text",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "icon",
+          "label": "Icon",
+          "type": "select",
+          "required": true,
+          "unique": false,
+          "defaultValue": "tooth",
+          "validation": {
+            "options": [
+              "leaf",
+              "tooth",
+              "people",
+              "smile"
+            ]
+          }
+        },
+        {
+          "slug": "place",
+          "label": "Where it shows",
+          "type": "select",
+          "required": true,
+          "unique": false,
+          "defaultValue": "hero",
+          "validation": {
+            "options": [
+              "hero",
+              "approach"
+            ]
+          }
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer",
+          "required": false,
+          "unique": false
+        }
+      ]
+    },
+    {
+      "slug": "services",
+      "label": "Services",
+      "labelSingular": "Service",
+      "supports": [
+        "drafts",
+        "revisions",
+        "preview",
+        "search",
+        "seo"
+      ],
+      "hidden": false,
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Service name",
+          "type": "string",
+          "required": true,
+          "unique": false
+        },
+        {
+          "slug": "summary",
+          "label": "One-line summary",
+          "type": "text",
+          "required": true,
+          "unique": false
+        },
+        {
+          "slug": "icon",
+          "label": "Icon",
+          "type": "select",
+          "required": true,
+          "unique": false,
+          "defaultValue": "tooth",
+          "validation": {
+            "options": [
+              "tooth",
+              "filling",
+              "sparkle",
+              "smile",
+              "bolt",
+              "drop"
+            ]
+          }
+        },
+        {
+          "slug": "featured",
+          "label": "Show on the homepage",
+          "type": "boolean",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "duration",
+          "label": "Typical appointment length (e.g. 45 minutes)",
+          "type": "string",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "price_label",
+          "label": "Price note (e.g. From $95, or Ask at reception)",
+          "type": "string",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "intro",
+          "label": "Intro paragraph",
+          "type": "text",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "what_happens",
+          "label": "What happens at the visit (one step per line)",
+          "type": "text",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "aftercare",
+          "label": "Aftercare basics (one per line)",
+          "type": "text",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "content",
+          "label": "Service page content",
+          "type": "portableText",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "image",
+          "label": "Photo (upload)",
+          "type": "image",
+          "required": false,
+          "unique": false
+        },
+        {
+          "slug": "photo",
+          "label": "Bundled photo path",
+          "type": "string",
+          "required": false,
+          "unique": false
+        }
+      ]
+    },
+    {
+      "slug": "steps",
+      "label": "First visit steps",
+      "labelSingular": "Step",
+      "supports": [
+        "revisions"
+      ],
+      "hidden": false,
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Step title",
+          "type": "string",
+          "required": true,
+          "unique": false
+        },
+        {
+          "slug": "text",
+          "label": "What happens",
+          "type": "text",
+          "required": true,
+          "unique": false
+        },
+        {
+          "slug": "position",
+          "label": "Sort order",
+          "type": "integer",
+          "required": false,
+          "unique": false
+        }
+      ]
+    }
+  ],
+  "version": "718951c4ba0dcaa5"
+}

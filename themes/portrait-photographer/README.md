@@ -34,17 +34,17 @@ the hero keeps the photo full-bleed with the headline over a dark gradient.
 
 ## Collections
 
-- **work** — series title, category (drives the filter), season/year as shown, one-line summary, "show
+- **work**: series title, category (drives the filter), season/year as shown, one-line summary, "show
   on the homepage" flag, sort order, cover `image` + `photo`, `gallery` repeater (photo upload or bundled
   path, plus caption), Portable Text note.
-- **journal** — title, date as shown, excerpt, "show on the homepage" flag, sort order (1 = newest),
+- **journal**: title, date as shown, excerpt, "show on the homepage" flag, sort order (1 = newest),
   cover `image` + `photo`, Portable Text post.
-- **sessions** — name, one-line description, starting price (whole dollars), length, included items
+- **sessions**: name, one-line description, starting price (whole dollars), length, included items
   (one per line), sort order.
-- **principles** (Approach) — title, text, sort order (homepage band and about page).
-- **studio** — one entry: studio name, photographer, base, phone, booking email, reply time and the note
+- **principles** (Approach): title, text, sort order (homepage band and about page).
+- **studio**: a single entry with studio name, photographer, base, phone, booking email, reply time and the note
   beside the form.
-- **pages** — title, optional small label and intro, Portable Text content. The page with slug `about`
+- **pages**: title, optional small label and intro, Portable Text content. The page with slug `about`
   feeds `/about`.
 
 Site settings: the title ("KELLEN") is the tracked serif-caps wordmark and the tagline ("Portrait
@@ -67,18 +67,18 @@ production route; it is not wired into this standalone theme. The extension mani
 
 - **Font** is self-hosted through npm, no font CDN, under the SIL Open Font License 1.1:
   [Newsreader](https://github.com/productiontype/Newsreader) (variable, optical sizes, roman and italic)
-  via `@fontsource-variable/newsreader` — all headlines, wordmark, navigation, tracked caps and body,
+  via `@fontsource-variable/newsreader`: all headlines, wordmark, navigation, tracked caps and body,
   © The Newsreader Project Authors. Its high optical-size cut approximates the design's display serif;
   the hero headline is set slightly smaller than the comp so that line widths match.
 - **Images** in `public/images/` were cropped for this theme from the ZeroHostCMS Buildful preview
   images of concept 11 (`11-portrait-photographer-a/b.png`, AI-generated design comps; the sitters are
   not real people):
-  - `hero-home.webp` (1448×660) — the design screen hero; the overlaid wordmark, navigation, pill,
+  - `hero-home.webp` (1448×660): the design screen hero; the overlaid wordmark, navigation, pill,
     headline, kicker and button were removed by inpainting (the theme draws the live text over the same
     spots). `woman-window`, `woman-bw`, `hand-detail` and `window-light` are crops of it.
-  - `man-bw`, `redhead`, `grey-hair` — the three portraits from the design screen, only about 330×380
+  - `man-bw`, `redhead`, `grey-hair`: the three portraits from the design screen, only about 330×380
     in the source and upscaled 2× with light sharpening; `redhead-bw` is a greyscale copy.
-  - `camera` — crop of the text-free still life (b), used on the about page and not as a portrait of the
+  - `camera`: crop of the text-free still life (b), used on the about page and not as a portrait of the
     photographer.
   The source comps are small, so some crops are soft and the same ten photos repeat across series and
   posts.

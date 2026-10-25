@@ -10,7 +10,7 @@ interface Props {
 const { title, tagline, logo, class: className, light = false } = Astro.props;
 ---
 
-<a class:list={["wordmark", { "is-light": light }, className]} href="/" aria-label={`${title} — home`}>
+<a class:list={["wordmark", { "is-light": light }, className]} href="/" aria-label={`${title}, home`}>
 	{
 		logo?.url ? (
 			<img src={logo.url} alt={logo.alt || title} />

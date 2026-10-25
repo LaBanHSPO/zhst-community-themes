@@ -32,15 +32,15 @@ hero stacks: text on paper first, then the photo. The right-hand rail is hidden 
 
 ## Collections
 
-- **stories** — couple (title), place, wedding date (as shown), one-line summary, "show on the
+- **stories**: couple (title), place, wedding date (as shown), one-line summary, "show on the
   homepage" flag, sort order, cover `image` + `photo`, `gallery` repeater (photo upload or bundled
   path, plus caption), Portable Text story.
-- **packages** — name, one-line description, starting price (whole dollars), coverage, included
+- **packages**: name, one-line description, starting price (whole dollars), coverage, included
   items (one per line), "most booked" highlight flag, sort order.
-- **principles** (Approach) — title, text, sort order (homepage band and about page).
-- **studio** — one entry: studio name, photographer, base, phone, inquiry email, reply time and the
+- **principles** (Approach): title, text, sort order (homepage band and about page).
+- **studio**: a single entry with studio name, photographer, base, phone, inquiry email, reply time and the
   note beside the form.
-- **pages** — title, optional small label and intro, Portable Text content. The page with slug `about`
+- **pages**: title, optional small label and intro, Portable Text content. The page with slug `about`
   feeds `/about`.
 
 Site settings: the title ("evermore") is the tracked lowercase serif wordmark and the tagline
@@ -63,21 +63,21 @@ production route; it is not wired into this standalone theme. The extension mani
 
 - **Fonts** are self-hosted through npm, no font CDN, all under the SIL Open Font License 1.1:
   - [Cormorant Garamond](https://github.com/CatharsisFonts/Cormorant) (variable, roman and italic)
-    via `@fontsource-variable/cormorant-garamond` — headlines and wordmark, © The Cormorant Project
+    via `@fontsource-variable/cormorant-garamond`: headlines and wordmark, © The Cormorant Project
     Authors.
   - [Newsreader](https://github.com/productiontype/Newsreader) (variable, optical sizes) via
-    `@fontsource-variable/newsreader` — body text and button labels, © The Newsreader Project Authors.
-  - [Figtree](https://github.com/erikdkennedy/figtree) (variable) via `@fontsource-variable/figtree` —
+    `@fontsource-variable/newsreader`: body text and button labels, © The Newsreader Project Authors.
+  - [Figtree](https://github.com/erikdkennedy/figtree) (variable) via `@fontsource-variable/figtree`:
     navigation and small tracked caps, © The Figtree Project Authors.
 - **Images** in `public/images/` were cropped for this theme from the ZeroHostCMS Buildful preview
   images of concept 10 (`10-wedding-photographer-a/b/c.png`, AI-generated design comps):
-  - `hero-home.webp` (1448×693) — the design screen hero; the overlaid wordmark, navigation, pill,
+  - `hero-home.webp` (1448×693): the design screen hero; the overlaid wordmark, navigation, pill,
     eyebrow, headline, button and right-hand rail were removed by inpainting (the theme draws the live
     text over the same spots). `bouquet`, `veil` and `hills` are crops of it.
-  - `table-setting`, `walking-bw`, `rings-card` — the three photos from the design screen, only about
+  - `table-setting`, `walking-bw`, `rings-card`: the three photos from the design screen, only about
     262×283 in the source and upscaled 2× with light sharpening (the handwritten card is part of the
     photo). `embrace-close` is the right part of the photo shown on the laptop in (c), upscaled 2×.
-  - `camera-prints`, `camera`, `lake-couple`, `prints` — the text-free product illustration (b) and
+  - `camera-prints`, `camera`, `lake-couple`, `prints`: the text-free product illustration (b) and
     crops of it.
   The source comps are small, so some crops are soft and the same eleven photos repeat across stories.
   No faces from these photos are used as portraits of the photographer.

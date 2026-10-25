@@ -13,7 +13,7 @@ const main = words.length > 1 ? words.slice(0, -1).join(" ") : title;
 const sub = words.length > 1 ? words[words.length - 1] : "";
 ---
 
-<a class:list={["wordmark", className]} href="/" aria-label={`${title} — home`}>
+<a class:list={["wordmark", className]} href="/" aria-label={`${title}, home`}>
 	{
 		logo?.url ? (
 			<img src={logo.url} alt={logo.alt || title} />

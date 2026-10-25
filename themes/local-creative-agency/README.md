@@ -35,19 +35,19 @@ without JavaScript). Between 960px and 1400px the hero photo narrows and crops f
 
 ## Collections
 
-- **projects** (Work) — name, short description, disciplines (comma separated, e.g. `Brand, Packaging`;
+- **projects** (Work): name, short description, disciplines (comma separated, e.g. `Brand, Packaging`;
   used for the filter chips and the tracked caps label under each card), client, year, "show on the
   homepage" flag (the homepage shows up to three), sort order, brief, approach, Portable Text write-up,
   `featured_image` + `photo`, and two extra bundled photo paths (`photo_2`, `photo_3`).
-- **services** — name, one-line summary, sort order, intro, Portable Text content, included items
+- **services**: name, one-line summary, sort order, intro, Portable Text content, included items
   (one per line), typical engagement, `image` + `photo`.
-- **people** (Team) — name, role, short bio, sort order, `image` + `photo`. A person without a photo is
+- **people** (Team): name, role, short bio, sort order, `image` + `photo`. A person without a photo is
   shown as initials.
-- **principles** (Beliefs) — title, text, sort order.
-- **steps** (How we work) — title, text, sort order.
-- **office** (Contact details) — one entry: studio name, street, city, country, phone, enquiries email,
+- **principles** (Beliefs): title, text, sort order.
+- **steps** (How we work): title, text, sort order.
+- **office** (Contact details): a single entry with studio name, street, city, country, phone, enquiries email,
   hours and the response note.
-- **pages** — title, optional small label and intro, Portable Text content. The page with slug `about`
+- **pages**: title, optional small label and intro, Portable Text content. The page with slug `about`
   feeds `/about`.
 
 Site settings: the title ("LOCAL") is the wide tracked wordmark and the tagline ("Creative Agency")
@@ -77,18 +77,18 @@ production route; it is not wired into this standalone theme.
   searchable. No font CDN is used.
 - **Images** in `public/images/` were cropped from the ZeroHostCMS Buildful preview images of concept
   09 (`09-local-creative-agency-a/b.png`, AI-generated design comps):
-  - `hero-home.webp` (1448×630) — the design screen hero. The wordmark, navigation, pill, eyebrow,
+  - `hero-home.webp` (1448×630): the design screen hero. The wordmark, navigation, pill, eyebrow,
     headline, paragraph, button, the handwritten wall note, the poster text and the mug text were
     removed by inpainting (the theme draws them as live text over the same spots). Faint smoothing is
     visible on the blank poster and the mug.
-  - `work-little-ground.webp`, `work-cove.webp`, `work-nook.webp` (about 270×217) — the three project
+  - `work-little-ground.webp`, `work-cove.webp`, `work-nook.webp` (about 270×217): the three project
     photos from the design screen. The text inside them ("A kinder daily ritual", "Further together",
     "Homes for a brighter tomorrow") is part of the showcased artwork and was kept. They are small, so
     case study and service pages show them upscaled about 2×, noticeably soft.
-  - `team-1/2/3.webp` (186×186) — the three circular portraits shown in the design screen, upscaled 2×
+  - `team-1/2/3.webp` (186×186): the three circular portraits shown in the design screen, upscaled 2×
     from about 93px. They are the design's own avatars; the extra team members use initials.
   - `studio-wide.webp` (1448×1086), `studio-trio.webp`, `studio-table.webp`, `work-arch.webp`,
-    `work-fern.webp`, `work-kiln.webp` — text-free crops of the product illustration (b), used for
+    `work-fern.webp`, `work-kiln.webp`: text-free crops of the product illustration (b), used for
     the about page, case study galleries and the three extra case studies (the "brands" in them are
     wall prints and desk objects in that illustration). Several images repeat across pages.
   - The contextual mockup (c) is not used: its screen shows another wordmark.

@@ -340,7 +340,7 @@
         "data": {
           "title": "A calm place for everyday beauty.",
           "eyebrow": "About",
-          "intro": "Lumière is an independent beauty studio for hair, skin and nails. We keep things unhurried, honest and a little bit luxurious.",
+          "intro": "Lumière is an independent beauty studio for hair, skin and nails. We keep the pace slow and the advice plain.",
           "content": [
             {
               "_type": "block",
@@ -388,7 +388,7 @@
               "children": [
                 {
                   "_type": "span",
-                  "text": "Come in for a trim or a full afternoon. Either way, we hope you leave feeling a little brighter than when you arrived.",
+                  "text": "Come in for a trim or stay for a full afternoon. Both are welcome.",
                   "_key": "k26s"
                 }
               ],

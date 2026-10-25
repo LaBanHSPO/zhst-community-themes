@@ -31,13 +31,13 @@ hero stacks: text on paper first, then the photograph.
 
 ## Collections
 
-- **articles** (Work) — title, category (select: `technology` / `productivity` / `lifestyle` / `culture`),
+- **articles** (Work): title, category (select: `technology` / `productivity` / `lifestyle` / `culture`),
   publication (a fictional name), date (as shown), reading time in minutes, one-line summary, "show on the
   homepage" flag, sort order, cover `image` + `photo`, Portable Text body.
-- **services** — title, text, sort order (homepage section; each links to `/contact?service=<slug>`).
-- **studio** — one entry: name, writer, base, phone, enquiry email, reply time, contact note, "who I write
+- **services**: title, text, sort order (homepage section; each links to `/contact?service=<slug>`).
+- **studio**: a single entry with name, writer, base, phone, enquiry email, reply time, contact note, "who I write
   for" sectors (one per line) and the closing note used in the commission band.
-- **pages** — title, optional small label and intro, optional side photo, Portable Text content. The page
+- **pages**: title, optional small label and intro, optional side photo, Portable Text content. The page
   with slug `about` feeds `/about`.
 
 Site settings: the title ("Freelance Writer") is the serif wordmark and the tagline ("Ideas  People  A
@@ -60,18 +60,18 @@ theme.
 
 - **Fonts** are self-hosted through npm, no font CDN, both under the SIL Open Font License 1.1:
   - [Newsreader](https://github.com/productiontype/Newsreader) (variable, optical sizes) via
-    `@fontsource-variable/newsreader` — headlines and body, © The Newsreader Project Authors. Its display
+    `@fontsource-variable/newsreader`: headlines and body, © The Newsreader Project Authors. Its display
     optical size with tight tracking approximates the design's headline face.
-  - [IBM Plex Mono](https://github.com/IBM/plex) via `@fontsource/ibm-plex-mono` — tracked small-caps
+  - [IBM Plex Mono](https://github.com/IBM/plex) via `@fontsource/ibm-plex-mono`: tracked small-caps
     labels, © IBM Corp.
 - **Images** in `public/images/` were cropped for this theme from the ZeroHostCMS Buildful preview images of
   concept 14 (`14-freelance-writer-a/b.png`, AI-generated design comps):
-  - `hero-desk.webp` (1018×592) — the design screen's desk photograph; the headline's overlapping letters
+  - `hero-desk.webp` (1018×592): the design screen's desk photograph; the headline's overlapping letters
     were removed by inpainting (the theme draws the live text). Text on physical objects (book spines, mug,
     plant pot, pinned note) is part of the photo and was kept.
-  - `coast-path`, `focused-day`, `valley` (about 333×170) — the three card photos from the design screen;
+  - `coast-path`, `focused-day`, `valley` (about 333×170): the three card photos from the design screen;
     they are small and look soft on the article and archive pages. `books-stack` is a crop of the desk photo.
-  - `desk-full`, `desk-wide`, `papers`, `notebook-pen`, `window-cup`, `plant-sea` — the text-free product
+  - `desk-full`, `desk-wide`, `papers`, `notebook-pen`, `window-cup`, `plant-sea`: the text-free product
     illustration (b) and crops of it.
   The mockup (c) is not used. The photos repeat across articles. No person is presented as the writer.
 - **Icons** (quill mark, arrows, menu button) are inline SVG. No other external requests, no browser

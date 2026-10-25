@@ -14,11 +14,11 @@ with an always-current menu and opening hours.
 
 | Route | Page |
 |---|---|
-| `/` | Homepage — photo hero with "View menu", "From our kitchen" split with two photos, "On the counter today" favourites (items flagged *Show on the homepage*), "Visit us" band with address and hours, footer |
-| `/menu` | Menu — photo header, sticky section tabs (Coffee, Tea & more, Pastries, Brunch; in-page anchors), priced item rows with optional thumbnails |
-| `/menu/[slug]` | Item detail — photo (or branded placeholder), price, description, "What's in it", allergens, and up to three more items from the same section |
-| `/about` | About — photo header with the page intro, Portable Text story from the CMS page `about`, photos, "View menu" band |
-| `/visit` | Visit — opening hours, today's weekday, address, phone, email, getting-here and accessibility notes, "Open in Google Maps" link, photo |
+| `/` | Homepage: photo hero with "View menu", "From our kitchen" split with two photos, "On the counter today" favourites (items flagged *Show on the homepage*), "Visit us" band with address and hours, footer |
+| `/menu` | Menu: photo header, sticky section tabs (Coffee, Tea & more, Pastries, Brunch; in-page anchors), priced item rows with optional thumbnails |
+| `/menu/[slug]` | Item detail: photo (or branded placeholder), price, description, "What's in it", allergens, and up to three more items from the same section |
+| `/about` | About: photo header with the page intro, Portable Text story from the CMS page `about`, photos, "View menu" band |
+| `/visit` | Visit: opening hours, today's weekday, address, phone, email, getting-here and accessibility notes, "Open in Google Maps" link, photo |
 | `/search` | Server-side search across menu items (`?q=`) |
 | `/[slug]` | Any other CMS page (`private-events` is seeded and linked from the footer) |
 | `404` | Styled not-found page |
@@ -29,15 +29,15 @@ without JavaScript. The "A cup brighter" pill in the header links to `/visit`.
 
 ## Collections
 
-- **items** — name, menu section (`coffee` / `tea` / `pastries` / `brunch`), price (free text,
+- **items**: name, menu section (`coffee` / `tea` / `pastries` / `brunch`), price (free text,
   shown as typed), menu line, full description, "what's in it", allergens, *show on the homepage*
   flag (first four flagged items appear on the homepage), sort order, `image` upload and bundled
   `photo` path.
-- **hours** — days, hours, sort order (homepage band, visit page, footer).
-- **venue** — one entry: name, street, postcode and city, country, phone, email, map/directions
+- **hours**: days, hours, sort order (homepage band, visit page, footer).
+- **venue**: one entry: name, street, postcode and city, country, phone, email, map/directions
   link (falls back to a Google Maps search built from the address), getting-here note, seating and
   accessibility note.
-- **pages** — title, intro line and Portable Text. The page with slug `about` feeds `/about`; any
+- **pages**: title, intro line and Portable Text. The page with slug `about` feeds `/about`; any
   other page is served at `/{slug}`.
 
 Every image-bearing item renders the uploaded CMS `image` when present, otherwise the bundled
@@ -47,12 +47,12 @@ to the `category` select and a row there.
 
 ## Source map
 
-- `seed/seed.json` — collections, menu, settings and sample content
-- `src/layouts/Base.astro` — head, header (overlay variant for photo heroes), mobile nav, footer
-- `src/pages/` — routes listed above
-- `src/components/` — `ItemPhoto`, `FavGrid`, `Hours`, `Arrow`, `Leaf`
-- `src/lib/cafe.ts` — menu sections and data helpers
-- `src/styles/theme.css` — the whole visual system (tokens at the top)
+- `seed/seed.json`: collections, menu, settings and sample content
+- `src/layouts/Base.astro`: head, header (overlay variant for photo heroes), mobile nav, footer
+- `src/pages/`: routes listed above
+- `src/components/`: `ItemPhoto`, `FavGrid`, `Hours`, `Arrow`, `Leaf`
+- `src/lib/cafe.ts`: menu sections and data helpers
+- `src/styles/theme.css`: the whole visual system (tokens at the top)
 
 ## Images, fonts and external requests
 
@@ -66,9 +66,9 @@ illustration. Chalkboard lettering and the mug print are part of the photographs
 Fonts are self-hosted through Fontsource npm packages, so the site makes no font requests to third
 parties:
 
-- Source Serif 4 (variable, optical sizes) — Adobe, SIL Open Font License 1.1
-- Inter (variable) — Rasmus Andersson, SIL Open Font License 1.1
-- IBM Plex Mono — IBM, SIL Open Font License 1.1
+- Source Serif 4 (variable, optical sizes): Adobe, SIL Open Font License 1.1
+- Inter (variable): Rasmus Andersson, SIL Open Font License 1.1
+- IBM Plex Mono: IBM, SIL Open Font License 1.1
 
 Icons (arrow, leaf) are inline SVG. The only external links are the Google Maps link on the visit
 page and footer; there is no embedded map, analytics, cookie or browser storage use.
@@ -100,7 +100,7 @@ been evaluated.
 
 ## Known limitations
 
-- No ordering, reservations or contact form — the visit page links to email, phone and maps.
+- No ordering, reservations or contact form. The visit page links to email, phone and maps.
 - Light mode only; left-to-right English only.
 - The footer links to `/private-events`; remove the link in `src/layouts/Base.astro` if that page
   is deleted.

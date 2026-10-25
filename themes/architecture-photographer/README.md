@@ -35,16 +35,16 @@ the hero stacks: text on paper first, then the photograph, with the four subject
 
 ## Collections
 
-- **projects** — name (title), category (select: `civic` / `interiors` / `residential`), architect
+- **projects**: name (title), category (select: `civic` / `interiors` / `residential`), architect
   (credit), location, year, building type, one-line summary, "show on the homepage" flag, sort order,
   cover `image` + `photo`, `gallery` repeater (photo upload or bundled path, plus caption) and a Portable
   Text notes field. Architects, places and projects in the seed are fictional.
-- **posts** (Journal) — title, date (as shown), topic label, summary, sort order, cover `image` +
+- **posts** (Journal): title, date (as shown), topic label, summary, sort order, cover `image` +
   `photo`, Portable Text body.
-- **principles** (Approach) — title, text, sort order (homepage section and about page).
-- **studio** — one entry: studio name, base, phone, commission email, reply time and the note beside
+- **principles** (Approach): title, text, sort order (homepage section and about page).
+- **studio**: a single entry with studio name, base, phone, commission email, reply time and the note beside
   the form.
-- **pages** — title, optional small label and intro, optional side photo, Portable Text content. The
+- **pages**: title, optional small label and intro, optional side photo, Portable Text content. The
   page with slug `about` feeds `/about`.
 
 Site settings: the title ("KELLEN") is the tracked capital wordmark and the tagline ("Architecture
@@ -66,17 +66,17 @@ the intended production route; it is not wired into this standalone theme.
 
 - **Fonts** are self-hosted through npm, no font CDN, both under the SIL Open Font License 1.1:
   - [Newsreader](https://github.com/productiontype/Newsreader) (variable, optical sizes) via
-    `@fontsource-variable/newsreader` — headlines and body prose, © The Newsreader Project Authors.
+    `@fontsource-variable/newsreader`: headlines and body prose, © The Newsreader Project Authors.
     Its light optical-size cut with tight tracking is the closest free match to the design's headline face.
-  - [Figtree](https://github.com/erikdkennedy/figtree) (variable) via `@fontsource-variable/figtree` —
+  - [Figtree](https://github.com/erikdkennedy/figtree) (variable) via `@fontsource-variable/figtree`:
     navigation, buttons, forms and the tracked capitals, © The Figtree Project Authors.
 - **Images** in `public/images/` were cropped for this theme from the ZeroHostCMS Buildful preview
   images of concept 12 (`12-architecture-photographer-a/b/c.png`, AI-generated design comps):
-  - `hero-home.webp` (1448×751) — the design screen hero. The overlaid wordmark, navigation, button,
+  - `hero-home.webp` (1448×751): the design screen hero. The overlaid wordmark, navigation, button,
     eyebrow, headline, subtitle, CTA and the right-hand rail were removed (smooth fill over the sky,
     texture-matched fill over the concrete, and the mountain ridge under the CTA redrawn); the theme draws
     the live text over the same spots. `glass-living`, `curve-soffit` and `sea-horizon` are crops of it.
-  - `civic`, `interiors`, `residential` — the three photos from the design screen, only about 285×204 in
+  - `civic`, `interiors`, `residential`: the three photos from the design screen, only about 285×204 in
     the source and upscaled 2.5× with light sharpening.
   - `prints-camera` (1448×1086) is the text-free product illustration (b) as is, with `print-pool`,
     `print-interior` and `camera-lens` cropped from it (the angled print was straightened). `sunset-rocks`

@@ -41,8 +41,8 @@ if (Astro.cache?.enabled) {
 
 const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(settingsResult.data);
 const titleIncludesSiteName =
-	title === siteTitle || title.endsWith(` | ${siteTitle}`) || title.endsWith(` — ${siteTitle}`);
-const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
+	title === siteTitle || title.endsWith(` | ${siteTitle}`) || title.endsWith(` | ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} | ${siteTitle}`;
 const pageDescription = description ?? siteTagline;
 const navItems = menuResult.data?.items ?? [];
 const { venue } = venueResult;
@@ -86,7 +86,7 @@ const year = new Intl.DateTimeFormat("en-US", { year: "numeric", timeZone: "Asia
 
 		<header class:list={["site-head", { "is-overlay": overlay }]}>
 			<div class="head-inner">
-				<a class="wordmark" href="/" aria-label={`${siteTitle} — homepage`}>
+				<a class="wordmark" href="/" aria-label={`${siteTitle}, homepage`}>
 					{
 						siteLogo ? (
 							<img src={siteLogo.url} alt={siteLogo.alt || siteTitle} />

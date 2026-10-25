@@ -40,19 +40,19 @@ sits over the sky with a light wash and the approach photo moves under the text.
 
 ## Collections
 
-- **services** — name, one-line summary, "show on the homepage" flag, sort order, intro, Portable
+- **services**: name, one-line summary, "show on the homepage" flag, sort order, intro, Portable
   Text content, outcomes (one per line), typical engagement, `image` + `photo`. The homepage lists
   up to four services flagged for the homepage (or the first four overall if none are flagged).
-- **people** (Our Team) — name, role, short bio, focus areas (one per line), monogram colour
+- **people** (Our Team): name, role, short bio, focus areas (one per line), monogram colour
   (`teal`, `copper`, `stone`), sort order, Portable Text profile. People are shown as initials
   monograms, not photographs.
-- **insights** — title, topic label, excerpt, date, reading time, `featured_image` + `photo`,
+- **insights**: title, topic label, excerpt, date, reading time, `featured_image` + `photo`,
   Portable Text article. Lists are sorted by the `date` field (newest first); if it is empty the
   publish date is shown.
-- **principles** (Values) — title, text, sort order (about page and the services page).
-- **office** — one entry: company name, street, city/state/ZIP, country, phone, enquiries email,
+- **principles** (Values): title, text, sort order (about page and the services page).
+- **office**: one entry: company name, street, city/state/ZIP, country, phone, enquiries email,
   office hours and the response note shown on the contact page.
-- **pages** — title, optional small label and intro, Portable Text content. The page with slug
+- **pages**: title, optional small label and intro, Portable Text content. The page with slug
   `about` feeds `/about`.
 
 Site settings: the title ("Northbridge") is the serif wordmark and the tagline ("Professional
@@ -74,20 +74,20 @@ standalone theme.
 
 - **Fonts** are self-hosted through npm, no font CDN:
   - [Source Serif 4](https://github.com/adobe-fonts/source-serif) (variable, optical sizes) via
-    `@fontsource-variable/source-serif-4` — SIL Open Font License 1.1, © Adobe.
+    `@fontsource-variable/source-serif-4`: SIL Open Font License 1.1, © Adobe.
   - [Instrument Sans](https://github.com/Instrument/instrument-sans) (variable) via
-    `@fontsource-variable/instrument-sans` — SIL Open Font License 1.1, © The Instrument Sans
+    `@fontsource-variable/instrument-sans`: SIL Open Font License 1.1, © The Instrument Sans
     Project Authors.
 - **Images** in `public/images/` were cropped for this theme from the ZeroHostCMS Buildful preview
   images of concept 06 (`06-professional-services-a/b/c.png`, AI-generated design comps):
-  - `hero-home.webp` (1448×698) — the design screen hero; the overlaid wordmark, navigation,
+  - `hero-home.webp` (1448×698): the design screen hero; the overlaid wordmark, navigation,
     buttons, eyebrow, headline and the white side notes were removed by inpainting (the theme draws
     them as live text over the same spots). `terrace-office.webp` and `city-dusk.webp` are crops
     of it.
-  - `approach-meeting.webp` (615×387) — the meeting photo from the design screen's first section.
-  - `model-review.webp` (1448×1086), `model-table.webp`, `plan-session.webp` — the text-free
+  - `approach-meeting.webp` (615×387): the meeting photo from the design screen's first section.
+  - `model-review.webp` (1448×1086), `model-table.webp`, `plan-session.webp`: the text-free
     product illustration (b).
-  - `studio-team.webp` (600×458) — the right-hand, text-free part of the hero photo on the monitor
+  - `studio-team.webp` (600×458): the right-hand, text-free part of the hero photo on the monitor
     in the contextual mockup (c).
   The source comps are small (1448×1086), so the meeting and studio photos are shown slightly
   upscaled where they fill wide columns on narrow layouts. No faces from these photos are used as

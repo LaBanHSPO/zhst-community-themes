@@ -1,4 +1,4 @@
-/* Montré — modern restaurant: near-black photography, warm off-white paper, sand-gold accents. */
+/* Montré: modern restaurant: near-black photography, warm off-white paper, sand-gold accents. */
 :root {
 	--night: #110e0b;
 	--night-2: #1b1713;
@@ -231,7 +231,7 @@ figure {
 	gap: 1.25rem 2rem;
 }
 
-/* Header — always floats over the dark first section of each page */
+/* Header: always floats over the dark first section of each page */
 .site-head {
 	position: absolute;
 	inset: 0 0 auto;

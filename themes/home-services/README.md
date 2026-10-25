@@ -35,17 +35,17 @@ decorative note on the hero photo is hidden; below 860px the hero copy sits abov
 
 ## Collections
 
-- **services** — name, one-line summary, "show on the homepage" flag (the homepage shows up to three),
+- **services**: name, one-line summary, "show on the homepage" flag (the homepage shows up to three),
   sort order, icon (`drop`, `bolt`, `roller`, `wrench`, `house`), intro, Portable Text content,
   included items (one per line), typical visit, `image` + `photo`.
-- **projects** — name, short description, service label, neighbourhood, time on site, before, after,
+- **projects**: name, short description, service label, neighbourhood, time on site, before, after,
   completed date, sort order, Portable Text write-up, `featured_image` + `photo`.
-- **people** (Team) — name, role, short bio, sort order. Shown as initials, not photographs.
-- **principles** (Values) — title, text, sort order.
-- **steps** (How it works) — title, text, sort order.
-- **office** (Contact details) — one entry: company name, street, city/state/ZIP, country, phone,
+- **people** (Team): name, role, short bio, sort order. Shown as initials, not photographs.
+- **principles** (Values): title, text, sort order.
+- **steps** (How it works): title, text, sort order.
+- **office** (Contact details): one entry: company name, street, city/state/ZIP, country, phone,
   enquiries email, hours, service area and the response note.
-- **pages** — title, optional small label and intro, Portable Text content. The page with slug
+- **pages**: title, optional small label and intro, Portable Text content. The page with slug
   `about` feeds `/about`.
 
 Site settings: the title ("HearthFix") is the heavy wordmark and the tagline ("Home Services") the
@@ -70,15 +70,15 @@ is the intended production route; it is not wired into this standalone theme.
   letter shapes are close, and word spacing is tightened in the large headings to match.
 - **Images** in `public/images/` were cropped from the ZeroHostCMS Buildful preview images of concept
   07 (`07-home-services-a/b/c.png`, AI-generated design comps):
-  - `hero-home.webp` (1448×685) — the design screen hero; the wordmark, navigation, buttons, eyebrow,
+  - `hero-home.webp` (1448×685): the design screen hero; the wordmark, navigation, buttons, eyebrow,
     headline, paragraph, trust items and painted wall note were removed by inpainting (the theme draws
     them as live text over the same spots). The "HearthFix" badge on the polo is part of the photo.
-  - `svc-plumbing.webp`, `svc-electrical.webp`, `svc-painting.webp` (292×178) — the three card photos
+  - `svc-plumbing.webp`, `svc-electrical.webp`, `svc-painting.webp` (292×178): the three card photos
     from the design screen. They are small, so the service and project detail pages show them
     upscaled about 1.5–2×, noticeably soft.
-  - `tech-house.webp` (1448×1086), `house-exterior.webp` (688×790), `tool-bag.webp` (600×346) — the
+  - `tech-house.webp` (1448×1086), `house-exterior.webp` (688×790), `tool-bag.webp` (600×346): the
     text-free product illustration (b).
-  - `kitchen-repair.webp` (562×477) — the right-hand, text-free part of the photo on the laptop in the
+  - `kitchen-repair.webp` (562×477): the right-hand, text-free part of the photo on the laptop in the
     contextual mockup (c).
   Several images repeat across services, projects and the quote band. No faces from these photos are
   used as team portraits.

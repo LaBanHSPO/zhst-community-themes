@@ -34,17 +34,17 @@ first, then the photograph.
 
 ## Collections
 
-- **books** — title, subtitle, author (slug of an author entry), genre (select: `fiction` / `poetry` /
+- **books**: title, subtitle, author (slug of an author entry), genre (select: `fiction` / `poetry` /
   `nonfiction`), one-line summary, synopsis (paragraphs separated by a blank line), year, pages, format, sample
   ISBN, "show on the homepage" flag, sort order, typeset-cover colour (`forest` / `ink` / `clay` / `sand`),
   cover `image` + `photo`, optional Portable Text body.
-- **authors** — name, one-line intro, homepage flag, sort order, Portable Text biography.
-- **journal** — title, kind, date (as shown), written by, summary, sort order, cover `image` + `photo`, Portable
+- **authors**: name, one-line intro, homepage flag, sort order, Portable Text biography.
+- **journal**: title, kind, date (as shown), written by, summary, sort order, cover `image` + `photo`, Portable
   Text body.
-- **topics** — contact topics: title, description, the email of the desk that answers, sort order.
-- **press** — one entry: name, address, phone, main email, reply time, contact note, the small caps beside the
+- **topics**: contact topics: title, description, the email of the desk that answers, sort order.
+- **press**: a single entry with name, address, phone, main email, reply time, contact note, the small caps beside the
   search icon and beside the featured titles, the submissions-band text and the "where to buy" sentence.
-- **pages** — title, small label, intro, optional side photo, optional contact topic for the closing button,
+- **pages**: title, small label, intro, optional side photo, optional contact topic for the closing button,
   Portable Text content.
 
 Site settings: the title ("Cord & Page") is the serif wordmark and the tagline ("Independent Publisher") is the

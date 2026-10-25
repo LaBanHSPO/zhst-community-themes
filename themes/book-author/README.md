@@ -36,15 +36,15 @@ and the handwritten notes are hidden.
 
 ## Collections
 
-- **books** — title, one-line pitch, short description, kind, year, pages, publisher, formats, pull
+- **books**: title, one-line pitch, short description, kind, year, pages, publisher, formats, pull
   quote for the homepage, "where to find it" (one per line, `Place: note`), "feature on the homepage"
   flag, sort order, cover `cover` upload + `cover_photo` bundled path, "print the title on the cover
   art" flag (for art without lettering; a book with no cover at all gets a typeset cover), Portable
   Text excerpt and synopsis.
-- **journal** — title, category, date (as shown), summary, homepage flag, sort order (newest first),
+- **journal**: title, category, date (as shown), summary, homepage flag, sort order (newest first),
   `image` upload + `photo` bundled path, Portable Text post.
-- **author** — one entry: name, base, phone, contact email, reply time and the note beside the form.
-- **pages** — title, optional small label and intro, Portable Text content. The page with slug `about`
+- **author**: a single entry with name, base, phone, contact email, reply time and the note beside the form.
+- **pages**: title, optional small label and intro, Portable Text content. The page with slug `about`
   feeds `/about`.
 
 Site settings: the title ("Elise Rowan") is the tracked serif wordmark and the tagline ("Writer of
@@ -68,22 +68,22 @@ and type `bio`.
 
 - **Fonts** are self-hosted through npm, no font CDN, all under the SIL Open Font License 1.1:
   - [Newsreader](https://github.com/productiontype/Newsreader) (variable, optical sizes, roman and
-    italic) via `@fontsource-variable/newsreader` — headlines, wordmark, body, buttons, © The
+    italic) via `@fontsource-variable/newsreader`: headlines, wordmark, body, buttons, © The
     Newsreader Project Authors.
-  - [Figtree](https://github.com/erikdkennedy/figtree) (variable) via `@fontsource-variable/figtree` —
+  - [Figtree](https://github.com/erikdkennedy/figtree) (variable) via `@fontsource-variable/figtree`:
     navigation, labels and light sans paragraphs, © The Figtree Project Authors.
   - [La Belle Aurore](https://fonts.google.com/specimen/La+Belle+Aurore) via
-    `@fontsource/la-belle-aurore` — the handwritten margin notes, © Dave Bastian.
+    `@fontsource/la-belle-aurore`: the handwritten margin notes, © Dave Bastian.
 - **Images** in `public/images/` were cropped for this theme from the ZeroHostCMS Buildful preview
   images of concept 13 (`13-book-author-a/b.png`, AI-generated design comps):
-  - `hero-home.webp` (1448×651) — the design screen hero with the logo, navigation, headline, copy,
+  - `hero-home.webp` (1448×651): the design screen hero with the logo, navigation, headline, copy,
     button, motto and the handwritten note removed (inpainting; the theme draws the live text over the
     same spots). The stacked books keep their spine words.
-  - `book-scene.webp` (540×432), `coast-cliff.webp` (688×432) — the book-on-stone scene and the faded
+  - `book-scene.webp` (540×432), `coast-cliff.webp` (688×432): the book-on-stone scene and the faded
     coast from the design's second section, with the section text and note removed. The cover lettering
     belongs to the printed book and stays. `cover-farther-shore.webp` is a crop of that cover.
   - `cover-lanterns.webp` (424×566), `portrait-author.webp`, `vase-flowers.webp`, `desk-notebook.webp`,
-    `spines-stack.webp` — crops of the text-free illustration (b). The lanterns cover has no lettering,
+    `spines-stack.webp`: crops of the text-free illustration (b). The lanterns cover has no lettering,
     so the theme prints its title and the author's name over the art.
   The source comps are small, so several crops are soft and some photos repeat across pages. The same
   AI-generated woman appears as the hero and about portrait; she is fictional.

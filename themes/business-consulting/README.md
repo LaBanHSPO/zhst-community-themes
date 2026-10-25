@@ -35,19 +35,19 @@ panel. The hero stacks its text above the photo on narrow screens.
 
 ## Collections
 
-- **services** — name, card description, icon (`chart`, `people`, `gear`, `compass`), icon colour
+- **services**: name, card description, icon (`chart`, `people`, `gear`, `compass`), icon colour
   (`navy`, `sage`, `taupe`), "show on the homepage" flag, sort order, intro, Portable Text content,
   outcomes (one per line), typical engagement, `image` + `photo`. The homepage shows the first three
   services flagged for the homepage (or the first three overall if none are flagged).
-- **insights** — title, topic label, excerpt, date, reading time, `featured_image` + `photo`,
+- **insights**: title, topic label, excerpt, date, reading time, `featured_image` + `photo`,
   Portable Text article. Lists are sorted by the `date` field (newest first); if it is empty the
   publish date is shown.
-- **principles** — title, text, placement (`approach` for the numbered steps on the homepage and
+- **principles**: title, text, placement (`approach` for the numbered steps on the homepage and
   services page, `values` for the about page), sort order.
-- **people** — name, role, short bio, sort order (about page team).
-- **office** — one entry: company name, street, city and postcode, country, phone, enquiries email,
+- **people**: name, role, short bio, sort order (about page team).
+- **office**: one entry: company name, street, city and postcode, country, phone, enquiries email,
   office hours and the response note shown on the contact page.
-- **pages** — title, optional small label and intro, Portable Text content. The page with slug
+- **pages**: title, optional small label and intro, Portable Text content. The page with slug
   `about` feeds `/about`.
 
 Site settings: the title ("Northbridge") is the serif wordmark and the tagline ("Business
@@ -69,17 +69,17 @@ standalone theme.
 
 - **Fonts** are self-hosted through npm, no font CDN:
   - [Newsreader](https://github.com/productiontype/Newsreader) (variable, optical sizes) via
-    `@fontsource-variable/newsreader` — SIL Open Font License 1.1, © Production Type.
-  - [Inter](https://github.com/rsms/inter) (variable) via `@fontsource-variable/inter` — SIL Open
+    `@fontsource-variable/newsreader`: SIL Open Font License 1.1, © Production Type.
+  - [Inter](https://github.com/rsms/inter) (variable) via `@fontsource-variable/inter`: SIL Open
     Font License 1.1, © The Inter Project Authors.
 - **Images** in `public/images/` were cropped for this theme from the ZeroHostCMS Buildful preview
   images of concept 04 (`04-business-consulting-a/b/c.png`, AI-generated design comps):
-  - `hero-home.webp` (1448×674) — design screen hero; the overlaid logo, navigation, button,
+  - `hero-home.webp` (1448×674): design screen hero; the overlaid logo, navigation, button,
     headline, copy and the painted "Brighter Businesses…" wall note were removed by inpainting (the
     theme draws them as live text over the same spot). `team-laptop.webp` is a crop of it.
-  - `team-workshop.webp` (1448×1086), `planning-session.webp`, `strategy-tiles.webp` — the
+  - `team-workshop.webp` (1448×1086), `planning-session.webp`, `strategy-tiles.webp`: the
     text-free product illustration (b).
-  - `client-meeting.webp` (576×374) — the hero photo on the laptop screen in the contextual mockup
+  - `client-meeting.webp` (576×374): the hero photo on the laptop screen in the contextual mockup
     (c), with its wall lettering removed by inpainting.
   The source comps are small (1448×1086), so some crops (the stone tiles and the meeting photo) are
   shown slightly upscaled on detail pages.

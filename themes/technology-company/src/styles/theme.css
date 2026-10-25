@@ -1,4 +1,4 @@
-/* Nexora — Technology Company theme
+/* Nexora: Technology Company theme
    Dark-navy architectural hero, Inter Tight headlines, Figtree body copy,
    light blue-grey sections, soft cards with glass illustrations, royal-blue pill buttons. */
 
@@ -225,7 +225,7 @@ a.link-arrow:hover .arrow {
 	transform: translateX(3px);
 }
 
-/* Header — always sits on the dark first section of every page */
+/* Header: always sits on the dark first section of every page */
 
 .site-head {
 	position: absolute;

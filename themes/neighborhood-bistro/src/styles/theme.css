@@ -1,4 +1,4 @@
-/* Neighborhood Bistro — candlelit dining room, cream paper, olive and brass. */
+/* Neighborhood Bistro: candlelit dining room, cream paper, olive and brass. */
 :root {
 	--ink: #1c1b16;
 	--ink-soft: #2f2d26;
@@ -160,7 +160,7 @@ p {
 	align-items: center;
 }
 
-/* Buttons — olive pills */
+/* Buttons: olive pills */
 .btn {
 	display: inline-flex;
 	align-items: center;
@@ -549,7 +549,7 @@ p {
 	}
 }
 
-/* Home — Our kitchen */
+/* Home: Our kitchen */
 .kitchen {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) minmax(0, 378px) minmax(0, 297px);
@@ -606,7 +606,7 @@ p {
 	}
 }
 
-/* Home — menu highlights */
+/* Home: menu highlights */
 .highlights {
 	padding: clamp(4.5rem, 8vw, 7.5rem) 0 clamp(4.5rem, 8vw, 7rem);
 }
@@ -674,7 +674,7 @@ p {
 	color: var(--brass-deep);
 }
 
-/* Home — visit band */
+/* Home: visit band */
 .visit-band {
 	display: grid;
 	grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);

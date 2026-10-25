@@ -33,15 +33,15 @@ panel.
 
 ## Collections
 
-- **dishes** — name, course (`snacks`, `starters`, `mains`, `sides`, `desserts`, `drinks`), price
+- **dishes**: name, course (`snacks`, `starters`, `mains`, `sides`, `desserts`, `drinks`), price
   (free text, shown as typed), description, dietary notes, "feature on the homepage" flag, sort
   order, `image` + `photo`. The first three featured dishes appear on the homepage.
-- **highlights** — title, text, placement (`story` for the Our Story values, `booking` for the
+- **highlights**: title, text, placement (`story` for the Our Story values, `booking` for the
   booking notes), sort order.
-- **hours** — days, hours, sort order (homepage band, visit page, footer).
-- **venue** — one entry: name, street, postcode and city, country, phone, reservations email,
+- **hours**: days, hours, sort order (homepage band, visit page, footer).
+- **venue**: one entry: name, street, postcode and city, country, phone, reservations email,
   optional directions link, "getting here" notes and a booking note.
-- **pages** — title, optional small label and intro line, Portable Text content. The page with slug
+- **pages**: title, optional small label and intro line, Portable Text content. The page with slug
   `our-story` feeds `/our-story`.
 
 Every image-bearing entry renders the uploaded CMS `image` when present and otherwise falls back to
@@ -62,17 +62,17 @@ is not wired into this standalone theme.
 
 - **Fonts** are self-hosted through npm, no font CDN:
   - [Source Serif 4](https://github.com/adobe-fonts/source-serif) (variable, optical sizes) via
-    `@fontsource-variable/source-serif-4` — SIL Open Font License 1.1, © Adobe.
-  - [Jost](https://github.com/indestredesign/jost) (variable) via `@fontsource-variable/jost` — SIL
+    `@fontsource-variable/source-serif-4`: SIL Open Font License 1.1, © Adobe.
+  - [Jost](https://github.com/indestredesign/jost) (variable) via `@fontsource-variable/jost`: SIL
     Open Font License 1.1, © Indestructible Type.
 - **Images** in `public/images/` were cropped for this theme from the ZeroHostCMS Buildful preview
   images of concept 02 (`02-neighborhood-bistro-a/b/c.png`, AI-generated design comps):
-  - `hero-home.webp` — design screen hero; the overlaid logo, navigation, headline and buttons were
+  - `hero-home.webp`: design screen hero; the overlaid logo, navigation, headline and buttons were
     removed by inpainting (the theme draws them as real text over the same spot).
-  - `kitchen-salad.webp`, `kitchen-room.webp`, `dish-scallops.webp`, `dish-beets.webp` — design
+  - `kitchen-salad.webp`, `kitchen-room.webp`, `dish-scallops.webp`, `dish-beets.webp`: design
     screen photos.
   - `dinner-table.webp`, `dining-room-evening.webp`, `dish-salmon.webp`, `bread-and-oil.webp`,
-    `wine-and-candle.webp` — the text-free product illustration (b).
+    `wine-and-candle.webp`: the text-free product illustration (b).
   The source comps are small (1448×1086), so some crops are shown at roughly their native size or
   slightly upscaled.
 - **Icons** (olive sprig, menu button) and the location map are inline SVG. The map is a stylised

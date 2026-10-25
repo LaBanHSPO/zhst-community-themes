@@ -38,21 +38,21 @@ photo sits behind a darker shade so the copy stays readable.
 
 ## Collections
 
-- **solutions** — name, card description (a line break is kept on the homepage card), card
+- **solutions**: name, card description (a line break is kept on the homepage card), card
   illustration (`layers`, `cubes`, `spheres`), "show on the homepage" flag, sort order, intro,
   Portable Text content, capabilities (one per line), how engagements usually start, `image` +
   `photo`. The homepage shows the first three solutions flagged for the homepage (or the first
   three overall if none are flagged).
-- **industries** — name, description, icon (`finance`, `health`, `energy`, `public`, `retail`,
+- **industries**: name, description, icon (`finance`, `health`, `energy`, `public`, `retail`,
   `manufacturing`), focus areas (one per line), sort order.
-- **principles** — title, text, placement (`approach` for the numbered steps, `values` for the about
+- **principles**: title, text, placement (`approach` for the numbered steps, `values` for the about
   and careers pages), sort order.
-- **openings** — role title, team, location, type (`Full-time`, `Part-time`, `Contract`,
+- **openings**: role title, team, location, type (`Full-time`, `Part-time`, `Contract`,
   `Internship`), summary, date posted, Portable Text description, responsibilities and requirements
   (one per line). Lists are sorted by the posted date, newest first.
-- **office** — one entry: company name, street, city and postcode, country, phone, enquiries email,
+- **office**: one entry: company name, street, city and postcode, country, phone, enquiries email,
   applications email (falls back to the enquiries email), office hours and the response note.
-- **pages** — title, optional small label and intro, Portable Text content. The page with slug
+- **pages**: title, optional small label and intro, Portable Text content. The page with slug
   `about` feeds `/about`.
 
 Site settings: the title ("Nexora") is the wordmark beside the gradient "N" mark, and the tagline
@@ -78,19 +78,19 @@ route; it is not wired into this standalone theme.
 
 - **Fonts** are self-hosted through npm, no font CDN:
   - [Inter Tight](https://github.com/rsms/inter) (variable) via
-    `@fontsource-variable/inter-tight` — SIL Open Font License 1.1, © The Inter Project Authors.
+    `@fontsource-variable/inter-tight`: SIL Open Font License 1.1, © The Inter Project Authors.
   - [Figtree](https://github.com/erikdkennedy/figtree) (variable) via
-    `@fontsource-variable/figtree` — SIL Open Font License 1.1, © The Figtree Project Authors.
+    `@fontsource-variable/figtree`: SIL Open Font License 1.1, © The Figtree Project Authors.
 - **Images** in `public/images/` were cropped for this theme from the ZeroHostCMS Buildful preview
   images of concept 05 (`05-technology-company-a/b/c.png`, AI-generated design comps):
-  - `hero-home.webp` (1448×706) — the design screen hero; the overlaid logo, navigation, button,
+  - `hero-home.webp` (1448×706): the design screen hero; the overlaid logo, navigation, button,
     eyebrow, headline, paragraph and side notes were removed by inpainting (the theme draws them as
     live text over the same spots). `building-glass.webp` (748×706) is its right half.
-  - `illus-layers.webp`, `illus-cubes.webp`, `illus-spheres.webp` (220×154) — the three card
+  - `illus-layers.webp`, `illus-cubes.webp`, `illus-spheres.webp` (220×154): the three card
     illustrations from the design screen, with the card background converted to transparency so
     they sit on any light surface.
-  - `cloud-platform.webp` (1448×1086) — the text-free product illustration (b).
-  - `skyline.webp` (554×380) — the hero photo on the monitor in the contextual mockup (c), with its
+  - `cloud-platform.webp` (1448×1086): the text-free product illustration (b).
+  - `skyline.webp` (554×380): the hero photo on the monitor in the contextual mockup (c), with its
     navigation and side labels removed.
   The source comps are small (1448×1086), so the card illustrations are 220px wide and shown at
   native size; the solution list shows them up to 1.5× on wide screens, where they are slightly soft.

@@ -41,8 +41,8 @@ if (Astro.cache?.enabled) {
 
 const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(settingsResult.data);
 const titleIncludesSiteName =
-	title === siteTitle || title.endsWith(` | ${siteTitle}`) || title.endsWith(` — ${siteTitle}`);
-const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
+	title === siteTitle || title.endsWith(` | ${siteTitle}`);
+const fullTitle = titleIncludesSiteName ? title : `${title} | ${siteTitle}`;
 const pageDescription = description ?? `${siteTitle} ${siteTagline}`;
 const navItems = menuResult.data?.items ?? [];
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";

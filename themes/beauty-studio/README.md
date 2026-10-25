@@ -34,18 +34,18 @@ cream wash at the top of the photo.
 
 ## Collections
 
-- **treatments** — name, one-line description, category (`facials`, `nails`, `hair`), duration,
+- **treatments**: name, one-line description, category (`facials`, `nails`, `hair`), duration,
   price (whole dollars), "signature treatment" flag, sort order, intro, Portable Text content,
   included items (one per line), `image` + `photo`. The homepage lists up to four signature
   treatments (or the first four overall if none are flagged). When no photo is set the category
   photo is used.
-- **team** — name, role, short bio, sort order. People are shown as initials monograms, not
+- **team**: name, role, short bio, sort order. People are shown as initials monograms, not
   photographs.
-- **gallery** — caption, short note, alt text, "show wide" flag, sort order, `image` + `photo`.
-- **principles** (Values) — title, text, sort order (about page).
-- **studio** — one entry: studio name, street, city/state/ZIP, country, phone, booking email,
+- **gallery**: caption, short note, alt text, "show wide" flag, sort order, `image` + `photo`.
+- **principles** (Values): title, text, sort order (about page).
+- **studio**: a single entry with studio name, street, city/state/ZIP, country, phone, booking email,
   opening hours (one `Day|Hours` pair per line) and the note beside the booking form.
-- **pages** — title, optional small label and intro, Portable Text content. The page with slug
+- **pages**: title, optional small label and intro, Portable Text content. The page with slug
   `about` feeds `/about`.
 
 Site settings: the title ("LUMIÈRE") is the tracked serif wordmark and the tagline ("Beauty
@@ -68,19 +68,19 @@ standalone theme.
 
 - **Fonts** are self-hosted through npm, no font CDN:
   - [Newsreader](https://github.com/productiontype/Newsreader) (variable, optical sizes, roman and
-    italic) via `@fontsource-variable/newsreader` — SIL Open Font License 1.1, © The Newsreader
+    italic) via `@fontsource-variable/newsreader`: SIL Open Font License 1.1, © The Newsreader
     Project Authors.
   - [Figtree](https://github.com/erikdkennedy/figtree) (variable) via
-    `@fontsource-variable/figtree` — SIL Open Font License 1.1, © The Figtree Project Authors.
+    `@fontsource-variable/figtree`: SIL Open Font License 1.1, © The Figtree Project Authors.
 - **Images** in `public/images/` were cropped for this theme from the ZeroHostCMS Buildful preview
   images of concept 08 (`08-beauty-studio-a/b/c.png`, AI-generated design comps):
-  - `hero-home.webp` (1448×710) — the design screen hero; the overlaid wordmark, navigation, buttons,
+  - `hero-home.webp` (1448×710): the design screen hero; the overlaid wordmark, navigation, buttons,
     headline, eyebrow, right-hand note and the "BEAUTY LIVES HERE" print on the book were removed by
     inpainting (the theme draws the live text over the same spots). `green-chairs.webp` is a crop
     of it.
-  - `facials.webp`, `nails.webp`, `hair.webp` (512×492) — the three photo cards from the design
+  - `facials.webp`, `nails.webp`, `hair.webp` (512×492): the three photo cards from the design
     screen, which are only 256×246 in the source and were upscaled 2× with light sharpening.
-  - `salon-chair-light.webp` (1448×1086), `peonies-marble.webp`, `chair-towel.webp` — the text-free
+  - `salon-chair-light.webp` (1448×1086), `peonies-marble.webp`, `chair-towel.webp`: the text-free
     illustration (b) and crops of it.
   The source comps are small, so detail-page photos of the three categories are soft. Contextual
   mockup (c) is not used because its photos carry printed text. No faces from these photos are used as
