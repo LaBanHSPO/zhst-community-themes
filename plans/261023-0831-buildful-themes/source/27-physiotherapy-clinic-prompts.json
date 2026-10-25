@@ -1,0 +1,28 @@
+{
+  "id": "27",
+  "group": "Health & Wellness",
+  "category": "Health Clinics",
+  "name": "Physiotherapy Clinic",
+  "slug": "physiotherapy-clinic",
+  "selectionBasis": "Editorial judgment: recognizable, broadly reusable use case; no verified demand ranking.",
+  "variants": [
+    {
+      "id": "27-A",
+      "direction": "Preview giao di\u1ec7n",
+      "filename": "27-physiotherapy-clinic-a.png",
+      "prompt": "Use case: ui-mockup\nAsset type: website template gallery thumbnail, direction A \u2014 interface preview.\nCreate one beautifully art-directed desktop homepage for a physiotherapy practice, guided mobility exercise in an airy clinic. Category: Health Clinics. Concept: Physiotherapy Clinic.\nLandscape 4:3, straight-on flat website screenshot filling the canvas edge to edge. No device or browser frame, no perspective, no background outside the page. Compact top navigation, dominant hero, beginning of one relevant content section. Strong hierarchy and large focal elements readable at thumbnail size. Premium contemporary typography, disciplined spacing, sector-appropriate palette, original relevant imagery, clear contrast and appealing editorial composition.\nHeadline verbatim: \"Move with more confidence.\". Primary CTA verbatim: \"Explore services\". Only a few short English navigation labels, minimal copy, simple fictional wordmark based on \"Physiotherapy Clinic\".\nOne website only. No contact sheet, no watermark, no external logos, no fake awards, no popularity claims, no medical outcome claims. Professional, distinctive, commercially useful design."
+    },
+    {
+      "id": "27-B",
+      "direction": "Minh h\u1ecda s\u1ea3n ph\u1ea9m",
+      "filename": "27-physiotherapy-clinic-b.png",
+      "prompt": "Use case: ads-marketing\nAsset type: standalone product/service illustration for a website template thumbnail, direction B \u2014 product illustration.\nCreate one striking premium visual that immediately communicates this website concept: Physiotherapy Clinic. Category: Health Clinics. Subject context: physiotherapy practice, guided mobility exercise in an airy clinic.\nLandscape 4:3, edge-to-edge polished conceptual illustration, sophisticated tactile 3D and editorial mixed-media treatment, one strong central sector-specific motif with at most 3 supporting elements, rich materials, coherent sector-appropriate palette, sculpted soft light, carefully controlled negative space, strong silhouette readable at thumbnail size. Depict the actual product, service, or creative work represented by this concept. For personal portfolios, resumes and writers, use beautifully arranged original work artifacts as the product; for service businesses, show relevant service tools and an inviting setting. Every object must serve the concept.\nNo website UI, no screens, no devices, no browser frames, no text or letters, no watermark, no third-party logos, no fake awards, no before/after medical promises. One coherent illustration only; not a contact sheet. Distinctive and professional, not generic clip art."
+    },
+    {
+      "id": "27-C",
+      "direction": "Mockup b\u1ed1i c\u1ea3nh",
+      "filename": "27-physiotherapy-clinic-c.png",
+      "prompt": "Use case: product-mockup\nAsset type: contextual website mockup for a template gallery thumbnail, direction C \u2014 contextual mockup.\nCreate one photorealistic premium mockup of the \"Physiotherapy Clinic\" website displayed on a single modern unbranded desktop monitor or laptop in a believable setting directly relevant to Health Clinics. Website subject: physiotherapy practice, guided mobility exercise in an airy clinic.\nLandscape 4:3. The device screen must occupy about 65\u201375 percent of the image, be nearly front-facing with only mild perspective, and remain the clear focal point at small thumbnail size. Show a fully designed homepage on the screen: clean navigation, large relevant hero image, refined typography, clear CTA. Headline verbatim: \"Move with more confidence.\". CTA verbatim: \"Explore services\". Minimal additional English text and a simple fictional wordmark. Surround with only 2\u20133 restrained context-specific props and a softly defocused environment. Realistic materials, natural premium light, balanced composition and coherent palette. The screen must be geometrically accurate and readable, without excessive glare.\nOne device and one scene only. No floating page collage, no contact sheet, no external logos, no watermark, no fake awards, no numeric popularity or medical outcome claims. Make the context genuinely specific to this business, not a generic desk reused for every concept."
+    }
+  ]
+}

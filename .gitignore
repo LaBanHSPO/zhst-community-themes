@@ -32,5 +32,6 @@ uploads/
 *.log
 .DS_Store
 
-# Local review screenshots (large; kept out of the repository)
+# Local review screenshots and design-comps (large; kept out of the repository)
 themes/*/screenshots/
+plans/**/*.png
